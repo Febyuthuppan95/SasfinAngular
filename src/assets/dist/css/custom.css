@@ -1,0 +1,14 @@
+﻿.alert-danger {
+    background: #ff0000;
+    color: #f2f2f2;
+    border: none;
+}
+
+.notify-bottom {
+    position: fixed;
+    margin: 25px;
+    top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width:auto;
+}
