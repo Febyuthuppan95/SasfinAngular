@@ -1,5 +1,5 @@
 {
   "dev": {
-    "apiDomain": "https://localhost:5001/"
+    "apiDomain": "http://197.189.218.50:7777/"
   }
 }
