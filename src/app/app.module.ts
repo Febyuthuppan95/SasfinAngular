@@ -17,6 +17,7 @@ import { ViewChangePasswordComponent } from './views/view-change-password/view-c
 import { ViewUserListComponent } from './views/view-user-list/view-user-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FormForgotPasswordComponent } from './components/form-forgot-password/form-forgot-password.component';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { FormForgotPasswordComponent } from './components/form-forgot-password/f
     ViewUserListComponent,
     FormForgotPasswordComponent,
     SidebarComponent,
+    SearchbarComponent,
   ],
   imports: [
     BrowserModule,
