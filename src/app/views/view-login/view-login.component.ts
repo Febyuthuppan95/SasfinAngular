@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { dev } from './../../../assets/config.json';
 
-import { AlertDangerComponent } from '../../components/alert-danger/alert-danger.component';
-
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',
