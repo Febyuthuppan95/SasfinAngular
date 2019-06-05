@@ -14,9 +14,9 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
 
-  alertError = true;
+  alertError = false;
 
-  constructor(private  httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
@@ -29,12 +29,12 @@ export class ViewLoginComponent implements OnInit {
 
     this.httpClient.post(`${dev.apiDomain}account/authenticate/`, requestModel)
       .subscribe(
-      data  => {
-        console.log('POST Request is successful ', data);
+        data => {
+          console.log('POST Request is successful ', data);
 
-      },
-      error  => {
-        console.log('Error', error);
-      });
+        },
+        error => {
+          console.log('Error', error);
+        });
   }
 }
