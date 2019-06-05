@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './alert-danger.component.html',
   styleUrls: ['./alert-danger.component.scss']
 })
-export class AlertDangerComponent implements OnInit{
+export class AlertDangerComponent implements OnInit {
   title = 'Failure';
   message = 'Email or Password is incorrect!';
 
