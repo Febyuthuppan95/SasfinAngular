@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { dev } from './../../../assets/config.json';
 
 @Component({
   selector: 'app-view-forgot-password',
@@ -7,9 +9,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewForgotPasswordComponent implements OnInit {
 
-  constructor() { }
+  txtEmail: string;
+
+  requestPending = false;
+
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
 
+  onRequestOtpSubmit() {
+    this.requestPending = true;
+
+    const requestModel = {
+      _email: this.txtEmail,
+    };
+
+    this.httpClient.post(`${dev.apiDomain}account/request/otp`, requestModel)
+      .subscribe(
+        data => {
+          console.log('POST Request is successful ', data);
+          this.requestPending = false;
+        },
+        error => {
+          console.log('Error', error);
+          this.requestPending = false;
+        });
+  }
 }
