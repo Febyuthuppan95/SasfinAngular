@@ -33,24 +33,22 @@
                   <table class="table table-hover">
                     <thead>
                     <tr>
-                      <th>UserID</th>
-                      <th>FirstName</th>
+                      <th>Emp No</th>
+                      <th>First Name</th>
                       <th>Surname</th>
                       <th>Email</th>
-                      <th>EmpNo</th>
-                      <th>Extension</th>
+                      <th>Ext</th>
                       <th>Designation</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
+                      <tr *ngFor="let user of userList">
+                        <td>{{user.empNo}}</td>
+                        <td>{{user.firstName}}</td>
+                        <td>{{user.surname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.extension}}</td>
+                        <td>{{user.designation}}</td>
                     </tr>
                     </tbody>
                   </table>
@@ -58,13 +56,10 @@
               </div>
             </div>
           </div>
-
-            <!-- End of page Content -->
         </div>
         <app-footer></app-footer>
       </div>
     </div>
   </div>
 </body>
-
 </html>
