@@ -1,4 +1,4 @@
-.bg-image {
+body {
   background: url('./../../../assets/dist/images/background.jpg');
   background-size: cover;
   background-attachment: fixed;
@@ -13,4 +13,8 @@
   width: 30px;
   height: 30px;
   border-radius: 100%;
+}
+
+.td {
+  color: #333333;
 }
