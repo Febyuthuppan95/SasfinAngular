@@ -88,6 +88,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
+              "src/web.config",
               "src/assets/dist/images/favicon.png",
               "src/assets"
             ],
