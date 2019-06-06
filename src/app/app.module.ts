@@ -18,6 +18,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationComponent } from './components/notification/notification.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 // @ts-ignore
 @NgModule({
@@ -32,7 +33,8 @@ import { NotificationComponent } from './components/notification/notification.co
     FormForgotPasswordComponent,
     SidebarComponent,
     SearchbarComponent,
-    NotificationComponent
+    NotificationComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+.bg-image {
+  background: url('./../../../assets/dist/images/background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.tile-frost {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+}
+
+.profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+}
