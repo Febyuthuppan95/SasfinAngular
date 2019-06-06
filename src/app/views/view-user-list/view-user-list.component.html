@@ -33,8 +33,8 @@
                   <table class="table table-hover">
                     <thead>
                     <tr>
-                      <th>EmpNo</th>
-                      <th>FirstName</th>
+                      <th>Emp No</th>
+                      <th>First Name</th>
                       <th>Surname</th>
                       <th>Email</th>
                       <th>Ext</th>
@@ -42,14 +42,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-                      <td>test</td>
-<!--                      <td>test</td>-->
-<!--                      <td>test</td>-->
+                      <tr *ngFor="let user of userList">
+                        <td>{{user.empNo}}</td>
+                        <td>{{user.firstName}}</td>
+                        <td>{{user.surname}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.extension}}</td>
+                        <td>{{user.designation}}</td>
                     </tr>
                     </tbody>
                   </table>
