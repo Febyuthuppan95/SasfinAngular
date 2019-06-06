@@ -16,6 +16,7 @@ export class ViewUserListComponent implements OnInit {
   }
 
   userList: UserList[];
+  showLoader = true;
 
   ngOnInit() {
   }
@@ -36,6 +37,7 @@ export class ViewUserListComponent implements OnInit {
       data => {
         console.log('POST Request is successful ', data);
         this.userList = data.userList;
+        this.showLoader = false;
       },
       error => {
         console.log('Error', error);
