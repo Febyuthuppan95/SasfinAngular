@@ -12,16 +12,16 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit() {
   }
-  successmsg() {
-    this.toastr.success('Toastr Success message', 'Success');
-}
-  errorsmsg() {
-    this.toastr.error('Toastr Error Notification', 'Error');
+  public successmsg(title: string, message: string) {
+    this.toastr.success(message, title);
   }
-  infotoastr() {
-    this.toastr.info('Important News', 'Information');
+  public errorsmsg(title: string, message: string) {
+    this.toastr.error(message, title);
   }
-  toastrwarning() {
-    this.toastr.warning('Battery about to Die', 'Warning');
+  public infotoastr(title: string, message: string) {
+    this.toastr.info(message, title);
+  }
+  public toastrwarning(title: string, message: string) {
+    this.toastr.warning(message, title);
   }
 }

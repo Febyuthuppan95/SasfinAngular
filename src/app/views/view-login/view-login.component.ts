@@ -1,25 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { dev } from './../../../assets/config.json';
 import { LoginResponse } from './../../models/LoginResponse';
+import { NotificationComponent } from './../../components/notification/notification.component';
 
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',
-  styleUrls: ['./view-login.component.scss']
+  styleUrls: ['./view-login.component.scss'],
 })
 export class ViewLoginComponent implements OnInit {
 
   txtEmail: string;
   txtPassword: string;
-
-  alertError = false;
   pendingRequest = false;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
-  ngOnInit() {
-  }
+  @ViewChild(NotificationComponent, {static: true})
+    private notify: NotificationComponent;
+
+  ngOnInit() {}
 
   onLoginSubmit() {
     this.pendingRequest = true;
@@ -34,11 +35,10 @@ export class ViewLoginComponent implements OnInit {
         data => {
           console.log('POST Request is successful ', data);
           this.pendingRequest = false;
-
           if (data.authenticated) {
-            alert('Status == true');
+            this.notify.successmsg(data.outcome.outcome, data.outcome.outcomeMessage);
           } else {
-            alert('Status == false');
+            this.notify.errorsmsg(data.outcome.outcome, data.outcome.outcomeMessage);
           }
         },
         error => {
