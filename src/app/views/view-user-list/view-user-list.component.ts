@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { dev } from './../../../assets/config.json';
 import { UserListResponse } from './../../models/UserListResponse';
 import { UserList } from './../../models/UserList';
 import { Pagination } from './../../models/Pagination';
+import { NotificationComponent } from './../../components/notification/notification.component';
 
 @Component({
   selector: 'app-view-user-list',
@@ -21,9 +22,13 @@ export class ViewUserListComponent implements OnInit {
     this.loadUsers();
   }
 
+  @ViewChild(NotificationComponent, {static: true})
+    private notify: NotificationComponent;
+
   pages: Pagination[];
   userList: UserList[];
   rowCount: number;
+  lastUpdate: Date;
 
   rowStart: number;
   rowEnd: number;
@@ -66,7 +71,7 @@ export class ViewUserListComponent implements OnInit {
 
   loadUsers() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = false;
+    this.showLoader = true;
 
     const requestModel = {
       _userID: 3,
@@ -86,10 +91,12 @@ export class ViewUserListComponent implements OnInit {
         this.showLoader = false;
         this.showingRecords = data.userList.length;
         this.paginateData();
+        this.lastUpdate = new Date();
       },
       error => {
         console.log('Error', error);
         this.showLoader = false;
+        this.notify.errorsmsg('Server Error', 'Something went wrong while trying to access the server.');
       });
   }
 

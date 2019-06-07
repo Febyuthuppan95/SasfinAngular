@@ -15,7 +15,8 @@
               <div class="card-body">
                   <button class="nav-search btn-light border-0 text-dark mdi mdi-account-search float-right" style="padding: 10px"></button>
                 <br/>
-                <h4 class="card-title">Users <small> - showing {{ showingRecords }} of {{ rowCount }} records.</small></h4>
+                <h4 class="card-title">Users <br/><br/><small>showing {{ showingRecords }} of {{ rowCount }} records.</small><br/><small>Last update - {{ lastUpdate.toLocaleDateString() }}, {{ lastUpdate.toLocaleTimeString() }}</small></h4>
+
                 <br />
                 <form class="form-inline">
                   <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}" class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
@@ -49,6 +50,7 @@
                       <th>Email</th>
                       <th>Ext</th>
                       <th>Designation</th>
+                      <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -64,6 +66,7 @@
                         <td>{{user.email}}</td>
                         <td>{{user.extension}}</td>
                         <td>{{user.designation}}</td>
+                        <td><span class="badge" [class.badge-success]="user.status == 'Active'" [class.badge-danger]="user.status == 'Inactive'">{{user.status}}</span></td>
                     </tr>
                     </tbody>
                   </table>
@@ -86,6 +89,8 @@
       </div>
     </div>
   </div>
+  <app-notification></app-notification>
+
 </body>
 
 </html>
