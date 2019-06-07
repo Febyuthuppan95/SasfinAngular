@@ -26,6 +26,7 @@ export class ViewUserListComponent implements OnInit {
     private notify: NotificationComponent;
 
   pages: Pagination[];
+  lastPage: Pagination;
   userList: UserList[];
   rowCount: number;
   lastUpdate: Date;
@@ -41,7 +42,6 @@ export class ViewUserListComponent implements OnInit {
   showLoader = true;
 
   paginateData() {
-
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -49,12 +49,10 @@ export class ViewUserListComponent implements OnInit {
 
     for (let i = 0; i < pageCount; i++) {
       const item = new Pagination();
-
       item.page = i + 1;
       item.rowStart = +rowStart;
       item.rowEnd = +rowEnd;
       this.pages[i] = item;
-
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
