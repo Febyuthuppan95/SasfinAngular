@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,15 +45,14 @@ import { LoaderComponent } from './components/loader/loader.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(
       {
-        closeButton: true,
+        closeButton: false,
         progressBar: true,
         positionClass: 'toast-top-full-width',
-        // showMethod: 'slideDown', //this doesn't work anymore
         timeOut: 3000
       }
     )
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
