@@ -16,6 +16,7 @@ export class ViewUserListComponent implements OnInit {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.rightName = 'Users';
+    this.activePage = +1;
     this.filter = '';
     this.loadUsers();
   }
@@ -30,6 +31,7 @@ export class ViewUserListComponent implements OnInit {
   showingRecords: number;
   filter: string;
   rightName: string;
+  activePage: number;
 
   showLoader = true;
 
@@ -53,9 +55,10 @@ export class ViewUserListComponent implements OnInit {
     }
   }
 
-  pageChange(rowStart: number, rowEnd: number) {
+  pageChange(rowStart: number, rowEnd: number, activePage: number) {
     this.rowStart = +rowStart;
     this.rowEnd = +rowEnd;
+    this.activePage = +activePage;
     this.loadUsers();
   }
 

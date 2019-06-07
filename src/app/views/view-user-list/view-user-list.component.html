@@ -18,12 +18,12 @@
                 <h4 class="card-title">Users <small> - showing {{ showingRecords }} of {{ rowCount }} records.</small></h4>
                 <br />
                 <form class="form-inline">
-                  <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}" class="form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
+                  <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}" class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
                       <option value='15' selected>15</option>
                       <option value='25'>25</option>
                       <option value='50'>50</option>
                   </select>
-                  <select [(ngModel)]="rightName" [ngModelOptions]="{standalone: true}" class="form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
+                  <select [(ngModel)]="rightName" [ngModelOptions]="{standalone: true}" class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
                     <option value="Users" selected>Users</option>
                 </select>
               </form>
@@ -32,7 +32,7 @@
               <nav aria-label="Pagination">
                 <ul class="pagination pagination-sm">
                   <li *ngFor="let page of pages" class="page-item">
-                    <button class="page-link btn-primary btn" type="button" (click)="pageChange(page.rowStart, page.rowEnd)">{{page.page}}</button>
+                    <button [class.active-page]="activePage == page.page" class="page-link btn-primary btn" type="button" (click)="pageChange(page.rowStart, page.rowEnd, page.page)">{{page.page}}</button>
                   </li>
                 </ul>
               </nav>
@@ -72,7 +72,7 @@
                 <nav aria-label="Pagination">
                     <ul class="pagination pagination-sm">
                       <li *ngFor="let page of pages" class="page-item">
-                        <button class="page-link btn-primary btn" type="button" (click)="pageChange(page.rowStart, page.rowEnd)">{{page.page}}</button>
+                        <button [class.active-page]="activePage == page.page"  class="page-link btn-primary btn" type="button" (click)="pageChange(page.rowStart, page.rowEnd, page.page)">{{page.page}}</button>
                       </li>
                     </ul>
                   </nav>

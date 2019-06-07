@@ -17,10 +17,15 @@
 }
 
 .form-control {
-  border: 1px rgba(30,30,30,0.5) solid;
+  border: 1px rgba(30,30,30,0.2) solid;
 }
 
 .form-control:focus {
   border: 1px #4d83ff solid;
 
+}
+
+.active-page {
+  background: #4d83ff;
+  color: #f2f2f2;
 }
