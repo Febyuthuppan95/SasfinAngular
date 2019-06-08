@@ -5,7 +5,7 @@ import { UserService } from './../services/UserService';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AnonGuard implements CanActivate {
+export class RightGuard implements CanActivate {
 
     constructor(private userService: UserService, private router: Router) { }
 
@@ -13,12 +13,7 @@ export class AnonGuard implements CanActivate {
      * canActivate
      */
     canActivate() {
-        const state: boolean = this.userService.isLoggedIn();
-
-        if (state) {
-            this.router.navigateByUrl('/users');
-        }
-
-        return !state;
+        // SP Service to check user rights
+        return true;
     }
 }

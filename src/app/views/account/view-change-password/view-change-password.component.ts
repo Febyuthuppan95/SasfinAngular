@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { dev } from './../../../../assets/config.json';
+import { Config } from '../../../../assets/config.json';
+import { UserService } from './../../../services/UserService';
+import { NotificationComponent } from './../../../components/notification/notification.component';
 
 @Component({
   selector: 'app-view-change-password',
@@ -9,6 +11,7 @@ import { dev } from './../../../../assets/config.json';
 })
 export class ViewChangePasswordComponent implements OnInit {
 
+  txtEmail: string;
   txtOTP: string;
   txtNewPass: string;
   txtConfirmNewPass: string;
@@ -16,27 +19,22 @@ export class ViewChangePasswordComponent implements OnInit {
   requestPending = false;
   otpEmail = 'ashton@lateral.solutions';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private userService: UserService) { }
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   ngOnInit() {
   }
 
   onRequestChangePassword() {
     this.requestPending = true;
-
-    const requestModel = {
-      _otp: this.txtOTP,
-      _newPass: this.txtNewPass
-    };
-
-    this.httpClient.post(`${dev.apiDomain}account/request/otp`, requestModel)
-      .subscribe(
-        data => {
-          console.log('POST Request is successful ', data);
+    this.userService.changePassword(this.txtEmail, this.txtOTP, this.txtNewPass)
+      .then(
+        (res) => {
           this.requestPending = false;
         },
-        error => {
-          console.log('Error', error);
+        (msg) => {
           this.requestPending = false;
         });
   }

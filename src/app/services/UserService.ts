@@ -4,11 +4,13 @@ import { UserListResponse } from './../models/UserListResponse';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { User } from '../models/User';
+import { LoginResponse } from './../models/LoginResponse';
+import { Config } from './../../assets/config.json';
 
 @Injectable()
 export class UserService {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService, private httpClient: HttpClient) { }
 
   /**
    * IsLoggedIn
@@ -50,17 +52,110 @@ export class UserService {
   }
 
   /**
-   * GetUserList
+   * authenticate
    */
-  public getUserList(obj: GetUserList) {
+  public authenticate(email: string, pass: string) {
+    const requestModel = {
+      _email: email,
+      _pass: pass
+    };
 
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${Config.ApiEndpoint.test}/account/authenticate`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
+    return promise;
+  }
+
+  /**
+   * forgot password
+   */
+  public forgotPassword(email: string) {
+    const requestModel = {
+      _email: email,
+    };
+
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${Config.ApiEndpoint.test}/account/request/otp`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
+    return promise;
+  }
+
+  /**
+   * change password
+   */
+  public changePassword(email: string, otp: string, newPass: string) {
+    const requestModel = {
+      _email: email,
+      _otp: otp,
+      _newPass: newPass
+    };
+
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${Config.ApiEndpoint.test}/account/request/changepassword`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
+    return promise;
+  }
+
+  /**
+   * user list
+   */
+  public getUserList(filter: string, userID: number, specificUserID: number, rightName: string, rowStart: number, rowEnd: number) {
     const requestModel = {
       _userID: 3,
       _specificUserID: -1,
-      _rightName: obj.rightName,
-      _filter: obj.filter,
-      _rowStart: obj.rowStart,
-      _rowEnd: obj.rowEnd
+      _rightName: rightName,
+      _filter: filter,
+      _rowStart: rowStart,
+      _rowEnd: rowEnd
     };
+
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${Config.ApiEndpoint.test}/users/list`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
+    return promise;
   }
 }

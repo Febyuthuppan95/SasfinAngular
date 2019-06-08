@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { dev } from '../../../../assets/config.json';
+import { Config } from '../../../../assets/config.json';
+import { UserService } from './../../../services/UserService';
+import { NotificationComponent } from './../../../components/notification/notification.component';
 
 @Component({
   selector: 'app-view-forgot-password',
@@ -13,27 +15,22 @@ export class ViewForgotPasswordComponent implements OnInit {
 
   requestPending = false;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private userService: UserService) { }
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   ngOnInit() {
   }
 
   onRequestOtpSubmit() {
     this.requestPending = true;
-
-    const requestModel = {
-      _email: this.txtEmail,
-    };
-
-    this.httpClient.post(`${dev.apiDomain}account/request/otp`, requestModel)
-      .subscribe(
-        data => {
-          console.log('POST Request is successful ', data);
-          this.requestPending = false;
-        },
-        error => {
-          console.log('Error', error);
-          this.requestPending = false;
-        });
+    this.userService.forgotPassword(this.txtEmail).then(
+      (res) => {
+        this.requestPending = false;
+      },
+      (msg) => {
+        this.requestPending = false;
+      });
   }
 }

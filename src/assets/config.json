@@ -1,5 +1,8 @@
 {
-  "dev": {
-    "apiDomain": "http://197.189.218.50:7777/"
+  "Config": {
+    "ApiEndpoint": {
+      "test": "http://197.189.218.50:7777",
+      "local": "https://localhost:5001"
+    }
   }
 }

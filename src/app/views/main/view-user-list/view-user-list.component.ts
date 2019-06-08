@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { dev } from '../../../../assets/config.json';
+import { Config } from '../../../../assets/config.json';
 import { UserListResponse } from '../../../models/UserListResponse';
 import { UserList } from '../../../models/UserList';
 import { Pagination } from '../../../models/Pagination';
@@ -74,30 +74,19 @@ export class ViewUserListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    const requestModel = {
-      _userID: 3,
-      _specificUserID: -1,
-      _rightName: this.rightName,
-      _filter: this.filter,
-      _rowStart: this.rowStart,
-      _rowEnd: this.rowEnd
-    };
-
-    this.httpClient.post<UserListResponse>(`${dev.apiDomain}users/list/`, requestModel)
-      .subscribe(
-        data => {
-          console.log('POST Request is successful ', data);
-          this.userList = data.userList;
-          this.rowCount = data.rowCount;
-          this.showLoader = false;
-          this.showingRecords = data.userList.length;
-          this.paginateData();
-        },
-        error => {
-          console.log('Error', error);
-          this.showLoader = false;
-          this.notify.errorsmsg('Server Error', 'Something went wrong while trying to access the server.');
-        });
+    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd).then(
+      (res: UserListResponse) => {
+        this.userList = res.userList;
+        this.rowCount = res.rowCount;
+        this.showLoader = false;
+        this.showingRecords = res.userList.length;
+        this.paginateData();
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg('Server Error', 'Something went wrong while trying to access the server.');
+      },
+    );
   }
 
 }
