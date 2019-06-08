@@ -5,20 +5,17 @@ import { UserService } from './../services/UserService';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AuthenticationGuard implements CanActivate {
+export class AnonGuard implements CanActivate {
 
     constructor(private userService: UserService, private router: Router) { }
 
-    /**
-     * canActivate
-     */
     canActivate() {
         const state: boolean = this.userService.isLoggedIn();
 
-        if (!state) {
-            this.router.navigateByUrl('/unauthorized');
+        if (state) {
+            this.router.navigateByUrl('/users');
         }
 
-        return state;
+        return !state;
     }
 }

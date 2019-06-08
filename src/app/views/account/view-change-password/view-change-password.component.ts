@@ -1,28 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { dev } from './../../../assets/config.json';
+import { dev } from './../../../../assets/config.json';
 
 @Component({
-  selector: 'app-view-forgot-password',
-  templateUrl: './view-forgot-password.component.html',
-  styleUrls: ['./view-forgot-password.component.scss']
+  selector: 'app-view-change-password',
+  templateUrl: './view-change-password.component.html',
+  styleUrls: ['./view-change-password.component.scss']
 })
-export class ViewForgotPasswordComponent implements OnInit {
+export class ViewChangePasswordComponent implements OnInit {
 
-  txtEmail: string;
+  txtOTP: string;
+  txtNewPass: string;
+  txtConfirmNewPass: string;
 
   requestPending = false;
+  otpEmail = 'ashton@lateral.solutions';
 
   constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
 
-  onRequestOtpSubmit() {
+  onRequestChangePassword() {
     this.requestPending = true;
 
     const requestModel = {
-      _email: this.txtEmail,
+      _otp: this.txtOTP,
+      _newPass: this.txtNewPass
     };
 
     this.httpClient.post(`${dev.apiDomain}account/request/otp`, requestModel)
@@ -36,4 +40,5 @@ export class ViewForgotPasswordComponent implements OnInit {
           this.requestPending = false;
         });
   }
+
 }

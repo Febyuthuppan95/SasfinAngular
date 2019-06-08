@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { dev } from './../../../assets/config.json';
-import { LoginResponse } from './../../models/LoginResponse';
-import { NotificationComponent } from './../../components/notification/notification.component';
+import { dev } from '../../../../assets/config.json';
+import { LoginResponse } from '../../../models/LoginResponse';
+import { NotificationComponent } from '../../../components/notification/notification.component';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 
@@ -18,12 +18,12 @@ export class ViewLoginComponent implements OnInit {
   txtPassword: string;
   pendingRequest = false;
 
-  constructor(private httpClient: HttpClient, private cookieService: CookieService, private router: Router) {}
+  constructor(private httpClient: HttpClient, private cookieService: CookieService, private router: Router) { }
 
-  @ViewChild(NotificationComponent, {static: true})
-    private notify: NotificationComponent;
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onLoginSubmit() {
     this.pendingRequest = true;
@@ -41,14 +41,15 @@ export class ViewLoginComponent implements OnInit {
           if (data.authenticated) {
             this.notify.successmsg(data.outcome.outcome, data.outcome.outcomeMessage);
 
-            this.cookieService.set('UserId', data.userID.toString());
-            this.cookieService.set('Email', data.email);
-            this.cookieService.set('FirstName', data.firstName);
-            this.cookieService.set('Surname', data.surname);
-            this.cookieService.set('EmpNo', data.empNo);
-            this.cookieService.set('Designation', data.designation);
-            this.cookieService.set('Extension', data.extension);
-            this.cookieService.set('ProfileImage', data.profileImage);
+            this.cookieService.set('UserId', data.userID.toString(), 5);
+            this.cookieService.set('Email', data.email, 5);
+            this.cookieService.set('FirstName', data.firstName, 5);
+            this.cookieService.set('Surname', data.surname, 5);
+            this.cookieService.set('EmpNo', data.empNo, 5);
+            this.cookieService.set('Designation', data.designation, 5);
+            this.cookieService.set('Extension', data.extension, 5);
+            this.cookieService.set('ProfileImage', data.profileImage, 5);
+            this.cookieService.set('BackgroundImage', data.backgroundImage, 5);
 
             this.router.navigateByUrl('/users');
           } else {

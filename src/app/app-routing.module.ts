@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { ViewForgotPasswordComponent } from './views/view-forgot-password/view-forgot-password.component';
-import { ViewLoginComponent } from './views/view-login/view-login.component';
-import { ViewUserListComponent } from './views/view-user-list/view-user-list.component';
-import { ViewChangePasswordComponent } from './views/view-change-password/view-change-password.component';
+import { ViewForgotPasswordComponent } from './views/account/view-forgot-password/view-forgot-password.component';
+import { ViewLoginComponent } from './views/account/view-login/view-login.component';
+import { ViewUserListComponent } from './views/main/view-user-list/view-user-list.component';
+import { ViewChangePasswordComponent } from './views/account/view-change-password/view-change-password.component';
+
+import { AuthenticationGuard } from './middleware/AuthenticationGuard';
+import { AnonGuard } from './middleware/AnonGuard';
+import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
 
 
 
 const routes: Routes = [
-  { path: '', component: ViewLoginComponent },
+  { path: '', component: ViewLoginComponent, canActivate: [AnonGuard] },
   { path: 'account/forgotpassword', component: ViewForgotPasswordComponent },
   { path: 'account/changepassword', component: ViewChangePasswordComponent },
-  { path: 'users', component: ViewUserListComponent },
+  { path: 'users', component: ViewUserListComponent, canActivate: [AuthenticationGuard] },
+  { path: 'unauthorized', component: ViewUnauthorizedComponent }
 ];
 
 @NgModule({
