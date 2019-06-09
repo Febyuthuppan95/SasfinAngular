@@ -11,7 +11,7 @@
       <app-sidebar></app-sidebar>
       <div class="main-panel">
         <div class="content-wrapper bg-transparent">
-          <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-12 offset-2 grid-margin stretch-card">
             <div class="card tile-frost shadow">
               <div class="card-body">
                 <button class="nav-search btn-light border-0 text-dark mdi mdi-account-search float-right"
@@ -32,6 +32,8 @@
                     class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
                     <option value="Users" selected>Users</option>
                   </select>
+                  <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm" placeholder="Search"
+                    (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
                 </form>
                 <br />
 
@@ -91,11 +93,9 @@
                 </nav>
               </div>
             </div>
+            <app-footer></app-footer>
           </div>
-
-          <!-- End of page Content -->
         </div>
-        <app-footer></app-footer>
       </div>
     </div>
   </div>

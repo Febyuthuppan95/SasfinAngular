@@ -32,17 +32,12 @@ export class ViewLoginComponent implements OnInit {
     this.pendingRequest = true;
     this.userService.authenticate(this.txtEmail, this.txtPassword).then(
       (res: LoginResponse) => {
+        const expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + 1);
+
         if (res.authenticated) {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.cookieService.set('UserId', res.userID.toString());
-          this.cookieService.set('Email', res.email);
-          this.cookieService.set('FirstName', res.firstName);
-          this.cookieService.set('Surname', res.surname);
-          this.cookieService.set('EmpNo', res.empNo);
-          this.cookieService.set('Designation', res.designation);
-          this.cookieService.set('Extension', res.extension);
-          this.cookieService.set('ProfileImage', res.profileImage);
-          this.cookieService.set('BackgroundImage', res.backgroundImage);
+          this.userService.persistLogin(JSON.stringify(res));
           this.router.navigateByUrl('/users');
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);

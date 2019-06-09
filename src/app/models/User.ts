@@ -8,4 +8,5 @@ export class User {
     backgroundImage?: string;
     designation: string;
     extension?: any;
+    authenticated: boolean;
 }
