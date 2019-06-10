@@ -17,7 +17,6 @@ export class ViewChangePasswordComponent implements OnInit {
   txtConfirmNewPass: string;
 
   requestPending = false;
-  otpEmail = 'ashton@lateral.solutions';
 
   constructor(private userService: UserService, private router: Router) { }
 
