@@ -52,6 +52,7 @@ export class ViewUserListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
   totalShowing: number;
+  orderIndicator = 'Surname_ASC';
 
   showLoader = true;
 
@@ -114,6 +115,7 @@ export class ViewUserListComponent implements OnInit {
     }
 
     this.orderBy = orderBy;
+    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
     this.loadUsers();
   }
 

@@ -45,15 +45,22 @@
                   <table id="dtOrder" class="table table-hover table-striped">
                     <thead>
                       <tr>
-                        <th>#</th>
                         <th></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('EmpNo')">Emp No <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('FirstName')">First Name <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Surname')">Surname <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Email')">Email <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Extension')">Ext <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Designation')">Designation <i class="mdi mdi-sort"></i></button></th>
-                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Status')">Status <i class="mdi mdi-sort"></i></button></th>
+                        <th></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('EmpNo')">Emp No
+                          <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('FirstName')">First Name
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Surname')">Surname
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Email')">Email
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Extension')">Ext
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Designation')">Designation
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i></button></th>
+                        <th><button class="btn bg-transparent btn-sort" (click)="updateSort('Status')">Status
+                            <i class="mdi mdi-chevron-up" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i><i style="margin-left: -5px;" class="mdi mdi-chevron-down" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i></button></th>
                       </tr>
                     </thead>
                     <tbody>

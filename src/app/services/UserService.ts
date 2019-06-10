@@ -145,7 +145,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.local}/users/list`;
+      const apiURL = `${Config.ApiEndpoint.test}/users/list`;
       this.httpClient.post(apiURL, requestModel)
         .toPromise()
         .then(
