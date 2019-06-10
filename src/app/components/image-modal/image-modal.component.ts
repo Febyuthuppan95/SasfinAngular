@@ -27,7 +27,7 @@ export class ImageModalComponent implements OnInit {
 
   open(sourceImage: string) {
     this.sourceImage = sourceImage;
-    const modalRef = this.modalService.open(NgbdModalContent);
+    const modalRef = this.modalService.open(NgbdModalContent, { centered: true });
     modalRef.componentInstance.srcImage = sourceImage;
   }
 }
