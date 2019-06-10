@@ -12,6 +12,7 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit() {
   }
+
   public successmsg(title: string, message: string) {
     this.toastr.success(message, title);
   }

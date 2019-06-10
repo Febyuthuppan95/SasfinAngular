@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ForgotPassword } from './../../../models/HttpResponses/ForgotPassword.model';
 import { UserService } from './../../../services/UserService';
-import { NotificationComponent } from './../../../components/notification/notification.component';
+import { NotificationComponent } from '../../../components/notification/notification.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 export class ViewForgotPasswordComponent implements OnInit {
 
   txtEmail: string;
-
   requestPending = false;
 
   constructor(private userService: UserService, private router: Router) { }
@@ -20,8 +19,7 @@ export class ViewForgotPasswordComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onRequestOtpSubmit() {
     this.requestPending = true;
@@ -30,7 +28,7 @@ export class ViewForgotPasswordComponent implements OnInit {
         this.requestPending = false;
 
         if (res.status) {
-          this.notify.successmsg('Success', `OTP sent to ${this.txtEmail}. Please check your inbox.`);
+          this.notify.successmsg('Success'.toString(), 'OTP sent. Please check your inbox.'.toString());
           this.router.navigateByUrl('/account/changepassword');
         } else {
           this.notify.errorsmsg('Failure', 'Email address is not accociated to an account.');
@@ -38,6 +36,7 @@ export class ViewForgotPasswordComponent implements OnInit {
       },
       (msg) => {
         this.requestPending = false;
+        this.notify.errorsmsg('Failure', 'Something went wrong');
       });
   }
 }

@@ -7,7 +7,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './../../../services/UserService';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',
@@ -19,9 +18,7 @@ export class ViewLoginComponent implements OnInit {
   txtPassword: string;
   pendingRequest = false;
 
-  constructor(private httpClient: HttpClient, private cookieService: CookieService, private router: Router,
-    // tslint:disable-next-line:align
-    private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -45,8 +42,8 @@ export class ViewLoginComponent implements OnInit {
         this.pendingRequest = false;
       },
       (msg) => {
-        this.notify.errorsmsg('Uh oh!', 'Something went wrong...');
         this.pendingRequest = false;
+        this.notify.errorsmsg('Uh oh!', 'Something went wrong...');
       });
   }
 }

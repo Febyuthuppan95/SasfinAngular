@@ -40,12 +40,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ViewUserListComponent,
     SidebarComponent,
     SearchbarComponent,
-    NotificationComponent,
     LoaderComponent,
     ViewNotFoundComponent,
     ViewUnauthorizedComponent,
     ImageModalComponent,
-    NgbdModalContent
+    NgbdModalContent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
