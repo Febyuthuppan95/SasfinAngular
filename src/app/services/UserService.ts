@@ -131,18 +131,21 @@ export class UserService {
   /**
    * user list
    */
-  public getUserList(filter: string, userID: number, specificUserID: number, rightName: string, rowStart: number, rowEnd: number) {
+  public getUserList(filter: string, userID: number, specificUserID: number, rightName: string, rowStart: number, rowEnd: number,
+                     orderBy: string, orderDirection: string) {
     const requestModel = {
       _userID: 3,
       _specificUserID: -1,
       _rightName: rightName,
       _filter: filter,
       _rowStart: rowStart,
-      _rowEnd: rowEnd
+      _rowEnd: rowEnd,
+      _orderBy: orderBy,
+      _orderDirection: orderDirection
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/users/list`;
+      const apiURL = `${Config.ApiEndpoint.local}/users/list`;
       this.httpClient.post(apiURL, requestModel)
         .toPromise()
         .then(

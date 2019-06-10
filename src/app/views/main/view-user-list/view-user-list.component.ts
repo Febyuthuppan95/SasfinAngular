@@ -7,6 +7,7 @@ import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from './../../../services/UserService';
 import { User } from './../../../models/User';
+import { StringifyOptions } from 'querystring';
 
 @Component({
   selector: 'app-view-user-list',
@@ -21,6 +22,8 @@ export class ViewUserListComponent implements OnInit {
     this.rightName = 'Users';
     this.activePage = +1;
     this.filter = '';
+    this.orderBy = 'Surname';
+    this.orderDirection = 'ASC';
     this.loadUsers();
   }
 
@@ -41,6 +44,8 @@ export class ViewUserListComponent implements OnInit {
   filter: string;
   rightName: string;
   activePage: number;
+  orderBy: string;
+  orderDirection: string;
 
   showLoader = true;
 
@@ -74,7 +79,7 @@ export class ViewUserListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd).then(
+    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd, this.orderBy, this.orderDirection).then(
       (res: UserListResponse) => {
         this.userList = res.userList;
         this.rowCount = res.rowCount;
@@ -87,6 +92,22 @@ export class ViewUserListComponent implements OnInit {
         this.notify.errorsmsg('Server Error', 'Something went wrong while trying to access the server.');
       },
     );
+  }
+
+  updateSort(orderBy: string) {
+
+    if (this.orderBy === orderBy) {
+      if (this.orderDirection === 'ASC') {
+        this.orderDirection = 'DESC';
+      } else {
+        this.orderDirection = 'ASC';
+      }
+    } else {
+      this.orderDirection = 'ASC';
+    }
+
+    this.orderBy = orderBy;
+    this.loadUsers();
   }
 
 }
