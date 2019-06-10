@@ -5,6 +5,7 @@ import { UserListResponse } from '../../../models/UserListResponse';
 import { UserList } from '../../../models/UserList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
+import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
 import { UserService } from './../../../services/UserService';
 import { User } from './../../../models/User';
 import { StringifyOptions } from 'querystring';
@@ -30,6 +31,9 @@ export class ViewUserListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild(ImageModalComponent, { static: true })
+  private imageModal: ImageModalComponent;
 
   currentUser: User = this.userService.getCurrentUser();
 
@@ -111,6 +115,10 @@ export class ViewUserListComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.loadUsers();
+  }
+
+  inspectUserImage(src: string) {
+    this.imageModal.open(src);
   }
 
 }

@@ -24,6 +24,9 @@ import { NotificationComponent } from './components/notification/notification.co
 import { LoaderComponent } from './components/loader/loader.component';
 import { ViewNotFoundComponent } from './views/errors/view-not-found/view-not-found.component';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
+import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
+
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // @ts-ignore
 @NgModule({
@@ -41,6 +44,8 @@ import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view
     LoaderComponent,
     ViewNotFoundComponent,
     ViewUnauthorizedComponent,
+    ImageModalComponent,
+    NgbdModalContent
   ],
   imports: [
     BrowserModule,
@@ -55,9 +60,13 @@ import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view
         positionClass: 'toast-top-full-width',
         timeOut: 3000
       }
-    )
+    ),
+    NgbModule
   ],
   providers: [CookieService, AuthenticationGuard, UserService, AnonGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    NgbdModalContent
+  ]
 })
 export class AppModule { }
