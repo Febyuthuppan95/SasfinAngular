@@ -159,5 +159,5 @@ export class UserService {
     });
 
     return promise;
-  }
+    }
 }

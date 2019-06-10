@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Config } from '../../../../assets/config.json';
+import { Router } from '@angular/router';
 import { UserService } from './../../../services/UserService';
 import { NotificationComponent } from './../../../components/notification/notification.component';
+import { ChangePassword } from 'src/app/models/HttpResponses/ChangePassword.model.js';
 
 @Component({
   selector: 'app-view-change-password',
@@ -19,7 +19,7 @@ export class ViewChangePasswordComponent implements OnInit {
   requestPending = false;
   otpEmail = 'ashton@lateral.solutions';
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -31,8 +31,15 @@ export class ViewChangePasswordComponent implements OnInit {
     this.requestPending = true;
     this.userService.changePassword(this.txtEmail, this.txtOTP, this.txtNewPass)
       .then(
-        (res) => {
+        (res: ChangePassword) => {
           this.requestPending = false;
+
+          if (res.status) {
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            this.router.navigateByUrl('/');
+          } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
         },
         (msg) => {
           this.requestPending = false;
