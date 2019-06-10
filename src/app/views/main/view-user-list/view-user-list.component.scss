@@ -4,16 +4,18 @@ body {
   background-attachment: fixed;
 }
 
-.tile-frost {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 5px;
-}
 
 .profile-image {
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  border: 3px #4d83ff solid;
+  border: 1px #f2f2f2 solid;
+  transition: ease-in-out 0.3s;
+}
+
+.userRecord:hover > td > img {
+  border: 1px #4d83ff solid;
+  transition: ease-in-out 0.3s;
 }
 
 .form-control {
@@ -42,8 +44,4 @@ body {
 
 .td {
   color: #333333;
-}
-
-.main-panel {
-  margin-left: 20px;
 }

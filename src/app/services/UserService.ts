@@ -8,6 +8,7 @@ import { LoginResponse } from './../models/LoginResponse';
 import { Router } from '@angular/router';
 import { Config } from './../../assets/config.json';
 
+
 @Injectable()
 export class UserService {
 

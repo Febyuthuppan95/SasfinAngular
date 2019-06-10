@@ -11,23 +11,22 @@
       <app-sidebar></app-sidebar>
       <div class="main-panel">
         <div class="content-wrapper bg-transparent">
-          <div class="col-lg-12 offset-2 grid-margin stretch-card">
+          <div class="col-lg-12 grid-margin stretch-card">
             <div class="card tile-frost shadow">
               <div class="card-body">
-                <button class="nav-search btn-light border-0 text-dark mdi mdi-account-search float-right"
-                  style="padding: 10px"></button>
                 <br />
-                <h4 class="card-title">Users <br /><br /><small>{{ rowCount }} total
-                    records.</small><br /><small>showing {{ showingRecords }} of {{ rowCount }} records.</small></h4>
+                <h4 class="card-title">Users <br /><br /><small>{{ rowCount }} total records</small></h4>
 
                 <br />
                 <form class="form-inline">
+                  <p>Showing</p>&nbsp;
                   <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
                     class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
                     <option value='15' selected>15</option>
                     <option value='25'>25</option>
                     <option value='50'>50</option>
                   </select>
+
                   <select [(ngModel)]="rightName" [ngModelOptions]="{standalone: true}"
                     class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
                     <option value="Users" selected>Users</option>
@@ -36,15 +35,6 @@
                     (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
                 </form>
                 <br />
-
-                <nav aria-label="Pagination">
-                  <ul class="pagination pagination-sm">
-                    <li *ngFor="let page of pages" class="page-item">
-                      <button [class.active-page]="activePage == page.page" class="page-link btn-primary btn"
-                        type="button" (click)="pageChange(page.rowStart, page.rowEnd, page.page)">{{page.page}}</button>
-                    </li>
-                  </ul>
-                </nav>
 
                 <div class="table-responsive">
                   <table id="dtOrder" class="table table-hover table-striped">
@@ -65,7 +55,7 @@
                       <ng-container *ngIf="showLoader">
                         <app-loader></app-loader>
                       </ng-container>
-                      <tr *ngFor="let user of userList">
+                      <tr *ngFor="let user of userList" class="userRecord">
                         <td>{{user.rowNum}}</td>
                         <td><img class="profile-image shadow"
                             src="data:image/jpeg;base64,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" />
@@ -83,7 +73,7 @@
                   </table>
                 </div>
                 <br />
-                <nav aria-label="Pagination">
+                <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
                   <ul class="pagination pagination-sm">
                     <li *ngFor="let page of pages" class="page-item">
                       <button [class.active-page]="activePage == page.page" class="page-link btn-primary btn"
@@ -91,11 +81,14 @@
                     </li>
                   </ul>
                 </nav>
+                <br/>
+                <p>Showing {{ rowStart }} to {{ rowEnd }} of {{ rowCount }}</p>
               </div>
             </div>
-            <app-footer></app-footer>
           </div>
         </div>
+        <app-footer></app-footer>
+
       </div>
     </div>
   </div>

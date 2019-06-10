@@ -17,7 +17,6 @@ import { ViewForgotPasswordComponent } from './views/account/view-forgot-passwor
 import { ViewChangePasswordComponent } from './views/account/view-change-password/view-change-password.component';
 import { ViewUserListComponent } from './views/main/view-user-list/view-user-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { FormForgotPasswordComponent } from './components/form-forgot-password/form-forgot-password.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
@@ -36,7 +35,6 @@ import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view
     ViewForgotPasswordComponent,
     ViewChangePasswordComponent,
     ViewUserListComponent,
-    FormForgotPasswordComponent,
     SidebarComponent,
     SearchbarComponent,
     NotificationComponent,
