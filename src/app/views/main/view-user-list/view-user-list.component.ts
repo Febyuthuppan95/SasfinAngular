@@ -24,6 +24,7 @@ export class ViewUserListComponent implements OnInit {
     this.filter = '';
     this.orderBy = 'Surname';
     this.orderDirection = 'ASC';
+    this.totalShowing = 0;
     this.loadUsers();
   }
 
@@ -46,6 +47,7 @@ export class ViewUserListComponent implements OnInit {
   activePage: number;
   orderBy: string;
   orderDirection: string;
+  totalShowing: number;
 
   showLoader = true;
 
@@ -85,6 +87,7 @@ export class ViewUserListComponent implements OnInit {
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.userList.length;
+        this.totalShowing = this.userList.length;
         this.paginateData();
       },
       (msg) => {
