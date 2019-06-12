@@ -1,17 +1,20 @@
-.float{
-  position:fixed;
-  width:40px;
-  height:40px;
-  bottom:40px;
-  right:40px;
-  background-color:#1b8dbf;
-  color:#FFF;
-  border-radius:50px;
-  text-align:center;
-  box-shadow: 2px 2px 3px #999;
-  z-index: 9999;
+.floating-btn-container {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
 }
 
-.float-contents{
-  margin-top:20px;
+.floating-btn {
+  background-color: rgb(54, 89, 244);
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  background: rgb(54, 89, 244);
+  border: none;
+  outline: none;
+  color: #FFF;
+  font-size: 25px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  transition: .3s;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
