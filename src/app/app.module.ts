@@ -27,6 +27,7 @@ import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view
 import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FloatingButtonComponent} from './components/floating-button/floating-button.component';
 
 // @ts-ignore
 @NgModule({
@@ -45,7 +46,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ViewUnauthorizedComponent,
     ImageModalComponent,
     NgbdModalContent,
-    NotificationComponent
+    NotificationComponent,
+    FloatingButtonComponent
   ],
   imports: [
     BrowserModule,
