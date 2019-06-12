@@ -1,7 +1,8 @@
 .floating-btn-container {
   position: fixed;
-  right: 30px;
+  right: 50px;
   bottom: 30px;
+  z-index: 99999;
 }
 
 .floating-btn {
@@ -9,7 +10,7 @@
   width: 45px;
   height: 45px;
   border-radius: 100%;
-  background: rgb(54, 89, 244);
+  background: #f47442;
   border: none;
   outline: none;
   color: #FFF;
