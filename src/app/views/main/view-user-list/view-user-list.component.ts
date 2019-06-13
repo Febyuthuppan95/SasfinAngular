@@ -6,8 +6,6 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/User.Service';
 import { User } from './../../../models/User';
-import { EditDashboardStyleComponent } from './../../../components/edit-dashboard-style/edit-dashboard-style.component';
-import { FloatingButtonComponent } from 'src/app/components/floating-button/floating-button.component.js';
 import { ThemeService } from 'src/app/services/Theme.Service.js';
 
 @Component({
@@ -22,6 +20,10 @@ export class ViewUserListComponent implements OnInit {
     this.rowCountPerPage = 15;
     this.rightName = 'Users';
     this.activePage = +1;
+    this.prevPageState = true;
+    this.nextPageState = false;
+    this.prevPage = +this.activePage - 1;
+    this.nextPage = +this.activePage + 1;
     this.filter = '';
     this.orderBy = 'Surname';
     this.orderDirection = 'ASC';
@@ -35,19 +37,20 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
-  @ViewChild(EditDashboardStyleComponent, { static: true })
-  private editSidebar: EditDashboardStyleComponent;
 
-  @ViewChild(FloatingButtonComponent, { static: true })
-  private floatingButton: EditDashboardStyleComponent;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
 
   pages: Pagination[];
+  showingPages: Pagination[];
   lastPage: Pagination;
   userList: UserList[];
   rowCount: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
 
   rowStart: number;
   rowEnd: number;
@@ -76,7 +79,7 @@ export class ViewUserListComponent implements OnInit {
     const pageCount = +this.rowCount / +this.rowCountPerPage;
     this.pages = Array<Pagination>();
 
-    for (let i = 0; i < this.userList.length; i++) {
+    for (let i = 0; i < pageCount; i++) {
       const item = new Pagination();
       item.page = i + 1;
       item.rowStart = +rowStart;
@@ -85,20 +88,40 @@ export class ViewUserListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
+
+    this.updatePagination();
   }
 
-  // pageChange(rowStart: number, rowEnd: number, activePage: number) {
-  //   this.rowStart = +rowStart;
-  //   this.rowEnd = +rowEnd;
-  //   this.activePage = +activePage;
-  //   this.loadUsers();
-  // }
-
   pageChange(pageNumber: number) {
+
     const page = this.pages[+pageNumber - 1];
     this.rowStart = page.rowStart;
     this.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;
+    this.prevPage = +this.activePage - 1;
+    this.nextPage = +this.activePage + 1;
+
+    if (this.prevPage < 1) {
+      this.prevPageState = true;
+    } else {
+      this.prevPageState = false;
+    }
+
+    let pagenumber = +this.rowCount / +this.rowCountPerPage;
+    const mod = +this.rowCount % +this.rowCountPerPage;
+
+    if (mod > 0) {
+      pagenumber++;
+    }
+
+    if (this.nextPage > pagenumber) {
+      this.nextPageState = true;
+    } else {
+      this.nextPageState = false;
+    }
+
+    this.updatePagination();
+
     this.loadUsers();
   }
 
@@ -106,7 +129,7 @@ export class ViewUserListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, 500, this.orderBy, this.orderDirection).then(
+    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd, this.orderBy, this.orderDirection).then(
       (res: UserListResponse) => {
         this.userList = res.userList;
         this.rowCount = res.rowCount;
@@ -143,12 +166,18 @@ export class ViewUserListComponent implements OnInit {
     this.imageModal.open(src);
   }
 
-  openEditTile() {
-    this.editSidebar.show = true;
-  }
+  updatePagination() {
+    this.showingPages = Array<Pagination>();
+    this.showingPages[0] = this.pages[this.activePage - 1];
+    const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-  closeEditTile() {
-    this.editSidebar.show = false;
+    if ((this.activePage) < pagenumber) {
+      this.showingPages[1] = this.pages[+this.activePage];
+    }
+
+    if ((+this.activePage + 1) <= pagenumber) {
+      this.showingPages[2] = this.pages[+this.activePage + 1];
+    }
   }
 
 }

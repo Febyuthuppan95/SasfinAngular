@@ -9,6 +9,7 @@ import { ViewChangePasswordComponent } from './views/account/view-change-passwor
 import { AuthenticationGuard } from './middleware/AuthenticationGuard';
 import { AnonGuard } from './middleware/AnonGuard';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 
 
@@ -16,7 +17,11 @@ const routes: Routes = [
   { path: '', component: ViewLoginComponent, canActivate: [AnonGuard] },
   { path: 'account/forgotpassword', component: ViewForgotPasswordComponent },
   { path: 'account/changepassword', component: ViewChangePasswordComponent },
-  { path: 'users', component: ViewUserListComponent, canActivate: [AuthenticationGuard] },
+  { path: 'users', component: MainLayoutComponent, canActivate: [AuthenticationGuard],
+    children: [
+      { path: '', component: ViewUserListComponent },
+    ],
+  },
   { path: 'unauthorized', component: ViewUnauthorizedComponent }
 ];
 

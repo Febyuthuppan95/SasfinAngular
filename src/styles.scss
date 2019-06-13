@@ -1,5 +1,11 @@
 @import '~ngx-toastr/toastr.css';
 
+body {
+  background-image: url('./assets/dist/images/background.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .badge {
   border-radius: 5px;
 }
