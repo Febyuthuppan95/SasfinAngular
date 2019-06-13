@@ -1,0 +1,35 @@
+<div class="ls-right-sidebar col-lg-2 float-right shadow" [ngClass]="(show)?'ls-sidebar-show':'ls-sidebar-hide'" (mouseleave)="clickEvent()">
+  <button type="button float-right" (click)="clickEvent()" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <p>Theme</p>
+  <br />
+  <div class="row">
+    <div class="col-md-4 text-center ls-theme">
+      <button class="ls-theme-item ls-theme-light shadow" (click)="updateTheme('light')" [ngClass]="(currentTheme === 'light') ? 'ls-item-active': ''"></button>
+      <br />
+      <p>Light</p>
+    </div>
+    <div class="col-md-4 text-center ls-theme">
+      <button class="ls-theme-item ls-theme-dark shadow" (click)="updateTheme('dark')" [ngClass]="(currentTheme === 'dark') ? 'ls-item-active': ''"></button>
+      <br />
+      <p>Dark</p>
+    </div>
+    <div class="col-md-4 text-center ls-theme">
+      <button class="ls-theme-item ls-theme-red shadow" [ngClass]="(currentTheme === 'red') ? 'ls-item-active': ''"></button>
+      <br />
+      <p>Red</p>
+    </div>
+    <div class="col-md-4 text-center ls-theme">
+      <button class="ls-theme-item ls-theme-blue shadow" (click)="updateTheme('blue')" [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
+      <br />
+      <p>Blue</p>
+    </div>
+    <div class="col-md-4 text-center ls-theme">
+      <button class="ls-theme-item ls-theme-green shadow"></button>
+      <br />
+      <p>Green</p>
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="show"></div>

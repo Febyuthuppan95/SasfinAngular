@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { GetUserList } from './../models/HttpRequests/GetUserList';
-import { UserListResponse } from './../models/UserListResponse';
+import { GetUserList } from '../models/HttpRequests/GetUserList';
+import { UserListResponse } from '../models/UserListResponse';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { User } from '../models/User';
-import { LoginResponse } from './../models/LoginResponse';
+import { LoginResponse } from '../models/LoginResponse';
 import { Router } from '@angular/router';
-import { Config } from './../../assets/config.json';
+import { Config } from '../../assets/config.json';
 
 
 @Injectable()

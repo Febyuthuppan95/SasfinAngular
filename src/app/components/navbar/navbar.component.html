@@ -1,5 +1,5 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="navbar-brand-wrapper d-flex justify-content-center">
+  <div class="navbar-brand-wrapper d-flex justify-content-center ls-tile-{{ currentTheme }} border-0">
     <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
       <a class="navbar-brand brand-logo " href="index.html"><img src="../../../assets/dist/images/logo.png"
           alt="logo" /></a>
@@ -10,7 +10,7 @@
       </button>
     </div>
   </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{ currentTheme }} border-0 ls-text-{{ currentTheme }}">
     <ul class="navbar-nav mr-lg-4 w-100">
       <li class="nav-item nav-search d-none d-lg-block w-100">
         <div class="input-group">
@@ -128,7 +128,7 @@
           <img
             src="https://media.licdn.com/dms/image/C4E03AQErAM-2L6czgw/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=VxwIGCx6LXfzU-dnDDl94kVcjWNOHlAwV6i_NoX84VM"
             alt="profile" />
-          <span class="nav-profile-name">{{ currentUser.firstName }} {{ currentUser.surname }}</span>
+          <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }} {{ currentUser.surname }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item">

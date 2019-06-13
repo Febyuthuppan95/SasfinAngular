@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ForgotPassword } from './../../../models/HttpResponses/ForgotPassword.model';
-import { UserService } from './../../../services/UserService';
+import { UserService } from '../../../services/User.Service';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { Router } from '@angular/router';
 

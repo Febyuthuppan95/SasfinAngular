@@ -8,3 +8,51 @@
   background: rgba(255, 255, 255, 0.8);
   border-radius: 5px;
 }
+
+
+.ls-tile-dark {
+  background: rgba($color: #121212, $alpha: 0.8) !important;
+  border-color: rgba($color: #121212, $alpha: 0.8) !important;
+}
+
+.ls-tile-light {
+  background: rgba($color: #ffffff, $alpha: 0.8) !important;
+  border-color: rgba($color: #ffffff, $alpha: 0.8) !important;
+  color: #333333 !important;
+}
+.ls-tile-blue {
+  background: rgba($color: #3877ff, $alpha: 0.8) !important;
+  border-color: rgba($color: #3877ff, $alpha: 0.8) !important;
+  color: #f2f2f2 !important;
+}
+
+.ls-text-dark {
+  color: #f2f2f2 !important;
+}
+
+.ls-text-light {
+  color: #333333 !important;
+}
+
+.ls-text-blue {
+  color: #f2f2f2 !important;
+}
+
+.ls-btn-hover-dark{transition: ease-in-out 0.5s;}
+.ls-btn-hover-light{transition: ease-in-out 0.5s;}
+.ls-btn-hover-blue{transition: ease-in-out 0.5s;}
+
+.ls-btn-hover-dark:hover {
+  background: rgba($color: #f2f2f2, $alpha: 0.2);
+  transition: ease-in-out 0.5s;
+}
+
+.ls-btn-hover-light:hover {
+  background: rgba($color: #000000, $alpha: 0.2);
+  transition: ease-in-out 0.5s;
+}
+
+.ls-btn-hover-blue:hover {
+  background: rgba($color: #000000, $alpha: 0.2);
+  transition: ease-in-out 0.5s;
+}

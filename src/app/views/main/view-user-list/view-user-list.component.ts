@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Config } from '../../../../assets/config.json';
 import { UserListResponse } from '../../../models/UserListResponse';
 import { UserList } from '../../../models/UserList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
-import { UserService } from './../../../services/UserService';
+import { UserService } from '../../../services/User.Service';
 import { User } from './../../../models/User';
-import { StringifyOptions } from 'querystring';
+import { EditDashboardStyleComponent } from './../../../components/edit-dashboard-style/edit-dashboard-style.component';
+import { FloatingButtonComponent } from 'src/app/components/floating-button/floating-button.component.js';
+import { ThemeService } from 'src/app/services/Theme.Service.js';
 
 @Component({
   selector: 'app-view-user-list',
@@ -17,7 +17,7 @@ import { StringifyOptions } from 'querystring';
 })
 export class ViewUserListComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient, private userService: UserService) {
+  constructor(private userService: UserService, private themeService: ThemeService) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.rightName = 'Users';
@@ -35,7 +35,14 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
+  @ViewChild(EditDashboardStyleComponent, { static: true })
+  private editSidebar: EditDashboardStyleComponent;
+
+  @ViewChild(FloatingButtonComponent, { static: true })
+  private floatingButton: EditDashboardStyleComponent;
+
   currentUser: User = this.userService.getCurrentUser();
+  currentTheme = 'light';
 
   pages: Pagination[];
   lastPage: Pagination;
@@ -55,6 +62,13 @@ export class ViewUserListComponent implements OnInit {
   orderIndicator = 'Surname_ASC';
 
   showLoader = true;
+
+  ngOnInit() {
+    const themeObservable = this.themeService.getCurrentTheme();
+    themeObservable.subscribe((themeData: string) => {
+        this.currentTheme = themeData;
+    });
+  }
 
   paginateData() {
     let rowStart = 1;
@@ -78,9 +92,8 @@ export class ViewUserListComponent implements OnInit {
     this.rowEnd = +rowEnd;
     this.activePage = +activePage;
     this.loadUsers();
-  }
 
-  ngOnInit() { }
+  }
 
   loadUsers() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
@@ -121,6 +134,14 @@ export class ViewUserListComponent implements OnInit {
 
   inspectUserImage(src: string) {
     this.imageModal.open(src);
+  }
+
+  openEditTile() {
+    this.editSidebar.show = true;
+  }
+
+  closeEditTile() {
+    this.editSidebar.show = false;
   }
 
 }

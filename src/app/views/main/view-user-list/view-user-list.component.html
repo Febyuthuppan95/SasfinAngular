@@ -13,16 +13,15 @@
       <div class="main-panel">
         <div class="content-wrapper bg-transparent">
           <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card tile-frost shadow">
-              <div class="card-body">
-                <app-floating-button></app-floating-button>
+            <div class="shadow col-12 ls-tile-{{ currentTheme }}" style="border-radius: 5px">
+              <div class="ls-card-body">
                 <div class="float-right">
                 <ng-container *ngIf="showLoader">
                     <app-loader></app-loader>
                   </ng-container>
                 </div>
                 <br />
-                <h4 class="card-title">Users <br /><br /><small>{{ rowCount }} total records</small></h4>
+                <h4 class="card-title ls-text-{{ currentTheme }}">Users <br /><br /><small class="text-uppercase" style="font-size: 14px">{{ rowCount }} total records</small></h4>
 
                 <br />
                 <form class="form-inline">
@@ -103,7 +102,9 @@
       </div>
     </div>
   </div>
+  <app-floating-button (myEvent)="openEditTile($event)"></app-floating-button>
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
+  <app-edit-dashboard-style (closeSidebar)="closeEditTile($event)"></app-edit-dashboard-style>
   </body>
   </html>

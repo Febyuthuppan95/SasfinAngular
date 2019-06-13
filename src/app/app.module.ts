@@ -6,7 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationGuard } from './middleware/AuthenticationGuard';
 import { AnonGuard } from './middleware/AnonGuard';
-import { UserService } from './services/UserService';
+import { UserService } from './services/User.Service';
+import { ThemeService } from './services/Theme.Service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { ImageModalComponent, NgbdModalContent } from './components/image-modal/
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FloatingButtonComponent} from './components/floating-button/floating-button.component';
+import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
 
 // @ts-ignore
 @NgModule({
@@ -47,7 +49,8 @@ import {FloatingButtonComponent} from './components/floating-button/floating-but
     ImageModalComponent,
     NgbdModalContent,
     NotificationComponent,
-    FloatingButtonComponent
+    FloatingButtonComponent,
+    EditDashboardStyleComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,7 @@ import {FloatingButtonComponent} from './components/floating-button/floating-but
     ),
     NgbModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard],
+  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent

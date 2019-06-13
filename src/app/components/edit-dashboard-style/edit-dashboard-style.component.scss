@@ -1,0 +1,82 @@
+.ls-right-sidebar {
+  padding: 25px;
+  background: rgba(255,255,255, 1);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99999;
+}
+
+.ls-sidebar-show {
+  // display: block;
+  right: 0;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 0.7s;
+
+}
+
+.ls-sidebar-hide {
+  // display: none;
+  right: -500px;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 0.7s;
+
+}
+
+.overlay {
+  background: rgba(0,0,0,0.2);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  transition: ease-in-out 0.5s;
+}
+
+
+.ls-theme-item {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: solid 3px #d6d6d6;
+  margin: auto;
+  transition: ease-in-out 0.5s;
+}
+
+.ls-theme-item:hover {
+  border-color: rgb(89, 128, 255);
+  transition: ease-in-out 0.5s;
+}
+
+.ls-item-active {
+  border-color: rgb(89, 128, 255);
+
+}
+
+.ls-theme-light {
+  background: rgb(245, 245, 245);
+}
+
+.ls-theme-dark {
+  background: rgb(26, 26, 26);
+}
+
+.ls-theme-red {
+  background: rgb(255, 45, 45);
+}
+
+.ls-theme-blue {
+  background: rgb(28, 81, 255);
+}
+
+.ls-theme-green {
+  background: rgb(28, 255, 115);
+}
+
+.col-md-4 {
+  margin-bottom: 12px;
+}
+
+.ls-theme {
+  color: #3d3d3d;
+}

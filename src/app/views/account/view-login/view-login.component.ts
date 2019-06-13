@@ -4,7 +4,7 @@ import { Config } from '../../../../assets/config.json';
 import { LoginResponse } from '../../../models/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { CookieService } from 'ngx-cookie-service';
-import { UserService } from './../../../services/UserService';
+import { UserService } from '../../../services/User.Service';
 import { Router } from '@angular/router';
 
 @Component({
