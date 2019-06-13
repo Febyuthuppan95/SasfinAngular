@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { UserListResponse } from '../../../models/UserListResponse';
-import { UserList } from '../../../models/UserList';
+import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
+import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
-import { UserService } from '../../../services/User.Service';
-import { User } from './../../../models/User';
-import { ThemeService } from 'src/app/services/Theme.Service.js';
+import { UserService } from '../../../services/user.Service';
+import { User } from '../../../models/HttpResponses/User';
+import { ThemeService } from 'src/app/services/theme.Service.js';
 
 @Component({
   selector: 'app-view-user-list',
@@ -36,8 +36,6 @@ export class ViewUserListComponent implements OnInit {
 
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
-
-
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
@@ -69,7 +67,7 @@ export class ViewUserListComponent implements OnInit {
   ngOnInit() {
     const themeObservable = this.themeService.getCurrentTheme();
     themeObservable.subscribe((themeData: string) => {
-        this.currentTheme = themeData;
+      this.currentTheme = themeData;
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ThemeService } from 'src/app/services/Theme.Service';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-edit-dashboard-style',

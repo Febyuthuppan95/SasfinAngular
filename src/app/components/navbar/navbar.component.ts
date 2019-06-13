@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/User.Service';
+import { Component, OnInit, Input } from '@angular/core';
+import { UserService } from '../../services/user.Service';
 import { Router } from '@angular/router';
-import { User } from './../../models/User';
-import { ThemeService } from 'src/app/services/Theme.Service';
+import { User } from '../../models/HttpResponses/User';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,14 +14,10 @@ export class NavbarComponent implements OnInit {
   constructor(private userService: UserService, private themeService: ThemeService) { }
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = 'light';
 
-  ngOnInit() {
-    const studentsObservable = this.themeService.getCurrentTheme();
-    studentsObservable.subscribe((themeData: string) => {
-        this.currentTheme = themeData;
-    });
-  }
+  @Input() currentTheme = 'light';
+
+  ngOnInit() { }
 
   logout() {
     this.userService.logout();

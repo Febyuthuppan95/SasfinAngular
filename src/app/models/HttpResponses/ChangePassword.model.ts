@@ -1,4 +1,4 @@
-import { Outcome } from './../Outcome';
+import { Outcome } from './Outcome';
 
 export class ChangePassword {
   outcome: Outcome;

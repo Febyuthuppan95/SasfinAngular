@@ -8,16 +8,9 @@ import { Observable } from 'rxjs';
 export class ThemeService {
 
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService) { }
 
   private theme = 'light';
-
-  /**
-   * getTheme
-   */
-  public getTheme() {
-
-  }
 
   /**
    * setTheme
@@ -28,10 +21,16 @@ export class ThemeService {
   }
 
   public getCurrentTheme(): any {
+    const themeCookie = this.cookieService.get('theme');
+
+    if (themeCookie !== '') {
+      this.theme = themeCookie;
+    }
+
     const studentsObservable = new Observable(observer => {
-          setInterval(() => {
-               observer.next(this.theme);
-           }, 500);
+      setInterval(() => {
+        observer.next(this.theme);
+      }, 500);
     });
 
     return studentsObservable;

@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { AuthenticationGuard } from './middleware/AuthenticationGuard';
-import { AnonGuard } from './middleware/AnonGuard';
-import { UserService } from './services/User.Service';
-import { ThemeService } from './services/Theme.Service';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { AnonGuard } from './guards/anon.guard';
+import { UserService } from './services/user.Service';
+import { ThemeService } from './services/theme.Service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,8 +28,8 @@ import { ViewNotFoundComponent } from './views/errors/view-not-found/view-not-fo
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
 import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {FloatingButtonComponent} from './components/floating-button/floating-button.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 

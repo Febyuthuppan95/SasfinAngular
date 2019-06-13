@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ForgotPassword } from './../../../models/HttpResponses/ForgotPassword.model';
-import { UserService } from '../../../services/User.Service';
+import { UserService } from '../../../services/user.Service';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,7 @@ export class ViewForgotPasswordComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onRequestOtpSubmit() {
     this.requestPending = true;

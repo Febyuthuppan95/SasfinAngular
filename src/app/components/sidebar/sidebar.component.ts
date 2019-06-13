@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ThemeService } from 'src/app/services/Theme.Service';
+import { Component, OnInit, Input } from '@angular/core';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,15 +8,9 @@ import { ThemeService } from 'src/app/services/Theme.Service';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private themeService: ThemeService) {
-  }
+  constructor() { }
 
-  currentTheme = 'light';
+  @Input() currentTheme = 'light';
 
-  ngOnInit() {
-    const studentsObservable = this.themeService.getCurrentTheme();
-    studentsObservable.subscribe((themeData: string) => {
-        this.currentTheme = themeData;
-    });
-  }
+  ngOnInit() { }
 }

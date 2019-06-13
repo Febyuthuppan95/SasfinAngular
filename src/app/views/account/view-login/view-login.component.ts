@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Config } from '../../../../assets/config.json';
-import { LoginResponse } from '../../../models/LoginResponse';
+import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { CookieService } from 'ngx-cookie-service';
-import { UserService } from '../../../services/User.Service';
+import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
 
 @Component({

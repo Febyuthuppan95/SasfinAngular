@@ -1,10 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { GetUserList } from '../models/HttpRequests/GetUserList';
-import { UserListResponse } from '../models/UserListResponse';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
-import { User } from '../models/User';
-import { LoginResponse } from '../models/LoginResponse';
+import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
 
@@ -132,7 +129,8 @@ export class UserService {
    * user list
    */
   public getUserList(filter: string, userID: number, specificUserID: number, rightName: string, rowStart: number, rowEnd: number,
-                     orderBy: string, orderDirection: string) {
+    // tslint:disable-next-line:align
+    orderBy: string, orderDirection: string) {
     const requestModel = {
       _userID: 3,
       _specificUserID: -1,
@@ -159,5 +157,5 @@ export class UserService {
     });
 
     return promise;
-    }
+  }
 }
