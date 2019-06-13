@@ -4,6 +4,7 @@ import { FloatingButtonComponent } from 'src/app/components/floating-button/floa
 import { ThemeService } from 'src/app/services/theme.Service';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -26,6 +27,9 @@ export class MainLayoutComponent implements OnInit {
   @ViewChild(SidebarComponent, { static: true })
   private sidebar: SidebarComponent;
 
+  @ViewChild(FooterComponent, { static: true })
+  private footer: FooterComponent;
+
   currentTheme = 'light';
 
   ngOnInit() {
@@ -47,5 +51,6 @@ export class MainLayoutComponent implements OnInit {
   updateChildrenComponents() {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
+    this.footer.currentTheme = this.currentTheme;
   }
 }

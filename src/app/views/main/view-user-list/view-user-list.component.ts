@@ -38,7 +38,7 @@ export class ViewUserListComponent implements OnInit {
   private imageModal: ImageModalComponent;
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = 'light';
+  currentTheme = this.themeService.getTheme();
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -65,8 +65,8 @@ export class ViewUserListComponent implements OnInit {
   showLoader = true;
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
+    const studentsObservable = this.themeService.getCurrentTheme();
+    studentsObservable.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
   }

@@ -10,7 +10,8 @@
       </button>
     </div>
   </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{ currentTheme }} border-0 ls-text-{{ currentTheme }}">
+  <div
+    class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{ currentTheme }} border-0 ls-text-{{ currentTheme }}">
     <ul class="navbar-nav mr-lg-4 w-100">
       <li class="nav-item nav-search d-none d-lg-block w-100">
         <div class="input-group">
@@ -125,10 +126,9 @@
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img
-            src="https://media.licdn.com/dms/image/C4E03AQErAM-2L6czgw/profile-displayphoto-shrink_200_200/0?e=1565222400&v=beta&t=VxwIGCx6LXfzU-dnDDl94kVcjWNOHlAwV6i_NoX84VM"
-            alt="profile" />
-          <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }} {{ currentUser.surname }}</span>
+          <img src="https://localhost:5001/public/images/profile/face6.jpg" alt="profile" />
+          <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }}
+            {{ currentUser.surname }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item">

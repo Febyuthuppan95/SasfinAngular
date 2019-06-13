@@ -1,7 +1,7 @@
 @import '~ngx-toastr/toastr.css';
 
 body {
-  background-image: url('./assets/dist/images/background.jpg');
+  background-image: url('https://localhost:5001/public/images/background/background1.jpg');
   background-size: cover;
   background-attachment: fixed;
 }
@@ -26,6 +26,7 @@ body {
   border-color: rgba($color: #ffffff, $alpha: 0.8) !important;
   color: #333333 !important;
 }
+
 .ls-tile-blue {
   background: rgba($color: #3877ff, $alpha: 0.8) !important;
   border-color: rgba($color: #3877ff, $alpha: 0.8) !important;
@@ -44,9 +45,17 @@ body {
   color: #f2f2f2 !important;
 }
 
-.ls-btn-hover-dark{transition: ease-in-out 0.5s;}
-.ls-btn-hover-light{transition: ease-in-out 0.5s;}
-.ls-btn-hover-blue{transition: ease-in-out 0.5s;}
+.ls-btn-hover-dark {
+  transition: ease-in-out 0.5s;
+}
+
+.ls-btn-hover-light {
+  transition: ease-in-out 0.5s;
+}
+
+.ls-btn-hover-blue {
+  transition: ease-in-out 0.5s;
+}
 
 .ls-btn-hover-dark:hover {
   background: rgba($color: #f2f2f2, $alpha: 0.2);

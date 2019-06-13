@@ -13,6 +13,21 @@ export class ThemeService {
   private theme = 'light';
 
   /**
+   * getTheme
+   */
+  public getTheme(): string {
+    const themeCookie = this.cookieService.get('theme');
+
+    if (themeCookie !== '') {
+      this.theme = themeCookie;
+    } else {
+      this.theme = 'light';
+    }
+
+    return this.theme;
+  }
+
+  /**
    * setTheme
    */
   public setTheme(theme: string) {

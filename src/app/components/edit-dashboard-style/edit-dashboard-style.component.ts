@@ -8,13 +8,13 @@ import { ThemeService } from 'src/app/services/theme.Service';
 })
 export class EditDashboardStyleComponent implements OnInit {
 
-  constructor(private designService: ThemeService) { }
+  constructor(private themeService: ThemeService) { }
 
   @Input() show = false;
 
   @Output() closeSidebar = new EventEmitter<string>();
 
-  currentTheme = 'light';
+  currentTheme = this.themeService.getTheme();
 
   ngOnInit() {
   }
@@ -25,6 +25,6 @@ export class EditDashboardStyleComponent implements OnInit {
 
   updateTheme(theme: string) {
     this.currentTheme = theme;
-    this.designService.setTheme(theme);
+    this.themeService.setTheme(theme);
   }
 }
