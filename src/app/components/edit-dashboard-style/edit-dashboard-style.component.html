@@ -16,19 +16,9 @@
       <p>Dark</p>
     </div>
     <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-red shadow" [ngClass]="(currentTheme === 'red') ? 'ls-item-active': ''"></button>
-      <br />
-      <p>Red</p>
-    </div>
-    <div class="col-md-4 text-center ls-theme">
       <button class="ls-theme-item ls-theme-blue shadow" (click)="updateTheme('blue')" [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
       <br />
       <p>Blue</p>
-    </div>
-    <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-green shadow"></button>
-      <br />
-      <p>Green</p>
     </div>
   </div>
 </div>
