@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { UserListResponse } from '../../../models/UserListResponse';
 import { UserList } from '../../../models/UserList';
 import { Pagination } from '../../../models/Pagination';
@@ -76,7 +76,7 @@ export class ViewUserListComponent implements OnInit {
     const pageCount = +this.rowCount / +this.rowCountPerPage;
     this.pages = Array<Pagination>();
 
-    for (let i = 0; i < pageCount; i++) {
+    for (let i = 0; i < this.userList.length; i++) {
       const item = new Pagination();
       item.page = i + 1;
       item.rowStart = +rowStart;
@@ -87,19 +87,26 @@ export class ViewUserListComponent implements OnInit {
     }
   }
 
-  pageChange(rowStart: number, rowEnd: number, activePage: number) {
-    this.rowStart = +rowStart;
-    this.rowEnd = +rowEnd;
-    this.activePage = +activePage;
-    this.loadUsers();
+  // pageChange(rowStart: number, rowEnd: number, activePage: number) {
+  //   this.rowStart = +rowStart;
+  //   this.rowEnd = +rowEnd;
+  //   this.activePage = +activePage;
+  //   this.loadUsers();
+  // }
 
+  pageChange(pageNumber: number) {
+    const page = this.pages[+pageNumber - 1];
+    this.rowStart = page.rowStart;
+    this.rowEnd = page.rowEnd;
+    this.activePage = +pageNumber;
+    this.loadUsers();
   }
 
   loadUsers() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd, this.orderBy, this.orderDirection).then(
+    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, 500, this.orderBy, this.orderDirection).then(
       (res: UserListResponse) => {
         this.userList = res.userList;
         this.rowCount = res.rowCount;

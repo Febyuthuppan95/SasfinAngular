@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { AuthenticationGuard } from './middleware/AuthenticationGuard';
 import { AnonGuard } from './middleware/AnonGuard';
 import { UserService } from './services/User.Service';
@@ -66,7 +67,8 @@ import { EditDashboardStyleComponent } from './components/edit-dashboard-style/e
         timeOut: 3000
       }
     ),
-    NgbModule
+    NgbModule,
+    NgxPaginationModule
   ],
   providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService],
   bootstrap: [AppComponent],

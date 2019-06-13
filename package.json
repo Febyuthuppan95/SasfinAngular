@@ -23,6 +23,7 @@
     "bootstrap": "^4.3.1",
     "classlist.js": "^1.1.20150312",
     "ngx-cookie-service": "^2.2.0",
+    "ngx-pagination": "^4.0.0",
     "ngx-toastr": "^10.0.4",
     "polyfills": "^2.1.1",
     "rxjs": "~6.4.0",
