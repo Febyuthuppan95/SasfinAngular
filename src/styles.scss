@@ -1,7 +1,7 @@
 @import '~ngx-toastr/toastr.css';
 
 body {
-  background-image: url('https://localhost:5001/public/images/background/background1.jpg');
+  background: url('./assets/dist/images/background1.jpg');
   background-size: cover;
   background-attachment: fixed;
 }

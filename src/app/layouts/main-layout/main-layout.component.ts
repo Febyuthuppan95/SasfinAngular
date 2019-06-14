@@ -31,6 +31,7 @@ export class MainLayoutComponent implements OnInit {
   private footer: FooterComponent;
 
   currentTheme = 'light';
+  currentBackground = './../../../assets/dist/images/background1.jpg';
 
   ngOnInit() {
     const studentsObservable = this.themeService.getCurrentTheme();
@@ -38,6 +39,8 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
+
+    console.log(this.currentBackground);
   }
 
   openEditTile() {

@@ -27,22 +27,30 @@ export class ViewChangePasswordComponent implements OnInit {
   }
 
   onRequestChangePassword() {
-    this.requestPending = true;
-    this.userService.changePassword(this.txtEmail, this.txtOTP, this.txtNewPass)
-      .then(
-        (res: ChangePassword) => {
-          this.requestPending = false;
+    if (this.txtEmail === undefined || this.txtConfirmNewPass === undefined || this.txtNewPass === undefined || this.txtOTP === undefined) {
+      this.notify.errorsmsg('Invalid Input', 'Please enter all fields.');
+    } else {
+      if (this.txtConfirmNewPass !== this.txtNewPass) {
+        this.notify.errorsmsg('Invalid Input', 'Passwords do not match');
+      } else {
+        this.requestPending = true;
+        this.userService.changePassword(this.txtEmail, this.txtOTP, this.txtNewPass)
+          .then(
+            (res: ChangePassword) => {
+              this.requestPending = false;
 
-          if (res.status) {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.router.navigateByUrl('/');
-          } else {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-        },
-        (msg) => {
-          this.requestPending = false;
-        });
+              if (res.status) {
+                this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+                this.router.navigateByUrl('/');
+              } else {
+                this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+              }
+            },
+            (msg) => {
+              this.requestPending = false;
+            });
+      }
+    }
   }
 
 }

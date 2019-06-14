@@ -126,7 +126,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img src="https://localhost:5001/public/images/profile/face6.jpg" alt="profile" />
+          <img [src]="currentUser.profileImage" alt="profile" />
           <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }}
             {{ currentUser.surname }}</span>
         </a>

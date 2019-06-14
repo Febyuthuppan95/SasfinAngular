@@ -41,6 +41,11 @@ export class UserService {
 
     if (jsonString !== '') {
       const currentUser: User = JSON.parse(jsonString);
+
+      if (currentUser.profileImage === null) {
+        currentUser.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
+      }
+
       return currentUser;
     } else {
       return null;
@@ -109,7 +114,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.local}/account/request/changepassword`;
+      const apiURL = `${Config.ApiEndpoint.test}/account/request/changepassword`;
       this.httpClient.post(apiURL, requestModel)
         .toPromise()
         .then(

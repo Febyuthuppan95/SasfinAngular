@@ -22,21 +22,25 @@ export class ViewForgotPasswordComponent implements OnInit {
   ngOnInit() { }
 
   onRequestOtpSubmit() {
-    this.requestPending = true;
-    this.userService.forgotPassword(this.txtEmail).then(
-      (res: ForgotPassword) => {
-        this.requestPending = false;
+    if (this.txtEmail === undefined) {
+      this.notify.errorsmsg('Invalid Input', 'Please enter all fields.');
+    } else {
+      this.requestPending = true;
+      this.userService.forgotPassword(this.txtEmail).then(
+        (res: ForgotPassword) => {
+          this.requestPending = false;
 
-        if (res.status) {
-          this.notify.successmsg('Success'.toString(), 'OTP sent. Please check your inbox.'.toString());
-          this.router.navigateByUrl('/account/changepassword');
-        } else {
-          this.notify.errorsmsg('Failure', 'Email address is not accociated to an account.');
-        }
-      },
-      (msg) => {
-        this.requestPending = false;
-        this.notify.errorsmsg('Failure', 'Something went wrong');
-      });
+          if (res.status) {
+            this.notify.successmsg('Success'.toString(), 'OTP sent. Please check your inbox.'.toString());
+            this.router.navigateByUrl('/account/changepassword');
+          } else {
+            this.notify.errorsmsg('Failure', 'Email address is not accociated to an account.');
+          }
+        },
+        (msg) => {
+          this.requestPending = false;
+          this.notify.errorsmsg('Failure', 'Something went wrong');
+        });
+    }
   }
 }

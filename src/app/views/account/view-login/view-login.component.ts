@@ -26,24 +26,29 @@ export class ViewLoginComponent implements OnInit {
   ngOnInit() { }
 
   onLoginSubmit() {
-    this.pendingRequest = true;
-    this.userService.authenticate(this.txtEmail, this.txtPassword).then(
-      (res: LoginResponse) => {
-        const expireDate = new Date();
-        expireDate.setDate(expireDate.getDate() + 1);
+    if (this.txtEmail === '' || this.txtPassword === '') {
+      this.notify.errorsmsg('Invalid Input', 'Please enter all fields.');
+    } else {
+      this.pendingRequest = true;
+      this.userService.authenticate(this.txtEmail, this.txtPassword).then(
+        (res: LoginResponse) => {
+          const expireDate = new Date();
+          expireDate.setDate(expireDate.getDate() + 1);
 
-        if (res.authenticated) {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.userService.persistLogin(JSON.stringify(res));
-          this.router.navigateByUrl('/users');
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
-        this.pendingRequest = false;
-      },
-      (msg) => {
-        this.pendingRequest = false;
-        this.notify.errorsmsg('Uh oh!', 'Something went wrong...');
-      });
+          if (res.authenticated) {
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            this.userService.persistLogin(JSON.stringify(res));
+            this.router.navigateByUrl('/users');
+          } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+          this.pendingRequest = false;
+        },
+        (msg) => {
+          this.pendingRequest = false;
+          this.notify.errorsmsg('Uh oh!', 'Something went wrong...');
+        });
+    }
+
   }
 }
