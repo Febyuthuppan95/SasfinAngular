@@ -27,4 +27,8 @@ export class EditDashboardStyleComponent implements OnInit {
     this.currentTheme = theme;
     this.themeService.setTheme(theme);
   }
+
+  updateBackground(background: string) {
+
+  }
 }

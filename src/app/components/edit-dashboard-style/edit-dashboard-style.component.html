@@ -1,4 +1,5 @@
-<div class="ls-right-sidebar col-lg-2 float-right shadow" [ngClass]="(show)?'ls-sidebar-show':'ls-sidebar-hide'" (mouseleave)="clickEvent()">
+<div class="ls-right-sidebar col-lg-2 float-right shadow" [ngClass]="(show)?'ls-sidebar-show':'ls-sidebar-hide'"
+  (mouseleave)="clickEvent()">
   <button type="button float-right" (click)="clickEvent()" class="close" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -6,20 +7,40 @@
   <br />
   <div class="row">
     <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-light shadow" (click)="updateTheme('light')" [ngClass]="(currentTheme === 'light') ? 'ls-item-active': ''"></button>
+      <button class="ls-theme-item ls-theme-light shadow" (click)="updateTheme('light')"
+        [ngClass]="(currentTheme === 'light') ? 'ls-item-active': ''"></button>
       <br />
       <p>Light</p>
     </div>
     <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-dark shadow" (click)="updateTheme('dark')" [ngClass]="(currentTheme === 'dark') ? 'ls-item-active': ''"></button>
+      <button class="ls-theme-item ls-theme-dark shadow" (click)="updateTheme('dark')"
+        [ngClass]="(currentTheme === 'dark') ? 'ls-item-active': ''"></button>
       <br />
       <p>Dark</p>
     </div>
     <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-blue shadow" (click)="updateTheme('blue')" [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
+      <button class="ls-theme-item ls-theme-blue shadow" (click)="updateTheme('blue')"
+        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
       <br />
       <p>Blue</p>
     </div>
   </div>
+  <br />
+  <p>Background</p>
+  <br />
+  <div class="row">
+    <div class="col-md-6 text-center ls-bg">
+      <img (click)="updateBackground('https://localhost:5001/public/images/background/background1.jpg')"
+        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"
+        src="https://localhost:5001/public/images/background/background1.jpg" class="ls-bg-item shadow" />
+    </div>
+    <div class="col-md-6 text-center ls-bg">
+      <img (click)="updateBackground('https://localhost:5001/public/images/background/background2.jpeg')"
+        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"
+        src="https://localhost:5001/public/images/background/background2.jpeg" class="ls-bg-item shadow" />
+    </div>
+  </div>
+
+
 </div>
 <div class="overlay" *ngIf="show"></div>
