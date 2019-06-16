@@ -33,7 +33,8 @@
               "src/assets/dist/css/style.css",
               "src/assets/dist/css/custom.css",
               "src/styles.scss",
-              "src/theme.scss"
+              "src/theme.scss",
+              "src/media-queries.scss"
             ],
             "scripts": []
           },

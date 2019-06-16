@@ -32,6 +32,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { DatatableComponent } from './components/datatable/datatable.component';
 
 // @ts-ignore
 @NgModule({
@@ -53,7 +54,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
     NotificationComponent,
     FloatingButtonComponent,
     EditDashboardStyleComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    DatatableComponent
   ],
   imports: [
     BrowserModule,

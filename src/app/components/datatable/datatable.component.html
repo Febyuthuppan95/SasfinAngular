@@ -1,0 +1,10 @@
+<div class="ls-datatable-container">
+  <table>
+    <thead>
+      <th *ngFor="let heading of headings">{{ heading }}</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows; let rowValue of row">{{ rowValue }}</tr>
+    </tbody>
+  </table>
+</div>

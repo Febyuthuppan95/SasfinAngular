@@ -1,19 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { EditDashboardStyleComponent } from 'src/app/components/edit-dashboard-style/edit-dashboard-style.component';
-import { FloatingButtonComponent } from 'src/app/components/floating-button/floating-button.component';
-import { ThemeService } from 'src/app/services/theme.Service';
-import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
-import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
-import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { EditDashboardStyleComponent } from "src/app/components/edit-dashboard-style/edit-dashboard-style.component";
+import { FloatingButtonComponent } from "src/app/components/floating-button/floating-button.component";
+import { ThemeService } from "src/app/services/theme.Service";
+import { NavbarComponent } from "src/app/components/navbar/navbar.component";
+import { SidebarComponent } from "src/app/components/sidebar/sidebar.component";
+import { FooterComponent } from "src/app/components/footer/footer.component";
 
 @Component({
-  selector: 'app-main-layout',
-  templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss']
+  selector: "app-main-layout",
+  templateUrl: "./main-layout.component.html",
+  styleUrls: ["./main-layout.component.scss"]
 })
 export class MainLayoutComponent implements OnInit {
-
-  constructor(private themeService: ThemeService) { }
+  constructor(private themeService: ThemeService) {}
 
   @ViewChild(EditDashboardStyleComponent, { static: true })
   private editSidebar: EditDashboardStyleComponent;
@@ -30,8 +29,8 @@ export class MainLayoutComponent implements OnInit {
   @ViewChild(FooterComponent, { static: true })
   private footer: FooterComponent;
 
-  currentTheme = 'light';
-  currentBackground = './../../../assets/dist/images/background1.jpg';
+  currentTheme = "light";
+  currentBackground = "./../../../assets/dist/images/background1.jpg";
 
   ngOnInit() {
     const studentsObservable = this.themeService.getCurrentTheme();
@@ -39,8 +38,6 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
-
-    console.log(this.currentBackground);
   }
 
   openEditTile() {
