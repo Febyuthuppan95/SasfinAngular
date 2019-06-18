@@ -10,6 +10,8 @@
         style="font-size: 14px">{{ rowCount }} total records</small></h4>
 
     <br />
+    <button class="btn btn-filter btn-filter-{{ currentTheme }}" (click)="toggleFilters()"><i class="mdi mdi-filter"></i> &nbsp;Filters</button>
+    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
     <form class="form-inline">
       <p class="ls-text-{{ currentTheme }}">Showing</p>&nbsp;
       <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
@@ -26,6 +28,7 @@
       <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm" placeholder="Search"
         (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
     </form>
+  </div>
     <br />
 
     <div class="table-responsive">
@@ -34,12 +37,20 @@
           <tr>
             <th></th>
             <th></th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">Emp
+            <th>
+              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')"><p>Emp
                 No
-                <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                  [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i><i
-                  style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                  [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i></button></th>
+                <i
+                  class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
+                  [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'">
+                </i>
+                <i
+                  style="margin-left: -5px;"
+                  class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
+                  [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'">
+                </i></p>
+                </button>
+              </th>
             <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('FirstName')">First Name
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"

@@ -1,8 +1,8 @@
 <div class="container-scroller">
-  <app-navbar></app-navbar>
+  <app-navbar (collapseSidebar)="collapseSidebar()"></app-navbar>
   <div class="container-fluid page-body-wrapper">
     <app-sidebar></app-sidebar>
-    <div class="main-panel">
+    <div class="main-panel" style="width: 100%">
       <div class="content-wrapper bg-transparent">
         <router-outlet></router-outlet>
         <app-footer></app-footer>

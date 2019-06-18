@@ -63,6 +63,7 @@ export class ViewUserListComponent implements OnInit {
   orderIndicator = 'Surname_ASC';
 
   showLoader = true;
+  displayFilter = false;
 
   ngOnInit() {
     const studentsObservable = this.themeService.getCurrentTheme();
@@ -176,6 +177,10 @@ export class ViewUserListComponent implements OnInit {
     if ((+this.activePage + 1) <= pagenumber) {
       this.showingPages[2] = this.pages[+this.activePage + 1];
     }
+  }
+
+  toggleFilters() {
+    this.displayFilter = !this.displayFilter;
   }
 
 }

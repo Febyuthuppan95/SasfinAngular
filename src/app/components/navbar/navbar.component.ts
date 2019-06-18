@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user.Service';
 import { User } from '../../models/HttpResponses/User';
 
@@ -15,10 +15,17 @@ export class NavbarComponent implements OnInit {
 
   @Input() currentTheme = 'light';
 
+  @Output() collapseSidebar = new EventEmitter<string>();
+
   ngOnInit() { }
 
   logout() {
     this.userService.logout();
+  }
+
+  public collapseSidebarEvent() {
+    console.log('Navbar collapse clicked');
+    this.collapseSidebar.emit('collapseSidebar');
   }
 
 }

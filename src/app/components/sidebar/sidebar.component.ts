@@ -11,6 +11,7 @@ export class SidebarComponent implements OnInit {
   constructor() { }
 
   @Input() currentTheme = 'light';
+  @Input() collapse = false;
 
   ngOnInit() { }
 }
