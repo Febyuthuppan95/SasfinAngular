@@ -24,7 +24,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public collapseSidebarEvent() {
-    console.log('Navbar collapse clicked');
     this.collapseSidebar.emit('collapseSidebar');
   }
 

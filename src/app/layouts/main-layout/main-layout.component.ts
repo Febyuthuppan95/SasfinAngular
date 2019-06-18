@@ -55,7 +55,6 @@ export class MainLayoutComponent implements OnInit {
   }
 
   collapseSidebar() {
-    console.log(this.sidebar.collapse);
     this.sidebar.collapse = !this.sidebar.collapse;
   }
 }
