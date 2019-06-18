@@ -3,7 +3,10 @@
   <button type="button float-right" (click)="clickEvent()" class="close" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-  <p>Theme</p>
+  <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="helpToggle" [checked]="toggleHelpValue">
+      <label class="custom-control-label" for="helpToggle">Help</label>
+    </div>
   <br />
   <div class="row">
     <div class="col-md-4 text-center ls-theme">
@@ -25,8 +28,6 @@
       <p>Blue</p>
     </div>
   </div>
-  <br />
-  <p>Background</p>
   <br />
   <div class="row">
     <div class="col-12 text-center ls-bg">

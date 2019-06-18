@@ -39,6 +39,8 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
+  defaultProfile = 'http://197.189.218.50:7777/public/images/profile/default.png';
+
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
 
@@ -136,6 +138,8 @@ export class ViewUserListComponent implements OnInit {
         for (const user of res.userList) {
           if (user.profileImage === null) {
             user.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
+          } else {
+            user.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/${user.profileImage}`;
           }
         }
 
@@ -143,7 +147,7 @@ export class ViewUserListComponent implements OnInit {
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.userList.length;
-        this.totalShowing = this.userList.length;
+        this.totalShowing = +this.rowStart + +this.userList.length - 1;
         this.paginateData();
       },
       (msg) => {

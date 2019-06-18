@@ -6,26 +6,18 @@
       </ng-container>
     </div>
     <br />
-    <h4 class="card-title ls-text-{{ currentTheme }}">Users <br /><br /><small class="text-uppercase"
-        style="font-size: 14px">{{ rowCount }} total records</small></h4>
-
+    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i class="mdi mdi-filter"></i> &nbsp;Filters</button>
+    <h4 class="card-title ls-text-{{ currentTheme }}">Users</h4>
     <br />
-    <button class="btn btn-filter btn-filter-{{ currentTheme }}" (click)="toggleFilters()"><i class="mdi mdi-filter"></i> &nbsp;Filters</button>
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
     <form class="form-inline">
-      <p class="ls-text-{{ currentTheme }}">Showing</p>&nbsp;
       <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
-        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
-        <option value='15' selected>15</option>
-        <option value='25'>25</option>
-        <option value='50'>50</option>
+        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}" (change)="loadUsers()">
+        <option value='15' selected>Showing 15</option>
+        <option value='25'>Showing 25</option>
+        <option value='50'>Showing 50</option>
       </select>
-
-      <select [(ngModel)]="rightName" [ngModelOptions]="{standalone: true}"
-        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
-        <option value="Users" selected>Users</option>
-      </select>
-      <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto" placeholder="Search"
+      <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}" placeholder="Search"
       (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
     </form>
   </div>
@@ -51,12 +43,16 @@
                 </i></p>
                 </button>
               </th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col">
+              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('FirstName')"><p>First Name
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                  [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i></p></button></th>
+                  [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i>
+                </p>
+                </button>
+                </th>
             <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Surname')"><p>Surname
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
@@ -96,7 +92,7 @@
             <td class="hover-pointer"
               (click)="inspectUserImage(user.profileImage)">
               <img class="profile-image shadow"
-                [src]="user.profileImage" />
+                [src]="user.profileImage"/>
             </td>
             <td>{{user.empNo}}</td>
             <td>{{user.firstName}}</td>
@@ -115,15 +111,15 @@
     <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
       <ul class="pagination pagination-sm">
         <li class="page-item">
-          <button class="page-link btn-primary btn" [disabled]="prevPageState || showLoader" type="button"
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState || showLoader" type="button"
             (click)="pageChange(prevPage)">Prev</button>
         </li>
         <li *ngFor="let page of showingPages" class="page-item">
-          <button [class.active-page]="activePage == page.page" class="page-link btn-primary btn" type="button"
+          <button [class.active-page]="activePage == page.page" class="page-link btn-primary btn page-btn-{{ currentTheme }}" type="button"
             (click)="pageChange(page.page)" [disabled]="showLoader">{{page.page}}</button>
         </li>
         <li class="page-item">
-          <button class="page-link btn-primary btn" [disabled]="nextPageState || showLoader" type="button"
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState || showLoader" type="button"
             (click)="pageChange(nextPage)">Next</button>
         </li>
       </ul>

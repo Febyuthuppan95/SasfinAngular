@@ -5,6 +5,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -29,14 +30,24 @@ export class MainLayoutComponent implements OnInit {
   @ViewChild(FooterComponent, { static: true })
   private footer: FooterComponent;
 
+  @ViewChild(SnackBarComponent, { static: true })
+  private snackBar: SnackBarComponent;
+
   currentTheme = 'light';
   currentBackground = './../../../assets/dist/images/background1.jpg';
+  toggleHelpValue = false;
 
   ngOnInit() {
-    const studentsObservable = this.themeService.getCurrentTheme();
-    studentsObservable.subscribe((themeData: string) => {
+    const themeObserver = this.themeService.getCurrentTheme();
+    themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
+    });
+
+    const toggleHelpObserver = this.themeService.toggleHelp();
+    toggleHelpObserver.subscribe((toggle: boolean) => {
+      this.toggleHelpValue = toggle;
+      console.log(toggle);
     });
   }
 
@@ -56,5 +67,16 @@ export class MainLayoutComponent implements OnInit {
 
   collapseSidebar() {
     this.sidebar.collapse = !this.sidebar.collapse;
+  }
+
+  showSnackBar(content: string) {
+    this.snackBar.content = content;
+    this.snackBar.display = true;
+  }
+
+  hideSnackBar() {
+    setTimeout(()=> {
+      this.snackBar.display = false;
+    }, 1500);
   }
 }

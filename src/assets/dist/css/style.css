@@ -20,7 +20,7 @@
     + Color Functions Mixins
     + Badge Mixins
     + Blockquote Mixins
-    
+
   * Core Styles
     + Reset Styles
     + Fonts
@@ -43,7 +43,7 @@
     + Lists
     + Tables
   * Plugin overrides
-    + Data-tables  
+    + Data-tables
   * Landing screens
     + Auth
   * Layout
@@ -19053,7 +19053,7 @@ code {
 
 .documentation .content-wrapper {
   padding-top: 0;
-  min-height: calc(100vh - 75px);
+  height: auto;
 }
 
 .doc-header {

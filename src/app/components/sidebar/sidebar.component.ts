@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ThemeService } from 'src/app/services/theme.Service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,5 +12,11 @@ export class SidebarComponent implements OnInit {
   @Input() currentTheme = 'light';
   @Input() collapse = false;
 
+  @Output() snackBar = new EventEmitter<string>();
+
   ngOnInit() { }
+
+  showSnackBar(content: string) {
+    this.snackBar.emit(content);
+  }
 }

@@ -23,7 +23,7 @@ export class UserService {
    */
   public logout() {
     this.cookieService.delete('currentUser', '/');
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/account/login');
   }
 
   /**
@@ -44,6 +44,8 @@ export class UserService {
 
       if (currentUser.profileImage === null) {
         currentUser.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
+      } else {
+        currentUser.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/${currentUser.profileImage}`;
       }
 
       return currentUser;

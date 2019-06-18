@@ -37,7 +37,7 @@
           <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
           <a class="dropdown-item">
             <div class="item-thumbnail">
-              <img src="../../../assets/dist/images/faces/face4.jpg" alt="image" class="profile-pic">
+              <img src="../../../assets/dist/images/faces/face3.jpg" alt="image" class="profile-pic">
             </div>
             <div class="item-content flex-grow">
               <h6 class="ellipsis font-weight-normal">
@@ -50,7 +50,7 @@
           </a>
           <a class="dropdown-item">
             <div class="item-thumbnail">
-              <img src="../../../assets/dist/images/faces/face2.jpg" alt="image" class="profile-pic">
+              <img src="../../../assets/dist/images/faces/face3.jpg" alt="image" class="profile-pic">
             </div>
             <div class="item-content flex-grow">
               <h6 class="ellipsis font-weight-normal">
@@ -127,7 +127,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img [src]="currentUser.profileImage" alt="profile" />
+          <img src="{{ currentUser.profileImage }}" alt="profile" />
           <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }}
             {{ currentUser.surname }}</span>
         </a>

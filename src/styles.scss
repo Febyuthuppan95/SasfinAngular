@@ -30,37 +30,10 @@ select.form-control {
 
 .btn-filter {
   background: transparent;
-  width: 100%;
   display: none;
-  border: 2px solid;
+  border: none;
   border-radius: 5px;
-}
-
-.btn-filter-dark {
-  color: #f2f2f2;
-  border-color: #f2f2f2;
-}
-
-.btn-filter-light {
-  color: #333333;
-  border-color: #333333;
-}
-
-.btn-filter-blue {
-  color: #f2f2f2;
-  border-color: #333333;
-}
-
-.btn-filter-dark:hover {
-  background: rgba($color: #f2f2f2, $alpha: 0.2)
-}
-
-.btn-filter-light:hover {
-  background: rgba($color: #333333, $alpha: 0.2)
-}
-
-.btn-filter-blue:hover {
-  background: rgba($color: #f2f2f2, $alpha: 0.2)
+  padding: 0;
 }
 
 .btn-sort {

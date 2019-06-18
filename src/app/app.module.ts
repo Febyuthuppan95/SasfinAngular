@@ -36,6 +36,7 @@ import { DatatableComponent } from './components/datatable/datatable.component';
 import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
 import { ViewDesignationsListComponent } from './views/main/view-designations-list/view-designations-list.component';
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 
 // @ts-ignore
 @NgModule({
@@ -61,7 +62,8 @@ import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list
     DatatableComponent,
     ViewRightsListComponent,
     ViewDesignationsListComponent,
-    ViewBackgroundsListComponent
+    ViewBackgroundsListComponent,
+    SnackBarComponent
   ],
   imports: [
     BrowserModule,
