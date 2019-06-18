@@ -25,8 +25,8 @@
         class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm" (change)="loadUsers()">
         <option value="Users" selected>Users</option>
       </select>
-      <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm" placeholder="Search"
-        (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+      <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto" placeholder="Search"
+      (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
     </form>
   </div>
     <br />
@@ -129,7 +129,7 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ rowEnd }} of {{ rowCount }}</p>
+    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ showingRecords }} of {{ rowCount }}</p>
   </div>
 </div>
 

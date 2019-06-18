@@ -33,6 +33,9 @@ import { FloatingButtonComponent } from './components/floating-button/floating-b
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { DatatableComponent } from './components/datatable/datatable.component';
+import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
+import { ViewDesignationsListComponent } from './views/main/view-designations-list/view-designations-list.component';
+import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
 
 // @ts-ignore
 @NgModule({
@@ -55,7 +58,10 @@ import { DatatableComponent } from './components/datatable/datatable.component';
     FloatingButtonComponent,
     EditDashboardStyleComponent,
     MainLayoutComponent,
-    DatatableComponent
+    DatatableComponent,
+    ViewRightsListComponent,
+    ViewDesignationsListComponent,
+    ViewBackgroundsListComponent
   ],
   imports: [
     BrowserModule,
