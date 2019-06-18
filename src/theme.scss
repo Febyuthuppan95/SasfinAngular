@@ -69,15 +69,47 @@
 .table-blue,
 .table-blue>th,
 .table-blue>td {
-  background-color: #3877ff;
+  background-color: transparent;
   color: #fff;
 }
 
 .table-blue.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba($color: #5c8fff, $alpha: .5)
+  background-color: rgba($color: #256aff, $alpha: .7)
 }
 
 .table-blue.table-hover tbody tr:hover {
   color: #ebebeb;
-  background-color: rgba($color: #1e65ff, $alpha: .5)
+  background-color: rgba($color: #256aff, $alpha: .5)
+}
+
+.table-light,
+.table-light>th,
+.table-light>td {
+  background-color: transparent;
+  color: #333;
+}
+
+.table-light.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: #f2f2f2, $alpha: .7)
+}
+
+.table-light.table-hover tbody tr:hover {
+  color: #333333;
+  background-color: rgba($color: #f2f2f2, $alpha: .5)
+}
+
+.table-dark,
+.table-dark>th,
+.table-dark>td {
+  background-color: transparent;
+  color: #f2f2f2;
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: #333333, $alpha: .7)
+}
+
+.table-dark.table-hover tbody tr:hover {
+  color: #f2f2f2;
+  background-color: rgba($color: #333333, $alpha: .5)
 }
