@@ -37,7 +37,7 @@
           <tr>
             <th></th>
             <th></th>
-            <th>
+            <th scope="col">
               <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')"><p>Emp
                 No
                 <i
@@ -51,38 +51,38 @@
                 </i></p>
                 </button>
               </th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('FirstName')"><p>First Name
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i></p></button></th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Surname')"><p>Surname
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i></p></button></th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Email')"><p>Email
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i></p></button></th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Extension')"><p>Ext
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i></p></button></th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Designation')"><p>Designation
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i><i
                   style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i></p></button>
             </th>
-            <th><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
+            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
                 (click)="updateSort('Status')"><p>Status
                 <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                   [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i><i

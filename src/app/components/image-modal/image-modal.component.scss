@@ -8,9 +8,25 @@
   height: auto;
   border-radius: 5px;
   border: none;
+  position: relative;
 }
 
 .tile-frost {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 5px;
+}
+
+.top-right {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.close {
+  background: rgb(255, 73, 73);
+  color: #fff;
+  border-radius: 100%;
+  padding: 2px;
+  width: 36px;
+  height: 36px;
 }
