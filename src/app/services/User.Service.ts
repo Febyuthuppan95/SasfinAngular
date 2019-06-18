@@ -5,11 +5,13 @@ import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
 
-
 @Injectable()
 export class UserService {
-
-  constructor(private cookieService: CookieService, private httpClient: HttpClient, private router: Router) { }
+  constructor(
+    private cookieService: CookieService,
+    private httpClient: HttpClient,
+    private router: Router
+  ) {}
 
   /**
    * IsLoggedIn
@@ -30,7 +32,12 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
-    this.cookieService.set('currentUser', currentUser, (1000 * 60 * 60 * 24), '/');
+    this.cookieService.set(
+      'currentUser',
+      currentUser,
+      1000 * 60 * 60 * 24,
+      '/'
+    );
   }
 
   /**
@@ -43,9 +50,13 @@ export class UserService {
       const currentUser: User = JSON.parse(jsonString);
 
       if (currentUser.profileImage === null) {
-        currentUser.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
+        currentUser.profileImage = `${
+          Config.ApiEndpoint.test
+        }/public/images/profile/default.png`;
       } else {
-        currentUser.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/${currentUser.profileImage}`;
+        currentUser.profileImage = `${
+          Config.ApiEndpoint.test
+        }/public/images/profile/${currentUser.profileImage}`;
       }
 
       return currentUser;
@@ -65,7 +76,8 @@ export class UserService {
 
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${Config.ApiEndpoint.test}/account/authenticate`;
-      this.httpClient.post(apiURL, requestModel)
+      this.httpClient
+        .post(apiURL, requestModel)
         .toPromise()
         .then(
           res => {
@@ -85,12 +97,13 @@ export class UserService {
    */
   public forgotPassword(email: string) {
     const requestModel = {
-      _email: email,
+      _email: email
     };
 
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${Config.ApiEndpoint.test}/account/request/otp`;
-      this.httpClient.post(apiURL, requestModel)
+      this.httpClient
+        .post(apiURL, requestModel)
         .toPromise()
         .then(
           res => {
@@ -116,8 +129,11 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/account/request/changepassword`;
-      this.httpClient.post(apiURL, requestModel)
+      const apiURL = `${
+        Config.ApiEndpoint.test
+      }/account/request/changepassword`;
+      this.httpClient
+        .post(apiURL, requestModel)
         .toPromise()
         .then(
           res => {
@@ -135,9 +151,17 @@ export class UserService {
   /**
    * user list
    */
-  public getUserList(filter: string, userID: number, specificUserID: number, rightName: string, rowStart: number, rowEnd: number,
+  public getUserList(
+    filter: string,
+    userID: number,
+    specificUserID: number,
+    rightName: string,
+    rowStart: number,
+    rowEnd: number,
     // tslint:disable-next-line:align
-    orderBy: string, orderDirection: string) {
+    orderBy: string,
+    orderDirection: string
+  ) {
     const requestModel = {
       _userID: 3,
       _specificUserID: -1,
@@ -151,7 +175,8 @@ export class UserService {
 
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${Config.ApiEndpoint.test}/users/list`;
-      this.httpClient.post(apiURL, requestModel)
+      this.httpClient
+        .post(apiURL, requestModel)
         .toPromise()
         .then(
           res => {

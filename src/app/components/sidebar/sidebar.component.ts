@@ -3,20 +3,24 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   @Input() currentTheme = 'light';
   @Input() collapse = false;
 
   @Output() snackBar = new EventEmitter<string>();
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  showSnackBar(content: string) {
-    this.snackBar.emit(content);
+  showSnackBar(title: string, content: string) {
+    const options = {
+      title,
+      content
+    };
+
+    this.snackBar.emit(JSON.stringify(options));
   }
 }

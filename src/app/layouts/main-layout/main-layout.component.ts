@@ -69,14 +69,16 @@ export class MainLayoutComponent implements OnInit {
     this.sidebar.collapse = !this.sidebar.collapse;
   }
 
-  showSnackBar(content: string) {
-    this.snackBar.content = content;
+  showSnackBar(options: string) {
+    const _options = JSON.parse(options);
+    this.snackBar.content = _options.content;
+    this.snackBar.title = _options.title;
     this.snackBar.display = true;
   }
 
   hideSnackBar() {
-    setTimeout(()=> {
-      this.snackBar.display = false;
-    }, 1500);
+    // setTimeout(() => {
+    //   this.snackBar.display = false;
+    // }, 2000);
   }
 }

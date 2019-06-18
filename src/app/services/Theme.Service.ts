@@ -56,20 +56,20 @@ export class ThemeService {
   /**
    * toggleHelp
    */
-    public toggleHelp(): any {
-      const toggleHelpObserver = new Observable(observer => {
-        setInterval(() => {
-          observer.next(this.toggleHelpValue);
-        }, 500);
-      });
+  public toggleHelp(): any {
+    const toggleHelpObserver = new Observable(observer => {
+      setInterval(() => {
+        observer.next(this.toggleHelpValue);
+      }, 500);
+    });
 
-      return toggleHelpObserver;
-    }
+    return toggleHelpObserver;
+  }
 
-    /**
-     * setToggle
-     */
-    public setToggleValue():void {
-      this.toggleHelpValue = !this.toggleHelpValue;
-    }
+  /**
+   * setToggle
+   */
+  public setToggleValue(): void {
+    this.toggleHelpValue = !this.toggleHelpValue;
+  }
 }

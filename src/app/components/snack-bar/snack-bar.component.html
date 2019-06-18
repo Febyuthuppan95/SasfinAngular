@@ -1,11 +1,9 @@
 <div class="snack-bar-container" [ngClass]="(display)?'snack-bar-show':''">
-  <div class="snack-bar col-lg-4 col-sm-12 shadow">
+  <div class="snack-bar col-lg-4 col-sm-12 shadow text-light bg-dark" (click)="close()">
     <div class="row">
       <div class="col-10">
-          <p class="snack-bar-content">{{content}}</p>
-      </div>
-      <div class="col-2 text-center">
-        <button class="btn btn-dark btn-sm snack-bar-button">EDIT</button>
+        <p class="snack-bar-content"><strong>{{title}}</strong></p>
+        <p class="snack-bar-content">{{content}}</p>
       </div>
     </div>
   </div>
