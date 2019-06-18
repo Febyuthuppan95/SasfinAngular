@@ -7,6 +7,8 @@ import { ImageModalComponent } from './../../../components/image-modal/image-mod
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+import { Config } from './../../../../assets/config.json';
+
 
 @Component({
   selector: 'app-view-user-list',
@@ -130,6 +132,13 @@ export class ViewUserListComponent implements OnInit {
 
     this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd, this.orderBy, this.orderDirection).then(
       (res: UserListResponse) => {
+
+        for (const user of res.userList) {
+          if (user.profileImage === null) {
+            user.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
+          }
+        }
+
         this.userList = res.userList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
