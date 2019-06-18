@@ -35,7 +35,7 @@ export class MainLayoutComponent implements OnInit {
 
   currentTheme = 'light';
   currentBackground = './../../../assets/dist/images/background1.jpg';
-  toggleHelpValue = false;
+  toggleHelpValue: boolean;
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
@@ -47,6 +47,8 @@ export class MainLayoutComponent implements OnInit {
     const toggleHelpObserver = this.themeService.toggleHelp();
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
+      this.snackBar.allow = toggle;
+
       console.log(toggle);
     });
   }
@@ -70,9 +72,9 @@ export class MainLayoutComponent implements OnInit {
   }
 
   showSnackBar(options: string) {
-    const _options = JSON.parse(options);
-    this.snackBar.content = _options.content;
-    this.snackBar.title = _options.title;
+    const optionsJson = JSON.parse(options);
+    this.snackBar.content = optionsJson.content;
+    this.snackBar.title = optionsJson.title;
     this.snackBar.display = true;
   }
 

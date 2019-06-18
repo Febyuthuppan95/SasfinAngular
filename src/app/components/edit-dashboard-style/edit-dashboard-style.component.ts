@@ -7,18 +7,16 @@ import { ThemeService } from 'src/app/services/theme.Service';
   styleUrls: ['./edit-dashboard-style.component.scss']
 })
 export class EditDashboardStyleComponent implements OnInit {
+  constructor(private themeService: ThemeService) {}
 
-  constructor(private themeService: ThemeService) { }
-
-  @Input() show = false;
-  @Input() toggleHelpValue = false;
+  @Input() show: boolean;
+  @Input() toggleHelpValue: boolean;
 
   @Output() closeSidebar = new EventEmitter<string>();
 
   currentTheme = this.themeService.getTheme();
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public clickEvent() {
     this.closeSidebar.emit('closeSidebar');
@@ -33,7 +31,5 @@ export class EditDashboardStyleComponent implements OnInit {
     this.themeService.setToggleValue();
   }
 
-  updateBackground(background: string) {
-
-  }
+  updateBackground(background: string) {}
 }

@@ -19,7 +19,7 @@ select.form-control {
   outline: none;
 }
 
-.collapse-sidebar .menu-title{
+.collapse-sidebar .menu-title {
   display: none !important;
   transition: visibility 0s, opacity 0.5s linear;
 }
@@ -38,4 +38,13 @@ select.form-control {
 
 .btn-sort {
   overflow-x: auto;
+}
+
+
+.show {
+  display: block !important;
+}
+
+.hide {
+  display: none !important;
 }

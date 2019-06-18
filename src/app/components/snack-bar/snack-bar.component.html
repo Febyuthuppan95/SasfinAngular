@@ -1,4 +1,4 @@
-<div class="snack-bar-container" [ngClass]="(display)?'snack-bar-show':''">
+<div class="snack-bar-container" [ngClass]="(display)?'snack-bar-show':''" [ngClass]="(allow)? 'show' : 'hide'">
   <div class="snack-bar col-lg-4 col-sm-12 shadow text-light bg-dark" (click)="close()">
     <div class="row">
       <div class="col-10">

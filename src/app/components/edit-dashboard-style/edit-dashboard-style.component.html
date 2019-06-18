@@ -3,10 +3,13 @@
   <button type="button float-right" (click)="clickEvent()" class="close" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+  <br />
+  <br />
   <div class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" id="helpToggle" [checked]="toggleHelpValue">
-      <label class="custom-control-label" for="helpToggle">Help</label>
-    </div>
+    <input type="checkbox" class="custom-control-input" id="helpToggle" [checked]="true">
+    <label class="custom-control-label" for="helpToggle" style="margin-top:5px;">Help</label>
+  </div>
+  <br />
   <br />
   <div class="row">
     <div class="col-md-4 text-center ls-theme">
@@ -28,7 +31,7 @@
       <p>Blue</p>
     </div>
   </div>
-  <br />
+  <!-- <br />
   <div class="row">
     <div class="col-12 text-center ls-bg">
       <img (click)="updateBackground('http://197.189.218.50:7777/public/images/background/background1.jpg')"
@@ -40,7 +43,7 @@
         [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"
         src="http://197.189.218.50:7777/public/images/background/background2.jpeg" class="ls-bg-item shadow" />
     </div>
-  </div>
+  </div> -->
 
 
 </div>

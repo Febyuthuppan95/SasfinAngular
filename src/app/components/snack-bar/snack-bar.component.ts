@@ -9,6 +9,7 @@ export class SnackBarComponent implements OnInit {
   constructor() {}
 
   @Input() display: boolean;
+  @Input() allow: boolean;
   @Input() title: string;
   @Input() content: string;
 
