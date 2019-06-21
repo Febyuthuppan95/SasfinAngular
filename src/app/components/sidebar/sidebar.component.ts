@@ -10,6 +10,7 @@ export class SidebarComponent implements OnInit {
 
   @Input() currentTheme = 'light';
   @Input() collapse = false;
+  @Input() offcanvas = true;
 
   @Output() snackBar = new EventEmitter<string>();
 

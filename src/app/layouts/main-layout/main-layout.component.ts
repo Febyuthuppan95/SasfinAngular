@@ -36,6 +36,7 @@ export class MainLayoutComponent implements OnInit {
   currentTheme = 'light';
   currentBackground = './../../../assets/dist/images/background1.jpg';
   toggleHelpValue: boolean;
+  offcanvasToggle: boolean;
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
@@ -82,5 +83,10 @@ export class MainLayoutComponent implements OnInit {
     // setTimeout(() => {
     //   this.snackBar.display = false;
     // }, 2000);
+  }
+
+  offCanvasSidebar(event: string) {
+    this.offcanvasToggle = !this.offcanvasToggle;
+    console.log('event commited');
   }
 }
