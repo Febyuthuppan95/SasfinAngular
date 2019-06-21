@@ -1,4 +1,5 @@
-@media only screen and (max-width: 800px) {
+//When screen width is below 900px
+@media only screen and (max-width: 900px) {
   .full-form {
     position: fixed;
     top: 0;
