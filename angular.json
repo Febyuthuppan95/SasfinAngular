@@ -28,6 +28,7 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/dist/css/style.css",
               "src/app.scss",
               "src/theme.scss",
               "src/mobile.scss"
