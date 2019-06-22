@@ -27,3 +27,14 @@
   right: 0 !important;
   bottom: 0 !important;
 }
+
+.active-item {
+  background: #f2f2f2;
+  color: #3877ff !important;
+  border-radius: 5px;
+}
+
+.active-item i,
+span {
+  color: #3877ff;
+}

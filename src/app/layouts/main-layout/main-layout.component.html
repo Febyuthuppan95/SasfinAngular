@@ -1,8 +1,6 @@
 <div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'">
+  <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
   <div class="row">
-    <div class="col-lg-12">
-      <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
-    </div>
     <div class="col-lg-2">
       <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle"
         [helpContext]="toggleHelpValue">
