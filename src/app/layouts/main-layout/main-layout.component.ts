@@ -91,4 +91,9 @@ export class MainLayoutComponent implements OnInit {
     this.currentBackground = event;
     this.themeService.setBackground(event);
   }
+
+  toggleHelp(event: boolean) {
+    this.toggleHelpValue = event;
+    this.themeService.setToggleValue(event);
+  }
 }

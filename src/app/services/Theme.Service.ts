@@ -69,8 +69,8 @@ export class ThemeService {
   /**
    * setToggle
    */
-  public setToggleValue(): void {
-    this.toggleHelpValue = !this.toggleHelpValue;
+  public setToggleValue(toggle: boolean): void {
+    this.toggleHelpValue = toggle;
   }
 
   /**

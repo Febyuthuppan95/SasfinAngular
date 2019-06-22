@@ -14,6 +14,7 @@ export class EditDashboardStyleComponent implements OnInit {
 
   @Output() closeSidebar = new EventEmitter<string>();
   @Output() background = new EventEmitter<string>();
+  @Output() help = new EventEmitter<boolean>();
 
   currentTheme = this.themeService.getTheme();
 
@@ -28,8 +29,8 @@ export class EditDashboardStyleComponent implements OnInit {
     this.themeService.setTheme(theme);
   }
 
-  public toggleHelpEvent() {
-    this.themeService.setToggleValue();
+  public helpCheckbox() {
+    this.help.emit(this.toggleHelpValue);
   }
 
   updateBackground(background: string) {

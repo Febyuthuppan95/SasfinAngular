@@ -11,17 +11,20 @@ export class SidebarComponent implements OnInit {
   @Input() currentTheme = 'light';
   @Input() collapse = false;
   @Input() offcanvas = true;
+  @Input() helpContext = false;
 
   @Output() snackBar = new EventEmitter<string>();
 
   ngOnInit() {}
 
   showSnackBar(title: string, content: string) {
-    const options = {
-      title,
-      content
-    };
+    if (this.helpContext) {
+      const options = {
+        title,
+        content
+      };
 
-    this.snackBar.emit(JSON.stringify(options));
+      this.snackBar.emit(JSON.stringify(options));
+    }
   }
 }

@@ -4,7 +4,8 @@
       <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
     </div>
     <div class="col-lg-2">
-      <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle">
+      <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle"
+        [helpContext]="toggleHelpValue">
       </app-sidebar>
     </div>
     <div class="col-lg-10 main">
@@ -15,6 +16,6 @@
 </div>
 <app-floating-button (myEvent)="openEditTile()"></app-floating-button>
 <app-edit-dashboard-style (closeSidebar)="closeEditTile()" [toggleHelpValue]="toggleHelpValue"
-  (background)="updateBackground($event)">
+  (help)="toggleHelp($event)" (background)="updateBackground($event)">
 </app-edit-dashboard-style>
 <app-snack-bar></app-snack-bar>

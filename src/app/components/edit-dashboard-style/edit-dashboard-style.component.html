@@ -6,7 +6,8 @@
   <br />
   <br />
   <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="helpToggle" [checked]="true">
+    <input type="checkbox" class="custom-control-input" id="helpToggle" [(ngModel)]="toggleHelpValue"
+      (change)="helpCheckbox()">
     <label class="custom-control-label" for="helpToggle" style="margin-top:5px;">Help</label>
   </div>
   <br />
