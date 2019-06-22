@@ -72,8 +72,8 @@ export class ViewUserListComponent implements OnInit {
   displayFilter = false;
 
   ngOnInit() {
-    const studentsObservable = this.themeService.getCurrentTheme();
-    studentsObservable.subscribe((themeData: string) => {
+    const themeObservable = this.themeService.getCurrentTheme();
+    themeObservable.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
   }

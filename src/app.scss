@@ -73,3 +73,82 @@ select.form-control {
 .nav {
   overflow-x: auto;
 }
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 1px #f2f2f2 solid;
+  transition: ease-in-out 0.3s;
+}
+
+.userRecord:hover>td>img {
+  border: 1px #4d83ff solid;
+  transition: ease-in-out 0.3s;
+}
+
+.form-control {
+  border: 1px rgba(30, 30, 30, 0.2) solid;
+}
+
+.form-control:focus {
+  border: 1px #4d83ff solid;
+
+}
+
+.active-page {
+  background: #4d83ff;
+  color: #f2f2f2;
+}
+
+.page-link {
+  border: none;
+  border-radius: 0;
+}
+
+.page-item {
+  border: none;
+  border-radius: 0;
+}
+
+td {
+  overflow-x: auto;
+}
+
+.btn-sort {
+  padding: 0;
+  margin: 0;
+  width: 150px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.btn-sort>p {
+  display: inline
+}
+
+.btn-sort:hover {
+  color: #4d83ff;
+}
+
+.hover-pointer {
+  cursor: pointer;
+}
+
+.order-active {
+  color: #4d83ff !important;
+}
+
+.order-not-active {
+  color: #333333;
+}
+
+.table {
+  overflow-x: auto;
+}
+
+.ls-card-body {
+  width: 100%;
+  padding: 25px;
+}
