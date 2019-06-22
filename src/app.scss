@@ -61,4 +61,15 @@ select.form-control {
 
 .main {
   padding: 25px;
+  padding-left: 10px;
+}
+
+.sidebar .nav .nav-item .nav-link {
+  padding-left: 10px;
+  padding-right: 10;
+  text-align: center;
+}
+
+.nav {
+  overflow-x: auto;
 }
