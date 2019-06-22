@@ -9,15 +9,16 @@ import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { Config } from './../../../../assets/config.json';
 
-
 @Component({
   selector: 'app-view-user-list',
   templateUrl: './view-user-list.component.html',
   styleUrls: ['./view-user-list.component.scss']
 })
 export class ViewUserListComponent implements OnInit {
-
-  constructor(private userService: UserService, private themeService: ThemeService) {
+  constructor(
+    private userService: UserService,
+    private themeService: ThemeService
+  ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.rightName = 'Users';
@@ -39,7 +40,8 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
-  defaultProfile = 'http://197.189.218.50:7777/public/images/profile/default.png';
+  defaultProfile =
+    'http://197.189.218.50:7777/public/images/profile/default.png';
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
@@ -96,7 +98,6 @@ export class ViewUserListComponent implements OnInit {
   }
 
   pageChange(pageNumber: number) {
-
     const page = this.pages[+pageNumber - 1];
     this.rowStart = page.rowStart;
     this.rowEnd = page.rowEnd;
@@ -128,37 +129,58 @@ export class ViewUserListComponent implements OnInit {
     this.loadUsers();
   }
 
+  searchBar() {
+    this.rowStart = 1;
+    this.loadUsers();
+  }
+
   loadUsers() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.userService.getUserList(this.filter, 3, -1, this.rightName, this.rowStart, this.rowEnd, this.orderBy, this.orderDirection).then(
-      (res: UserListResponse) => {
-
-        for (const user of res.userList) {
-          if (user.profileImage === null) {
-            user.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/default.png`;
-          } else {
-            user.profileImage = `${Config.ApiEndpoint.test}/public/images/profile/${user.profileImage}`;
+    this.userService
+      .getUserList(
+        this.filter,
+        3,
+        -1,
+        this.rightName,
+        this.rowStart,
+        this.rowEnd,
+        this.orderBy,
+        this.orderDirection
+      )
+      .then(
+        (res: UserListResponse) => {
+          for (const user of res.userList) {
+            if (user.profileImage === null) {
+              user.profileImage = `${
+                Config.ApiEndpoint.test
+              }/public/images/profile/default.png`;
+            } else {
+              user.profileImage = `${
+                Config.ApiEndpoint.test
+              }/public/images/profile/${user.profileImage}`;
+            }
           }
-        }
 
-        this.userList = res.userList;
-        this.rowCount = res.rowCount;
-        this.showLoader = false;
-        this.showingRecords = res.userList.length;
-        this.totalShowing = +this.rowStart + +this.userList.length - 1;
-        this.paginateData();
-      },
-      (msg) => {
-        this.showLoader = false;
-        this.notify.errorsmsg('Server Error', 'Something went wrong while trying to access the server.');
-      },
-    );
+          this.userList = res.userList;
+          this.rowCount = res.rowCount;
+          this.showLoader = false;
+          this.showingRecords = res.userList.length;
+          this.totalShowing = +this.rowStart + +this.userList.length - 1;
+          this.paginateData();
+        },
+        msg => {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+        }
+      );
   }
 
   updateSort(orderBy: string) {
-
     if (this.orderBy === orderBy) {
       if (this.orderDirection === 'ASC') {
         this.orderDirection = 'DESC';
@@ -183,11 +205,19 @@ export class ViewUserListComponent implements OnInit {
     this.showingPages[0] = this.pages[this.activePage - 1];
     const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-    if ((this.activePage) < pagenumber) {
+    if (this.activePage < pagenumber) {
       this.showingPages[1] = this.pages[+this.activePage];
+
+      if (this.showingPages[1] === undefined) {
+        const page = new Pagination();
+        page.page = 1;
+        page.rowStart = 1;
+        page.rowEnd = this.rowEnd;
+        this.showingPages[1] = page;
+      }
     }
 
-    if ((+this.activePage + 1) <= pagenumber) {
+    if (+this.activePage + 1 <= pagenumber) {
       this.showingPages[2] = this.pages[+this.activePage + 1];
     }
   }
@@ -195,5 +225,4 @@ export class ViewUserListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
-
 }

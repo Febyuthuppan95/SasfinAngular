@@ -1,18 +1,20 @@
-<div class="fh">
+<div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'">
   <div class="row">
     <div class="col-lg-12">
-        <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
+      <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
     </div>
     <div class="col-lg-2">
-        <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle"></app-sidebar>
+      <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle">
+      </app-sidebar>
     </div>
     <div class="col-lg-10 main">
-        <router-outlet></router-outlet>
-        <app-footer></app-footer>
-      </div>
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
   </div>
-  </div>
+</div>
 <app-floating-button (myEvent)="openEditTile()"></app-floating-button>
-<app-edit-dashboard-style (closeSidebar)="closeEditTile()" [toggleHelpValue]="toggleHelpValue">
+<app-edit-dashboard-style (closeSidebar)="closeEditTile()" [toggleHelpValue]="toggleHelpValue"
+  (background)="updateBackground($event)">
 </app-edit-dashboard-style>
 <app-snack-bar></app-snack-bar>

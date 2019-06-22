@@ -33,7 +33,7 @@ const routes: Routes = [
         component: MainLayoutComponent,
         canActivate: [AuthenticationGuard],
         children: [
-          { path: '', redirectTo: '/users', pathMatch: 'full' },
+          { path: '', redirectTo: '/account/login', pathMatch: 'full' },
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'backgrounds', component: ViewBackgroundsListComponent },

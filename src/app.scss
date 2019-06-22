@@ -1,12 +1,6 @@
 @import '~ngx-toastr/toastr.css';
 @import './assets/dist/vendors/mdi/css/materialdesignicons.min.css';
 
-body {
-  background: url('./assets/dist/images/background1.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
 .badge {
   border-radius: 5px;
 }
@@ -52,6 +46,11 @@ select.form-control {
 
 .fh {
   height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .tile {

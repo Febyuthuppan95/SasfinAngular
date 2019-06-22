@@ -1,4 +1,26 @@
+/* Theme Colors BEGIN */
+
+$primaryAccent: #3877ff;
+
 $blueTheme: #c4dbff;
+$blueThemeText: #121212;
+
+$lightTheme: #f2f2f2;
+$lightThemeText: #121212;
+
+$darkTheme: #121212;
+$darkThemeText: #f2f2f2;
+
+$pinkTheme: #ff77ff;
+$pinkThemeText: #222222;
+
+$greenTheme: #84ff74;
+$greenThemeText: #222222;
+
+$peachTheme: #ffa65e;
+$peachThemeText: #222222;
+
+/* END Theme Colors */
 
 .ls-bg-item {
   width: 100%;
@@ -11,45 +33,72 @@ $blueTheme: #c4dbff;
   border: none;
 }
 
-
 .ls-tile-dark {
-  background: rgba($color: #121212, $alpha: 0.8) !important;
-  border-color: rgba($color: #121212, $alpha: 0.8) !important;
+  background: rgba($color: $darkTheme, $alpha: 0.8) !important;
+  border-color: rgba($color: $darkTheme, $alpha: 0.8) !important;
+  color: $darkThemeText
 }
 
 .ls-tile-light {
-  background: rgba($color: #ffffff, $alpha: 0.8) !important;
-  border-color: rgba($color: #ffffff, $alpha: 0.8) !important;
-  color: #333333 !important;
+  background: rgba($color: $lightTheme, $alpha: 0.8) !important;
+  border-color: rgba($color: $lightTheme, $alpha: 0.8) !important;
+  color: $lightThemeText !important;
 }
 
 .ls-tile-blue {
   background: rgba($color: $blueTheme, $alpha: 0.8) !important;
   border-color: rgba($color: $blueTheme, $alpha: 0.8) !important;
-  color: #f2f2f2 !important;
+  color: $blueThemeText !important;
+}
+
+.ls-tile-pink {
+  background: rgba($color: $pinkTheme, $alpha: 0.8) !important;
+  border-color: rgba($color: $pinkTheme, $alpha: 0.8) !important;
+  color: $pinkThemeText;
+}
+
+.ls-tile-green {
+  background: rgba($color: $greenTheme, $alpha: 0.8) !important;
+  border-color: rgba($color: $greenTheme, $alpha: 0.8) !important;
+  color: $greenThemeText !important;
+}
+
+.ls-tile-peach {
+  background: rgba($color: $peachTheme, $alpha: 0.8) !important;
+  border-color: rgba($color: $peachTheme, $alpha: 0.8) !important;
+  color: $peachThemeText !important;
 }
 
 .ls-text-dark {
-  color: #f2f2f2 !important;
+  color: $darkThemeText !important;
 }
 
 .ls-text-light {
-  color: #333333 !important;
+  color: $lightThemeText !important;
 }
 
 .ls-text-blue {
-  color: #121212 !important;
+  color: $blueThemeText !important;
 }
 
-.ls-btn-hover-dark {
-  transition: ease-in-out 0.5s;
+.ls-text-pink {
+  color: $pinkThemeText !important;
 }
 
-.ls-btn-hover-light {
-  transition: ease-in-out 0.5s;
+.ls-text-green {
+  color: $greenThemeText !important;
 }
 
-.ls-btn-hover-blue {
+.ls-text-peach {
+  color: $peachThemeText !important;
+}
+
+.ls-btn-hover-dark,
+.ls-btn-hover-light,
+.ls-btn-hover-blue,
+.ls-btn-hover-pink,
+.ls-btn-hover-green,
+.ls-btn-hover-peach {
   transition: ease-in-out 0.5s;
 }
 
@@ -58,77 +107,132 @@ $blueTheme: #c4dbff;
   transition: ease-in-out 0.5s;
 }
 
-.ls-btn-hover-light:hover {
+.ls-btn-hover-light:hover,
+.ls-btn-hover-blue:hover,
+.ls-btn-hover-green:hover,
+.ls-btn-hover-pink:hover,
+.ls-btn-hover-peach:hover {
   background: rgba($color: #000000, $alpha: 0.2);
   transition: ease-in-out 0.5s;
 }
 
-.ls-btn-hover-blue:hover {
-  background: rgba($color: #000000, $alpha: 0.2);
-  transition: ease-in-out 0.5s;
-}
-
-.table-blue,
-.table-blue>th,
-.table-blue>td {
-  background-color: transparent;
-  color: #121212;
-}
-
-.table-blue.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba($color: $blueTheme, $alpha: .7)
-}
-
-.table-blue.table-hover tbody tr:hover {
-  color: #121212;
-  background-color: rgba($color: $blueTheme, $alpha: .5)
-}
-
+// Light table
 .table-light,
 .table-light>th,
 .table-light>td {
   background-color: transparent;
-  color: #333;
+  color: $lightThemeText;
 }
 
 .table-light.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba($color: #f2f2f2, $alpha: .7)
+  background-color: rgba($color: $lightTheme, $alpha: .7)
 }
 
 .table-light.table-hover tbody tr:hover {
-  color: #333333;
-  background-color: rgba($color: #f2f2f2, $alpha: .5)
+  color: $lightThemeText;
+  background-color: rgba($color: $lightTheme, $alpha: .5)
 }
 
+// Dark Table
 .table-dark,
 .table-dark>th,
 .table-dark>td {
   background-color: transparent;
-  color: #f2f2f2;
+  color: $darkThemeText;
 }
 
 .table-dark.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba($color: #333333, $alpha: .7)
+  background-color: rgba($color: $darkTheme, $alpha: .7)
 }
 
 .table-dark.table-hover tbody tr:hover {
-  color: #f2f2f2;
-  background-color: rgba($color: #333333, $alpha: .5)
+  color: $darkThemeText;
+  background-color: rgba($color: $darkTheme, $alpha: 1);
 }
 
+// Blue Table
+.table-blue,
+.table-blue>th,
+.table-blue>td {
+  background-color: transparent;
+  color: $blueThemeText;
+}
+
+.table-blue.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: $blueTheme, $alpha: .7);
+}
+
+.table-blue.table-hover tbody tr:hover {
+  color: $blueThemeText;
+  background-color: rgba($color: $blueTheme, $alpha: 1);
+}
+
+// Pink Table
+.table-pink,
+.table-pink>th,
+.table-pink>td {
+  background-color: transparent;
+  color: $pinkThemeText;
+}
+
+.table-pink.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: $pinkTheme, $alpha: .7)
+}
+
+.table-pink.table-hover tbody tr:hover {
+  color: $pinkThemeText;
+  background-color: rgba($color: $pinkTheme, $alpha: 1)
+}
+
+// Green Table
+.table-green,
+.table-green>th,
+.table-green>td {
+  background-color: transparent;
+  color: $greenThemeText;
+}
+
+.table-green.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: $greenTheme, $alpha: .7)
+}
+
+.table-green.table-hover tbody tr:hover {
+  color: $greenThemeText;
+  background-color: rgba($color: $greenTheme, $alpha: 1)
+}
+
+// Peach Table
+.table-peach,
+.table-peach>th,
+.table-peach>td {
+  background-color: transparent;
+  color: $peachThemeText;
+}
+
+.table-peach.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba($color: $peachTheme, $alpha: .7)
+}
+
+.table-peach.table-hover tbody tr:hover {
+  color: $peachThemeText;
+  background-color: rgba($color: $peachTheme, $alpha: 1)
+}
+
+// Buttons
+
 .btn-filter-dark {
-  color: #f2f2f2;
-  border-color: #f2f2f2;
+  color: $darkThemeText;
+  border-color: $darkThemeText;
 }
 
 .btn-filter-light {
-  color: #333333;
-  border-color: #333333;
+  color: $lightThemeText;
+  border-color: $blueThemeText;
 }
 
 .btn-filter-blue {
-  color: #f2f2f2;
-  border-color: #333333;
+  color: $blueThemeText;
+  border-color: $blueThemeText;
 }
 
 .btn-filter-dark:hover {
@@ -144,37 +248,52 @@ $blueTheme: #c4dbff;
 }
 
 .page-btn-light {
+  background: $lightTheme;
+  box-shadow: none;
+}
+
+.page-btn-light .page-btn-active {
+  background: $primaryAccent;
+  color: $lightTheme;
   box-shadow: none;
 }
 
 .page-btn-light:hover {
-  background: #3877ff;
-  color: #f2f2f2;
+  background: $primaryAccent;
+  color: $lightTheme;
 }
 
 .page-btn-light[disabled] {
-  background: #333333;
+  background: $lightTheme;
+  color: $lightThemeText;
 }
+
 .page-btn-dark {
-  background: #121212;
-  color: #ffffff;
+  background: $darkTheme;
+  color: $darkThemeText;
   box-shadow: none;
 }
 
 .page-btn-dark:hover {
-  background: #3877ff;
-  color: #f2f2f2;
+  background: $primaryAccent;
+  color: $darkThemeText;
 }
 
 .page-btn-dark[disabled] {
-  background: #333333;
-}
-
-.page-btn-dark[disabled]:hover {
-  background: #333333;
+  background: $darkTheme;
   box-shadow: none;
 }
 
+.page-btn-dark[disabled]:hover {
+  background: $darkTheme;
+  box-shadow: none;
+}
+
+.page-btn-dark .page-btn-active {
+  background: $primaryAccent;
+  color: $lightTheme;
+  box-shadow: none;
+}
 
 .form-control-dark {
   background: #121212;

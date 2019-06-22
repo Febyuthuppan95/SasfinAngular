@@ -21,7 +21,7 @@
         </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="loadUsers()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
       </form>
     </div>
     <br />
@@ -120,22 +120,23 @@
     <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
       <ul class="pagination pagination-sm">
         <li class="page-item">
-          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState || showLoader"
-            type="button" (click)="pageChange(prevPage)">Prev</button>
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+            (click)="pageChange(prevPage)">Prev</button>
         </li>
         <li *ngFor="let page of showingPages" class="page-item">
           <button [class.active-page]="activePage == page.page"
-            class="page-link btn-primary btn page-btn-{{ currentTheme }}" type="button" (click)="pageChange(page.page)"
-            [disabled]="showLoader">{{page.page}}</button>
+            class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+            type="button" (click)="pageChange(page.page)">{{page.page}}</button>
         </li>
         <li class="page-item">
-          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState || showLoader"
-            type="button" (click)="pageChange(nextPage)">Next</button>
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+            (click)="pageChange(nextPage)">Next</button>
         </li>
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ showingRecords }} of {{ rowCount }}</p>
+    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+      {{ rowCount }}</p>
   </div>
 </div>
 
