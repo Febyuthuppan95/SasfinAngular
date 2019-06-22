@@ -13,6 +13,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { ViewDesignationsListComponent } from './views/main/view-designations-list/view-designations-list.component';
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
 import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
+import { AccountComponent } from './layouts/account/account.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
     component: AppComponent,
     children: [
       {
-        path: 'account',
+        path: 'account', component: AccountComponent,
         canActivate: [AnonGuard],
         children: [
           { path: 'login', component: ViewLoginComponent },
