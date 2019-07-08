@@ -1,3 +1,4 @@
+import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -84,7 +85,7 @@ import { AccountComponent } from './layouts/account/account.component';
     NgbModule,
     NgxPaginationModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService],
+  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent
