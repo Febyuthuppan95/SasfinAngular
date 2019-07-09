@@ -154,7 +154,7 @@ export class UserService {
   public getUserList(
     filter: string,
     userID: number,
-    specificUserID: number,
+    specificUserID: number = -1,
     rightName: string,
     rowStart: number,
     rowEnd: number,
@@ -163,8 +163,8 @@ export class UserService {
     orderDirection: string
   ) {
     const requestModel = {
-      _userID: 3,
-      _specificUserID: -1,
+      _userID: userID,
+      _specificUserID: specificUserID,
       _rightName: rightName,
       _filter: filter,
       _rowStart: rowStart,
@@ -174,7 +174,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/users/list`;
+      const apiURL = `${Config.ApiEndpoint.local}/users/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()

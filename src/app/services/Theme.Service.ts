@@ -69,7 +69,33 @@ export class ThemeService {
   /**
    * setToggle
    */
-  public setToggleValue(): void {
-    this.toggleHelpValue = !this.toggleHelpValue;
+  public setToggleValue(toggle: boolean): void {
+    this.toggleHelpValue = toggle;
+  }
+
+  /**
+   * getBackground
+   */
+  public getBackground(): string {
+    let bg = this.cookieService.get('backgroundURL');
+
+    if (bg === '') {
+      bg =
+        'http://197.189.218.50:7777/public/images/background/background1.jpg';
+    }
+
+    return bg;
+  }
+
+  /**
+   * setBackground
+   */
+  public setBackground(backgroundURL: string): void {
+    this.cookieService.set(
+      'backgroundURL',
+      backgroundURL,
+      1000 * 60 * 60 * 24,
+      '/'
+    );
   }
 }

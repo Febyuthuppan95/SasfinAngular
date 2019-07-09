@@ -1,3 +1,4 @@
+import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -37,6 +38,7 @@ import { ViewRightsListComponent } from './views/main/view-rights-list/view-righ
 import { ViewDesignationsListComponent } from './views/main/view-designations-list/view-designations-list.component';
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { AccountComponent } from './layouts/account/account.component';
 
 // @ts-ignore
 @NgModule({
@@ -63,7 +65,8 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     ViewRightsListComponent,
     ViewDesignationsListComponent,
     ViewBackgroundsListComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     NgbModule,
     NgxPaginationModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService],
+  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent

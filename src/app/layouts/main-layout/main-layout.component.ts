@@ -34,8 +34,9 @@ export class MainLayoutComponent implements OnInit {
   private snackBar: SnackBarComponent;
 
   currentTheme = 'light';
-  currentBackground = './../../../assets/dist/images/background1.jpg';
+  currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
+  offcanvasToggle: boolean;
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
@@ -48,8 +49,6 @@ export class MainLayoutComponent implements OnInit {
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
       this.snackBar.allow = toggle;
-
-      console.log(toggle);
     });
   }
 
@@ -82,5 +81,19 @@ export class MainLayoutComponent implements OnInit {
     // setTimeout(() => {
     //   this.snackBar.display = false;
     // }, 2000);
+  }
+
+  offCanvasSidebar(event: string) {
+    this.offcanvasToggle = !this.offcanvasToggle;
+  }
+
+  updateBackground(event: string) {
+    this.currentBackground = event;
+    this.themeService.setBackground(event);
+  }
+
+  toggleHelp(event: boolean) {
+    this.toggleHelpValue = event;
+    this.themeService.setToggleValue(event);
   }
 }

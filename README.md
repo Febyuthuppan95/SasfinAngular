@@ -12,6 +12,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
+              // "src/assets/dist/vendors/mdi/css/materialdesignicons.min.css",
+              // "src/assets/dist/vendors/base/vendor.bundle.base.css",
+              // "src/assets/dist/css/style.css",
+              // "src/assets/dist/css/custom.css",
+
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests

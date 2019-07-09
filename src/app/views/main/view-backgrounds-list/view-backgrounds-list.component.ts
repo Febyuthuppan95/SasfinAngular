@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-view-backgrounds-list',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
 export class ViewBackgroundsListComponent implements OnInit {
+  constructor(private themeService: ThemeService) {}
 
-  constructor() { }
+  currentTheme = 'light';
 
   ngOnInit() {
+    const themeObservable = this.themeService.getCurrentTheme();
+    themeObservable.subscribe((themeData: string) => {
+      this.currentTheme = themeData;
+    });
   }
-
 }

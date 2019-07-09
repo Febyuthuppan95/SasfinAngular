@@ -12,10 +12,12 @@ export class NavbarComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   currentUser: User = this.userService.getCurrentUser();
+  activateSidebar = false;
 
   @Input() currentTheme = 'light';
 
   @Output() collapseSidebar = new EventEmitter<string>();
+  @Output() offcanvas = new EventEmitter<string>();
 
   ngOnInit() { }
 
@@ -25,6 +27,11 @@ export class NavbarComponent implements OnInit {
 
   public collapseSidebarEvent() {
     this.collapseSidebar.emit('collapseSidebar');
+  }
+
+  public offcanvasSidebar() {
+    this.offcanvas.emit('offcanvas');
+    console.log('event emmited from navbar');
   }
 
 }

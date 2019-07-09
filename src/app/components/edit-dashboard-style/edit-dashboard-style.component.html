@@ -6,42 +6,67 @@
   <br />
   <br />
   <div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input" id="helpToggle" [checked]="true">
+    <input type="checkbox" class="custom-control-input" id="helpToggle" [(ngModel)]="toggleHelpValue"
+      (change)="helpCheckbox()">
     <label class="custom-control-label" for="helpToggle" style="margin-top:5px;">Help</label>
   </div>
   <br />
   <br />
   <div class="row">
-    <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-light shadow" (click)="updateTheme('light')"
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-light shadow" (click)="updateTheme('light')"
         [ngClass]="(currentTheme === 'light') ? 'ls-item-active': ''"></button>
       <br />
-      <p>Light</p>
+      <p class="text-center">Light</p>
     </div>
-    <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-dark shadow" (click)="updateTheme('dark')"
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-dark shadow" (click)="updateTheme('dark')"
         [ngClass]="(currentTheme === 'dark') ? 'ls-item-active': ''"></button>
       <br />
-      <p>Dark</p>
+      <p class="text-center">Dark</p>
     </div>
-    <div class="col-md-4 text-center ls-theme">
-      <button class="ls-theme-item ls-theme-blue shadow" (click)="updateTheme('blue')"
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-blue shadow" (click)="updateTheme('blue')"
         [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
       <br />
-      <p>Blue</p>
+      <p class="text-center">Blue</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-pink shadow" (click)="updateTheme('pink')"
+        [ngClass]="(currentTheme === 'pink') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Pink</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-green shadow" (click)="updateTheme('green')"
+        [ngClass]="(currentTheme === 'green') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Green</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-peach shadow" (click)="updateTheme('peach')"
+        [ngClass]="(currentTheme === 'peach') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Peach</p>
     </div>
   </div>
   <br />
   <div class="row">
-    <div class="col-12 text-center ls-bg">
+    <div class="col-md-12 col-sm-6 text-center ls-bg">
       <img (click)="updateBackground('http://197.189.218.50:7777/public/images/background/background1.jpg')"
-        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"
-        src="http://197.189.218.50:7777/public/images/background/background1.jpg" class="ls-bg-item shadow" />
+        src="http://197.189.218.50:7777/public/images/background/background1.jpg" class="ls-bg-item shadow m-auto" />
     </div>
-    <div class="col-12 text-center ls-bg">
+    <div class="col-md-12 col-sm-6 text-center ls-bg">
       <img (click)="updateBackground('http://197.189.218.50:7777/public/images/background/background2.jpeg')"
-        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"
         src="http://197.189.218.50:7777/public/images/background/background2.jpeg" class="ls-bg-item shadow" />
+    </div>
+    <div class="col-md-12 col-sm-6 text-center ls-bg">
+      <img (click)="updateBackground('http://197.189.218.50:7777/public/images/background/background3.jfif')"
+        src="http://197.189.218.50:7777/public/images/background/background3.jfif" class="ls-bg-item shadow" />
+    </div>
+    <div class="col-md-12 col-sm-6 text-center ls-bg">
+      <img (click)="updateBackground('http://197.189.218.50:7777/public/images/background/background8.jfif')"
+        src="http://197.189.218.50:7777/public/images/background/background8.jfif" class="ls-bg-item shadow" />
     </div>
   </div>
 

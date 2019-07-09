@@ -28,13 +28,10 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/assets/dist/vendors/mdi/css/materialdesignicons.min.css",
-              "src/assets/dist/vendors/base/vendor.bundle.base.css",
               "src/assets/dist/css/style.css",
-              "src/assets/dist/css/custom.css",
-              "src/styles.scss",
+              "src/app.scss",
               "src/theme.scss",
-              "src/media-queries.scss"
+              "src/mobile.scss"
             ],
             "scripts": []
           },
