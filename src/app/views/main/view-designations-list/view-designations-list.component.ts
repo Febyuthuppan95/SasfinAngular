@@ -1,10 +1,10 @@
-import { DesignationService } from './../../../services/Designation.service';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { DesignationService } from '../../../services/Designation.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DesignationListResponse } from '../../../models/HttpResponses/DesignationListResponse';
 import { DesignationList } from '../../../models/HttpResponses/DesignationList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
+import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
