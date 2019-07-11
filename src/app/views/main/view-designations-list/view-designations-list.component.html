@@ -30,7 +30,7 @@
       <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
         <thead>
           <tr>
-            <th></th>
+<!--            <th></th>-->
             <th></th>
             <th scope="col">
               <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
@@ -53,63 +53,13 @@
                 </p>
               </button>
             </th>
-            <!-- <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Surname')">
-                <p>Surname
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Email')">
-                <p>Email
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Extension')">
-                <p>Ext
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Designation')">
-                <p>Designation
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i></p>
-              </button>
-            </th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Status')">
-                <p>Status
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th> -->
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let designation of designationList" class="userRecord">
             <td>{{designation.rowNum}}</td>
-            <!-- <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
-              <img class="profile-image shadow" [src]="user.profileImage" />
-            </td> -->
             <td>{{designation.name}}</td>
             <td>{{designation.description}}</td>
-            <!-- <td>{{user.surname}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.extension}}</td>
-            <td>{{user.designation}}</td> -->
-            <!-- <td><span class="badge" [class.badge-success]="user.status == 'Active'"
-                [class.badge-danger]="user.status == 'Inactive'">{{user.status}}</span></td> -->
           </tr>
         </tbody>
       </table>

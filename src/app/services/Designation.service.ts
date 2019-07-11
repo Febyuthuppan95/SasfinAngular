@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Config } from '../../assets/config.json';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class DesignationService {
   constructor(
     private httpClient: HttpClient
@@ -28,7 +30,7 @@ export class DesignationService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.local}/designations/list`;
+      const apiURL = `${Config.ApiEndpoint.test}/designations/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
