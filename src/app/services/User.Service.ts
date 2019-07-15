@@ -32,6 +32,7 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
+
     this.cookieService.set(
       'currentUser',
       currentUser,
@@ -39,6 +40,7 @@ export class UserService {
       '/'
     );
   }
+
 
   /**
    * getCurrentUser
@@ -75,7 +77,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/account/authenticate`;
+      const apiURL = `${Config.ApiEndpoint.local}/account/authenticate`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -147,6 +149,7 @@ export class UserService {
 
     return promise;
   }
+
 
   /**
    * user list

@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
+import { Config } from '../../assets/config.json';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  constructor(private cookieService: CookieService) {}
+  constructor(
+    private cookieService: CookieService,
+    private httpClient: HttpClient) {}
 
   private theme = 'light';
   private toggleHelpValue = false;
@@ -77,6 +81,7 @@ export class ThemeService {
    * getBackground
    */
   public getBackground(): string {
+
     let bg = this.cookieService.get('backgroundURL');
 
     if (bg === '') {
@@ -87,6 +92,28 @@ export class ThemeService {
     return bg;
   }
 
+  public getUserBackground() {
+    const jsonString: string = this.cookieService.get('currentUser');
+    const requestModel = {
+      _userID: jsonString,
+      _specificUserID: 5 // Hardcoded for specific user id
+    };
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${Config.ApiEndpoint.local}/backgrounds/get`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+    return promise;
+  }
   /**
    * setBackground
    */

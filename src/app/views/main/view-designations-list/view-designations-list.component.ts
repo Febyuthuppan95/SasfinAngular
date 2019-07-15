@@ -68,7 +68,7 @@ export class ViewDesignationsListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
   totalShowing: number;
-  orderIndicator = 'Surname_ASC';
+  orderIndicator = 'Name_ASC';
 
   showLoader = true;
   displayFilter = false;
