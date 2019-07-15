@@ -8,6 +8,7 @@ import { ImageModalComponent } from '../../../components/image-modal/image-modal
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+// import { cursorTo } from 'readline';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -210,4 +211,11 @@ export class ViewDesignationsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
+
+  // popupMenu() {
+  //   alert(document.getElementById(document.getSelection));
+  //   document.getElementById('myPopup').style.top = document.getElementById('cursorX').nodeValue;
+  //   document.getElementById('myPopup').style.left = document.getElementById('cursorY').nodeValue;
+  //   document.getElementById('myPopup').hidden = false;
+  // }
 }
