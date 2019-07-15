@@ -68,7 +68,7 @@ export class ViewDesignationsListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
   totalShowing: number;
-  orderIndicator = 'Surname_ASC';
+  orderIndicator = 'Name_ASC';
 
   showLoader = true;
   displayFilter = false;
@@ -173,12 +173,12 @@ export class ViewDesignationsListComponent implements OnInit {
   updateSort(orderBy: string) {
     if (this.orderBy === orderBy) {
       if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
-      } else {
         this.orderDirection = 'ASC';
+      } else {
+        this.orderDirection = 'DESC';
       }
     } else {
-      this.orderDirection = 'ASC';
+      this.orderDirection = 'DESC';
     }
 
     this.orderBy = orderBy;

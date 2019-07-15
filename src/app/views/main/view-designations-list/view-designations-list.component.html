@@ -29,10 +29,10 @@
     <br />
       <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
         <thead>
-          <tr style="background-color:blue">
+          <tr>
             <th></th>
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
+              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
                 <p>Name
                   <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                     [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'">
@@ -43,7 +43,7 @@
               </button>
             </th>
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')">
+              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Description')">
                 <p>Description
                   <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
                     [ngClass]="(orderIndicator === 'Description_ASC')?'order-active':'order-not-active'"></i><i
@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let designation of designationList" class="userRecord" style="background-color: orange" (click)="popupMenu()">
+          <tr *ngFor="let designation of designationList">
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
