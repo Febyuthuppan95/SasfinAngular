@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 import { Config } from '../../assets/config.json';
 import { HttpClient } from '@angular/common/http';
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
+import { User } from 'src/app/models/HttpResponses/User.js';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,9 @@ import { HttpHeaders } from '@angular/common/http';
 export class ThemeService {
   constructor(
     private cookieService: CookieService,
-    private httpClient: HttpClient) {}
+    private httpClient: HttpClient
+
+    ) {}
 
   private theme = 'light';
   private toggleHelpValue = false;
@@ -69,7 +74,6 @@ export class ThemeService {
         observer.next(this.toggleHelpValue);
       }, 500);
     });
-
     return toggleHelpObserver;
   }
 
@@ -86,21 +90,20 @@ export class ThemeService {
    */
   public getBackground(): string {
     let bg = '';
-    console.log('Getting Background for main');
-    bg  = 'http://197.189.218.50:7777/public/images/backgrounds/background1.jpg';
-    return this.background;
+    bg  = `${environment.ImageRoute}/backgrounds/background1.jpg`;
+    return bg;
   }
   /**
    *
    */
   public getBackgroundUser(): Observable<{}> {
     const jsonString: string = this.cookieService.get('currentUser');
+    const curUser: User = JSON.parse(jsonString);
     const requestModel = {
-      _userID: jsonString,
+      _userID: curUser.userID,
       _specificUserID: 5 // Hardcoded for specific user id
     };
-
-    const url = `${Config.ApiEndpoint.local}/backgrounds/get`;
+    const url = `${environment.ApiEndpoint}/backgrounds/get`;
     let result = this.httpClient.post(url, requestModel);
     return result;
   }
@@ -108,12 +111,10 @@ export class ThemeService {
    * setBackground
    */
   public setBackground(backgroundURL: string): void {
-    console.log(backgroundURL);
-    const url = `http://localhost:4200/images/backgrounds/${backgroundURL}`;
-    console.log(url);
+    const path = `${environment.ImageRoute}/backgrounds/${backgroundURL}`;
       this.cookieService.set(
         'backgroundURL',
-        `http://localhost:4200/images/backgrounds/${backgroundURL}`,
+        path,
         1000 * 60 * 60 * 24,
         '/'
       );

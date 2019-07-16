@@ -43,13 +43,7 @@ export class ViewLoginComponent implements OnInit {
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.userService.persistLogin(JSON.stringify(res.userID));
-            // this.themeService.getUserBackground().then(
-            //   (result: BackgroundResponse) => {
-            //     console.log(result.Image);
-            //     this.themeService.setBackground(result.Image);
-            //   }
-            // );
+            this.userService.persistLogin(JSON.stringify(res));
             this.router.navigateByUrl('/users');
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);

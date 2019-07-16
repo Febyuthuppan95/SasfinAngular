@@ -8,6 +8,7 @@ import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { CookieService } from 'ngx-cookie-service';
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -51,9 +52,11 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
-    backgroundObserver.subscribe((result: BackgroundResponse) => {
-      this.currentBackground = `http://localhost:4200/assets/dist/images/backgrounds/${result.image}`;
-    });
+    if(this.cookieService.get('currentUser') != null){
+      backgroundObserver.subscribe((result: BackgroundResponse) => {
+        this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
+      });
+    }
 
     const toggleHelpObserver = this.themeService.toggleHelp();
     toggleHelpObserver.subscribe((toggle: boolean) => {
@@ -98,7 +101,6 @@ export class MainLayoutComponent implements OnInit {
   }
 
   updateBackground(event: string) {
-    console.log('updating background');
     this.currentBackground = event;
     this.themeService.setBackground(event);
   }

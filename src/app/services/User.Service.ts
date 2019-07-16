@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
-
+    debugger;
     this.cookieService.set(
       'currentUser',
       currentUser,
@@ -47,20 +48,14 @@ export class UserService {
    */
   public getCurrentUser() {
     const jsonString: string = this.cookieService.get('currentUser');
-
     if (jsonString !== '') {
       const currentUser: User = JSON.parse(jsonString);
 
-      // if (currentUser.profileImage === null) {
-      //   currentUser.profileImage = `${
-      //     Config.ApiEndpoint.test
-      //   }/public/images/profile/default.png`;
-      // } else {
-      //   currentUser.profileImage = `${
-      //     Config.ApiEndpoint.test
-      //   }/public/images/profile/${currentUser.profileImage}`;
-      // }
-
+      if (currentUser.profileImage === null) {
+        currentUser.profileImage = `${environment.ImageRoute}/default.jpg`;
+      } else {
+        currentUser.profileImage = `${environment.ImageRoute}/${currentUser.profileImage}`;
+      }
       return currentUser;
     } else {
       return null;
@@ -77,7 +72,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.local}/account/authenticate`;
+      const apiURL = `${environment.ApiEndpoint}/account/authenticate`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -103,7 +98,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/account/request/otp`;
+      const apiURL = `${environment.ApiEndpoint}/account/request/otp`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -132,7 +127,7 @@ export class UserService {
 
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${
-        Config.ApiEndpoint.test
+        environment.ApiEndpoint
       }/account/request/changepassword`;
       this.httpClient
         .post(apiURL, requestModel)
@@ -177,7 +172,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/users/list`;
+      const apiURL = `${environment.ApiEndpoint}/users/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
