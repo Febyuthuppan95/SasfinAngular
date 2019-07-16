@@ -51,15 +51,15 @@ export class UserService {
     if (jsonString !== '') {
       const currentUser: User = JSON.parse(jsonString);
 
-      if (currentUser.profileImage === null) {
-        currentUser.profileImage = `${
-          Config.ApiEndpoint.test
-        }/public/images/profile/default.png`;
-      } else {
-        currentUser.profileImage = `${
-          Config.ApiEndpoint.test
-        }/public/images/profile/${currentUser.profileImage}`;
-      }
+      // if (currentUser.profileImage === null) {
+      //   currentUser.profileImage = `${
+      //     Config.ApiEndpoint.test
+      //   }/public/images/profile/default.png`;
+      // } else {
+      //   currentUser.profileImage = `${
+      //     Config.ApiEndpoint.test
+      //   }/public/images/profile/${currentUser.profileImage}`;
+      // }
 
       return currentUser;
     } else {
