@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Config } from '../../assets/config.json';
+import {HttpClient} from '@angular/common/http';
+import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class RightService {
       _orderDirection: orderDirection
     };
 
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const apiURL = `${Config.ApiEndpoint.test}/rights/list`;
       this.httpClient
         .post(apiURL, requestModel)
@@ -43,8 +43,6 @@ export class RightService {
           }
         );
     });
-
-    return promise;
   }
 
 }
