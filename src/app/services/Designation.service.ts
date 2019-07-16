@@ -16,7 +16,7 @@ export class DesignationService {
     rowStart: number,
     rowEnd: number,
     orderBy: string,
-    orderDirection: string
+    orderByDirection: string
   ) {
     const requestModel = {
       _userID: userID,
@@ -26,11 +26,11 @@ export class DesignationService {
       _rowStart: rowStart,
       _rowEnd: rowEnd,
       _orderBy: orderBy,
-      _orderDirection: orderDirection
+      _orderByDirection: orderByDirection
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/designations/list`;
+      const apiURL = `${Config.ApiEndpoint.local}/designations/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()

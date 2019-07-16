@@ -31,7 +31,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.nextPage = +this.activePage + 1;
     this.filter = '';
     this.orderBy = '';
-    this.orderDirection = 'ASC';
+    this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
   }
@@ -66,7 +66,7 @@ export class ViewDesignationsListComponent implements OnInit {
   rightName: string;
   activePage: number;
   orderBy: string;
-  orderDirection: string;
+  orderByDirection: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
 
@@ -149,7 +149,7 @@ export class ViewDesignationsListComponent implements OnInit {
         this.rowStart,
         this.rowEnd,
         this.orderBy,
-        this.orderDirection
+        this.orderByDirection
       )
       .then(
         (res: DesignationListResponse) => {
@@ -172,17 +172,17 @@ export class ViewDesignationsListComponent implements OnInit {
 
   updateSort(orderBy: string) {
     if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
+      if (this.orderByDirection === 'ASC') {
+        this.orderByDirection = 'DESC';
       } else {
-        this.orderDirection = 'ASC';
+        this.orderByDirection = 'ASC';
       }
     } else {
-      this.orderDirection = 'ASC';
+      this.orderByDirection = 'ASC';
     }
 
     this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+    this.orderIndicator = `${this.orderBy}_${this.orderByDirection}`;
     this.loadDesignations();
   }
 
