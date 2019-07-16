@@ -16,7 +16,7 @@ export class RightService {
     rowStart: number,
     rowEnd: number,
     orderBy: string,
-    orderDirection: string
+    orderByDirection: string
   ) {
     const requestModel = {
       _userID: userID,
@@ -26,7 +26,7 @@ export class RightService {
       _rowStart: rowStart,
       _rowEnd: rowEnd,
       _orderBy: orderBy,
-      _orderDirection: orderDirection
+      _orderByDirection: orderByDirection
     };
 
     const promise = new Promise((resolve, reject) => {
