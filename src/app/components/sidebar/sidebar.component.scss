@@ -38,3 +38,26 @@
 span {
   color: #3877ff;
 }
+// Eathon Maritz
+// 17-07-19
+// Allows for sidebar collapsing
+.collapse-sidebar {
+  width: 65px !important;
+
+}
+.collapse-sidebar .nav-item span {
+  display: none;
+}
+.collapse-sidebar .nav-item {
+  width: 40px;
+  height: 40px;
+
+}
+.collapse-sidebar .nav-item .nav-link {
+  width: 40px;
+  height: 40px;
+  border-radius:50%;
+}
+.col-lg-1 .sidebar {
+  margin: 0px !important;
+}
