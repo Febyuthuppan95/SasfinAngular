@@ -52,7 +52,7 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
-    if(this.cookieService.get('currentUser') != null){
+    if (this.cookieService.get('currentUser') != null) {
       backgroundObserver.subscribe((result: BackgroundResponse) => {
         this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
       });
