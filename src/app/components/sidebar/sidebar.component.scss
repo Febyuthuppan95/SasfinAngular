@@ -1,11 +1,11 @@
 .offset-sidebar {
-  margin-top: 25px;
+  margin-top: 10px;
   margin-left: 10px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   width: auto;
-  height: calc(100% - 50px);
+  height: calc(100% - 20px);
 }
 
 .nav-item {
@@ -32,6 +32,7 @@
   background: #f2f2f2;
   color: #3877ff !important;
   border-radius: 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 .active-item i,
@@ -42,12 +43,10 @@ span {
 // 17-07-19
 // Allows for sidebar collapsing
 .nav-item {
-  border-bottom-left-radius: 20px;
-  border-top-left-radius: 20px;
+  border-radius: 20px;
 }
 .nav-link {
-  border-bottom-left-radius: 20px;
-  border-top-left-radius: 20px;
+  border-radius: 20px;
 }
 .collapse-sidebar {
   width: 65px !important;
