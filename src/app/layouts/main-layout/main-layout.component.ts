@@ -6,6 +6,10 @@ import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
+import { CookieService } from 'ngx-cookie-service';
+import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-main-layout',
@@ -13,7 +17,10 @@ import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.compon
   styleUrls: ['./main-layout.component.scss']
 })
 export class MainLayoutComponent implements OnInit {
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private cookieService: CookieService
+    ) {}
 
   @ViewChild(EditDashboardStyleComponent, { static: true })
   private editSidebar: EditDashboardStyleComponent;
@@ -40,10 +47,16 @@ export class MainLayoutComponent implements OnInit {
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
+    const backgroundObserver = this.themeService.getBackgroundUser();
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
+    if(this.cookieService.get('currentUser') != null){
+      backgroundObserver.subscribe((result: BackgroundResponse) => {
+        this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
+      });
+    }
 
     const toggleHelpObserver = this.themeService.toggleHelp();
     toggleHelpObserver.subscribe((toggle: boolean) => {
@@ -91,7 +104,6 @@ export class MainLayoutComponent implements OnInit {
     this.currentBackground = event;
     this.themeService.setBackground(event);
   }
-
   toggleHelp(event: boolean) {
     this.toggleHelpValue = event;
     this.themeService.setToggleValue(event);

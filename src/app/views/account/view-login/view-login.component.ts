@@ -6,6 +6,8 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
+import { ThemeService } from 'src/app/services/theme.Service.js';
+import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
 
 @Component({
   selector: 'app-view-login',
@@ -18,7 +20,12 @@ export class ViewLoginComponent implements OnInit {
   txtPassword: string;
   pendingRequest = false;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private themeService: ThemeService
+    ) { }
+
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -34,7 +41,6 @@ export class ViewLoginComponent implements OnInit {
         (res: LoginResponse) => {
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
-
           if (res.authenticated) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));

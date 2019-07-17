@@ -3,6 +3,9 @@
     "ApiEndpoint": {
       "test": "http://197.189.218.50:7777",
       "local": "https://localhost:44397"
+    },
+    "AssetRoute": {
+      "local": "http://localhost:4200/assets/dist/images/backgrounds"
     }
   }
 }
