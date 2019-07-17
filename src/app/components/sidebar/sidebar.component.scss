@@ -41,22 +41,36 @@ span {
 // Eathon Maritz
 // 17-07-19
 // Allows for sidebar collapsing
+.nav-item {
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+}
+.nav-link {
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+}
 .collapse-sidebar {
   width: 65px !important;
+  margin-left: 20px !important;
 
 }
 .collapse-sidebar .nav-item span {
   display: none;
 }
 .collapse-sidebar .nav-item {
-  width: 40px;
-  height: 40px;
+  width: 43.5px;
+  height: 43.5px;
+
 
 }
 .collapse-sidebar .nav-item .nav-link {
-  width: 40px;
-  height: 40px;
+  width: 43.5px;
+  height: 43.5px;
   border-radius:50%;
+}
+.collapse-sidebar .nav-item {
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
 }
 .col-lg-1 .sidebar {
   margin: 0px !important;
