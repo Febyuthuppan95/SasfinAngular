@@ -44,6 +44,7 @@ export class MainLayoutComponent implements OnInit {
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
+  sidebarCollapse: boolean;
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
@@ -52,7 +53,7 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
-    if(this.cookieService.get('currentUser') != null){
+    if (this.cookieService.get('currentUser') != null) {
       backgroundObserver.subscribe((result: BackgroundResponse) => {
         this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
       });
@@ -81,6 +82,8 @@ export class MainLayoutComponent implements OnInit {
 
   collapseSidebar() {
     this.sidebar.collapse = !this.sidebar.collapse;
+    this.sidebarCollapse = this.sidebar.collapse;
+    console.log(this.sidebarCollapse);
   }
 
   showSnackBar(options: string) {

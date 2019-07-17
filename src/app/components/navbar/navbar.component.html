@@ -1,18 +1,17 @@
 <nav class="navbar col-lg-12 col-12 p-0 d-flex flex-row shadow fixed-top">
   <div class="navbar-brand-wrapper d-flex justify-content-center ls-tile-{{currentTheme}} border-0">
-    <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+    <div class="navbar-brand-inner-wrapper d-flex justify-content-left align-items-center w-100">
+      <button class="navbar-toggler navbar-toggler align-self-center ls-text-{{ currentTheme }}" type="button"
+      data-toggle="minimize" (click)="collapseSidebarEvent()">
+      <span class="mdi mdi-sort-variant"></span>
+      </button>
       <a class="navbar-brand brand-logo " href="index.html"><img src="../../../assets/dist/images/logo.png"
           alt="logo" /></a>
       <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../../assets/dist/images/favicon.png"
-          alt="logo" /></a>
-      <button class="navbar-toggler navbar-toggler align-self-center ls-text-{{ currentTheme }}" type="button"
-        data-toggle="minimize" (click)="collapseSidebarEvent()">
-        <span class="mdi mdi-sort-variant"></span>
-      </button>
+        alt="logo" /></a>
     </div>
   </div>
-  <div
-    class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{currentTheme}} border-0 ls-text-{{currentTheme}}">
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{currentTheme}} border-0 ls-text-{{currentTheme}}">
     <ul class="navbar-nav mr-lg-4 w-100">
       <li class="nav-item nav-search d-none d-lg-block w-100">
         <div class="input-group">

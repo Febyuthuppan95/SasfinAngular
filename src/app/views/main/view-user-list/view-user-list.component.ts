@@ -8,6 +8,7 @@ import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { Config } from './../../../../assets/config.json';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-view-user-list',
@@ -41,7 +42,7 @@ export class ViewUserListComponent implements OnInit {
   private imageModal: ImageModalComponent;
 
   defaultProfile =
-    'http://197.189.218.50:7777/public/images/profile/default.png';
+    `${environment.ImageRoute}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();

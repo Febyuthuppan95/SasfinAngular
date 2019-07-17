@@ -1,31 +1,31 @@
 <nav class="sidebar sidebar-offcanvas offset-sidebar shadow ls-tile-{{ currentTheme }}" id="sidebar"
-  [ngClass]="(collapse)? 'collapse-sidebar' : '' ">
-  <ul class="nav bg-transparent" style="padding:22px">
+  [ngClass]="(collapse)? 'collapse-sidebar' : '' "[ngStyle]="(!collapse)? '':'margin-left:22px !important;'">
+  <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Users Button','Users navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }} active-item shadow"
-        routerLink="/users">
+      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }} shadow"
+        routerLink="/users" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account menu-icon"></i>
         <span class="menu-title">Users</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Designations Button','Designations navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations">
+      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-view-headline menu-icon"></i>
         <span class="menu-title">Designations</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Rights Button','Rights navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights">
+      <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-file-document-box-outline menu-icon"></i>
         <span class="menu-title">Rights</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Backgrounds Button','Backgrounds navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds">
+      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account-key menu-icon"></i>
         <span class="menu-title">Backgrounds</span>
       </a>

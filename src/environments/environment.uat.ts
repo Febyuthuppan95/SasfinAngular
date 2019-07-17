@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  AssetRoute: 'http://197.189.218.50:7777/assets/dist/images/backgrounds',
-  ApiEndpoint: 'http://197.189.218.50:7778'
+  AssetRoute: 'http://197.189.218.50:8889/assets/dist/images/backgrounds',
+  ApiEndpoint: 'http://197.189.218.50:8889'
 };
