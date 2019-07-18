@@ -63,6 +63,10 @@ select.form-control {
   padding: 10px 20px 10px 10px;
 }
 
+.main-mini {
+  padding-top: 10px;
+}
+
 .sidebar .nav .nav-item .nav-link {
   padding-left: 10px;
   padding-right: 10px;
@@ -150,4 +154,24 @@ td {
 .ls-card-body {
   width: 100%;
   padding: 25px;
+}
+
+.headerText {
+  text-align: center;
+  margin-right: 10px !important;
+}
+
+.headerBtn {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  text-align: center !important;
+  //background-color: #0d57ff !important;
+}
+
+.headerChevrons {
+  margin-left: -5px !important;
+}
+
+.headerSpan {
+  display: inline-block !important;
 }
