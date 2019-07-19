@@ -1,15 +1,15 @@
 <div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'">
   <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
   <div class="row">
-    <div class="col-lg-2">
+    <div [ngClass]="(!sidebarCollapse)? '' : 'col-lg-2'" >
       <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle"
         [helpContext]="toggleHelpValue">
       </app-sidebar>
     </div>
-    <div class="col-lg-10 main">
-      <router-outlet></router-outlet>
-      <app-footer></app-footer>
-    </div>
+      <div class="" [ngClass]="(!sidebarCollapse)? 'col-lg-11 main-mini' : 'col-lg-10 main'">
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
+      </div>
   </div>
 </div>
 <app-floating-button (myEvent)="openEditTile()"></app-floating-button>

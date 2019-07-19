@@ -31,27 +31,27 @@
         <thead>
           <tr>
             <th></th>
+
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
-                <p>Name
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'">
-                  </i>
-                  <i style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'">
-                  </i></p>
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
+                <p class="headerText">Name</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
+                </span>
               </button>
             </th>
+
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Description')">
-                <p>Description
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Description_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Description_DESC')?'order-active':'order-not-active'"></i>
-                </p>
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Description')">
+                <p class="headerText">Description</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Description_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Description_DESC')?'order-active':'order-not-active'"></i>
+                </span>
               </button>
             </th>
+
           </tr>
         </thead>
         <tbody>
