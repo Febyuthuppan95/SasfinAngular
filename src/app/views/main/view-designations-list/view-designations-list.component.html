@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let designation of designationList">
+          <tr *ngFor="let designation of designationList"  [ngbPopover]="popCont" [ngStyle]="" (click)="popClick($event)">
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
@@ -90,3 +90,9 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<ng-template #popCont>
+  <ul>
+    <li>Option 1</li>
+    <li>Option 2</li>
+  </ul>
+</ng-template>
