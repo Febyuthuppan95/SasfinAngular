@@ -1,10 +1,9 @@
-import { RightService } from './../../../services/Right.service';
+import { RightService } from '../../../services/Right.Service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RightListResponse } from '../../../models/HttpResponses/RightListResponse';
 import { RightList } from '../../../models/HttpResponses/RightList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
@@ -30,10 +29,13 @@ export class ViewRightsListComponent implements OnInit {
     this.nextPage = +this.activePage + 1;
     this.filter = '';
     this.orderBy = '';
-    this.orderDirection = 'ASC';
+    this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadRights();
   }
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
@@ -56,9 +58,9 @@ export class ViewRightsListComponent implements OnInit {
   rightName: string;
   activePage: number;
   orderBy: string;
-  orderDirection: string;
+  orderByDirection: string;
   totalShowing: number;
-  orderIndicator = 'Surname_ASC';
+  orderIndicator = 'Name_ASC';
 
   showLoader = true;
   displayFilter = false;
@@ -139,7 +141,7 @@ export class ViewRightsListComponent implements OnInit {
         this.rowStart,
         this.rowEnd,
         this.orderBy,
-        this.orderDirection
+        this.orderByDirection
       )
       .then(
         (res: RightListResponse) => {
@@ -162,17 +164,17 @@ export class ViewRightsListComponent implements OnInit {
 
   updateSort(orderBy: string) {
     if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
+      if (this.orderByDirection === 'ASC') {
+        this.orderByDirection = 'DESC';
       } else {
-        this.orderDirection = 'ASC';
+        this.orderByDirection = 'ASC';
       }
     } else {
-      this.orderDirection = 'ASC';
+      this.orderByDirection = 'ASC';
     }
 
     this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+    this.orderIndicator = `${this.orderBy}_${this.orderByDirection}`;
     this.loadRights();
   }
 

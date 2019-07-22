@@ -1,4 +1,4 @@
-<div class="shadow tile ls-tile-{{ currentTheme }}" [ngStyle]="(!sidebarCollapse)? '':'width: 94%'">
+<div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <div class="float-right">
       <ng-container *ngIf="showLoader">
@@ -32,69 +32,79 @@
           <tr>
             <th></th>
             <th></th>
+
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
-                <p>Emp No
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'">
-                  </i>
-                  <i style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'">
-                  </i></p>
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
+                <p class="headerText">Emp No</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
+                </span>
               </button>
             </th>
+
             <th scope="col">
-              <button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')">
-                <p>First Name
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i></p>
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')">
+                <p class="headerText">First Name</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i>
+                </span>
               </button>
             </th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Surname')">
-                <p>Surname
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Email')">
-                <p>Email
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Extension')">
-                <p>Ext
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Designation')">
-                <p>Designation
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i></p>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Surname')">
+                <p class="headerText">Surname</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i>
+                </span>
               </button>
             </th>
-            <th scope="col"><button class="btn bg-transparent btn-sort ls-text-{{ currentTheme }}"
-                (click)="updateSort('Status')">
-                <p>Status
-                  <i class="mdi mdi-chevron-up ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i><i
-                    style="margin-left: -5px;" class="mdi mdi-chevron-down ls-text-{{ currentTheme }}"
-                    [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i></p>
-              </button></th>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Email')">
+                <p class="headerText">Email</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+
+            <th scope="col">
+            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Extension')">
+              <p class="headerText">Ext</p>
+              <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+            </button>
+            </th>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Designation')">
+              <p class="headerText">Designation</p>
+              <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
+                <p class="headerText">Status</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let user of userList" class="userRecord">
             <td>{{user.rowNum}}</td>
