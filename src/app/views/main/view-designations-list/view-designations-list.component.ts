@@ -208,10 +208,15 @@ export class ViewDesignationsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
+  popClick(event) {
+    console.log(event.x);
+    console.log(event.y);
+  }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));
     document.getElementById('myPopup').style.top = document.getElementById('cursorX').nodeValue;
     document.getElementById('myPopup').style.left = document.getElementById('cursorY').nodeValue;
     document.getElementById('myPopup').hidden = false;
   }
+
 }
