@@ -83,7 +83,6 @@ export class MainLayoutComponent implements OnInit {
   collapseSidebar() {
     this.sidebar.collapse = !this.sidebar.collapse;
     this.sidebarCollapse = this.sidebar.collapse;
-    console.log(this.sidebarCollapse);
   }
 
   showSnackBar(options: string) {

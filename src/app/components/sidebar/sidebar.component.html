@@ -3,7 +3,8 @@
   <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Users Button','Users navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']">
+      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }} shadow"
+        routerLink="/users" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account menu-icon"></i>
         <span class="menu-title">Users</span>
       </a>
