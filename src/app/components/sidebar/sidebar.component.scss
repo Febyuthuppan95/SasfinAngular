@@ -56,15 +56,15 @@ span {
 .collapse-sidebar .nav-item span {
   display: none;
 }
-.collapse-sidebar .nav-item {
-  width: 43.5px;
-  height: 43.5px;
-
-
+.nav-item, .nav-item a {
+  height: 40px;
 }
+.nav-item a {
+  //vertical-align: middle;
+  padding-left: 12px !important;
+}
+
 .collapse-sidebar .nav-item .nav-link {
-  width: 43.5px;
-  height: 43.5px;
   border-radius:50%;
 }
 .collapse-sidebar .nav-item {
