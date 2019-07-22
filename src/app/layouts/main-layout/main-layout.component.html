@@ -6,7 +6,7 @@
         [helpContext]="toggleHelpValue">
       </app-sidebar>
     </div>
-    <div class="main" [ngClass]="(!sidebarCollapse)? 'col-lg-10' : 'list-div'" [ngStyle]="(!sidebarCollapse)? '':''">
+    <div class="main" [ngClass]="(!sidebarCollapse)? 'col-lg-10' : 'list-div'">
       <router-outlet></router-outlet>
       <app-footer></app-footer>
     </div>
