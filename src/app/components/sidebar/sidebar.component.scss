@@ -74,3 +74,21 @@ span {
 .col-lg-1 .sidebar {
   margin: 0px !important;
 }
+
+// // Large devices (desktops, 992px and up)
+// @media (max-width: 1200px) {
+//   .offset-sidebar{
+//     width: 65px !important;
+//     margin-left: 20px !important;
+//   }
+//   .nav-item span {
+//     display: none !important;
+//   }
+//   .nav-item .nav-link {
+//     border-radius:50%;
+//   }
+//   .nav-item {
+//     border-bottom-right-radius: 20px;
+//     border-top-right-radius: 20px;
+//   }
+// }

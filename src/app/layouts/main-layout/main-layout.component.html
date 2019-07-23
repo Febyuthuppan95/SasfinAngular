@@ -1,4 +1,4 @@
-<div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'">
+<div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'" (window:resize)="onResize($event)">
   <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
   <div class="row">
     <div [ngClass]="(!sidebarCollapse)? 'col-lg-2' : 'side-div'" >

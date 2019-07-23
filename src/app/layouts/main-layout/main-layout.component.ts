@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { EditDashboardStyleComponent } from 'src/app/components/edit-dashboard-style/edit-dashboard-style.component';
 import { FloatingButtonComponent } from 'src/app/components/floating-button/floating-button.component';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -45,8 +45,11 @@ export class MainLayoutComponent implements OnInit {
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
   sidebarCollapse: boolean;
+  innerWidth: any;
+  @HostListener('window:resize', ['$event'])
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     const themeObserver = this.themeService.getCurrentTheme();
     const backgroundObserver = this.themeService.getBackgroundUser();
     themeObserver.subscribe((themeData: string) => {
@@ -66,6 +69,13 @@ export class MainLayoutComponent implements OnInit {
     });
   }
 
+  onResize(event) {
+    this.innerWidth = window.innerWidth;
+    if (window.innerWidth <= 1200) {
+      this.sidebarCollapse = true;
+    }
+    console.log(this.innerWidth);
+  }
   openEditTile() {
     this.editSidebar.show = true;
   }
