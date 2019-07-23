@@ -153,7 +153,7 @@ export class ViewDesignationsListComponent implements OnInit {
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.showingRecords = res.designationList.length;
-          this.totalShowing = +this.rowStart + +this.designationList.length - 1;
+          this.totalShowing = +this.rowStart + this.designationList.length - 1;
           this.paginateData();
         },
         msg => {

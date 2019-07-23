@@ -97,12 +97,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
-        console.log(res);
         // Process Success
         this.designationRightsList = res.designationRightsList;
-        this.rowCount = res.RowCount;
+        this.rowCount = res.rowCount;
         this.showLoader = false;
-        this.totalShowing += this.rowStart + this.designationRightsList.length -1;
+        this.showingRecords = res.designationRightsList.length;
+        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
+        console.log(res);
         this.paginateData();
       },
       msg => {
@@ -156,6 +157,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
+    console.log(this.rowCountPerPage);
     this.pages = Array<Pagination>();
 
     for (let i = 0; i < pageCount; i++) {
@@ -167,7 +169,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
-
+    console.log(this.pages);
     this.updatePagination();
   }
 
@@ -191,6 +193,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.showingPages = Array<Pagination>();
     this.showingPages[0] = this.pages[this.activePage - 1];
     const pagenumber = +this.rowCount / +this.rowCountPerPage;
+    console.log(this.showingPages);
 
     if (this.activePage < pagenumber) {
       this.showingPages[1] = this.pages[+this.activePage];
