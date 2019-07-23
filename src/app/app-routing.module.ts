@@ -14,6 +14,7 @@ import { ViewDesignationsListComponent } from './views/main/view-designations-li
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
 import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
 import { AccountComponent } from './layouts/account/account.component';
+import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
           { path: '', redirectTo: '/account/login', pathMatch: 'full' },
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
+          { path: 'designation-rights', component: ViewDesignationsRightsListComponent },
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent }
         ]

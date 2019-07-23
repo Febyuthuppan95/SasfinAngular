@@ -23,6 +23,13 @@
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+      (mouseenter)="showSnackBar('DesignationsRights Button','DesignationsRights navigation item')">
+      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designation-rights" [routerLinkActive]="['active-item']">
+        <i class="mdi mdi-view-headline menu-icon"></i>
+        <span class="menu-title">Designation Rights</span>
+      </a>
+    </li>
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
       (mouseenter)="showSnackBar('Backgrounds Button','Backgrounds navigation item')">
       <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account-key menu-icon"></i>
