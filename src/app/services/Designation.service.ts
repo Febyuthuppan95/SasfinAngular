@@ -1,6 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
+import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
+import { environment } from 'src/environments/environment.js';
 
 @Injectable()
 export class DesignationService {
@@ -43,6 +45,38 @@ export class DesignationService {
           }
         );
     });
+  }
+  /**
+   *
+   */
+  public getDesignationRightsList(model: GetDesignationRightsList) {
+    const json = {
+      _userID: model.userID,
+      _specificUserID: model.specificUserID,
+      _specificDesignationID: model.specifcDesignationID,
+      _rightName: model.rightName,
+      _filter: model.filter,
+      _orderBy: model.orderBy,
+      _orderByDirection: model.orderDirection,
+      _rowStart: model.rowStart,
+      _rowEnd: model.rowEnd
+    };
+
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/designationrights/list`;
+      this.httpClient.post(apiURL, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+
   }
 
 }
