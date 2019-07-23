@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DesignationService } from 'src/app/services/Designation.service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -7,6 +7,7 @@ import { DesignationRightsList } from '../../../models/HttpResponses/Designation
 import { GetDesignationRightsList } from 'src/app/models/HttpRequests/GetDesignationRightsList';
 import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/DesignationRightsListResponse';
 import { User } from 'src/app/models/HttpResponses/User';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private designationsService: DesignationService,
     private userService: UserService,
     private themeService: ThemeService
+
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
@@ -59,11 +61,14 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.prevPage = +this.activePage - 1;
       this.nextPage = +this.activePage + 1;
       this.filter = '';
-      this.orderBy = '';
+      this.orderBy = 'Name';
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
       this.loadDesignationRights();
     }
+
+    @ViewChild(NotificationComponent, {static: true })
+    private notify: NotificationComponent;
 
   ngOnInit() {
     const themeObservable = this.themeService.getCurrentTheme();
@@ -76,11 +81,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
    * Returns DesignationRightsListResponse
    */
   loadDesignationRights() {
-    this.rowEnd = +this.rowStart + this.rowCountPerPage -1;
+    this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
     const dRModel: GetDesignationRightsList = {
       userID: this.currentUser.userID,
-      specificUserID: this.currentUser.userID,
+      specificRightID: -1, // default
       specifcDesignationID: -1, // default
       rightName: this.rightName,
       filter: this.filter,
@@ -92,6 +97,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
+        console.log(res);
         // Process Success
         this.designationRightsList = res.designationRightsList;
         this.rowCount = res.RowCount;
@@ -102,12 +108,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       msg => {
         // Process Failure
         this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+
       }
     );
   }
 
   pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
+    const page = this.pages[+ pageNumber - 1];
     this.rowStart = page.rowStart;
     this.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;

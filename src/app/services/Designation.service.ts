@@ -52,7 +52,7 @@ export class DesignationService {
   public getDesignationRightsList(model: GetDesignationRightsList) {
     const json = {
       _userID: model.userID,
-      _specificUserID: model.specificUserID,
+      _specificRightID: model.specificRightID,
       _specificDesignationID: model.specifcDesignationID,
       _rightName: model.rightName,
       _filter: model.filter,
