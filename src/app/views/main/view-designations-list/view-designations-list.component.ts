@@ -1,5 +1,5 @@
 import { DesignationService } from '../../../services/Designation.service';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { DesignationListResponse } from '../../../models/HttpResponses/DesignationListResponse';
 import { DesignationList } from '../../../models/HttpResponses/DesignationList';
 import { Pagination } from '../../../models/Pagination';
@@ -7,7 +7,7 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-// import { cursorTo } from 'readline';
+import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -18,7 +18,8 @@ export class ViewDesignationsListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
-    private designationService: DesignationService
+    private designationService: DesignationService,
+    private popConfig: NgbPopoverConfig
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -38,12 +39,18 @@ export class ViewDesignationsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('popCont', {static: false})
+  private popOver: ElementRef;
 
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
+  
+  popOverX: number;
+  popOverY: number;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
+  focusDesgination: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -208,9 +215,12 @@ export class ViewDesignationsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event) {
-    console.log(event.x);
-    console.log(event.y);
+  popClick(event, id) {
+    this.popOverX = event.x;
+    this.popOverY = event.y;
+    this.popConfig.placement = 'auto';
+    this.focusDesgination = id;
+    console.log(this.popOver);
   }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));

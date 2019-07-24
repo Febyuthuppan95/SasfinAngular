@@ -130,3 +130,14 @@ td {
 tr {
   cursor: pointer;
 }
+.popBodyNav {
+  cursor: pointer;
+  background: transparent !important;
+}
+.popnav {
+  border-radius: 20px !important;
+}
+.popover {
+  transform: translateX(var(--x));
+  transform: translateX(var(--y));
+}

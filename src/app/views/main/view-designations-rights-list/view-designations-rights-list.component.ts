@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DesignationService } from 'src/app/services/Designation.service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -8,6 +9,7 @@ import { GetDesignationRightsList } from 'src/app/models/HttpRequests/GetDesigna
 import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/DesignationRightsListResponse';
 import { User } from 'src/app/models/HttpResponses/User';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+
 
 
 @Component({
@@ -20,7 +22,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   /* Initializing Variables */
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
-
+  currentDesignation = 'Designation';
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
@@ -49,7 +51,9 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   constructor(
     private designationsService: DesignationService,
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
 
     ) {
       this.rowStart = 1;
@@ -65,6 +69,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
       this.loadDesignationRights();
+      
     }
 
     @ViewChild(NotificationComponent, {static: true })
@@ -74,6 +79,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const themeObservable = this.themeService.getCurrentTheme();
     themeObservable.subscribe((themeData: string) => {
       this.currentTheme = themeData;
+    });
+    const currentDesignation = this.activatedRoute.paramMap
+    .subscribe(params => {
+      this.currentDesignation = params.get('name');
+      console.log(this.currentDesignation);
     });
   }
   /**
@@ -214,5 +224,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+  removeRight(id: string) {
+    console.log(id);
   }
 }

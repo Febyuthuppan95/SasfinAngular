@@ -38,7 +38,7 @@ const routes: Routes = [
           { path: '', redirectTo: '/account/login', pathMatch: 'full' },
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
-          { path: 'designation-rights', component: ViewDesignationsRightsListComponent },
+          { path: 'designation-rights/:name', component: ViewDesignationsRightsListComponent },
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent }
         ]
