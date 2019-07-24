@@ -1,5 +1,5 @@
 import { DesignationService } from '../../../services/Designation.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DesignationListResponse } from '../../../models/HttpResponses/DesignationListResponse';
 import { DesignationList } from '../../../models/HttpResponses/DesignationList';
 import { Pagination } from '../../../models/Pagination';
@@ -38,11 +38,12 @@ export class ViewDesignationsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = this.themeService.getTheme();
+  currentTheme = 'light';
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -70,12 +71,11 @@ export class ViewDesignationsListComponent implements OnInit {
   displayFilter = false;
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
+    const themeObserver = this.themeService.getCurrentTheme();
+    themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
   }
-
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;

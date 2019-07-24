@@ -26,14 +26,8 @@ export class SidebarComponent implements OnInit {
       };
 
       this.snackBar.emit(JSON.stringify(options));
+      console.log(options);
     }
   }
 
-  onResize(event) {
-    this.innerWidth = window.innerWidth;
-    if (window.innerWidth <= 1200) {
-      this.collapse = true;
-    }
-    console.log(this.innerWidth);
-  }
 }

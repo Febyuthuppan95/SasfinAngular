@@ -11,6 +11,7 @@ import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
 import { environment } from '../../../environments/environment';
 
 
+
 @Component({
   selector: 'app-main-layout',
   templateUrl: './main-layout.component.html',
@@ -39,6 +40,9 @@ export class MainLayoutComponent implements OnInit {
 
   @ViewChild(SnackBarComponent, { static: true })
   private snackBar: SnackBarComponent;
+  
+  
+  
 
   currentTheme = 'light';
   currentBackground = this.themeService.getBackground();
@@ -52,6 +56,7 @@ export class MainLayoutComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     const themeObserver = this.themeService.getCurrentTheme();
     const backgroundObserver = this.themeService.getBackgroundUser();
+
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
@@ -72,7 +77,7 @@ export class MainLayoutComponent implements OnInit {
   onResize(event) {
     this.innerWidth = window.innerWidth;
     if (window.innerWidth <= 1200) {
-      this.sidebarCollapse = true;
+      // this.sidebarCollapse = true;
     }
     console.log(this.innerWidth);
   }
@@ -88,6 +93,7 @@ export class MainLayoutComponent implements OnInit {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
     this.footer.currentTheme = this.currentTheme;
+    
   }
 
   collapseSidebar() {

@@ -1,4 +1,5 @@
 
+
 /*Side Nav*/
 .side-div {
   width:6%;
@@ -7,16 +8,38 @@
 .list-div {
   padding-left: 0px;
   padding-right: 20px;
-  width: 94%;
+  width: calc(94%)
+}
+
+@media (max-width: 1500px) {
+  .list-div {
+    padding-left: 0px;
+    padding-right: 20px;
+    width: calc(94% -20px)
+  }
 }
 @media (max-width: 1200px) {
   .list-div {
     padding-left: 0px;
-    padding-right: 20px;
-    min-width: 1000px;
+    padding-right: 10px;
+    max-width: calc(98% - 90px);
+    left: 100px;
   }
   .side-div {
-  min-width: 150px;
+  min-width: 80px;
   margin-right:15px;
+  }
+
 }
+@media (max-width: 991px) {
+  .list-div {
+    padding-left: 0px;
+    padding-right: 10px;
+    max-width: calc(98% - 90px);
+    left: 100px;
+  }
+  .side-div {
+    min-width: 80px;
+    margin-right:15px;
+    }
 }

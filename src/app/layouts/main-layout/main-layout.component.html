@@ -1,12 +1,14 @@
 <div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'" (window:resize)="onResize($event)">
   <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
   <div class="row">
-    <div [ngClass]="(!sidebarCollapse)? 'col-lg-2' : 'side-div'" >
+    <div [ngClass]="(!sidebarCollapse)? 'col-lg-2' : 'side-div'"  >
+    <!-- <div class="col-lg-2"> -->
       <app-sidebar (snackBar)="showSnackBar($event)" (mouseleave)="hideSnackBar()" [offcanvas]="offcanvasToggle"
         [helpContext]="toggleHelpValue">
       </app-sidebar>
     </div>
     <div class="main" [ngClass]="(!sidebarCollapse)? 'col-lg-10' : 'list-div'">
+    <!-- <div class="col-lg-10"> -->
       <router-outlet></router-outlet>
       <app-footer></app-footer>
     </div>
