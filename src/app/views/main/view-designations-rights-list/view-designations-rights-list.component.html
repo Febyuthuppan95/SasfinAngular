@@ -59,7 +59,7 @@
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
-            <td scope="col"><a (click)="removeRight(designation.rightID)"><i class="mdi mdi-close mdi-18px"></i></a></td>
+            <td scope="col"><a (click)="confirmRemove(content, designation.rightID)"><i class="mdi mdi-close mdi-18px"></i></a></td>
           </tr>
         </tbody>
       </table>
@@ -91,10 +91,24 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<!-- <ng-template #popCont>
-  <ul>
-    <li>Option 1</li>
-    <li>Option 2</li>
-  </ul>
-</ng-template> -->
+<!--Remove Modal-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span> 
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+       <h5 class="">Are you sure you want to remove this right?</h5>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId)">Remove</button>
+    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
+  </div>
+</ng-template>
 

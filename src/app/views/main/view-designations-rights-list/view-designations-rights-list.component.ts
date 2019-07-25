@@ -9,6 +9,7 @@ import { GetDesignationRightsList } from 'src/app/models/HttpRequests/GetDesigna
 import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/DesignationRightsListResponse';
 import { User } from 'src/app/models/HttpResponses/User';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -24,6 +25,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   currentTheme = this.themeService.getTheme();
   currentDesignation: number;
   currentDesignationName: string;
+  rightId: number;
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
@@ -48,13 +50,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   showLoader = true;
   displayFilter = false;
+
+  // Modal
+  closeResult: string;
   /*Init*/
   constructor(
     private designationsService: DesignationService,
     private userService: UserService,
     private themeService: ThemeService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal
 
     ) {
       this.rowStart = 1;
@@ -225,7 +231,24 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
-  removeRight(id: string) {
-    console.log(id);
+  
+  confirmRemove(content, id) {
+    this.rightId = id;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // Remove the right
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any) {
+    console.log(reason);
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 }
