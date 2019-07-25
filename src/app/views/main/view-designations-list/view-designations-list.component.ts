@@ -4,7 +4,6 @@ import { DesignationListResponse } from '../../../models/HttpResponses/Designati
 import { DesignationList } from '../../../models/HttpResponses/DesignationList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
@@ -38,9 +37,6 @@ export class ViewDesignationsListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-
-  @ViewChild(ImageModalComponent, { static: true })
-  private imageModal: ImageModalComponent;
 
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
@@ -157,7 +153,7 @@ export class ViewDesignationsListComponent implements OnInit {
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.showingRecords = res.designationList.length;
-          this.totalShowing = +this.rowStart + +this.designationList.length - 1;
+          this.totalShowing = +this.rowStart + this.designationList.length - 1;
           this.paginateData();
         },
         msg => {
@@ -212,10 +208,15 @@ export class ViewDesignationsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
+  popClick(event) {
+    console.log(event.x);
+    console.log(event.y);
+  }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));
     document.getElementById('myPopup').style.top = document.getElementById('cursorX').nodeValue;
     document.getElementById('myPopup').style.left = document.getElementById('cursorY').nodeValue;
     document.getElementById('myPopup').hidden = false;
   }
+
 }

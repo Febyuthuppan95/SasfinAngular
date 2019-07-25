@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Config } from '../../assets/config.json';
+import {HttpClient} from '@angular/common/http';
+import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class RightService {
@@ -29,8 +30,8 @@ export class RightService {
       _orderByDirection: orderByDirection
     };
 
-    const promise = new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.test}/rights/list`;
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/rights/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -43,8 +44,6 @@ export class RightService {
           }
         );
     });
-
-    return promise;
   }
 
 }

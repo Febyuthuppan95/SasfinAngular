@@ -44,6 +44,7 @@ export class MainLayoutComponent implements OnInit {
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
+  sidebarCollapse: boolean;
 
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
@@ -81,6 +82,7 @@ export class MainLayoutComponent implements OnInit {
 
   collapseSidebar() {
     this.sidebar.collapse = !this.sidebar.collapse;
+    this.sidebarCollapse = this.sidebar.collapse;
   }
 
   showSnackBar(options: string) {

@@ -40,6 +40,7 @@ import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
+import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 
 // @ts-ignore
 @NgModule({
@@ -67,7 +68,8 @@ import {RightService} from './services/Right.Service';
     ViewDesignationsListComponent,
     ViewBackgroundsListComponent,
     SnackBarComponent,
-    AccountComponent
+    AccountComponent,
+    ViewDesignationsRightsListComponent
   ],
   imports: [
     BrowserModule,

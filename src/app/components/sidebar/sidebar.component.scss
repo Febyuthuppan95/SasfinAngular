@@ -1,11 +1,11 @@
 .offset-sidebar {
-  margin-top: 25px;
+  margin-top: 10px;
   margin-left: 10px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   width: auto;
-  height: calc(100% - 50px);
+  height: calc(100% - 20px);
 }
 
 .nav-item {
@@ -32,9 +32,45 @@
   background: #f2f2f2;
   color: #3877ff !important;
   border-radius: 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 .active-item i,
 span {
   color: #3877ff;
+}
+// Eathon Maritz
+// 17-07-19
+// Allows for sidebar collapsing
+.nav-item {
+  border-radius: 20px;
+}
+.nav-link {
+  border-radius: 20px;
+}
+.collapse-sidebar {
+  width: 65px !important;
+  margin-left: 20px !important;
+}
+.collapse-sidebar .nav-item span {
+  display: none;
+}
+.nav-item, .nav-item a {
+  height: 40px;
+}
+.nav-item a {
+  //vertical-align: middle;
+  padding-left: 12px !important;
+}
+
+.collapse-sidebar .nav-item .nav-link {
+  border-radius:50%;
+}
+.collapse-sidebar .nav-item {
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.col-lg-1 .sidebar {
+  margin: 0px !important;
 }
