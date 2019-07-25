@@ -48,7 +48,7 @@ export class MainLayoutComponent implements OnInit {
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
-  sidebarCollapse: boolean;
+  sidebarCollapse: boolean = true;
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
 

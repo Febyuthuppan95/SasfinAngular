@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let designation of designationList"  [ngbPopover]="popCont" popoverClass="ngbPopClass" [ngStyle]="" (click)="popClick($event, designation.designationId)">
+          <tr *ngFor="let designation of designationList"  [ngbPopover]="popCont" popoverClass="ngbPopClass" [ngStyle]="" (click)="popClick($event, designation.designationID, designation.name)">
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
@@ -92,7 +92,7 @@
 <app-modal-component></app-modal-component>
 <ng-template #popCont>
   <ul class="nav popBodyNav bg-transparent">
-    <li class="nav-item popnav ls-btn-hover-{{ currentTheme }} col-12" ><a [routerLink]="['/designation-rights', focusDesgination]" class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}"><span class="menu-title">{{focusDesgination}} Rights</span></a></li>
+    <li class="nav-item popnav ls-btn-hover-{{ currentTheme }} col-12" ><a [routerLink]="['/designation-rights',focusDesName, focusDesgination]" class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}"><span class="menu-title">{{focusDesName}} Rights</span></a></li>
     
   </ul>
 </ng-template>

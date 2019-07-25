@@ -10,7 +10,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <h4 class="card-title ls-text-{{ currentTheme }}">{{currentDesignation}} - Rights</h4>
+    <h4 class="card-title ls-text-{{ currentTheme }}">{{currentDesignationName}} - Rights</h4>
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -91,10 +91,10 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<ng-template #popCont>
+<!-- <ng-template #popCont>
   <ul>
     <li>Option 1</li>
     <li>Option 2</li>
   </ul>
-</ng-template>
+</ng-template> -->
 

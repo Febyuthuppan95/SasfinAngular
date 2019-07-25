@@ -22,7 +22,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   /* Initializing Variables */
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
-  currentDesignation = 'Designation';
+  currentDesignation: number;
+  currentDesignationName: string;
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
@@ -69,7 +70,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
       this.loadDesignationRights();
-      
     }
 
     @ViewChild(NotificationComponent, {static: true })
@@ -82,7 +82,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     });
     const currentDesignation = this.activatedRoute.paramMap
     .subscribe(params => {
-      this.currentDesignation = params.get('name');
+      this.currentDesignation = +params.get('id');
+      this.currentDesignationName = params.get('name');
       console.log(this.currentDesignation);
     });
   }
@@ -96,7 +97,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const dRModel: GetDesignationRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
-      specifcDesignationID: -1, // default
+      specifcDesignationID: this.currentDesignation, 
       rightName: this.rightName,
       filter: this.filter,
       orderBy: this.orderBy,
@@ -113,7 +114,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
         this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
-        console.log(res);
         this.paginateData();
       },
       msg => {
