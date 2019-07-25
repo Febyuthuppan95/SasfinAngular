@@ -64,6 +64,18 @@ td {
   width: 100%;
   padding: 25px;
 }
+.popBodyNav { 
+  list-style-type: none;
+  padding: 0px !important;
+}
+.popBodyNav .nav-link:hover {
+  color: white;
+  background: #4d83ff;
+  
+}
+.popover-body {
+  padding: 0px !important;
+}
 
 
 
