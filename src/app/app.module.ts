@@ -41,6 +41,8 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
+import { UserRightsListComponent } from './user-rights-list/user-rights-list.component';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 
 // @ts-ignore
 @NgModule({
@@ -69,7 +71,9 @@ import { ViewDesignationsRightsListComponent } from './views/main/view-designati
     ViewBackgroundsListComponent,
     SnackBarComponent,
     AccountComponent,
-    ViewDesignationsRightsListComponent
+    ViewDesignationsRightsListComponent,
+    UserRightsListComponent,
+    ViewUserRightsListComponent
   ],
   imports: [
     BrowserModule,
