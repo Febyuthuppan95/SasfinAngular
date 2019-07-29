@@ -12709,9 +12709,9 @@ input[type="button"].btn-block {
     display: flex !important;
     flex-basis: auto;
   }
-  .navbar-expand-lg .navbar-toggler {
+  /* .navbar-expand-lg .navbar-toggler {
     display: none;
-  }
+  } */
 }
 
 @media (max-width: 1199.98px) {
