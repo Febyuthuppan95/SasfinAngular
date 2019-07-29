@@ -3,6 +3,10 @@ import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
 import { environment } from 'src/environments/environment.js';
+import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
+import { UpdateDesignationright } from '../models/HttpRequests/UpdateDesignationRight.js';
+import { resolve } from 'dns';
+import { reject } from 'q';
 
 @Injectable()
 export class DesignationService {
@@ -46,9 +50,6 @@ export class DesignationService {
         );
     });
   }
-  /**
-   *
-   */
   public getDesignationRightsList(model: GetDesignationRightsList) {
     const json = {
       _userID: model.userID,
@@ -76,6 +77,27 @@ export class DesignationService {
       );
     });
     return promise;
+
+  }
+
+  public updateDesignationRight(model: UpdateDesignationright) {
+    const json = JSON.stringify(model);
+    console.log(json);
+    const promise = new Promise((resolve, reject) => {
+      this.httpClient.post(`${environment.ApiEndpoint}/designationrights/update`, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+  public addDesignationright(model: AddDesignationRight) {
 
   }
 
