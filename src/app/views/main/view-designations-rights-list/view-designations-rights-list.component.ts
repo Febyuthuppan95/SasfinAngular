@@ -172,20 +172,31 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.loadDesignationRights();
   }
   paginateData() {
-    let rowStart = 1;
-    let rowEnd = +this.rowCountPerPage;
-    const pageCount = +this.rowCount / +this.rowCountPerPage;
-    console.log(this.rowCountPerPage);
-    this.pages = Array<Pagination>();
+    console.log(this.rowCount);
+    if(this.rowCount > 0) {
+      let rowStart = 1;
+      let rowEnd = +this.rowCountPerPage;
+      const pageCount = +this.rowCount / +this.rowCountPerPage;
+      console.log(this.rowCountPerPage);
+      this.pages = Array<Pagination>();
 
-    for (let i = 0; i < pageCount; i++) {
+      for (let i = 0; i < pageCount; i++) {
+        const item = new Pagination();
+        item.page = i + 1;
+        item.rowStart = +rowStart;
+        item.rowEnd = +rowEnd;
+        this.pages[i] = item;
+        rowStart = +rowEnd + 1;
+        rowEnd += +this.rowCountPerPage;
+      }
+    } else {
+      this.rowStart = 0;
+      this.showingRecords = 1;
       const item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
-      rowStart = +rowEnd + 1;
-      rowEnd += +this.rowCountPerPage;
+      item.page = 1;
+      item.rowStart = 0;
+      item.rowEnd = 0;
+      this.pages[0] = item;
     }
     console.log(this.pages);
     this.updatePagination();
