@@ -41,7 +41,6 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
-import { UserRightsListComponent } from './user-rights-list/user-rights-list.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 
 // @ts-ignore
@@ -72,7 +71,6 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     SnackBarComponent,
     AccountComponent,
     ViewDesignationsRightsListComponent,
-    UserRightsListComponent,
     ViewUserRightsListComponent
   ],
   imports: [
