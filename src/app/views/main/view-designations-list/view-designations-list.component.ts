@@ -51,6 +51,7 @@ export class ViewDesignationsListComponent implements OnInit {
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
   focusDesgination: string;
+  focusDesName: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -215,12 +216,13 @@ export class ViewDesignationsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, id, name) {
     this.popOverX = event.x;
     this.popOverY = event.y;
     this.popConfig.placement = 'auto';
     this.focusDesgination = id;
-    console.log(this.popOver);
+    this.focusDesName = name;
+    console.log(this.focusDesgination);
   }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));

@@ -65,7 +65,18 @@ td {
   padding: 25px;
 }
 
-
+.mdi-close:hover {
+  color: #3877ff;
+}
+.mdi-close:focus {
+  color:gray;
+}
+.btn-success, .btn-danger {
+  border-color: #3877ff;
+}
+.btn-success:hover, .btn-danger:hover {
+  color: #3877ff;
+}
 
 
 

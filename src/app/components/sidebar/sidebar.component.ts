@@ -9,7 +9,7 @@ export class SidebarComponent implements OnInit {
   constructor() {}
 
   @Input() currentTheme = 'light';
-  @Input() collapse = false;
+  @Input() collapse = true;
   @Input() offcanvas = true;
   @Input() helpContext = false;
   innerWidth: any;

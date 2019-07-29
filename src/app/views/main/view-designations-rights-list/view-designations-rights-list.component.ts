@@ -9,6 +9,7 @@ import { GetDesignationRightsList } from 'src/app/models/HttpRequests/GetDesigna
 import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/DesignationRightsListResponse';
 import { User } from 'src/app/models/HttpResponses/User';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -22,7 +23,9 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   /* Initializing Variables */
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = this.themeService.getTheme();
-  currentDesignation = 'Designation';
+  currentDesignation: number;
+  currentDesignationName: string;
+  rightId: number;
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
@@ -47,13 +50,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   showLoader = true;
   displayFilter = false;
+
+  // Modal
+  closeResult: string;
   /*Init*/
   constructor(
     private designationsService: DesignationService,
     private userService: UserService,
     private themeService: ThemeService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal
 
     ) {
       this.rowStart = 1;
@@ -69,7 +76,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
       this.loadDesignationRights();
-      
     }
 
     @ViewChild(NotificationComponent, {static: true })
@@ -82,7 +88,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     });
     const currentDesignation = this.activatedRoute.paramMap
     .subscribe(params => {
-      this.currentDesignation = params.get('name');
+      this.currentDesignation = +params.get('id');
+      this.currentDesignationName = params.get('name');
       console.log(this.currentDesignation);
     });
   }
@@ -96,7 +103,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const dRModel: GetDesignationRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
-      specifcDesignationID: -1, // default
+      specifcDesignationID: this.currentDesignation, 
       rightName: this.rightName,
       filter: this.filter,
       orderBy: this.orderBy,
@@ -113,7 +120,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
         this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
-        console.log(res);
         this.paginateData();
       },
       msg => {
@@ -225,7 +231,24 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
-  removeRight(id: string) {
-    console.log(id);
+  
+  confirmRemove(content, id) {
+    this.rightId = id;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // Remove the right
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any) {
+    console.log(reason);
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 }

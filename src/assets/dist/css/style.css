@@ -14476,7 +14476,7 @@ a.close.disabled {
 }
 
 .popover-body {
-  padding: 0.5rem 0.75rem;
+  padding: 0 !important;
   color: #212529;
 }
 
