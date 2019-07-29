@@ -1,8 +1,8 @@
 import {Outcome} from './Outcome';
-import {DesignationRightsList} from './DesignationRightsList';
+import {UserRightsList} from './UserRightsList';
 
 export class DesignationRightsListResponse {
   outcome: Outcome;
   rowCount: number;
-  designationRightsList: DesignationRightsList[];
+  userRightsList: UserRightsList[];
 }

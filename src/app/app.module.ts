@@ -90,7 +90,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     NgbModule,
     NgxPaginationModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService, RightService],
+  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService, RightService, UserService],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent
