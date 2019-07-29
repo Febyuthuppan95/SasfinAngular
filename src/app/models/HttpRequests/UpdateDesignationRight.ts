@@ -1,5 +1,5 @@
-export class UpdateDesignationright {
+export class UpdateDesignationRight {
 userID: number;
 designationRightID: number;
-rightname: string;
+rightName: string;
 }

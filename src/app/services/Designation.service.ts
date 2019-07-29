@@ -4,9 +4,7 @@ import {Injectable} from '@angular/core';
 import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
 import { environment } from 'src/environments/environment.js';
 import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
-import { UpdateDesignationright } from '../models/HttpRequests/UpdateDesignationRight.js';
-import { resolve } from 'dns';
-import { reject } from 'q';
+import { UpdateDesignationRight } from '../models/HttpRequests/UpdateDesignationRight.js';
 
 @Injectable()
 export class DesignationService {
@@ -36,7 +34,7 @@ export class DesignationService {
     };
 
     return new Promise((resolve, reject) => {
-      const apiURL = `${Config.ApiEndpoint.local}/designations/list`;
+      const apiURL = `${environment.ApiEndpoint}/designations/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -80,11 +78,11 @@ export class DesignationService {
 
   }
 
-  public updateDesignationRight(model: UpdateDesignationright) {
-    const json = JSON.stringify(model);
+  public updateDesignationRight(model: UpdateDesignationRight) {
+    const json = JSON.parse(JSON.stringify(model));
     console.log(json);
     const promise = new Promise((resolve, reject) => {
-      this.httpClient.post(`${environment.ApiEndpoint}/designationrights/update`, json)
+      this.httpClient.post(`${environment.ApiEndpoint}/designationRights/update`, json)
       .toPromise()
       .then(
         res => {

@@ -1,7 +1,8 @@
 
 export class DesignationRightsList {
-  rowNum: string;
-  rightID: string;
+  rowNum: number;
+  designationRightID: number;
+  rightID: number;
   name: string;
   description: string;
 }

@@ -10,6 +10,8 @@ import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/Desi
 import { User } from 'src/app/models/HttpResponses/User';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { UpdateDesignationRight } from 'src/app/models/HttpRequests/UpdateDesignationRight';
+import { DesignationRightReponse } from 'src/app/models/HttpResponses/DesignationRightResponse';
 
 
 
@@ -103,7 +105,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const dRModel: GetDesignationRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
-      specifcDesignationID: this.currentDesignation, 
+      specifcDesignationID: this.currentDesignation,
       rightName: this.rightName,
       filter: this.filter,
       orderBy: this.orderBy,
@@ -115,6 +117,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
         // Process Success
+        console.log(res.designationRightsList);
         this.designationRightsList = res.designationRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -129,7 +132,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-
       }
     );
   }
@@ -231,24 +233,48 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
-  
-  confirmRemove(content, id) {
+
+  confirmRemove(content, id, Name) {
     this.rightId = id;
+    this.rightName = Name;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      console.log(result);
+      console.log(this.rightName);
+      this.removeRight(this.rightId, this.rightName);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  private getDismissReason(reason: any) {
-    console.log(reason);
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
+  // private getDismissReason(reason: any) {
+  //   console.log(reason);
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return  `with: ${reason}`;
+  //   }
+  // }
+  private removeRight(id: number, name: string) {
+    const requestModel: UpdateDesignationRight = {
+      userID: this.currentUser.userID,
+      designationRightID: id,
+      rightName: name
+    };
+    const result = this.designationsService
+    .updateDesignationRight(requestModel).then(
+      (res: DesignationRightReponse) => {
+        console.log(res);
+        this.loadDesignationRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 }
