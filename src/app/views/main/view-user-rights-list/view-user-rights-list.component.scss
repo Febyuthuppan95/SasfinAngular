@@ -1,0 +1,143 @@
+//ccs for the table
+.form-control {
+  border: 1px rgba(30, 30, 30, 0.2) solid;
+}
+
+.form-control:focus {
+  border: 1px #4d83ff solid;
+
+}
+
+.active-page {
+  background: #4d83ff;
+  color: #f2f2f2;
+}
+
+.page-link {
+  border: none;
+  border-radius: 0;
+}
+
+.page-item {
+  border: none;
+  border-radius: 0;
+}
+
+td {
+  overflow-x: auto;
+}
+
+.btn-sort {
+  padding: 0;
+  margin: 0;
+  width: 115%;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.btn-sort>p {
+  display: inline
+}
+
+.btn-sort:hover {
+  color: #4d83ff;
+}
+
+.hover-pointer {
+  cursor: pointer;
+}
+
+.order-active {
+  color: #4d83ff !important;
+}
+
+.order-not-active {
+  color: #333333;
+}
+
+.table {
+  overflow-x: auto;
+}
+
+.ls-card-body {
+  width: 100%;
+  padding: 25px;
+}
+
+.mdi-close:hover {
+  color: #3877ff;
+}
+.mdi-close:focus {
+  color:gray;
+}
+.btn-success, .btn-danger {
+  border-color: #3877ff;
+}
+.btn-success:hover, .btn-danger:hover {
+  color: #3877ff;
+}
+
+
+
+
+
+
+
+//brandon's css
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+tr {
+  cursor: pointer;
+}
