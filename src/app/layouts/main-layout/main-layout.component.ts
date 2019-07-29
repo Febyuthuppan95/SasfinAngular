@@ -40,9 +40,9 @@ export class MainLayoutComponent implements OnInit {
 
   @ViewChild(SnackBarComponent, { static: true })
   private snackBar: SnackBarComponent;
-  
-  
-  
+
+
+
 
   currentTheme = 'light';
   currentBackground = this.themeService.getBackground();
@@ -79,7 +79,6 @@ export class MainLayoutComponent implements OnInit {
     if (window.innerWidth <= 1200) {
       // this.sidebarCollapse = true;
     }
-    console.log(this.innerWidth);
   }
   openEditTile() {
     this.editSidebar.show = true;
@@ -93,7 +92,7 @@ export class MainLayoutComponent implements OnInit {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
     this.footer.currentTheme = this.currentTheme;
-    
+
   }
 
   collapseSidebar() {
