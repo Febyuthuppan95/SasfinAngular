@@ -14237,6 +14237,7 @@ a.close.disabled {
 }
 
 .tooltip .arrow {
+  display: none;
   position: absolute;
   display: block;
   width: 0.8rem;
@@ -14318,6 +14319,13 @@ a.close.disabled {
   background-color: #000;
   border-radius: 0.25rem;
 }
+/* :root {
+  --x: 100px;
+  --y: 100px;
+}
+.tbodyPop ngb-popover-window {
+  transform: translate(var(--x), var(--y)) !important;
+} */
 
 .popover {
   position: absolute;
@@ -14350,7 +14358,7 @@ a.close.disabled {
 
 .popover .arrow {
   position: absolute;
-  display: block;
+  display: none;
   width: 1rem;
   height: 0.5rem;
   margin: 0 0.3rem;

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DesignationService } from 'src/app/services/Designation.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -62,7 +63,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private themeService: ThemeService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private location: Location
 
     ) {
       this.rowStart = 1;
@@ -82,7 +84,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
-
   ngOnInit() {
     const themeObservable = this.themeService.getCurrentTheme();
     themeObservable.subscribe((themeData: string) => {
@@ -173,7 +174,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
   paginateData() {
     console.log(this.rowCount);
-    if(this.rowCount > 0) {
+    if (this.rowCount > 0) {
       let rowStart = 1;
       let rowEnd = +this.rowCountPerPage;
       const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -287,5 +288,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
+  }
+  private addRight() {
+    console.log('adding right');
+  }
+  backToDesignations() {
+    this.location.back();
   }
 }

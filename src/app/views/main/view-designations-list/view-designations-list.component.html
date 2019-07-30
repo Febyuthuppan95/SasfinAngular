@@ -1,5 +1,5 @@
 <div id="myPopup" hidden="true" style="position:absolute; background:purple;" height="400px" width="400px">this is me getting frustrated!</div>
-<div class="shadow tile ls-tile-{{ currentTheme }}">
+<div class="shadow tile ls-tile-{{ currentTheme }}" (contextMenu)="closeContextMenu()" oncontextmenu="return false;">
     <div class="">
   <div class="ls-card-body">
     <div class="float-right">
@@ -54,8 +54,8 @@
 
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let designation of designationList"  [ngbPopover]="popCont" popoverClass="ngbPopClass" [ngStyle]="" (click)="popClick($event, designation.designationID, designation.name)">
+        <tbody class="tbodyPop" >
+          <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationId, designation.name)">
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
@@ -90,10 +90,11 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<ng-template #popCont>
+<!-- <ng-template #popCont >
   <div class="popBodyNav">
     <a [routerLink]="['/designation-rights',focusDesName, focusDesgination]" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">{{focusDesName}} Rights</span></a>
     <a  class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Other Rights</span></a>
   </div>
-  
-</ng-template>
+</ng-template> -->
+
+<app-context-menu [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [designationId]="focusDesgination" [designationName]="focusDesName"></app-context-menu>

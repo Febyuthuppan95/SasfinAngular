@@ -42,8 +42,6 @@ export class MainLayoutComponent implements OnInit {
   private snackBar: SnackBarComponent;
 
 
-
-
   currentTheme = 'light';
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;

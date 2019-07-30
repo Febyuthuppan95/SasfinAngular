@@ -7,7 +7,8 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -39,14 +40,17 @@ export class ViewDesignationsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  @ViewChild('popCont', {static: false})
-  private popOver: ElementRef;
+  @ViewChild(ContextMenuComponent, {static: true } )
+  private contextmenu: ContextMenuComponent;
 
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
+  // popOverX: number;
+  // popOverY: number;
+  contextMenu = false;
+  contextMenuX = 0;
+  contextMenuY = 0;
   
-  popOverX: number;
-  popOverY: number;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
@@ -217,12 +221,26 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    this.popOverX = event.x;
-    this.popOverY = event.y;
-    this.popConfig.placement = 'auto';
+    // this.popOverX = event.x;
+    // this.popOverY = event.y;
+    // this.contextmenu.currentTheme = this.currentTheme;
+    // this.contextmenu.designationId = id;
+    // this.contextmenu.designationName = name;
+    this.contextMenuX = event.x;
+    this.contextMenuY = event.y;
+    this.contextMenu = true;
+    // let popDiv = document.getElementsByClassName('.popover') as HTMLCollectionOf<HTMLElement>;
+    // console.log(popDiv);
+    // popDiv[0].style.transform = 'translate(this.popOverX, this.popOverY);';
+    // this.popConfig.placement = 'auto';
     this.focusDesgination = id;
     this.focusDesName = name;
-    console.log(this.focusDesgination);
+    // console.log(this.popOverX);
+  }
+  closeContextMenu()
+  {
+    this.contextMenu = false;
+    console.log(this.contextMenu);
   }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));
