@@ -48,16 +48,20 @@ export class MainLayoutComponent implements OnInit {
   offcanvasToggle: boolean;
   sidebarCollapse: boolean = true;
   innerWidth: any;
+  tableContextMenu: boolean;
   @HostListener('window:resize', ['$event'])
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     const themeObserver = this.themeService.getCurrentTheme();
     const backgroundObserver = this.themeService.getBackgroundUser();
-
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
+    });
+    const menuObsever = this.themeService.isContextMenu();
+    menuObsever.subscribe((menu: boolean) => {
+      this.tableContextMenu = menu;
     });
     if (this.cookieService.get('currentUser') != null) {
       backgroundObserver.subscribe((result: BackgroundResponse) => {
@@ -76,6 +80,13 @@ export class MainLayoutComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     if (window.innerWidth <= 1200) {
       // this.sidebarCollapse = true;
+    }
+  }
+  closeTableContextMenu() {
+    if (this.tableContextMenu) {
+      console.log('closing...');
+      this.themeService.toggleContextMenu(false);
+      
     }
   }
   openEditTile() {

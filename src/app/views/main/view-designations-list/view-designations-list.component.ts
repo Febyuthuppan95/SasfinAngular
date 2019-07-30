@@ -87,6 +87,14 @@ export class ViewDesignationsListComponent implements OnInit {
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
+    const menuObserver = this.themeService.isContextMenu();
+    menuObserver.subscribe((menu: boolean) => {
+      console.log(menu);
+      this.contextMenu = menu;
+    });
+    // this.themeService.isContextMenu().subscribe((menu: boolean) => {
+    //   this.contextMenu = menu;
+    // });
   }
   paginateData() {
     let rowStart = 1;
@@ -229,6 +237,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.contextMenuX = event.x;
     this.contextMenuY = event.y;
     this.contextMenu = true;
+    this.themeService.toggleContextMenu(this.contextMenu);
     // let popDiv = document.getElementsByClassName('.popover') as HTMLCollectionOf<HTMLElement>;
     // console.log(popDiv);
     // popDiv[0].style.transform = 'translate(this.popOverX, this.popOverY);';
@@ -236,11 +245,6 @@ export class ViewDesignationsListComponent implements OnInit {
     this.focusDesgination = id;
     this.focusDesName = name;
     // console.log(this.popOverX);
-  }
-  closeContextMenu()
-  {
-    this.contextMenu = false;
-    console.log(this.contextMenu);
   }
   popupMenu() {
     // alert(document.getElementById(document.getSelection));

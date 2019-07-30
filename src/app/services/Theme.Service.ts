@@ -22,6 +22,7 @@ export class ThemeService {
   private theme = 'light';
   private toggleHelpValue = false;
   private background = '';
+  private contextMenu: boolean = false;
 
   /**
    * getTheme
@@ -119,5 +120,17 @@ export class ThemeService {
         '/'
       );
 
+  }
+  public toggleContextMenu(setting: boolean): void {
+    this.contextMenu = setting;
+    console.log('context menu is: ', this.contextMenu);
+  }
+  public isContextMenu(): any {
+    const isMenu = new Observable(observer => {
+      setInterval(() => {
+        observer.next(this.contextMenu);
+      }, 500);
+    });
+    return isMenu;
   }
 }
