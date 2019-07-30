@@ -5,7 +5,6 @@ import { ViewForgotPasswordComponent } from './views/account/view-forgot-passwor
 import { ViewLoginComponent } from './views/account/view-login/view-login.component';
 import { ViewUserListComponent } from './views/main/view-user-list/view-user-list.component';
 import { ViewChangePasswordComponent } from './views/account/view-change-password/view-change-password.component';
-
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
@@ -15,6 +14,7 @@ import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list
 import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
 import { AccountComponent } from './layouts/account/account.component';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
+import {ViewUserRightsListComponent} from './views/main/view-user-rights-list/view-user-rights-list.component';
 
 const routes: Routes = [
   {
@@ -40,7 +40,8 @@ const routes: Routes = [
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
-          { path: 'rights', component: ViewRightsListComponent }
+          { path: 'rights', component: ViewRightsListComponent },
+          { path: 'UserRights', component: ViewUserRightsListComponent }
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent }

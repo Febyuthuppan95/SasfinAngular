@@ -1,13 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../../models/HttpResponses/User';
 import {Pagination} from '../../../models/Pagination';
-import {DesignationService} from '../../../services/Designation.service';
 import {UserService} from '../../../services/User.Service';
 import {ThemeService} from '../../../services/Theme.Service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NotificationComponent} from '../../../components/notification/notification.component';
-import {GetDesignationRightsList} from '../../../models/HttpRequests/GetDesignationRightsList';
 import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
 import {UpdateDesignationRight} from '../../../models/HttpRequests/UpdateDesignationRight';
 import {DesignationRightReponse} from '../../../models/HttpResponses/DesignationRightResponse';
@@ -115,11 +113,11 @@ export class ViewUserRightsListComponent implements OnInit {
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
-    this.userRightService.
+    this.userRightService
       .getUserRightList(dRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
-        console.log(res.designationRightsList);
+        console.log(res.userRightsList);
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -175,7 +173,7 @@ export class ViewUserRightsListComponent implements OnInit {
   }
   paginateData() {
     console.log(this.rowCount);
-    if(this.rowCount > 0) {
+    if (this.rowCount > 0) {
       let rowStart = 1;
       let rowEnd = +this.rowCountPerPage;
       const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -253,7 +251,7 @@ export class ViewUserRightsListComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       console.log(result);
       console.log(this.rightName);
-      this.removeRight(this.rightId, this.rightName);
+      this.removeUserRight(this.rightId, this.rightName);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -270,17 +268,17 @@ export class ViewUserRightsListComponent implements OnInit {
   //     return  `with: ${reason}`;
   //   }
   // }
-  private removeRight(id: number, name: string) {
+  private removeUserRight(id: number, name: string) {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
       rightName: name
     };
-    const result = this.designationsService
-      .updateDesignationRight(requestModel).then(
+    const result = this.userRightService
+      .updateUserRight(requestModel).then(
         (res: DesignationRightReponse) => {
           console.log(res);
-          this.loadDesignationRights();
+          this.loadUserRights();
         },
         msg => {
           this.notify.errorsmsg(
