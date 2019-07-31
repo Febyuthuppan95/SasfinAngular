@@ -44,7 +44,7 @@ export class ViewDesignationsListComponent implements OnInit {
 
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
-  
+
   popOverX: number;
   popOverY: number;
 

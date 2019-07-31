@@ -1,8 +1,6 @@
 import {HttpClient} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
-import {GetDesignationRightsList} from '../models/HttpRequests/GetDesignationRightsList';
 import {UpdateDesignationRight} from '../models/HttpRequests/UpdateDesignationRight';
 import {GetUserRightsList} from '../models/HttpRequests/GetUserRightsList';
 
@@ -51,7 +49,7 @@ export class UserRightService {
   //   });
   // }
 
-  public getUserRightList(model: GetUserRightsList) {
+  public getUserRightsList(model: GetUserRightsList) {
     const json = {
       _userID: model.userID,
       _specificRightID: model.specificRightID,

@@ -1,5 +1,4 @@
 import {HttpClient} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
 import { environment } from 'src/environments/environment.js';
@@ -62,7 +61,7 @@ export class DesignationService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/designationrights/list`;
+      const apiURL = `${environment.ApiEndpoint}/designationRights/list`;
       this.httpClient.post(apiURL, json)
       .toPromise()
       .then(

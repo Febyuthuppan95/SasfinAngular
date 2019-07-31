@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
-import { Injectable } from '@angular/core';
-import { User } from '../models/HttpResponses/User';
-import { Router } from '@angular/router';
-import { Config } from '../../assets/config.json';
-import { environment } from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
+import {Injectable} from '@angular/core';
+import {User} from '../models/HttpResponses/User';
+import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class UserService {
@@ -125,10 +124,10 @@ export class UserService {
       _newPass: newPass
     };
 
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const apiURL = `${
         environment.ApiEndpoint
-      }/account/request/changepassword`;
+        }/account/request/changepassword`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -141,8 +140,6 @@ export class UserService {
           }
         );
     });
-
-    return promise;
   }
 
 
@@ -171,7 +168,7 @@ export class UserService {
       _orderDirection: orderDirection
     };
 
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/list`;
       this.httpClient
         .post(apiURL, requestModel)
@@ -185,7 +182,5 @@ export class UserService {
           }
         );
     });
-
-    return promise;
   }
 }
