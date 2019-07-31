@@ -13,6 +13,10 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateDesignationRight } from 'src/app/models/HttpRequests/UpdateDesignationRight';
 import { DesignationRightReponse } from 'src/app/models/HttpResponses/DesignationRightResponse';
+import { RightList } from 'src/app/models/HttpResponses/RightList';
+import { RightService } from 'src/app/services/Right.Service';
+import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
+
 
 
 
@@ -33,6 +37,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   showingPages: Pagination[];
   lastPage: Pagination;
   designationRightsList: DesignationRightsList[];
+  rightsList: RightList[];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -64,7 +69,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
-    private location: Location
+    private location: Location,
+    private rightsService: RightService
 
     ) {
       this.rowStart = 1;
@@ -95,6 +101,30 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.currentDesignationName = params.get('name');
       console.log(this.currentDesignation);
     });
+
+    this.rightsService
+    .getRightList(
+      this.filter,
+      this.currentUser.userID,
+      -1,
+      this.rightName,
+      this.rowStart,
+      this.rowEnd,
+      this.orderBy,
+      this.orderByDirection
+    )
+    .then(
+      (res: RightListResponse) => {
+        this.rightsList = res.rightList;
+      },
+      msg => {
+        this.showLoader = false;
+        // this.notify.errorsmsg(
+        //   'Server Error',
+        //   'Something went wrong while trying to access the server.'
+        // );
+      }
+    );
   }
   /**
    * Load Designation Rights
@@ -259,16 +289,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  // private getDismissReason(reason: any) {
-  //   console.log(reason);
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
+
+  confirmAdd(add) {
+    this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      console.log(result);
+      this.addRight(this.rightId, this.rightName);
+      // Remove the right
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
   private removeRight(id: number, name: string) {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
@@ -289,7 +320,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       }
     );
   }
-  private addRight() {
+  private addRight(id, name) {
     console.log('adding right');
   }
   backToDesignations() {

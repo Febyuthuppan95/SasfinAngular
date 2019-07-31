@@ -9,6 +9,9 @@ import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
+import { Subscription } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -20,7 +23,7 @@ export class ViewDesignationsListComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private designationService: DesignationService,
-    private popConfig: NgbPopoverConfig
+    private cookieService: CookieService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -35,6 +38,10 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
+    // this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
+    //   console.log(result);
+    //   this.sidebarCollapsed = result;
+    // });
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -50,7 +57,7 @@ export class ViewDesignationsListComponent implements OnInit {
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
-  
+  sidebarCollapsed = true;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme = 'light';
@@ -82,17 +89,26 @@ export class ViewDesignationsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
 
+  subscription: Subscription;
+
   ngOnInit() {
     const themeObserver = this.themeService.getCurrentTheme();
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
-    const menuObserver = this.themeService.isContextMenu();
-    menuObserver.subscribe((menu: boolean) => {
-      this.contextMenu = menu;
-    });
-    // this.themeService.isContextMenu().subscribe((menu: boolean) => {
-    //   this.contextMenu = menu;
+    // this.themeService.subjectSidebarEmit$.subscribe(result => {
+    //   this.sidebarCollapsed = result;
+    //   console.log(result);
+    // });
+
+    // const sidebar = this.themeService.getSidebarCollapse();
+    // sidebar.subscribe(side => {
+    //   console.log(side);
+    //   this.sidebarCollapsed = side;
+    // });
+    // const menuObserver = this.themeService.isContextMenu();
+    // menuObserver.subscribe((menu: ContextMenu) => {
+    //   this.contextMenu = menu.showMenu;
     // });
   }
   paginateData() {
@@ -228,10 +244,27 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    this.contextMenuX = event.x - 50;
-    this.contextMenuY = event.y;
-    this.contextMenu = true;
+    console.log(this.cookieService.get('sidebar'));
+    this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
+    console.log(this.sidebarCollapsed);
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX - 270;
+      this.contextMenuY = event.clientY - 45;
+    }
+
     this.focusDesgination = id;
     this.focusDesName = name;
-    this.themeService.toggleContextMenu(this.contextMenu);
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
 }

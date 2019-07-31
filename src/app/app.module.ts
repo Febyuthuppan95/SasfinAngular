@@ -10,6 +10,7 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
+import { MenuService } from './services/menu.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -90,7 +91,7 @@ import { ContextMenuComponent } from './components/context-menu/context-menu.com
     NgbModule,
     NgxPaginationModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService, RightService],
+  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService, DesignationService, RightService, MenuService],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent

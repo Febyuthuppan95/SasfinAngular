@@ -1,28 +1,45 @@
-import { Injectable } from '@angular/core';
+import { Injectable, HostListener, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Config } from '../../assets/config.json';
 import { HttpClient } from '@angular/common/http';
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
 import { User } from 'src/app/models/HttpResponses/User.js';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { ContextMenu } from '../models/StateModels/ContextMenu';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient
-
-    ) {}
+    ) {
+    }
 
   private theme = 'light';
   private toggleHelpValue = false;
   private background = '';
-  private contextMenu: boolean = false;
+  private contMenu = false;
+  private contMenuX = 0;
+  private contMenuY = 0;
+  private contMenuTable = false;
+  private sidebarCollapsed = true;
+  // Subjects
+  private subjectSidebar = new Subject<boolean>();
+
+  // Observable stream
+  subjectSidebarEmit$ = this.subjectSidebar.asObservable();
+
+  public setSidebar(source: boolean) {
+    this.subjectSidebar.next(source);
+    console.log(source);
+  }
 
   /**
    * getTheme
@@ -75,6 +92,7 @@ export class ThemeService {
         observer.next(this.toggleHelpValue);
       }, 500);
     });
+
     return toggleHelpObserver;
   }
 
@@ -122,15 +140,45 @@ export class ThemeService {
 
   }
   public toggleContextMenu(setting: boolean): void {
-    this.contextMenu = setting;
-    console.log('context menu is: ', this.contextMenu);
+    // if(this.contMenuTable && setting) { // Clicked on table
+    //   console.log('table');
+    //   this.contMenu = true;
+    // } else {
+    //   console.log('not table');
+    //   this.contMenu = false;
+    //   this.contMenuTable = false;
+    // }
+    this.contMenu = setting;
   }
-  public isContextMenu(): any {
-    const isMenu = new Observable(observer => {
+  // Clicked on table
+  public toggleContTable(): void {
+    this.contMenuTable = true;
+  }
+  public isTable(): Observable<any> {
+    return new Observable(observer => {
       setInterval(() => {
-        observer.next(this.contextMenu);
+        observer.next(this.contMenuTable);
       }, 500);
     });
-    return isMenu;
   }
+  public isContextMenu(): Observable<any> {
+    return new Observable(observer => {
+      setInterval(() => {
+        observer.next(this.contMenu);
+      }, 500);
+    });
+    // return isMenu;
+  }
+ public setSidebarCollapse(collapse: boolean) {
+   console.log('set to...', collapse);
+   this.sidebarCollapsed = collapse;
+ }
+ public getSidebarCollapse(): any {
+   const result = new Observable(observer => {
+    setInterval(() => {
+      observer.next(this.sidebarCollapsed);
+    }, 500);
+  });
+  return result;
+ }
 }

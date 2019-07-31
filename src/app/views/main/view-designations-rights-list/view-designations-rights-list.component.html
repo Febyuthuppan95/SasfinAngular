@@ -10,8 +10,8 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentDesignationName}} - Rights</h4><span style="margin-left:10px;"><button (click)="addRight()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div> 
-    
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentDesignationName}} - Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -112,4 +112,22 @@
     <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
   </div>
 </ng-template>
-
+<ng-template #add let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Right</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <form class="form-group">
+      <select class="form-control col-sm-6" multiple="multiple">
+        <option [ngValue]="right" *ngFor="let right of rightsList"><span class="checkbox"></span>{{right.name}}</option>
+      </select>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
+    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
+  </div>
+</ng-template>
