@@ -5,18 +5,20 @@
   border:1px solid #edf2f2;
   border-radius: 10px;
   background-color: #4d83ff;
+  color: #fff;
 }
 .contextmenu .card:hover {
   border:1px solid #4d83ff;
   border-radius: 10px;
   background-color: #fff;
+  color: #4d83ff;
 }
 .contextmenu a {
   color:#fff;
   border-radius: 10px;
 }
-.contextmenu a:hover {
-  background-color: #fff;
-  color:#4d83ff;
-  transition: 0.3s;
-}
+// .contextmenu a:hover {
+//   background-color: #fff;
+//   color:#4d83ff;
+//   transition: 0.3s;
+// }

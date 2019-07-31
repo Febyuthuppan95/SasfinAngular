@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-context-menu',
@@ -7,7 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ContextMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    ) { }
   @Input() x = 0;
   @Input() y = 0;
   @Input() designationId = 0;
@@ -15,7 +17,6 @@ export class ContextMenuComponent implements OnInit {
   @Input() currentTheme = '';
 
   ngOnInit() {
-
   }
 
 }

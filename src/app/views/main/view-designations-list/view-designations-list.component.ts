@@ -89,7 +89,6 @@ export class ViewDesignationsListComponent implements OnInit {
     });
     const menuObserver = this.themeService.isContextMenu();
     menuObserver.subscribe((menu: boolean) => {
-      console.log(menu);
       this.contextMenu = menu;
     });
     // this.themeService.isContextMenu().subscribe((menu: boolean) => {
@@ -229,28 +228,10 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    // this.popOverX = event.x;
-    // this.popOverY = event.y;
-    // this.contextmenu.currentTheme = this.currentTheme;
-    // this.contextmenu.designationId = id;
-    // this.contextmenu.designationName = name;
-    this.contextMenuX = event.x;
+    this.contextMenuX = event.x - 50;
     this.contextMenuY = event.y;
     this.contextMenu = true;
-    this.themeService.toggleContextMenu(this.contextMenu);
-    // let popDiv = document.getElementsByClassName('.popover') as HTMLCollectionOf<HTMLElement>;
-    // console.log(popDiv);
-    // popDiv[0].style.transform = 'translate(this.popOverX, this.popOverY);';
-    // this.popConfig.placement = 'auto';
     this.focusDesgination = id;
     this.focusDesName = name;
-    // console.log(this.popOverX);
-  }
-  popupMenu() {
-    // alert(document.getElementById(document.getSelection));
-    document.getElementById('myPopup').style.top = document.getElementById('cursorX').nodeValue;
-    document.getElementById('myPopup').style.left = document.getElementById('cursorY').nodeValue;
-    document.getElementById('myPopup').hidden = false;
-  }
-
+    this.themeService.toggleContextMenu(this.contextMenu);
 }
