@@ -103,7 +103,7 @@ export class ViewDesignationsListComponent implements OnInit {
     });
   }
   paginateData() {
-    let rowStart = 1;
+    let rowStart = this.rowStart;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
     this.pages = Array<Pagination>();
@@ -117,7 +117,6 @@ export class ViewDesignationsListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
-
     this.updatePagination();
   }
 
@@ -177,11 +176,16 @@ export class ViewDesignationsListComponent implements OnInit {
         (res: DesignationListResponse) => {
           console.log(res.rowCount);
           if (res.rowCount === 0) {
+            this.rowStart = 0;
             this.showLoader = false;
             this.noData = true;
+            this.rowCount = 0;
+            this.showingRecords = 1;
+            this.totalShowing = 0;
           } else {
             this.noData = false;
             this.designationList = res.designationList;
+            console.log(this.designationList);
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;
@@ -242,6 +246,7 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
+    console.log(id);
     this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;

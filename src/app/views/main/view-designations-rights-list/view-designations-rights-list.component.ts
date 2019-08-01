@@ -150,6 +150,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
+          this.rowStart = 0;
+          this.showLoader = false;
+          this.noData = true;
+          this.rowCount = 0;
+          this.showingRecords = 1;
+          this.totalShowing = 0;
         } else {
         this.noData = false;
         // Process Success

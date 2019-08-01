@@ -54,7 +54,7 @@
           </tr>
         </thead>
         <tbody class="tbodyPop" *ngIf="(!noData)" >
-            <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationId, designation.name)">
+            <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationID, designation.name)">
               <td scope="col">{{designation.rowNum}}</td>
               <td scope="col">{{designation.name}}</td>
               <td scope="col">{{designation.description}}</td>
