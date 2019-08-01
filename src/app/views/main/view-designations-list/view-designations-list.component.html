@@ -51,14 +51,20 @@
                 </span>
               </button>
             </th>
-
           </tr>
         </thead>
-        <tbody class="tbodyPop" >
-          <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationId, designation.name)">
-            <td scope="col">{{designation.rowNum}}</td>
-            <td scope="col">{{designation.name}}</td>
-            <td scope="col">{{designation.description}}</td>
+        <tbody class="tbodyPop" *ngIf="(!noData)" >
+            <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationId, designation.name)">
+              <td scope="col">{{designation.rowNum}}</td>
+              <td scope="col">{{designation.name}}</td>
+              <td scope="col">{{designation.description}}</td>
+            </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">Not found..</td>
+            <td scope="col"></td>
           </tr>
         </tbody>
       </table>

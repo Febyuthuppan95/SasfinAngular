@@ -105,7 +105,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody *ngIf="(!noData)">
           <tr *ngFor="let user of userList" class="userRecord">
             <td>{{user.rowNum}}</td>
             <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
@@ -119,6 +119,13 @@
             <td>{{user.designation}}</td>
             <td><span class="badge" [class.badge-success]="user.status == 'Active'"
                 [class.badge-danger]="user.status == 'Inactive'">{{user.status}}</span></td>
+          </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">No data to display..</td>
+            <td scope="col"></td>
           </tr>
         </tbody>
       </table>

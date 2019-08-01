@@ -55,7 +55,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   orderByDirection: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
-
+  noData = false;
   showLoader = true;
   displayFilter = false;
 
@@ -147,6 +147,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+        this.noData = false;
         // Process Success
         console.log(res.designationRightsList);
         this.designationRightsList = res.designationRightsList;
@@ -155,6 +160,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.showingRecords = res.designationRightsList.length;
         this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
         this.paginateData();
+        }
       },
       msg => {
         // Process Failure

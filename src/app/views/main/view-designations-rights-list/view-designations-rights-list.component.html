@@ -55,12 +55,19 @@
 
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="(!noData)">
           <tr *ngFor="let designation of designationRightsList" >
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
             <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td>
+          </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">No data to display..</td>
+            <td scope="col"></td>
           </tr>
         </tbody>
       </table>

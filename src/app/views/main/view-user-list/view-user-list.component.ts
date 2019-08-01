@@ -68,7 +68,7 @@ export class ViewUserListComponent implements OnInit {
   orderDirection: string;
   totalShowing: number;
   orderIndicator = 'Surname_ASC';
-
+  noData = false;
   showLoader = true;
   displayFilter = false;
 
@@ -163,13 +163,18 @@ export class ViewUserListComponent implements OnInit {
               }/public/images/profile/${user.profileImage}`;
             }
           }
-
-          this.userList = res.userList;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.showingRecords = res.userList.length;
-          this.totalShowing = +this.rowStart + +this.userList.length - 1;
-          this.paginateData();
+          if (res.rowCount === 0) {
+            this.noData = true;
+            this.showLoader = false;
+          } else {
+            this.noData = false;
+            this.userList = res.userList;
+            this.rowCount = res.rowCount;
+            this.showLoader = false;
+            this.showingRecords = res.userList.length;
+            this.totalShowing = +this.rowStart + +this.userList.length - 1;
+            this.paginateData();
+          }
         },
         msg => {
           this.showLoader = false;

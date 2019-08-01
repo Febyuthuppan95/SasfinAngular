@@ -59,6 +59,7 @@ export class MainLayoutComponent implements OnInit {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
+    this.cookieService.set('sidebar', 'true');
     // const menuObsever = this.themeService.isContextMenu();
     // menuObsever.subscribe((menu: boolean) => {
     //   this.tableContextMenu = menu;
@@ -82,7 +83,6 @@ export class MainLayoutComponent implements OnInit {
       this.themeService.toggleContextMenu(false);
     }
     this.themeService.isContextMenu().subscribe((context: boolean) => this.tableContextMenu = context);
-    console.log(this.tableContextMenu);
   }
   openEditTile() {
     this.editSidebar.show = true;
@@ -101,10 +101,11 @@ export class MainLayoutComponent implements OnInit {
 
   collapseSidebar() {
 
-    console.log('lcicked');
+
     this.sidebar.collapse = !this.sidebar.collapse;
     this.sidebarCollapse = this.sidebar.collapse;
     this.themeService.setSidebar(this.sidebarCollapse);
+    console.log(this.sidebarCollapse);
     this.cookieService.set('sidebar', this.sidebarCollapse ? 'true' : 'false');
   }
 
@@ -122,6 +123,7 @@ export class MainLayoutComponent implements OnInit {
   }
 
   offCanvasSidebar(event: string) {
+    console.log('event');
     this.offcanvasToggle = !this.offcanvasToggle;
   }
 

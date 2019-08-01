@@ -12,6 +12,7 @@ import { ContextMenuComponent } from 'src/app/components/context-menu/context-me
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -50,6 +51,9 @@ export class ViewDesignationsListComponent implements OnInit {
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
 
+  @ViewChild(SidebarComponent, {static: true })
+  private sidebar: SidebarComponent;
+
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
   // popOverX: number;
@@ -85,6 +89,7 @@ export class ViewDesignationsListComponent implements OnInit {
   orderByDirection: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
+  noData = false;
 
   showLoader = true;
   displayFilter = false;
@@ -96,20 +101,6 @@ export class ViewDesignationsListComponent implements OnInit {
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
-    // this.themeService.subjectSidebarEmit$.subscribe(result => {
-    //   this.sidebarCollapsed = result;
-    //   console.log(result);
-    // });
-
-    // const sidebar = this.themeService.getSidebarCollapse();
-    // sidebar.subscribe(side => {
-    //   console.log(side);
-    //   this.sidebarCollapsed = side;
-    // });
-    // const menuObserver = this.themeService.isContextMenu();
-    // menuObserver.subscribe((menu: ContextMenu) => {
-    //   this.contextMenu = menu.showMenu;
-    // });
   }
   paginateData() {
     let rowStart = 1;
@@ -184,12 +175,19 @@ export class ViewDesignationsListComponent implements OnInit {
       )
       .then(
         (res: DesignationListResponse) => {
-          this.designationList = res.designationList;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.showingRecords = res.designationList.length;
-          this.totalShowing = +this.rowStart + this.designationList.length - 1;
-          this.paginateData();
+          console.log(res.rowCount);
+          if (res.rowCount === 0) {
+            this.showLoader = false;
+            this.noData = true;
+          } else {
+            this.noData = false;
+            this.designationList = res.designationList;
+            this.rowCount = res.rowCount;
+            this.showLoader = false;
+            this.showingRecords = res.designationList.length;
+            this.totalShowing = +this.rowStart + this.designationList.length - 1;
+            this.paginateData();
+          }
         },
         msg => {
           this.showLoader = false;
@@ -244,15 +242,13 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    console.log(this.cookieService.get('sidebar'));
     this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
-    console.log(this.sidebarCollapsed);
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     } else {
-      this.contextMenuX = event.clientX - 270;
-      this.contextMenuY = event.clientY - 45;
+      this.contextMenuX = event.clientX - 255;
+      this.contextMenuY = event.clientY - 52;
     }
 
     this.focusDesgination = id;
