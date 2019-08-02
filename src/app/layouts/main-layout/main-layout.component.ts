@@ -71,7 +71,9 @@ export class MainLayoutComponent implements OnInit {
 
       backgroundObserver.subscribe((result: BackgroundResponse) => {
         console.log(JSON.stringify(result));
-        this.currentBackground = `${environment.ApiBackgroundImages}/backgrounds/${result}`;
+        if (result.image !== undefined) {
+          this.currentBackground = `${environment.ApiBackgroundImages}/backgrounds/${result.image}`;
+        }
       });
     }
 
