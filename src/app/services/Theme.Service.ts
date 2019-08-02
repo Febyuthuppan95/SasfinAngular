@@ -145,6 +145,8 @@ export class ThemeService {
         1000 * 60 * 60 * 24,
         '/'
       );
+
+      //TODO Create Http Post call
   }
   public toggleContextMenu(setting: boolean): void {
     // if(this.contMenuTable && setting) { // Clicked on table
