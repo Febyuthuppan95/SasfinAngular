@@ -38,7 +38,7 @@ export class ThemeService {
 
   public setSidebar(source: boolean) {
     this.subjectSidebar.next(source);
-    console.log(source);
+    // console.log(source);
   }
 
   /**

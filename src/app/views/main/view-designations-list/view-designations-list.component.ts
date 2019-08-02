@@ -40,7 +40,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.totalShowing = 0;
     this.loadDesignations();
     this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
-      console.log(result);
+      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }
@@ -174,7 +174,6 @@ export class ViewDesignationsListComponent implements OnInit {
       )
       .then(
         (res: DesignationListResponse) => {
-          console.log(res.rowCount);
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
@@ -185,7 +184,6 @@ export class ViewDesignationsListComponent implements OnInit {
           } else {
             this.noData = false;
             this.designationList = res.designationList;
-            console.log(this.designationList);
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;
@@ -246,7 +244,6 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    console.log(this.sidebarCollapsed);
     // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;

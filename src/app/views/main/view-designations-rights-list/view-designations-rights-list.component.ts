@@ -99,7 +99,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-      console.log(this.currentDesignation);
+      // console.log(this.currentDesignation);
     });
 
     this.rightsService
@@ -159,7 +159,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         } else {
         this.noData = false;
         // Process Success
-        console.log(res.designationRightsList);
+        // console.log(res.designationRightsList);
         this.designationRightsList = res.designationRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -215,12 +215,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.loadDesignationRights();
   }
   paginateData() {
-    console.log(this.rowCount);
+    // console.log(this.rowCount);
     if (this.rowCount > 0) {
       let rowStart = 1;
       let rowEnd = +this.rowCountPerPage;
       const pageCount = +this.rowCount / +this.rowCountPerPage;
-      console.log(this.rowCountPerPage);
+      // console.log(this.rowCountPerPage);
       this.pages = Array<Pagination>();
 
       for (let i = 0; i < pageCount; i++) {
@@ -241,7 +241,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       item.rowEnd = 0;
       this.pages[0] = item;
     }
-    console.log(this.pages);
+    // console.log(this.pages);
     this.updatePagination();
   }
 
@@ -265,7 +265,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.showingPages = Array<Pagination>();
     this.showingPages[0] = this.pages[this.activePage - 1];
     const pagenumber = +this.rowCount / +this.rowCountPerPage;
-    console.log(this.showingPages);
+    // console.log(this.showingPages);
 
     if (this.activePage < pagenumber) {
       this.showingPages[1] = this.pages[+this.activePage];
@@ -292,8 +292,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.rightId = id;
     this.rightName = Name;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log(result);
-      console.log(this.rightName);
+      // (result);
+      // console.log(this.rightName);
       this.removeRight(this.rightId, this.rightName);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
@@ -304,7 +304,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmAdd(add) {
     this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log(result);
+      // console.log(result);
       this.addRight(this.rightId, this.rightName);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
@@ -321,7 +321,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
       (res: DesignationRightReponse) => {
-        console.log(res);
+        // console.log(res);
         this.loadDesignationRights();
       },
       msg => {
@@ -333,7 +333,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     );
   }
   private addRight(id, name) {
-    console.log('adding right');
+    // console.log('adding right');
   }
   backToDesignations() {
     this.location.back();
