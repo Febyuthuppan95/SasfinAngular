@@ -33,7 +33,6 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
-    debugger;
     this.cookieService.set(
       'currentUser',
       currentUser,

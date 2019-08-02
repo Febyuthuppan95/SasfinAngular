@@ -39,10 +39,10 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
-    // this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
-    //   console.log(result);
-    //   this.sidebarCollapsed = result;
-    // });
+    this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
+      console.log(result);
+      this.sidebarCollapsed = result;
+    });
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -246,8 +246,8 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    console.log(id);
-    this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
+    console.log(this.sidebarCollapsed);
+    // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
