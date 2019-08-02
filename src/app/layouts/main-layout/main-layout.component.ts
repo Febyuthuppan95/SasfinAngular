@@ -7,11 +7,9 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { CookieService } from 'ngx-cookie-service';
-import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
-import { environment } from '../../../environments/environment';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
-
-
+import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-main-layout',
@@ -47,7 +45,7 @@ export class MainLayoutComponent implements OnInit {
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
-  sidebarCollapse: boolean = true;
+  sidebarCollapse = true;
   innerWidth: any;
   tableContextMenu = false;
 
@@ -55,28 +53,35 @@ export class MainLayoutComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     const themeObserver = this.themeService.getCurrentTheme();
     const backgroundObserver = this.themeService.getBackgroundUser();
+    const toggleHelpObserver = this.themeService.toggleHelp();
+
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
+
     this.cookieService.set('sidebar', 'true');
+
     // const menuObsever = this.themeService.isContextMenu();
     // menuObsever.subscribe((menu: boolean) => {
     //   this.tableContextMenu = menu;
     // });
-    if (this.cookieService.get('currentUser') != null) {
+
+    if (this.cookieService.get('currentUser') !== null) {
+
       backgroundObserver.subscribe((result: BackgroundResponse) => {
-        this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
+        console.log(JSON.stringify(result));
+        this.currentBackground = `${environment.ApiBackgroundImages}/backgrounds/${result}`;
       });
     }
 
-    const toggleHelpObserver = this.themeService.toggleHelp();
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
       this.snackBar.allow = toggle;
     });
   }
-  // WOrks
+
+  // Works
   onClick(event) {
 
     if (this.tableContextMenu) {

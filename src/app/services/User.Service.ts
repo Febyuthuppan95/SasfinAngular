@@ -5,13 +5,16 @@ import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
 import { environment } from '../../environments/environment';
+import { ThemeService } from './theme.Service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   /**
@@ -33,7 +36,6 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
-    debugger;
     this.cookieService.set(
       'currentUser',
       currentUser,
@@ -52,9 +54,9 @@ export class UserService {
       const currentUser: User = JSON.parse(jsonString);
 
       if (currentUser.profileImage === null) {
-        currentUser.profileImage = `${environment.ImageRoute}/default.jpg`;
+        currentUser.profileImage = `${environment.ApiProfileImages}/default.jpg`;
       } else {
-        currentUser.profileImage = `${environment.ImageRoute}/${currentUser.profileImage}`;
+        currentUser.profileImage = `${environment.ApiProfileImages}/${currentUser.profileImage}`;
       }
       return currentUser;
     } else {

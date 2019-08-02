@@ -8,7 +8,8 @@ export class LoginResponse {
   surname: string;
   email: string;
   profileImage?: any;
-  backgroundImage?: string;
+  backroundID?: number;
+  backgroundColour: string;
   designation: string;
   extension?: any;
   outcome: Outcome;
