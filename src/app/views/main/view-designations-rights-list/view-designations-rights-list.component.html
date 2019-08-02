@@ -123,7 +123,7 @@
 <!--Add Modal-->
 <ng-template #add let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Right</h4>
+    <h4 class="modal-title" id="modal-basic-title">Rights</h4>
     <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
        <span aria-hidden="true">&times;</span>
     </button> -->
@@ -134,7 +134,7 @@
           <h5 class="control-label">Available</h5>
           <div class="modal-list-rights">
             <ul class="right-list">
-              <li *ngFor="let right of rightsList"><a><i class="mdi mdi-plus"></i><span>{{ right.name}}</span></a></li>
+              <li *ngFor="let right of rightsList"><button type="button"><i class="mdi mdi-10px mdi-plus"></i></button><span>{{ right.name}}</span></li>
             </ul>
           </div>
       </form>
@@ -142,7 +142,7 @@
         <h5 class="control-label">Assigned</h5>
         <div class="modal-add-rights">
           <ul class="right-list">
-            <li *ngFor="let right of rightsList"><a><i class="mdi mdi-close"></i><span>{{ right.name}}</span></a></li>
+            <li *ngFor="let right of rightsList"><button type="button"><i class="mdi mdi-10px mdi-close"></i></button><span>{{ right.name}}</span></li>
           </ul>
         </div>
       </form>
