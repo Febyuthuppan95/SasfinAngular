@@ -11,8 +11,8 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { MenuService } from 'src/app/services/Menu.Service';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -21,10 +21,10 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 })
 export class ViewDesignationsListComponent implements OnInit {
   constructor(
-    private userService: UserService,
-    private themeService: ThemeService,
-    private designationService: DesignationService,
-    private cookieService: CookieService
+    private IUserService: UserService,
+    private IThemeService: ThemeService,
+    private IDesignationService: DesignationService,
+    private IMenuService: MenuService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -39,7 +39,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
-    this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       // console.log(result);
       this.sidebarCollapsed = result;
     });
@@ -63,7 +63,7 @@ export class ViewDesignationsListComponent implements OnInit {
   contextMenuY = 0;
   sidebarCollapsed = true;
 
-  currentUser: User = this.userService.getCurrentUser();
+  currentUser: User = this.IUserService.getCurrentUser();
   currentTheme = 'light';
   focusDesgination: string;
   focusDesName: string;
@@ -97,7 +97,7 @@ export class ViewDesignationsListComponent implements OnInit {
   subscription: Subscription;
 
   ngOnInit() {
-    const themeObserver = this.themeService.getCurrentTheme();
+    const themeObserver = this.IThemeService.getCurrentTheme();
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
@@ -161,7 +161,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.designationService
+    this.IDesignationService
       .getDesignationList(
         this.filter,
         this.currentUser.userID,
@@ -257,11 +257,11 @@ export class ViewDesignationsListComponent implements OnInit {
     this.focusDesName = name;
     // Will only toggle on if off
     if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true); // Set true
+      this.IThemeService.toggleContextMenu(true); // Set true
       this.contextMenu = true;
       // Show menu
     } else {
-      this.themeService.toggleContextMenu(false);
+      this.IThemeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
   }

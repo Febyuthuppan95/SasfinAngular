@@ -142,7 +142,7 @@
         <h5 class="control-label">Assigned</h5>
         <div class="modal-add-rights">
           <ul class="right-list">
-            <li *ngFor="let right of rightsList"><button type="button"><i class="mdi mdi-10px mdi-close"></i></button><span>{{ right.name}}</span></li>
+            <li *ngFor="let dRight of designationRightsList"><button type="button" (click)="removeRight()"><i class="mdi mdi-10px mdi-close"></i></button><span>{{ dRight.name}}</span></li>
           </ul>
         </div>
       </form>

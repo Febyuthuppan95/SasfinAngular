@@ -30,17 +30,15 @@ export class ThemeService {
   private contMenuY = 0;
   private contMenuTable = false;
   private sidebarCollapsed = true;
-  // Subjects
-  private subjectSidebar = new Subject<boolean>();
+  // // Subjects
+  // private subjectSidebar = new Subject<boolean>();
 
-  // Observable stream
-  subjectSidebarEmit$ = this.subjectSidebar.asObservable();
+  // // Observable stream
+  // subjectSidebarEmit$ = this.subjectSidebar.asObservable();
 
-  public setSidebar(source: boolean) {
-    this.subjectSidebar.next(source);
-    // console.log(source);
-  }
-
+  // public setSidebar(source: boolean) {
+  //   this.subjectSidebar.next(source);
+  // }
   /**
    * getTheme
    */

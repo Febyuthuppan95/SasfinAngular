@@ -235,7 +235,7 @@ border: none !important;
 }
 .modal-add-rights {
   height: 200px;
-  overflow-y: auto;
+  // overflow-y: auto;
   ::-webkit-scrollbar {
     width: 20px;
   }
@@ -303,11 +303,11 @@ border: none !important;
   margin:2px;
 }
 .right-list button:hover {
-  background-color: #5085fa;
+  background-color: #d1d4e3;
   border: 1px solid transparent;
-  :first-child{
-    color:#fff;
-  }
+  // :first-child{
+  //   color:rgb(14, 179, 14);
+  // }
 }
 .right-list button i {
   color: #5085fa;

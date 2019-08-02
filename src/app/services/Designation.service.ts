@@ -96,7 +96,21 @@ export class DesignationService {
     return promise;
   }
   public addDesignationright(model: AddDesignationRight) {
-
+    const json = JSON.parse(JSON.stringify(model));
+    // console.log(json);
+    const promise = new Promise((resolve, reject) => {
+      this.httpClient.post(`${environment.ApiEndpoint}/designationRights/add`, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
 }
