@@ -191,10 +191,6 @@ export class ViewUserRightsListComponent implements OnInit {
     this.loadUserRights();
   }
 
-  inspectUserImage(src: string) {
-    this.imageModal.open(src);
-  }
-
   updatePagination() {
     this.showingPages = Array<Pagination>();
     this.showingPages[0] = this.pages[this.activePage - 1];
