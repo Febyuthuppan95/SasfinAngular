@@ -1,13 +1,13 @@
 import { Injectable, HostListener, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, Subject } from 'rxjs';
-import { Config } from '../../assets/config.json';
 import { HttpClient } from '@angular/common/http';
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
 import { User } from 'src/app/models/HttpResponses/User.js';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ContextMenu } from '../models/StateModels/ContextMenu';
+import { UserService } from './user.Service.js';
 
 
 
@@ -18,7 +18,8 @@ export class ThemeService {
 
   constructor(
     private cookieService: CookieService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private userService: UserService
     ) {
     }
 
@@ -106,36 +107,44 @@ export class ThemeService {
    * getBackground
    */
   public getBackground(): string {
-    let bg = '';
-    bg  = `${environment.ImageRoute}/backgrounds/background1.jpg`;
-    return bg;
+    const currentUser = this.userService.getCurrentUser();
+
+    if (currentUser !== null) {
+      if (currentUser.backgroundImage !== undefined) {
+        return `${environment.ApiBackgroundImages}/${currentUser.backgroundImage}`;
+      }
+    }
+
+    return `${environment.ApiBackgroundImages}/background1.jpg`;
   }
+
   /**
    *
    */
   public getBackgroundUser(): Observable<{}> {
     const jsonString: string = this.cookieService.get('currentUser');
     const curUser: User = JSON.parse(jsonString);
+
     const requestModel = {
       _userID: curUser.userID,
       _specificUserID: 5 // Hardcoded for specific user id
     };
-    const url = `${environment.ApiEndpoint}/backgrounds/get`;
-    let result = this.httpClient.post(url, requestModel);
-    return result;
+
+    return this.httpClient.post(`${environment.ApiEndpoint}/backgrounds/get`, requestModel);
   }
+
   /**
    * setBackground
    */
   public setBackground(backgroundURL: string): void {
-    const path = `${environment.ImageRoute}/backgrounds/${backgroundURL}`;
-      this.cookieService.set(
+    this.cookieService.set(
         'backgroundURL',
-        path,
+        `${environment.ImageRoute}/backgrounds/${backgroundURL}`,
         1000 * 60 * 60 * 24,
         '/'
       );
 
+      //TODO Create Http Post call
   }
   public toggleContextMenu(setting: boolean): void {
     // if(this.contMenuTable && setting) { // Clicked on table
