@@ -9,6 +9,9 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
+import { MenuService } from './services/menu.service';
+import { BackgroundService } from './services/Background.service';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -38,6 +41,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
+import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import {UserRightService} from './services/UserRight.service';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 
@@ -69,6 +73,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     SnackBarComponent,
     AccountComponent,
     ViewDesignationsRightsListComponent,
+    ContextMenuComponent
     ViewUserRightsListComponent,
   ],
   imports: [
@@ -88,8 +93,18 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     NgbModule,
     NgxPaginationModule
   ],
-  providers: [CookieService, AuthenticationGuard, UserService, AnonGuard, ThemeService,
-  DesignationService, RightService, UserRightService],
+  providers: [
+    CookieService,
+    AuthenticationGuard,
+    UserService,
+    AnonGuard,
+    ThemeService,
+    DesignationService,
+    RightService,
+    MenuService,
+    BackgroundService,
+    UserRightService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent

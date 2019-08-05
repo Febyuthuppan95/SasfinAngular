@@ -7,7 +7,12 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
+import { Subscription } from 'rxjs';
+import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { MenuService } from 'src/app/services/Menu.Service';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -16,10 +21,10 @@ import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ViewDesignationsListComponent implements OnInit {
   constructor(
-    private userService: UserService,
-    private themeService: ThemeService,
-    private designationService: DesignationService,
-    private popConfig: NgbPopoverConfig
+    private IUserService: UserService,
+    private IThemeService: ThemeService,
+    private IDesignationService: DesignationService,
+    private IMenuService: MenuService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -34,21 +39,31 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
+    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      // console.log(result);
+      this.sidebarCollapsed = result;
+    });
   }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  @ViewChild('popCont', {static: false})
-  private popOver: ElementRef;
+  @ViewChild(ContextMenuComponent, {static: true } )
+  private contextmenu: ContextMenuComponent;
+
+  @ViewChild(SidebarComponent, {static: true })
+  private sidebar: SidebarComponent;
 
   defaultProfile =
     'http://197.189.218.50:7777/public/images/profile/default.png';
+  // popOverX: number;
+  // popOverY: number;
+  contextMenu = false;
+  contextMenuX = 0;
+  contextMenuY = 0;
+  sidebarCollapsed = true;
 
-  popOverX: number;
-  popOverY: number;
-
-  currentUser: User = this.userService.getCurrentUser();
+  currentUser: User = this.IUserService.getCurrentUser();
   currentTheme = 'light';
   focusDesgination: string;
   focusDesName: string;
@@ -74,18 +89,21 @@ export class ViewDesignationsListComponent implements OnInit {
   orderByDirection: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
+  noData = false;
 
   showLoader = true;
   displayFilter = false;
 
+  subscription: Subscription;
+
   ngOnInit() {
-    const themeObserver = this.themeService.getCurrentTheme();
+    const themeObserver = this.IThemeService.getCurrentTheme();
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
   }
   paginateData() {
-    let rowStart = 1;
+    let rowStart = this.rowStart;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
     this.pages = Array<Pagination>();
@@ -99,7 +117,6 @@ export class ViewDesignationsListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
-
     this.updatePagination();
   }
 
@@ -144,7 +161,7 @@ export class ViewDesignationsListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    this.designationService
+    this.IDesignationService
       .getDesignationList(
         this.filter,
         this.currentUser.userID,
@@ -157,12 +174,22 @@ export class ViewDesignationsListComponent implements OnInit {
       )
       .then(
         (res: DesignationListResponse) => {
-          this.designationList = res.designationList;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.showingRecords = res.designationList.length;
-          this.totalShowing = +this.rowStart + this.designationList.length - 1;
-          this.paginateData();
+          if (res.rowCount === 0) {
+            this.rowStart = 0;
+            this.showLoader = false;
+            this.noData = true;
+            this.rowCount = 0;
+            this.showingRecords = 1;
+            this.totalShowing = 0;
+          } else {
+            this.noData = false;
+            this.designationList = res.designationList;
+            this.rowCount = res.rowCount;
+            this.showLoader = false;
+            this.showingRecords = res.designationList.length;
+            this.totalShowing = +this.rowStart + this.designationList.length - 1;
+            this.paginateData();
+          }
         },
         msg => {
           this.showLoader = false;
@@ -217,18 +244,25 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    this.popOverX = event.x;
-    this.popOverY = event.y;
-    this.popConfig.placement = 'auto';
+    // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX - 255;
+      this.contextMenuY = event.clientY - 52;
+    }
+
     this.focusDesgination = id;
     this.focusDesName = name;
-    console.log(this.focusDesgination);
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.IThemeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.IThemeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
   }
-  popupMenu() {
-    // alert(document.getElementById(document.getSelection));
-    document.getElementById('myPopup').style.top = document.getElementById('cursorX').nodeValue;
-    document.getElementById('myPopup').style.left = document.getElementById('cursorY').nodeValue;
-    document.getElementById('myPopup').hidden = false;
-  }
-
 }

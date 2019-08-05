@@ -31,6 +31,7 @@ export class ViewRightsListComponent implements OnInit {
     this.orderBy = '';
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
+
     this.loadRights();
   }
 
@@ -61,10 +62,9 @@ export class ViewRightsListComponent implements OnInit {
   orderByDirection: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
-
+  noData = false;
   showLoader = true;
   displayFilter = false;
-
   ngOnInit() {
     const themeObservable = this.themeService.getCurrentTheme();
     themeObservable.subscribe((themeData: string) => {
@@ -145,12 +145,18 @@ export class ViewRightsListComponent implements OnInit {
       )
       .then(
         (res: RightListResponse) => {
-          this.rightList = res.rightList;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.showingRecords = res.rightList.length;
-          this.totalShowing = +this.rowStart + +this.rightList.length - 1;
-          this.paginateData();
+          if (res.rowCount === 0) {
+            this.noData = true;
+            this.showLoader = false;
+          } else {
+            this.noData = false;
+            this.rightList = res.rightList;
+            this.rowCount = res.rowCount;
+            this.showLoader = false;
+            this.showingRecords = res.rightList.length;
+            this.totalShowing = +this.rowStart + +this.rightList.length - 1;
+            this.paginateData();
+          }
         },
         msg => {
           this.showLoader = false;

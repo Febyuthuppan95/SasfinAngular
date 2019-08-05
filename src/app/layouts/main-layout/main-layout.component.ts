@@ -7,10 +7,12 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { CookieService } from 'ngx-cookie-service';
+import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
+import { MenuService } from 'src/app/services/Menu.Service';
+
+
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
-import { environment } from '../../../environments/environment';
-
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-main-layout',
@@ -20,7 +22,8 @@ import { environment } from '../../../environments/environment';
 export class MainLayoutComponent implements OnInit {
   constructor(
     private themeService: ThemeService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private IMenuService: MenuService
     ) {}
 
   @ViewChild(EditDashboardStyleComponent, { static: true })
@@ -42,43 +45,55 @@ export class MainLayoutComponent implements OnInit {
   private snackBar: SnackBarComponent;
 
 
-
-
   currentTheme = 'light';
   currentBackground = this.themeService.getBackground();
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
-  sidebarCollapse: boolean = true;
+  sidebarCollapse = true;
   innerWidth: any;
-  @HostListener('window:resize', ['$event'])
+  tableContextMenu = false;
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     const themeObserver = this.themeService.getCurrentTheme();
     const backgroundObserver = this.themeService.getBackgroundUser();
+    const toggleHelpObserver = this.themeService.toggleHelp();
 
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
       this.updateChildrenComponents();
     });
-    if (this.cookieService.get('currentUser') != null) {
+
+    this.cookieService.set('sidebar', 'true');
+
+    // const menuObsever = this.themeService.isContextMenu();
+    // menuObsever.subscribe((menu: boolean) => {
+    //   this.tableContextMenu = menu;
+    // });
+
+    if (this.cookieService.get('currentUser') !== null) {
+
       backgroundObserver.subscribe((result: BackgroundResponse) => {
-        this.currentBackground = `${environment.ImageRoute}/backgrounds/${result.image}`;
+        console.log(JSON.stringify(result));
+        if (result.image !== undefined) {
+          this.currentBackground = `${environment.ApiBackgroundImages}/backgrounds/${result.image}`;
+        }
       });
     }
 
-    const toggleHelpObserver = this.themeService.toggleHelp();
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
       this.snackBar.allow = toggle;
     });
   }
 
-  onResize(event) {
-    this.innerWidth = window.innerWidth;
-    if (window.innerWidth <= 1200) {
-      // this.sidebarCollapse = true;
+  // Works
+  onClick(event) {
+
+    if (this.tableContextMenu) {
+      this.themeService.toggleContextMenu(false);
     }
+    this.themeService.isContextMenu().subscribe((context: boolean) => this.tableContextMenu = context);
   }
   openEditTile() {
     this.editSidebar.show = true;
@@ -96,8 +111,12 @@ export class MainLayoutComponent implements OnInit {
   }
 
   collapseSidebar() {
+
+
     this.sidebar.collapse = !this.sidebar.collapse;
     this.sidebarCollapse = this.sidebar.collapse;
+    this.IMenuService.setSidebar(this.sidebarCollapse);
+    this.cookieService.set('sidebar', this.sidebarCollapse ? 'true' : 'false');
   }
 
   showSnackBar(options: string) {

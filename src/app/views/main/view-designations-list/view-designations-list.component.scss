@@ -64,14 +64,14 @@ td {
   width: 100%;
   padding: 25px;
 }
-.popBodyNav { 
+.popBodyNav {
   list-style-type: none;
   padding: 0px !important;
 }
 .popBodyNav .nav-link:hover {
   color: white;
   background: #4d83ff;
-  
+
 }
 .popover-body {
   padding: 0px !important;
@@ -84,7 +84,9 @@ td {
 
 
 
-
+.arrow {
+  display: none !important;
+}
 //brandon's css
 .popup {
   position: relative;
@@ -138,6 +140,10 @@ td {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+.contextMenuDiv {
+  width:100px;
+  height:50px;
+}
 
 tr {
   cursor: pointer;
@@ -149,7 +155,11 @@ tr {
 .popnav {
   border-radius: 20px !important;
 }
-.popover {
-  transform: translateX(var(--x));
-  transform: translateX(var(--y));
+// .popover {
+//   transform: translateX(var(--x));
+//   transform: translateX(var(--y));
+// }
+
+.bs-popover-top {
+  transform: translate(100px, 100px) !important;
 }

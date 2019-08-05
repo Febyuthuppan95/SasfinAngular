@@ -51,14 +51,20 @@
                 </span>
               </button>
             </th>
-
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let designation of designationList"  [ngbPopover]="popCont" popoverClass="ngbPopClass" [ngStyle]="" (click)="popClick($event, designation.designationID, designation.name)">
-            <td scope="col">{{designation.rowNum}}</td>
-            <td scope="col">{{designation.name}}</td>
-            <td scope="col">{{designation.description}}</td>
+        <tbody class="tbodyPop" *ngIf="(!noData)" >
+            <tr *ngFor="let designation of designationList"  (click)="popClick($event, designation.designationID, designation.name)">
+              <td scope="col">{{designation.rowNum}}</td>
+              <td scope="col">{{designation.name}}</td>
+              <td scope="col">{{designation.description}}</td>
+            </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">Not found..</td>
+            <td scope="col"></td>
           </tr>
         </tbody>
       </table>
@@ -90,10 +96,11 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<ng-template #popCont>
+<!-- <ng-template #popCont >
   <div class="popBodyNav">
     <a [routerLink]="['/designation-rights',focusDesName, focusDesgination]" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">{{focusDesName}} Rights</span></a>
     <a  class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Other Rights</span></a>
   </div>
-  
-</ng-template>
+</ng-template> -->
+
+<app-context-menu [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [designationId]="focusDesgination" [designationName]="focusDesName"></app-context-menu>

@@ -53,13 +53,20 @@
           </th>
         </tr>
         </thead>
-        <tbody>
-        <tr *ngFor="let right of rightList">
-          <td scope="col">{{right.rowNum}}</td>
-          <td scope="col">{{right.name}}</td>
-          <td scope="col">{{right.description}}</td>
-        </tr>
-        </tbody>
+          <tbody *ngIf="(!noData)">
+            <tr *ngFor="let right of rightList">
+              <td scope="col">{{right.rowNum}}</td>
+              <td scope="col">{{right.name}}</td>
+              <td scope="col">{{right.description}}</td>
+            </tr>
+          </tbody>
+          <tbody class="tbodyPop" *ngIf="(noData)" >
+              <tr>
+                <td scope="col"></td>
+                <td scope="col">No data to display..</td>
+                <td scope="col"></td>
+              </tr>
+          </tbody>
       </table>
     </div>
     <br />

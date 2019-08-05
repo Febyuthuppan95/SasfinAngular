@@ -9,6 +9,7 @@ import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { Config } from './../../../../assets/config.json';
 import { environment } from '../../../../environments/environment';
+import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 
 @Component({
   selector: 'app-view-user-list',
@@ -49,7 +50,6 @@ export class ViewUserListComponent implements OnInit {
 
   pages: Pagination[];
   showingPages: Pagination[];
-  lastPage: Pagination;
   userList: UserList[];
   rowCount: number;
   nextPage: number;
@@ -68,7 +68,7 @@ export class ViewUserListComponent implements OnInit {
   orderDirection: string;
   totalShowing: number;
   orderIndicator = 'Surname_ASC';
-
+  noData = false;
   showLoader = true;
   displayFilter = false;
 
@@ -163,13 +163,18 @@ export class ViewUserListComponent implements OnInit {
               }/public/images/profile/${user.profileImage}`;
             }
           }
-
-          this.userList = res.userList;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.showingRecords = res.userList.length;
-          this.totalShowing = +this.rowStart + +this.userList.length - 1;
-          this.paginateData();
+          if (res.rowCount === 0) {
+            this.noData = true;
+            this.showLoader = false;
+          } else {
+            this.noData = false;
+            this.userList = res.userList;
+            this.rowCount = res.rowCount;
+            this.showLoader = false;
+            this.showingRecords = res.userList.length;
+            this.totalShowing = +this.rowStart + +this.userList.length - 1;
+            this.paginateData();
+          }
         },
         msg => {
           this.showLoader = false;
@@ -198,7 +203,10 @@ export class ViewUserListComponent implements OnInit {
   }
 
   inspectUserImage(src: string) {
-    this.imageModal.open(src);
+    const options = new ImageModalOptions();
+    options.width = '100%';
+
+    this.imageModal.open(src, options);
   }
 
   updatePagination() {
