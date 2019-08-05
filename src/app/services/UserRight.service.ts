@@ -1,7 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { environment } from '../../environments/environment';
-import {UpdateDesignationRight} from '../models/HttpRequests/UpdateDesignationRight';
+import {environment} from '../../environments/environment';
 import {GetUserRightsList} from '../models/HttpRequests/GetUserRightsList';
 
 @Injectable()
@@ -56,13 +55,13 @@ export class UserRightService {
       _specificUserID: model.specificUserID,
       _rightName: model.rightName,
       _filter: model.filter,
-      _orderBy: model.orderBy,
-      _orderByDirection: model.orderDirection,
       _rowStart: model.rowStart,
-      _rowEnd: model.rowEnd
+      _rowEnd: model.rowEnd,
+      _orderBy: model.orderBy,
+      _orderByDirection: model.orderDirection
     };
 
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/userRights/list`;
       this.httpClient.post(apiURL, json)
         .toPromise()
@@ -75,26 +74,24 @@ export class UserRightService {
           }
         );
     });
-    return promise;
 
   }
 
-  public updateUserRight(model: UpdateDesignationRight) {
-    const json = JSON.parse(JSON.stringify(model));
-    console.log(json);
-    const promise = new Promise((resolve, reject) => {
-      this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          msg => {
-            reject(msg);
-          }
-        );
-    });
-    return promise;
-  }
+  // public updateUserRight(model: UpdateUserRight) {
+  //   const json = JSON.parse(JSON.stringify(model));
+  //   console.log(json);
+  //   return new Promise((resolve, reject) => {
+  //     this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
+  //       .toPromise()
+  //       .then(
+  //         res => {
+  //           resolve(res);
+  //         },
+  //         msg => {
+  //           reject(msg);
+  //         }
+  //       );
+  //   });
+  // }
 
 }

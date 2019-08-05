@@ -3,7 +3,7 @@ import { UserListResponse } from '../../../models/HttpResponses/UserListResponse
 import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from './../../../components/image-modal/image-modal.component';
+import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';

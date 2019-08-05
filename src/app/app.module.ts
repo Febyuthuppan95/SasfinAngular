@@ -1,7 +1,6 @@
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,7 +9,6 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -28,7 +26,6 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ViewNotFoundComponent } from './views/errors/view-not-found/view-not-found.component';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
 import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
@@ -41,8 +38,8 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
-import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import {UserRightService} from './services/UserRight.service';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 
 // @ts-ignore
 @NgModule({
@@ -72,7 +69,7 @@ import {UserRightService} from './services/UserRight.service';
     SnackBarComponent,
     AccountComponent,
     ViewDesignationsRightsListComponent,
-    ViewUserRightsListComponent
+    ViewUserRightsListComponent,
   ],
   imports: [
     BrowserModule,
