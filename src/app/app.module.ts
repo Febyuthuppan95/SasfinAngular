@@ -73,7 +73,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     SnackBarComponent,
     AccountComponent,
     ViewDesignationsRightsListComponent,
-    ContextMenuComponent
+    ContextMenuComponent,
     ViewUserRightsListComponent,
   ],
   imports: [
