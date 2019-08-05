@@ -134,7 +134,7 @@
           <h5 class="control-label">Available</h5>
           <div class="modal-list-rights">
             <ul class="right-list">
-              <li *ngFor="let right of rightsList"><button type="button" (click)="addNewRight(right.rightID, right.name)"><i class="mdi mdi-10px mdi-plus"></i></button><span>{{ right.name}} {{right.rightId}}</span></li>
+              <li *ngFor="let right of rightsList"><a (click)="addNewRight(right.rightID, right.name)"><span>{{ right.name}} {{right.rightId}}</span></a></li>
             </ul>
           </div>
       </form>
@@ -142,7 +142,7 @@
         <h5 class="control-label">Assigned</h5>
         <div class="modal-add-rights">
           <ul class="right-list">
-            <li *ngFor="let dRight of designationRightsList"><button type="button" (click)="removeRight(dRight.rightID, dRight.name)"><i class="mdi mdi-10px mdi-close"></i></button><span>{{ dRight.name}}</span></li>
+            <li *ngFor="let dRight of designationRightsList"><a (click)="removeRight(dRight.rightID, dRight.name)"><span>{{ dRight.name}}</span></a></li>
           </ul>
         </div>
       </form>
@@ -150,6 +150,6 @@
   </div>
   <div class="modal-footer">
     <!-- <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Save</button> -->
-    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
+    <button type="button" class="btn btn-outline-light btn-primary" (click)="modal.close('')">Done</button>
   </div>
 </ng-template>

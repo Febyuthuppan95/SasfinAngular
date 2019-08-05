@@ -285,6 +285,18 @@ border: none !important;
 //   color: #fff;
 //   transition: 0.1s;
 // }
+.right-list li a {
+  border: none;
+  background-color: transparent;
+  color: #5085fa;
+}
+.right-list li:hover {
+  background-color: #5085fa;
+  :first-child {
+    color: #fff;
+  }
+
+}
 .right-list li:hover {
   color: #5085fa
 }
