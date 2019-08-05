@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
       class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <h4 class="card-title ls-text-{{ currentTheme }}">Users</h4>
+    <h4 class="card-title ls-text-{{ currentTheme }}">User Rights</h4>
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -31,8 +31,6 @@
         <thead>
         <tr>
           <th></th>
-          <th></th>
-
           <th scope="col">
             <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
               <p class="headerText">Name</p>

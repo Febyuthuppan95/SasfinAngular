@@ -5,7 +5,7 @@ import {User} from '../models/HttpResponses/User';
 import {Router} from '@angular/router';
 import {environment} from '../../environments/environment';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class UserService {
   constructor(
     private cookieService: CookieService,
