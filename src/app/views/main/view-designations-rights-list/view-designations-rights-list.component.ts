@@ -16,6 +16,7 @@ import { DesignationRightReponse } from 'src/app/models/HttpResponses/Designatio
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
+import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
 
 
 
@@ -116,6 +117,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
+        console.log(this.rightsList);
       },
       msg => {
         this.showLoader = false;
@@ -147,6 +149,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
+        console.log(res);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -178,6 +181,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       }
     );
   }
+  
 
   pageChange(pageNumber: number) {
     const page = this.pages[+ pageNumber - 1];
@@ -305,14 +309,14 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   confirmAdd(add) {
     this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // console.log(result);
-      this.addRight(this.rightId, this.rightName);
+      // this.addNewRight(this.rightId, this.rightName);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  private removeRight(id: number, name: string) {
+  removeRight(id: number, name: string) {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
@@ -332,8 +336,26 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       }
     );
   }
-  private addRight(id, name) {
-    // console.log('adding right');
+  addNewRight(id, name) {
+    console.log('adding right ', id, name );
+    const requestModel: AddDesignationRight = {
+      userID: this.currentUser.userID,
+      designationID: this.currentDesignation,
+      rightID: id,
+      rightName: name
+    };
+    const result = this.designationsService
+    .addDesignationright(requestModel).then(
+      (res: DesignationRightReponse) => {
+        this.loadDesignationRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
   backToDesignations() {
     this.location.back();
