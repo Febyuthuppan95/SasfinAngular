@@ -1,6 +1,6 @@
 /* Theme Colors BEGIN */
 
-$primaryAccent: #3877ff;
+$primaryAccent: #4d83ff;
 
 $blueTheme: #c4dbff;
 $blueThemeText: #121212;
@@ -303,4 +303,20 @@ $peachThemeText: #121212;
 .form-control-dark:focus {
   background: #333333;
   color: #f2f2f2;
+}
+
+.modal {
+  border: none;
+}
+
+.modal-header {
+  background: $primaryAccent;
+  color: $darkThemeText;
+  border-radius: 0;
+}
+
+.modal-footer {
+  background: $darkTheme;
+  color: $darkThemeText;
+  border-radius: 0;
 }

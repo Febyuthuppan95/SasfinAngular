@@ -14,8 +14,8 @@
       <select [value]='15' [(ngModel)]="backgroundRequestModel.orderByDirection" [ngModelOptions]="{standalone: true}"
         class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
           (change)="loadBackgrounds()">
-        <option value='ASC' selected>Order in Ascending</option>
-        <option value='DESC'>Order in Descending</option>
+        <option value='ASC' selected>ASC</option>
+        <option value='DESC'>DESC</option>
       </select>
       <div class="mb-2 mr-sm-2 ml-auto">
       <input type="text"
@@ -23,7 +23,7 @@
         placeholder="Search" (keyup)="searchBar()" [(ngModel)]="backgroundRequestModel.filter" [ngModelOptions]="{standalone: true}" />
         &nbsp;
         <button type="text"
-        class="shadow-sm btn btn-primary form-control-sm"><span class="mdi mdi-cloud-upload"></span> Upload</button>
+        class="shadow-sm btn btn-primary form-control-sm" data-toggle="modal" data-target="#uploadBackground"><span class="mdi mdi-cloud-upload"></span> Upload</button>
       </div>
       </form>
     <br>
@@ -72,6 +72,34 @@
       </nav>
     <br>
     <p class="ls-text-{{ currentTheme }} text-left">Showing {{ totalDisplayCount }} of {{ totalRowCount }}</p>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadBackground" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Upload Background</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="uploadBackground()" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="form-group">
+              <input type="text" placeholder="Background name" class="form-control"
+                [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}" required/>
+            </div>
+          <div class="form-group">
+            <input type="file" (change)="onFileChange($event.target.files)" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
   </div>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { BackgroundService } from 'src/app/services/Background.service';
 import { BackgroundList } from 'src/app/models/HttpResponses/BackgroundList';
@@ -9,6 +9,8 @@ import { ImageModalComponent } from 'src/app/components/image-modal/image-modal.
 import { Pagination } from 'src/app/models/Pagination';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
+import { FormGroup } from '@angular/forms';
+import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
 
 @Component({
   selector: 'app-view-backgrounds-list',
@@ -24,6 +26,9 @@ export class ViewBackgroundsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('closeUploadModal', { static: true })
+  closeUploadModal: ElementRef;
+
   currentTheme = 'light';
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
@@ -38,6 +43,9 @@ export class ViewBackgroundsListComponent implements OnInit {
   nextPage: number;
   pages: Pagination[];
   showingPages: Pagination[];
+  fileName: string;
+  uploadForm: FormGroup;
+  fileToUpload: File = null;
 
   ngOnInit() {
     const themeObservable = this.themeService.getCurrentTheme();
@@ -73,8 +81,6 @@ export class ViewBackgroundsListComponent implements OnInit {
         this.backgroundList = res.backgroundList;
         this.totalRowCount = res.rowCount;
         this.totalDisplayCount = res.backgroundList.length;
-
-        console.log(this.backgroundService.compress(`${environment.ApiBackgroundImages}/${this.backgroundList[0].image}`, 'landscape'));
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Unable to reach server.');
@@ -153,5 +159,35 @@ export class ViewBackgroundsListComponent implements OnInit {
     if (+this.activePage + 1 <= pagenumber) {
       this.showingPages[2] = this.pages[+this.activePage + 1];
     }
+  }
+
+  uploadBackground() {
+    this.backgroundService.addBackgrounds(
+      this.fileName,
+      this.fileToUpload,
+      3,
+      'Backgrounds'
+      ).then(
+        (res: BackgroundsAdd) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+              this.fileName = '';
+              this.fileToUpload = null;
+              this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+              this.backgroundRequestModel.rowStart = 1;
+              this.backgroundRequestModel.rowEnd = 15;
+              this.closeUploadModal.nativeElement.click();
+              this.loadBackgrounds();
+          } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Unable to reach server.');
+        }
+      );
+  }
+
+  onFileChange(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 }
