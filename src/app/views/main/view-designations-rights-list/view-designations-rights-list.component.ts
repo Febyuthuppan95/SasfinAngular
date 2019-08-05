@@ -127,12 +127,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
-        let temp = new Array<RightList>();
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
             if (dRight.rightID !== right.rightId) {
+              console.log(right);
               this.rightsList.splice(count, 1);
+              console.log(this.rightsList);
             } else {
               count ++;
             }
