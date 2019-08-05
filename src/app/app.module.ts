@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxImageCompressService } from 'ngx-image-compress';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
@@ -101,7 +102,8 @@ import { ContextMenuComponent } from './components/context-menu/context-menu.com
     DesignationService,
     RightService,
     MenuService,
-    BackgroundService
+    BackgroundService,
+    NgxImageCompressService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

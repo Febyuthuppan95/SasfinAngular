@@ -73,6 +73,8 @@ export class ViewBackgroundsListComponent implements OnInit {
         this.backgroundList = res.backgroundList;
         this.totalRowCount = res.rowCount;
         this.totalDisplayCount = res.backgroundList.length;
+
+        console.log(this.backgroundService.compress(`${environment.ApiBackgroundImages}/${this.backgroundList[0].image}`, 'landscape'));
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Unable to reach server.');
