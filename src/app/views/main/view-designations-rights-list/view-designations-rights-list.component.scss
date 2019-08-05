@@ -272,7 +272,7 @@ border: none !important;
 .right-list li {
   text-align: left;
   list-style-type: none;
-
+  border-bottom: 1px solid #888888;
 }
 .right-list li a svg {
   color: white;
@@ -285,6 +285,9 @@ border: none !important;
 //   color: #fff;
 //   transition: 0.1s;
 // }
+.modal-list-rights .right-list {
+  padding-right: 0px;
+}
 .right-list li a {
   border: none;
   background-color: transparent;

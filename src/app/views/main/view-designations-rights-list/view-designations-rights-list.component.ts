@@ -86,7 +86,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderBy = 'Name';
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
-      this.loadDesignationRights();
+
     }
 
     @ViewChild(NotificationComponent, {static: true })
@@ -103,6 +103,16 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       // console.log(this.currentDesignation);
     });
 
+    this.loadDesignationRights();
+    this.loadAvailableRights();
+
+
+  }
+  /**
+   * Load Designation Rights
+   * Returns DesignationRightsListResponse
+   */
+  loadAvailableRights() {
     this.rightsService
     .getRightList(
       this.filter,
@@ -117,7 +127,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
-        console.log(this.rightsList);
+        let temp = new Array<RightList>();
+        this.designationRightsList.forEach(dRight => {
+          let count = 0;
+          this.rightsList.forEach(right => {
+            if (dRight.rightID !== right.rightId) {
+              this.rightsList.splice(count, 1);
+            } else {
+              count ++;
+            }
+          });
+        });
       },
       msg => {
         this.showLoader = false;
@@ -128,10 +148,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       }
     );
   }
-  /**
-   * Load Designation Rights
-   * Returns DesignationRightsListResponse
-   */
   loadDesignationRights() {
     this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
@@ -139,7 +155,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specifcDesignationID: this.currentDesignation,
-      rightName: this.rightName,
+      rightName: 'Designations',
       filter: this.filter,
       orderBy: this.orderBy,
       orderDirection: this.orderByDirection,
@@ -181,7 +197,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       }
     );
   }
-  
 
   pageChange(pageNumber: number) {
     const page = this.pages[+ pageNumber - 1];
@@ -221,7 +236,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   paginateData() {
     // console.log(this.rowCount);
     if (this.rowCount > 0) {
-      let rowStart = 1;
+      let rowStart = this.rowStart;
       let rowEnd = +this.rowCountPerPage;
       const pageCount = +this.rowCount / +this.rowCountPerPage;
       // console.log(this.rowCountPerPage);
@@ -294,7 +309,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = Name;
+    this.rightName = 'Designations';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
       // console.log(this.rightName);
@@ -320,7 +335,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
-      rightName: name
+      rightName: 'Designations'
     };
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
@@ -337,12 +352,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     );
   }
   addNewRight(id, name) {
-    console.log('adding right ', id, name );
+
     const requestModel: AddDesignationRight = {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,
       rightID: id,
-      rightName: name
+      rightName: 'Designations'
     };
     const result = this.designationsService
     .addDesignationright(requestModel).then(
