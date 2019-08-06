@@ -6,10 +6,9 @@ export const environment = {
   production: false,
   AssetRoute: 'http://localhost:4200/assets/dist',
   ImageRoute: 'http://localhost:4200/assets/dist/images',
-  ApiEndpoint: 'https://localhost:44397',
-  ApiEndpointVersion: 'v1.0',
-  ApiBackgroundImages: 'https://localhost:44397/public/images/background',
-  ApiProfileImages: 'https://localhost:44397/public/images/profile'
+  ApiEndpoint: 'https://localhost:44397/api/v1.0',
+  ApiBackgroundImages: 'https://localhost:44397api/v1.0/public/images/background',
+  ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile'
 };
 
 /*

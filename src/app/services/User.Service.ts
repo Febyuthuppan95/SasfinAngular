@@ -74,7 +74,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/api/${environment.ApiEndpointVersion}/account/authenticate`;
+      const apiURL = `${environment.ApiEndpoint}/account/authenticate`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -127,10 +127,10 @@ export class UserService {
       _newPass: newPass
     };
 
-    return new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       const apiURL = `${
         environment.ApiEndpoint
-        }/account/request/changepassword`;
+      }/account/request/changepassword`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -143,6 +143,8 @@ export class UserService {
           }
         );
     });
+
+    return promise;
   }
 
 
@@ -171,7 +173,7 @@ export class UserService {
       _orderDirection: orderDirection
     };
 
-    return new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/list`;
       this.httpClient
         .post(apiURL, requestModel)
@@ -185,5 +187,7 @@ export class UserService {
           }
         );
     });
+
+    return promise;
   }
 }
