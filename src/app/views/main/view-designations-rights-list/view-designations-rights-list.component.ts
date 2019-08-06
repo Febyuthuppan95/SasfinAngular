@@ -353,7 +353,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     );
   }
   addNewRight(id, name) {
-
     const requestModel: AddDesignationRight = {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,

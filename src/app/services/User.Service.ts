@@ -74,7 +74,7 @@ export class UserService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/account/authenticate`;
+      const apiURL = `${environment.ApiEndpoint}/api/${environment.ApiEndpointVersion}/account/authenticate`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
