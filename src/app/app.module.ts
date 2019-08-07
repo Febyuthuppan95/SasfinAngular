@@ -11,6 +11,10 @@ import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
 import { MenuService } from './services/menu.service';
 import { BackgroundService } from './services/Background.service';
+import { AuthenticationService } from './services/Authentication.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './helpers/auth.interceptor';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -103,7 +107,13 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     RightService,
     MenuService,
     BackgroundService,
-    UserRightService
+    UserRightService,
+    AuthenticationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
   entryComponents: [

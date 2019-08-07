@@ -1,5 +1,4 @@
 import {HttpClient} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';

@@ -19,7 +19,6 @@ export class AuthenticationGuard implements CanActivate {
             this.toastr.warning('Please login to continue', 'Unauthenticated');
             this.router.navigateByUrl('/account/login');
         }
-
         return state;
     }
 }
