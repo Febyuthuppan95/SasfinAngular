@@ -130,7 +130,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (dRight.rightID !== right.rightId) {
+            if (dRight.rightID !== right.rightID) {
               console.log(right);
               this.rightsList.splice(count, 1);
               console.log(this.rightsList);

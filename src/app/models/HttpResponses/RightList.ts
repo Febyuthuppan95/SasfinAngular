@@ -1,6 +1,6 @@
 export class RightList {
   rowNum: string;
-  rightId: number;
+  rightID: number;
   name: string;
   description: string;
 }
