@@ -17,6 +17,7 @@ import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
+import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 
 
 
@@ -113,17 +114,18 @@ export class ViewDesignationsRightsListComponent implements OnInit {
    * Returns DesignationRightsListResponse
    */
   loadAvailableRights() {
+    const model: GetRightList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      rightName: this.rightName,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      specificRightID: -1,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderByDirection
+    };
     this.rightsService
-    .getRightList(
-      this.filter,
-      this.currentUser.userID,
-      -1,
-      this.rightName,
-      this.rowStart,
-      this.rowEnd,
-      this.orderBy,
-      this.orderByDirection
-    )
+    .getRightList(model)
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
