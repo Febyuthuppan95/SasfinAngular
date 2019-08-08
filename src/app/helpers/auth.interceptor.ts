@@ -13,7 +13,6 @@ import { UserService } from '../services/user.Service';
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Should get auth token
-
     const request = req.clone({
       withCredentials: true,
       headers: req.headers.set('Access-Control-Allow-Origin', '*')
