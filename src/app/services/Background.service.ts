@@ -10,16 +10,7 @@ export class BackgroundService {
   constructor(private httpClient: HttpClient) {}
 
   public getBackgrounds(request: BackgroundListRequest) {
-    const requestModel = {
-      _userID: request.userID,
-      _specificBackgroundID: request.specificBackgroundID,
-      _rightName: request.rightName,
-      _filter: request.filter,
-      _orderBy: request.orderBy,
-      _orderByDirection: request.orderByDirection,
-      _rowStart: request.rowStart,
-      _rowEnd: request.rowEnd,
-    };
+    const requestModel = JSON.parse(JSON.stringify(request));
 
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/backgrounds/list`;

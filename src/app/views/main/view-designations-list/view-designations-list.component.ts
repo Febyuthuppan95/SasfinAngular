@@ -13,6 +13,7 @@ import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { MenuService } from 'src/app/services/Menu.Service';
+import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -160,18 +161,14 @@ export class ViewDesignationsListComponent implements OnInit {
   loadDesignations() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
+    const model: GetDesignationList = {
+      rowEnd: this.rowEnd,
+      rowStart: this.rowStart,
+      rightName: this.rightName,
+      filter: this.filter
+    };
     this.IDesignationService
-      .getDesignationList(
-        this.filter,
-        this.currentUser.userID,
-        -1,
-        this.rightName,
-        this.rowStart,
-        this.rowEnd,
-        this.orderBy,
-        this.orderByDirection
-      )
+      .getDesignationList(model)
       .then(
         (res: DesignationListResponse) => {
           if (res.rowCount === 0) {

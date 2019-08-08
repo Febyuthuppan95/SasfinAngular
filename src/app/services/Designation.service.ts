@@ -4,6 +4,8 @@ import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationR
 import { environment } from 'src/environments/environment.js';
 import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
 import { UpdateDesignationRight } from '../models/HttpRequests/UpdateDesignationRight.js';
+import { DesignationListResponse } from '../models/HttpResponses/DesignationListResponse';
+import { GetDesignationList } from '../models/HttpRequests/GetDesignationList';
 
 @Injectable()
 export class DesignationService {
@@ -11,26 +13,18 @@ export class DesignationService {
     private httpClient: HttpClient
   ) {}
 
-  public getDesignationList(
-    filter: string,
-    userID: number,
-    specificDesignationID: number = -1,
-    rightName: string,
-    rowStart: number,
-    rowEnd: number,
-    orderBy: string,
-    orderByDirection: string
-  ) {
-    const requestModel = {
-      _userID: userID,
-      _specificDesignationID: specificDesignationID,
-      _rightName: rightName,
-      _filter: filter,
-      _rowStart: rowStart,
-      _rowEnd: rowEnd,
-      _orderBy: orderBy,
-      _orderByDirection: orderByDirection
-    };
+  public getDesignationList(model: GetDesignationList) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    // const requestModel = {
+    //   _userID: userID,
+    //   _specificDesignationID: specificDesignationID,
+    //   _rightName: rightName,
+    //   _filter: filter,
+    //   _rowStart: rowStart,
+    //   _rowEnd: rowEnd,
+    //   _orderBy: orderBy,
+    //   _orderByDirection: orderByDirection
+    // };
 
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/designations/list`;
