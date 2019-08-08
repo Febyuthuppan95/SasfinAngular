@@ -10,6 +10,7 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import { Config } from './../../../../assets/config.json';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
+import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 
 @Component({
   selector: 'app-view-user-list',
@@ -138,18 +139,18 @@ export class ViewUserListComponent implements OnInit {
   loadUsers() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
+    const model: GetUserList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificUserID: -1,
+      rightName: this.rightName,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderDirection: this.orderDirection
+    };
     this.userService
-      .getUserList(
-        this.filter,
-        3,
-        -1,
-        this.rightName,
-        this.rowStart,
-        this.rowEnd,
-        this.orderBy,
-        this.orderDirection
-      )
+      .getUserList(model)
       .then(
         (res: UserListResponse) => {
           for (const user of res.userList) {

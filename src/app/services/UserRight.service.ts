@@ -49,18 +49,7 @@ export class UserRightService {
   // }
 
   public getUserRightsList(model: GetUserRightsList) {
-    const json = {
-      _userID: model.userID,
-      _specificRightID: model.specificRightID,
-      _specificUserID: model.specificUserID,
-      _rightName: model.rightName,
-      _filter: model.filter,
-      _rowStart: model.rowStart,
-      _rowEnd: model.rowEnd,
-      _orderBy: model.orderBy,
-      _orderByDirection: model.orderDirection
-    };
-
+    const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/userRights/list`;
       this.httpClient.post(apiURL, json)

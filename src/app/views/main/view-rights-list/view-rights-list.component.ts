@@ -7,6 +7,7 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 
 @Component({
   selector: 'app-view-rights-list',
@@ -131,18 +132,18 @@ export class ViewRightsListComponent implements OnInit {
   loadRights() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
+    const model: GetRightList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificRightID: -1,
+      rightName: this.rightName,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderByDirection
+    };
     this.rightService
-      .getRightList(
-        this.filter,
-        this.currentUser.userID,
-        -1,
-        this.rightName,
-        this.rowStart,
-        this.rowEnd,
-        this.orderBy,
-        this.orderByDirection
-      )
+      .getRightList(model)
       .then(
         (res: RightListResponse) => {
           if (res.rowCount === 0) {

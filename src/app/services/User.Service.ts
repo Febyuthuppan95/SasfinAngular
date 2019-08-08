@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
 import { environment } from '../../environments/environment';
 import { ThemeService } from './theme.Service';
+import { GetUserList } from '../models/HttpRequests/GetUserList';
 
 @Injectable({
   providedIn: 'root'
@@ -69,8 +70,8 @@ export class UserService {
    */
   public authenticate(email: string, pass: string) {
     const requestModel = {
-      _email: email,
-      _pass: pass
+      email: email,
+      pass: pass
     };
 
     const promise = new Promise((resolve, reject) => {
@@ -95,14 +96,10 @@ export class UserService {
    * forgot password
    */
   public forgotPassword(email: string) {
-    const requestModel = {
-      _email: email
-    };
-
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/account/request/otp`;
       this.httpClient
-        .post(apiURL, requestModel)
+        .post(apiURL, {email: email})
         .toPromise()
         .then(
           res => {
@@ -151,28 +148,8 @@ export class UserService {
   /**
    * user list
    */
-  public getUserList(
-    filter: string,
-    userID: number,
-    specificUserID: number = -1,
-    rightName: string,
-    rowStart: number,
-    rowEnd: number,
-    // tslint:disable-next-line:align
-    orderBy: string,
-    orderDirection: string
-  ) {
-    const requestModel = {
-      _userID: userID,
-      _specificUserID: specificUserID,
-      _rightName: rightName,
-      _filter: filter,
-      _rowStart: rowStart,
-      _rowEnd: rowEnd,
-      _orderBy: orderBy,
-      _orderDirection: orderDirection
-    };
-
+  public getUserList(model: GetUserList) {
+    const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/list`;
       this.httpClient

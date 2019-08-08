@@ -8,6 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ContextMenu } from '../models/StateModels/ContextMenu';
 import { UserService } from './user.Service.js';
+import { GetUserBackground } from '../models/HttpRequests/GetUserBackground';
 
 
 
@@ -125,10 +126,11 @@ export class ThemeService {
     const jsonString: string = this.cookieService.get('currentUser');
     const curUser: User = JSON.parse(jsonString);
 
-    const requestModel = {
-      _userID: curUser.userID,
-      _specificUserID: 5 // Hardcoded for specific user id
+    const model: GetUserBackground = {
+      userID: curUser.userID,
+      specificUserID: curUser.userID
     };
+    const requestModel = JSON.parse(JSON.stringify(model));
 
     return this.httpClient.post(`${environment.ApiEndpoint}/backgrounds/get`, requestModel);
   }

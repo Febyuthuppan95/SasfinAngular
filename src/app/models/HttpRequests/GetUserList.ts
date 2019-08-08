@@ -3,4 +3,8 @@ export class GetUserList {
   rowStart: number;
   rightName: string;
   filter: string;
+  userID: number;
+  specificUserID: number;
+  orderBy: string;
+  orderDirection: string;
 }
