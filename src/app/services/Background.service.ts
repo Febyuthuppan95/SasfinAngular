@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Config} from '../../assets/config.json';
-=======
-import {HttpClient} from '@angular/common/http';
->>>>>>> master
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';
@@ -18,7 +14,6 @@ export class BackgroundService {
 
   public getBackgrounds(request: BackgroundListRequest) {
     const requestModel = JSON.parse(JSON.stringify(request));
-
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/backgrounds/list`;
       this.httpClient
@@ -37,10 +32,10 @@ export class BackgroundService {
 
   public addBackgrounds(fileName: string, src: File, userID: number, rightName: string) {
     const requestModel = {
-      _name: fileName,
-      _image: src.name,
-      _userId: userID,
-      _rightName: rightName
+      name: fileName,
+      image: src.name,
+      userId: userID,
+      rightName: rightName
     };
 
     const formData: FormData = new FormData();

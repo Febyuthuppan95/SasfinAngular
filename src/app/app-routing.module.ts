@@ -15,6 +15,7 @@ import { ViewRightsListComponent } from './views/main/view-rights-list/view-righ
 import { AccountComponent } from './layouts/account/account.component';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
+import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'userRights', component: ViewUserRightsListComponent },
+          { path: 'helpglossary', component: ViewHelpGlossaryComponent }
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent }

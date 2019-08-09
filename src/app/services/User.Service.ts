@@ -70,8 +70,8 @@ export class UserService {
    */
   public authenticate(email: string, pass: string) {
     const requestModel = {
-      email: email,
-      pass: pass
+      email,
+      pass
     };
 
     const promise = new Promise((resolve, reject) => {
@@ -99,7 +99,7 @@ export class UserService {
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/account/request/otp`;
       this.httpClient
-        .post(apiURL, {email: email})
+        .post(apiURL, {email})
         .toPromise()
         .then(
           res => {

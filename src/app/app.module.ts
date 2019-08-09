@@ -44,15 +44,14 @@ import { ViewDesignationsListComponent } from './views/main/view-designations-li
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
-import {RightService} from './services/Right.Service';
+import { RightService } from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
-<<<<<<< HEAD
-import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
-=======
-import {UserRightService} from './services/UserRight.service';
+import { UserRightService } from './services/UserRight.service';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
->>>>>>> master
+import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
+import { HelpGlossaryService } from './services/HelpGlossary.Service';
+import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
 
 // @ts-ignore
 @NgModule({
@@ -83,11 +82,9 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     AccountComponent,
     ViewDesignationsRightsListComponent,
     ContextMenuComponent,
-<<<<<<< HEAD
-    ViewUnitsOfMeasureComponent
-=======
     ViewUserRightsListComponent,
->>>>>>> master
+    ViewHelpGlossaryComponent,
+    HelpGlossaryContextMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -116,17 +113,15 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     RightService,
     MenuService,
     BackgroundService,
-<<<<<<< HEAD
-    NgxImageCompressService
-=======
+    NgxImageCompressService,
     UserRightService,
+    HelpGlossaryService,
     AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
->>>>>>> master
+    },
   ],
   bootstrap: [AppComponent],
   entryComponents: [
