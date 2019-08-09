@@ -1,10 +1,11 @@
 import {HttpClient} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
 import { environment } from 'src/environments/environment.js';
 import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
 import { UpdateDesignationRight } from '../models/HttpRequests/UpdateDesignationRight.js';
+import { DesignationListResponse } from '../models/HttpResponses/DesignationListResponse';
+import { GetDesignationList } from '../models/HttpRequests/GetDesignationList';
 
 @Injectable()
 export class DesignationService {
@@ -12,26 +13,18 @@ export class DesignationService {
     private httpClient: HttpClient
   ) {}
 
-  public getDesignationList(
-    filter: string,
-    userID: number,
-    specificDesignationID: number = -1,
-    rightName: string,
-    rowStart: number,
-    rowEnd: number,
-    orderBy: string,
-    orderByDirection: string
-  ) {
-    const requestModel = {
-      _userID: userID,
-      _specificDesignationID: specificDesignationID,
-      _rightName: rightName,
-      _filter: filter,
-      _rowStart: rowStart,
-      _rowEnd: rowEnd,
-      _orderBy: orderBy,
-      _orderByDirection: orderByDirection
-    };
+  public getDesignationList(model: GetDesignationList) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    // const requestModel = {
+    //   _userID: userID,
+    //   _specificDesignationID: specificDesignationID,
+    //   _rightName: rightName,
+    //   _filter: filter,
+    //   _rowStart: rowStart,
+    //   _rowEnd: rowEnd,
+    //   _orderBy: orderBy,
+    //   _orderByDirection: orderByDirection
+    // };
 
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/designations/list`;
@@ -62,7 +55,7 @@ export class DesignationService {
     };
 
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/designationrights/list`;
+      const apiURL = `${environment.ApiEndpoint}/designationRights/list`;
       this.httpClient.post(apiURL, json)
       .toPromise()
       .then(
@@ -80,7 +73,7 @@ export class DesignationService {
 
   public updateDesignationRight(model: UpdateDesignationRight) {
     const json = JSON.parse(JSON.stringify(model));
-    console.log(json);
+    // console.log(json);
     const promise = new Promise((resolve, reject) => {
       this.httpClient.post(`${environment.ApiEndpoint}/designationRights/update`, json)
       .toPromise()
@@ -96,7 +89,21 @@ export class DesignationService {
     return promise;
   }
   public addDesignationright(model: AddDesignationRight) {
-
+    const json = JSON.parse(JSON.stringify(model));
+    // console.log(json);
+    const promise = new Promise((resolve, reject) => {
+      this.httpClient.post(`${environment.ApiEndpoint}/designationRights/add`, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
 }

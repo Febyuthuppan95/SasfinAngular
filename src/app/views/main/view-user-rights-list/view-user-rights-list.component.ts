@@ -1,40 +1,41 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
-import { UserList } from '../../../models/HttpResponses/UserList';
-import { Pagination } from '../../../models/Pagination';
-import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
-import { UserService } from '../../../services/user.Service';
-import { User } from '../../../models/HttpResponses/User';
-import { ThemeService } from 'src/app/services/theme.Service.js';
-import { Config } from './../../../../assets/config.json';
-import { environment } from '../../../../environments/environment';
-import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ThemeService} from '../../../services/Theme.Service';
+import {UserService} from '../../../services/User.Service';
+import {NotificationComponent} from '../../../components/notification/notification.component';
+import {ImageModalComponent} from '../../../components/image-modal/image-modal.component';
+import {environment} from '../../../../environments/environment';
+import {User} from '../../../models/HttpResponses/User';
+import {Pagination} from '../../../models/Pagination';
+import {UserRightService} from '../../../services/UserRight.service';
+import {GetUserRightsList} from '../../../models/HttpRequests/GetUserRightsList';
+import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
+import {UserRightsList} from '../../../models/HttpResponses/UserRightsList';
 
 @Component({
-  selector: 'app-view-user-list',
-  templateUrl: './view-user-list.component.html',
-  styleUrls: ['./view-user-list.component.scss']
+  selector: 'app-view-user-rights-list',
+  templateUrl: './view-user-rights-list.component.html',
+  styleUrls: ['./view-user-rights-list.component.scss']
 })
-export class ViewUserListComponent implements OnInit {
+export class ViewUserRightsListComponent implements OnInit {
+
   constructor(
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userRightService: UserRightService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Users';
+    this.rightName = 'Rights';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
     this.prevPage = +this.activePage - 1;
     this.nextPage = +this.activePage + 1;
     this.filter = '';
-    this.orderBy = 'Surname';
+    this.orderBy = '';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadUsers();
+    this.loadUserRights();
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -51,7 +52,8 @@ export class ViewUserListComponent implements OnInit {
 
   pages: Pagination[];
   showingPages: Pagination[];
-  userList: UserList[];
+  lastPage: Pagination;
+  userRightsList: UserRightsList[];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -69,7 +71,7 @@ export class ViewUserListComponent implements OnInit {
   orderDirection: string;
   totalShowing: number;
   orderIndicator = 'Surname_ASC';
-  noData = false;
+
   showLoader = true;
   displayFilter = false;
 
@@ -128,63 +130,49 @@ export class ViewUserListComponent implements OnInit {
 
     this.updatePagination();
 
-    this.loadUsers();
+    this.loadUserRights();
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadUsers();
+    this.loadUserRights();
   }
 
-  loadUsers() {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+  loadUserRights() {
+    this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetUserList = {
-      filter: this.filter,
+    const dRModel: GetUserRightsList = {
       userID: this.currentUser.userID,
-      specificUserID: -1,
+      specificRightID: -1, // default
+      specificUserID: -1, // default
       rightName: this.rightName,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      filter: this.filter,
       orderBy: this.orderBy,
-      orderDirection: this.orderDirection
+      orderDirection: this.orderDirection,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd
     };
-    this.userService
-      .getUserList(model)
-      .then(
-        (res: UserListResponse) => {
-          for (const user of res.userList) {
-            if (user.profileImage === null) {
-              user.profileImage = `${
-                Config.ApiEndpoint.test
-              }/public/images/profile/default.png`;
-            } else {
-              user.profileImage = `${
-                Config.ApiEndpoint.test
-              }/public/images/profile/${user.profileImage}`;
-            }
-          }
-          if (res.rowCount === 0) {
-            this.noData = true;
-            this.showLoader = false;
-          } else {
-            this.noData = false;
-            this.userList = res.userList;
-            this.rowCount = res.rowCount;
-            this.showLoader = false;
-            this.showingRecords = res.userList.length;
-            this.totalShowing = +this.rowStart + +this.userList.length - 1;
-            this.paginateData();
-          }
-        },
-        msg => {
-          this.showLoader = false;
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-        }
-      );
+    this.userRightService
+      .getUserRightsList(dRModel).then(
+      (res: UserRightsListResponse) => {
+        // Process Success
+        console.log(res.userRightsList);
+        this.userRightsList = res.userRightsList;
+        this.rowCount = res.rowCount;
+        this.showLoader = false;
+        this.showingRecords = res.userRightsList.length;
+        this.totalShowing += this.rowStart + this.userRightsList.length - 1;
+        this.paginateData();
+      },
+      msg => {
+        // Process Failure
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
   updateSort(orderBy: string) {
@@ -200,14 +188,7 @@ export class ViewUserListComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadUsers();
-  }
-
-  inspectUserImage(src: string) {
-    const options = new ImageModalOptions();
-    options.width = '100%';
-
-    this.imageModal.open(src, options);
+    this.loadUserRights();
   }
 
   updatePagination() {

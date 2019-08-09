@@ -1,5 +1,5 @@
-export class RightList {
-  rowNum: string;
+export class UserRightsList {
+  rowNum: number;
   rightID: number;
   name: string;
   description: string;

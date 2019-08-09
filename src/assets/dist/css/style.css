@@ -14001,7 +14001,20 @@ a.close.disabled {
 .toast-body {
   padding: 0.75rem;
 }
-
+.modal-body-blue {
+  background: rgba(196, 219, 255, 0.8) !important;
+  border-color: rgba(196, 219, 255, 0.8) !important;
+  color: #121212 !important;
+}
+.modal-header {
+ border: 1px solid #fff;
+}
+.modal-title {
+  color: #fff;
+}
+.modal-footer {
+  border: 1px solid #fff;
+}
 .modal-open {
   overflow: hidden;
 }

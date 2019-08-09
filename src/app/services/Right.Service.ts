@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
+import { GetRightList } from '../models/HttpRequests/GetRightList.js';
 
 @Injectable()
 export class RightService {
@@ -9,26 +10,8 @@ export class RightService {
     private httpClient: HttpClient
   ) {}
 
-  public getRightList(
-    filter: string,
-    userID: number,
-    specificRightID: number = -1,
-    rightName: string,
-    rowStart: number,
-    rowEnd: number,
-    orderBy: string,
-    orderByDirection: string
-  ) {
-    const requestModel = {
-      _userID: userID,
-      _specificRightID: specificRightID,
-      _rightName: rightName,
-      _filter: filter,
-      _rowStart: rowStart,
-      _rowEnd: rowEnd,
-      _orderBy: orderBy,
-      _orderByDirection: orderByDirection
-    };
+  public getRightList(model: GetRightList) {
+    const requestModel = JSON.parse(JSON.stringify(model));
 
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/rights/list`;

@@ -11,8 +11,9 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { MenuService } from 'src/app/services/Menu.Service';
+import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 
 @Component({
   selector: 'app-view-designations-list',
@@ -21,10 +22,10 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 })
 export class ViewDesignationsListComponent implements OnInit {
   constructor(
-    private userService: UserService,
-    private themeService: ThemeService,
-    private designationService: DesignationService,
-    private cookieService: CookieService
+    private IUserService: UserService,
+    private IThemeService: ThemeService,
+    private IDesignationService: DesignationService,
+    private IMenuService: MenuService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -39,8 +40,8 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
-    this.subscription = this.themeService.subjectSidebarEmit$.subscribe(result => {
-      console.log(result);
+    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }
@@ -63,7 +64,7 @@ export class ViewDesignationsListComponent implements OnInit {
   contextMenuY = 0;
   sidebarCollapsed = true;
 
-  currentUser: User = this.userService.getCurrentUser();
+  currentUser: User = this.IUserService.getCurrentUser();
   currentTheme = 'light';
   focusDesgination: string;
   focusDesName: string;
@@ -97,7 +98,7 @@ export class ViewDesignationsListComponent implements OnInit {
   subscription: Subscription;
 
   ngOnInit() {
-    const themeObserver = this.themeService.getCurrentTheme();
+    const themeObserver = this.IThemeService.getCurrentTheme();
     themeObserver.subscribe((themeData: string) => {
       this.currentTheme = themeData;
     });
@@ -160,21 +161,16 @@ export class ViewDesignationsListComponent implements OnInit {
   loadDesignations() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
-    this.designationService
-      .getDesignationList(
-        this.filter,
-        this.currentUser.userID,
-        -1,
-        this.rightName,
-        this.rowStart,
-        this.rowEnd,
-        this.orderBy,
-        this.orderByDirection
-      )
+    const model: GetDesignationList = {
+      rowEnd: this.rowEnd,
+      rowStart: this.rowStart,
+      rightName: this.rightName,
+      filter: this.filter
+    };
+    this.IDesignationService
+      .getDesignationList(model)
       .then(
         (res: DesignationListResponse) => {
-          console.log(res.rowCount);
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
@@ -185,7 +181,6 @@ export class ViewDesignationsListComponent implements OnInit {
           } else {
             this.noData = false;
             this.designationList = res.designationList;
-            console.log(this.designationList);
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;
@@ -246,7 +241,6 @@ export class ViewDesignationsListComponent implements OnInit {
   }
 
   popClick(event, id, name) {
-    console.log(this.sidebarCollapsed);
     // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
@@ -260,11 +254,11 @@ export class ViewDesignationsListComponent implements OnInit {
     this.focusDesName = name;
     // Will only toggle on if off
     if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true); // Set true
+      this.IThemeService.toggleContextMenu(true); // Set true
       this.contextMenu = true;
       // Show menu
     } else {
-      this.themeService.toggleContextMenu(false);
+      this.IThemeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
   }

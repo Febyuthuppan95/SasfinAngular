@@ -1,7 +1,6 @@
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,6 +12,10 @@ import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
 import { MenuService } from './services/menu.service';
 import { BackgroundService } from './services/Background.service';
+import { AuthenticationService } from './services/Authentication.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './helpers/auth.interceptor';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +34,6 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ViewNotFoundComponent } from './views/errors/view-not-found/view-not-found.component';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
 import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
@@ -45,7 +47,12 @@ import { AccountComponent } from './layouts/account/account.component';
 import {RightService} from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+<<<<<<< HEAD
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
+=======
+import {UserRightService} from './services/UserRight.service';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
+>>>>>>> master
 
 // @ts-ignore
 @NgModule({
@@ -76,7 +83,11 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
     AccountComponent,
     ViewDesignationsRightsListComponent,
     ContextMenuComponent,
+<<<<<<< HEAD
     ViewUnitsOfMeasureComponent
+=======
+    ViewUserRightsListComponent,
+>>>>>>> master
   ],
   imports: [
     BrowserModule,
@@ -105,7 +116,17 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
     RightService,
     MenuService,
     BackgroundService,
+<<<<<<< HEAD
     NgxImageCompressService
+=======
+    UserRightService,
+    AuthenticationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+>>>>>>> master
   ],
   bootstrap: [AppComponent],
   entryComponents: [

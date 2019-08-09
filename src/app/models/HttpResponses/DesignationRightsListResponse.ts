@@ -1,5 +1,5 @@
 import {Outcome} from './Outcome';
-import {DesignationRightsList} from '../HttpResponses/DesignationRightsList';
+import {DesignationRightsList} from './DesignationRightsList';
 
 export class DesignationRightsListResponse {
   outcome: Outcome;

@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
         content
       };
       this.snackBar.emit(JSON.stringify(options));
-      console.log(options);
+      // console.log(options);
     }
   }
 

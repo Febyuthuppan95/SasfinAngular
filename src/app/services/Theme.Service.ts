@@ -8,6 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ContextMenu } from '../models/StateModels/ContextMenu';
 import { UserService } from './user.Service.js';
+import { GetUserBackground } from '../models/HttpRequests/GetUserBackground';
 
 
 
@@ -31,17 +32,15 @@ export class ThemeService {
   private contMenuY = 0;
   private contMenuTable = false;
   private sidebarCollapsed = true;
-  // Subjects
-  private subjectSidebar = new Subject<boolean>();
+  // // Subjects
+  // private subjectSidebar = new Subject<boolean>();
 
-  // Observable stream
-  subjectSidebarEmit$ = this.subjectSidebar.asObservable();
+  // // Observable stream
+  // subjectSidebarEmit$ = this.subjectSidebar.asObservable();
 
-  public setSidebar(source: boolean) {
-    this.subjectSidebar.next(source);
-    console.log(source);
-  }
-
+  // public setSidebar(source: boolean) {
+  //   this.subjectSidebar.next(source);
+  // }
   /**
    * getTheme
    */
@@ -127,10 +126,11 @@ export class ThemeService {
     const jsonString: string = this.cookieService.get('currentUser');
     const curUser: User = JSON.parse(jsonString);
 
-    const requestModel = {
-      _userID: curUser.userID,
-      _specificUserID: 5 // Hardcoded for specific user id
+    const model: GetUserBackground = {
+      userID: curUser.userID,
+      specificUserID: curUser.userID
     };
+    const requestModel = JSON.parse(JSON.stringify(model));
 
     return this.httpClient.post(`${environment.ApiEndpoint}/backgrounds/get`, requestModel);
   }
