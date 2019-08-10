@@ -83,7 +83,8 @@ export class ViewBackgroundsListComponent implements OnInit {
         this.totalDisplayCount = res.backgroundList.length;
       },
       (msg) => {
-        this.notify.errorsmsg('Failure', 'Unable to reach server.');
+        console.log(JSON.stringify(msg));
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
       });
   }
 
