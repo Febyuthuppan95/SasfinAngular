@@ -15,6 +15,8 @@ import { HelpGlossaryService } from 'src/app/services/HelpGlossary.Service';
 import { ListHelpGlossary } from 'src/app/models/HttpRequests/ListHelpGlossary';
 import { ListHelpGlossaryResponse, ListHelpGlossaryItem } from 'src/app/models/HttpResponses/ListHelpGlossaryResponse';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { UpdateHelpGlossary } from 'src/app/models/HttpRequests/UpdateHelpGlossary';
+import { UpdateHelpGlossaryResponse } from 'src/app/models/HttpResponses/UpdateHelpGlossaryResponse';
 
 @Component({
   selector: 'app-view-help-glossary',
@@ -86,7 +88,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
   showingRecords: number;
   activePage: number;
 
-  focusHelp: string;
+  focusHelp: number;
   focusHelpName: string;
   focusDescription: string;
 
@@ -289,5 +291,42 @@ export class ViewHelpGlossaryComponent implements OnInit {
     this.openModal.nativeElement.click();
   }
 
-  updateGlossary() {}
+  updateGlossary() {
+    let errors = 0;
+
+    if (this.focusHelpName === '') {
+      errors++;
+    }
+
+    if (this.focusDescription === '') {
+      errors++;
+    }
+
+    if (errors === 0) {
+      const requestModel: UpdateHelpGlossary = {
+        userID: 3,
+        helpGlossaryID: this.focusHelp,
+        rightName: 'HelpGlossary',
+        name: this.focusHelpName,
+        description: this.focusDescription
+      };
+
+      this.helpGlossaryService.update(requestModel).then(
+        (res: UpdateHelpGlossaryResponse) => {
+          console.log(JSON.stringify(res));
+
+          this.closeModal.nativeElement.click();
+          this.loadHelpGlossary();
+
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        },
+
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server.');
+        }
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    }
+  }
 }
