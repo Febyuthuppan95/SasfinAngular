@@ -48,7 +48,6 @@ export class ViewLoginComponent implements OnInit {
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
-
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             this.router.navigateByUrl('/users');

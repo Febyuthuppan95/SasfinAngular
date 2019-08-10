@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
@@ -51,6 +51,12 @@ export class ViewHelpGlossaryComponent implements OnInit {
 
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
+
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -272,6 +278,10 @@ export class ViewHelpGlossaryComponent implements OnInit {
   }
 
   editHelp($event) {
-    alert($event);
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openModal.nativeElement.click();
   }
+
+  updateGlossary() {}
 }
