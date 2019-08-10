@@ -43,7 +43,7 @@ const routes: Routes = [
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'userRights', component: ViewUserRightsListComponent },
-          { path: 'helpglossary', component: ViewHelpGlossaryComponent }
+          { path: 'helpglossary', component: ViewHelpGlossaryComponent },
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent }

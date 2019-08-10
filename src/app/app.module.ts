@@ -52,6 +52,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 import { HelpGlossaryService } from './services/HelpGlossary.Service';
 import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
+import { HelpSnackbar } from './services/HelpSnackbar.service';
 
 // @ts-ignore
 @NgModule({
@@ -84,7 +85,7 @@ import { HelpGlossaryContextMenuComponent } from './components/help-glossary-con
     ContextMenuComponent,
     ViewUserRightsListComponent,
     ViewHelpGlossaryComponent,
-    HelpGlossaryContextMenuComponent
+    HelpGlossaryContextMenuComponent,
   ],
   imports: [
     BrowserModule,
@@ -116,6 +117,7 @@ import { HelpGlossaryContextMenuComponent } from './components/help-glossary-con
     NgxImageCompressService,
     UserRightService,
     HelpGlossaryService,
+    HelpSnackbar,
     AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,

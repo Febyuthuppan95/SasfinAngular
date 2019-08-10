@@ -11,6 +11,8 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { FormGroup } from '@angular/forms';
 import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   selector: 'app-view-backgrounds-list',
@@ -18,7 +20,7 @@ import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
 export class ViewBackgroundsListComponent implements OnInit {
-  constructor(private themeService: ThemeService, private backgroundService: BackgroundService) {}
+  constructor(private themeService: ThemeService, private backgroundService: BackgroundService, private snackbarService: HelpSnackbar) {}
 
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
@@ -190,5 +192,15 @@ export class ViewBackgroundsListComponent implements OnInit {
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+  }
+
+  updateHelpContext(title: string, content: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      title,
+      content,
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 }

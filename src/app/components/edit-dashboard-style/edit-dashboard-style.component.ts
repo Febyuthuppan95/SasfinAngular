@@ -5,6 +5,8 @@ import { BackgroundService } from 'src/app/services/Background.service';
 import { BackgroundListRequest } from 'src/app/models/HttpRequests/BackgroundList';
 import { BackgroundListResponse } from 'src/app/models/HttpResponses/BackgroundListResponse';
 import { environment } from 'src/environments/environment';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-edit-dashboard-style',
@@ -12,10 +14,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./edit-dashboard-style.component.scss']
 })
 export class EditDashboardStyleComponent implements OnInit {
-  constructor(private themeService: ThemeService, private backgroundService: BackgroundService) {}
+  constructor(private themeService: ThemeService, private backgroundService: BackgroundService,
+              private objectHelpService: ObjectHelpService, private cookieService: CookieService) {}
 
   @Input() show: boolean;
-  @Input() toggleHelpValue: boolean;
+  toggleHelpValue: boolean;
 
   @Output() closeSidebar = new EventEmitter<string>();
   @Output() background = new EventEmitter<string>();
@@ -39,6 +42,10 @@ export class EditDashboardStyleComponent implements OnInit {
     };
 
     this.loadBackgrounds();
+
+    this.objectHelpService.observeAllow().subscribe((allow: boolean) => {
+      this.toggleHelpValue = allow;
+    });
   }
 
   public clickEvent() {
@@ -51,7 +58,7 @@ export class EditDashboardStyleComponent implements OnInit {
   }
 
   public helpCheckbox() {
-    this.help.emit(this.toggleHelpValue);
+    this.objectHelpService.toggleHelp(this.toggleHelpValue);
   }
 
   updateBackground(background: string) {

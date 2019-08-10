@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@a
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  constructor() {}
+  constructor(private snackbarService: HelpSnackbar) {}
 
   @Input() currentTheme = 'light';
   @Input() collapse = true;
@@ -18,15 +20,14 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {}
 
-  showSnackBar(title: string, content: string) {
-    if (this.helpContext) {
-      const options = {
-        title,
-        content
-      };
-      this.snackBar.emit(JSON.stringify(options));
-      // console.log(options);
-    }
+  updateHelpContext(title: string, content: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      title,
+      content,
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
 }

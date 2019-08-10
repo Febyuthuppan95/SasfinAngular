@@ -83,7 +83,6 @@ export class MainLayoutComponent implements OnInit {
 
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
-      this.snackBar.allow = toggle;
     });
   }
 
@@ -117,19 +116,6 @@ export class MainLayoutComponent implements OnInit {
     this.sidebarCollapse = this.sidebar.collapse;
     this.IMenuService.setSidebar(this.sidebarCollapse);
     this.cookieService.set('sidebar', this.sidebarCollapse ? 'true' : 'false');
-  }
-
-  showSnackBar(options: string) {
-    const optionsJson = JSON.parse(options);
-    this.snackBar.content = optionsJson.content;
-    this.snackBar.title = optionsJson.title;
-    this.snackBar.display = true;
-  }
-
-  hideSnackBar() {
-    // setTimeout(() => {
-    //   this.snackBar.display = false;
-    // }, 2000);
   }
 
   offCanvasSidebar(event: string) {
