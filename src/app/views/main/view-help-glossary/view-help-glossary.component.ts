@@ -230,25 +230,31 @@ export class ViewHelpGlossaryComponent implements OnInit {
   }
 
   updatePagination() {
-    this.showingPages = Array<Pagination>();
-    this.showingPages[0] = this.pages[this.activePage - 1];
-    const pagenumber = +this.rowCount / +this.rowCountPerPage;
+    if (this.dataset.length <= this.totalShowing) {
+      this.prevPageState = false;
+      this.nextPageState = false;
+    } else {
+      this.showingPages = Array<Pagination>();
+      this.showingPages[0] = this.pages[this.activePage - 1];
+      const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-    if (this.activePage < pagenumber) {
-      this.showingPages[1] = this.pages[+this.activePage];
+      if (this.activePage < pagenumber) {
+        this.showingPages[1] = this.pages[+this.activePage];
 
-      if (this.showingPages[1] === undefined) {
-        const page = new Pagination();
-        page.page = 1;
-        page.rowStart = 1;
-        page.rowEnd = this.rowEnd;
-        this.showingPages[1] = page;
+        if (this.showingPages[1] === undefined) {
+          const page = new Pagination();
+          page.page = 1;
+          page.rowStart = 1;
+          page.rowEnd = this.rowEnd;
+          this.showingPages[1] = page;
+        }
+      }
+
+      if (+this.activePage + 1 <= pagenumber) {
+        this.showingPages[2] = this.pages[+this.activePage + 1];
       }
     }
 
-    if (+this.activePage + 1 <= pagenumber) {
-      this.showingPages[2] = this.pages[+this.activePage + 1];
-    }
   }
 
   toggleFilters() {
