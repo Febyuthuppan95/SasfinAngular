@@ -3,14 +3,13 @@ import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';
-import { NgxImageCompressService } from 'ngx-image-compress';
 import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackgroundService {
-  constructor(private httpClient: HttpClient, private imageCompress: NgxImageCompressService) {}
+  constructor(private httpClient: HttpClient) {}
 
   public getBackgrounds(request: BackgroundListRequest) {
     const requestModel = JSON.parse(JSON.stringify(request));
@@ -35,7 +34,7 @@ export class BackgroundService {
       name: fileName,
       image: src.name,
       userId: userID,
-      rightName: rightName
+      rightName
     };
 
     const formData: FormData = new FormData();
@@ -56,23 +55,5 @@ export class BackgroundService {
         }
       );
     });
-  }
-
-  compressFile(src: string) {
-
-    this.imageCompress.uploadFile().then(({image, orientation}) => {
-
-      src = image;
-      console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
-
-      this.imageCompress.compressFile(image, orientation, 50, 50).then(
-        result => {
-          src = result;
-          console.warn('Size in bytes is now:', this.imageCompress.byteCount(result));
-        }
-      );
-
-    });
-
   }
 }

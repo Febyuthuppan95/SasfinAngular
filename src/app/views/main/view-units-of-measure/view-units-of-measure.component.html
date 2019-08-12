@@ -1,4 +1,4 @@
-<!-- <div class="shadow tile ls-tile-{{ currentTheme }}">
+<div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <div class="float-right">
       <ng-container *ngIf="showLoader">
@@ -14,7 +14,7 @@
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadUsers()">
+          (change)="loadUnitsOfMeasures()">
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
@@ -31,8 +31,6 @@
         <thead>
           <tr>
             <th></th>
-            <th></th>
-
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
                 <p class="headerText">Emp No</p>
@@ -42,83 +40,13 @@
                 </span>
               </button>
             </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')">
-                <p class="headerText">First Name</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Surname')">
-                <p class="headerText">Surname</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Email')">
-                <p class="headerText">Email</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Extension')">
-              <p class="headerText">Ext</p>
-              <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-            </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Designation')">
-              <p class="headerText">Designation</p>
-              <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
-                <p class="headerText">Status</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
           </tr>
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let user of userList" class="userRecord">
-            <td>{{user.rowNum}}</td>
-            <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
-              <img class="profile-image shadow" [src]="user.profileImage" />
-            </td>
-            <td>{{user.empNo}}</td>
-            <td>{{user.firstName}}</td>
-            <td>{{user.surname}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.extension}}</td>
-            <td>{{user.designation}}</td>
-            <td><span class="badge" [class.badge-success]="user.status == 'Active'"
-                [class.badge-danger]="user.status == 'Inactive'">{{user.status}}</span></td>
+          <tr *ngFor="let unit of dataset" class="userRecord">
+            <td>{{unit.description}}</td>
+            <td>{{unit.name}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -156,4 +84,4 @@
 </div>
 
 <app-notification></app-notification>
-<app-modal-component></app-modal-component> -->
+<app-modal-component></app-modal-component>

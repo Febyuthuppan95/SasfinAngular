@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxImageCompressService } from 'ngx-image-compress';
 import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
@@ -53,6 +52,7 @@ import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-
 import { HelpGlossaryService } from './services/HelpGlossary.Service';
 import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
 import { HelpSnackbar } from './services/HelpSnackbar.service';
+import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 
 // @ts-ignore
 @NgModule({
@@ -86,6 +86,7 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
     ViewUserRightsListComponent,
     ViewHelpGlossaryComponent,
     HelpGlossaryContextMenuComponent,
+    ViewUnitsOfMeasureComponent
   ],
   imports: [
     BrowserModule,
@@ -114,7 +115,6 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
     RightService,
     MenuService,
     BackgroundService,
-    NgxImageCompressService,
     UserRightService,
     HelpGlossaryService,
     HelpSnackbar,

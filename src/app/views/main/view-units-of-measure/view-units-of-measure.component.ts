@@ -5,6 +5,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
+import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 
 @Component({
   selector: 'app-view-units-of-measure',
@@ -21,13 +22,29 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   currentTheme = 'light';
   unitsOfMeasure: ListUnitsOfMeasureRequest;
   selectRowDisplay: number;
-  totalRowCount: number;
-  totalDisplayCount: number;
-  activePage: number;
-  prevPageState: boolean;
+  rowCount: number;
+  nextPage: number;
   nextPageState: boolean;
   prevPage: number;
-  nextPage: number;
+  prevPageState: boolean;
+  totalRowCount: number;
+  totalDisplayCount: number;
+  dataset: UnitsOfMeasure[];
+
+  rowStart: number;
+  rowEnd: number;
+  rowCountPerPage: number;
+  showingRecords: number;
+  filter: string;
+  rightName: string;
+  activePage: number;
+  orderBy: string;
+  orderDirection: string;
+  totalShowing: number;
+  orderIndicator = 'Surname_ASC';
+  noData = false;
+  showLoader = true;
+  displayFilter = false;
   pages: Pagination[];
   showingPages: Pagination[];
 
@@ -41,7 +58,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
     this.selectRowDisplay = 15;
 
-    // call service method
+    this.loadUnitsOfMeasures();
 
     this.activePage = +1;
     this.prevPageState = true;
@@ -55,6 +72,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       (res: ListUnitsOfMeasure) => {
         if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.dataset = res.unitsOfMeasureList;
         }
       },
       (msg) => {
@@ -65,8 +83,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
-    // this.backgroundRequestModel.rowStart = page.rowStart;
-    // this.backgroundRequestModel.rowEnd = page.rowEnd;
+    this.unitsOfMeasure.rowStart = page.rowStart;
+    this.unitsOfMeasure.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;
     this.prevPage = +this.activePage - 1;
     this.nextPage = +this.activePage + 1;
@@ -91,7 +109,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     }
 
     this.updatePagination();
-    // update units list
+    this.loadUnitsOfMeasures();
   }
 
   updatePagination() {
@@ -106,7 +124,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         const page = new Pagination();
         page.page = 1;
         page.rowStart = 1;
-        // page.rowEnd = this.backgroundRequestModel.rowEnd;
+        page.rowEnd = this.unitsOfMeasure.rowEnd;
         this.showingPages[1] = page;
       }
     }
@@ -116,4 +134,29 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     }
   }
 
+  updateSort(orderBy: string) {
+    if (this.orderBy === orderBy) {
+      if (this.orderDirection === 'ASC') {
+        this.orderDirection = 'DESC';
+      } else {
+        this.orderDirection = 'ASC';
+      }
+    } else {
+      this.orderDirection = 'ASC';
+    }
+
+    this.orderBy = orderBy;
+    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+    this.loadUnitsOfMeasures();
+  }
+
+  searchBar() {
+    this.unitsOfMeasure.rowStart = 1;
+    this.unitsOfMeasure.rowEnd = this.selectRowDisplay;
+    this.loadUnitsOfMeasures();
+  }
+
+  toggleFilters() {
+    this.displayFilter = !this.displayFilter;
+  }
 }

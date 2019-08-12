@@ -1,3 +1,5 @@
 export class UnitsOfMeasure {
-  // add fields
+  unitsOfMeasureID: number;
+  name: string;
+  description: string;
 }
