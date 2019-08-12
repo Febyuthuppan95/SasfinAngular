@@ -183,7 +183,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         },
         (msg) => {
-          this.notify.errorsmsg('Failure', 'Unable to reach server.');
+          this.notify.errorsmsg('500', msg);
         }
       );
   }
