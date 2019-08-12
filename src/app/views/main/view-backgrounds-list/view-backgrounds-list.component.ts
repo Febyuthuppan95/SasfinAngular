@@ -50,10 +50,8 @@ export class ViewBackgroundsListComponent implements OnInit {
   fileToUpload: File = null;
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
 
     this.selectRowDisplay = 15;

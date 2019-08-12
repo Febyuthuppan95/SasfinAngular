@@ -24,7 +24,7 @@ export class EditDashboardStyleComponent implements OnInit {
   @Output() background = new EventEmitter<string>();
   @Output() help = new EventEmitter<boolean>();
 
-  currentTheme = this.themeService.getTheme();
+  currentTheme: string;
   imagePath = environment.ApiBackgroundImages;
   backgroundRequestModel: BackgroundListRequest;
   backgrounds: BackgroundList[];
@@ -46,6 +46,10 @@ export class EditDashboardStyleComponent implements OnInit {
     this.objectHelpService.observeAllow().subscribe((allow: boolean) => {
       this.toggleHelpValue = allow;
     });
+
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
+    });
   }
 
   public clickEvent() {
@@ -61,8 +65,11 @@ export class EditDashboardStyleComponent implements OnInit {
     this.objectHelpService.toggleHelp(this.toggleHelpValue);
   }
 
-  updateBackground(background: string) {
-    this.background.emit(background);
+  updateBackground(background: BackgroundList) {
+      this.themeService.setBackground(background).then(
+        (res) => {},
+        (msg) => {}
+      );
   }
 
   loadBackgrounds() {

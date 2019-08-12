@@ -7,11 +7,7 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { CookieService } from 'ngx-cookie-service';
-import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { MenuService } from 'src/app/services/Menu.Service';
-
-
-import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -46,7 +42,7 @@ export class MainLayoutComponent implements OnInit {
 
 
   currentTheme = 'light';
-  currentBackground = this.themeService.getBackground();
+  currentBackground: string;
   toggleHelpValue: boolean;
   offcanvasToggle: boolean;
   sidebarCollapse = true;
@@ -55,31 +51,20 @@ export class MainLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    const themeObserver = this.themeService.getCurrentTheme();
-    const backgroundObserver = this.themeService.getBackgroundUser();
     const toggleHelpObserver = this.themeService.toggleHelp();
 
-    themeObserver.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
       this.updateChildrenComponents();
     });
 
     this.cookieService.set('sidebar', 'true');
 
-    // const menuObsever = this.themeService.isContextMenu();
-    // menuObsever.subscribe((menu: boolean) => {
-    //   this.tableContextMenu = menu;
-    // });
-
-    if (this.cookieService.get('currentUser') !== null) {
-
-      backgroundObserver.subscribe((result: BackgroundResponse) => {
-        console.log(JSON.stringify(result));
-        if (result.image !== undefined) {
-          this.currentBackground = `${environment.ApiBackgroundImages}/backgrounds/${result.image}`;
-        }
-      });
-    }
+    this.themeService.observeBackground().subscribe((result: string) => {
+      if (result !== undefined) {
+        this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
+      }
+    });
 
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
@@ -94,6 +79,7 @@ export class MainLayoutComponent implements OnInit {
     }
     this.themeService.isContextMenu().subscribe((context: boolean) => this.tableContextMenu = context);
   }
+
   openEditTile() {
     this.editSidebar.show = true;
   }
@@ -106,12 +92,9 @@ export class MainLayoutComponent implements OnInit {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
     this.footer.currentTheme = this.currentTheme;
-
   }
 
   collapseSidebar() {
-
-
     this.sidebar.collapse = !this.sidebar.collapse;
     this.sidebarCollapse = this.sidebar.collapse;
     this.IMenuService.setSidebar(this.sidebarCollapse);
@@ -122,10 +105,6 @@ export class MainLayoutComponent implements OnInit {
     this.offcanvasToggle = !this.offcanvasToggle;
   }
 
-  updateBackground(event: string) {
-    this.currentBackground = event;
-    this.themeService.setBackground(event);
-  }
   toggleHelp(event: boolean) {
     this.toggleHelpValue = event;
     this.themeService.setToggleValue(event);

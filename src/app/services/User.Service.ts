@@ -49,7 +49,7 @@ export class UserService {
   /**
    * getCurrentUser
    */
-  public getCurrentUser() {
+  public getCurrentUser(): User {
     const jsonString: string = this.cookieService.get('currentUser');
     if (jsonString !== '') {
       const currentUser: User = JSON.parse(jsonString);
@@ -59,6 +59,7 @@ export class UserService {
       } else {
         currentUser.profileImage = `${environment.ApiProfileImages}/${currentUser.profileImage}`;
       }
+
       return currentUser;
     } else {
       return null;

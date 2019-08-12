@@ -56,4 +56,27 @@ export class BackgroundService {
       );
     });
   }
+
+  public removeBackgrounds(backgroundID, rightName, userID) {
+    const requestModel = {
+      userID,
+      rightName,
+      backgroundID
+    };
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/backgrounds/remove`;
+
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+  }
 }

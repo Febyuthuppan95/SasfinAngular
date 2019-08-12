@@ -31,7 +31,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   /* Initializing Variables */
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = this.themeService.getTheme();
+  currentTheme: string;
   currentDesignation: number;
   currentDesignationName: string;
   rightId: number;
@@ -93,15 +93,15 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
-    });
     const currentDesignation = this.activatedRoute.paramMap
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
       // console.log(this.currentDesignation);
+    });
+
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
 
     this.loadDesignationRights();

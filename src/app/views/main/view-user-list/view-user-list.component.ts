@@ -47,7 +47,7 @@ export class ViewUserListComponent implements OnInit {
     `${environment.ImageRoute}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = this.themeService.getTheme();
+  currentTheme: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -74,9 +74,8 @@ export class ViewUserListComponent implements OnInit {
   displayFilter = false;
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
   }
 

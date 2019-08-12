@@ -64,7 +64,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
     `${environment.ApiProfileImages}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = this.themeService.getTheme();
+  currentTheme: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -102,9 +102,8 @@ export class ViewHelpGlossaryComponent implements OnInit {
   sidebarCollapsed = true;
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
   }
 

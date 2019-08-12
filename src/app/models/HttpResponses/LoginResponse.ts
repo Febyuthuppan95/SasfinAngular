@@ -9,6 +9,7 @@ export class LoginResponse {
   email: string;
   profileImage?: any;
   backroundID?: number;
+  backgroundImage?: string;
   backgroundColour: string;
   designation: string;
   extension?: any;

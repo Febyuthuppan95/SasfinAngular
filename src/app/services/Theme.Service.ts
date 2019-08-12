@@ -1,6 +1,6 @@
 import { Injectable, HostListener, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
 import { User } from 'src/app/models/HttpResponses/User.js';
@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 import { ContextMenu } from '../models/StateModels/ContextMenu';
 import { UserService } from './user.Service.js';
 import { GetUserBackground } from '../models/HttpRequests/GetUserBackground';
+import { BackgroundList } from '../models/HttpResponses/BackgroundList';
 
 
 
@@ -22,65 +23,43 @@ export class ThemeService {
     private httpClient: HttpClient,
     private userService: UserService
     ) {
+      const currentUser = this.userService.getCurrentUser();
+
+      this.themeColor = new BehaviorSubject<string>(this.cookieService.get('theme') !== '' ? this.cookieService.get('theme') : 'light');
+      this.backgroundImage = new BehaviorSubject<string>(currentUser.backgroundImage);
     }
 
-  private theme = 'light';
+  // private theme = 'light';
   private toggleHelpValue = false;
-  private background = '';
   private contMenu = false;
-  private contMenuX = 0;
-  private contMenuY = 0;
+  // private contMenuX = 0;
+  // private contMenuY = 0;
   private contMenuTable = false;
   private sidebarCollapsed = true;
-  // // Subjects
-  // private subjectSidebar = new Subject<boolean>();
 
-  // // Observable stream
-  // subjectSidebarEmit$ = this.subjectSidebar.asObservable();
+  backgroundImage: BehaviorSubject<string>;
+  themeColor: BehaviorSubject<string>;
 
-  // public setSidebar(source: boolean) {
-  //   this.subjectSidebar.next(source);
-  // }
   /**
-   * getTheme
+   * observeBackground
    */
-  public getTheme(): string {
-    const themeCookie = this.cookieService.get('theme');
+  public observeBackground() {
+    return this.backgroundImage.asObservable();
+  }
 
-    if (themeCookie !== '') {
-      this.theme = themeCookie;
-    } else {
-      this.theme = 'light';
-    }
-
-    return this.theme;
+  /**
+   * observeTheme
+   */
+  public observeTheme() {
+    return this.themeColor.asObservable();
   }
 
   /**
    * setTheme
    */
   public setTheme(theme: string) {
-    this.theme = theme;
-    this.cookieService.set('theme', this.theme, 1000 * 60 * 60 * 24, '/');
-  }
-
-  /**
-   * getCurrentTheme
-   */
-  public getCurrentTheme(): any {
-    const themeCookie = this.cookieService.get('theme');
-
-    if (themeCookie !== '') {
-      this.theme = themeCookie;
-    }
-
-    const themeObserver = new Observable(observer => {
-      setInterval(() => {
-        observer.next(this.theme);
-      }, 500);
-    });
-
-    return themeObserver;
+    this.cookieService.set('theme', theme, 1000 * 60 * 60 * 24, '/');
+    this.themeColor.next(theme);
   }
 
   /**
@@ -120,34 +99,37 @@ export class ThemeService {
   }
 
   /**
-   *
-   */
-  public getBackgroundUser(): Observable<{}> {
-    const jsonString: string = this.cookieService.get('currentUser');
-    const curUser: User = JSON.parse(jsonString);
-
-    const model: GetUserBackground = {
-      userID: curUser.userID,
-      specificUserID: curUser.userID
-    };
-    const requestModel = JSON.parse(JSON.stringify(model));
-
-    return this.httpClient.post(`${environment.ApiEndpoint}/backgrounds/get`, requestModel);
-  }
-
-  /**
    * setBackground
    */
-  public setBackground(backgroundURL: string): void {
-    this.cookieService.set(
-        'backgroundURL',
-        `${environment.ImageRoute}/backgrounds/${backgroundURL}`,
-        1000 * 60 * 60 * 24,
-        '/'
-      );
+  public setBackground(background: BackgroundList) {
+    const currentUser: User = this.userService.getCurrentUser();
+    currentUser.backgroundImage = background.image;
+    this.userService.persistLogin(JSON.stringify(currentUser));
+    this.backgroundImage.next(background.image);
 
-      //TODO Create Http Post call
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/backgrounds/set`;
+      const requestModel = {
+        userID: currentUser.userID,
+        specificUserID: currentUser.userID,
+        backgroundID: background.backgroundID,
+        rightName: 'BackgroundUser',
+      };
+
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
+
   public toggleContextMenu(setting: boolean): void {
     // if(this.contMenuTable && setting) { // Clicked on table
     //   console.log('table');

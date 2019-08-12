@@ -40,7 +40,7 @@ export class ViewRightsListComponent implements OnInit {
   private notify: NotificationComponent;
 
   currentUser: User = this.userService.getCurrentUser();
-  currentTheme = this.themeService.getTheme();
+  currentTheme: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
@@ -67,9 +67,8 @@ export class ViewRightsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
   }
 

@@ -49,11 +49,10 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   showingPages: Pagination[];
 
   ngOnInit() {
-    const themeObservable = this.themeService.getCurrentTheme();
     this.unitsOfMeasure = new ListUnitsOfMeasureRequest();
 
-    themeObservable.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
 
     this.selectRowDisplay = 15;

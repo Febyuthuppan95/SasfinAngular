@@ -98,9 +98,8 @@ export class ViewDesignationsListComponent implements OnInit {
   subscription: Subscription;
 
   ngOnInit() {
-    const themeObserver = this.IThemeService.getCurrentTheme();
-    themeObserver.subscribe((themeData: string) => {
-      this.currentTheme = themeData;
+    this.IThemeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
     });
   }
   paginateData() {

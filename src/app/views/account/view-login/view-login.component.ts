@@ -1,14 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Config } from '../../../../assets/config.json';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { CookieService } from 'ngx-cookie-service';
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
-import { environment } from './../../../../environments/environment';
 
 
 @Component({
