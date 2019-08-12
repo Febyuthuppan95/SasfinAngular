@@ -1,4 +1,5 @@
 export class GetObjectHelpRequest {
-  userID: string;
-  specificObjectHelpID: string;
+  userID: number;
+  specificObjectHelpID: number;
+  slug: string;
 }

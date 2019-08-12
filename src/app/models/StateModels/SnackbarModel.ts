@@ -1,6 +1,7 @@
 export class SnackbarModel {
   id?: number;
   display: boolean;
-  title: string;
-  content: string;
+  content?: string;
+  title?: string;
+  slug?: string;
 }

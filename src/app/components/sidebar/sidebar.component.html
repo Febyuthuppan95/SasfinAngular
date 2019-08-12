@@ -2,42 +2,42 @@
   [ngClass]="(collapse)? 'collapse-sidebar' : '' ">
   <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-      (mouseenter)="updateHelpContext('Users Button','Users navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']">
+    (mouseover)="updateHelpContext('sidebar-users-link')">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account menu-icon"></i>
         <span class="menu-title">Users</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-      (mouseenter)="updateHelpContext('Designations Button','Designations navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
+    (mouseover)="updateHelpContext('sidebar-designations-link')">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-view-headline menu-icon"></i>
         <span class="menu-title">Designations</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-      (mouseenter)="updateHelpContext('Rights Button','Rights navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
+    (mouseover)="updateHelpContext('sidebar-rights-link')">
+    <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-file-document-box-outline menu-icon"></i>
         <span class="menu-title">Rights</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-        (mouseenter)="updateHelpContext('UserRights Button','UserRights navigation item')">
+    (mouseover)="updateHelpContext('sidebar-user-rights-link')">
       <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/userRights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account-key menu-icon"></i>
         <span class="menu-title">User Rights</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-      (mouseenter)="updateHelpContext('Backgrounds Button','Backgrounds navigation item')">
-      <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
+    (mouseover)="updateHelpContext('sidebar-backgrounds-link')">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-image menu-icon"></i>
         <span class="menu-title">Backgrounds</span>
       </a>
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-    (mouseenter)="updateHelpContext('Help Glossary','View glossary of help items')">
+    (mouseover)="updateHelpContext('sidebar-help-glossary-link')">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/helpglossary" [routerLinkActive]="['active-item']">
       <i class="mdi mdi-help-box menu-icon"></i>
       <span class="menu-title">Help Glossary</span>

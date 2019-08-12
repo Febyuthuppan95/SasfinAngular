@@ -13,8 +13,8 @@ export class HelpSnackbar {
   constructor() {
     const defaultContext: SnackbarModel = {
       display: false,
-      title: 'Help',
       content: 'Default help object',
+      id: -1,
     };
 
     this.context = new BehaviorSubject<SnackbarModel>(defaultContext);

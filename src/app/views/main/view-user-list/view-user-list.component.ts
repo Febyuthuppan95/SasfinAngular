@@ -84,7 +84,7 @@ export class ViewUserListComponent implements OnInit {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
-    this.pages = Array<Pagination>();
+    this.pages = new Array<Pagination>();
 
     for (let i = 0; i < pageCount; i++) {
       const item = new Pagination();

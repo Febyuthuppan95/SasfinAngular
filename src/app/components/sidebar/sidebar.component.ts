@@ -20,11 +20,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {}
 
-  updateHelpContext(title: string, content: string) {
+  updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,
-      title,
-      content,
+      slug,
     };
 
     this.snackbarService.setHelpContext(newContext);

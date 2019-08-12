@@ -194,11 +194,10 @@ export class ViewBackgroundsListComponent implements OnInit {
     this.fileToUpload = files.item(0);
   }
 
-  updateHelpContext(title: string, content: string) {
+  updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,
-      title,
-      content,
+      slug,
     };
 
     this.snackbarService.setHelpContext(newContext);
