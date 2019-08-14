@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthenticationGuard } from '../guards/authentication.guard';
 import { UserService } from '../services/user.Service';
+import { headersToString } from 'selenium-webdriver/http';
 
 @Injectable()
  export class AuthInterceptor implements HttpInterceptor {
@@ -15,7 +16,11 @@ import { UserService } from '../services/user.Service';
     // Should get auth token
     const request = req.clone({
       withCredentials: true,
-      headers: req.headers.set('Access-Control-Allow-Origin', '*')
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+      // headers: req.headers().set('Access-Control-Allow-Origin', '*').set()
     });
     return next.handle(request);
  }
