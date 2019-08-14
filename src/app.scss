@@ -159,6 +159,10 @@ td {
 .headerText {
   text-align: center;
   margin-right: 10px !important;
+
+}
+button p .headerText {
+  font-size: 0.95rem;
 }
 
 .headerBtn {
@@ -542,4 +546,18 @@ td {
 }
 .btn-toggle.btn-secondary.active {
   background-color: #ff8300;
+}
+
+
+tr td {
+  font-size: 0.95rem !important;
+}
+p {
+  font-size:0.95rem !important;
+}
+.pagination-sm .page-link {
+  font-size: 0.95rem !important;
+}
+.footer {
+  font-size: 0.95rem;
 }
