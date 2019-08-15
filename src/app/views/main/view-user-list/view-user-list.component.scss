@@ -89,6 +89,9 @@ td {
   z-index: 1000;
   cursor: pointer;
 }
+td {
+  border: 1px solid transparent !important;
+}
 tr.active { 
   background-color:#b3c9ff !important;
   box-shadow: 0 0.75rem 1.2rem rgba(0, 0, 0, 0.301) !important;
