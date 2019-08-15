@@ -14,6 +14,7 @@ import { Config } from './../../../../assets/config.json';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-user-list',
@@ -24,7 +25,8 @@ export class ViewUserListComponent implements OnInit {
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
-    private IMenuService: MenuService
+    private IMenuService: MenuService,
+    private location: Location
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -276,5 +278,25 @@ export class ViewUserListComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+  addNewUser(id, name) {
+    // const requestModel: AddDesignationRight = {
+    //   userID: this.currentUser.userID,
+    //   designationID: this.currentDesignation,
+    //   rightID: id,
+    //   rightName: 'Designations'
+    // };
+    // const result = this.designationsService
+    // .addDesignationright(requestModel).then(
+    //   (res: DesignationRightReponse) => {
+    //     this.loadDesignationRights();
+    //   },
+    //   msg => {
+    //     this.notify.errorsmsg(
+    //       'Server Error',
+    //       'Something went wrong while trying to access the server.'
+    //     );
+    //   }
+    // );
   }
 }
