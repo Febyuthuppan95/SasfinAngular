@@ -183,7 +183,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
       .list(model)
       .then(
         (res: ListHelpGlossaryResponse) => {
-          console.log(JSON.stringify(res));
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -312,14 +311,10 @@ export class ViewHelpGlossaryComponent implements OnInit {
 
       this.helpGlossaryService.update(requestModel).then(
         (res: UpdateHelpGlossaryResponse) => {
-          console.log(JSON.stringify(res));
-
           this.closeModal.nativeElement.click();
           this.loadHelpGlossary();
-
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         },
-
         (msg) => {
           this.notify.errorsmsg('Failure', 'Cannot reach server.');
         }

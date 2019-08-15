@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment.test';
+import { environment } from 'src/environments/environment';
 import { ListUnitsOfMeasureRequest } from '../models/HttpRequests/ListUnitsOfMeasure';
 import { Injectable } from '@angular/core';
+import { UpdateUnitOfMeasureRequest } from '../models/HttpRequests/UpdateUnitsOfMeasure';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +15,9 @@ export class UnitMeasureService {
   constructor(private httpClient: HttpClient) {}
 
   public list(params: ListUnitsOfMeasureRequest) {
-    const requestModel = {
-      _userId: params.userId,
-      _specificUnitOfMeasureId: params.specificUnitOfMeasureId,
-      _rightName: params.rightName,
-      _filter: params.filter,
-      _orderBy: params.orderBy,
-      _orderByDirection: params.orderByDirection,
-      _rowStart: params.rowStart,
-      _rowEnd: params.rowEnd,
-      _rowCount: params.rowCount,
-    };
-
-
-    const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/unitsofmeasure/list`;
+    const requestModel = JSON.parse(JSON.stringify(params));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/unitofmeasure/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -41,7 +30,23 @@ export class UnitMeasureService {
           }
         );
     });
+  }
 
-    return promise;
+  public update(request: UpdateUnitOfMeasureRequest) {
+    const requestModel = JSON.parse(JSON.stringify(request));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/unitofmeasure/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 }

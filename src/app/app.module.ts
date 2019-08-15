@@ -54,6 +54,7 @@ import { HelpGlossaryService } from './services/HelpGlossary.Service';
 import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
 import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
+import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 
 // @ts-ignore
 @NgModule({
@@ -88,7 +89,8 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
     ViewHelpGlossaryComponent,
     HelpGlossaryContextMenuComponent,
     ViewUnitsOfMeasureComponent,
-    ContextMenuUserComponent
+    ContextMenuUserComponent,
+    ContextMenuUnitsOfMeasureComponent
   ],
   imports: [
     BrowserModule,

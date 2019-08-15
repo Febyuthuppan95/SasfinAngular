@@ -12,7 +12,7 @@
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
-        <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
+        <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
           (change)="loadUnitsOfMeasures()">
           <option value='15' selected>Showing 15</option>
@@ -21,7 +21,7 @@
         </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="unitsOfMeasure.filter" [ngModelOptions]="{standalone: true}" />
       </form>
     </div>
     <br />
@@ -32,8 +32,17 @@
           <tr>
             <th></th>
             <th scope="col">
+                <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
+                  <p class="headerText">Name</p>
+                  <span class="headerSpan">
+                    <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
+                    <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
+                  </span>
+                </button>
+              </th>
+            <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
-                <p class="headerText">Emp No</p>
+                <p class="headerText">Description</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
                   <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
@@ -44,9 +53,10 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let unit of dataset" class="userRecord">
-            <td>{{unit.description}}</td>
+          <tr *ngFor="let unit of dataset" class="userRecord" (click)="popClick($event, unit.unitOfMeasureID, unit.name, unit.description)">
+            <td>{{unit.rowNum}}</td>
             <td>{{unit.name}}</td>
+            <td>{{unit.description}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -78,10 +88,41 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+    <p class="ls-text-{{ currentTheme }}">Showing {{ unitsOfMeasure.rowStart }} to {{ totalDisplayCount }} of
       {{ rowCount }}</p>
+  </div>
+</div>
+
+<button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Update Unit Of Measure</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateUnit()" enctype="multipart/form-data">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Unit Name" class="form-control"
+            [(ngModel)]="this.focusUnitName" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Unit Description" class="form-control"
+            [(ngModel)]="this.focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
   </div>
 </div>
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
