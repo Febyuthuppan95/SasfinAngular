@@ -57,6 +57,7 @@ export class ViewUserListComponent implements OnInit {
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
 
+  selectedRow = -1;
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   sidebarCollapsed = true;
@@ -271,5 +272,9 @@ export class ViewUserListComponent implements OnInit {
   }
   popOff() {
     this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+  setClickedRow(index) {
+    this.selectedRow = index;
   }
 }

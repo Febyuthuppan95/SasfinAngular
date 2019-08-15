@@ -106,7 +106,7 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let user of userList" class="userRecord" (click)="popClick($event, user.userId)">
+          <tr *ngFor="let user of userList; let i=index"  class="userRecord" (click)="popClick($event, user.userId); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{user.rowNum}}</td>
             <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
               <img class="profile-image shadow" [src]="user.profileImage" />
