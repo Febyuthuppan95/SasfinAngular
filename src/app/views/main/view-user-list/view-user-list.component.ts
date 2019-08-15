@@ -1,3 +1,6 @@
+import { Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/Menu.Service';
+import { ContextMenuUserComponent } from './../../../components/context-menu-user/context-menu-user.component';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';
@@ -20,7 +23,8 @@ import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 export class ViewUserListComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private IMenuService: MenuService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -35,6 +39,10 @@ export class ViewUserListComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.loadUsers();
+    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      // console.log(result);
+      this.sidebarCollapsed = result;
+    });
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -43,12 +51,19 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
+  @ViewChild(ContextMenuUserComponent, {static: true})
+  private contextMenuUser: ContextMenuUserComponent;
+
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-
+  sidebarCollapsed = true;
+  contextMenu = false;
+  contextMenuX = 0;
+  contextMenuY = 0;
+  currentUserID: number;
   pages: Pagination[];
   showingPages: Pagination[];
   userList: UserList[];
@@ -57,7 +72,7 @@ export class ViewUserListComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
-
+  subscription: Subscription;
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
@@ -233,5 +248,28 @@ export class ViewUserListComponent implements OnInit {
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+  
+  popClick(event, id) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
+    this.currentUserID = id;
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+  popOff() {
+    this.contextMenu = false;
   }
 }

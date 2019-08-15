@@ -106,7 +106,7 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let user of userList" class="userRecord">
+          <tr *ngFor="let user of userList" class="userRecord" (click)="popClick($event, user.userId)">
             <td>{{user.rowNum}}</td>
             <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
               <img class="profile-image shadow" [src]="user.profileImage" />
@@ -154,6 +154,8 @@
       {{ rowCount }}</p>
   </div>
 </div>
-
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-user [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
+</div>  
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

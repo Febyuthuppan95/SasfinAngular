@@ -1,0 +1,9 @@
+
+  <div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}">
+    <div class="card">
+      <div class=" popBodyNav">
+        <a class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Edit</span></a>
+        <a [routerLink]="['/user-rights']" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Rights</span></a>
+      </div>
+    </div>
+  </div>
