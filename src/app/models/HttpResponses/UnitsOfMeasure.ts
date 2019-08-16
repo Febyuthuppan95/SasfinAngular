@@ -1,5 +1,6 @@
 export class UnitsOfMeasure {
-  unitsOfMeasureID: number;
+  rowNum: number;
+  unitOfMeasureID: number;
   name: string;
   description: string;
 }

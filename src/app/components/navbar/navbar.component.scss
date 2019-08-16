@@ -5,7 +5,9 @@
     margin-bottom: 0;
     list-style: none;
   }
-
+  .nav-search-flex{
+    display: flex !important;
+  }
   .nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -544,9 +546,17 @@
   color: #9b9b9b;
   padding-left: 0px !important;
   padding-right: 1.062rem;
-  width: calc(100% - 257px);
+  width: calc(100% - 218px);
   height: 60px;
   border-bottom: 1px solid #e3e3e3;
+  float: left !important;
+  left: 219px !important;
+  position: absolute;
+  display: flex !important;
+}
+
+.navbar-menu-wrapper > div {
+  flex: 1;
 }
 
 @media (max-width: 991px) {

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-context-menu-user',
