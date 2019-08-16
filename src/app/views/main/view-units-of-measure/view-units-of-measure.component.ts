@@ -70,6 +70,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
+  selectedRow = -1;
 
   focusUnitId: number;
   focusUnitName: string;
@@ -200,8 +201,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     } else {
-      this.contextMenuX = event.clientX - 255;
-      this.contextMenuY = event.clientY - 52;
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
     }
 
     this.focusUnitId = id;
@@ -215,6 +216,14 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
+  }
+
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+  setClickedRow(index) {
+    this.selectedRow = index;
   }
 
   editUnitOfMeasure($event) {

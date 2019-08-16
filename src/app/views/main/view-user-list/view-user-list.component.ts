@@ -257,6 +257,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
+
     this.currentUserID = id;
     // Will only toggle on if off
     if (!this.contextMenu) {
