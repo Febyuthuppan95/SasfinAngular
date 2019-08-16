@@ -27,8 +27,8 @@
                       <i class="mdi mdi-lock-outline text-primary"></i>
                     </span>
                   </div>
-                  <input type="password" class="form-control form-control-lg border-left-0" placeholder="Password"
-                    required [(ngModel)]="txtPassword" [ngModelOptions]="{standalone: true}">
+                  <input type="{{typePassword ? 'text' : 'password'}}" class="form-control form-control-lg border-left-0" placeholder="Password"
+                    required [(ngModel)]="txtPassword" [ngModelOptions]="{standalone: true}"><div class="input-group-append border-left-0" style="background-color: white" ><span class="input-group-text bg-transparent"><i class="{{typePassword ? 'mdi mdi-eye text-primary': 'mdi mdi-eye-off text-primary'}}" (click)="togglePassword()"></i></span></div>
                 </div>
               </div>
               <div class="my-3">
