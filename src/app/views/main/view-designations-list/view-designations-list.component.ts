@@ -29,7 +29,7 @@ export class ViewDesignationsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Designations';
+    this.rightName = 'Designation';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -94,6 +94,7 @@ export class ViewDesignationsListComponent implements OnInit {
 
   showLoader = true;
   displayFilter = false;
+  selectedRow = -1;
 
   subscription: Subscription;
 
@@ -159,12 +160,17 @@ export class ViewDesignationsListComponent implements OnInit {
 
   loadDesignations() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    const userID = +this.currentUser.userID;
     this.showLoader = true;
     const model: GetDesignationList = {
       rowEnd: this.rowEnd,
       rowStart: this.rowStart,
       rightName: this.rightName,
-      filter: this.filter
+      filter: this.filter,
+      userID,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderByDirection,
+      specificDesignationID: -1
     };
     this.IDesignationService
       .getDesignationList(model)
@@ -241,13 +247,8 @@ export class ViewDesignationsListComponent implements OnInit {
 
   popClick(event, id, name) {
     // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX - 255;
-      this.contextMenuY = event.clientY - 52;
-    }
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
 
     this.focusDesgination = id;
     this.focusDesName = name;
@@ -261,4 +262,13 @@ export class ViewDesignationsListComponent implements OnInit {
       this.contextMenu = false;
     }
   }
+
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+  setClickedRow(index) {
+    this.selectedRow = index;
+  }
+
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewUserRightsListComponent } from './view-user-rights-list.component';
+import { ModalStandardComponent } from './modal-standard.component';
 
-describe('ViewUserRightsListComponent', () => {
-  let component: ViewUserRightsListComponent;
-  let fixture: ComponentFixture<ViewUserRightsListComponent>;
+describe('ModalStandardComponent', () => {
+  let component: ModalStandardComponent;
+  let fixture: ComponentFixture<ModalStandardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewUserRightsListComponent ]
+      declarations: [ ModalStandardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewUserRightsListComponent);
+    fixture = TestBed.createComponent(ModalStandardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

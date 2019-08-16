@@ -176,3 +176,29 @@ tr {
 .bs-popover-top {
   transform: translate(100px, 100px) !important;
 }
+
+.contextOverlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1000;
+  cursor: pointer;
+}
+td {
+  border: 1px solid transparent !important;
+}
+tr.active {
+  background-color:#b3c9ff !important;
+  box-shadow: 0 0.75rem 1.2rem rgba(0, 0, 0, 0.301) !important;
+  border: 1px solid transparent !important;
+  td {
+    border: 1px solid transparent !important;
+  }
+}
+

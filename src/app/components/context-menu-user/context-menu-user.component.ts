@@ -1,4 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DesignationService } from 'src/app/services/Designation.service';
+import { Route } from '@angular/router';
 
 @Component({
   selector: 'app-context-menu-user',
@@ -7,19 +9,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ContextMenuUserComponent implements OnInit {
 
-  constructor(
-    ) { }
+  constructor() { }
     // show = false;
   @Input() x = 0;
   @Input() y = 0;
   @Input() userID = 0;
   @Input() currentTheme = '';
 
-
-  ngOnInit() {
-  }
-  // popOff() {
-
-  // }
-
+  ngOnInit() {}
 }

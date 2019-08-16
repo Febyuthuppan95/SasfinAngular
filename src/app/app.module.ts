@@ -10,12 +10,13 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
-import { MenuService } from './services/menu.service';
+import { MenuService } from './services/Menu.service';
 import { BackgroundService } from './services/Background.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,15 +49,14 @@ import { RightService } from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { UserRightService } from './services/UserRight.service';
-import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 import { HelpGlossaryService } from './services/HelpGlossary.Service';
 import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
 import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
+import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
 
-// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,12 +85,12 @@ import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-un
     AccountComponent,
     ViewDesignationsRightsListComponent,
     ContextMenuComponent,
-    ViewUserRightsListComponent,
     ViewHelpGlossaryComponent,
     HelpGlossaryContextMenuComponent,
     ViewUnitsOfMeasureComponent,
     ContextMenuUserComponent,
-    ContextMenuUnitsOfMeasureComponent
+    ContextMenuUnitsOfMeasureComponent,
+    ModalStandardComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +107,9 @@ import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-un
       }
     ),
     NgbModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatTooltipModule,
+    MatButtonModule
   ],
   providers: [
     CookieService,
