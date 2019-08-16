@@ -172,13 +172,9 @@ export class ViewUserListComponent implements OnInit {
         (res: UserListResponse) => {
           for (const user of res.userList) {
             if (user.profileImage === null) {
-              user.profileImage = `${
-                Config.ApiEndpoint.test
-              }/public/images/profile/default.png`;
+              user.profileImage = `${environment.ApiProfileImages}/default.png`;
             } else {
-              user.profileImage = `${
-                Config.ApiEndpoint.test
-              }/public/images/profile/${user.profileImage}`;
+              user.profileImage = `${environment.ApiProfileImages}/${user.profileImage}`;
             }
           }
           if (res.rowCount === 0) {
@@ -252,7 +248,7 @@ export class ViewUserListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
-  
+
   popClick(event, id) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
