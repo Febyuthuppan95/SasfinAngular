@@ -26,7 +26,9 @@ export class ThemeService {
       const currentUser = this.userService.getCurrentUser();
 
       this.themeColor = new BehaviorSubject<string>(this.cookieService.get('theme') !== '' ? this.cookieService.get('theme') : 'light');
-      this.backgroundImage = new BehaviorSubject<string>(currentUser.backgroundImage);
+      this.backgroundImage = currentUser == null 
+      ? new BehaviorSubject<string>(`${environment.AssetRoute}/backgrounds/background1.jpg`)
+      : new BehaviorSubject<string>(currentUser.backgroundImage);
     }
 
   // private theme = 'light';
@@ -95,7 +97,8 @@ export class ThemeService {
       }
     }
 
-    return `${environment.ApiBackgroundImages}/background1.jpg`;
+    //return `${environment.ApiBackgroundImages}/background1.jpg`;
+    return `http://localhost:4200/assets/dist/images/backgrounds/background1.jpg`;
   }
 
   /**
