@@ -3,7 +3,7 @@
   <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-users-link')"
-    matTooltip="Users" matTooltipPosition="above">
+    matTooltip="Users" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']" >
         <i class="mdi mdi-account menu-icon"></i>
         <span class="menu-title">Users</span>
@@ -11,7 +11,7 @@
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-designations-link')"
-    matTooltip="Designations" matTooltipPosition="above">
+    matTooltip="Designations" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-view-headline menu-icon"></i>
         <span class="menu-title">Designations</span>
@@ -19,7 +19,7 @@
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-rights-link')"
-    matTooltip="Rights" matTooltipPosition="above">
+    matTooltip="Rights" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-file-document-box-outline menu-icon"></i>
         <span class="menu-title">Rights</span>
@@ -27,7 +27,7 @@
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-user-rights-link')"
-    matTooltip="User Rights" matTooltipPosition="above">
+    matTooltip="User Rights" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
       <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/userRights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-account-key menu-icon"></i>
         <span class="menu-title">User Rights</span>
@@ -35,7 +35,7 @@
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-backgrounds-link')"
-    matTooltip="Backgrounds" matTooltipPosition="above">
+    matTooltip="Backgrounds" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-image menu-icon"></i>
         <span class="menu-title">Backgrounds</span>
@@ -43,7 +43,7 @@
     </li>
     <li class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-help-glossary-link')"
-    matTooltip="Help Glossary" matTooltipPosition="above">
+    matTooltip="Help Glossary" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/helpglossary" [routerLinkActive]="['active-item']">
       <i class="mdi mdi-help-box menu-icon"></i>
       <span class="menu-title">Help Glossary</span>
@@ -51,7 +51,7 @@
   </li>
   <li class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-units-measure-link')"
-  matTooltip="Units Of Measure" matTooltipPosition="above">
+  matTooltip="Units Of Measure" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/unitsofmeasure" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-scale menu-icon"></i>
     <span class="menu-title">Units Of Measure</span>
