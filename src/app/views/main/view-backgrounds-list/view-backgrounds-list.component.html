@@ -22,7 +22,7 @@
         class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
         placeholder="Search" (keyup)="searchBar()" [(ngModel)]="backgroundRequestModel.filter" [ngModelOptions]="{standalone: true}" />
         &nbsp;
-        <button (mouseover)="updateHelpContext('view-background-upload-button')" type="text"
+        <button (mouseover)="updateHelpContext('view-background-upload-button')" type="text" mat-raised-button
         class="shadow-sm btn btn-primary form-control-sm" data-toggle="modal" data-target="#uploadBackground"><span class="mdi mdi-cloud-upload"></span> Upload</button>
       </div>
       </form>
