@@ -49,5 +49,13 @@
     <span class="menu-title">Units Of Measure</span>
   </a>
 </li>
+<li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-places-link')"
+  matTooltip="Places" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/places" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-google-maps menu-icon"></i>
+    <span class="menu-title">Places</span>
+  </a>
+  </li>
   </ul>
 </nav>

@@ -56,6 +56,8 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
+import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
+import { PlaceService } from './services/Place.Service';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,8 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     ViewUnitsOfMeasureComponent,
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
-    ModalStandardComponent
+    ModalStandardComponent,
+    ViewPlacesComponent
   ],
   imports: [
     BrowserModule,
@@ -123,6 +126,7 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     BackgroundService,
     UserRightService,
     HelpGlossaryService,
+    PlaceService,
     HelpSnackbar,
     AuthenticationService,
     {
