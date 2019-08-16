@@ -98,7 +98,7 @@ export class ViewBackgroundsListComponent implements OnInit {
 
   viewBackground(src: string) {
     const options = new ImageModalOptions();
-    options.width = '100%';
+    options.width = '.modal-lg';
 
     this.imageModal.open(`${environment.ApiBackgroundImages}/${src}`, options);
   }

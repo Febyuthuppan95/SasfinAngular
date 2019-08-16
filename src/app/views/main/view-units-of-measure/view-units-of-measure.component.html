@@ -53,7 +53,7 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let unit of dataset" class="userRecord" (click)="popClick($event, unit.unitOfMeasureID, unit.name, unit.description)">
+          <tr *ngFor="let unit of dataset; let i=index" class="userRecord" (click)="popClick($event, unit.unitOfMeasureID, unit.name, unit.description); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{unit.rowNum}}</td>
             <td>{{unit.name}}</td>
             <td>{{unit.description}}</td>
@@ -125,4 +125,6 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
 <app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
+</div>

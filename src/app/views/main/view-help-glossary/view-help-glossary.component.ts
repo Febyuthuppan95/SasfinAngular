@@ -100,6 +100,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
+  selectedRow = -1;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -266,8 +267,8 @@ export class ViewHelpGlossaryComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     } else {
-      this.contextMenuX = event.clientX - 255;
-      this.contextMenuY = event.clientY - 52;
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
     }
 
     this.focusHelp = id;
@@ -281,6 +282,14 @@ export class ViewHelpGlossaryComponent implements OnInit {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
+  }
+
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+  setClickedRow(index) {
+    this.selectedRow = index;
   }
 
   editHelp($event) {

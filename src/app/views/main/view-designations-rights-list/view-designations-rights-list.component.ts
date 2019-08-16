@@ -54,12 +54,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   rightName: string;
   activePage: number;
   orderBy: string;
-  orderByDirection: string;
+  orderByDirection = 'ASC';
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   noData = false;
   showLoader = true;
   displayFilter = false;
+  selectedRow = -1;
 
   // Modal
   closeResult: string;
@@ -77,7 +78,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
-      this.rightName = 'Designations';
+      this.rightName = 'Designation';
       this.activePage = +1;
       this.prevPageState = true;
       this.nextPageState = false;
@@ -92,12 +93,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
+
   ngOnInit() {
     const currentDesignation = this.activatedRoute.paramMap
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-      // console.log(this.currentDesignation);
+      console.log(this.currentDesignation);
     });
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -157,8 +159,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const dRModel: GetDesignationRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
-      specifcDesignationID: this.currentDesignation,
-      rightName: 'Designations',
+      specificDesignationID: this.currentDesignation,
+      rightName: 'Designation',
       filter: this.filter,
       orderBy: this.orderBy,
       orderDirection: this.orderByDirection,
@@ -376,5 +378,9 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
   backToDesignations() {
     this.location.back();
+  }
+
+  setClickedRow(index) {
+    this.selectedRow = index;
   }
 }

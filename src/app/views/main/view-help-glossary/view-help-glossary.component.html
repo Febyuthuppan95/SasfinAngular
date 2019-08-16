@@ -52,7 +52,7 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let help of dataset" class="userRecord" (click)="popClick($event, help.helpGlossaryID, help.name, help.description)">
+          <tr *ngFor="let help of dataset; let i=index" class="userRecord" (click)="popClick($event, help.helpGlossaryID, help.name, help.description); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{help.rowNum}}</td>
             <td>{{help.name}}</td>
             <td>{{help.description}}</td>
@@ -123,4 +123,6 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
 <app-help-glossary-context-menu (editHelpItem)="editHelp($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [helpId]="focusHelp" [helpName]="focusHelpName" [helpDescription]="focusDescription"></app-help-glossary-context-menu>
+</div>
