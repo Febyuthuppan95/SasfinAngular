@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -6,6 +6,9 @@ import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnits
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
+import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
+import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
 
 @Component({
   selector: 'app-view-units-of-measure',
@@ -20,7 +23,27 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   private notify: NotificationComponent;
 
   currentTheme = 'light';
-  unitsOfMeasure: ListUnitsOfMeasureRequest;
+
+  unitsOfMeasure: ListUnitsOfMeasureRequest = {
+    userID: 3,
+    specificUnitOfMeasureID: -1,
+    rightName: 'UnitOfMeasures',
+    filter: '',
+    orderBy: 'Name',
+    orderByDirection: 'ASC',
+    rowStart: 1,
+    rowEnd: 15
+  };
+
+  @ViewChild(ContextMenuComponent, {static: true } )
+  private contextmenu: ContextMenuComponent;
+
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
+
   selectRowDisplay: number;
   rowCount: number;
   nextPage: number;
@@ -34,12 +57,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
-  showingRecords: number;
-  filter: string;
-  rightName: string;
   activePage: number;
-  orderBy: string;
-  orderDirection: string;
   totalShowing: number;
   orderIndicator = 'Surname_ASC';
   noData = false;
@@ -48,9 +66,16 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   pages: Pagination[];
   showingPages: Pagination[];
 
-  ngOnInit() {
-    this.unitsOfMeasure = new ListUnitsOfMeasureRequest();
+  contextMenu = false;
+  contextMenuX = 0;
+  contextMenuY = 0;
+  sidebarCollapsed = true;
 
+  focusUnitId: number;
+  focusUnitName: string;
+  focusUnitDescription: string;
+
+  ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -69,12 +94,23 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   loadUnitsOfMeasures() {
     this.unitService.list(this.unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
-        if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.dataset = res.unitsOfMeasureList;
+        this.showLoader = false;
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.dataset = res.unitOfMeasureList;
+          this.rowCount = res.rowCount;
+
+          if (res.rowCount > this.selectRowDisplay) {
+            this.totalDisplayCount = res.unitOfMeasureList.length;
+          } else {
+            this.totalDisplayCount = res.rowCount;
+          }
+
+        } else {
+          this.noData = true;
         }
       },
       (msg) => {
+        this.showLoader = false;
         this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
       }
     );
@@ -134,18 +170,18 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   }
 
   updateSort(orderBy: string) {
-    if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
+    if (this.unitsOfMeasure.orderBy === orderBy) {
+      if (this.unitsOfMeasure.orderByDirection === 'ASC') {
+        this.unitsOfMeasure.orderByDirection = 'DESC';
       } else {
-        this.orderDirection = 'ASC';
+        this.unitsOfMeasure.orderByDirection = 'ASC';
       }
     } else {
-      this.orderDirection = 'ASC';
+      this.unitsOfMeasure.orderByDirection = 'ASC';
     }
 
-    this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+    this.unitsOfMeasure.orderBy = orderBy;
+    this.orderIndicator = `${this.unitsOfMeasure.orderBy}_${this.unitsOfMeasure.orderByDirection}`;
     this.loadUnitsOfMeasures();
   }
 
@@ -157,5 +193,73 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+
+  popClick(event, id: number, name: string, description: string) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX - 255;
+      this.contextMenuY = event.clientY - 52;
+    }
+
+    this.focusUnitId = id;
+    this.focusUnitName = name;
+    this.focusUnitDescription = description;
+
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+
+  editUnitOfMeasure($event) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openModal.nativeElement.click();
+  }
+
+  updateUnit() {
+    let errors = 0;
+
+    if (this.focusUnitName === '') {
+      errors++;
+    }
+
+    if (this.focusUnitDescription === '') {
+      errors++;
+    }
+
+    if (errors === 0) {
+      const requestModel: UpdateUnitOfMeasureRequest = {
+        userID: 3,
+        unitOfMeasureID: this.focusUnitId,
+        rightName: 'UnitOfMeasures',
+        name: this.focusUnitName,
+        description: this.focusUnitDescription,
+        isDeleted: 0,
+      };
+
+      this.unitService.update(requestModel).then(
+        (res: UpdateUnitsOfMeasureResponse) => {
+          this.closeModal.nativeElement.click();
+
+          this.unitsOfMeasure.rowStart = 1;
+          this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+
+          this.loadUnitsOfMeasures();
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', msg.message);
+        }
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    }
   }
 }
