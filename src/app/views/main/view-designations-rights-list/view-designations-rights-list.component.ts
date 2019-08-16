@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DesignationService } from 'src/app/services/Designation.service';
@@ -93,6 +93,10 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
+    @ViewChild('openModal', {static: true })
+    openModal: ElementRef;
+    @ViewChild('closeModal', {static: true })
+    closeModal: ElementRef;
 
   ngOnInit() {
     const currentDesignation = this.activatedRoute.paramMap
