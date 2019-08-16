@@ -10,7 +10,7 @@ import { AuthenticationGuard } from './guards/authentication.guard';
 import { AnonGuard } from './guards/anon.guard';
 import { UserService } from './services/user.Service';
 import { ThemeService } from './services/theme.Service';
-import { MenuService } from './services/menu.service';
+import { MenuService } from './services/Menu.service';
 import { BackgroundService } from './services/Background.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
