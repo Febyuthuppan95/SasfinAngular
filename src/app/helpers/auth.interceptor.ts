@@ -19,7 +19,7 @@ import { headersToString } from 'selenium-webdriver/http';
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
-      })
+      },)
       // headers: req.headers().set('Access-Control-Allow-Origin', '*').set()
     });
     return next.handle(request);

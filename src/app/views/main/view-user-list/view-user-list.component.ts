@@ -218,7 +218,7 @@ export class ViewUserListComponent implements OnInit {
 
   inspectUserImage(src: string) {
     const options = new ImageModalOptions();
-    options.width = '100%';
+    options.width = '';
 
     this.imageModal.open(src, options);
   }

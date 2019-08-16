@@ -55,7 +55,7 @@ export class ViewLoginComponent implements OnInit {
         (msg) => {
 
           this.pendingRequest = false;
-          this.notify.errorsmsg('Failure', 'Something went wrong.w');
+          this.notify.errorsmsg('Failure', 'Something went wrong.');
         });
     }
 
