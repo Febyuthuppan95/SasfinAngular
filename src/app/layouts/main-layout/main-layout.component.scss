@@ -1,8 +1,13 @@
 
-
+.row {
+  display: flex;
+  
+}
 /*Side Nav*/
 .side-div {
-  min-width:6%;
+  flex: 5%;
+  width: 20%;
+  overflow: none;
 }
 /*Main List Div*/
 .list-div {
@@ -10,18 +15,18 @@
   padding-right: 20px;
   left: 93px !important;
   // min-width: 1410px;
-  width: 94%;
+  flex: 94%
 }
 
 @media (max-width: 1500px) {
   .side-div {
-    width: 93px;
+    flex: 6%;
   }
   .list-div {
     padding-left: 0px;
     padding-right: 15px;
     left: 100px !important;
-    width: 93% !important;
+    flex: 94%
   }
 }
 @media (max-width: 1350px) {

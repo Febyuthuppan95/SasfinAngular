@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <h4 class="card-title ls-text-{{ currentTheme }}">Users</h4>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Users</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -106,7 +106,7 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let user of userList" class="userRecord">
+          <tr *ngFor="let user of userList; let i=index"  class="userRecord" (click)="popClick($event, user.userId); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{user.rowNum}}</td>
             <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
               <img class="profile-image shadow" [src]="user.profileImage" />
@@ -154,6 +154,8 @@
       {{ rowCount }}</p>
   </div>
 </div>
-
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-user [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
+</div>  
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

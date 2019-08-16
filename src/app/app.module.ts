@@ -1,3 +1,4 @@
+import { ContextMenuUserComponent } from './components/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -53,6 +54,7 @@ import { HelpGlossaryService } from './services/HelpGlossary.Service';
 import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
 import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
+import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 
 // @ts-ignore
 @NgModule({
@@ -86,7 +88,9 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
     ViewUserRightsListComponent,
     ViewHelpGlossaryComponent,
     HelpGlossaryContextMenuComponent,
-    ViewUnitsOfMeasureComponent
+    ViewUnitsOfMeasureComponent,
+    ContextMenuUserComponent,
+    ContextMenuUnitsOfMeasureComponent
   ],
   imports: [
     BrowserModule,

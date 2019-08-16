@@ -4,7 +4,7 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  width: 246px !important;
+  width: calc(100% - 10px);
   height: calc(100% - 20px);
 }
 
@@ -19,7 +19,6 @@
   border: none;
   outline: none;
 }
-
 .offcanvas-sidebar-show {
   position: fixed !important;
   top: 0 !important;
@@ -94,3 +93,6 @@ span {
 //     border-top-right-radius: 20px;
 //   }
 // }
+.menu-title {
+  font-size: .95rem !important;
+}

@@ -1,11 +1,10 @@
 export class ListUnitsOfMeasureRequest {
-  userId: number;
-  specificUnitOfMeasureId: number;
+  userID: number;
+  specificUnitOfMeasureID: number;
   rightName: string;
   filter: string;
   orderBy: string;
   orderByDirection: string;
   rowStart: number;
   rowEnd: number;
-  rowCount: number;
 }

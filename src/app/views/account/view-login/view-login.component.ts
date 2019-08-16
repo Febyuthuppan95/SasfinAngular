@@ -46,7 +46,7 @@ export class ViewLoginComponent implements OnInit {
           if (res.authenticated) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
-            this.router.navigateByUrl('/users');
+            this.router.navigate(['users']);
           } else {
 
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -56,8 +56,7 @@ export class ViewLoginComponent implements OnInit {
         (msg) => {
 
           this.pendingRequest = false;
-          this.notify.errorsmsg('Failure', JSON.stringify(msg));
-
+          this.notify.errorsmsg('Failure', 'Something went wrong.w');
         });
     }
 
