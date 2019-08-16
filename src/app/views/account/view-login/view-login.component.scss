@@ -8,3 +8,15 @@
   border-radius: 5px;
   padding: 25px;
 }
+
+.input-container{
+  position: relative;
+  display: inline;
+}
+
+.input-container span {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 99999;
+}
