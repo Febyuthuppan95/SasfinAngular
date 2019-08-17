@@ -230,6 +230,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
+    console.log('open modal');
   }
 
   updateUnit() {

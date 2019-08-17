@@ -154,8 +154,39 @@
       {{ rowCount }}</p>
   </div>
 </div>
+
+<!--Edit Modal-->
+<button class="hide" data-toggle="modal" data-target="#editUser" #openModal></button>
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Edit</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateUnit()" enctype="multipart/form-data">
+      <div class="modal-body">
+        <!-- <div class="form-group">
+            <input type="text" placeholder="Unit Name" class="form-control"
+              [(ngModel)]="this.focusUnitName" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Unit Description" class="form-control"
+            [(ngModel)]="this.focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
+        </div> -->
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-user [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
+  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
 </div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

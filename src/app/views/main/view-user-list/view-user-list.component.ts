@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from './../../../components/context-menu-user/context-menu-user.component';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
@@ -55,6 +55,12 @@ export class ViewUserListComponent implements OnInit {
 
   @ViewChild(ContextMenuUserComponent, {static: true})
   private contextMenuUser: ContextMenuUserComponent;
+
+  @ViewChild('openModal', {static: true})
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', {static: true})
+  closeModal: ElementRef;
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
@@ -275,6 +281,13 @@ export class ViewUserListComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  editUser($event) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openModal.nativeElement.click();
+    console.log('CLicked and open');
   }
   addNewUser(id, name) {
     // const requestModel: AddDesignationRight = {

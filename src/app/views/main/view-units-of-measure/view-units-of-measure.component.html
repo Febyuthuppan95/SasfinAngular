@@ -124,7 +124,7 @@
 </div>
 
 <app-notification></app-notification>
-<app-modal-component></app-modal-component>
+<!-- <app-modal-component></app-modal-component> -->
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
 <app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
 </div>
