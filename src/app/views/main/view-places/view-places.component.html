@@ -5,120 +5,58 @@
           <app-loader></app-loader>
         </ng-container>
       </div>
-      <h4 class="card-title ls-text-{{ currentTheme }}">Places</h4>
+      <button class="btn btn-primary float-right btn-sm"><i class="mdi mdi-google-maps menu-icon"></i>&nbsp;Add Location</button>
+      <h4 class="card-title ls-text-{{ currentTheme }}">Locations</h4>
       <br />
-      <!-- <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
-        <form class="form-inline">
-          <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
-            class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-            (change)="loadUnitsOfMeasures()">
-            <option value='15' selected>Showing 15</option>
-            <option value='25'>Showing 25</option>
-            <option value='50'>Showing 50</option>
-          </select>
-          <input type="text"
-            class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-            placeholder="Search" (keyup)="searchBar()" [(ngModel)]="unitsOfMeasure.filter" [ngModelOptions]="{standalone: true}" />
-        </form>
-      </div> -->
-
-      <div *ngFor="let country of dataset.countries">
-        <h6>{{ country.name }}</h6>
+      <div class="row">
+      <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult">
+        <div class="tile shadow-sm">
+          <div class="location-country">
+        <h4 (click)="editModal(country.countryID, country.name, 'country')" class="country-name">{{ country.name }}&nbsp;<span class="mdi mdi-circle-edit-outline text-primary" matTooltip="Edit Country"
+          matTooltipPosition="after"></span>
+        </h4>
+      </div>
+        <div class="locations-list">
         <div *ngFor="let region of country.regions">
-          <p>{{ region.name }}</p>
-          <br>
-          <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th scope="col">
-                      <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}">
-                        <p class="headerText">Name</p>
-                        <span class="headerSpan">
-                          <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}"></i>
-                          <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}"></i>
-                        </span>
-                      </button>
-                    </th>
-                </tr>
-              </thead>
-
-              <tbody *ngIf="(!noData)">
-                <tr *ngFor="let city of region.cities" class="userRecord">
-                  <td>{{city.rowNum}}</td>
-                  <th>{{city.name}}</th>
-                </tr>
-              </tbody>
-              <tbody class="tbodyPop" *ngIf="(noData)" >
-                <tr>
-                  <td scope="col"></td>
-                  <td scope="col">No data to display..</td>
-                  <td scope="col"></td>
-                </tr>
-              </tbody>
-            </table>
+          <p class="country-name" (click)="editModal(region.id, region.name, 'region')"><strong>{{ region.name }}&nbsp;<span class="mdi mdi-circle-edit-outline text-primary" matTooltip="Edit Region"
+            matTooltipPosition="after"></span></strong></p>
+          <ul class="list-unstyled">
+            <li *ngFor="let city of region.cities;" (click)="editModal(city.id, city.name, 'city')" class="location-city country-name" matTooltip="Edit City"
+            matTooltipPosition="after">
+                <span class="mdi mdi-circle-edit-outline text-primary float-right"></span>
+              {{city.name}}
+            </li>
+          </ul>
         </div>
       </div>
-
-
-
-        <!-- <br />
-      <br />
-      <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
-        <ul class="pagination pagination-sm">
-          <li class="page-item">
-            <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
-              (click)="pageChange(prevPage)">Prev</button>
-          </li>
-          <li *ngFor="let page of showingPages" class="page-item">
-            <button [class.active-page]="activePage == page.page"
-              class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
-              type="button" (click)="pageChange(page.page)">{{page.page}}</button>
-          </li>
-          <li class="page-item">
-            <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
-              (click)="pageChange(nextPage)">Next</button>
-          </li>
-        </ul>
-      </nav>
-      <br />
-      <p class="ls-text-{{ currentTheme }}">Showing {{ unitsOfMeasure.rowStart }} to {{ totalDisplayCount }} of
-        {{ rowCount }}</p> -->
-    </div>
-  </div>
-
-  <!-- <button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
-  <div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="uploadBackgroundLabel">Update Unit Of Measure</h5>
-          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form (submit)="updateUnit()" enctype="multipart/form-data">
-        <div class="modal-body">
-        <div class="form-group">
-            <input type="text" placeholder="Unit Name" class="form-control"
-              [(ngModel)]="this.focusUnitName" [ngModelOptions]="{standalone: true}" required/>
-          </div>
-          <div class="form-group">
-            <input type="text" placeholder="Unit Description" class="form-control"
-              [(ngModel)]="this.focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
-          </div>
-        </div>
-        <div class="modal-footer bg-dark">
-          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-          <button type="submit" class="btn btn-primary btn-sm">Save</button>
-        </div>
-      </form>
+      </div>
       </div>
     </div>
   </div>
+</div>
 
-  <app-notification></app-notification>
-  <app-modal-component></app-modal-component>
-  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
-  </div> -->
+<button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Update Location</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="editLocation()">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Help Name" class="form-control"
+            [(ngModel)]="this.locationName" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

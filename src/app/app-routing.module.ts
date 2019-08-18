@@ -44,7 +44,7 @@ const routes: Routes = [
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
-          { path: 'places', component: ViewPlacesComponent }
+          { path: 'locations', component: ViewPlacesComponent }
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent }

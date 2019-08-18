@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { PlacesParameters, PlacesResponse } from 'src/app/models/HttpResponses/PlacesResponse';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { PlaceService } from 'src/app/services/Place.Service';
-import { ListCitiesResponse, City } from 'src/app/models/HttpResponses/ListCitiesResponse';
-import { ListCountriesResponse } from 'src/app/models/HttpResponses/ListCountriesResponse';
-import { ListRegionsResponse, Region } from 'src/app/models/HttpResponses/ListRegionsResponse';
+import { ListCountriesRequest } from 'src/app/models/HttpRequests/ListCountriesRequest';
+import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/HttpResponses/LocationsList';
 
 @Component({
   selector: 'app-view-places',
@@ -14,23 +12,35 @@ export class ViewPlacesComponent implements OnInit {
 
   constructor(private placeService: PlaceService) {}
 
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
+
   displayResults: string;
-  dataset = new PlacesResponse();
-  request: PlacesParameters = {
+  dataset: LocationsList;
+  dataResult: LocationItems[] = [];
+  regions: Regions[] = [];
+  cities: Cities[] = [];
+  request: ListCountriesRequest = {
     specificCountryID: -1,
-    specificRegionID: -1,
-    specificCityID: -1,
     filter: '',
     orderBy: 'Name',
     orderByDirection: 'ASC',
     rowStart: 1,
-    rowEnd: 100000,
+    rowEnd: 15,
     rightName: 'Places',
     userID: 4,
   };
 
+  locationID: number;
+  locationName: string;
+  locationType: string;
+
   showLoader = false;
   noData = false;
+  selectedRow = -1;
   currentTheme = 'light';
 
   ngOnInit() {
@@ -38,111 +48,32 @@ export class ViewPlacesComponent implements OnInit {
   }
 
   loadData() {
-    this.getAll(this.request);
-  }
-
-  getAll(requestObject: PlacesParameters): PlacesResponse {
-    const result = new PlacesResponse();
-    let countryResponse = new ListCountriesResponse();
-    let regionResponse = new ListRegionsResponse();
-    let cityResponse = new ListCitiesResponse();
-
-    const countryModel = {
-      userID: requestObject.userID,
-      specificCountryID: -1,
-      filter: requestObject.filter,
-      orderBy: requestObject.orderBy,
-      orderByDirection: requestObject.orderByDirection,
-      rowStart: requestObject.rowStart,
-      rowEnd: requestObject.rowEnd,
-      rightName: requestObject.rightName,
-    };
-    this.placeService.getCountries(countryModel).then(
-      (res: ListCountriesResponse) => {
-        countryResponse = res;
-        if (countryResponse.countriesList.length !== 0) {
-          const regionModel = {
-            userID: requestObject.userID,
-            specificCountryID: -1,
-            specificRegionID: -1,
-            filter: requestObject.filter,
-            orderBy: requestObject.orderBy,
-            orderByDirection: requestObject.orderByDirection,
-            rowStart: requestObject.rowStart,
-            rowEnd: requestObject.rowEnd,
-            rightName: requestObject.rightName,
-          };
-          this.placeService.getRegions(regionModel).then(
-            (res2: ListRegionsResponse) => {
-              regionResponse = res2;
-
-              if (regionResponse.regionsList.length !== 0) {
-                const cityModel = {
-                  userID: requestObject.userID,
-                  specificCountryID: -1,
-                  specificRegionID: -1,
-                  specificCityID: -1,
-                  filter: requestObject.filter,
-                  orderBy: requestObject.orderBy,
-                  orderByDirection: requestObject.orderByDirection,
-                  rowStart: requestObject.rowStart,
-                  rowEnd: requestObject.rowEnd,
-                  rightName: requestObject.rightName,
-                };
-                this.placeService.getCities(cityModel).then(
-                  (res3: ListCitiesResponse) => {
-                    cityResponse = res3;
-
-                    if (cityResponse.citiesLists.length !== 0) {
-                    countryResponse.countriesList.forEach((country) => {
-                      const regionsList: Region[] = [];
-                      regionResponse.regionsList.forEach((region) => {
-                        const cityList: City[] = [];
-                        if (country.countryID === region.countryID) {
-                          regionsList.push(region);
-                          cityResponse.citiesLists.forEach((city) => {
-                            if (region.regionID === city.cityID) {
-                              cityList.push(city);
-                            }
-                          });
-                        }
-                        region.cities = cityList;
-                      });
-
-                      country.regions = regionsList;
-                    });
-
-                    this.dataset.countries = countryResponse.countriesList;
-                    this.displayResults = JSON.stringify(this.dataset.countries);
-
-                    } else {
-                      alert('No cities found');
-                    }
-                  },
-                  (msg) => {
-                    alert(JSON.stringify(msg));
-                  }
-                );
-              } else {
-                alert('No regions found');
-              }
-            },
-            (msg) => {
-              alert(JSON.stringify(msg));
-            }
-          );
-        } else {
-          alert('No countries found');
-        }
+    this.placeService.getAll(this.request).then(
+      (res: LocationsList) => {
+        this.dataset = res;
+        this.dataResult = this.placeService.getCountries(this.dataset);
       },
       (msg) => {
         alert(JSON.stringify(msg));
       }
     );
-
-    return result;
   }
 
+  setSelectedRow(i: number) {
+    this.selectedRow = i;
+  }
+
+  editModal(id: number, name: string, type: string) {
+    this.locationID = id;
+    this.locationName = name;
+    this.locationType = type;
+
+    this.openModal.nativeElement.click();
+  }
+
+  editLocation() {
+
+  }
 }
 
 
