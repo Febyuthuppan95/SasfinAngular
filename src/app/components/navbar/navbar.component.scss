@@ -1,11 +1,15 @@
+
 .nav {
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
+    
   }
-
+  .nav-search-flex{
+    display: flex !important;
+  }
   .nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -106,13 +110,7 @@
 
   .logo{
     display: inline-block;
-    padding-top: 0.3125rem;
-    padding-bottom: 0.3125rem;
     padding-left: 26px !important;
-    margin-right: 1rem;
-    font-size: 1.25rem;
-    line-height: inherit;
-    white-space: nowrap;
   }
 
   .navbar-brand {
@@ -477,7 +475,7 @@
   -webkit-transition: width 0.25s ease, background 0.25s ease;
   -moz-transition: width 0.25s ease, background 0.25s ease;
   -ms-transition: width 0.25s ease, background 0.25s ease;
-  width: 257px;
+  width: 219px;
   height: 60px;
   border-right: 1px solid #e3e3e3;
 }
@@ -550,9 +548,17 @@
   color: #9b9b9b;
   padding-left: 0px !important;
   padding-right: 1.062rem;
-  width: calc(100% - 257px);
+  width: calc(100% - 218px);
   height: 60px;
   border-bottom: 1px solid #e3e3e3;
+  float: left !important;
+  left: 219px !important;
+  position: absolute;
+  display: flex !important;
+}
+
+.navbar-menu-wrapper > div {
+  flex: 1;
 }
 
 @media (max-width: 991px) {

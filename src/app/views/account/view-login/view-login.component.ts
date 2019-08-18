@@ -26,6 +26,7 @@ export class ViewLoginComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+  typePassword: boolean;
 
   ngOnInit() { }
 
@@ -59,5 +60,9 @@ export class ViewLoginComponent implements OnInit {
         });
     }
 
+  }
+
+  togglePassword() {
+    this.togglePassword = function() { this.typePassword = !this.typePassword; };
   }
 }

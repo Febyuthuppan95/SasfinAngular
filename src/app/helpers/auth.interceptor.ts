@@ -22,6 +22,11 @@ import { headersToString } from 'selenium-webdriver/http';
       },)
       // headers: req.headers().set('Access-Control-Allow-Origin', '*').set()
     });
+    // console.log(request.withCredentials);
+    // console.log(request.serializeBody);
+    // console.log(request.headers);
+    // console.log(request.urlWithParams);
+    // console.log(request.body);
     return next.handle(request);
  }
 }

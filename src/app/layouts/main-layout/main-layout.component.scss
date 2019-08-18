@@ -5,41 +5,47 @@
 }
 /*Side Nav*/
 .side-div {
-  flex: 5%;
-  width: 20%;
+  // flex: 5%;
+  width: 75px;
+  margin-right: 20px;
   overflow: none;
 }
+// .side-div .collapse-sidebar {
+//   position: absolute;
+//   width:65px;
+//   left: 10px !important;
+
+// }
 /*Main List Div*/
 .list-div {
   padding-left: 0px;
   padding-right: 20px;
   left: 93px !important;
   // min-width: 1410px;
-  flex: 94%
+  width: calc(100% - 95px);
 }
 
-@media (max-width: 1500px) {
-  .side-div {
-    flex: 6%;
-  }
-  .list-div {
-    padding-left: 0px;
-    padding-right: 15px;
-    left: 100px !important;
-    flex: 94%
-  }
-}
-@media (max-width: 1350px) {
-  .side-div {
-    width: 93px;
-  }
-  .list-div {
-    padding-left: 0px;
-    padding-right: 10px;
-    left: 100px !important;
-    width: 92% !important;
-  }
-}
+// @media (max-width: 1500px) {
+//   .side-div {
+//     flex: 6%;
+//   }
+//   .list-div {
+//     padding-left: 0px;
+//     padding-right: 15px;
+//     width: calc(100% - 95px);
+//   }
+// }
+// @media (max-width: 1350px) {
+//   .side-div {
+//     width: 93px;
+//   }
+//   .list-div {
+//     padding-left: 0px;
+//     padding-right: 10px;
+//     left: 100px !important;
+//     width: 92% !important;
+//   }
+// }
 @media (max-width: 1200px) {
   .list-div {
     padding-left: 0px;
