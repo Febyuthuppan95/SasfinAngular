@@ -93,10 +93,10 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
-    @ViewChild('openModal', {static: true })
-    openModal: ElementRef;
-    @ViewChild('closeModal', {static: true })
-    closeModal: ElementRef;
+    @ViewChild('openAddModal', {static: true })
+    openAddModal: ElementRef;
+    @ViewChild('closeAddModal', {static: true })
+    closeAddModal: ElementRef;
 
   ngOnInit() {
     const currentDesignation = this.activatedRoute.paramMap
@@ -331,14 +331,15 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmAdd(add) {
-    this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      // console.log(result);
-      // this.addNewRight(this.rightId, this.rightName);
-      // Remove the right
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.openAddModal.nativeElement.click();
+    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    //   // console.log(result);
+    //   // this.addNewRight(this.rightId, this.rightName);
+    //   // Remove the right
+    //   this.closeResult = `Closed with: ${result}`;
+    // }, (reason) => {
+    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    // });
   }
   removeRight(id: number, name: string) {
     const requestModel: UpdateDesignationRight = {

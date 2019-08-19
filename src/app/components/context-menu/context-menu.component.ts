@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
@@ -16,7 +16,14 @@ export class ContextMenuComponent implements OnInit {
   @Input() designationName = 0;
   @Input() currentTheme = '';
 
+  @Output() editDesignation = new EventEmitter<string>();
+
   ngOnInit() {
   }
 
+  // edit() {
+  //   this.editDesignation.emit(JSON.stringify({
+  //     designationID:this.designationId
+  //   }));
+  // }
 }

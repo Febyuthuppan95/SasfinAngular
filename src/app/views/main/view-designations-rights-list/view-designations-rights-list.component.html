@@ -158,4 +158,43 @@
     </div>
   </div>
 </ng-template>
+<button class="hide" data-toggle="modal" data-target="#addRight" #openAddModal></button>
+<div class="modal fade" id="addRight" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateUnit()" enctype="multipart/form-data">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-group add-scroll col-md-6 text-center">
+              <h5 class="control-label">Available</h5>
+              <div class="modal-list-rights">
+                <ul class="right-list">
+                  <li *ngFor="let right of rightsList"><a (click)="addNewRight(right.rightID, right.name)"><span>{{ right.name}} {{right.rightID}}</span></a></li>
+                </ul>
+              </div>
+          </form>
+          <form class="form-group add-scroll col-md-6 text-center">
+            <h5 class="control-label">Assigned</h5>
+            <div class="modal-add-rights">
+              <ul class="right-list">
+                <li *ngFor="let dRight of designationRightsList"><a (click)="removeRight(dRight.rightID, dRight.name)"><span>{{ dRight.name}}</span></a></li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 <app-modal-component></app-modal-component>
