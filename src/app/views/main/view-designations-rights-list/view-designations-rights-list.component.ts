@@ -167,7 +167,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       rightName: 'Designation',
       filter: this.filter,
       orderBy: this.orderBy,
-      orderDirection: this.orderByDirection,
+      orderByDirection: this.orderByDirection,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
