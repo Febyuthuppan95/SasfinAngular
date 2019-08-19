@@ -1,0 +1,71 @@
+.tile {
+  background: #f2f2f2;
+  border-radius: 3px;
+
+}
+
+.location-list {
+  overflow-y: auto;
+  height: 128px;
+}
+
+.location-country {
+  padding: 12px 0;
+}
+
+.location-city {
+  padding: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: ease-in-out 0.3s;
+}
+
+.location-city:hover {
+  background: rgba(200, 200, 200, 0.5);
+  transition: ease-in-out 0.3s;
+}
+
+li.active {
+  background: rgba(77, 139, 255, 0.5) !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  color: #f2f2f2;
+  font-weight: 500;
+  transition: ease-in-out 0.3s;
+}
+
+li.active span {
+  color: #f2f2f2 !important;
+}
+
+.country-name {
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 3px;
+    transition: ease-in-out 0.3s;
+}
+
+.country-name:hover {
+  background: rgba(156, 156, 156, 0.5);
+  transition: ease-in-out 0.3s;
+}
+
+.contextOverlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+
+.activeCountry, .activeRegion {
+  background: rgba(77, 139, 255, 0.5) !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  color: #f2f2f2;
+}

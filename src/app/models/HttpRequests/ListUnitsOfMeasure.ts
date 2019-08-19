@@ -1,10 +1,5 @@
-export class ListUnitsOfMeasureRequest {
-  userID: number;
+import { ListBase } from './ListBase';
+
+export class ListUnitsOfMeasureRequest extends ListBase {
   specificUnitOfMeasureID: number;
-  rightName: string;
-  filter: string;
-  orderBy: string;
-  orderByDirection: string;
-  rowStart: number;
-  rowEnd: number;
 }

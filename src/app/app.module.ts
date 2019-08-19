@@ -18,6 +18,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,6 +58,9 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
+import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
+import { PlaceService } from './services/Place.Service';
+import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +95,9 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     ViewUnitsOfMeasureComponent,
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
-    ModalStandardComponent
+    ModalStandardComponent,
+    ViewPlacesComponent,
+    ContextMenuLocationComponent
   ],
   imports: [
     BrowserModule,
@@ -110,7 +116,8 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     NgbModule,
     NgxPaginationModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     CookieService,
@@ -124,6 +131,7 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     BackgroundService,
     UserRightService,
     HelpGlossaryService,
+    PlaceService,
     HelpSnackbar,
     AuthenticationService,
     {

@@ -17,6 +17,7 @@ export class HelpGlossaryContextMenuComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() editHelpItem = new EventEmitter<string>();
+
   ngOnInit() {
   }
 
