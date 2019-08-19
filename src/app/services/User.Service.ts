@@ -1,3 +1,4 @@
+import { UpdateUserRequest } from './../models/HttpRequests/UpdateUserRequest';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
@@ -167,6 +168,24 @@ export class UserService {
         );
     });
 
+    return promise;
+  }
+  public UserUpdate(model: UpdateUserRequest) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/update`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
     return promise;
   }
 }

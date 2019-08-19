@@ -1,3 +1,7 @@
+import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
+import { DesignationService } from './../../../services/Designation.service';
+import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequest';
+import { Status } from './../../../models/Enums/Statuses';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from './../../../components/context-menu-user/context-menu-user.component';
@@ -15,6 +19,8 @@ import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { Location } from '@angular/common';
+import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
+import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 
 @Component({
   selector: 'app-view-user-list',
@@ -26,7 +32,8 @@ export class ViewUserListComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private location: Location
+    private location: Location,
+    private DIDesignationService: DesignationService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -64,7 +71,6 @@ export class ViewUserListComponent implements OnInit {
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
-
   selectedRow = -1;
   selectedFirstName = '';
   selectedSurName = '';
@@ -75,6 +81,7 @@ export class ViewUserListComponent implements OnInit {
   Extension = '';
   ProfileImage: any;
 
+  statusList: Status[];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   sidebarCollapsed = true;
@@ -105,13 +112,43 @@ export class ViewUserListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
+  designations: DesignationList[];
+  
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
+    this.statusList = new Array<Status>();
+    this.statusList.push({name: 'Active', id: 1}, {name: 'Inactive', id: 2});
+    this.loadDesignations();
   }
 
+  loadDesignations() {
+    const model: GetDesignationList = {
+      userID: this.currentUser.userID,
+      orderBy: 'Name',
+      orderByDirection: 'DESC',
+      rowStart: 1,
+      rowEnd: 1000,
+      rightName: 'Designations',
+      specificDesignationID: -1,
+      filter: ''
+    };
+    this.DIDesignationService
+    .getDesignationList(model)
+    .then(
+      (res: DesignationListResponse) => {
+        this.designations = res.designationList;
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
@@ -159,7 +196,6 @@ export class ViewUserListComponent implements OnInit {
     }
 
     this.updatePagination();
-
     this.loadUsers();
   }
 
@@ -304,7 +340,6 @@ export class ViewUserListComponent implements OnInit {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
-    console.log('CLicked and open');
   }
   addNewUser(id, name) {
     // const requestModel: AddDesignationRight = {
@@ -336,5 +371,17 @@ export class ViewUserListComponent implements OnInit {
       }
       reader.readAsDataURL(file);
     }
+  }
+  updateUser() {
+    const requestModel: UpdateUserRequest = {
+      userID: this.currentUser.userID,
+      firstName: this.selectedFirstName,
+      surname: this.selectedSurName,
+      email: this.selectedEmail,
+      empNo: 1,
+      designation: this.selectedDesignation,
+      status: this.selectedStatus,
+      profileImage: null
+    };
   }
 }
