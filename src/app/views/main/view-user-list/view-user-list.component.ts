@@ -82,6 +82,7 @@ export class ViewUserListComponent implements OnInit {
   contextMenuX = 0;
   contextMenuY = 0;
   currentUserID: number;
+  currentUserName: string;
   pages: Pagination[];
   showingPages: Pagination[];
   userList: UserList[];
@@ -272,7 +273,8 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-    console.log(user);
+    
+    this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
     this.selectedSurName = user.surname;

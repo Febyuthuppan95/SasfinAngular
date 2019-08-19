@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { Location } from '@angular/common';
 import {ThemeService} from '../../../services/Theme.Service';
 import {UserService} from '../../../services/User.Service';
 import {NotificationComponent} from '../../../components/notification/notification.component';
 import {ImageModalComponent} from '../../../components/image-modal/image-modal.component';
 import {environment} from '../../../../environments/environment';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../../models/HttpResponses/User';
 import {Pagination} from '../../../models/Pagination';
 import {UserRightService} from '../../../services/UserRight.service';
@@ -12,6 +13,9 @@ import {GetUserRightsList} from '../../../models/HttpRequests/GetUserRightsList'
 import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
 import {UserRightsList} from '../../../models/HttpResponses/UserRightsList';
 import { ActivatedRoute } from '@angular/router';
+import { UpdateUserRight } from 'src/app/models/HttpRequests/UpdateUserRight';
+import { UserRightReponse } from 'src/app/models/HttpResponses/UserRightResponse';
+import { AddUserRight } from 'src/app/models/HttpRequests/AddUserRight';
 
 @Component({
   selector: 'app-view-user-rights-list',
@@ -25,7 +29,8 @@ export class ViewUserRightsListComponent implements OnInit {
     private themeService: ThemeService,
     private userRightService: UserRightService,
     private activatedRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private modalService: NgbModal,
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -44,7 +49,10 @@ export class ViewUserRightsListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-
+  @ViewChild('openAddModal', {static: true })
+  openAddModal: ElementRef;
+  @ViewChild('closeAddModal', {static: true })
+  closeAddModal: ElementRef;
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
@@ -53,6 +61,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  rightId: number;
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
@@ -76,6 +85,8 @@ export class ViewUserRightsListComponent implements OnInit {
   orderIndicator = 'Surname_ASC';
   showLoader = true;
   displayFilter = false;
+
+  closeResult: string;
  
 
   ngOnInit() {
@@ -238,4 +249,70 @@ export class ViewUserRightsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
+
+  confirmRemove(content, id, Name) {
+    this.rightId = id;
+    this.rightName = 'Designations';
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // (result);
+      // console.log(this.rightName);
+      this.removeRight(this.rightId, this.rightName);
+      // Remove the right
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  confirmAdd(add) {
+    this.openAddModal.nativeElement.click();
+    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    //   // console.log(result);
+    //   // this.addNewRight(this.rightId, this.rightName);
+    //   // Remove the right
+    //   this.closeResult = `Closed with: ${result}`;
+    // }, (reason) => {
+    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    // });
+  }
+  removeRight(id: number, name: string) {
+    const requestModel: UpdateUserRight = {
+      userID: this.currentUser.userID,
+      userRightID: id,
+      rightName: 'Designations'
+    };
+    const result = this.userService
+    .updateUserRight(requestModel).then(
+      (res: UserRightReponse) => {
+        // console.log(res);
+        this.loadUserRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+  addNewRight(id, name) {
+    const requestModel: AddUserRight = {
+      userID: this.currentUser.userID,      
+      rightID: id,
+      rightName: 'Rights'
+    };
+    const result = this.userService
+    .addUserright(requestModel).then(
+      (res: UserRightReponse) => {
+        this.loadUserRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+  
 }

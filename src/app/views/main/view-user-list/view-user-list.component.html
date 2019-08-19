@@ -218,7 +218,7 @@
   </div>
 </div>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
+  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID" [userName]="currentUserName"></app-context-menu-user>
 </div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
