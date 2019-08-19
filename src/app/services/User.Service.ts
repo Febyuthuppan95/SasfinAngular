@@ -55,7 +55,7 @@ export class UserService {
       const currentUser: User = JSON.parse(jsonString);
 
       if (currentUser.profileImage === null) {
-        currentUser.profileImage = `${environment.ApiProfileImages}/default.jpg`;
+        currentUser.profileImage = `${environment.ApiProfileImages}/default.png`;
       } else {
         currentUser.profileImage = `${environment.ApiProfileImages}/${currentUser.profileImage}`;
       }

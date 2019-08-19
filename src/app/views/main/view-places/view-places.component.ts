@@ -79,13 +79,16 @@ export class ViewPlacesComponent implements OnInit {
   }
 
   loadData() {
+    this.showLoader = true;
     this.placeService.getAll(this.request).then(
       (res: LocationsList) => {
+        this.showLoader = false;
         this.dataset = res;
         this.dataResult = this.placeService.getCountries(this.dataset);
       },
       (msg) => {
-        console.log('Something went wrong');
+        this.showLoader = false;
+        console.log(JSON.stringify(msg));
       }
     );
   }

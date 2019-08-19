@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   @Output() collapseSidebar = new EventEmitter<string>();
   @Output() offcanvas = new EventEmitter<string>();
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   logout() {
     this.userService.logout();
