@@ -15,10 +15,25 @@ export class ContextMenuLocationComponent implements OnInit {
   @Input() locationName: string;
   @Input() locationType: string;
   @Input() currentTheme: string;
+  @Input() parentID: number;
+
+  isCountry = false;
+  isRegion = false;
+  isCity = false;
 
   @Output() editItem = new EventEmitter<string>();
+  @Output() addRegionEmit = new EventEmitter<number>();
+  @Output() addCountryEmit = new EventEmitter<string>();
+  @Output() addCityEmit = new EventEmitter<number>();
 
   ngOnInit() {
+    if (this.locationType === 'country') {
+      this.isCountry = true;
+    } else if (this.locationType === 'region') {
+      this.isRegion = true;
+    } else if (this.locationType === 'city') {
+      this.isCity = true;
+    }
   }
 
   edit() {
@@ -27,6 +42,18 @@ export class ContextMenuLocationComponent implements OnInit {
       locationName: this.locationName,
       locationType: this.locationType
     }));
+  }
+
+  addCity($event) {
+    this.addCityEmit.emit(this.parentID);
+  }
+
+  addRegion($event) {
+    this.addRegionEmit.emit(this.parentID);
+  }
+
+  addCountry($event) {
+    this.addCountryEmit.emit($event);
   }
 
 }

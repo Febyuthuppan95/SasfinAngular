@@ -2,6 +2,8 @@
   <div class="card">
     <div class=" popBodyNav">
       <a (click)="edit()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Edit</span></a>
+      <a *ngIf="isCountry" (click)="addRegion($event)" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Add Region</span></a>
+      <a *ngIf="isRegion" (click)="addCity($event)" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Add City</span></a>
     </div>
   </div>
 </div>

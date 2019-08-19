@@ -202,4 +202,61 @@ export class PlaceService {
         );
     });
   }
+
+  addCity(requestData: any) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/cities/add`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  addRegion(requestData: any) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/regions/add`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  addCountry(requestData: any) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/countries/add`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 }

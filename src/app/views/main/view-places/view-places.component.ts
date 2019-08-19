@@ -3,6 +3,8 @@ import { PlaceService } from 'src/app/services/Place.Service';
 import { ListCountriesRequest } from 'src/app/models/HttpRequests/ListCountriesRequest';
 import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/HttpResponses/LocationsList';
 import { ThemeService } from 'src/app/services/theme.Service';
+import { UserService } from 'src/app/services/user.Service';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-places',
@@ -11,13 +13,22 @@ import { ThemeService } from 'src/app/services/theme.Service';
 })
 export class ViewPlacesComponent implements OnInit {
 
-  constructor(private placeService: PlaceService, private themeService: ThemeService) {}
+  constructor(private placeService: PlaceService, private themeService: ThemeService,
+              private userService: UserService) {}
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
+
+  @ViewChild('addModalOpen', { static: true })
+  addModalOpen: ElementRef;
+
+  @ViewChild('addModalClose', { static: true })
+  addModalClose: ElementRef;
+
+  currentUser = this.userService.getCurrentUser();
 
   displayResults: string;
   dataset: LocationsList;
@@ -38,6 +49,9 @@ export class ViewPlacesComponent implements OnInit {
   locationID: number;
   locationName: string;
   locationType: string;
+  locationParentID: number;
+
+  newLocationName: string;
 
   showLoader = false;
   noData = false;
@@ -108,6 +122,90 @@ export class ViewPlacesComponent implements OnInit {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
+  }
+
+  addCountryModal($event) {
+    this.locationType = 'country';
+    this.addModalOpen.nativeElement.click();
+  }
+  addRegionModal($event) {
+    this.locationParentID = this.locationID;
+    this.locationType = 'region';
+    this.addModalOpen.nativeElement.click();
+  }
+  addCityModal($event) {
+    this.locationParentID = this.locationID;
+    this.locationType = 'city';
+    this.addModalOpen.nativeElement.click();
+  }
+
+  addLocation() {
+   if (this.locationType === 'country') {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      name: this.newLocationName,
+      rightName: 'Places',
+    };
+
+    this.placeService.addCountry(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.newLocationName = '';
+          this.addModalClose.nativeElement.click();
+          this.loadData();
+        } else {
+          alert('Error Adding');
+        }
+      },
+      (msg) => {
+        alert('Error');
+      }
+    );
+   } else if (this.locationType === 'region') {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      countryID: this.locationParentID,
+      name: this.newLocationName,
+      rightName: 'Places',
+    };
+
+    this.placeService.addRegion(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.newLocationName = '';
+          this.addModalClose.nativeElement.click();
+          this.loadData();
+        } else {
+          alert('Error Adding');
+        }
+      },
+      (msg) => {
+        alert('Error');
+      }
+    );
+   } else {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      regionID: this.locationParentID,
+      name: this.newLocationName,
+      rightName: 'Places',
+    };
+
+    this.placeService.addCity(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.newLocationName = '';
+          this.addModalClose.nativeElement.click();
+          this.loadData();
+        } else {
+          alert('Error Adding');
+        }
+      },
+      (msg) => {
+        alert('Error');
+      }
+    );
+   }
   }
 }
 

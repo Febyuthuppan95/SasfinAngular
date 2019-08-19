@@ -6,7 +6,7 @@
         </ng-container>
       </div>
       <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-        <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Locations</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+        <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Locations</h4><span style="margin-left:10px;"><button (click)="addCountryModal($event)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
         </div>
       <br />
       <div class="row">
@@ -45,7 +45,7 @@
       <form (submit)="editLocation()">
       <div class="modal-body">
       <div class="form-group">
-          <input type="text" placeholder="Help Name" class="form-control"
+          <input type="text" placeholder="Name" class="form-control"
             [(ngModel)]="this.locationName" [ngModelOptions]="{standalone: true}" required/>
         </div>
       </div>
@@ -58,6 +58,34 @@
   </div>
 </div>
 
+<button class="hide" data-toggle="modal" data-target="#addLocation" #addModalOpen></button>
+<div class="modal fade" id="addLocation" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Add {{ locationType }}</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="addLocation()">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Name" class="form-control"
+            [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #addModalClose>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-location (editItem)="locationModal($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [locationID]="locationID" [locationName]="locationName" [locationType]="locationType"></app-context-menu-location>
+  <app-context-menu-location (editItem)="locationModal($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY"
+                              [locationID]="locationID" [locationName]="locationName" [locationType]="locationType"
+                                (addCountryEmit)="addCountryModal($event)" (addCityEmit)="addCityModal(locationParentID)" (addRegionEmit)="addRegionModal(locationParentID)" [parentID]="locationParentID"></app-context-menu-location>
 </div>
