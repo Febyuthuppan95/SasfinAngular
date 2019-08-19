@@ -58,6 +58,9 @@ td {
   overflow-x: auto;
 }
 
+.close span {
+  color: #fff;
+}
 .btn-sort {
   padding: 0;
   margin: 0;
@@ -108,13 +111,6 @@ td {
 .btn-success:hover, .btn-danger:hover {
   color: #3877ff;
 }
-
-
-
-
-
-
-
 //brandon's css
 .popup {
   position: relative;

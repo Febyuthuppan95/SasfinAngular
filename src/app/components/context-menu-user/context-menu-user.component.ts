@@ -16,5 +16,13 @@ export class ContextMenuUserComponent implements OnInit {
   @Input() userID = 0;
   @Input() currentTheme = '';
 
+  @Output() editUser = new EventEmitter<string>();
   ngOnInit() {}
+
+
+  edit() {
+    this.editUser.emit(JSON.stringify({
+      userID: this.userID
+    }));
+  }
 }

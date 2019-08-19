@@ -1,8 +1,9 @@
 <div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <br />
-    <h4 class="card-title ls-text-{{ currentTheme }}">Backgrounds</h4>
-    <br>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" data-target="#uploadBackground" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+    </div>    <br>
     <form class="form-inline">
       <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
         class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
@@ -21,9 +22,6 @@
       <input type="text"
         class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
         placeholder="Search" (keyup)="searchBar()" [(ngModel)]="backgroundRequestModel.filter" [ngModelOptions]="{standalone: true}" />
-        &nbsp;
-        <button (mouseover)="updateHelpContext('view-background-upload-button')" type="text" mat-raised-button
-        class="shadow-sm btn btn-primary form-control-sm" data-toggle="modal" data-target="#uploadBackground"><span class="mdi mdi-cloud-upload"></span> Upload</button>
       </div>
       </form>
     <br>

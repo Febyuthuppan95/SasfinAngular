@@ -17,6 +17,7 @@ import { ViewDesignationsRightsListComponent } from './views/main/view-designati
 import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
+import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 
 const routes: Routes = [
   {
@@ -44,7 +45,8 @@ const routes: Routes = [
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
-          { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent }
+          { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
+          { path: 'locations', component: ViewPlacesComponent }
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent }

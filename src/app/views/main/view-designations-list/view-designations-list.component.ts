@@ -167,7 +167,7 @@ export class ViewDesignationsListComponent implements OnInit {
       rowStart: this.rowStart,
       rightName: this.rightName,
       filter: this.filter,
-      userID,
+      userID: this.currentUser.userID,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
       specificDesignationID: -1

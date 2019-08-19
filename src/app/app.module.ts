@@ -1,3 +1,4 @@
+
 import { ContextMenuUserComponent } from './components/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,6 +18,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,6 +59,9 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
+import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
+import { PlaceService } from './services/Place.Service';
+import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,9 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
     ModalStandardComponent,
-    ViewUserRightsListComponent
+    ViewUserRightsListComponent,
+    ViewPlacesComponent,
+    ContextMenuLocationComponent
   ],
   imports: [
     BrowserModule,
@@ -111,7 +118,8 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     NgbModule,
     NgxPaginationModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
     CookieService,
@@ -125,6 +133,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
     BackgroundService,
     UserRightService,
     HelpGlossaryService,
+    PlaceService,
     HelpSnackbar,
     AuthenticationService,
     {
