@@ -13,5 +13,6 @@ export class Region {
   name: string;
   description: string;
   rowNum: number;
+  hash?: string;
   cities?: City[];
 }

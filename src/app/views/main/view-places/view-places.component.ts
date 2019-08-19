@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { PlaceService } from 'src/app/services/Place.Service';
 import { ListCountriesRequest } from 'src/app/models/HttpRequests/ListCountriesRequest';
 import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/HttpResponses/LocationsList';
+import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
   selector: 'app-view-places',
@@ -10,7 +11,7 @@ import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/Ht
 })
 export class ViewPlacesComponent implements OnInit {
 
-  constructor(private placeService: PlaceService) {}
+  constructor(private placeService: PlaceService, private themeService: ThemeService) {}
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -40,10 +41,19 @@ export class ViewPlacesComponent implements OnInit {
 
   showLoader = false;
   noData = false;
-  selectedRow = -1;
+  selectedRow: string;
   currentTheme = 'light';
 
+  contextMenu = false;
+  contextMenuX = 0;
+  contextMenuY = 0;
+  sidebarCollapsed = true;
+
   ngOnInit() {
+    this.themeService.observeTheme().subscribe((theme) => {
+      this.currentTheme = theme;
+    });
+
     this.loadData();
   }
 
@@ -54,25 +64,50 @@ export class ViewPlacesComponent implements OnInit {
         this.dataResult = this.placeService.getCountries(this.dataset);
       },
       (msg) => {
-        alert(JSON.stringify(msg));
+        console.log('Something went wrong');
       }
     );
   }
 
-  setSelectedRow(i: number) {
-    this.selectedRow = i;
+  setSelectedRow(hash: string) {
+    this.selectedRow = hash;
   }
 
-  editModal(id: number, name: string, type: string) {
+  editLocation() {
+    // TODO
+  }
+
+  popClick(event, id, name, type) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
+
     this.locationID = id;
     this.locationName = name;
     this.locationType = type;
 
-    this.openModal.nativeElement.click();
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
   }
 
-  editLocation() {
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = '';
+  }
 
+  locationModal($event) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openModal.nativeElement.click();
   }
 }
 

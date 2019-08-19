@@ -5,25 +5,22 @@
           <app-loader></app-loader>
         </ng-container>
       </div>
-      <button class="btn btn-primary float-right btn-sm"><i class="mdi mdi-google-maps menu-icon"></i>&nbsp;Add Location</button>
-      <h4 class="card-title ls-text-{{ currentTheme }}">Locations</h4>
+      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+        <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Locations</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+        </div>
       <br />
       <div class="row">
       <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult">
         <div class="tile shadow-sm">
           <div class="location-country">
-        <h4 (click)="editModal(country.countryID, country.name, 'country')" class="country-name">{{ country.name }}&nbsp;<span class="mdi mdi-circle-edit-outline text-primary" matTooltip="Edit Country"
-          matTooltipPosition="after"></span>
+        <h4 (click)="popClick($event, country.countryID, country.name, 'country'); setSelectedRow(country.hash)" [ngClass]="{activeCountry: selectedRow === country.hash}" class="country-name">{{ country.name }}
         </h4>
       </div>
         <div class="locations-list">
         <div *ngFor="let region of country.regions">
-          <p class="country-name" (click)="editModal(region.id, region.name, 'region')"><strong>{{ region.name }}&nbsp;<span class="mdi mdi-circle-edit-outline text-primary" matTooltip="Edit Region"
-            matTooltipPosition="after"></span></strong></p>
+          <p class="country-name" (click)="popClick($event, region.id, region.name, 'region'); setSelectedRow(region.hash)" [ngClass]="{activeRegion: selectedRow === region.hash}"><strong>{{ region.name }}</strong></p>
           <ul class="list-unstyled">
-            <li *ngFor="let city of region.cities;" (click)="editModal(city.id, city.name, 'city')" class="location-city country-name" matTooltip="Edit City"
-            matTooltipPosition="after">
-                <span class="mdi mdi-circle-edit-outline text-primary float-right"></span>
+            <li *ngFor="let city of region.cities;" (click)="popClick($event, city.id, city.name, 'city'); setSelectedRow(city.hash)" class="location-city" [ngClass]="{active: selectedRow === city.hash}">
               {{city.name}}
             </li>
           </ul>
@@ -59,4 +56,8 @@
     </form>
     </div>
   </div>
+</div>
+
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-location (editItem)="locationModal($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [locationID]="locationID" [locationName]="locationName" [locationType]="locationType"></app-context-menu-location>
 </div>

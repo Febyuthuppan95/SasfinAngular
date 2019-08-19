@@ -14,16 +14,19 @@ export class LocationItems {
   region?: string;
   cityID?: number;
   city?: string;
+  hash?: string;
   regions?: Regions[];
 }
 
 export class Regions {
     id: number;
     name: string;
+    hash?: string;
     cities?: Cities[];
 }
 
 export class Cities {
     id: number;
     name: string;
+    hash?: string;
 }

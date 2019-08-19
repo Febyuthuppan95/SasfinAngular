@@ -11,5 +11,6 @@ export class Country {
   countryID: number;
   name: string;
   rowNum: number;
+  hash?: string;
   regions?: Region[];
 }

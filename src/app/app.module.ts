@@ -59,6 +59,7 @@ import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-un
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
+import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { PlaceService } from './services/Place.Service';
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
     ModalStandardComponent,
-    ViewPlacesComponent
+    ViewPlacesComponent,
+    ContextMenuLocationComponent
   ],
   imports: [
     BrowserModule,

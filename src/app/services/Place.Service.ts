@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PlacesResponse, PlacesParameters } from '../models/HttpResponses/PlacesResponse';
-import { ListCountriesResponse, Country } from '../models/HttpResponses/ListCountriesResponse';
 import { ListCountriesRequest } from '../models/HttpRequests/ListCountriesRequest';
 import { environment } from 'src/environments/environment';
-import { ListRegionsResponse } from '../models/HttpResponses/ListRegionsResponse';
-import { ListCitiesResponse } from '../models/HttpResponses/ListCitiesResponse';
 import { Regions, LocationsList, Cities, LocationItems } from '../models/HttpResponses/LocationsList';
+import { UpdateCountryRequest, UpdateRegionRequest, UpdateCityRequest } from '../models/HttpRequests/UpdateLocationRequest';
+import { UUID } from 'angular2-uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +100,7 @@ export class PlaceService {
            countryID: country.countryID,
            name: country.name,
            rowNum: country.rowNum,
+           hash: UUID.UUID(),
            regions: this.getRegions(data, country.name),
          });
       }
@@ -121,6 +120,7 @@ export class PlaceService {
         result.push({
            id: country.regionID,
            name: country.region,
+           hash: UUID.UUID(),
            cities: this.getCities(data, country.region)
         });
       }
@@ -138,10 +138,68 @@ export class PlaceService {
         result.push({
            id: country.cityID,
            name: country.city,
+           hash: UUID.UUID(),
         });
      }
     });
 
     return result;
+  }
+
+  updateCountry(requestData: UpdateCountryRequest) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/countries/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  updateRegion(requestData: UpdateRegionRequest) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/regions/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  updateCity(requestData: UpdateCityRequest) {
+    const requestModel = JSON.parse(JSON.stringify(requestData));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/cities/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 }

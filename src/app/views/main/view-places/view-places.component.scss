@@ -39,14 +39,33 @@ li.active span {
 
 .country-name {
     cursor: pointer;
+    padding: 12px;
+    border-radius: 3px;
+    transition: ease-in-out 0.3s;
 }
 
-.country-name span {
-  opacity: 0;
+.country-name:hover {
+  background: rgba(156, 156, 156, 0.5);
   transition: ease-in-out 0.3s;
 }
 
-.country-name:hover span {
-  opacity: 1;
-  transition: ease-in-out 0.3s;
+.contextOverlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+
+.activeCountry, .activeRegion {
+  background: rgba(77, 139, 255, 0.5) !important;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  color: #f2f2f2;
 }
