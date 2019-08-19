@@ -206,7 +206,7 @@
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
             <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
-            [(ngModel)]="this.ProfileImage" (change)="readFile($event)" [ngModelOptions]="{standalone: true}" required/>
+             (change)="readFile($event)" required/>
             <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{this.ProfileImage}}" ></div>
           </div>
         </div>

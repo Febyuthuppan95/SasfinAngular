@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
       class="mdi mdi-filter"></i> &nbsp;Filters</button>
-      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">User Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">User Rights</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
     <!-- <h4 class="card-title ls-text-{{ currentTheme }}">User Rights</h4> -->
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">

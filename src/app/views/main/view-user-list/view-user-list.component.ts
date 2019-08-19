@@ -79,7 +79,7 @@ export class ViewUserListComponent implements OnInit {
   selectedStatus = '';
   EmpNo = '';
   Extension = '';
-  ProfileImage: any;
+  ProfileImage: any = '';
 
   statusList: Status[];
   currentUser: User = this.userService.getCurrentUser();
@@ -308,7 +308,6 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-    console.log(user);
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
     this.selectedSurName = user.surname;
