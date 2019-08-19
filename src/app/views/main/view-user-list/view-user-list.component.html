@@ -192,7 +192,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control">
+            <select class="form-control"> 
               <option *ngFor="let des of this.designations" [ngValue]="des" [selected]="des.name === 'this.selectedDesignation'">{{des.name}}</option>
             </select>
           </div>
