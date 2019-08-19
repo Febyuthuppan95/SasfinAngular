@@ -58,6 +58,7 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
@@ -96,6 +97,7 @@ import { ContextMenuLocationComponent } from './components/context-menu-location
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
     ModalStandardComponent,
+    ViewUserRightsListComponent,
     ViewPlacesComponent,
     ContextMenuLocationComponent
   ],

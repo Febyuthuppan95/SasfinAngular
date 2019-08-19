@@ -5,7 +5,7 @@ export class GetUserRightsList {
   rightName: string;
   filter: string;
   orderBy: string;
-  orderDirection: string;
+  orderByDirection: string;
   rowStart: number;
   rowEnd: number;
 }

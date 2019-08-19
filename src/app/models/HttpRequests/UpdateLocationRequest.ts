@@ -5,17 +5,24 @@ export class UpdateLocationRequest {
 
 export class UpdateCountryRequest {
   userID: number;
-  locationType: string;
+  countryID: number;
+  rightName: string;
+  name: string;
+  isDeleted?: boolean;
 }
 
 export class UpdateRegionRequest {
   userID: number;
-  locationType: string;
+  regionID: number;
+  rightName: string;
+  name: string;
+  isDeleted?: boolean;
 }
 
 export class UpdateCityRequest {
   userID: number;
-  locationType: string;
+  cityID: number;
+  rightName: string;
+  name: string;
+  isDeleted?: boolean;
 }
-
-// TODO

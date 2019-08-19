@@ -16,6 +16,7 @@ import { AccountComponent } from './layouts/account/account.component';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
 import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
+          {path: 'user-rights/:id',component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
