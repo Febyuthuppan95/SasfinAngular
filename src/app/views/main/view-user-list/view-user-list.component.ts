@@ -309,11 +309,8 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-<<<<<<< HEAD
     
     this.currentUserName = user.firstName;
-=======
->>>>>>> 95f19bbbfc4be031bd232cc994faec3e94d43a7f
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
     this.selectedSurName = user.surname;
