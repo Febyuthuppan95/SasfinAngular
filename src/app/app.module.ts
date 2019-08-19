@@ -56,6 +56,7 @@ import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
+import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { ModalStandardComponent } from './components/modal-standard/modal-standa
     ViewUnitsOfMeasureComponent,
     ContextMenuUserComponent,
     ContextMenuUnitsOfMeasureComponent,
-    ModalStandardComponent
+    ModalStandardComponent,
+    ViewUserRightsListComponent
   ],
   imports: [
     BrowserModule,
