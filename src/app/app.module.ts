@@ -63,7 +63,8 @@ import { ViewPlacesComponent } from './views/main/view-places/view-places.compon
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
-import { ViewCaptureComponent } from './view-capture/view-capture.component';
+import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
+import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { ViewCaptureComponent } from './view-capture/view-capture.component';
     ViewPlacesComponent,
     ContextMenuLocationComponent,
     CaptureLayoutComponent,
-    ViewCaptureComponent
+    ViewCaptureComponent,
+    DocumentViewerComponent
   ],
   imports: [
     BrowserModule,
