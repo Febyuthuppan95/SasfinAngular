@@ -5,6 +5,7 @@ import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/Ht
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateRegionRequest, UpdateCountryRequest, UpdateCityRequest } from 'src/app/models/HttpRequests/UpdateLocationRequest';
 
 @Component({
   selector: 'app-view-places',
@@ -27,6 +28,12 @@ export class ViewPlacesComponent implements OnInit {
 
   @ViewChild('addModalClose', { static: true })
   addModalClose: ElementRef;
+
+  @ViewChild('deleteLocationModal', { static: true })
+  deleteLocationModal: ElementRef;
+
+  @ViewChild('deleteModalClose', { static: true })
+  deleteModalClose: ElementRef;
 
   currentUser = this.userService.getCurrentUser();
 
@@ -87,10 +94,6 @@ export class ViewPlacesComponent implements OnInit {
     this.selectedRow = hash;
   }
 
-  editLocation() {
-    // TODO
-  }
-
   popClick(event, id, name, type) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
@@ -124,6 +127,8 @@ export class ViewPlacesComponent implements OnInit {
     this.openModal.nativeElement.click();
   }
 
+  /* Add Handlers from context menu */
+
   addCountryModal($event) {
     this.locationType = 'country';
     this.addModalOpen.nativeElement.click();
@@ -138,6 +143,27 @@ export class ViewPlacesComponent implements OnInit {
     this.locationType = 'city';
     this.addModalOpen.nativeElement.click();
   }
+
+  /* END Add Handlers from context menu */
+
+  /* Delete Handlers from context menu */
+
+  deleteCountryModal($event) {
+    this.locationType = 'country';
+    this.deleteLocationModal.nativeElement.click();
+  }
+  deleteRegionModal($event) {
+    this.locationParentID = this.locationID;
+    this.locationType = 'region';
+    this.deleteLocationModal.nativeElement.click();
+  }
+  deleteCityModal($event) {
+    this.locationParentID = this.locationID;
+    this.locationType = 'city';
+    this.deleteLocationModal.nativeElement.click();
+  }
+
+  /* END Delete Handlers from context menu */
 
   addLocation() {
    if (this.locationType === 'country') {
@@ -207,6 +233,150 @@ export class ViewPlacesComponent implements OnInit {
     );
    }
   }
+
+  deleteLocation() {
+    if (this.locationType === 'country') {
+      const requestModel: UpdateCountryRequest = {
+        userID: this.currentUser.userID,
+        name: this.locationName,
+        countryID: this.locationID,
+        rightName: 'Places',
+        isDeleted: true,
+      };
+
+      this.placeService.updateCountry(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.deleteModalClose.nativeElement.click();
+            this.loadData();
+          } else {
+            alert('Error Updating');
+          }
+        },
+        (msg) => {
+          alert('Error');
+        }
+      );
+     } else if (this.locationType === 'region') {
+      const requestModel: UpdateRegionRequest = {
+        userID: this.currentUser.userID,
+        name: this.locationName,
+        regionID: this.locationID,
+        rightName: 'Places',
+        isDeleted: true,
+      };
+
+      this.placeService.updateRegion(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.deleteModalClose.nativeElement.click();
+            this.loadData();
+          } else {
+            alert(JSON.stringify(res));
+          }
+        },
+        (msg) => {
+          alert(JSON.stringify(msg));
+        }
+      );
+     } else {
+      const requestModel: UpdateCityRequest = {
+        userID: this.currentUser.userID,
+        cityID: this.locationID,
+        name: this.locationName,
+        rightName: 'Places',
+        isDeleted: true,
+      };
+
+      this.placeService.updateCity(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.deleteModalClose.nativeElement.click();
+            this.loadData();
+          } else {
+            alert('Error Updating');
+          }
+        },
+        (msg) => {
+          alert('Error');
+        }
+      );
+     }
+  }
+
+  editLocation() {
+    if (this.locationType === 'country') {
+      const requestModel: UpdateCountryRequest = {
+        userID: this.currentUser.userID,
+        name: this.locationName,
+        countryID: this.locationID,
+        rightName: 'Places',
+      };
+
+      this.placeService.updateCountry(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.closeModal.nativeElement.click();
+            this.loadData();
+          } else {
+            alert('Error Updating');
+          }
+        },
+        (msg) => {
+          alert('Error');
+        }
+      );
+     } else if (this.locationType === 'region') {
+      const requestModel: UpdateRegionRequest = {
+        userID: this.currentUser.userID,
+        name: this.locationName,
+        regionID: this.locationID,
+        rightName: 'Places',
+      };
+
+      this.placeService.updateRegion(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.closeModal.nativeElement.click();
+            this.loadData();
+          } else {
+            alert(JSON.stringify(res));
+          }
+        },
+        (msg) => {
+          alert(JSON.stringify(msg));
+        }
+      );
+     } else {
+      const requestModel: UpdateCityRequest = {
+        userID: this.currentUser.userID,
+        cityID: this.locationID,
+        name: this.locationName,
+        rightName: 'Places',
+      };
+
+      this.placeService.updateCity(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.newLocationName = '';
+            this.closeModal.nativeElement.click();
+            this.loadData();
+          } else {
+            alert('Error Updating');
+          }
+        },
+        (msg) => {
+          alert('Error');
+        }
+      );
+     }
+  }
+
 }
 
 

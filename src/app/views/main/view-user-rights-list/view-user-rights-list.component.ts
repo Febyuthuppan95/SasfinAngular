@@ -119,7 +119,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowEnd += +this.rowCountPerPage;
     }
   }
-  else{
+  else {
     this.rowStart = 0;
     this.showingRecords = 1;
     const item = new Pagination();
