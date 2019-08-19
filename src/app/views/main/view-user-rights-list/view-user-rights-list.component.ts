@@ -60,6 +60,7 @@ export class ViewUserRightsListComponent implements OnInit {
     `${environment.ImageRoute}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
+  currentUserName: string;
   currentTheme: string;
   rightId: number;
   pages: Pagination[];
@@ -91,8 +92,9 @@ export class ViewUserRightsListComponent implements OnInit {
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
-    .subscribe(params => {
-       this.specificUser = +params.get('id');      
+    .subscribe(params => {      
+       this.specificUser = +params.get('id');  
+       this.currentUserName = params.get('name');    
     });
 
     this.loadUserRights();
