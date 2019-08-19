@@ -62,6 +62,8 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
+import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
+import { ViewCaptureComponent } from './view-capture/view-capture.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,9 @@ import { ContextMenuLocationComponent } from './components/context-menu-location
     ModalStandardComponent,
     ViewUserRightsListComponent,
     ViewPlacesComponent,
-    ContextMenuLocationComponent
+    ContextMenuLocationComponent,
+    CaptureLayoutComponent,
+    ViewCaptureComponent
   ],
   imports: [
     BrowserModule,

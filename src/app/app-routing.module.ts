@@ -18,6 +18,8 @@ import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
+import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
+import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
 
 const routes: Routes = [
   {
@@ -49,7 +51,12 @@ const routes: Routes = [
           { path: 'locations', component: ViewPlacesComponent }
         ]
       },
-      { path: 'unauthorized', component: ViewUnauthorizedComponent }
+      { path: 'unauthorized', component: ViewUnauthorizedComponent },
+      {
+        path: 'capture', component: CaptureLayoutComponent, children: [
+          {path: '', component: ViewCaptureComponent}
+        ]
+      }
     ]
   }
 ];
