@@ -66,6 +66,15 @@ export class ViewUserListComponent implements OnInit {
     `${environment.ImageRoute}/default.jpg`;
 
   selectedRow = -1;
+  selectedFirstName = '';
+  selectedSurName = '';
+  selectedEmail = '';
+  selectedDesignation = '';
+  selectedStatus = '';
+  EmpNo = '';
+  Extension = '';
+  ProfileImage: any;
+
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   sidebarCollapsed = true;
@@ -255,7 +264,7 @@ export class ViewUserListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, user) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -263,8 +272,16 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-
-    this.currentUserID = id;
+    console.log(user);
+    this.EmpNo = user.empNo;
+    this.selectedFirstName = user.firstName;
+    this.selectedSurName = user.surname;
+    this.selectedDesignation = user.designation;
+    this.selectedEmail = user.email;
+    this.selectedStatus = user.status;
+    this.currentUserID = user.userId;
+    this.Extension = user.extension;
+    this.ProfileImage = user.profileImage;
     // Will only toggle on if off
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true); // Set true
@@ -308,5 +325,16 @@ export class ViewUserListComponent implements OnInit {
     //     );
     //   }
     // );
+  }
+
+  readFile(event): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.ProfileImage = reader.result;
+      }
+      reader.readAsDataURL(file);
+    }
   }
 }
