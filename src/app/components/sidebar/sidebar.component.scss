@@ -1,0 +1,100 @@
+.offset-sidebar {
+  margin-top: 10px;
+  margin-left: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 20px);
+}
+
+.nav-item {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
+}
+
+.sidebar .nav:not(.sub-menu)>.nav-item {
+  border: none;
+  outline: none;
+}
+.offcanvas-sidebar-show {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+.active-item {
+  background: #f2f2f2;
+  color: #3877ff !important;
+  border-radius: 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.active-item i,
+span {
+  color: #3877ff;
+}
+// Eathon Maritz
+// 17-07-19
+// Allows for sidebar collapsing
+.nav-item {
+  border-radius: 20px;
+}
+.nav-link {
+  border-radius: 20px;
+}
+.collapse-sidebar {
+  left: 0px;
+  position: relative;
+  width: 65px !important;
+  margin-left: 20px !important;
+}
+.collapse-sidebar .nav-item span {
+  display: none;
+}
+.nav-item, .nav-item a {
+  height: 40px;
+}
+.nav-item a {
+  //vertical-align: middle;
+  padding-left: 12px !important;
+}
+
+.collapse-sidebar .nav-item .nav-link {
+  border-radius:50%;
+}
+.collapse-sidebar .nav-item {
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.col-lg-1 .sidebar {
+  margin: 0px !important;
+}
+
+// // Large devices (desktops, 992px and up)
+// @media (max-width: 1200px) {
+//   .offset-sidebar{
+//     width: 65px !important;
+//     margin-left: 20px !important;
+//   }
+//   .nav-item span {
+//     display: none !important;
+//   }
+//   .nav-item .nav-link {
+//     border-radius:50%;
+//   }
+//   .nav-item {
+//     border-bottom-right-radius: 20px;
+//     border-top-right-radius: 20px;
+//   }
+// }
+.menu-title {
+  font-size: .95rem !important;
+}

@@ -1,0 +1,22 @@
+.bg-image {
+  background-image: url('./../../../../assets/dist/images/backgrounds/background1.jpg');
+  background-size: cover;
+}
+
+.tile-frost {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  padding: 25px;
+}
+
+.input-container{
+  position: relative;
+  display: inline;
+}
+
+.input-container span {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  z-index: 99999;
+}

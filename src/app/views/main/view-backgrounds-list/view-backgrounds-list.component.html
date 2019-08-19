@@ -1,0 +1,105 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <br />
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" data-target="#uploadBackground" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+    </div>    <br>
+    <form class="form-inline">
+      <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
+        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+        (change)="loadBackgrounds()">
+        <option value='15' selected>Showing 15</option>
+        <option value='25'>Showing 25</option>
+        <option value='50'>Showing 50</option>
+      </select>
+      <select [value]='15' [(ngModel)]="backgroundRequestModel.orderByDirection" [ngModelOptions]="{standalone: true}"
+        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+          (change)="loadBackgrounds()">
+        <option value='ASC' selected>ASC</option>
+        <option value='DESC'>DESC</option>
+      </select>
+      <div class="mb-2 mr-sm-2 ml-auto">
+      <input type="text"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="Search" (keyup)="searchBar()" [(ngModel)]="backgroundRequestModel.filter" [ngModelOptions]="{standalone: true}" />
+      </div>
+      </form>
+    <br>
+    <div class="row">
+      <div class="col-sm-3" *ngFor="let image of backgroundList">
+        <div class="background-item shadow-sm ls-tile-{{ currentTheme }}">
+          <img src="{{ backgroundPath }}/{{ image.image }}" alt="">
+          <div class="controls-top-right form-inline">
+            <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
+              <div class="form-group">
+                <button class="btn btn-danger btn-sm" type="submit"><span class="mdi mdi-trash-can"></span> REMOVE</button>
+              </div>
+            </form>
+            &nbsp;
+            <form (submit)="editBackground([image.backgroundID])" class="form-inline">
+              <div class="form-group">
+                <button class="btn btn-info btn-sm" type="submit"><span class="mdi mdi-circle-edit-outline"></span> Edit</button>
+              </div>
+            </form>
+          </div>
+          <br>
+        <div class="background-info">
+          <button (click)="viewBackground([image.image])" class="btn btn-primary btn-sm float-right"><span class="mdi mdi-eye"></span> View</button>
+          <h4 class="text-light background-name">{{ image.name }}</h4>
+        </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+        <ul class="pagination pagination-sm">
+          <li class="page-item">
+            <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+              (click)="pageChange(prevPage)">Prev</button>
+          </li>
+          <li *ngFor="let page of showingPages" class="page-item">
+            <button [class.active-page]="activePage == page.page"
+              class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+              type="button" (click)="pageChange(page.page)">{{page.page}}</button>
+          </li>
+          <li class="page-item">
+            <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+              (click)="pageChange(nextPage)">Next</button>
+          </li>
+        </ul>
+      </nav>
+    <br>
+    <p class="ls-text-{{ currentTheme }} text-left">Showing {{ totalDisplayCount }} of {{ totalRowCount }}</p>
+  </div>
+</div>
+
+<div class="modal fade" id="uploadBackground" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Update Help Item</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="uploadBackground()" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="form-group">
+              <input type="text" placeholder="Background name" class="form-control"
+                [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}" required/>
+            </div>
+          <div class="form-group">
+            <input type="file" (change)="onFileChange($event.target.files)" required>
+          </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<app-modal-component></app-modal-component>
+<app-notification></app-notification>

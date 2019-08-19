@@ -1,0 +1,45 @@
+<div [ngClass]="(enabled)?'show':'hide'">
+<div class="snack-bar-container" [ngClass]="(settings.display)?'snack-bar-show':''">
+  <div class="snack-bar col-lg-4 col-sm-12 shadow text-light bg-dark" (click)="close()">
+        <button class="float-right btn btn-primary btn-sm" (click)="edit()">Edit</button>
+    <div class="row">
+      <div class="col-12">
+        <p class="snack-bar-content" style="margin-bottom: 6px"><strong>{{settings.title}}</strong></p>
+        <p class="snack-bar-content">{{settings.content}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- *ngIf="currentUser.userID === 3" -->
+
+<button class="hide" data-toggle="modal" data-target="#editObjectHelp" #openModal></button>
+<div class="modal fade" id="editObjectHelp" tabindex="-1" role="dialog" aria-labelledby="editObjectHelpLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editObjectHelpLabel">Update Help Item</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateObjectHelp()" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="form-group">
+              <input type="text" placeholder="Help Name" class="form-control"
+                [(ngModel)]="this.settings.title" [ngModelOptions]="{standalone: true}" required/>
+            </div>
+        <div class="form-group">
+          <textarea type="text" placeholder="Help Description" class="form-control"
+            [(ngModel)]="this.settings.content" [ngModelOptions]="{standalone: true}" required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

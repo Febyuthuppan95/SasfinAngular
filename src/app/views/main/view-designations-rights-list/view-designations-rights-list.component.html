@@ -1,0 +1,200 @@
+
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <br />
+    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
+        class="mdi mdi-filter"></i> &nbsp;Filters</button>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentDesignationName}} - Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+
+    <br />
+    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
+      <form class="form-inline">
+        <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
+          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+          (change)="loadDesignationRights()">
+          <option value='15' selected>Showing 15</option>
+          <option value='25'>Showing 25</option>
+          <option value='50'>Showing 50</option>
+        </select>
+        <input type="text"
+          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+      </form>
+    </div>
+    <br />
+      <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
+        <thead>
+          <tr>
+            <th></th>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
+                <p class="headerText">Name</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Description')">
+                <p class="headerText">Description</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Description_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Description_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="(!noData)">
+          <tr *ngFor="let designation of designationRightsList; let i = index"  (click)="setClickedRow(i)"  [class.active]="i == selectedRow">
+            <td scope="col">{{designation.rowNum}}</td>
+            <td scope="col">{{designation.name}}</td>
+            <td scope="col">{{designation.description}}</td>
+            <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td>
+          </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">No data to display..</td>
+            <td scope="col"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <br />
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+      <ul class="pagination pagination-sm">
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+            (click)="pageChange(prevPage)">Prev</button>
+        </li>
+        <li *ngFor="let page of showingPages" class="page-item">
+          <button [class.active-page]="activePage == page.page"
+            class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+            type="button" (click)="pageChange(page.page)">{{page.page}}</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+            (click)="pageChange(nextPage)">Next</button>
+        </li>
+      </ul>
+    </nav>
+    <br />
+    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + showingRecords - 1 }} of
+      {{ rowCount }}</p>
+  </div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
+<!--Remove Modal-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+       <h5 class="">Are you sure you want to remove this right?</h5>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
+    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#addRight" #openModal></button>
+<ng-template id="addRight" #add let-modal>
+  <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="addRight" aria-hidden="true" >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title" id="modal-basic-title">Rights</h5>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form class="form-group add-scroll col-md-6 text-center">
+                <h5 class="control-label">Available</h5>
+                <div class="modal-list-rights">
+                  <ul class="right-list">
+                    <li *ngFor="let right of rightsList"><a (click)="addNewRight(right.rightID, right.name)"><span>{{ right.name}} {{right.rightID}}</span></a></li>
+                  </ul>
+                </div>
+            </form>
+            <form class="form-group add-scroll col-md-6 text-center">
+              <h5 class="control-label">Assigned</h5>
+              <div class="modal-add-rights">
+                <ul class="right-list">
+                  <li *ngFor="let dRight of designationRightsList"><a (click)="removeRight(dRight.rightID, dRight.name)"><span>{{ dRight.name}}</span></a></li>
+                </ul>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" (click)="modal.close('')" data-dismiss="modal" #closeModal>Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<button class="hide" data-toggle="modal" data-target="#addRight" #openAddModal></button>
+<div class="modal fade" id="addRight" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateUnit()" enctype="multipart/form-data">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-group add-scroll col-md-6 text-center">
+              <h5 class="control-label">Available</h5>
+              <div class="modal-list-rights">
+                <ul class="right-list">
+                  <li *ngFor="let right of rightsList"><a (click)="addNewRight(right.rightID, right.name)"><span>{{ right.name}} {{right.rightID}}</span></a></li>
+                </ul>
+              </div>
+          </form>
+          <form class="form-group add-scroll col-md-6 text-center">
+            <h5 class="control-label">Assigned</h5>
+            <div class="modal-add-rights">
+              <ul class="right-list">
+                <li *ngFor="let dRight of designationRightsList"><a (click)="removeRight(dRight.rightID, dRight.name)"><span>{{ dRight.name}}</span></a></li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<app-modal-component></app-modal-component>

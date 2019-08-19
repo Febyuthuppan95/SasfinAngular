@@ -1,0 +1,10 @@
+<div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}" style="cursor: pointer">
+  <div class="card">
+    <div class=" popBodyNav">
+      <a *ngIf="isCountry" (click)="addRegion($event)" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Add Region</span></a>
+      <a *ngIf="isRegion" (click)="addCity($event)" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Add City</span></a>
+      <a (click)="edit()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Edit</span></a>
+      <a (click)="delete()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Delete</span></a>
+    </div>
+  </div>
+</div>

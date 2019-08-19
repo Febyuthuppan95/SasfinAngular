@@ -1,0 +1,61 @@
+<div class="ls-right-sidebar col-lg-2 float-right shadow" [ngClass]="(show)?'ls-sidebar-show':'ls-sidebar-hide'"
+  (mouseleave)="clickEvent()">
+<!--  <button type="button float-right" (click)="clickEvent()" class="close" aria-label="Close">-->
+<!--    <span aria-hidden="true">&times;</span>-->
+<!--  </button>-->
+  <br />
+  <br />
+  <div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="helpToggle" [(ngModel)]="toggleHelpValue"
+      (change)="helpCheckbox()">
+    <label class="custom-control-label" for="helpToggle" style="margin-top:5px;">Help</label>
+  </div>
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-light shadow" (click)="updateTheme('light')"
+        [ngClass]="(currentTheme === 'light') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Light</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-dark shadow" (click)="updateTheme('dark')"
+        [ngClass]="(currentTheme === 'dark') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Dark</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-blue shadow" (click)="updateTheme('blue')"
+        [ngClass]="(currentTheme === 'blue') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Blue</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-pink shadow" (click)="updateTheme('pink')"
+        [ngClass]="(currentTheme === 'pink') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Pink</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-green shadow" (click)="updateTheme('green')"
+        [ngClass]="(currentTheme === 'green') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Green</p>
+    </div>
+    <div class="col-md-4 col-sm-2 text-center ls-theme">
+      <button class="ls-theme-item ls-tile-peach shadow" (click)="updateTheme('peach')"
+        [ngClass]="(currentTheme === 'peach') ? 'ls-item-active': ''"></button>
+      <br />
+      <p class="text-center">Peach</p>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-12 col-sm-6 text-center ls-bg" *ngFor="let image of backgrounds">
+      <img (click)="updateBackground(image)"
+        [src]="imagePath+'/'+image.image" class="ls-bg-item shadow m-auto" />
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="show"></div>

@@ -20,7 +20,7 @@
     + Color Functions Mixins
     + Badge Mixins
     + Blockquote Mixins
-    
+
   * Core Styles
     + Reset Styles
     + Fonts
@@ -43,7 +43,7 @@
     + Lists
     + Tables
   * Plugin overrides
-    + Data-tables  
+    + Data-tables
   * Landing screens
     + Auth
   * Layout
@@ -9207,7 +9207,7 @@ pre code {
 .col-xl-auto {
   position: relative;
   width: 100%;
-  padding-right: 10px;
+  padding-right: 0px;
   padding-left: 10px;
 }
 
@@ -12709,9 +12709,9 @@ input[type="button"].btn-block {
     display: flex !important;
     flex-basis: auto;
   }
-  .navbar-expand-lg .navbar-toggler {
+  /* .navbar-expand-lg .navbar-toggler {
     display: none;
-  }
+  } */
 }
 
 @media (max-width: 1199.98px) {
@@ -14001,7 +14001,20 @@ a.close.disabled {
 .toast-body {
   padding: 0.75rem;
 }
-
+.modal-body-blue {
+  background: rgba(196, 219, 255, 0.8) !important;
+  border-color: rgba(196, 219, 255, 0.8) !important;
+  color: #121212 !important;
+}
+.modal-header {
+ border: 1px solid #fff;
+}
+.modal-title {
+  color: #fff;
+}
+.modal-footer {
+  border: 1px solid #fff;
+}
 .modal-open {
   overflow: hidden;
 }
@@ -14237,6 +14250,7 @@ a.close.disabled {
 }
 
 .tooltip .arrow {
+  display: none;
   position: absolute;
   display: block;
   width: 0.8rem;
@@ -14318,6 +14332,13 @@ a.close.disabled {
   background-color: #000;
   border-radius: 0.25rem;
 }
+/* :root {
+  --x: 100px;
+  --y: 100px;
+}
+.tbodyPop ngb-popover-window {
+  transform: translate(var(--x), var(--y)) !important;
+} */
 
 .popover {
   position: absolute;
@@ -14350,7 +14371,7 @@ a.close.disabled {
 
 .popover .arrow {
   position: absolute;
-  display: block;
+  display: none;
   width: 1rem;
   height: 0.5rem;
   margin: 0 0.3rem;
@@ -14476,7 +14497,7 @@ a.close.disabled {
 }
 
 .popover-body {
-  padding: 0.5rem 0.75rem;
+  padding: 0 !important;
   color: #212529;
 }
 
@@ -18468,7 +18489,7 @@ h3,
 
 h4,
 .h4 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
 }
 
 h5,
@@ -19053,7 +19074,7 @@ code {
 
 .documentation .content-wrapper {
   padding-top: 0;
-  min-height: calc(100vh - 75px);
+  height: auto;
 }
 
 .doc-header {
@@ -21122,6 +21143,15 @@ dl li {
   }
 }
 
+
+.main-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+  width: 50%;
+}
+
 .content-wrapper {
   background: #f3f3f3;
   padding: 2.1rem 1.04rem;
@@ -21346,7 +21376,7 @@ dl li {
     top: 60px;
     bottom: 0;
     overflow: auto;
-    right: -257px;
+    /* right: -257px; */
     -webkit-transition: all 0.25s ease-out;
     -o-transition: all 0.25s ease-out;
     transition: all 0.25s ease-out;

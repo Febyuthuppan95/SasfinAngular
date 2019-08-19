@@ -1,0 +1,68 @@
+.background-item {
+  position: relative;
+}
+
+.background-item-controls {
+  padding: 25px;
+  color: #333;
+}
+
+.background-item > img {
+  width: 100%;
+  height: 250px;
+}
+
+.controls-top-right{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.controls-bottom-right{
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+}
+
+.background-info {
+  padding: 8px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba($color: #000000, $alpha: 0.6)
+}
+
+.col-sm-3 {
+  padding: 16px;
+}
+
+.background-name{margin-top:6px;}
+
+
+.btn-add {
+  width: 35px;
+  height: 35px;
+  padding: 3px 0px;
+  border-radius: 18px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  background-color: #71c016;
+  color:#fff;
+}
+
+.btn-add:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  background-color: #62ab0e;
+  transition: 0.3s;
+  color:#fff;
+}
+.btn-add:active {
+  border: 2px solid #79d90b;
+
+}
+.btn-add i:hover {
+  color:#fff;
+}

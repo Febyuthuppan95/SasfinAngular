@@ -1,0 +1,16 @@
+<div class="fh" [style.backgroundImage]="'url(' + currentBackground + ')'" (click)="onClick($event)">
+  <app-navbar (collapseSidebar)="collapseSidebar()" (offcanvas)="offCanvasSidebar($event)"></app-navbar>
+  <div class="row">
+    <div [ngClass]="(!sidebarCollapse)? 'col-lg-2' : 'side-div'"  >
+      <app-sidebar [offcanvas]="offcanvasToggle">
+      </app-sidebar>
+    </div>
+    <div class="main" [ngClass]="(!sidebarCollapse)? 'col-lg-10' : 'list-div'">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+<app-floating-button (myEvent)="openEditTile()"></app-floating-button>
+<app-edit-dashboard-style (closeSidebar)="closeEditTile()" (help)="toggleHelp($event)" (background)="updateBackground($event)">
+</app-edit-dashboard-style>

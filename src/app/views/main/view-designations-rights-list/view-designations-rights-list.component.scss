@@ -1,0 +1,339 @@
+//ccs for the table
+.form-control {
+  border: 1px rgba(30, 30, 30, 0.2) solid;
+}
+.btn-add {
+  width: 35px;
+  height: 35px;
+  padding: 3px 0px;
+  border-radius: 18px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  background-color: #71c016;
+  color:#fff;
+}
+.btn-back {
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding-top:7px;
+  padding-left:0;
+  padding-right:5px;
+}
+.btn-add:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  background-color: #62ab0e;
+  transition: 0.3s;
+  color:#fff;
+}
+.btn-add:active {
+  border: 2px solid #79d90b;
+
+}
+.btn-add i:hover {
+  color:#fff;
+}
+.form-control:focus {
+  border: 1px #4d83ff solid;
+
+}
+
+.active-page {
+  background: #4d83ff;
+  color: #f2f2f2;
+}
+
+.page-link {
+  border: none;
+  border-radius: 0;
+}
+
+.page-item {
+  border: none;
+  border-radius: 0;
+}
+
+td {
+  overflow-x: auto;
+}
+
+.close span {
+  color: #fff;
+}
+.btn-sort {
+  padding: 0;
+  margin: 0;
+  width: 115%;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.btn-sort>p {
+  display: inline
+}
+
+.btn-sort:hover {
+  color: #4d83ff;
+}
+
+.hover-pointer {
+  cursor: pointer;
+}
+
+.order-active {
+  color: #4d83ff !important;
+}
+
+.order-not-active {
+  color: #333333;
+}
+
+.table {
+  overflow-x: auto;
+}
+
+.ls-card-body {
+  width: 100%;
+  padding: 25px;
+}
+
+.mdi-close:hover {
+  color: #3877ff;
+}
+.mdi-close:focus {
+  color:gray;
+}
+.btn-success, .btn-danger {
+  border-color: #3877ff;
+}
+.btn-success:hover, .btn-danger:hover {
+  color: #3877ff;
+}
+//brandon's css
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+tr {
+  cursor: pointer;
+}
+// Add Modal List Scroll Bar
+.add-scroll {
+border: none !important;
+  /* width */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #88ADFE;
+  border-radius: 10px;
+  border: 1px solid #6a97f7;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #88ADFE;
+}
+
+}
+.add-scroll .modal-list-rights {
+  direction: rtl;
+  text-align: left;
+  height: 200px;
+  // border: 2px solid #dadada;
+  outline: none;
+}
+.inner-div {
+  border: 2px solid #dadada;
+}
+.modal-list-rights {
+  height: 200px;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #007BFF;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #007BFF;
+  }
+}
+.modal-add-rights {
+  height: 200px;
+  // overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #007BFF;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #007BFF;
+  }
+}
+.right-list {
+  background-color: #f0f1f5;
+  border: 2px solid #dadada;
+  border-right: none;
+  border-bottom: none;
+  margin-right: 2px;
+  padding-right: 20px;
+  padding-left:5px;
+}
+.right-list:hover {
+  cursor: pointer;
+}
+.right-list li {
+  text-align: left;
+  list-style-type: none;
+  border-bottom: 1px solid #888888;
+}
+.right-list li a svg {
+  color: white;
+}
+// .right-list li:hover {
+//   border: 1px solid #5085fa;
+//   border-bottom-left-radius: 10px;
+//   border-top-left-radius: 10px;
+//   background-color: #88ADFE;
+//   color: #fff;
+//   transition: 0.1s;
+// }
+.modal-list-rights .right-list {
+  padding-right: 0px;
+}
+.right-list li a {
+  border: none;
+  background-color: transparent;
+  color: #5085fa;
+}
+.right-list li:hover {
+  background-color: #5085fa;
+  :first-child {
+    color: #fff;
+  }
+
+}
+.right-list li:hover {
+  color: #5085fa
+}
+.right-list li:active {
+  background-color: #5085fa;
+  color: #fff;
+}
+.right-list button {
+  height: 25px;
+  width: 25px;
+  color:#5085fa;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  padding: 0px;
+  margin:2px;
+}
+.right-list button:hover {
+  background-color: #A1FFFF;
+  border: 1px solid transparent;
+  // :first-child{
+  //   color:rgb(14, 179, 14);
+  // }
+}
+.right-list button i {
+  color: #5085fa;
+  padding-bottom: 3px;
+}
+
+td {
+  border: 1px solid transparent !important;
+}
+tr.active {
+  background-color:#b3c9ff !important;
+  box-shadow: 0 0.75rem 1.2rem rgba(0, 0, 0, 0.301) !important;
+  border: 1px solid transparent !important;
+  td {
+    border: 1px solid transparent !important;
+  }
+}
+

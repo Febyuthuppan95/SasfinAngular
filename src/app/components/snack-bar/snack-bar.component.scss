@@ -1,0 +1,29 @@
+.snack-bar-container {
+  position: fixed;
+  bottom: -250px;
+  left: 25px;
+  right: 25px;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 1s;
+}
+
+.snack-bar {
+  margin: auto;
+  padding: 25px 20px;
+  background: #f2f2f2;
+  color: #121212;
+  border-radius: 5px;
+}
+
+.snack-bar-content {
+  margin: 0;
+  text-align: justify;
+}
+
+.snack-bar-button {
+  margin: auto;
+}
+
+.snack-bar-show {
+  bottom: 25px;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+}

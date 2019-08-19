@@ -1,59 +1,61 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
-  <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link" href="index.html">
-        <i class="mdi mdi-home menu-icon"></i>
-        <span class="menu-title">Dashboard</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link color" href="#auth" aria-expanded="false" aria-controls="auth">
+<nav class="sidebar sidebar-offcanvas offset-sidebar shadow ls-tile-{{ currentTheme }}" id="sidebar"
+  [ngClass]="(collapse)? 'collapse-sidebar' : '' ">
+  <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    (mouseover)="updateHelpContext('sidebar-users-link')"
+    matTooltip="Users" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']" >
         <i class="mdi mdi-account menu-icon"></i>
         <span class="menu-title">Users</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-        <i class="mdi mdi-circle-outline menu-icon"></i>
-        <span class="menu-title">Entry 2</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="ui-basic">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-          <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="pages/forms/basic_elements.html">
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    (mouseover)="updateHelpContext('sidebar-designations-link')"
+    matTooltip="Designations" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-view-headline menu-icon"></i>
-        <span class="menu-title">Entry 3</span>
+        <span class="menu-title">Designations</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="pages/charts/chartjs.html">
-        <i class="mdi mdi-chart-pie menu-icon"></i>
-        <span class="menu-title">Entry 4</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="pages/tables/basic-table.html">
-        <i class="mdi mdi-grid-large menu-icon"></i>
-        <span class="menu-title">Entry 5</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="pages/icons/mdi.html">
-        <i class="mdi mdi-emoticon menu-icon"></i>
-        <span class="menu-title">Entry 6</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="documentation/documentation.html">
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    (mouseover)="updateHelpContext('sidebar-rights-link')"
+    matTooltip="Rights" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+    <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
         <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-        <span class="menu-title">Entry 7</span>
+        <span class="menu-title">Rights</span>
       </a>
     </li>
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    (mouseover)="updateHelpContext('sidebar-backgrounds-link')"
+    matTooltip="Backgrounds" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
+        <i class="mdi mdi-image menu-icon"></i>
+        <span class="menu-title">Backgrounds</span>
+      </a>
+    </li>
+    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    (mouseover)="updateHelpContext('sidebar-help-glossary-link')"
+    matTooltip="Help Glossary" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+    <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/helpglossary" [routerLinkActive]="['active-item']">
+      <i class="mdi mdi-help-box menu-icon"></i>
+      <span class="menu-title">Help Glossary</span>
+    </a>
+  </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-units-measure-link')"
+  matTooltip="Units Of Measure" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/unitsofmeasure" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-scale menu-icon"></i>
+    <span class="menu-title">Units Of Measure</span>
+  </a>
+</li>
+<li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-places-link')"
+  matTooltip="Locations" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/locations" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-google-maps menu-icon"></i>
+    <span class="menu-title">Locations</span>
+  </a>
+  </li>
   </ul>
 </nav>

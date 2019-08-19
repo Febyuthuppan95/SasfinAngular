@@ -1,0 +1,31 @@
+//When screen width is below 900px
+@media only screen and (max-width: 900px) {
+  .full-form {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    border-radius: 0 !important;
+    box-shadow: none;
+  }
+
+  .full-form>* {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-filter {
+    display: block;
+  }
+
+  .filters {
+    display: none;
+  }
+
+  .filters-show {
+    display: block !important;
+    padding: 12px;
+  }
+}
