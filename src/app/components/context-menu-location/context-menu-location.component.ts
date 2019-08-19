@@ -25,6 +25,9 @@ export class ContextMenuLocationComponent implements OnInit {
   @Output() addRegionEmit = new EventEmitter<number>();
   @Output() addCountryEmit = new EventEmitter<string>();
   @Output() addCityEmit = new EventEmitter<number>();
+  @Output() deleteRegionEmit = new EventEmitter<string>();
+  @Output() deleteCountryEmit = new EventEmitter<string>();
+  @Output() deleteCityEmit = new EventEmitter<string>();
 
   ngOnInit() {
     if (this.locationType === 'country') {
@@ -42,6 +45,22 @@ export class ContextMenuLocationComponent implements OnInit {
       locationName: this.locationName,
       locationType: this.locationType
     }));
+  }
+
+  delete() {
+    const emit = {
+      locationID: this.locationID,
+    };
+
+    const stringEmit = JSON.stringify(emit);
+
+    if (this.locationType === 'country') {
+      this.deleteCountryEmit.emit(stringEmit);
+    } else if (this.locationType === 'region') {
+      this.deleteRegionEmit.emit(stringEmit);
+    } else {
+      this.deleteCityEmit.emit(stringEmit);
+    }
   }
 
   addCity($event) {

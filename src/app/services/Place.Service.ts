@@ -117,12 +117,14 @@ export class PlaceService {
         if (result.find((element) => {
           return element.id === country.regionID;
         }) === undefined) {
-        result.push({
-           id: country.regionID,
-           name: country.region,
-           hash: UUID.UUID(),
-           cities: this.getCities(data, country.region)
-        });
+          if (country.regionID !== undefined && country.region !== undefined && country.regionID !== 0 && country.region !== '') {
+            result.push({
+              id: country.regionID,
+              name: country.region,
+              hash: UUID.UUID(),
+              cities: this.getCities(data, country.region)
+           });
+          }
       }
      }
     });
@@ -135,11 +137,13 @@ export class PlaceService {
 
     data.locations.forEach((country) => {
       if (country.region === regionName) {
+        if (country.cityID !== undefined && country.city !== undefined && country.cityID !== 0 && country.city !== '') {
         result.push({
            id: country.cityID,
            name: country.city,
            hash: UUID.UUID(),
         });
+      }
      }
     });
 
