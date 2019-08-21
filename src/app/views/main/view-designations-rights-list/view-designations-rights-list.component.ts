@@ -167,6 +167,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
+    console.log("1 ",dRModel.specificRightID);
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {       
