@@ -347,9 +347,11 @@ export class ViewUserRightsListComponent implements OnInit {
       rightID: id,
       rightName: 'Users'
     };
+    console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
+        console.log(res);
         this.loadUserRights();
       },
       msg => {

@@ -315,7 +315,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = 'Designations';
+    this.rightName = 'Designation';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
       // console.log(this.rightName);
@@ -343,7 +343,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
-      rightName: 'Designations'
+      rightName: 'Designation'
     };
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
@@ -364,7 +364,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,
       rightID: id,
-      rightName: 'Designations'
+      rightName: 'Designation'
     };
     const result = this.designationsService
     .addDesignationright(requestModel).then(
