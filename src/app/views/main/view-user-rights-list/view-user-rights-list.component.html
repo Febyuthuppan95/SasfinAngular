@@ -137,7 +137,7 @@
             <h5 class="control-label">Assigned</h5>
             <div class="modal-add-rights">
               <ul class="right-list">
-                <li *ngFor="let uRight of userRightsList"><a (click)="removeRight(uRight.rightID, uRight.name)"><span>{{uRight.name}}</span></a></li>
+                <li *ngFor="let uRight of userRightsList"><a (click)="removeRight(uRight.userRightID, uRight.name)"><span>{{uRight.name}}</span></a></li>
               </ul>
             </div>
           </form>
