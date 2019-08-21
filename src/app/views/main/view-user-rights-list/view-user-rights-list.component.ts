@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { Location } from '@angular/common';
 import {ThemeService} from '../../../services/Theme.Service';
 import {UserService} from '../../../services/User.Service';
 import {NotificationComponent} from '../../../components/notification/notification.component';
 import {ImageModalComponent} from '../../../components/image-modal/image-modal.component';
 import {environment} from '../../../../environments/environment';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../../models/HttpResponses/User';
 import {Pagination} from '../../../models/Pagination';
 import {UserRightService} from '../../../services/UserRight.service';
@@ -12,6 +13,13 @@ import {GetUserRightsList} from '../../../models/HttpRequests/GetUserRightsList'
 import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
 import {UserRightsList} from '../../../models/HttpResponses/UserRightsList';
 import { ActivatedRoute } from '@angular/router';
+import { UpdateUserRight } from 'src/app/models/HttpRequests/UpdateUserRight';
+import { UserRightReponse } from 'src/app/models/HttpResponses/UserRightResponse';
+import { AddUserRight } from 'src/app/models/HttpRequests/AddUserRight';
+import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
+import { RightService } from 'src/app/services/Right.Service';
+import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
+import { RightList } from 'src/app/models/HttpResponses/RightList';
 
 @Component({
   selector: 'app-view-user-rights-list',
@@ -25,7 +33,9 @@ export class ViewUserRightsListComponent implements OnInit {
     private themeService: ThemeService,
     private userRightService: UserRightService,
     private activatedRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private modalService: NgbModal,
+    private rightsService: RightService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -44,7 +54,10 @@ export class ViewUserRightsListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-
+  @ViewChild('openAddModal', {static: true })
+  openAddModal: ElementRef;
+  @ViewChild('closeAddModal', {static: true })
+  closeAddModal: ElementRef;
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
@@ -52,11 +65,14 @@ export class ViewUserRightsListComponent implements OnInit {
     `${environment.ImageRoute}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
+  currentUserName: string;
   currentTheme: string;
+  rightId: number;
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
   userRightsList: UserRightsList[];
+  rightsList: RightList[];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -76,12 +92,15 @@ export class ViewUserRightsListComponent implements OnInit {
   orderIndicator = 'Surname_ASC';
   showLoader = true;
   displayFilter = false;
+
+  closeResult: string;
  
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
-    .subscribe(params => {
-       this.specificUser = +params.get('id');      
+    .subscribe(params => {      
+       this.specificUser = +params.get('id');  
+       this.currentUserName = params.get('name');    
     });
 
     this.loadUserRights();
@@ -108,7 +127,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowEnd += +this.rowCountPerPage;
     }
   }
-  else{
+  else {
     this.rowStart = 0;
     this.showingRecords = 1;
     const item = new Pagination();
@@ -157,14 +176,51 @@ export class ViewUserRightsListComponent implements OnInit {
     this.loadUserRights();
   }
 
+  loadAvailableRights() {
+    const model: GetRightList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      rightName: this.rightName,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      specificRightID: -1,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderByDirection
+    };    
+    this.rightsService
+    .getRightList(model)
+    .then(
+      (res: RightListResponse) => {        
+        this.rightsList = res.rightList;        
+        this.userRightsList.forEach(uRight => {
+          let count = 0;
+          this.rightsList.forEach(right => {
+            if (uRight.rightID === right.rightID) {             
+              this.rightsList.splice(count, 1);
+            } else {
+              count ++;
+            }
+          });
+        });
+      },      
+      msg => {
+        this.showLoader = false;
+        // this.notify.errorsmsg(
+        //   'Server Error',
+        //   'Something went wrong while trying to access the server.'
+        // );
+      }
+    );
+  }
+
   loadUserRights() {
     this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
-    const dRModel: GetUserRightsList = {
+    const uRModel: GetUserRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificUserID: this.specificUser,
-      rightName: 'Rights',
+      rightName: 'Users',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
@@ -172,7 +228,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowEnd: this.rowEnd
     };
     this.userRightService
-      .getUserRightsList(dRModel).then(
+      .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success       
         this.userRightsList = res.userRightsList;
@@ -191,6 +247,7 @@ export class ViewUserRightsListComponent implements OnInit {
         );
       }
     );
+    this.loadAvailableRights();
   }
 
   updateSort(orderBy: string) {
@@ -238,4 +295,72 @@ export class ViewUserRightsListComponent implements OnInit {
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
+
+  confirmRemove(content, id, Name) {
+    this.rightId = id;
+    this.rightName = 'Users';
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      // (result);
+      // console.log(this.rightName);
+      this.removeRight(this.rightId, this.rightName);
+      // Remove the right
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  confirmAdd(add) {
+    this.openAddModal.nativeElement.click();
+    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    //   // console.log(result);
+    //   // this.addNewRight(this.rightId, this.rightName);
+    //   // Remove the right
+    //   this.closeResult = `Closed with: ${result}`;
+    // }, (reason) => {
+    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    // });
+  }
+  removeRight(id: number, name: string) {
+    const requestModel: UpdateUserRight = {
+      userID: this.currentUser.userID,
+      userRightID: id,
+      rightName: 'Users'
+    };
+    const result = this.userService
+    .updateUserRight(requestModel).then(
+      (res: UserRightReponse) => {        
+        this.loadUserRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+  addNewRight(id, name) {
+    const requestModel: AddUserRight = {
+      userID: this.currentUser.userID,  
+      addedUserID:this.specificUser,
+      rightID: id,
+      rightName: 'Users'
+    };
+    console.log(requestModel);
+    const result = this.userService
+    .addUserright(requestModel).then(
+      (res: UserRightReponse) => {
+        console.log(res);
+        this.loadUserRights();
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+  
 }

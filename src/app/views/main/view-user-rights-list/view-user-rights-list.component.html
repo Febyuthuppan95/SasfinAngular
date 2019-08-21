@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
       class="mdi mdi-filter"></i> &nbsp;Filters</button>
-      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">User Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="card-title ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentUserName}} - Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
     <!-- <h4 class="card-title ls-text-{{ currentTheme }}">User Rights</h4> -->
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -91,3 +91,63 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+       <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+       <h5 class="">Are you sure you want to remove this right?</h5>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
+    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
+  </div>
+</ng-template>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#addRight" #openAddModal></button>
+<div class="modal fade" id="addRight" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="updateUnit()" enctype="multipart/form-data">
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-group add-scroll col-md-6 text-center">
+              <h5 class="control-label">Available</h5>
+              <div class="modal-list-rights">
+                <ul class="right-list">
+                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{right.name}} {{right.rightID}}</span></a></li>
+                </ul>
+              </div>
+          </form>
+          <form class="form-group add-scroll col-md-6 text-center">
+            <h5 class="control-label">Assigned</h5>
+            <div class="modal-add-rights">
+              <ul class="right-list">
+                <li (click)="removeRight(uRight.userRightID, uRight.name)" *ngFor="let uRight of userRightsList"><a><span>{{uRight.name}}</span></a></li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

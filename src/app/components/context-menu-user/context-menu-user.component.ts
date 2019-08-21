@@ -14,6 +14,7 @@ export class ContextMenuUserComponent implements OnInit {
   @Input() x = 0;
   @Input() y = 0;
   @Input() userID = 0;
+  @Input() userName = '';
   @Input() currentTheme = '';
 
   @Output() editUser = new EventEmitter<string>();
