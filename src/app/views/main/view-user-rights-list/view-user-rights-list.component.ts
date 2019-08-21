@@ -16,6 +16,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UpdateUserRight } from 'src/app/models/HttpRequests/UpdateUserRight';
 import { UserRightReponse } from 'src/app/models/HttpResponses/UserRightResponse';
 import { AddUserRight } from 'src/app/models/HttpRequests/AddUserRight';
+import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
+import { RightService } from 'src/app/services/Right.Service';
+import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
+import { RightList } from 'src/app/models/HttpResponses/RightList';
 
 @Component({
   selector: 'app-view-user-rights-list',
@@ -31,6 +35,7 @@ export class ViewUserRightsListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private location: Location,
     private modalService: NgbModal,
+    private rightsService: RightService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -67,6 +72,7 @@ export class ViewUserRightsListComponent implements OnInit {
   showingPages: Pagination[];
   lastPage: Pagination;
   userRightsList: UserRightsList[];
+  rightsList: RightList[];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -170,14 +176,51 @@ export class ViewUserRightsListComponent implements OnInit {
     this.loadUserRights();
   }
 
+  loadAvailableRights() {
+    const model: GetRightList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      rightName: this.rightName,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      specificRightID: -1,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderByDirection
+    };    
+    this.rightsService
+    .getRightList(model)
+    .then(
+      (res: RightListResponse) => {        
+        this.rightsList = res.rightList;        
+        this.userRightsList.forEach(uRight => {
+          let count = 0;
+          this.rightsList.forEach(right => {
+            if (uRight.rightID === right.rightID) {             
+              this.rightsList.splice(count, 1);
+            } else {
+              count ++;
+            }
+          });
+        });
+      },      
+      msg => {
+        this.showLoader = false;
+        // this.notify.errorsmsg(
+        //   'Server Error',
+        //   'Something went wrong while trying to access the server.'
+        // );
+      }
+    );
+  }
+
   loadUserRights() {
     this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
-    const dRModel: GetUserRightsList = {
+    const uRModel: GetUserRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificUserID: this.specificUser,
-      rightName: 'Rights',
+      rightName: 'Users',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
@@ -185,7 +228,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowEnd: this.rowEnd
     };
     this.userRightService
-      .getUserRightsList(dRModel).then(
+      .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success       
         this.userRightsList = res.userRightsList;
@@ -204,6 +247,7 @@ export class ViewUserRightsListComponent implements OnInit {
         );
       }
     );
+    this.loadAvailableRights();
   }
 
   updateSort(orderBy: string) {
@@ -254,7 +298,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = 'Designations';
+    this.rightName = 'Users';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
       // console.log(this.rightName);
@@ -281,12 +325,11 @@ export class ViewUserRightsListComponent implements OnInit {
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
-      rightName: 'Designations'
+      rightName: 'Users'
     };
     const result = this.userService
     .updateUserRight(requestModel).then(
-      (res: UserRightReponse) => {
-        // console.log(res);
+      (res: UserRightReponse) => {        
         this.loadUserRights();
       },
       msg => {
@@ -299,9 +342,10 @@ export class ViewUserRightsListComponent implements OnInit {
   }
   addNewRight(id, name) {
     const requestModel: AddUserRight = {
-      userID: this.currentUser.userID,      
+      userID: this.currentUser.userID,  
+      addedUserID:this.specificUser,
       rightID: id,
-      rightName: 'Rights'
+      rightName: 'Users'
     };
     const result = this.userService
     .addUserright(requestModel).then(
