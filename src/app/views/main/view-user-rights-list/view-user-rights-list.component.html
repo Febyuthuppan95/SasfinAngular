@@ -56,7 +56,7 @@
         </thead>
 
         <tbody>
-        <tr *ngFor="let userRight of userRightsList" class="userRightsRecord">
+        <tr *ngFor="let userRight of userRightsList; let i=index" (click)="popClick($event, userRight); setClickedRow(i)" class="userRightsRecord">
           <td>{{userRight.rowNum}}</td>
           <td>{{userRight.name}}</td>
           <td>{{userRight.description}}</td>
@@ -88,29 +88,11 @@
       {{ rowCount }}</p>
   </div>
 </div>
-
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-userrights (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userRightId]="currentRightID"></app-context-menu-userrights>
+</div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
-    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-       <span aria-hidden="true">&times;</span>
-    </button> -->
-  </div>
-  <div class="modal-body">
-    <form>
-      <div class="form-group">
-       <h5 class="">Are you sure you want to remove this right?</h5>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
-    <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
-  </div>
-</ng-template>
-
 <!--Add Modal-->
 <button class="hide" data-toggle="modal" data-target="#addRight" #openAddModal></button>
 <div class="modal fade" id="addRight" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
