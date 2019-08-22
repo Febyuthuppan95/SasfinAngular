@@ -310,7 +310,7 @@ export class ViewUserRightsListComponent implements OnInit {
     });
   }
 
-  confirmAdd(add) {
+  confirmAdd() {
     this.openAddModal.nativeElement.click();
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);

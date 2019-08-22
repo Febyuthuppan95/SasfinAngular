@@ -59,7 +59,7 @@
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
-            <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td>
+            <!-- <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td> -->
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -99,13 +99,13 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <!--Remove Modal-->
-<ng-template #content let-modal>
+<!-- <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
+    <h4 class="modal-title" id="modal-basic-title">Confirm</h4> -->
     <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
        <span aria-hidden="true">&times;</span>
     </button> -->
-  </div>
+  <!-- </div>
   <div class="modal-body">
     <form>
       <div class="form-group">
@@ -117,7 +117,7 @@
     <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
     <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 <!--Add Modal-->
 <button class="hide" data-toggle="modal" data-target="#addRight" #openModal></button>
@@ -190,8 +190,7 @@
         </div>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>       
       </div>
     </form>
     </div>
