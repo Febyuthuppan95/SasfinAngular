@@ -94,6 +94,20 @@ td {
   overflow-x: auto;
 }
 
+.contextOverlay {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 1000;
+  cursor: pointer;
+}
+
 .ls-card-body {
   width: 100%;
   padding: 25px;
