@@ -18,7 +18,9 @@ import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
 import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
-
+import { MenuService } from 'src/app/services/Menu.Service';
+import { Subscription } from 'rxjs';
+import { ContextMenuUserrightsComponent } from './../../../components/context-menu-userrights/context-menu-userrights.component';
 
 @Component({
   selector: 'app-view-designations-rights-list',
@@ -43,7 +45,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
-
+  contextMenu = false;
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
@@ -59,6 +61,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   selectedRow = -1;
+  currentRightID: number;
+  sidebarCollapsed = true;
+  subscription: Subscription;
+  contextMenuX = 0;
+  contextMenuY = 0;
 
   // Modal
   closeResult: string;
@@ -71,7 +78,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     private location: Location,
-    private rightsService: RightService
+    private rightsService: RightService,
+    private IMenuService: MenuService
 
     ) {
       this.rowStart = 1;
@@ -87,7 +95,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
 
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+        // console.log(result);
+        this.sidebarCollapsed = result;
+      });
     }
+
+  
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
@@ -314,6 +328,30 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+
+  popClick(event, uRight) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
+    this.currentRightID = uRight;
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
   }
 
   confirmRemove(content, id, Name) {

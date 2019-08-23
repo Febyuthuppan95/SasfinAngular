@@ -259,9 +259,7 @@ export class ViewUserRightsListComponent implements OnInit {
         } else {
           this.noData = false;
         }       
-        this.paginateData();    
-        
-        this.loadAvailableRights();
+        this.paginateData();          
       },
       msg => {
         // Process Failure
@@ -270,8 +268,9 @@ export class ViewUserRightsListComponent implements OnInit {
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-      }
+      }      
     );    
+    this.loadAvailableRights();
   }
 
   updateSort(orderBy: string) {
