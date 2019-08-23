@@ -20,8 +20,6 @@ import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationR
 import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 
 
-
-
 @Component({
   selector: 'app-view-designations-rights-list',
   templateUrl: './view-designations-rights-list.component.html',
@@ -78,7 +76,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
-      this.rightName = 'Designation';
+      this.rightName = 'Designations';
       this.activePage = +1;
       this.prevPageState = true;
       this.nextPageState = false;
@@ -103,7 +101,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-      console.log(this.currentDesignation);
+    
     });
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -133,10 +131,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
+        console.log(this.designationRightsList);
+        console.log(this.rightsList);
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (dRight.rightID === right.rightID) {
+            if (dRight.rightID === right.rightID) {              
               this.rightsList.splice(count, 1);
             } else {
               count ++;
@@ -160,14 +160,14 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificDesignationID: this.currentDesignation,
-      rightName: 'Designation',
+      rightName: 'Designations',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
-    console.log("1 ",dRModel.specificRightID);
+   
     this.designationsService
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {       
@@ -183,13 +183,16 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         } else {
         this.noData = false;
         // Process Success
-        // console.log(res.designationRightsList);
+      
         this.designationRightsList = res.designationRightsList;
+        
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
         this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
         this.paginateData();
+        
+        this.loadAvailableRights();
         }
       },
       msg => {
@@ -201,7 +204,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
-    this.loadAvailableRights();
+    
   }
 
   pageChange(pageNumber: number) {
@@ -315,7 +318,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = 'Designation';
+    this.rightName = 'Designations';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
       // console.log(this.rightName);
@@ -343,7 +346,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
-      rightName: 'Designation'
+      rightName: 'Designations'
     };
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
@@ -364,7 +367,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,
       rightID: id,
-      rightName: 'Designation'
+      rightName: 'Designations'
     };
     const result = this.designationsService
     .addDesignationright(requestModel).then(

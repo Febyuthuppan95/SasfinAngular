@@ -63,6 +63,7 @@ import { ViewPlacesComponent } from './views/main/view-places/view-places.compon
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
 import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
+import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { ContextMenuUserrightsComponent } from './components/context-menu-userri
     ViewUserRightsListComponent,
     ViewPlacesComponent,
     ContextMenuLocationComponent,
-    ContextMenuUserrightsComponent
+    ContextMenuUserrightsComponent,
+    ContextMenuDesignationrightsComponent
   ],
   imports: [
     BrowserModule,

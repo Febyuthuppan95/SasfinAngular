@@ -99,6 +99,7 @@ export class ViewUserRightsListComponent implements OnInit {
   activePage: number;
   orderBy: string;
   orderByDirection: string;
+  noData = false;
   totalShowing: number;
   orderIndicator = 'Surname_ASC';
   showLoader = true;
@@ -253,7 +254,14 @@ export class ViewUserRightsListComponent implements OnInit {
         this.showLoader = false;
         this.showingRecords = res.userRightsList.length;
         this.totalShowing += this.rowStart + this.userRightsList.length - 1;
-        this.paginateData();
+        if (this.rowCount === 0) {
+          this.noData = true;         
+        } else {
+          this.noData = false;
+        }       
+        this.paginateData();    
+        
+        this.loadAvailableRights();
       },
       msg => {
         // Process Failure
@@ -263,8 +271,7 @@ export class ViewUserRightsListComponent implements OnInit {
           'Something went wrong while trying to access the server.'
         );
       }
-    );
-    this.loadAvailableRights();
+    );    
   }
 
   updateSort(orderBy: string) {
@@ -339,6 +346,7 @@ export class ViewUserRightsListComponent implements OnInit {
     // });
   }
   removeRight(id: number, name: string) {
+    console.log(id);
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
@@ -387,6 +395,7 @@ export class ViewUserRightsListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
+    this.currentRightID = uRight;
     // Will only toggle on if off
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true); // Set true

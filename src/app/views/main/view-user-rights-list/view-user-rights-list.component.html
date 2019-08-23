@@ -55,12 +55,19 @@
         </tr>
         </thead>
 
-        <tbody>
-        <tr *ngFor="let userRight of userRightsList; let i=index" (click)="popClick($event, userRight); setClickedRow(i)" class="userRightsRecord">
+        <tbody *ngIf="(!noData)">
+        <tr *ngFor="let userRight of userRightsList; let i=index" (click)="popClick($event, userRight.userRightID); setClickedRow(i)" class="userRightsRecord">
           <td>{{userRight.rowNum}}</td>
           <td>{{userRight.name}}</td>
           <td>{{userRight.description}}</td>
         </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">No data to display..</td>
+            <td scope="col"></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -89,7 +96,7 @@
   </div>
 </div>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-userrights (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userRightId]="currentRightID"></app-context-menu-userrights>
+  <app-context-menu-userrights (editUserRight)="removeRight( currentRightID,'')" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userRightId]="currentRightID"></app-context-menu-userrights>
 </div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
@@ -111,7 +118,7 @@
               <h5 class="control-label">Available</h5>
               <div class="modal-list-rights">
                 <ul class="right-list">
-                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{right.name}} {{right.rightID}}</span></a></li>
+                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{right.name}}</span></a></li>
                 </ul>
               </div>
           </form>

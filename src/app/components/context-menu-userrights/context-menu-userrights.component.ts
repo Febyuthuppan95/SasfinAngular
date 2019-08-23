@@ -18,4 +18,10 @@ export class ContextMenuUserrightsComponent implements OnInit {
   ngOnInit() {
   }
 
+  remove() {
+    this.editUserRight.emit(JSON.stringify({
+      userRightId: this.userRightId
+    }));
+  }
+
 }
