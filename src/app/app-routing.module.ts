@@ -22,6 +22,7 @@ import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.
 import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
+import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 
 const routes: Routes = [
   {
@@ -52,12 +53,14 @@ const routes: Routes = [
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
-          { path: 'transactions/:id/:name', component: ViewTransactionsComponent }
+          { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
+          { path: 'transaction/files/:id/', component: ViewTransactionFilesComponent },
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
       {
-        path: 'capture', component: CaptureLayoutComponent, children: [
+        path: 'capture', component: CaptureLayoutComponent,
+        children: [
           {path: '', component: ViewCaptureComponent}
         ]
       }

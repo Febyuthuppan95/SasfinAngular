@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-context-menu-transaction',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContextMenuTransactionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
+
+  @Input() x: number;
+  @Input() y: number;
+  @Input() transactionID: number;
+  @Input() currentTheme: string;
+
+  @Output() viewTransactionsEmit = new EventEmitter<string>();
 
   ngOnInit() {
+  }
+
+  viewTransactionAttachments() {
+    this.router.navigate(['transactions', 'files', this.transactionID]);
   }
 
 }

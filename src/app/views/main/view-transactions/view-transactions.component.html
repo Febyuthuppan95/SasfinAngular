@@ -40,11 +40,22 @@
                 </span>
               </button>
             </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
+                <p class="headerText">Status</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
           <tr *ngFor="let transaction of dataList; let i=index" class="userRecord" (click)="popClick($event, transaction.transactionID); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{transaction.rowNum}}</td>
+            <td>{{transaction.name}}</td>
+            <td>{{transaction.status}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -84,5 +95,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-companies-context-menu [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyID]="focusHelp" [companyName]="focusHelpName"></app-companies-context-menu>
+<app-context-menu-transaction [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [transactionID]="focusHelp"></app-context-menu-transaction>
 </div>

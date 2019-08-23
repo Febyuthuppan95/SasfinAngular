@@ -73,6 +73,7 @@ import { ViewTransactionsComponent } from './views/main/view-transactions/view-t
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 import { TransactionService } from './services/Transaction.Service';
 import { ContextMenuTransactionComponent } from './components/context-menu-transaction/context-menu-transaction.component';
+import { ContextMenuTransactionFileComponent } from './components/context-menu-transaction-file/context-menu-transaction-file.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { ContextMenuTransactionComponent } from './components/context-menu-trans
     CompaniesContextMenuComponent,
     ViewTransactionsComponent,
     ViewTransactionFilesComponent,
-    ContextMenuTransactionComponent
+    ContextMenuTransactionComponent,
+    ContextMenuTransactionFileComponent,
   ],
   imports: [
     BrowserModule,

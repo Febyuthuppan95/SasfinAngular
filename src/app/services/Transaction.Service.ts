@@ -16,7 +16,8 @@ export class TransactionService {
    */
   public list(requestModel) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/transations/list`;
+      const apiURL = `${environment.ApiEndpoint}/transactions/list`;
+
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()

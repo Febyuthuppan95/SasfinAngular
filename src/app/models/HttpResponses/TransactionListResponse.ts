@@ -9,5 +9,6 @@ export class TransactionListResponse {
 export class Transaction {
   rowNum: number;
   transactionID: number;
-  // TODO complete
+  name: string;
+  status: string;
 }
