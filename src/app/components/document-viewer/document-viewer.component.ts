@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DocumentService } from 'src/app/services/Document.Service';
 
 @Component({
   selector: 'app-document-viewer',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentViewerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private docService: DocumentService) { }
+
+  pdfSRC: string;
 
   ngOnInit() {
+    this.docService.observeActiveDocument().subscribe((url) => {
+      this.pdfSRC = url;
+    });
   }
 
 }

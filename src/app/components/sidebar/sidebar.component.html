@@ -57,5 +57,13 @@
     <span class="menu-title">Locations</span>
   </a>
   </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-places-link')"
+  matTooltip="Companies" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/companies" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-office-building menu-icon"></i>
+    <span class="menu-title">Companies</span>
+  </a>
+  </li>
   </ul>
 </nav>

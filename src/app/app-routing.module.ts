@@ -20,6 +20,8 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
+import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
+import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 
 const routes: Routes = [
   {
@@ -43,12 +45,14 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-          {path: 'user-rights/:name/:id',component: ViewUserRightsListComponent},
+           {path: 'user-rights/:name/:id',component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
-          { path: 'locations', component: ViewPlacesComponent }
+          { path: 'locations', component: ViewPlacesComponent },
+          { path: 'companies', component: ViewCompanyListComponent },
+          { path: 'transactions/:id/:name', component: ViewTransactionsComponent }
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent },

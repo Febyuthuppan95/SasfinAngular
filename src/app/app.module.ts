@@ -65,7 +65,14 @@ import { ContextMenuLocationComponent } from './components/context-menu-location
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
-import { ViewTransactionInsertComponent } from './views/main/view-transaction-insert/view-transaction-insert.component';
+import { DocumentService } from './services/Document.Service';
+import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { CompaniesContextMenuComponent } from './components/companies-context-menu/companies-context-menu.component';
+import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
+import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
+import { TransactionService } from './services/Transaction.Service';
+import { ContextMenuTransactionComponent } from './components/context-menu-transaction/context-menu-transaction.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +114,11 @@ import { ViewTransactionInsertComponent } from './views/main/view-transaction-in
     CaptureLayoutComponent,
     ViewCaptureComponent,
     DocumentViewerComponent,
-    ViewTransactionInsertComponent
+    ViewCompanyListComponent,
+    CompaniesContextMenuComponent,
+    ViewTransactionsComponent,
+    ViewTransactionFilesComponent,
+    ContextMenuTransactionComponent
   ],
   imports: [
     BrowserModule,
@@ -115,6 +126,7 @@ import { ViewTransactionInsertComponent } from './views/main/view-transaction-in
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
+    PdfViewerModule,
     ToastrModule.forRoot(
       {
         closeButton: false,
@@ -142,7 +154,9 @@ import { ViewTransactionInsertComponent } from './views/main/view-transaction-in
     UserRightService,
     HelpGlossaryService,
     PlaceService,
+    TransactionService,
     HelpSnackbar,
+    DocumentService,
     AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,

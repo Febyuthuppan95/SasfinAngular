@@ -1,22 +1,22 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionService {
+export class CompanyService {
   /**
    *
    */
   constructor(private httpClient: HttpClient) {}
 
   /**
-   * get
+   * list
    */
   public list(requestModel) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/transations/list`;
+      const apiURL = `${environment.ApiEndpoint}/companies/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
