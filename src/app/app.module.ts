@@ -65,6 +65,7 @@ import { ContextMenuLocationComponent } from './components/context-menu-location
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
+import { ViewTransactionInsertComponent } from './views/main/view-transaction-insert/view-transaction-insert.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { DocumentViewerComponent } from './components/document-viewer/document-v
     ContextMenuLocationComponent,
     CaptureLayoutComponent,
     ViewCaptureComponent,
-    DocumentViewerComponent
+    DocumentViewerComponent,
+    ViewTransactionInsertComponent
   ],
   imports: [
     BrowserModule,
