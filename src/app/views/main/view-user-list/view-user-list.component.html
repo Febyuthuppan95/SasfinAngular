@@ -168,7 +168,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form >
+      <form (submit)="updateUser()" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Emp No:</label>
@@ -191,20 +191,22 @@
           [(ngModel)]="this.selectedEmail" [ngModelOptions]="{standalone: true}"  required/>
         </div>
         <div class="form-group">
-          <label class="control-label">Designation:</label>
-          <input type="text" placeholder="Designation" class="form-control"
-          [(ngModel)]="this.selectedDesignation" [ngModelOptions]="{standalone: true}"  required/>
-        </div>
-        <div class="form-group">
-          <label class="control-label">Status:</label>
-          <input type="text" placeholder="Status" class="form-control"
-          [(ngModel)]="this.selectedStatus" [ngModelOptions]="{standalone: true}" required/>
+            <label class="control-label">Designation:</label>
+            <select class="form-control"> 
+              <option *ngFor="let des of this.designations" [ngValue]="des" [selected]="des.name === 'this.selectedDesignation'">{{des.name}}</option>
+            </select>
           </div>
         <div class="form-group">
+          <label class="control-label">Status:</label>
+          <select class="form-control">
+            <option *ngFor="let stat of this.statusList" [ngValue]="stat" [selected]="stat.name === 'this.selectedStatus'">{{stat.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
             <label class="control-label">Profile Image:</label>
-          <div class="row">
+          <div class="row" style="margin-left:0px;">
             <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
-            [(ngModel)]="this.ProfileImage" (change)="readFile($event)" [ngModelOptions]="{standalone: true}" required/>
+             (change)="readFile($event)" required/>
             <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{this.ProfileImage}}" ></div>
           </div>
         </div>
@@ -218,7 +220,7 @@
   </div>
 </div>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID"></app-context-menu-user>
+  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID" [userName]="currentUserName"></app-context-menu-user>
 </div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

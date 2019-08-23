@@ -111,9 +111,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     });
 
     this.loadDesignationRights();
-    this.loadAvailableRights();
-
-
+    
   }
   /**
    * Load Designation Rights
@@ -134,14 +132,14 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
+        console.log(res);
+        console.log(this.designationRightsList);
         this.rightsList = res.rightList;
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
             if (dRight.rightID !== right.rightID) {
-              console.log(right);
               this.rightsList.splice(count, 1);
-              console.log(this.rightsList);
             } else {
               count ++;
             }
@@ -205,6 +203,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
+    this.loadAvailableRights();
   }
 
   pageChange(pageNumber: number) {
@@ -332,6 +331,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmAdd(add) {
     this.openAddModal.nativeElement.click();
+    this.addNewRight(this.rightId, this.rightName);
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);
     //   // this.addNewRight(this.rightId, this.rightName);

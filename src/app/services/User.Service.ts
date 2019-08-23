@@ -1,12 +1,16 @@
+import { UpdateUserRequest } from './../models/HttpRequests/UpdateUserRequest';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
+import { AddUserRight } from '../models/HttpRequests/AddUserRight.js';
 import { Config } from '../../assets/config.json';
 import { environment } from '../../environments/environment';
 import { ThemeService } from './theme.Service';
 import { GetUserList } from '../models/HttpRequests/GetUserList';
+import { UpdateUserRight } from '../models/HttpRequests/UpdateUserRight.js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +70,41 @@ export class UserService {
     }
   }
 
+  public addUserright(model: AddUserRight) {
+    const json = JSON.parse(JSON.stringify(model));
+    // console.log(json);
+    const promise = new Promise((resolve, reject) => {
+      this.httpClient.post(`${environment.ApiEndpoint}/userRights/add`, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public updateUserRight(model: UpdateUserRight) {
+    const json = JSON.parse(JSON.stringify(model));
+    // console.log(json);
+    const promise = new Promise((resolve, reject) => {
+      this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
   /**
    * authenticate
    */
@@ -167,6 +206,24 @@ export class UserService {
         );
     });
 
+    return promise;
+  }
+  public UserUpdate(model: UpdateUserRequest) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/update`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
     return promise;
   }
 }
