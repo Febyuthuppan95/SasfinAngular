@@ -46,7 +46,7 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-           {path: 'user-rights/:name/:id',component: ViewUserRightsListComponent},
+           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
@@ -54,7 +54,7 @@ const routes: Routes = [
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
           { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
-          { path: 'transaction/files/:id/', component: ViewTransactionFilesComponent },
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
         ]
       },
       { path: 'unauthorized', component: ViewUnauthorizedComponent },

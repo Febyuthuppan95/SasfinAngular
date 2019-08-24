@@ -74,6 +74,8 @@ import { ViewTransactionFilesComponent } from './views/main/view-transaction-fil
 import { TransactionService } from './services/Transaction.Service';
 import { ContextMenuTransactionComponent } from './components/context-menu-transaction/context-menu-transaction.component';
 import { ContextMenuTransactionFileComponent } from './components/context-menu-transaction-file/context-menu-transaction-file.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuTransactionAttachmentComponent } from './components/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +123,7 @@ import { ContextMenuTransactionFileComponent } from './components/context-menu-t
     ViewTransactionFilesComponent,
     ContextMenuTransactionComponent,
     ContextMenuTransactionFileComponent,
+    ContextMenuTransactionAttachmentComponent,
   ],
   imports: [
     BrowserModule,

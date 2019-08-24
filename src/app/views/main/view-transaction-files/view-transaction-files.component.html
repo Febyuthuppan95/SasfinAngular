@@ -14,7 +14,7 @@
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadTransactions()">
+          (change)="loadAttachments()">
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
@@ -32,19 +32,30 @@
           <tr>
             <th></th>
             <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
-                <p class="headerText">Name</p>
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('File')">
+                <p class="headerText">File</p>
                 <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'File_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'File_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Type')">
+                <p class="headerText">Type</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Type_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Type_DESC')?'order-active':'order-not-active'"></i>
                 </span>
               </button>
             </th>
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.fileID); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{file.rowNum}}</td>
+            <td>{{file.file}}</td>
+            <td>{{file.fileType}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -84,5 +95,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-companies-context-menu [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyID]="focusHelp" [companyName]="focusHelpName"></app-companies-context-menu>
+<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [transactionID]="focusHelp"></app-context-menu-transaction-attachment>
 </div>

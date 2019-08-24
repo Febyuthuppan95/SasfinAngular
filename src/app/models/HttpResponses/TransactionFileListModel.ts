@@ -2,12 +2,14 @@ import { Outcome } from './Outcome';
 
 export class TransactionFileListResponse {
   outcome: Outcome;
-  files: TransactionFile[];
+  attachments: TransactionFile[];
   rowCount: number;
 }
 
 export class TransactionFile {
-  fileID: number;
+  attachmentID: number;
   rowNum: number;
-  // TODO
+  transactionID: number;
+  file: string;
+  fileType: string;
 }

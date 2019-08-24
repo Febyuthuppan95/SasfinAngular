@@ -27,7 +27,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Companies';
+    this.rightName = 'Attachments';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -94,12 +94,13 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
+
     this.activatedRoute.paramMap
     .subscribe(params => {
       this.transactionID = +params.get('id');
     });
 
-    this.loadTransactions();
+    this.loadAttachments();
   }
 
 
@@ -151,23 +152,23 @@ export class ViewTransactionFilesComponent implements OnInit {
 
     this.updatePagination();
 
-    this.loadTransactions();
+    this.loadAttachments();
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadTransactions();
+    this.loadAttachments();
   }
 
-  loadTransactions() {
+  loadAttachments() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      transactionID: this.transactionID,
-      specificTransactionID: -1,
+      specificTransactionID: this.transactionID,
+      specificAttachmentID: -1,
       rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
@@ -176,7 +177,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     };
 
     this.transationService
-      .list(model)
+      .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
           if (res.rowCount === 0) {
@@ -185,11 +186,11 @@ export class ViewTransactionFilesComponent implements OnInit {
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.files;
+            this.dataList = res.attachments;
             this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.files.length;
-            this.totalShowing = +this.rowStart + +this.dataset.files.length - 1;
+            this.showingRecords = res.attachments.length;
+            this.totalShowing = +this.rowStart + +this.dataset.attachments.length - 1;
             this.paginateData();
           }
         },
@@ -216,11 +217,11 @@ export class ViewTransactionFilesComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadTransactions();
+    this.loadAttachments();
   }
 
   updatePagination() {
-    if (this.dataset.files.length <= this.totalShowing) {
+    if (this.dataset.attachments.length <= this.totalShowing) {
       this.prevPageState = false;
       this.nextPageState = false;
     } else {
