@@ -80,6 +80,9 @@ import { ContextMenuTransactionFileComponent } from './components/context-menu-t
 import { ContextMenuTransactionAttachmentComponent } from './components/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +131,9 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     ContextMenuTransactionFileComponent,
     ContextMenuTransactionAttachmentComponent,
     ViewCaptureTransactionComponent,
-    CompanySheetComponent
+    CompanySheetComponent,
+    ContextMenuUserrightsComponent,
+    ContextMenuDesignationrightsComponent
   ],
   imports: [
     BrowserModule,

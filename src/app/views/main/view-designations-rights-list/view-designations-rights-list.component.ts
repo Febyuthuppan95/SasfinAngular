@@ -18,9 +18,9 @@ import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
 import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
-
-
-
+import { MenuService } from 'src/app/services/Menu.Service';
+import { Subscription } from 'rxjs';
+import { ContextMenuUserrightsComponent } from './../../../components/context-menu-userrights/context-menu-userrights.component';
 
 @Component({
   selector: 'app-view-designations-rights-list',
@@ -45,7 +45,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
-
+  contextMenu = false;
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
@@ -61,6 +61,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   selectedRow = -1;
+  currentRightID: number;
+  sidebarCollapsed = true;
+  subscription: Subscription;
+  contextMenuX = 0;
+  contextMenuY = 0;
 
   // Modal
   closeResult: string;
@@ -73,12 +78,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     private location: Location,
-    private rightsService: RightService
+    private rightsService: RightService,
+    private IMenuService: MenuService
 
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
-      this.rightName = 'Designation';
+      this.rightName = 'Designations';
       this.activePage = +1;
       this.prevPageState = true;
       this.nextPageState = false;
@@ -89,7 +95,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
 
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+        // console.log(result);
+        this.sidebarCollapsed = result;
+      });
     }
+
+  
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
@@ -103,7 +115,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-      console.log(this.currentDesignation);
+    
     });
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -132,13 +144,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-        console.log(res);
-        console.log(this.designationRightsList);
         this.rightsList = res.rightList;
+        console.log(this.designationRightsList);
+        console.log(this.rightsList);
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (dRight.rightID !== right.rightID) {
+            if (dRight.rightID === right.rightID) {              
               this.rightsList.splice(count, 1);
             } else {
               count ++;
@@ -162,17 +174,17 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificDesignationID: this.currentDesignation,
-      rightName: 'Designation',
+      rightName: 'Designations',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
+   
     this.designationsService
     .getDesignationRightsList(dRModel).then(
-      (res: DesignationRightsListResponse) => {
-        console.log(res);
+      (res: DesignationRightsListResponse) => {       
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -185,13 +197,16 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         } else {
         this.noData = false;
         // Process Success
-        // console.log(res.designationRightsList);
+      
         this.designationRightsList = res.designationRightsList;
+        
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
         this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
         this.paginateData();
+        
+        this.loadAvailableRights();
         }
       },
       msg => {
@@ -203,7 +218,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
-    this.loadAvailableRights();
+    
   }
 
   pageChange(pageNumber: number) {
@@ -315,6 +330,30 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
+  popClick(event, uRight) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
+    this.currentRightID = uRight;
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+
   confirmRemove(content, id, Name) {
     this.rightId = id;
     this.rightName = 'Designations';
@@ -331,7 +370,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmAdd(add) {
     this.openAddModal.nativeElement.click();
-    this.addNewRight(this.rightId, this.rightName);
+    //this.addNewRight(this.rightId, this.rightName);
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);
     //   // this.addNewRight(this.rightId, this.rightName);

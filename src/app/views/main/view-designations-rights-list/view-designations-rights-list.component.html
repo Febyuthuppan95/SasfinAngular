@@ -10,7 +10,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentUserName}} - Rights</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentDesignationName}} - Rights</h4><span style="margin-left:10px;"><button (click)="confirmAdd(add)"  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
 
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -55,11 +55,11 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let designation of designationRightsList; let i = index"  (click)="setClickedRow(i)"  [class.active]="i == selectedRow">
+          <tr *ngFor="let designation of designationRightsList; let i = index"  (click)="popClick($event, designation.designationRightID); setClickedRow(i)"  [class.active]="i == selectedRow">
             <td scope="col">{{designation.rowNum}}</td>
             <td scope="col">{{designation.name}}</td>
             <td scope="col">{{designation.description}}</td>
-            <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td>
+            <!-- <td scope="col"><a (click)="confirmRemove(content, designation.designationRightID, designation.name)"><i class="mdi mdi-close mdi-18px"></i></a></td> -->
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -95,17 +95,19 @@
       {{ rowCount }}</p>
   </div>
 </div>
-
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-designationrights (editDesignationRight)="removeRight( currentRightID,'')" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [designationRightId]="currentRightID"></app-context-menu-designationrights>
+</div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <!--Remove Modal-->
-<ng-template #content let-modal>
+<!-- <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Confirm</h4>
+    <h4 class="modal-title" id="modal-basic-title">Confirm</h4> -->
     <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
        <span aria-hidden="true">&times;</span>
     </button> -->
-  </div>
+  <!-- </div>
   <div class="modal-body">
     <form>
       <div class="form-group">
@@ -117,7 +119,7 @@
     <button type="button" class="btn btn-outline-light btn-success" (click)="modal.close(rightId, rightName)">Remove</button>
     <button type="button" class="btn btn-outline-light btn-danger" (click)="modal.close('')">Cancel</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 <!--Add Modal-->
 <button class="hide" data-toggle="modal" data-target="#addRight" #openModal></button>
@@ -175,7 +177,7 @@
               <h5 class="control-label">Available</h5>
               <div class="modal-list-rights">
                 <ul class="right-list">
-                  <li *ngFor="let right of rightsList"><a (click)="addNewRight(right.rightID, right.name)"><span>{{ right.name}} {{right.rightID}}</span></a></li>
+                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{ right.name}} {{right.rightID}}</span></a></li>
                 </ul>
               </div>
           </form>
@@ -183,15 +185,14 @@
             <h5 class="control-label">Assigned</h5>
             <div class="modal-add-rights">
               <ul class="right-list">
-                <li *ngFor="let dRight of designationRightsList"><a (click)="removeRight(dRight.rightID, dRight.name)"><span>{{ dRight.name}}</span></a></li>
+                <li (click)="removeRight(dRight.rightID, dRight.name)" *ngFor="let dRight of designationRightsList"><a><span>{{ dRight.name}}</span></a></li>
               </ul>
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>       
       </div>
     </form>
     </div>
