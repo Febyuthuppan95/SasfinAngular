@@ -183,7 +183,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         },
         (msg) => {
-          this.notify.errorsmsg('500', msg);
+          this.notify.errorsmsg('500', JSON.stringify(msg));
         }
       );
   }

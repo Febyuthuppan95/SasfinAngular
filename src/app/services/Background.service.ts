@@ -1,9 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +35,7 @@ export class BackgroundService {
       rightName
     };
 
-    const formData: FormData = new FormData();
+    const formData = new FormData();
     formData.append('file', src);
     formData.append('requestModel', JSON.stringify(requestModel));
 

@@ -19,6 +19,9 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatListModule } from '@angular/material/list';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,8 +65,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
-import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
-import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
+import { CaptureLayoutComponent, CompanySheetComponent } from './layouts/capture-layout/capture-layout.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 import { DocumentService } from './services/Document.Service';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
@@ -76,6 +78,8 @@ import { ContextMenuTransactionComponent } from './components/context-menu-trans
 import { ContextMenuTransactionFileComponent } from './components/context-menu-transaction-file/context-menu-transaction-file.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuTransactionAttachmentComponent } from './components/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
+import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -115,7 +119,6 @@ import { ContextMenuTransactionAttachmentComponent } from './components/context-
     ViewPlacesComponent,
     ContextMenuLocationComponent,
     CaptureLayoutComponent,
-    ViewCaptureComponent,
     DocumentViewerComponent,
     ViewCompanyListComponent,
     CompaniesContextMenuComponent,
@@ -124,6 +127,8 @@ import { ContextMenuTransactionAttachmentComponent } from './components/context-
     ContextMenuTransactionComponent,
     ContextMenuTransactionFileComponent,
     ContextMenuTransactionAttachmentComponent,
+    ViewCaptureTransactionComponent,
+    CompanySheetComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +149,11 @@ import { ContextMenuTransactionAttachmentComponent } from './components/context-
     NgxPaginationModule,
     MatTooltipModule,
     MatButtonModule,
-    MatIconModule
+    NgxExtendedPdfViewerModule,
+    MatIconModule,
+    MatChipsModule,
+    MatBottomSheetModule,
+    MatListModule
   ],
   providers: [
     CookieService,
@@ -171,7 +180,8 @@ import { ContextMenuTransactionAttachmentComponent } from './components/context-
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    NgbdModalContent
+    NgbdModalContent,
+    CompanySheetComponent
   ]
 })
 export class AppModule { }

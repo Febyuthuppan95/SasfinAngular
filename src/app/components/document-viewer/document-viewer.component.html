@@ -1,4 +1,6 @@
-<pdf-viewer [src]="pdfSRC"
-            [render-text]="true"
-            style="display: block;">
-          </pdf-viewer>
+<ngx-extended-pdf-viewer
+  *ngIf="displayPDF"
+  [src]="pdfSRC"
+  [height]="'100vh'"
+  [useBrowserLocale]="true">
+</ngx-extended-pdf-viewer>

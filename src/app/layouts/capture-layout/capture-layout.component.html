@@ -1,6 +1,22 @@
-<div class="side-panel">
+<div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
+<div class="col-6 bg-light">
   <app-document-viewer></app-document-viewer>
 </div>
-<div class="side-panel">
+<div class="col-6 bg-transparent" style="padding: 24px;">
   <router-outlet></router-outlet>
+</div>
+</div>
+
+<div class="company-container">
+  <button matTooltip="Company Info" matTooltipPosition="above" (click)="openBottomSheet()" class=" btn btn-primary company-bottom"><span class="mdi mdi-information" style="font-size: 20px;"></span>&nbsp;</button>
+</div>
+
+<div class="attachment-container">
+    <button matTooltip="Company Info" matTooltipPosition="above" (click)="openBottomSheet()" class=" btn btn-primary attachment-bottom"><span class="mdi mdi-information" style="font-size: 20px;"></span>&nbsp;</button>
+</div>
+
+<div class="exit-container">
+  <button (click)="goBack()" mat-mini-fab class="bg-primary"
+  matTooltip="Exit" matTooltipPosition="before"><span class="mdi mdi-close text-light"></span>
+  </button>
 </div>

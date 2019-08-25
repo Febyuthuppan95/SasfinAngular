@@ -30,7 +30,7 @@
         <div class="background-item shadow-sm ls-tile-{{ currentTheme }}">
           <img src="{{ backgroundPath }}/{{ image.image }}" alt="">
           <div class="controls-top-right form-inline">
-            <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
+            <!-- <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
               <div class="form-group">
                 <button class="btn btn-danger btn-sm" type="submit"><span class="mdi mdi-trash-can"></span> REMOVE</button>
               </div>
@@ -40,7 +40,7 @@
               <div class="form-group">
                 <button class="btn btn-info btn-sm" type="submit"><span class="mdi mdi-circle-edit-outline"></span> Edit</button>
               </div>
-            </form>
+            </form> -->
           </div>
           <br>
         <div class="background-info">
@@ -77,7 +77,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Update Help Item</h5>
+        <h5 class="modal-title" id="uploadBackgroundLabel">Upload Background</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

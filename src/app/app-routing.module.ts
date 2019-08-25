@@ -19,10 +19,10 @@ import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
-import { ViewCaptureComponent } from './views/capture/view-capture/view-capture.component';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
+import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
 
 const routes: Routes = [
   {
@@ -57,13 +57,10 @@ const routes: Routes = [
           { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
         ]
       },
+      { path: 'capture', component: CaptureLayoutComponent, children: [
+        { path: 'transaction/attachment/:transactionID', component: ViewCaptureTransactionComponent }
+      ]},
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
-      {
-        path: 'capture', component: CaptureLayoutComponent,
-        children: [
-          {path: '', component: ViewCaptureComponent}
-        ]
-      }
     ]
   }
 ];

@@ -8,7 +8,8 @@ export const environment = {
   ImageRoute: 'http://localhost:4200/assets/dist/images',
   ApiEndpoint: 'https://localhost:44397/api/v1.0',
   ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
-  ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile'
+  ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
+  ApiDocuments: 'https://localhost:44397/api/v1.0/public/images/document'
 };
 
 /*

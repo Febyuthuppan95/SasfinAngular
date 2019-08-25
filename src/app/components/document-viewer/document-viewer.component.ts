@@ -10,12 +10,20 @@ export class DocumentViewerComponent implements OnInit {
 
   constructor(private docService: DocumentService) { }
 
-  pdfSRC: string;
+  pdfSRC: Blob;
+  displayPDF = false;
 
   ngOnInit() {
-    this.docService.observeActiveDocument().subscribe((url) => {
-      this.pdfSRC = url;
+    this.docService.observeActiveDocument().subscribe((fileName) => {
+      this.docService.get(fileName).then(
+        (res: string) => {
+          this.pdfSRC = new Blob([res], {type: 'application/pdf'});
+          this.displayPDF = true;
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
     });
   }
-
 }
