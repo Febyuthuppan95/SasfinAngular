@@ -83,6 +83,10 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
+import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
+import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
+import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
+import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +137,11 @@ import { ContextMenuDesignationrightsComponent } from './components/context-menu
     ViewCaptureTransactionComponent,
     CompanySheetComponent,
     ContextMenuUserrightsComponent,
-    ContextMenuDesignationrightsComponent
+    ContextMenuDesignationrightsComponent,
+    ViewCompanyInfoComponent,
+    ViewCompanyAddressesComponent,
+    ViewCompanyContactsComponent,
+    ContextMenuCompanyInfoComponent
   ],
   imports: [
     BrowserModule,

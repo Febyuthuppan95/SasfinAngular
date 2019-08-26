@@ -208,6 +208,7 @@ export class UserService {
 
     return promise;
   }
+
   public UserUpdate(model: UpdateUserRequest) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
@@ -225,5 +226,28 @@ export class UserService {
       );
     });
     return promise;
+  }
+
+  /**
+   * UserUpdateProfileImage
+   */
+  public UserUpdateProfileImage(src: File) {
+    const formData = new FormData();
+    formData.append('file', src);
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/upload`;
+      this.httpClient
+      .post(apiURL, formData)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
   }
 }
