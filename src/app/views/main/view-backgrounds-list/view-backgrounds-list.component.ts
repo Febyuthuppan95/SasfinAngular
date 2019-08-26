@@ -163,29 +163,39 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   uploadBackground() {
-    this.backgroundService.addBackgrounds(
-      this.fileName,
-      this.fileToUpload,
-      3,
-      'Backgrounds'
-      ).then(
-        (res: BackgroundsAdd) => {
-          if (res.outcome.outcome === 'SUCCESS') {
-              this.fileName = '';
-              this.fileToUpload = null;
-              this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-              this.backgroundRequestModel.rowStart = 1;
-              this.backgroundRequestModel.rowEnd = 15;
-              this.closeUploadModal.nativeElement.click();
-              this.loadBackgrounds();
-          } else {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+    let errors = 0;
+
+    if (this.fileName === '' || this.fileName === undefined) {
+      errors++;
+    }
+
+    if (errors === 0) {
+      this.backgroundService.addBackgrounds(
+        this.fileName,
+        this.fileToUpload,
+        3,
+        'Backgrounds'
+        ).then(
+          (res: BackgroundsAdd) => {
+            if (res.outcome.outcome === 'SUCCESS') {
+                this.fileName = '';
+                this.fileToUpload = null;
+                this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+                this.backgroundRequestModel.rowStart = 1;
+                this.backgroundRequestModel.rowEnd = 15;
+                this.closeUploadModal.nativeElement.click();
+                this.loadBackgrounds();
+            } else {
+              this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            }
+          },
+          (msg) => {
+            this.notify.errorsmsg('Failure', 'Something went wrong...');
           }
-        },
-        (msg) => {
-          this.notify.errorsmsg('500', JSON.stringify(msg));
-        }
-      );
+        );
+    } else {
+      this.notify.toastrwarning('Missing fields', 'Please enter all fields and try again.');
+    }
   }
 
   onFileChange(files: FileList) {

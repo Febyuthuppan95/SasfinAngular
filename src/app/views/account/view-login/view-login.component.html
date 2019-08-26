@@ -37,8 +37,15 @@
                 </div>
               </div>
               <div class="my-3">
+                <div class="text-center">
+                <app-loader *ngIf="pendingRequest"></app-loader>
+              </div>
                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                  [disabled]="pendingRequest">Login</button>
+                  [disabled]="pendingRequest">
+                  <span *ngIf="pendingRequest">Logging in...</span>
+                  <span *ngIf="!pendingRequest">Login</span>
+
+                </button>
               </div>
               <div class="my-2 text-center">
                 <a routerLink="/account/forgotpassword" class="auth-link text-behance">Forgot Password?</a>

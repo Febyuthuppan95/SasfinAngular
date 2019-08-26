@@ -177,7 +177,7 @@
               <h5 class="control-label">Available</h5>
               <div class="modal-list-rights">
                 <ul class="right-list">
-                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{ right.name}} {{right.rightID}}</span></a></li>
+                  <li (click)="addNewRight(right.rightID, right.name)" *ngFor="let right of rightsList"><a><span>{{ right.name}}</span></a></li>
                 </ul>
               </div>
           </form>
@@ -192,7 +192,7 @@
         </div>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>       
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
       </div>
     </form>
     </div>

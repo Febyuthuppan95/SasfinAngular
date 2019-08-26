@@ -236,11 +236,11 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   updateUnit() {
     let errors = 0;
 
-    if (this.focusUnitName === '') {
+    if (this.focusUnitName === '' || this.focusUnitName === undefined) {
       errors++;
     }
 
-    if (this.focusUnitDescription === '') {
+    if (this.focusUnitDescription === '' || this.focusUnitDescription === undefined) {
       errors++;
     }
 
@@ -260,9 +260,9 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
           this.unitsOfMeasure.rowStart = 1;
           this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
           this.loadUnitsOfMeasures();
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         },
         (msg) => {
           this.notify.errorsmsg('Failure', msg.message);
