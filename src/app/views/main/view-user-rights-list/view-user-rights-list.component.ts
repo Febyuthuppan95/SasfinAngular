@@ -259,18 +259,33 @@ export class ViewUserRightsListComponent implements OnInit {
         } else {
           this.noData = false;
         }
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        this.loadAvailableRights();
         this.paginateData();
       },
       msg => {
         // Process Failure
         this.showLoader = false;
+
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
       }
     );
-    this.loadAvailableRights();
+
   }
 
   updateSort(orderBy: string) {
@@ -345,7 +360,7 @@ export class ViewUserRightsListComponent implements OnInit {
     // });
   }
   removeRight(id: number, name: string) {
-    console.log(id);
+
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
@@ -355,6 +370,19 @@ export class ViewUserRightsListComponent implements OnInit {
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
         this.loadUserRights();
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
       },
       msg => {
         this.notify.errorsmsg(
