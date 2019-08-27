@@ -17,16 +17,11 @@ import { headersToString } from 'selenium-webdriver/http';
     const request = req.clone({
       withCredentials: true,
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
-      },)
-      // headers: req.headers().set('Access-Control-Allow-Origin', '*').set()
+      })
     });
-    // console.log(request.withCredentials);
-    // console.log(request.serializeBody);
-    // console.log(request.headers);
-    // console.log(request.urlWithParams);
-    // console.log(request.body);
+
     return next.handle(request);
  }
 }

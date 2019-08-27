@@ -1,0 +1,33 @@
+.row, .col-6 {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.company-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 9999;
+}
+
+.company-bottom {
+  padding-left: 64px;
+  padding-right: 64px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.company-bottom .active {
+  z-index: 0;
+}
+
+.exit-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+}

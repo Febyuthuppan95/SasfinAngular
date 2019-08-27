@@ -26,8 +26,8 @@ export class ThemeService {
       const currentUser = this.userService.getCurrentUser();
 
       this.themeColor = new BehaviorSubject<string>(this.cookieService.get('theme') !== '' ? this.cookieService.get('theme') : 'light');
-      this.backgroundImage = currentUser == null 
-      ? new BehaviorSubject<string>(`${environment.AssetRoute}/backgrounds/background1.jpg`)
+      this.backgroundImage = currentUser == null
+      ? new BehaviorSubject<string>(`${environment.ApiBackgroundImages}/background1.jpg`)
       : new BehaviorSubject<string>(currentUser.backgroundImage);
     }
 

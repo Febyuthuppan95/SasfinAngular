@@ -6,7 +6,7 @@
 
 .location-list {
   overflow-y: auto;
-  height: 128px;
+  max-height: 256px;
 }
 
 .location-country {
@@ -18,10 +18,22 @@
   border-radius: 3px;
   cursor: pointer;
   transition: ease-in-out 0.3s;
+  margin-left: 12px;
 }
 
 .location-city:hover {
   background: rgba(200, 200, 200, 0.5);
+  transition: ease-in-out 0.3s;
+}
+
+.location-city:hover .location-hint {
+  opacity: 1;
+  transition: ease-in-out 0.3s;
+}
+
+
+.country-name:hover .location-hint {
+  opacity: 1;
   transition: ease-in-out 0.3s;
 }
 
@@ -68,4 +80,17 @@ li.active span {
   background: rgba(77, 139, 255, 0.5) !important;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
   color: #f2f2f2;
+}
+
+.location-country:hover .location-hint {
+  opacity: 1;
+  transition: ease-in-out 0.3s;
+}
+
+.location-hint {
+  float: right;
+  opacity: 0;
+  font-size: 16px;
+  color: #888;
+  transition: ease-in-out 0.3s;
 }

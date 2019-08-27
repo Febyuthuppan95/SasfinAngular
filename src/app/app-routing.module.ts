@@ -18,6 +18,11 @@ import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
+import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
+import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
+import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
+import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
+import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
 
 const routes: Routes = [
   {
@@ -41,15 +46,21 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-          {path: 'user-rights/:name/:id',component: ViewUserRightsListComponent},
+           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
-          { path: 'locations', component: ViewPlacesComponent }
+          { path: 'locations', component: ViewPlacesComponent },
+          { path: 'companies', component: ViewCompanyListComponent },
+          { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
         ]
       },
-      { path: 'unauthorized', component: ViewUnauthorizedComponent }
+      { path: 'capture', component: CaptureLayoutComponent, children: [
+        { path: 'transaction/attachment/:transactionID', component: ViewCaptureTransactionComponent }
+      ]},
+      { path: 'unauthorized', component: ViewUnauthorizedComponent },
     ]
   }
 ];
