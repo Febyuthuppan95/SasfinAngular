@@ -1,4 +1,4 @@
-import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
+//import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
 import { DesignationService } from './../../../services/Designation.service';
 import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequest';
 import { Status } from './../../../models/Enums/Statuses';
@@ -19,8 +19,8 @@ import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { Location } from '@angular/common';
-import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
-import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+//import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
+//import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 
 @Component({
   selector: 'app-view-user-list',
@@ -113,7 +113,7 @@ export class ViewUserListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
-  designations: DesignationList[];
+  //designations: DesignationList[];
   
 
   ngOnInit() {
@@ -122,34 +122,34 @@ export class ViewUserListComponent implements OnInit {
     });
     this.statusList = new Array<Status>();
     this.statusList.push({name: 'Active', id: 1}, {name: 'Inactive', id: 2});
-    this.loadDesignations();
+    // this.loadDesignations();
   }
 
-  loadDesignations() {
-    const model: GetDesignationList = {
-      userID: this.currentUser.userID,
-      orderBy: 'Name',
-      orderByDirection: 'DESC',
-      rowStart: 1,
-      rowEnd: 1000,
-      rightName: 'Designations',
-      specificDesignationID: -1,
-      filter: ''
-    };
-    this.DIDesignationService
-    .getDesignationList(model)
-    .then(
-      (res: DesignationListResponse) => {
-        this.designations = res.designationList;
-      },
-      msg => {
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-  }
+  // loadDesignations() {
+  //   const model: GetDesignationList = {
+  //     userID: this.currentUser.userID,
+  //     orderBy: 'Name',
+  //     orderByDirection: 'DESC',
+  //     rowStart: 1,
+  //     rowEnd: 1000,
+  //     rightName: 'Designations',
+  //     specificDesignationID: -1,
+  //     filter: ''
+  //   };
+  //   this.DIDesignationService
+  //   .getDesignationList(model)
+  //   .then(
+  //     (res: DesignationListResponse) => {
+  //       this.designations = res.designationList;
+  //     },
+  //     msg => {
+  //       this.notify.errorsmsg(
+  //         'Server Error',
+  //         'Something went wrong while trying to access the server.'
+  //       );
+  //     }
+  //   );
+  // }
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
