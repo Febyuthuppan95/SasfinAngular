@@ -21,6 +21,8 @@ import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { Location } from '@angular/common';
 import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
 import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
+import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 
 @Component({
   selector: 'app-view-user-list',
@@ -33,7 +35,8 @@ export class ViewUserListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private location: Location,
-    private DIDesignationService: DesignationService
+    private DIDesignationService: DesignationService,
+    private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -114,7 +117,7 @@ export class ViewUserListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   designations: DesignationList[];
-  
+
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -309,7 +312,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-    
+
     this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
@@ -386,4 +389,14 @@ export class ViewUserListComponent implements OnInit {
       profileImage: null
     };
   }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug,
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
+
 }
