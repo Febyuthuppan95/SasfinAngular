@@ -55,7 +55,7 @@ export class SidebarComponent implements OnInit {
   @Input() showbackgroundColorUser = false;
   @Input() showobjectHelp = false;
   @Input() showhelpglossary = false;
-  @Input() showunitofMeasures = false;
+  @Input() showunitofmeasures = false;
   @Input() showcountries = false;
   @Input() showregions = false;
   @Input() showcities = false;
@@ -140,7 +140,7 @@ export class SidebarComponent implements OnInit {
           }
           if(uRight.name === "UnitOfMeasures")
           {
-            this.showunitofMeasures = true
+            this.showunitofmeasures = true
           }
           if(uRight.name === "Countries")
           {
