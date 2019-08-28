@@ -229,6 +229,21 @@ export class ViewUserListComponent implements OnInit {
               user.profileImage = `${environment.ApiProfileImages}/${user.profileImage}`;
             }
           }
+          
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -239,6 +254,7 @@ export class ViewUserListComponent implements OnInit {
             this.showLoader = false;
             this.showingRecords = res.userList.length;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
+            
             this.paginateData();
           }
         },

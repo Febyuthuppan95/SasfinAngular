@@ -248,7 +248,25 @@ export class ViewUserRightsListComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success            
+        // Process Success 
+        if(!this.openAddModal)
+        {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+        }           
+        
+        
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -259,19 +277,7 @@ export class ViewUserRightsListComponent implements OnInit {
         } else {
           this.noData = false;
         }       
-        if(res.outcome.outcome === "FAILURE"){
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        }
-        else
-        {
-          this.notify.successmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        }
+       
         this.loadAvailableRights();
         this.paginateData();          
       },
@@ -350,6 +356,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmAdd() {
     this.openAddModal.nativeElement.click();
+    
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);
     //   // this.addNewRight(this.rightId, this.rightName);
@@ -368,8 +375,7 @@ export class ViewUserRightsListComponent implements OnInit {
     };
     const result = this.userService
     .updateUserRight(requestModel).then(
-      (res: UserRightReponse) => {        
-        this.loadUserRights();
+      (res: UserRightReponse) => {    
         if(res.outcome.outcome === "FAILURE"){
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -383,6 +389,9 @@ export class ViewUserRightsListComponent implements OnInit {
             res.outcome.outcomeMessage
           );
         }
+
+        this.loadUserRights();
+        
       },
       msg => {
         this.notify.errorsmsg(
@@ -403,7 +412,19 @@ export class ViewUserRightsListComponent implements OnInit {
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        console.log(res);
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
         this.loadUserRights();
       },
       msg => {

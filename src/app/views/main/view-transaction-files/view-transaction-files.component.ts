@@ -180,6 +180,19 @@ export class ViewTransactionFilesComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
