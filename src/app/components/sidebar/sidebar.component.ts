@@ -54,8 +54,8 @@ export class SidebarComponent implements OnInit {
   @Input() showbackgroundUser = false;
   @Input() showbackgroundColorUser = false;
   @Input() showobjectHelp = false;
-  @Input() showhelpGlossary = false;
-  @Input() showunitOfMeasures = false;
+  @Input() showhelpglossary = false;
+  @Input() showunitofMeasures = false;
   @Input() showcountries = false;
   @Input() showregions = false;
   @Input() showcities = false;
