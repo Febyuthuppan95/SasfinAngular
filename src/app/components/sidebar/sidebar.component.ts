@@ -136,11 +136,11 @@ export class SidebarComponent implements OnInit {
           }
           if(uRight.name === "HelpGlossary")
           {
-            this.showhelpGlossary = true
+            this.showhelpglossary = true
           }
           if(uRight.name === "UnitOfMeasures")
           {
-            this.showunitOfMeasures = true
+            this.showunitofMeasures = true
           }
           if(uRight.name === "Countries")
           {
