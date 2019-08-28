@@ -172,7 +172,7 @@
       <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Emp No:</label>
-              <input type="text" placeholder="Emp No" class="form-control" 
+              <input type="text" placeholder="Emp No" class="form-control"
               [(ngModel)]="this.EmpNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
         <div class="form-group">
@@ -192,7 +192,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control"> 
+            <select class="form-control">
               <option *ngFor="let des of this.designations" [ngValue]="des" [selected]="des.name === 'this.selectedDesignation'">{{des.name}}</option>
             </select>
           </div>
@@ -206,8 +206,8 @@
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
             <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
-             (change)="readFile($event)" required/>
-            <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{this.ProfileImage}}" ></div>
+             (change)="onFileChange($event); readFile($event)" required/>
+            <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{preview}}" ></div>
           </div>
         </div>
       </div>

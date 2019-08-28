@@ -14,13 +14,18 @@ import { ImageModalComponent } from '../../../components/image-modal/image-modal
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { Config } from './../../../../assets/config.json';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { Location } from '@angular/common';
+<<<<<<< HEAD
 //import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
 //import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+=======
+import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
+import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+>>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
 
 @Component({
   selector: 'app-view-user-list',
@@ -79,7 +84,7 @@ export class ViewUserListComponent implements OnInit {
   selectedStatus = '';
   EmpNo = '';
   Extension = '';
-  ProfileImage: any = '';
+  ProfileImage = '';
 
   statusList: Status[];
   currentUser: User = this.userService.getCurrentUser();
@@ -113,8 +118,16 @@ export class ViewUserListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
+<<<<<<< HEAD
   //designations: DesignationList[];
   
+=======
+  designations: DesignationList[];
+
+  fileToUpload: File = null;
+  preview: any;
+
+>>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -325,7 +338,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
     }
-    
+
     this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
@@ -336,6 +349,7 @@ export class ViewUserListComponent implements OnInit {
     this.currentUserID = user.userId;
     this.Extension = user.extension;
     this.ProfileImage = user.profileImage;
+    this.preview = user.profileImage;
     // Will only toggle on if off
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true); // Set true
@@ -385,21 +399,45 @@ export class ViewUserListComponent implements OnInit {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.ProfileImage = reader.result;
-      }
+        this.preview = reader.result;
+      };
+
       reader.readAsDataURL(file);
     }
   }
+
+  onFileChange(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+
   updateUser() {
     const requestModel: UpdateUserRequest = {
-      userID: this.currentUser.userID,
+      specificUserID: this.currentUser.userID,
       firstName: this.selectedFirstName,
       surname: this.selectedSurName,
       email: this.selectedEmail,
-      empNo: 1,
-      designation: this.selectedDesignation,
-      status: this.selectedStatus,
-      profileImage: null
+      empNo: +this.EmpNo,
+      specificDesignationID: +this.selectedDesignation,
+      specificStatusID: +this.selectedStatus,
+      profileImage: this.fileToUpload.name
     };
+
+    this.userService.UserUpdate(requestModel).then(
+      (res: {outcome: Outcome}) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.userService.UserUpdateProfileImage(this.fileToUpload).then(
+            (uploadRes) => {
+              this.notify.successmsg('Success', 'User has been updated');
+            },
+            (uploadMsg) => {
+              this.notify.errorsmsg('Failure', 'User record updated, but image failed to upload');
+            }
+          );
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'User not updated');
+      }
+    );
   }
 }

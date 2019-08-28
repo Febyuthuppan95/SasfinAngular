@@ -24,4 +24,16 @@ export class CompaniesContextMenuComponent implements OnInit {
   viewTransactions() {
     this.router.navigate(['transactions', this.companyID, this.companyName]);
   }
+
+  companyInfo() {
+    this.router.navigate(['companies', 'info', this.companyID, this.companyName]);
+  }
+
+  companyAddresses() {
+    this.router.navigate(['companies', 'addresses', this.companyID, this.companyName]);
+  }
+
+  companyContacts() {
+    this.router.navigate(['companies', 'contacts', this.companyID, this.companyName]);
+  }
 }

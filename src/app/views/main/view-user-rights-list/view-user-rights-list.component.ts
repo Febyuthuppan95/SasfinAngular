@@ -112,13 +112,13 @@ export class ViewUserRightsListComponent implements OnInit {
   currentRightID: number;
 
   closeResult: string;
- 
+
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
-    .subscribe(params => {      
-       this.specificUser = +params.get('id');  
-       this.currentUserName = params.get('name');    
+    .subscribe(params => {
+       this.specificUser = +params.get('id');
+       this.currentUserName = params.get('name');
     });
 
     this.loadUserRights();
@@ -204,23 +204,23 @@ export class ViewUserRightsListComponent implements OnInit {
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
-    };    
+    };
     this.rightsService
     .getRightList(model)
     .then(
-      (res: RightListResponse) => {        
-        this.rightsList = res.rightList;        
+      (res: RightListResponse) => {
+        this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (uRight.rightID === right.rightID) {             
+            if (uRight.rightID === right.rightID) {
               this.rightsList.splice(count, 1);
             } else {
               count ++;
             }
           });
         });
-      },      
+      },
       msg => {
         this.showLoader = false;
         // this.notify.errorsmsg(
@@ -248,6 +248,7 @@ export class ViewUserRightsListComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
+<<<<<<< HEAD
         // Process Success 
         if(!this.openAddModal)
         {
@@ -267,31 +268,51 @@ export class ViewUserRightsListComponent implements OnInit {
         }           
         
         
+=======
+        // Process Success
+>>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.userRightsList.length;
         this.totalShowing += this.rowStart + this.userRightsList.length - 1;
         if (this.rowCount === 0) {
-          this.noData = true;         
+          this.noData = true;
         } else {
           this.noData = false;
+<<<<<<< HEAD
         }       
        
+=======
+        }
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+>>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
         this.loadAvailableRights();
-        this.paginateData();          
+        this.paginateData();
       },
       msg => {
         // Process Failure
         this.showLoader = false;
-        
+
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-      }      
-    );    
-    
+      }
+    );
+
   }
 
   updateSort(orderBy: string) {
@@ -375,7 +396,12 @@ export class ViewUserRightsListComponent implements OnInit {
     };
     const result = this.userService
     .updateUserRight(requestModel).then(
+<<<<<<< HEAD
       (res: UserRightReponse) => {    
+=======
+      (res: UserRightReponse) => {
+        this.loadUserRights();
+>>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
         if(res.outcome.outcome === "FAILURE"){
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -403,7 +429,7 @@ export class ViewUserRightsListComponent implements OnInit {
   }
   addNewRight(id, name) {
     const requestModel: AddUserRight = {
-      userID: this.currentUser.userID,  
+      userID: this.currentUser.userID,
       addedUserID:this.specificUser,
       rightID: id,
       rightName: 'Users'
@@ -462,5 +488,5 @@ export class ViewUserRightsListComponent implements OnInit {
   setClickedRow(index) {
     this.selectedRow = index;
   }
-  
+
 }
