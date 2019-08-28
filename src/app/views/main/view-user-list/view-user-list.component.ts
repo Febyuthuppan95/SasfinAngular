@@ -18,14 +18,9 @@ import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { Location } from '@angular/common';
-<<<<<<< HEAD
-//import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
-//import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
-=======
-import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
-import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+// import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
+// import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
->>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
 
 @Component({
   selector: 'app-view-user-list',
@@ -118,16 +113,11 @@ export class ViewUserListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
-<<<<<<< HEAD
   //designations: DesignationList[];
-  
-=======
-  designations: DesignationList[];
 
   fileToUpload: File = null;
   preview: any;
 
->>>>>>> f872fec3b86d605d9761bdd61ab44f1a98bf13a6
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
