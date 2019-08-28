@@ -199,8 +199,8 @@ export class ViewUserRightsListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       rightName: this.rightName,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      rowStart: 1,
+      rowEnd: 100000000000000000000000000000000000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
@@ -209,6 +209,7 @@ export class ViewUserRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
+        console.log(res.rightList)
         this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
