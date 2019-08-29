@@ -250,8 +250,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   editUnitOfMeasure($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openModal.nativeElement.click();
-    console.log('open modal');
+    this.openModal.nativeElement.click();   
   }
 
   updateUnit() {
@@ -277,10 +276,10 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
       this.unitService.update(requestModel).then(
         (res: UpdateUnitsOfMeasureResponse) => {
+          console.log(res);
           this.closeModal.nativeElement.click();
-
-          this.unitsOfMeasure.rowStart = 1;
-          this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+          //this.unitsOfMeasure.rowStart = 1;
+          //this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
           this.loadUnitsOfMeasures();

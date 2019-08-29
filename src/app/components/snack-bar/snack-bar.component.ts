@@ -87,7 +87,7 @@ export class SnackBarComponent implements OnInit {
 
   updateObjectHelp() {
     const request: UpdateObjectHelpRequest = {
-      userID: 3,
+      userID: this.currentUser.userID,
       objectHelpID: this.focus.id,
       name: this.settings.title,
       rightName: 'ObjectHelp',
