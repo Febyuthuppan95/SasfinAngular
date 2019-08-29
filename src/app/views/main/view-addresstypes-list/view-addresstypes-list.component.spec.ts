@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewAdddresstypesListComponent } from './view-adddresstypes-list.component';
+import { ViewAdddresstypesListComponent } from './view-addresstypes-list.component';
 
 describe('ViewAdddresstypesListComponent', () => {
   let component: ViewAdddresstypesListComponent;

@@ -23,7 +23,7 @@ import { ViewCompanyListComponent } from './views/main/view-company-list/view-co
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
-import { ViewAdddresstypesListComponent } from './views/main/view-adddresstypes-list/view-adddresstypes-list.component';
+import { ViewAdddresstypesListComponent } from './views/main/view-addresstypes-list/view-addresstypes-list.component';
 
 const routes: Routes = [
   {

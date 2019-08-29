@@ -7,4 +7,5 @@ export class GetAddressTypesList {
   specificAddressTypeID: number;
   orderByDirection: string;
   orderBy: string;
+  
 }

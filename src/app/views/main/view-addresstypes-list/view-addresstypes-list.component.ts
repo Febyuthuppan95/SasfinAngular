@@ -14,22 +14,25 @@ import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { GetAddressTypesList } from 'src/app/models/HttpRequests/GetAddressTypesList';
+import { AddressTypesService } from 'src/app/services/AddressTypes.service';
+import { AddressTypesListResponse } from 'src/app/models/HttpResponses/AddressTypesListResponse';
+import { AddressTypesList } from 'src/app/models/HttpResponses/AddressTypesList';
 
 @Component({
-  selector: 'app-view-adddresstypes-list',
-  templateUrl: './view-adddresstypes-list.component.html',
-  styleUrls: ['./view-adddresstypes-list.component.scss']
+  selector: 'app-view-addresstypes-list',
+  templateUrl: './view-addresstypes-list.component.html',
+  styleUrls: ['./view-addresstypes-list.component.scss']
 })
 export class ViewAdddresstypesListComponent implements OnInit {
   constructor(
     private IUserService: UserService,
     private IThemeService: ThemeService,
-    private IDesignationService: DesignationService,
+    private IAddressTypesService: AddressTypesService,
     private IMenuService: MenuService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Designation';
+    this.rightName = 'AddressTypes';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -39,7 +42,7 @@ export class ViewAdddresstypesListComponent implements OnInit {
     this.orderBy = '';
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadDesignations();
+    this.loadAddressTypes();
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       // console.log(result);
       this.sidebarCollapsed = result;
@@ -72,7 +75,7 @@ export class ViewAdddresstypesListComponent implements OnInit {
   pages: Pagination[];
   showingPages: Pagination[];
   lastPage: Pagination;
-  designationList: DesignationList[];
+  addressTypesList: AddressTypesList[];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -150,15 +153,15 @@ export class ViewAdddresstypesListComponent implements OnInit {
 
     this.updatePagination();
 
-    this.loadDesignations();
+    this.loadAddressTypes();
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadDesignations();
+    this.loadAddressTypes();
   }
 
-  loadDesignations() {
+  loadAddressTypes() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     const userID = +this.currentUser.userID;
     this.showLoader = true;
@@ -172,10 +175,10 @@ export class ViewAdddresstypesListComponent implements OnInit {
       orderByDirection: this.orderByDirection,
       specificAddressTypeID: -1
     };
-    this.IDesignationService
-      .getDesignationList(model)
+    this.IAddressTypesService
+      .getAddressTypesList(model)
       .then(
-        (res: DesignationListResponse) => {
+        (res: AddressTypesListResponse) => {
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
@@ -185,11 +188,11 @@ export class ViewAdddresstypesListComponent implements OnInit {
             this.totalShowing = 0;
           } else {
             this.noData = false;
-            this.designationList = res.designationList;
+            this.addressTypesList = res.addressTypesList;
             this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.designationList.length;
-            this.totalShowing = +this.rowStart + this.designationList.length - 1;
+            this.showingRecords = res.addressTypesList.length;
+            this.totalShowing = +this.rowStart + this.addressTypesList.length - 1;
             this.paginateData();
           }
         },
@@ -216,7 +219,7 @@ export class ViewAdddresstypesListComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderByDirection}`;
-    this.loadDesignations();
+    this.loadAddressTypes();
   }
 
   updatePagination() {
