@@ -44,12 +44,11 @@ export class ViewLoginComponent implements OnInit {
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
-            console.log("running");
+         
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             this.router.navigate(['users']);
-          } else {
-            console.log("running2");
+          } else {            
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
           this.pendingRequest = false;
@@ -57,7 +56,7 @@ export class ViewLoginComponent implements OnInit {
         (msg) => {
 
           this.pendingRequest = false;
-          this.notify.errorsmsg('Failure', 'Something went wrong.');
+          this.notify.errorsmsg('Failure', 'No Authorization.');
         });
     }
 
