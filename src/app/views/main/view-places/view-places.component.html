@@ -51,7 +51,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Update Location</h5>
+        <h5 class="modal-title" id="uploadBackgroundLabel">Update {{this.locationName}}</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -85,8 +85,7 @@
       <form (submit)="addLocation()">
       <div class="modal-body">
       <div class="form-group">
-          <input type="text" placeholder="Name" class="form-control"
-            [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
+          <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
         </div>
       </div>
       <div class="modal-footer bg-dark">
