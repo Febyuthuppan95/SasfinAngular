@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 
 
+
 @Component({
   selector: 'app-view-login',
   templateUrl: './view-login.component.html',
@@ -16,11 +17,13 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
   pendingRequest = false;
+  
 
   constructor(
     private router: Router,
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+  
     ) { }
 
 
@@ -28,7 +31,8 @@ export class ViewLoginComponent implements OnInit {
   private notify: NotificationComponent;
   typePassword: boolean;
 
-  ngOnInit() { }
+
+  ngOnInit() { }   
 
   onLoginSubmit() {
     if (this.txtEmail === '' || this.txtPassword === '') {
@@ -43,8 +47,7 @@ export class ViewLoginComponent implements OnInit {
 
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
-          if (res.authenticated) {
-         
+          if (res.authenticated) {            
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             this.router.navigate(['users']);
