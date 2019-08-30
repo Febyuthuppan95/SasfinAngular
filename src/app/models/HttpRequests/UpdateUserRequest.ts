@@ -1,11 +1,12 @@
 export class UpdateUserRequest {
     specificUserID: number;
+    userID: number;
     firstName: string;
     surname: string;
-    empNo: number;
+    empNo: string;
     email: string;
     specificDesignationID: number;
     specificStatusID: number;
     profileImage: string;
-    rightName?: string;
+    rightName: string;
 }

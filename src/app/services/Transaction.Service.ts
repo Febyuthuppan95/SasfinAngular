@@ -52,4 +52,30 @@ export class TransactionService {
         );
     });
   }
+
+  /**
+   * Upload
+   */
+  public Upload(src: File) {
+    console.log(src);
+    if (src !== undefined) {
+      const formData = new FormData();
+      formData.append('file', src);
+
+      return new Promise((resolve, reject) => {
+        const apiURL = `${environment.ApiEndpoint}/transactions/upload`;
+        this.httpClient
+        .post(apiURL, formData)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+      });
+    }
+  }
 }

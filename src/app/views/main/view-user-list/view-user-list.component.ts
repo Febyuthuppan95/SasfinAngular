@@ -75,11 +75,12 @@ export class ViewUserListComponent implements OnInit {
   selectedFirstName = '';
   selectedSurName = '';
   selectedEmail = '';
-  selectedDesignation = '';
-  selectedStatus = '';
+  selectedDesignation = -1;
+  selectedStatus = -1;
   EmpNo = '';
   Extension = '';
   ProfileImage = '';
+  selectedUserID = -1;
 
   statusList: Status[];
   currentUser: User = this.userService.getCurrentUser();
@@ -304,7 +305,7 @@ export class ViewUserListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, user) {
+  popClick(event, user: UserList) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -317,13 +318,12 @@ export class ViewUserListComponent implements OnInit {
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
     this.selectedSurName = user.surname;
-    this.selectedDesignation = user.designation;
     this.selectedEmail = user.email;
-    this.selectedStatus = user.status;
-    this.currentUserID = user.userId;
     this.Extension = user.extension;
     this.ProfileImage = user.profileImage;
     this.preview = user.profileImage;
+    this.selectedUserID = +user.userId;
+
     // Will only toggle on if off
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true); // Set true
@@ -384,29 +384,50 @@ export class ViewUserListComponent implements OnInit {
     this.fileToUpload = files.item(0);
   }
 
-  updateUser() {
+  updateUser($event) {
+    $event.preventDefault();
+    let ImageName = null;
+
+    if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {
+      ImageName = this.fileToUpload.name;
+    }
+
     const requestModel: UpdateUserRequest = {
       specificUserID: this.currentUser.userID,
+      userID: this.selectedUserID,
       firstName: this.selectedFirstName,
       surname: this.selectedSurName,
       email: this.selectedEmail,
-      empNo: +this.EmpNo,
+      empNo: this.EmpNo,
       specificDesignationID: +this.selectedDesignation,
       specificStatusID: +this.selectedStatus,
-      profileImage: this.fileToUpload.name
+      rightName: 'UpdateUser',
+      profileImage: ImageName
     };
+
 
     this.userService.UserUpdate(requestModel).then(
       (res: {outcome: Outcome}) => {
         if (res.outcome.outcome === 'SUCCESS') {
-          this.userService.UserUpdateProfileImage(this.fileToUpload).then(
-            (uploadRes) => {
-              this.notify.successmsg('Success', 'User has been updated');
-            },
-            (uploadMsg) => {
-              this.notify.errorsmsg('Failure', 'User record updated, but image failed to upload');
-            }
-          );
+          if (this.fileToUpload !== undefined && this.fileToUpload !== null) {
+            this.userService.UserUpdateProfileImage(this.fileToUpload).then(
+              (uploadRes) => {
+                this.notify.successmsg('Success', 'User has been updated');
+                this.closeModal.nativeElement.click();
+                this.loadUsers();
+              },
+              (uploadMsg) => {
+                this.notify.errorsmsg('Failure', 'User record updated, but image failed to upload');
+              }
+            );
+          } else {
+            this.notify.successmsg('Success', 'User has been updated');
+
+            this.closeModal.nativeElement.click();
+            this.loadUsers();
+          }
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
       },
       (msg) => {
