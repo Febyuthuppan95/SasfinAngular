@@ -91,4 +91,32 @@ export class CompanyService {
         );
     });
   }
+
+  /**
+   * Upload
+   */
+  public Upload(src: File[]) {
+    if (src !== undefined) {
+      const formData = new FormData();
+
+      src.forEach(file => {
+        formData.append('files', file);
+      });
+
+      return new Promise((resolve, reject) => {
+        const apiURL = `${environment.ApiEndpoint}/transactions/upload`;
+        this.httpClient
+        .post(apiURL, formData)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+      });
+    }
+  }
 }
