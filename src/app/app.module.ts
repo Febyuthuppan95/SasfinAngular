@@ -84,6 +84,7 @@ import { ContextMenuUserrightsComponent } from './components/context-menu-userri
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
 import { ViewAdddresstypesListComponent } from './views/main/view-addresstypes-list/view-addresstypes-list.component';
+import { AddressTypesService } from './services/AddressTypes.service';
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { ViewAdddresstypesListComponent } from './views/main/view-addresstypes-l
     HelpGlossaryService,
     PlaceService,
     TransactionService,
+    AddressTypesService,
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
