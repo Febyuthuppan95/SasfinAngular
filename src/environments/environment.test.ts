@@ -5,5 +5,5 @@ export const environment = {
   ApiEndpoint: 'http://197.189.218.50:7777/api/v1.0',
   ApiBackgroundImages: 'http://197.189.218.50:7777/api/v1.0/public/images/background',
   ApiProfileImages: 'http://197.189.218.50:7777/api/v1.0/public/images/profile',
-  ApiDocuments: 'http://197.189.218.50:7777/api/v1.0/public/images/document'
+  ApiDocuments: 'http://197.189.218.50:7777/api/v1.0/public/document'
 };

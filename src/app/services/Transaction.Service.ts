@@ -80,14 +80,15 @@ export class TransactionService {
     }
   }
 
-  public uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, companyName: string) {
+  public uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
     const requestModel = {
       name,
       fileName: file.name,
       type,
       transactionID,
       userID,
-      companyName
+      company,
+      rightName: 'Attachments'
     };
 
     const formData = new FormData();
@@ -95,7 +96,7 @@ export class TransactionService {
     formData.append('requestModel', JSON.stringify(requestModel));
 
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/transaction/attachment/upload`;
+      const apiURL = `${environment.ApiEndpoint}/transactions/attachment/upload`;
       this.httpClient.post(apiURL, formData)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));

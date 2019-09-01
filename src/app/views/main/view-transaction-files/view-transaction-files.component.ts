@@ -10,6 +10,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -66,6 +67,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
+  focusPath: string;
 
   rowStart: number;
   rowEnd: number;
@@ -101,7 +103,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     { name: 'SAD500', value: 2 },
   ];
   attachmentName: string;
-  attachmentQueue: { name: string, type: string, file: File }[] = [];
+  attachmentQueue: { name: string, type: string, file: File, uploaded: boolean }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
@@ -269,7 +271,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, id, fileName) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -278,7 +280,10 @@ export class ViewTransactionFilesComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
+    alert(fileName);
+
     this.focusHelp = id;
+    this.focusPath = fileName;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -303,23 +308,25 @@ export class ViewTransactionFilesComponent implements OnInit {
 
   uploadAttachments() {
     this.uploading = true;
-    // this.attachmentQueue.forEach((attach) => {
-    //   this.transationService.uploadAttachment(
-    //     attach.name,
-    //     attach.file,
-    //     attach.type,
-    //     this.transactionID,
-    //     this.currentUser.userID,
-    //     'The boring company'
-    //   ).then(
-    //     (res) => {
-    //       console.log(JSON.stringify(res));
-    //     },
-    //     (msg) => {
-    //       console.log(JSON.stringify(msg));
-    //     }
-    //   );
-    // });
+    this.attachmentQueue.forEach((attach) => {
+      this.transationService.uploadAttachment(
+        attach.name,
+        attach.file,
+        attach.type,
+        this.transactionID,
+        this.currentUser.userID,
+        'The Boring Company'
+      ).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            attach.uploaded = true;
+          }
+        },
+        (msg) => {
+          console.log(JSON.stringify(msg));
+        }
+      );
+    });
   }
 
   upload() {
@@ -330,7 +337,8 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentQueue[this.currentAttachment] = {
       name: this.attachmentName,
       type: this.transactionTypes[this.selectedTransactionType - 1].name,
-      file: files.item(0)
+      file: files.item(0),
+      uploaded: false,
     };
 
     this.currentAttachment++;
