@@ -258,10 +258,18 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         (res: UpdateUnitsOfMeasureResponse) => {
           this.closeModal.nativeElement.click();
 
-          this.unitsOfMeasure.rowStart = 1;
-          this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.unitsOfMeasure = {
+            userID: 3,
+            specificUnitOfMeasureID: -1,
+            rightName: 'UnitOfMeasures',
+            filter: '',
+            orderBy: 'Name',
+            orderByDirection: 'ASC',
+            rowStart: 1,
+            rowEnd: 15
+          };
 
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadUnitsOfMeasures();
         },
         (msg) => {
