@@ -61,8 +61,6 @@ export class MainLayoutComponent implements OnInit {
     this.cookieService.set('sidebar', 'true');
 
     this.themeService.observeBackground().subscribe((result: string) => {
-      console.log(result);
-
       if (result !== undefined) {
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
