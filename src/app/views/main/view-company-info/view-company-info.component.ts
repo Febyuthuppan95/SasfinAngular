@@ -170,7 +170,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: 1, // FIX as Contacts list
+      specificCompanyID: this.companyID,
       specificCompanyAddInfoID: -1,
       specificCompanyAddInfoTypeID: -1,
       rightName: this.rightName,

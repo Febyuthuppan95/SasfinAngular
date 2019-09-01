@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,27 @@ export class TransactionService {
         );
       });
     }
+  }
+
+  public uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, companyName: string) {
+    const requestModel = {
+      name,
+      fileName: file.name,
+      type,
+      transactionID,
+      userID,
+      companyName
+    };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('requestModel', JSON.stringify(requestModel));
+
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transaction/attachment/upload`;
+      this.httpClient.post(apiURL, formData)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
   }
 }

@@ -170,7 +170,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: 1,
+      specificCompanyID: this.companyID,
       specificAddressID: -1,
       specificAddressTypeID: -1,
       rightName: this.rightName,

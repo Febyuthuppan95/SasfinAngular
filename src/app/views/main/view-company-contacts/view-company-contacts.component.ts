@@ -170,7 +170,7 @@ export class ViewCompanyContactsComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: 1, // Company ID Not getting from URL
+      specificCompanyID: this.companyID,
       specificContactID: -1,
       specificContacTypeID: -1,
       rightName: this.rightName,

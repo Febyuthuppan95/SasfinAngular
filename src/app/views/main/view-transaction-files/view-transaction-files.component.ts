@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -45,6 +45,12 @@ export class ViewTransactionFilesComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -89,6 +95,17 @@ export class ViewTransactionFilesComponent implements OnInit {
   selectedRow = -1;
 
   transactionID: number;
+
+  transactionTypes = [
+    { name: 'ICI', value: 1 },
+    { name: 'SAD500', value: 2 },
+  ];
+  attachmentName: string;
+  attachmentQueue: { name: string, type: string, file: File }[] = [];
+  selectedTransactionType: number;
+  fileToUpload: File;
+  currentAttachment = 0;
+  uploading = false;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -284,5 +301,38 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.router.navigate(['companies']);
   }
 
+  uploadAttachments() {
+    this.uploading = true;
+    // this.attachmentQueue.forEach((attach) => {
+    //   this.transationService.uploadAttachment(
+    //     attach.name,
+    //     attach.file,
+    //     attach.type,
+    //     this.transactionID,
+    //     this.currentUser.userID,
+    //     'The boring company'
+    //   ).then(
+    //     (res) => {
+    //       console.log(JSON.stringify(res));
+    //     },
+    //     (msg) => {
+    //       console.log(JSON.stringify(msg));
+    //     }
+    //   );
+    // });
+  }
 
+  upload() {
+    this.openModal.nativeElement.click();
+  }
+
+  onFileChange(files: FileList) {
+    this.attachmentQueue[this.currentAttachment] = {
+      name: this.attachmentName,
+      type: this.transactionTypes[this.selectedTransactionType - 1].name,
+      file: files.item(0)
+    };
+
+    this.currentAttachment++;
+  }
 }
