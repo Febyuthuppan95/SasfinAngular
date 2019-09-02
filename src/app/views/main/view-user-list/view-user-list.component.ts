@@ -331,6 +331,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
+    this.currentUserID = +user.userId;
     this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
     this.selectedFirstName = user.firstName;
