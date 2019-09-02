@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { CreateTransactionRequest } from '../models/HttpRequests/TransactionRequests';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +99,24 @@ export class TransactionService {
       await this.httpClient.post(apiURL, formData)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string, rightName: string) {
+    const requestModel: CreateTransactionRequest = {
+      userID,
+      specificCompanyID: companyID,
+      specificTransactioTypeID: typeID,
+      specificTransactioStatusID: statusID,
+      name,
+      rightName
+    };
+
+    return new Promise(async (resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/create`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(res => resolve(res), msg => reject(msg));
     });
   }
 }

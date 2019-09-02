@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
@@ -11,6 +11,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction, TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-transactions',
@@ -46,6 +47,12 @@ export class ViewTransactionsComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('openModal', { static: true })
+  private openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  private closeModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -92,6 +99,12 @@ export class ViewTransactionsComponent implements OnInit {
 
   companyID: number;
   companyName: string;
+
+  newTransaction = {
+    name: '',
+    transactionTypeID: -1,
+    transactionStatusID: -1
+  }
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -190,14 +203,12 @@ export class ViewTransactionsComponent implements OnInit {
       .list(model)
       .then(
         (res: TransactionListResponse) => {
-          if(res.outcome.outcome === "FAILURE"){
+          if(res.outcome.outcome === 'FAILURE'){
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -305,6 +316,33 @@ export class ViewTransactionsComponent implements OnInit {
 
   backToCompanies() {
     this.router.navigate(['companies']);
+  }
+
+  addTransaction() {
+    this.transationService.createdTransaction(
+      this.currentUser.userID,
+      this.companyID,
+      1,
+      1,
+      this.newTransaction.name,
+      'Transactions'
+    ).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadTransactions();
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeModal.nativeElement.click();
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Could not reach server');
+        this.closeModal.nativeElement.click();
+      }
+    );
+  }
+
+  addTransactionModal() {
+    this.openModal.nativeElement.click();
   }
 
 }
