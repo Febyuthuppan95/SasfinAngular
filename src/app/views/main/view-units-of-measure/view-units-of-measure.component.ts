@@ -99,7 +99,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.unitOfMeasureList;
           this.rowCount = res.rowCount;
-
           if (res.rowCount > this.selectRowDisplay) {
             this.totalDisplayCount = res.unitOfMeasureList.length;
           } else {

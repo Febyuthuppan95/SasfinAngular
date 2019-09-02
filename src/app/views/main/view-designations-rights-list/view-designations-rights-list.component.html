@@ -10,7 +10,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentUserName}} - Rights</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToDesignations()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{currentDesignationName}} - Rights</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
 
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -119,7 +119,7 @@
   </div>
 </ng-template>
 
-<!--Add Modal-->
+<!-- Add Modal
 <button class="hide" data-toggle="modal" data-target="#addRight" #openModal></button>
 <ng-template id="addRight" #add let-modal>
   <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="addRight" aria-hidden="true" >
@@ -157,7 +157,7 @@
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 <button class="hide" data-toggle="modal" data-target="#addRight" #openAddModal></button>
 <div class="modal fade" id="addRight" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

@@ -331,7 +331,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   confirmAdd(add) {
     this.openAddModal.nativeElement.click();
-    this.addNewRight(this.rightId, this.rightName);
+    // this.addNewRight(this.rightId, this.rightName);
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);
     //   // this.addNewRight(this.rightId, this.rightName);
