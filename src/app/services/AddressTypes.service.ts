@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment.js';
 import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
 import { UpdateDesignationRight } from '../models/HttpRequests/UpdateDesignationRight.js';
 import { DesignationListResponse } from '../models/HttpResponses/DesignationListResponse';
-import { GetAddressTypesList } from '../models/HttpRequests/GetAddressTypesList';
+import { UpdateAddressTypesList } from '../models/HttpRequests/UpdateAddressTypesList';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class AddressTypesService {
     return this.desinationObserverable.asObservable();
   }
 
-  public getAddressTypesList(model: GetAddressTypesList) {
+  public getAddressTypesList(model: UpdateAddressTypesList) {
     const requestModel = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/addressTypes/list`;

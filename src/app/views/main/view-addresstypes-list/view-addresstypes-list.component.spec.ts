@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewAdddresstypesListComponent } from './view-addresstypes-list.component';
+import { ViewAddresstypesListComponent } from './view-addresstypes-list.component';
 
 describe('ViewAdddresstypesListComponent', () => {
-  let component: ViewAdddresstypesListComponent;
-  let fixture: ComponentFixture<ViewAdddresstypesListComponent>;
+  let component: ViewAddresstypesListComponent;
+  let fixture: ComponentFixture<ViewAddresstypesListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewAdddresstypesListComponent ]
+      declarations: [ ViewAddresstypesListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewAdddresstypesListComponent);
+    fixture = TestBed.createComponent(ViewAddresstypesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

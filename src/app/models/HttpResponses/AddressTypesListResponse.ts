@@ -5,4 +5,6 @@ export class AddressTypesListResponse {
   outcome: Outcome;
   addressTypesList: AddressTypesList[];
   rowCount: number;
+  // addressTypesList: AddressTypesList[];
+  // rowCount: number;
   }

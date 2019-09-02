@@ -13,7 +13,6 @@ import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { GetAddressTypesList } from 'src/app/models/HttpRequests/GetAddressTypesList';
 import { AddressTypesService } from 'src/app/services/AddressTypes.service';
 import { AddressTypesListResponse } from 'src/app/models/HttpResponses/AddressTypesListResponse';
 import { AddressTypesList } from 'src/app/models/HttpResponses/AddressTypesList';
@@ -23,7 +22,13 @@ import { AddressTypesList } from 'src/app/models/HttpResponses/AddressTypesList'
   templateUrl: './view-addresstypes-list.component.html',
   styleUrls: ['./view-addresstypes-list.component.scss']
 })
-export class ViewAdddresstypesListComponent implements OnInit {
+export class ViewAddresstypesListComponent implements OnInit {
+  openModal: any;
+  themeService: any;
+  focusAddTypeName: string;
+  focusAddressTypeID: any;
+  closeModal: any;
+  addressTypeService: any;
   constructor(
     private IUserService: UserService,
     private IThemeService: ThemeService,
@@ -165,7 +170,7 @@ export class ViewAdddresstypesListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     const userID = +this.currentUser.userID;
     this.showLoader = true;
-    const model: GetAddressTypesList = {
+    const model: UpdateAddressTypesRequest = {
       rowEnd: this.rowEnd,
       rowStart: this.rowStart,
       rightName: this.rightName,
@@ -272,6 +277,49 @@ export class ViewAdddresstypesListComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  editAddressType($event){
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openModal.nativeElement.click();
+    console.log('open modal');
+  }
+
+  updateAddress() {
+    let errors = 0;
+
+    if (this.focusAddTypeName === '' || this.focusAddTypeName === undefined) {
+      errors++;
+    }    
+
+    if (errors === 0) {
+      const requestModel: UpdateAddressTypesRequest = {
+        userID: 3,
+        specificAddressTypeID: this.focusAddressTypeID,
+        //addressTypeID: this.focusAddressTypeID,
+        rightName: 'AddressType',
+        name: this.focusAddTypeName,        
+        isDeleted: 0,
+      };
+
+      this.addressTypeService.update(requestModel).then(
+        (res: AddressTypesListResponse) => {
+          this.closeModal.nativeElement.click();
+
+          this.addressTypesList.rowStart = 1;
+          this.addressTypesList.rowEnd = this.rowCountPerPage;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+
+          this.loadAddressTypes();
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', msg.message);
+        }
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    }
   }
 
 }
