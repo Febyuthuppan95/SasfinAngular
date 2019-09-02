@@ -1,4 +1,4 @@
-import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
+//import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
 import { DesignationService } from './../../../services/Designation.service';
 import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequest';
 import { Status } from './../../../models/Enums/Statuses';
@@ -21,6 +21,7 @@ import { Location } from '@angular/common';
 import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
 import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
 
 @Component({
   selector: 'app-view-user-list',
@@ -233,6 +234,21 @@ export class ViewUserListComponent implements OnInit {
               user.profileImage = `${environment.ApiProfileImages}/${user.profileImage}`;
             }
           }
+          
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -243,6 +259,7 @@ export class ViewUserListComponent implements OnInit {
             this.showLoader = false;
             this.showingRecords = res.userList.length;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
+            
             this.paginateData();
           }
         },

@@ -248,7 +248,25 @@ export class ViewUserRightsListComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success
+        // Process Success 
+        if(!this.openAddModal)
+        {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+        }           
+        
+        
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -258,19 +276,22 @@ export class ViewUserRightsListComponent implements OnInit {
           this.noData = true;
         } else {
           this.noData = false;
-        }
+        }       
+       
+        this.loadAvailableRights();
         this.paginateData();
       },
       msg => {
         // Process Failure
         this.showLoader = false;
+
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
       }
     );
-    this.loadAvailableRights();
+
   }
 
   updateSort(orderBy: string) {
@@ -335,6 +356,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmAdd() {
     this.openAddModal.nativeElement.click();
+    
     // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
     //   // console.log(result);
     //   // this.addNewRight(this.rightId, this.rightName);
@@ -345,7 +367,7 @@ export class ViewUserRightsListComponent implements OnInit {
     // });
   }
   removeRight(id: number, name: string) {
-    console.log(id);
+
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
@@ -354,7 +376,23 @@ export class ViewUserRightsListComponent implements OnInit {
     const result = this.userService
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
+        
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+
         this.loadUserRights();
+        
       },
       msg => {
         this.notify.errorsmsg(
@@ -375,7 +413,19 @@ export class ViewUserRightsListComponent implements OnInit {
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        console.log(res);
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
         this.loadUserRights();
       },
       msg => {

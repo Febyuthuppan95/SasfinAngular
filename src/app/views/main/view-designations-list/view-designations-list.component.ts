@@ -176,20 +176,35 @@ export class ViewDesignationsListComponent implements OnInit {
       .getDesignationList(model)
       .then(
         (res: DesignationListResponse) => {
+
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
             this.noData = true;
             this.rowCount = 0;
             this.showingRecords = 1;
-            this.totalShowing = 0;
+            this.totalShowing = 0;            
           } else {
             this.noData = false;
             this.designationList = res.designationList;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;
-            this.totalShowing = +this.rowStart + this.designationList.length - 1;
+            this.totalShowing = +this.rowStart + this.designationList.length - 1;            
             this.paginateData();
           }
         },

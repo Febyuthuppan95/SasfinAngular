@@ -184,7 +184,22 @@ export class ViewDesignationsRightsListComponent implements OnInit {
    
     this.designationsService
     .getDesignationRightsList(dRModel).then(
-      (res: DesignationRightsListResponse) => {       
+      (res: DesignationRightsListResponse) => {   
+        
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -194,6 +209,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
           this.rowCount = 0;
           this.showingRecords = 1;
           this.totalShowing = 0;
+          
         } else {
         this.noData = false;
         // Process Success
@@ -203,7 +219,8 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
-        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
+        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;        
+
         this.paginateData();
         
         this.loadAvailableRights();
@@ -389,7 +406,20 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
       (res: DesignationRightReponse) => {
-        // console.log(res);
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        
         this.loadDesignationRights();
       },
       msg => {
@@ -410,6 +440,19 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const result = this.designationsService
     .addDesignationright(requestModel).then(
       (res: DesignationRightReponse) => {
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
         this.loadDesignationRights();
       },
       msg => {

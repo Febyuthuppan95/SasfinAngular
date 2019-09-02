@@ -1,4 +1,3 @@
-
 import { ContextMenuUserComponent } from './components/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';

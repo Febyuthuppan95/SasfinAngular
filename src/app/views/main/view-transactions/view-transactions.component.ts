@@ -190,6 +190,19 @@ export class ViewTransactionsComponent implements OnInit {
       .list(model)
       .then(
         (res: TransactionListResponse) => {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
