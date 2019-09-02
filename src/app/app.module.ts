@@ -152,7 +152,7 @@ import { UserIdleModule } from 'angular-user-idle';
     FormsModule,
     BrowserAnimationsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 3, timeout: 12, ping: 3}),
+    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,

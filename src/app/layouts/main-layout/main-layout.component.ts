@@ -160,7 +160,7 @@ export class MainLayoutComponent implements OnInit {
    if(this.count === 10)
    {
     this.opentimeoutModal.nativeElement.click();
-    console.log(this.opentimeoutModal.nativeElement.hasClass('in'));
+   
    }
   }
 }

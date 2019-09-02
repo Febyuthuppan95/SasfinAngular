@@ -21,6 +21,10 @@
 padding-left: 100px;
 }
 
+.no-click-backdrop {
+  pointer-events: none;
+}
+
 .imageposition{
   padding-left: 10px;
   width: 70px;
