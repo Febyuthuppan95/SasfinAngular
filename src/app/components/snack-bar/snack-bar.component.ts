@@ -17,13 +17,17 @@ import { GetObjectHelpResponse } from 'src/app/models/HttpResponses/GetObjectHel
   styleUrls: ['./snack-bar.component.scss']
 })
 export class SnackBarComponent implements OnInit {
-  constructor(private helpSnackbarService: HelpSnackbar, private objectHelpService: ObjectHelpService,
-              private userService: UserService) {
+  constructor(
+    private helpSnackbarService: HelpSnackbar,
+    private objectHelpService: ObjectHelpService,
+    private userService: UserService
+  ) {
     this.settings = new SnackbarModel();
     this.focus = new SnackbarModel();
   }
 
-
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -31,8 +35,7 @@ export class SnackBarComponent implements OnInit {
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
-  @ViewChild(NotificationComponent, { static: true })
-  private notify: NotificationComponent;
+
 
   settings: SnackbarModel;
   focus: SnackbarModel;
@@ -84,27 +87,30 @@ export class SnackBarComponent implements OnInit {
 
   updateObjectHelp() {
     const request: UpdateObjectHelpRequest = {
-      userID: 3,
+      userID: this.currentUser.userID,
       objectHelpID: this.focus.id,
       name: this.settings.title,
       rightName: 'ObjectHelp',
       description: this.settings.content
     };
 
-    this.objectHelpService.update(request).then(
+    this.objectHelpService
+    .update(request)
+    .then(
       (res: UpdateObjectHelpResponse) => {
-        console.log(res);
+        
         if(res.outcome.outcome === "Access denied"){
           this.notify.errorsmsg(
             'Error',
-            res.outcome.outcomeMessage
+            res.outcome.outcome
           );
         }
         else
         {
           this.notify.successmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
+            'Success',
+            res.outcome.outcome
+            
           );
           this.closeModal.nativeElement.click();
         }        

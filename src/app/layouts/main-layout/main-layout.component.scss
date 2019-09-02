@@ -10,6 +10,29 @@
   margin-right: 20px;
   overflow: none;
 }
+.modal-message{
+  font-size: 0.85rem !important;
+}
+.modal-white{
+  background-color: white;
+  color: black;
+}
+.padleft100{
+padding-left: 100px;
+}
+
+.no-click-backdrop {
+  pointer-events: none;
+}
+
+.imageposition{
+  padding-left: 10px;
+  width: 70px;
+  height: 60px;
+  position: absolute;
+}
+
+
 // .side-div .collapse-sidebar {
 //   position: absolute;
 //   width:65px;

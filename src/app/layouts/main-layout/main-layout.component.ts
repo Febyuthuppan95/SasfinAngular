@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { EditDashboardStyleComponent } from 'src/app/components/edit-dashboard-style/edit-dashboard-style.component';
 import { FloatingButtonComponent } from 'src/app/components/floating-button/floating-button.component';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,6 +9,8 @@ import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.compon
 import { CookieService } from 'ngx-cookie-service';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { environment } from 'src/environments/environment';
+import { UserIdleService } from 'angular-user-idle';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-main-layout',
@@ -19,7 +21,9 @@ export class MainLayoutComponent implements OnInit {
   constructor(
     private themeService: ThemeService,
     private cookieService: CookieService,
-    private IMenuService: MenuService
+    private IMenuService: MenuService,
+    private userIdle: UserIdleService,
+    private userService: UserService
     ) {}
 
   @ViewChild(EditDashboardStyleComponent, { static: true })
@@ -40,6 +44,12 @@ export class MainLayoutComponent implements OnInit {
   @ViewChild(SnackBarComponent, { static: true })
   private snackBar: SnackBarComponent;
 
+  @ViewChild('opentimeoutModal', {static: true })
+  opentimeoutModal: ElementRef;
+  
+  @ViewChild('closetimeoutModal', {static: true })
+  closetimeoutModal: ElementRef;
+
 
   currentTheme = 'light';
   currentBackground: string;
@@ -48,6 +58,7 @@ export class MainLayoutComponent implements OnInit {
   sidebarCollapse = true;
   innerWidth: any;
   tableContextMenu = false;
+  count = 0;  
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
@@ -55,8 +66,9 @@ export class MainLayoutComponent implements OnInit {
 
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
-      this.updateChildrenComponents();
+      this.updateChildrenComponents();      
     });
+
 
     this.cookieService.set('sidebar', 'true');
 
@@ -69,6 +81,26 @@ export class MainLayoutComponent implements OnInit {
     toggleHelpObserver.subscribe((toggle: boolean) => {
       this.toggleHelpValue = toggle;
     });
+
+      //Start watching for user inactivity.
+      this.userIdle.startWatching();
+        
+      // Start watching when user idle is starting.
+      this.userIdle.onTimerStart().subscribe(count => {
+        this.TriggerSessionTimeout(count);
+        console.log(this.closetimeoutModal);
+      });
+      
+      // Start watch when time is up.
+      this.userIdle.onTimeout().subscribe(() => {
+        this.closetimeoutModal.nativeElement.click(),
+        this.userIdle.resetTimer();
+        this.userIdle.stopTimer();
+        this.userIdle.stopWatching();
+        this.userService.logout(); 
+      });
+
+    this.userIdle.ping$.subscribe(() => {});
   }
 
   // Works
@@ -111,5 +143,22 @@ export class MainLayoutComponent implements OnInit {
   }
   updateBackground(event) {
 
+  }
+
+  ResetSessionTimer()
+  {    
+    this.userIdle.stopTimer();
+    this.userIdle.resetTimer();    
+  }
+
+  TriggerSessionTimeout(count){  
+   this.count = 11;
+   this.count =  this.count - count;
+
+   if(this.count === 10)
+   {
+    this.opentimeoutModal.nativeElement.click();
+   
+   }
   }
 }

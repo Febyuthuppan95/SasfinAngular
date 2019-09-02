@@ -89,6 +89,9 @@ import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-co
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
+import { UserIdleModule } from 'angular-user-idle';
+
+
 
 @NgModule({
   declarations: [
@@ -152,6 +155,7 @@ import { ContextMenuCompanyInfoComponent } from './components/context-menu-compa
     FormsModule,
     BrowserAnimationsModule,
     PdfViewerModule,
+    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,

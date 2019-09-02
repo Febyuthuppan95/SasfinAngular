@@ -135,16 +135,20 @@ export class ViewPlacesComponent implements OnInit {
   addCountryModal($event) {
     this.locationType = 'country';
     this.addModalOpen.nativeElement.click();
+    this.newLocationName = '';
+
   }
   addRegionModal($event) {
     this.locationParentID = this.locationID;
     this.locationType = 'region';
     this.addModalOpen.nativeElement.click();
+    this.newLocationName = '';
   }
   addCityModal($event) {
     this.locationParentID = this.locationID;
     this.locationType = 'city';
     this.addModalOpen.nativeElement.click();
+    this.newLocationName = '';
   }
 
   /* END Add Handlers from context menu */

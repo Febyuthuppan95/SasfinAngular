@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user.Service';
 import { User } from '../../models/HttpResponses/User';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,9 @@ import { User } from '../../models/HttpResponses/User';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private userIdle: UserIdleService,) { }
 
   currentUser: User = this.userService.getCurrentUser();
   activateSidebar = false;
@@ -22,6 +25,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
 
   logout() {
+    this.userIdle.resetTimer();
+    this.userIdle.stopTimer();
+    this.userIdle.stopWatching();
     this.userService.logout();
   }
 

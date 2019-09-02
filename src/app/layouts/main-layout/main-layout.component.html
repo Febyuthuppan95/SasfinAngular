@@ -14,3 +14,31 @@
 <app-floating-button (myEvent)="openEditTile()"></app-floating-button>
 <app-edit-dashboard-style (closeSidebar)="closeEditTile()" (help)="toggleHelp($event)" (background)="updateBackground($event)">
 </app-edit-dashboard-style>
+
+<!-- TimeOut modal -->
+<button class="hide" data-toggle="modal" data-target="#timeout" #opentimeoutModal></button>
+<div class="modal fade no-click-backdrop" id="timeout" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div  class="modal-header modal-white">
+          <h5 class="modal-title modal-white" id="modalContent">Warning!</h5> 
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form >
+        <div class="modal-body">
+          <div class="row">            
+              <img class="imageposition" src="../../../assets/dist/images/warning.png" alt="warning"/>
+           <p class="modal-message padleft100">Due to inactivity you will be logged out in {{count}} seconds</p>    
+           <p class="modal-message padleft100">Click "Extend Session" button to continue working</p>       
+          </div>
+        </div>
+        <div class="modal-footer modal-white">        
+          
+          <button style="color: white; background-color: rgb(103, 150, 252)" (click)="ResetSessionTimer()" type="button" class="btn btn-sm" data-dismiss="modal" #closetimeoutModal>Extend Session</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
