@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,14 @@ export class CompanyService {
   /**
    *
    */
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    this.selectedCompany = new BehaviorSubject<SelectedCompany>(null);
+  }
+
+  selectedCompany: BehaviorSubject<SelectedCompany>;
+
+  setCompany(company: SelectedCompany) { this.selectedCompany.next(company); }
+  observeCompany() {return this.selectedCompany.asObservable(); }
 
   /**
    * list
@@ -119,4 +127,10 @@ export class CompanyService {
       });
     }
   }
+}
+
+export class SelectedCompany {
+  companyID: number;
+  companyName: string;
+  selectedTransactionID?: number;
 }

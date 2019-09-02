@@ -36,10 +36,9 @@ export class TransactionService {
   /**
    * listAttatchments
    */
-  public listAttatchments(requestModel) {
-    return new Promise((resolve, reject) => {
+  public async listAttatchments(requestModel) {
+    return await new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/list/files`;
-
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -80,7 +79,7 @@ export class TransactionService {
     }
   }
 
-  public uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
     const requestModel = {
       name,
       fileName: file.name,
@@ -95,9 +94,9 @@ export class TransactionService {
     formData.append('file', file);
     formData.append('requestModel', JSON.stringify(requestModel));
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/attachment/upload`;
-      this.httpClient.post(apiURL, formData)
+      await this.httpClient.post(apiURL, formData)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
     });

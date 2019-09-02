@@ -11,6 +11,7 @@ import { Pagination } from 'src/app/models/Pagination';
 import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -101,9 +102,12 @@ export class ViewTransactionFilesComponent implements OnInit {
   transactionTypes = [
     { name: 'ICI', value: 1 },
     { name: 'SAD500', value: 2 },
+    { name: 'PACKING', value: 3 },
+    { name: 'CUSRELEASE', value: 4 },
+    { name: 'VOC', value: 4 },
   ];
   attachmentName: string;
-  attachmentQueue: { name: string, type: string, file: File, uploaded: boolean }[] = [];
+  attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
@@ -280,8 +284,6 @@ export class ViewTransactionFilesComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    alert(fileName);
-
     this.focusHelp = id;
     this.focusPath = fileName;
 
@@ -306,9 +308,12 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.router.navigate(['companies']);
   }
 
-  uploadAttachments() {
+   uploadAttachments() {
     this.uploading = true;
     this.attachmentQueue.forEach((attach) => {
+      attach.status = 'Uploading';
+      attach.uploading = false;
+
       this.transationService.uploadAttachment(
         attach.name,
         attach.file,
@@ -317,14 +322,15 @@ export class ViewTransactionFilesComponent implements OnInit {
         this.currentUser.userID,
         'The Boring Company'
       ).then(
-        (res: Outcome) => {
-          if (res.outcome === 'SUCCESS') {
-            attach.uploaded = true;
-          }
+        (res) => {
+            attach.uploading = false;
+            attach.status = 'Complete';
+            this.loadAttachments();
         },
         (msg) => {
-          console.log(JSON.stringify(msg));
-        }
+          attach.uploading = false;
+          attach.status = 'Failed to upload';
+      }
       );
     });
   }
@@ -338,9 +344,12 @@ export class ViewTransactionFilesComponent implements OnInit {
       name: this.attachmentName,
       type: this.transactionTypes[this.selectedTransactionType - 1].name,
       file: files.item(0),
-      uploaded: false,
+      uploading: false,
+      status: 'Pending Upload'
     };
 
+    this.attachmentName = '';
+    this.selectedTransactionType = - 1;
     this.currentAttachment++;
   }
 }

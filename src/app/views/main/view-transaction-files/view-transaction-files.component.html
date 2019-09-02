@@ -54,7 +54,7 @@
         <tbody *ngIf="(!noData)">
           <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID, file.file); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{file.rowNum}}</td>
-            <td>{{file.file}}</td>
+            <td>{{file.name}}</td>
             <td>{{file.fileType}}</td>
           </tr>
         </tbody>
@@ -120,12 +120,13 @@
         <hr/>
         <div class="attachment-queue">
           <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueue">
+              <span class="float-right">{{attach.status}}</span>
               <p>{{attach.name}}</p>
               <small>{{attach.type}}</small><br/>
               <small>{{attach.file.name}}</small>
               <br/>
               <br/>
-              <mat-progress-bar *ngIf="this.uploading && !attach.uploaded" mode="indeterminate" color="primary"></mat-progress-bar>
+              <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>
           </div>
         </div>
       </div>

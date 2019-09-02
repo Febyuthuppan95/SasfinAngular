@@ -1,9 +1,10 @@
 .row, .col-6 {
-  height: 100vh;
+  height: 93vh;
   margin: 0;
   padding: 0;
   background-size: cover;
   background-attachment: fixed;
+  overflow: hidden;
 }
 
 .company-container {
@@ -30,4 +31,14 @@
   position: fixed;
   top: 24px;
   right: 24px;
+}
+
+.reader-line {
+  background: rgba($color: #ffee00, $alpha: 0.5);
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  padding: 48px;
+  z-index: 9999999999999;
 }
