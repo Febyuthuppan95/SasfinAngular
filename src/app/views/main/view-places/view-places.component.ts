@@ -48,7 +48,7 @@ export class ViewPlacesComponent implements OnInit {
     orderBy: 'Name',
     orderByDirection: 'ASC',
     rowStart: 1,
-    rowEnd: 15,
+    rowEnd: 10000,
     rightName: 'Places',
     userID: 4,
   };
