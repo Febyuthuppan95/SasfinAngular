@@ -87,13 +87,12 @@ export class MainLayoutComponent implements OnInit {
         
       // Start watching when user idle is starting.
       this.userIdle.onTimerStart().subscribe(count => {
-        this.TriggerSessionTimeout(count);
-        console.log(this.closetimeoutModal);
+        this.TriggerSessionTimeout(count);        
       });
       
       // Start watch when time is up.
       this.userIdle.onTimeout().subscribe(() => {
-        this.closetimeoutModal.nativeElement.click(),
+        this.closetimeoutModal.nativeElement.click();
         this.userIdle.resetTimer();
         this.userIdle.stopTimer();
         this.userIdle.stopWatching();

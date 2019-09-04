@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
@@ -23,16 +23,26 @@ export class ViewLoginComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private themeService: ThemeService,
+    private renderer: Renderer2,
+     private elRef : ElementRef
   
     ) { }
 
+  @ViewChild('login', { static: true }) 
+  elRefs: ElementRef;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
   typePassword: boolean;
 
+  ngOnInit() { 
+    var elem = document.getElementsByClassName("modal-backdrop")
 
-  ngOnInit() { }   
+    if(elem.length > 0)
+    {
+      this.renderer.removeClass(elem[0], elem[0].classList[0]);
+    }  
+  }   
 
   onLoginSubmit() {
     if (this.txtEmail === '' || this.txtPassword === '') {
