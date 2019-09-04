@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CompanyService } from 'src/app/services/Company.Service';
@@ -41,6 +41,12 @@ export class ViewCompanyListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+  
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -269,6 +275,13 @@ export class ViewCompanyListComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  EditCompony($event)
+  {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openeditModal.nativeElement.click();    
   }
 
 }
