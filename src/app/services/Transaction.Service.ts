@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +36,9 @@ export class TransactionService {
   /**
    * listAttatchments
    */
-  public listAttatchments(requestModel) {
-    return new Promise((resolve, reject) => {
+  public async listAttatchments(requestModel) {
+    return await new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/list/files`;
-
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -77,5 +77,28 @@ export class TransactionService {
         );
       });
     }
+  }
+
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
+    const requestModel = {
+      name,
+      fileName: file.name,
+      type,
+      transactionID,
+      userID,
+      company,
+      rightName: 'Attachments'
+    };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('requestModel', JSON.stringify(requestModel));
+
+    return new Promise(async (resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/attachment/upload`;
+      await this.httpClient.post(apiURL, formData)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
   }
 }

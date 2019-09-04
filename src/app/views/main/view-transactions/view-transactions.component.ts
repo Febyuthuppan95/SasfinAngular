@@ -10,6 +10,7 @@ import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/Com
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction, TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-view-transactions',
@@ -24,6 +25,7 @@ export class ViewTransactionsComponent implements OnInit {
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private companyService: CompanyService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -95,11 +97,16 @@ export class ViewTransactionsComponent implements OnInit {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
-    this.activatedRoute.paramMap
-    .subscribe(params => {
-      this.companyID = +params.get('id');
-      this.companyName = params.get('name');
+
+    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+      this.companyID = obj.companyID;
+      this.companyName = obj.companyName;
     });
+    // this.activatedRoute.paramMap
+    // .subscribe(params => {
+    //   this.companyID = +params.get('id');
+    //   this.companyName = params.get('name');
+    // });
 
     this.loadTransactions();
   }
@@ -176,6 +183,8 @@ export class ViewTransactionsComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
+
+    console.log(JSON.stringify(model));
 
     this.transationService
       .list(model)

@@ -112,7 +112,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
             );
           }
         }
-        
+
 
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.unitOfMeasureList;
@@ -250,7 +250,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   editUnitOfMeasure($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openModal.nativeElement.click();   
+    this.openModal.nativeElement.click();
   }
 
   updateUnit() {
@@ -278,10 +278,19 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         (res: UpdateUnitsOfMeasureResponse) => {
           console.log(res);
           this.closeModal.nativeElement.click();
-          //this.unitsOfMeasure.rowStart = 1;
-          //this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
+          this.unitsOfMeasure = {
+            userID: 3,
+            specificUnitOfMeasureID: -1,
+            rightName: 'UnitOfMeasures',
+            filter: '',
+            orderBy: 'Name',
+            orderByDirection: 'ASC',
+            rowStart: 1,
+            rowEnd: 15
+          };
+
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadUnitsOfMeasures();
         },
         (msg) => {

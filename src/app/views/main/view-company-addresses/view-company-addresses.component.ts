@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CompanyService } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -96,10 +96,16 @@ export class ViewCompanyAddressesComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.activatedRoute.paramMap
-    .subscribe(params => {
-      this.companyID = +params.get('id');
-      this.companyName = params.get('name');
+    // this.activatedRoute.paramMap
+    // .subscribe(params => {
+    //   this.companyID = +params.get('id');
+    //   this.companyName = params.get('name');
+    // });
+
+
+    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+      this.companyID = obj.companyID;
+      this.companyName = obj.companyName;
     });
   }
 
@@ -170,7 +176,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: 1,
+      specificCompanyID: this.companyID,
       specificAddressID: -1,
       specificAddressTypeID: -1,
       rightName: this.rightName,

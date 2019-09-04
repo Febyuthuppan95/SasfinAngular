@@ -9,7 +9,7 @@ export const environment = {
   ApiEndpoint: 'https://localhost:44397/api/v1.0',
   ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://localhost:44397/api/v1.0/public/images/document'
+  ApiDocuments: 'https://localhost:44397/api/v1.0/public/document'
 };
 
 /*
