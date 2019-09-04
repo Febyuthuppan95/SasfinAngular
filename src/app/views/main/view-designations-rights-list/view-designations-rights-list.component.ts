@@ -20,7 +20,7 @@ import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationR
 import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Subscription } from 'rxjs';
-import { ContextMenuUserrightsComponent } from './../../../components/context-menu-userrights/context-menu-userrights.component';
+
 
 @Component({
   selector: 'app-view-designations-rights-list',

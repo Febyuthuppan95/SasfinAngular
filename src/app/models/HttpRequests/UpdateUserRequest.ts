@@ -1,6 +1,6 @@
 export class UpdateUserRequest {
-    specificUserID: number;
     userID: number;
+    specificUserID: number;
     firstName: string;
     surname: string;
     empNo: string;

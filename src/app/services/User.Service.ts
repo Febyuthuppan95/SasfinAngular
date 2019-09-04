@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 import { ThemeService } from './theme.Service';
 import { GetUserList } from '../models/HttpRequests/GetUserList';
 import { UpdateUserRight } from '../models/HttpRequests/UpdateUserRight.js';
+import { AddUserRequest } from '../models/HttpRequests/AddUserRequest';
 
 
 @Injectable({
@@ -216,6 +217,25 @@ export class UserService {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/update`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UserAdd(model: AddUserRequest) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/add`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()

@@ -22,6 +22,7 @@ import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
 import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
+import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
 
 @Component({
   selector: 'app-view-user-list',
@@ -70,18 +71,30 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild('closeModal', {static: true})
   closeModal: ElementRef;
 
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+  
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
+
+
+
+
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
   selectedRow = -1;
   selectedFirstName = '';
   selectedSurName = '';
   selectedEmail = '';
-  selectedDesignation = -1;
+  selectedDesignation = '';
   selectedStatus = -1;
   EmpNo = '';
   Extension = '';
   ProfileImage = '';
   selectedUserID = -1;
+  password = '';
+  confirmpassword = '0';
+  EmployeeNumb = '';
 
   statusList: Status[];
   currentUser: User = this.userService.getCurrentUser();
@@ -342,6 +355,23 @@ export class ViewUserListComponent implements OnInit {
     this.preview = user.profileImage;
     this.selectedUserID = +user.userId;
 
+    for (let index = 0; index < this.designations.length; index++) 
+    {
+      if(this.designations[index].name == user.designation)
+      {
+        this.selectedDesignation = this.designations[index].designationID;        
+      }      
+    }
+
+    for (let index = 0; index < this.statusList.length; index++) 
+    {
+      if(this.statusList[index].name == user.status)
+      {
+        this.selectedStatus = +this.statusList[index].id;        
+      }      
+    }
+    
+
     // Will only toggle on if off
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true); // Set true
@@ -363,27 +393,18 @@ export class ViewUserListComponent implements OnInit {
   editUser($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openModal.nativeElement.click();
+    this.openModal.nativeElement.click();    
   }
-  addNewUser(id, name) {
-    // const requestModel: AddDesignationRight = {
-    //   userID: this.currentUser.userID,
-    //   designationID: this.currentDesignation,
-    //   rightID: id,
-    //   rightName: 'Designations'
-    // };
-    // const result = this.designationsService
-    // .addDesignationright(requestModel).then(
-    //   (res: DesignationRightReponse) => {
-    //     this.loadDesignationRights();
-    //   },
-    //   msg => {
-    //     this.notify.errorsmsg(
-    //       'Server Error',
-    //       'Something went wrong while trying to access the server.'
-    //     );
-    //   }
-    // );
+
+  addNewUser() {     
+     this.selectedFirstName = '',
+     this.selectedSurName = '',
+     this.selectedEmail = '',  
+     this.password = '',
+     this.confirmpassword = '',  
+     this.selectedDesignation = '', 
+        
+    this.openAddModal.nativeElement.click();    
   }
 
   readFile(event): void {
@@ -402,6 +423,62 @@ export class ViewUserListComponent implements OnInit {
     this.fileToUpload = files.item(0);
   }
 
+  addUser($event) {
+    $event.preventDefault();
+    let ImageName = null;
+
+    if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {
+      ImageName = this.fileToUpload.name;
+    }
+    if(this.password === this.confirmpassword)
+    {
+      const requestModel: AddUserRequest = {      
+        userID: this.currentUser.userID,
+        empNo: this.EmployeeNumb,
+        firstName: this.selectedFirstName,
+        surname: this.selectedSurName,
+        email: this.selectedEmail,  
+        password:this.password,  
+        specificDesignationID: +this.selectedDesignation,       
+        rightName: 'AddUser',
+        profileImage: ImageName
+      };    
+
+      this.userService.UserAdd(requestModel).then(
+        (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+            if (this.fileToUpload !== undefined && this.fileToUpload !== null) {
+              this.userService.UserUpdateProfileImage(this.fileToUpload).then(
+                (uploadRes) => {
+                  this.notify.successmsg('Success', 'User has been Added');
+                  this.closeAddModal.nativeElement.click();
+                  this.loadUsers();
+                },
+                (uploadMsg) => {
+                  this.notify.errorsmsg('Failure', 'User record Added, but image failed to Add');
+                }
+              );
+            } else {
+              this.notify.successmsg('Success', 'User has been Added');
+
+              this.closeAddModal.nativeElement.click();
+              this.loadUsers();
+            }
+          } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'User not Added');
+        }
+      );
+    }
+    else
+    {
+      this.notify.errorsmsg('Failure', 'Passwords do not match!');      
+    }
+  }
+
   updateUser($event) {
     $event.preventDefault();
     let ImageName = null;
@@ -411,8 +488,8 @@ export class ViewUserListComponent implements OnInit {
     }
 
     const requestModel: UpdateUserRequest = {
-      specificUserID: this.currentUser.userID,
-      userID: this.selectedUserID,
+      userID: this.currentUser.userID,
+      specificUserID: this.selectedUserID,
       firstName: this.selectedFirstName,
       surname: this.selectedSurName,
       email: this.selectedEmail,
