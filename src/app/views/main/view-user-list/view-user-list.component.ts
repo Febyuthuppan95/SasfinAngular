@@ -403,6 +403,7 @@ export class ViewUserListComponent implements OnInit {
      this.password = '',
      this.confirmpassword = '',  
      this.selectedDesignation = '', 
+     this.ProfileImage = '';
         
     this.openAddModal.nativeElement.click();    
   }
