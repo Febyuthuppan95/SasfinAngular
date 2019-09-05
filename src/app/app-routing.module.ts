@@ -23,7 +23,6 @@ import { ViewCompanyListComponent } from './views/main/view-company-list/view-co
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
-import { ViewAdddresstypesListComponent } from './views/main/view-addresstypes-list/view-addresstypes-list.component';
 
 const routes: Routes = [
   {
@@ -55,9 +54,7 @@ const routes: Routes = [
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
           { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
-          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
-          { path: 'addressTypes', component: ViewAdddresstypesListComponent },
-          
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },          
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
