@@ -320,3 +320,19 @@ $peachThemeText: #121212;
   color: $darkThemeText;
   border-radius: 0;
 }
+
+.upload-button {
+  height: 18px;
+  background: #4d83ff;
+  color: #c4dbff;
+  padding: 8px 14px;
+  border-radius: 3px;
+  font-size: 14px;
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background: #2e5abe;
+  transition: ease-in-out 0.3s;
+}
