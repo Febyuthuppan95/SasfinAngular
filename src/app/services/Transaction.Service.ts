@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { CreateTransactionRequest } from '../models/HttpRequests/TransactionRequests';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,48 @@ export class TransactionService {
   public list(requestModel) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/list`;
+
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  /**
+   * list
+   */
+  public typessList(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/list/types`;
+
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  /**
+   * list
+   */
+  public statusList(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/list/statuses`;
 
       this.httpClient
         .post(apiURL, requestModel)
@@ -99,6 +141,24 @@ export class TransactionService {
       await this.httpClient.post(apiURL, formData)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string, rightName: string) {
+    const requestModel: CreateTransactionRequest = {
+      userID,
+      specificCompanyID: companyID,
+      specificTransactioTypeID: typeID,
+      specificTransactioStatusID: statusID,
+      name,
+      rightName
+    };
+
+    return new Promise(async (resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/create`;
+      this.httpClient.post(apiURL, requestModel)
+        .toPromise()
+        .then(res => resolve(res), msg => reject(msg));
     });
   }
 }
