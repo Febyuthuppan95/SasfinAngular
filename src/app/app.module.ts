@@ -90,6 +90,7 @@ import { ViewCompanyAddressesComponent } from './views/main/view-company-address
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
+import { CompanyService } from './services/Company.Service';
 
 
 
@@ -194,6 +195,7 @@ import { UserIdleModule } from 'angular-user-idle';
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
+    CompanyService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
