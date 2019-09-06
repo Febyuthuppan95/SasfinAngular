@@ -17,7 +17,7 @@
       </ul>
     </div>
   </nav>
-<div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
+<div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'" #screenWrapper appKeyHandler tabindex="-1">
 <div class="col-6 bg-light">
   <div class="reader-line"></div>
   <app-document-viewer></app-document-viewer>
@@ -36,3 +36,4 @@
   matTooltip="Exit" matTooltipPosition="before"><span class="mdi mdi-close text-light"></span>
   </button>
 </div> -->
+<!-- <input type="text" app-key-handler /> -->

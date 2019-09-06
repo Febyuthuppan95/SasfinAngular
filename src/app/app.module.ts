@@ -92,6 +92,7 @@ import { ContextMenuCompanyInfoComponent } from './components/context-menu-compa
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
+import { KeyHandlerDirective } from './directives/key-handler.directive';
 
 
 
@@ -149,7 +150,8 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
-    FormCustomReleaseComponent
+    FormCustomReleaseComponent,
+    KeyHandlerDirective
   ],
   imports: [
     BrowserModule,

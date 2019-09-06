@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -16,9 +16,13 @@ export class CaptureLayoutComponent implements OnInit {
   constructor(private themeService: ThemeService, private userService: UserService, private router: Router,
               private bottomSheet: MatBottomSheet) { }
 
+  @ViewChild('screenWrapper', { static: true })
+  screenWrapper: ElementRef;
+
   currentBackground: string;
   currentTheme: string;
   currentUser: User;
+  translateY: '120px';
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
@@ -30,7 +34,7 @@ export class CaptureLayoutComponent implements OnInit {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
-  }
+    }
 
   goBack() {
     this.router.navigate(['transaction', 'attachments', 2]);
@@ -38,13 +42,6 @@ export class CaptureLayoutComponent implements OnInit {
 
   openBottomSheet(): void {
     this.bottomSheet.open(CompanySheetComponent);
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.key) {
-
-    }
   }
 }
 
