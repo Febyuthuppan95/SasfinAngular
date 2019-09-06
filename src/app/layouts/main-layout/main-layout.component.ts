@@ -82,24 +82,24 @@ export class MainLayoutComponent implements OnInit {
       this.toggleHelpValue = toggle;
     });
 
-    // // Start watching for user inactivity.
-    // this.userIdle.startWatching();
+    // Start watching for user inactivity.
+    this.userIdle.startWatching();
 
-    // // Start watching when user idle is starting.
-    // this.userIdle.onTimerStart().subscribe(count => {
-    //   this.TriggerSessionTimeout(count);
-    // });
+    // Start watching when user idle is starting.
+    this.userIdle.onTimerStart().subscribe(count => {
+      this.TriggerSessionTimeout(count);
+    });
 
-    // // Start watch when time is up.
-    // this.userIdle.onTimeout().subscribe(() => {
-    //   this.closetimeoutModal.nativeElement.click();
-    //   this.userIdle.resetTimer();
-    //   this.userIdle.stopTimer();
-    //   this.userIdle.stopWatching();
-    //   this.userService.logout();
-    // });
+    // Start watch when time is up.
+    this.userIdle.onTimeout().subscribe(() => {
+      this.closetimeoutModal.nativeElement.click();
+      this.userIdle.resetTimer();
+      this.userIdle.stopTimer();
+      this.userIdle.stopWatching();
+      this.userService.logout();
+    });
 
-    // this.userIdle.ping$.subscribe(() => {});
+    this.userIdle.ping$.subscribe(() => {});
   }
 
   // Works
