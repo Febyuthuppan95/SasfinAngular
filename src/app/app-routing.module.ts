@@ -61,6 +61,8 @@ const routes: Routes = [
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
+          { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },          
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
