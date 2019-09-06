@@ -273,14 +273,7 @@ export class ViewCompanyListComponent implements OnInit {
     this.CompanyName = company.name;
     this.RegNo = company.regNo;
     this.ExportRegNo = company.regExportNo;
-<<<<<<< HEAD
     this.VATNo = company.vatNo;  
-=======
-    this.VATNo = company.VATNo;
-
-
-    console.log(company.id);
->>>>>>> 83a0fb0cd6498782f90a194a94a4d263777dd6c1
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -365,23 +358,13 @@ export class ViewCompanyListComponent implements OnInit {
             this.notify.successmsg('SUCCESS','Company successfully Updated');          
             this.closeeditModal.nativeElement.click();    
             this.loadCompanies()
-<<<<<<< HEAD
           }                         
-=======
-            this.closeaddModal.nativeElement.click();
-          }
->>>>>>> 83a0fb0cd6498782f90a194a94a4d263777dd6c1
         },
         msg => {
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'
-<<<<<<< HEAD
           );              
-=======
-          );
-          this.closeaddModal.nativeElement.click();
->>>>>>> 83a0fb0cd6498782f90a194a94a4d263777dd6c1
         }
       );
   }
