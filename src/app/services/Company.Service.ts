@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { AddCompany } from '../models/HttpRequests/AddCompany';
+import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
+import { CompanyList } from '../models/HttpRequests/CompanyList';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +25,11 @@ export class CompanyService {
   /**
    * list
    */
-  public list(requestModel) {
+  public list(model: CompanyList) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/list`;
       this.httpClient
-        .post(apiURL, requestModel)
+        .post(apiURL, model)
         .toPromise()
         .then(
           res => {
@@ -37,6 +40,44 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public Update(model: UpdateCompany) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/update`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public Add(model: AddCompany) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/add`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
   /**
