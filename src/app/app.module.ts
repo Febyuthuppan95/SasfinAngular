@@ -83,6 +83,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
+import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 
 
 @NgModule({
@@ -135,6 +136,8 @@ import { ContextMenuDesignationrightsComponent } from './components/context-menu
     CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
+    ViewAddressTypesListComponent,
+    ViewAddressTypesListComponent
   ],
   imports: [
     BrowserModule,

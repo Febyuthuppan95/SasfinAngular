@@ -212,7 +212,6 @@ export class ViewUserListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       specificUserID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

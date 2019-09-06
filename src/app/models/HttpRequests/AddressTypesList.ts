@@ -1,9 +1,9 @@
-export class GetUserList {
+export class AddressTypesList {
   rowEnd: number;
-  rowStart: number;
+  rowStart: number;  
   filter: string;
   userID: number;
-  specificUserID: number;
+  specificAddressTypeID: number;
   orderBy: string;
   orderDirection: string;
 }
