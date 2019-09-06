@@ -46,7 +46,7 @@ export class MainLayoutComponent implements OnInit {
 
   @ViewChild('opentimeoutModal', {static: true })
   opentimeoutModal: ElementRef;
-  
+
   @ViewChild('closetimeoutModal', {static: true })
   closetimeoutModal: ElementRef;
 
@@ -58,7 +58,7 @@ export class MainLayoutComponent implements OnInit {
   sidebarCollapse = true;
   innerWidth: any;
   tableContextMenu = false;
-  count = 0;  
+  count = 0;
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
@@ -66,7 +66,7 @@ export class MainLayoutComponent implements OnInit {
 
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
-      this.updateChildrenComponents();      
+      this.updateChildrenComponents();
     });
 
 
@@ -82,24 +82,24 @@ export class MainLayoutComponent implements OnInit {
       this.toggleHelpValue = toggle;
     });
 
-      //Start watching for user inactivity.
-      this.userIdle.startWatching();
-        
-      // Start watching when user idle is starting.
-      this.userIdle.onTimerStart().subscribe(count => {
-        this.TriggerSessionTimeout(count);        
-      });
-      
-      // Start watch when time is up.
-      this.userIdle.onTimeout().subscribe(() => {
-        this.closetimeoutModal.nativeElement.click();
-        this.userIdle.resetTimer();
-        this.userIdle.stopTimer();
-        this.userIdle.stopWatching();
-        this.userService.logout(); 
-      });
+    // // Start watching for user inactivity.
+    // this.userIdle.startWatching();
 
-    this.userIdle.ping$.subscribe(() => {});
+    // // Start watching when user idle is starting.
+    // this.userIdle.onTimerStart().subscribe(count => {
+    //   this.TriggerSessionTimeout(count);
+    // });
+
+    // // Start watch when time is up.
+    // this.userIdle.onTimeout().subscribe(() => {
+    //   this.closetimeoutModal.nativeElement.click();
+    //   this.userIdle.resetTimer();
+    //   this.userIdle.stopTimer();
+    //   this.userIdle.stopWatching();
+    //   this.userService.logout();
+    // });
+
+    // this.userIdle.ping$.subscribe(() => {});
   }
 
   // Works
@@ -145,19 +145,19 @@ export class MainLayoutComponent implements OnInit {
   }
 
   ResetSessionTimer()
-  {    
+  {
     this.userIdle.stopTimer();
-    this.userIdle.resetTimer();    
+    this.userIdle.resetTimer();
   }
 
-  TriggerSessionTimeout(count){  
+  TriggerSessionTimeout(count){
    this.count = 11;
    this.count =  this.count - count;
 
    if(this.count === 10)
    {
     this.opentimeoutModal.nativeElement.click();
-   
+
    }
   }
 }

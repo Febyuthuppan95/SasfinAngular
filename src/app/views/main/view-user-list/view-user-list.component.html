@@ -192,22 +192,27 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control" [(ngModel)]="this.selectedDesignation"  [ngModelOptions]="{standalone: true}">
-              <option *ngFor="let des of this.designations" [ngValue]="des.designationID"  [selected]="des.designationID === 'this.selectedDesignation'">{{des.name}}</option>
+            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event)">
+              <option selected value="-1">Select a designation</option>
+              <option *ngFor="let des of this.designations" [ngValue]="des.designationID">{{des.name}}</option>
             </select>
           </div>
         <div class="form-group">
           <label class="control-label">Status:</label>
-          <select class="form-control" [(ngModel)]="this.selectedStatus"  [ngModelOptions]="{standalone: true}">
-            <option *ngFor="let stat of this.statusList" [ngValue]="stat.id" [selected]="stat.id === 'this.selectedStatus'">{{stat.name}}</option>
+          <select class="form-control" (change)="onStatusChange($event)">
+              <option selected value="-1">Select a status</option>
+            <option *ngFor="let stat of this.statusList" [ngValue]="stat.id" [selected]="stat.id === this.selectedStatus">{{stat.name}}</option>
           </select>
         </div>
         <div class="form-group">
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
-            <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
+          <label for="editUserImage" class="col-md-10" style="height:18px;padding: 14px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <input hidden id="editUserImage" type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
              (change)="onFileChange($event.target.files); readFile($event)" required/>
-            <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{preview}}" ></div>
+            <div class="col-md-2 text-center" *ngIf="this.preview !== undefined && this.preview !== null"><img class="profile-image shadow" src="{{preview}}" ></div>
           </div>
         </div>
       </div>
@@ -223,7 +228,7 @@
 <!--Add Modal-->
 <button class="hide" data-toggle="modal" data-target="#AddUser" #openAddModal></button>
 <div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalContent">Add</h5>
@@ -232,12 +237,12 @@
         </button>
       </div>
       <form (submit)="addUser($event)" enctype="multipart/form-data">
-      <div class="modal-body">   
+      <div class="modal-body">
           <div class="form-group">
               <label class="control-label">Employee Number:</label>
               <input type="text" placeholder="Employee Number" maxlength="5"  class="form-control"
               [(ngModel)]="this.EmployeeNumb" [ngModelOptions]="{standalone: true}"  required/>
-            </div>      
+            </div>
         <div class="form-group">
           <label class="control-label">First Name:</label>
           <input type="text" placeholder="First Name" class="form-control"
@@ -259,22 +264,26 @@
           [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}"  required/>
         </div>
         <div class="form-group">
-          <label class="control-label">Confirms Password:</label>
+          <label class="control-label">Confirm Password:</label>
           <input type="password" placeholder="Confirm Password" class="form-control"
           [(ngModel)]="this.confirmpassword" [ngModelOptions]="{standalone: true}"  required/>
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control" [(ngModel)]="this.selectedDesignation"  [ngModelOptions]="{standalone: true}">
-              <option *ngFor="let des of this.designations" [ngValue]="des.designationID"  [selected]="des.name === 'this.selectedDesignation'">{{des.name}}</option>
+            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
+              <option selected value="-1">Select a designation</option>
+              <option *ngFor="let des of this.designations" [value]="des.designationID">{{des.name}}</option>
             </select>
-          </div>       
+          </div>
         <div class="form-group">
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
-            <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
-             (change)="onFileChange($event.target.files); readFile($event)" required/>
-            <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{preview}}" ></div>
+            <label for="addUserImage" class="col-md-10" style="height:18px;padding: 14px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <input hidden id="addUserImage" type="file" class="form-control text-right col-md-10"
+             (change)="onFileChange($event.target.files); readFile($event)"/>
+            <div class="col-md-2 text-center" *ngIf="this.preview !== undefined && this.preview !== null"><img class="profile-image shadow" src="{{preview}}" ></div>
           </div>
         </div>
       </div>

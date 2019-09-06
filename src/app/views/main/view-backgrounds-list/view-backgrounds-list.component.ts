@@ -48,6 +48,7 @@ export class ViewBackgroundsListComponent implements OnInit {
   fileName: string;
   uploadForm: FormGroup;
   fileToUpload: File = null;
+  preview: any;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -185,6 +186,7 @@ export class ViewBackgroundsListComponent implements OnInit {
                 this.backgroundRequestModel.rowEnd = 15;
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
+                this.preview = null;
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -200,6 +202,18 @@ export class ViewBackgroundsListComponent implements OnInit {
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+  }
+
+  readFile(event): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.preview = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   updateHelpContext(slug: string) {
