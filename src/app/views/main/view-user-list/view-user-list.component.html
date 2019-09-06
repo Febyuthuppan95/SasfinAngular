@@ -16,7 +16,7 @@
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadUsers()">
+          (change)="loadUsers($event)">
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
