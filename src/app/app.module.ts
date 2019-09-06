@@ -175,7 +175,6 @@ import { ContextMenuDesignationrightsComponent } from './components/context-menu
     HelpGlossaryService,
     PlaceService,
     TransactionService,
-    AddressTypesService,
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
