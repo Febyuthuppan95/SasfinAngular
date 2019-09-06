@@ -48,13 +48,13 @@ export class ViewCompanyListComponent implements OnInit {
 
   @ViewChild('openeditModal', {static: true})
   openeditModal: ElementRef;
-  
+
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
 
   @ViewChild('openaddModal', {static: true})
   openaddModal: ElementRef;
-  
+
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
@@ -172,7 +172,7 @@ export class ViewCompanyListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
-    const model: CompanyList = {     
+    const model: CompanyList = {
       userID: this.currentUser.userID,
       specificCompanyID: -1,
       rowStart: this.rowStart,
@@ -268,13 +268,15 @@ export class ViewCompanyListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusCompanyID = company.id;
+    this.focusCompanyID = company.companyID;
     this.focusHelpName = company.name;
     this.CompanyName = company.name;
     this.RegNo = company.regNo;
     this.ExportRegNo = company.regExportNo;
     this.VATNo = company.VATNo;
-    console.log(company.VATNo);
+
+
+    console.log(company.id);
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -296,22 +298,22 @@ export class ViewCompanyListComponent implements OnInit {
   EditCompony($event)
   {
     this.themeService.toggleContextMenu(false);
-    this.contextMenu = false;    
-    this.openeditModal.nativeElement.click();    
+    this.contextMenu = false;
+    this.openeditModal.nativeElement.click();
   }
 
   Add()
-  { 
-    this.openaddModal.nativeElement.click();    
+  {
+    this.openaddModal.nativeElement.click();
   }
 
-  addCompany(){     
-    const requestModel: AddCompany = {      
+  addCompany(){
+    const requestModel: AddCompany = {
       userID: this.currentUser.userID,
       Name: this.CompanyName,
       RegNo: this.RegNo,
       ExportRegNo: this.ExportRegNo,
-      VATNo: this.VATNo      
+      VATNo: this.VATNo
     };
 
     this.companyService.Add(requestModel).then(
@@ -323,30 +325,30 @@ export class ViewCompanyListComponent implements OnInit {
           {
             this.notify.successmsg('SUCCESS','Company successfully added');
             this.loadCompanies()
-            this.closeaddModal.nativeElement.click();  
-          }             
+            this.closeaddModal.nativeElement.click();
+          }
 
-            
+
         },
-        msg => {          
+        msg => {
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'
-          );     
-          this.closeaddModal.nativeElement.click();   
+          );
+          this.closeaddModal.nativeElement.click();
         }
       );
   }
-  
 
-  UpdateCompany(){     
-    const requestModel: UpdateCompany = {      
+
+  UpdateCompany(){
+    const requestModel: UpdateCompany = {
       userID: this.currentUser.userID,
       SpesificCopmanyID: this.focusCompanyID,
       Name: this.CompanyName,
       RegNo: this.RegNo,
       ExportRegNo: this.ExportRegNo,
-      VATNo: this.VATNo      
+      VATNo: this.VATNo
     };
 
     this.companyService.Update(requestModel).then(
@@ -358,15 +360,15 @@ export class ViewCompanyListComponent implements OnInit {
           {
             this.notify.successmsg('SUCCESS','Company successfully Updated');
             this.loadCompanies()
-            this.closeaddModal.nativeElement.click();  
-          }                         
+            this.closeaddModal.nativeElement.click();
+          }
         },
-        msg => {          
+        msg => {
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'
-          );     
-          this.closeaddModal.nativeElement.click();   
+          );
+          this.closeaddModal.nativeElement.click();
         }
       );
   }

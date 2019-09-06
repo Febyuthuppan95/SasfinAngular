@@ -20,6 +20,9 @@ export class CompaniesContextMenuComponent implements OnInit {
   @Output() EditCompony = new EventEmitter<string>();
 
   ngOnInit() {
+    console.log(this.companyID);
+    console.log(this.companyName);
+
     this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
   }
 
@@ -38,6 +41,7 @@ export class CompaniesContextMenuComponent implements OnInit {
   companyContacts() {
     this.router.navigate(['companies', 'contacts']);
   }
+
   Edit() {
     this.EditCompony.emit(JSON.stringify({
       companyID: this.companyID

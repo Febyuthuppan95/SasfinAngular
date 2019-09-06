@@ -91,6 +91,7 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
+import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 
 
 
@@ -147,7 +148,8 @@ import { CompanyService } from './services/Company.Service';
     ViewCompanyInfoComponent,
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
-    ContextMenuCompanyInfoComponent
+    ContextMenuCompanyInfoComponent,
+    FormCustomReleaseComponent
   ],
   imports: [
     BrowserModule,
