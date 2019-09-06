@@ -184,7 +184,7 @@ export class ViewCompanyListComponent implements OnInit {
 
     this.companyService
       .list(model).then(
-        (res: CompaniesListResponse) => {
+        (res: CompaniesListResponse) => {        
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -197,7 +197,7 @@ export class ViewCompanyListComponent implements OnInit {
             this.showingRecords = res.companies.length;
             this.totalShowing = +this.rowStart + +this.dataset.companies.length - 1;
             this.paginateData();
-            console.log(res.companies);
+           
           }
         },
         msg => {
@@ -206,7 +206,7 @@ export class ViewCompanyListComponent implements OnInit {
             'Server Error',
             'Something went wrong while trying to access the server.'
           );
-          console.log(JSON.stringify(msg));
+         
         }
       );
   }
@@ -268,13 +268,12 @@ export class ViewCompanyListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusCompanyID = company.id;
+    this.focusCompanyID = company.companyID;
     this.focusHelpName = company.name;
     this.CompanyName = company.name;
     this.RegNo = company.regNo;
     this.ExportRegNo = company.regExportNo;
-    this.VATNo = company.VATNo;
-    console.log(company.VATNo);
+    this.VATNo = company.vatNo;  
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -352,21 +351,20 @@ export class ViewCompanyListComponent implements OnInit {
     this.companyService.Update(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
           else
           {
-            this.notify.successmsg('SUCCESS','Company successfully Updated');
+            this.notify.successmsg('SUCCESS','Company successfully Updated');          
+            this.closeeditModal.nativeElement.click();    
             this.loadCompanies()
-            this.closeaddModal.nativeElement.click();  
           }                         
         },
         msg => {          
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'
-          );     
-          this.closeaddModal.nativeElement.click();   
+          );              
         }
       );
   }
