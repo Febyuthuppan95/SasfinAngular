@@ -12,5 +12,5 @@ export class Company {
   name: string;
   regNo: string;
   regExportNo: string;
-  VATNo: string;
+  vatNo: string;
 }

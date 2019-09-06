@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-companies-context-menu',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class CompaniesContextMenuComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private companyService: CompanyService) { }
 
   @Input() x: number;
   @Input() y: number;
@@ -16,12 +17,34 @@ export class CompaniesContextMenuComponent implements OnInit {
   @Input() companyName: string;
   @Input() currentTheme: string;
 
-  @Output() viewTransactionsEmit = new EventEmitter<string>();
+  @Output() EditCompony = new EventEmitter<string>();
 
   ngOnInit() {
+    console.log(this.companyID);
+    console.log(this.companyName);
+
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
   }
 
   viewTransactions() {
-    this.router.navigate(['transactions', this.companyID, this.companyName]);
+    this.router.navigate(['companies', 'transactions']);
+  }
+
+  companyInfo() {
+    this.router.navigate(['companies', 'info']);
+  }
+
+  companyAddresses() {
+    this.router.navigate(['companies', 'addresses']);
+  }
+
+  companyContacts() {
+    this.router.navigate(['companies', 'contacts']);
+  }
+
+  Edit() {
+    this.EditCompony.emit(JSON.stringify({
+      companyID: this.companyID
+    }));
   }
 }

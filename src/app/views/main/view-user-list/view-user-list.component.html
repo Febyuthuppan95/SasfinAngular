@@ -9,14 +9,14 @@
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
     <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Users</h4><span style="margin-left:10px;"><button  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Users</h4><span style="margin-left:10px;"><button (click)="addNewUser()"  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
     </div>
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadUsers()">
+          (change)="loadUsers(false)">
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
@@ -168,11 +168,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form (submit)="updateUser()" enctype="multipart/form-data">
+      <form (submit)="updateUser($event)" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Emp No:</label>
-              <input type="text" placeholder="Emp No" class="form-control" 
+              <input type="text" placeholder="Emp No" class="form-control"
               [(ngModel)]="this.EmpNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
         <div class="form-group">
@@ -192,27 +192,103 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control"> 
-              <option *ngFor="let des of this.designations" [ngValue]="des" [selected]="des.name === 'this.selectedDesignation'">{{des.name}}</option>
+            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event)">
+              <option selected value="-1">Select a designation</option>
+              <option *ngFor="let des of this.designations" [ngValue]="des.designationID">{{des.name}}</option>
             </select>
           </div>
         <div class="form-group">
           <label class="control-label">Status:</label>
-          <select class="form-control">
-            <option *ngFor="let stat of this.statusList" [ngValue]="stat" [selected]="stat.name === 'this.selectedStatus'">{{stat.name}}</option>
+          <select class="form-control" (change)="onStatusChange($event)">
+              <option selected value="-1">Select a status</option>
+            <option *ngFor="let stat of this.statusList" [ngValue]="stat.id" [selected]="stat.id === this.selectedStatus">{{stat.name}}</option>
           </select>
         </div>
         <div class="form-group">
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
-            <input type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
-             (change)="readFile($event)" required/>
-            <div class="col-md-2 text-center"><img class="profile-image shadow" src="{{this.ProfileImage}}" ></div>
+          <label for="editUserImage" class="col-md-10" style="height:18px;padding: 14px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <input hidden id="editUserImage" type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
+             (change)="onFileChange($event.target.files); readFile($event)" required/>
+            <div class="col-md-2 text-center" *ngIf="this.preview !== undefined && this.preview !== null"><img class="profile-image shadow" src="{{preview}}" ></div>
           </div>
         </div>
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#AddUser" #openAddModal></button>
+<div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="addUser($event)" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="form-group">
+              <label class="control-label">Employee Number:</label>
+              <input type="text" placeholder="Employee Number" maxlength="5"  class="form-control"
+              [(ngModel)]="this.EmployeeNumb" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+        <div class="form-group">
+          <label class="control-label">First Name:</label>
+          <input type="text" placeholder="First Name" class="form-control"
+          [(ngModel)]="this.selectedFirstName" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Surname:</label>
+          <input type="text" placeholder="Surname" class="form-control"
+          [(ngModel)]="this.selectedSurName" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Email:</label>
+          <input type="text" placeholder="Email" class="form-control"
+          [(ngModel)]="this.selectedEmail" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Password:</label>
+          <input type="password" placeholder="Password" class="form-control"
+          [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Confirm Password:</label>
+          <input type="password" placeholder="Confirm Password" class="form-control"
+          [(ngModel)]="this.confirmpassword" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Designation:</label>
+            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
+              <option selected value="-1">Select a designation</option>
+              <option *ngFor="let des of this.designations" [value]="des.designationID">{{des.name}}</option>
+            </select>
+          </div>
+        <div class="form-group">
+            <label class="control-label">Profile Image:</label>
+          <div class="row" style="margin-left:0px;">
+            <label for="addUserImage" class="col-md-10" style="height:18px;padding: 14px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <input hidden id="addUserImage" type="file" class="form-control text-right col-md-10"
+             (change)="onFileChange($event.target.files); readFile($event)"/>
+            <div class="col-md-2 text-center" *ngIf="this.preview !== undefined && this.preview !== null"><img class="profile-image shadow" src="{{preview}}" ></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
         <button type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>

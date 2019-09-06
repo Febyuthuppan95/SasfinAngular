@@ -32,7 +32,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'HelpGlossary';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -78,7 +77,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -173,7 +171,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
       // userID: this.currentUser.userID,
       userID: 3,
       specificHelpGlossaryID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -313,7 +310,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
       const requestModel: UpdateHelpGlossary = {
         userID: 3,
         helpGlossaryID: this.focusHelp,
-        rightName: 'HelpGlossary',
         name: this.focusHelpName,
         description: this.focusDescription
       };

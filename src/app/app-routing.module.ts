@@ -23,6 +23,9 @@ import { ViewCompanyListComponent } from './views/main/view-company-list/view-co
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
+import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
+import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
+import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 
 const routes: Routes = [
   {
@@ -53,6 +56,11 @@ const routes: Routes = [
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
+          { path: 'companies/info', component: ViewCompanyInfoComponent },
+          { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
+          { path: 'companies/contacts', component: ViewCompanyContactsComponent },
+          { path: 'companies/transactions', component: ViewTransactionsComponent },
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
           { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
           { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },          
         ]

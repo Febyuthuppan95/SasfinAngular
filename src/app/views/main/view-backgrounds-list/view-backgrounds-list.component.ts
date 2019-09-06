@@ -48,6 +48,7 @@ export class ViewBackgroundsListComponent implements OnInit {
   fileName: string;
   uploadForm: FormGroup;
   fileToUpload: File = null;
+  preview: any;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -58,7 +59,6 @@ export class ViewBackgroundsListComponent implements OnInit {
     this.backgroundRequestModel = {
       userID: 3, // Default User ID for testing
       specificBackgroundID: -1,
-      rightName: 'Backgrounds',
       filter: '',
       orderBy: 'Name',
       orderByDirection: 'ASC',
@@ -173,8 +173,7 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3,
-        'Backgrounds'
+        3
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
@@ -185,6 +184,7 @@ export class ViewBackgroundsListComponent implements OnInit {
                 this.backgroundRequestModel.rowEnd = 15;
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
+                this.preview = null;
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -200,6 +200,18 @@ export class ViewBackgroundsListComponent implements OnInit {
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+  }
+
+  readFile(event): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.preview = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   updateHelpContext(slug: string) {

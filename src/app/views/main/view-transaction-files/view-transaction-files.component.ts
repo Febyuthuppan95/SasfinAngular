@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -10,6 +10,8 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -27,7 +29,6 @@ export class ViewTransactionFilesComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Attachments';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -45,6 +46,12 @@ export class ViewTransactionFilesComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -60,11 +67,11 @@ export class ViewTransactionFilesComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
+  focusPath: string;
 
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -89,6 +96,20 @@ export class ViewTransactionFilesComponent implements OnInit {
   selectedRow = -1;
 
   transactionID: number;
+
+  transactionTypes = [
+    { name: 'ICI', value: 1 },
+    { name: 'SAD500', value: 2 },
+    { name: 'PACKING', value: 3 },
+    { name: 'CUSRELEASE', value: 4 },
+    { name: 'VOC', value: 4 },
+  ];
+  attachmentName: string;
+  attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
+  selectedTransactionType: number;
+  fileToUpload: File;
+  currentAttachment = 0;
+  uploading = false;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -169,7 +190,6 @@ export class ViewTransactionFilesComponent implements OnInit {
       userID: this.currentUser.userID,
       specificTransactionID: this.transactionID,
       specificAttachmentID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -180,6 +200,19 @@ export class ViewTransactionFilesComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -252,7 +285,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, id, fileName) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -262,6 +295,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     }
 
     this.focusHelp = id;
+    this.focusPath = fileName;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -284,5 +318,48 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.router.navigate(['companies']);
   }
 
+   uploadAttachments() {
+    this.uploading = true;
+    this.attachmentQueue.forEach((attach) => {
+      attach.status = 'Uploading';
+      attach.uploading = false;
 
+      this.transationService.uploadAttachment(
+        attach.name,
+        attach.file,
+        attach.type,
+        this.transactionID,
+        this.currentUser.userID,
+        'The Boring Company'
+      ).then(
+        (res) => {
+            attach.uploading = false;
+            attach.status = 'Complete';
+            this.loadAttachments();
+        },
+        (msg) => {
+          attach.uploading = false;
+          attach.status = 'Failed to upload';
+      }
+      );
+    });
+  }
+
+  upload() {
+    this.openModal.nativeElement.click();
+  }
+
+  onFileChange(files: FileList) {
+    this.attachmentQueue[this.currentAttachment] = {
+      name: this.attachmentName,
+      type: this.transactionTypes[this.selectedTransactionType - 1].name,
+      file: files.item(0),
+      uploading: false,
+      status: 'Pending Upload'
+    };
+
+    this.attachmentName = '';
+    this.selectedTransactionType = - 1;
+    this.currentAttachment++;
+  }
 }

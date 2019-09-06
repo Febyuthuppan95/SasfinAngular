@@ -12,4 +12,5 @@ export class TransactionFile {
   transactionID: number;
   file: string;
   fileType: string;
+  name: string;
 }

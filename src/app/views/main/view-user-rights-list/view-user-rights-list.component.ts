@@ -43,7 +43,6 @@ export class ViewUserRightsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Rights';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -95,7 +94,6 @@ export class ViewUserRightsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -112,13 +110,13 @@ export class ViewUserRightsListComponent implements OnInit {
   currentRightID: number;
 
   closeResult: string;
- 
+
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
-    .subscribe(params => {      
-       this.specificUser = +params.get('id');  
-       this.currentUserName = params.get('name');    
+    .subscribe(params => {
+       this.specificUser = +params.get('id');
+       this.currentUserName = params.get('name');
     });
 
     this.loadUserRights();
@@ -198,29 +196,29 @@ export class ViewUserRightsListComponent implements OnInit {
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      rightName: this.rightName,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      rowStart: 1,
+      rowEnd: 100000000000000000000000000000000000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
-    };    
+    };
     this.rightsService
     .getRightList(model)
     .then(
-      (res: RightListResponse) => {        
-        this.rightsList = res.rightList;        
+      (res: RightListResponse) => {
+        console.log(res.rightList)
+        this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (uRight.rightID === right.rightID) {             
+            if (uRight.rightID === right.rightID) {
               this.rightsList.splice(count, 1);
             } else {
               count ++;
             }
           });
         });
-      },      
+      },
       msg => {
         this.showLoader = false;
         // this.notify.errorsmsg(
@@ -238,7 +236,6 @@ export class ViewUserRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificUserID: this.specificUser,
-      rightName: 'Users',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
@@ -248,29 +245,50 @@ export class ViewUserRightsListComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success       
+        // Process Success 
+        if(!this.openAddModal)
+        {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+        }           
+        
+        
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.userRightsList.length;
         this.totalShowing += this.rowStart + this.userRightsList.length - 1;
         if (this.rowCount === 0) {
-          this.noData = true;         
+          this.noData = true;
         } else {
           this.noData = false;
         }       
-        this.paginateData();          
+       
+        this.loadAvailableRights();
+        this.paginateData();
       },
       msg => {
         // Process Failure
         this.showLoader = false;
+
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-      }      
-    );    
-    this.loadAvailableRights();
+      }
+    );
+
   }
 
   updateSort(orderBy: string) {
@@ -321,11 +339,9 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = 'Users';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
-      // console.log(this.rightName);
-      this.removeRight(this.rightId, this.rightName);
+      this.removeRight(this.rightId);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -335,26 +351,33 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmAdd() {
     this.openAddModal.nativeElement.click();
-    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //   // console.log(result);
-    //   // this.addNewRight(this.rightId, this.rightName);
-    //   // Remove the right
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
   }
-  removeRight(id: number, name: string) {
-    console.log(id);
+  removeRight(id: number,) {
+
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
-      rightName: 'Users'
     };
     const result = this.userService
     .updateUserRight(requestModel).then(
-      (res: UserRightReponse) => {        
+      (res: UserRightReponse) => {
+        
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+
         this.loadUserRights();
+        
       },
       msg => {
         this.notify.errorsmsg(
@@ -366,16 +389,27 @@ export class ViewUserRightsListComponent implements OnInit {
   }
   addNewRight(id, name) {
     const requestModel: AddUserRight = {
-      userID: this.currentUser.userID,  
+      userID: this.currentUser.userID,
       addedUserID:this.specificUser,
       rightID: id,
-      rightName: 'Users'
     };
     console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        console.log(res);
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
         this.loadUserRights();
       },
       msg => {
@@ -413,5 +447,5 @@ export class ViewUserRightsListComponent implements OnInit {
   setClickedRow(index) {
     this.selectedRow = index;
   }
-  
+
 }

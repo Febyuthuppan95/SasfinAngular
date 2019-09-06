@@ -16,6 +16,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() transactionID: number;
   @Input() attachmentID: number;
   @Input() currentTheme: string;
+  @Input() docPath: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
 
@@ -23,7 +24,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   }
 
   capture() {
-    this.docService.loadDocumentToViewer('sample.pdf');
+    this.docService.loadDocumentToViewer(this.docPath);
     this.router.navigate(['capture', 'transaction', 'attachment', this.transactionID]);
   }
 

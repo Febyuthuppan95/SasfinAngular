@@ -1,4 +1,3 @@
-
 import { ContextMenuUserComponent } from './components/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -22,6 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -84,6 +86,15 @@ import { ContextMenuUserrightsComponent } from './components/context-menu-userri
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
+import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
+import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
+import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
+import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
+import { UserIdleModule } from 'angular-user-idle';
+import { CompanyService } from './services/Company.Service';
+import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
+
+
 
 
 @NgModule({
@@ -136,8 +147,16 @@ import { ViewAddressTypesListComponent } from './views/main/view-address-types-l
     CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
+<<<<<<< HEAD
     ViewAddressTypesListComponent,
     ViewAddressTypesListComponent
+=======
+    ViewCompanyInfoComponent,
+    ViewCompanyAddressesComponent,
+    ViewCompanyContactsComponent,
+    ContextMenuCompanyInfoComponent,
+    FormCustomReleaseComponent
+>>>>>>> c0d891fac5f7b88877d22cc758b0fc72c0ed5045
   ],
   imports: [
     BrowserModule,
@@ -146,6 +165,7 @@ import { ViewAddressTypesListComponent } from './views/main/view-address-types-l
     FormsModule,
     BrowserAnimationsModule,
     PdfViewerModule,
+    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,
@@ -162,7 +182,10 @@ import { ViewAddressTypesListComponent } from './views/main/view-address-types-l
     MatIconModule,
     MatChipsModule,
     MatBottomSheetModule,
-    MatListModule
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatMenuModule
   ],
   providers: [
     CookieService,
@@ -181,6 +204,7 @@ import { ViewAddressTypesListComponent } from './views/main/view-address-types-l
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
+    CompanyService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

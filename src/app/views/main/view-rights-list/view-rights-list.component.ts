@@ -22,7 +22,6 @@ export class ViewRightsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Rights';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -57,7 +56,6 @@ export class ViewRightsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -135,7 +133,6 @@ export class ViewRightsListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       specificRightID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -145,6 +142,21 @@ export class ViewRightsListComponent implements OnInit {
       .getRightList(model)
       .then(
         (res: RightListResponse) => {
+
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -160,10 +172,10 @@ export class ViewRightsListComponent implements OnInit {
         },
         msg => {
           this.showLoader = false;
-          // this.notify.errorsmsg(
-          //   'Server Error',
-          //   'Something went wrong while trying to access the server.'
-          // );
+           this.notify.errorsmsg(
+             'Server Error',
+             'Something went wrong while trying to access the server.'
+          );
         }
       );
   }

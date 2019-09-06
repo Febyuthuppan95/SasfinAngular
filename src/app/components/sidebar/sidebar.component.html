@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas offset-sidebar shadow ls-tile-{{ currentTheme }}" id="sidebar"
   [ngClass]="(collapse)? 'collapse-sidebar' : '' ">
   <ul class="nav bg-transparent" style="padding:22px 10px 22px 12px;">
-    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    <li *ngIf="showusers" class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-users-link')"
     matTooltip="Users" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/users" [routerLinkActive]="['active-item']" >
@@ -9,7 +9,8 @@
         <span class="menu-title">Users</span>
       </a>
     </li>
-    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    
+    <li *ngIf="showdesignation" class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-designations-link')"
     matTooltip="Designations" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/designations" [routerLinkActive]="['active-item']">
@@ -17,7 +18,7 @@
         <span class="menu-title">Designations</span>
       </a>
     </li>
-    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    <li *ngIf="showrights" class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-rights-link')"
     matTooltip="Rights" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }}" routerLink="/rights" [routerLinkActive]="['active-item']">
@@ -25,7 +26,7 @@
         <span class="menu-title">Rights</span>
       </a>
     </li>
-    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    <li *ngIf="showbackgrounds" class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-backgrounds-link')"
     matTooltip="Backgrounds" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/backgrounds" [routerLinkActive]="['active-item']">
@@ -33,7 +34,7 @@
         <span class="menu-title">Backgrounds</span>
       </a>
     </li>
-    <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+    <li *ngIf="showhelpglossary" class="nav-item ls-btn-hover-{{ currentTheme }}"
     (mouseover)="updateHelpContext('sidebar-help-glossary-link')"
     matTooltip="Help Glossary" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
     <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/helpglossary" [routerLinkActive]="['active-item']">
@@ -41,7 +42,7 @@
       <span class="menu-title">Help Glossary</span>
     </a>
   </li>
-  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  <li *ngIf="showunitofmeasures" class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-units-measure-link')"
   matTooltip="Units Of Measure" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/unitsofmeasure" [routerLinkActive]="['active-item']">
@@ -50,15 +51,15 @@
   </a>
 </li>
 <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-  (mouseover)="updateHelpContext('sidebar-places-link')"
+  (mouseover)="updateHelpContext('sidebar-locations-link')"
   matTooltip="Locations" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/locations" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-google-maps menu-icon"></i>
     <span class="menu-title">Locations</span>
   </a>
   </li>
-  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-  (mouseover)="updateHelpContext('sidebar-places-link')"
+  <li  *ngIf="showcompanies" class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-companies-link')"
   matTooltip="Companies" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/companies" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-office-building menu-icon"></i>
