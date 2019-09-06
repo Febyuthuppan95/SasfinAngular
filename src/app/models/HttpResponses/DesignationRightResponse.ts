@@ -4,5 +4,4 @@ export class DesignationRightReponse {
   outcome: Outcome;
   userID: number;
   designationRightID: number;
-  rightName: string;
 }

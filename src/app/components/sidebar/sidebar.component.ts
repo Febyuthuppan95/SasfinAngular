@@ -24,7 +24,6 @@ export class SidebarComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -93,7 +92,6 @@ export class SidebarComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificUserID: this.currentUser.userID,
-      rightName: 'Rights',
       filter: '',
       orderBy: 'Name',
       orderByDirection: 'DESC',

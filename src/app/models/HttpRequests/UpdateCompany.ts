@@ -4,6 +4,5 @@ export class UpdateCompany {
     RegNo: string;
     ExportRegNo: string;
     VATNo: string;    
-    Name: string;    
-    rightName: string;
+    Name: string;   
 }

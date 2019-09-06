@@ -3,6 +3,5 @@ export class AddCompany {
     RegNo: string;
     ExportRegNo: string;
     VATNo: string;    
-    Name: string;    
-    rightName: string;
+    Name: string;        
 }

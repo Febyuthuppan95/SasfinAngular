@@ -32,7 +32,6 @@ export class ViewTransactionsComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Companies';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -75,7 +74,6 @@ export class ViewTransactionsComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -117,7 +115,6 @@ export class ViewTransactionsComponent implements OnInit {
     rowStart: 1,
     rowEnd: 100,
     filter: '',
-    rightName: 'Transactions',
     orderBy: '',
     orderByDirection: '',
     userID: this.userService.getCurrentUser().userID,
@@ -128,7 +125,6 @@ export class ViewTransactionsComponent implements OnInit {
     rowStart: 1,
     rowEnd: 100,
     filter: '',
-    rightName: 'Transactions',
     orderBy: '',
     orderByDirection: '',
     userID: this.userService.getCurrentUser().userID,
@@ -252,7 +248,6 @@ export class ViewTransactionsComponent implements OnInit {
       userID: this.currentUser.userID,
       companyID: this.companyID,
       specificTransactionID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -387,7 +382,6 @@ export class ViewTransactionsComponent implements OnInit {
       1,
       1,
       this.newTransaction.name,
-      'Transactions'
     ).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {

@@ -29,7 +29,6 @@ export class ViewTransactionFilesComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Attachments';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -73,7 +72,6 @@ export class ViewTransactionFilesComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -192,7 +190,6 @@ export class ViewTransactionFilesComponent implements OnInit {
       userID: this.currentUser.userID,
       specificTransactionID: this.transactionID,
       specificAttachmentID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

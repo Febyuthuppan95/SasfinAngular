@@ -51,7 +51,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection = 'ASC';
@@ -84,7 +83,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
-      this.rightName = 'Designations';
       this.activePage = +1;
       this.prevPageState = true;
       this.nextPageState = false;
@@ -133,7 +131,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       specificRightID: -1,
@@ -174,7 +171,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificDesignationID: this.currentDesignation,
-      rightName: 'Designations',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
@@ -372,12 +368,10 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmRemove(content, id, Name) {
-    this.rightId = id;
-    this.rightName = 'Designations';
+    this.rightId = id;    
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
-      // console.log(this.rightName);
-      this.removeRight(this.rightId, this.rightName);
+      this.removeRight(this.rightId);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -386,22 +380,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmAdd(add) {
-    this.openAddModal.nativeElement.click();
-    //this.addNewRight(this.rightId, this.rightName);
-    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //   // console.log(result);
-    //   // this.addNewRight(this.rightId, this.rightName);
-    //   // Remove the right
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
+    this.openAddModal.nativeElement.click();   
   }
-  removeRight(id: number, name: string) {
+  removeRight(id: number) {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
-      rightName: 'Designations'
     };
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
@@ -435,7 +419,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,
       rightID: id,
-      rightName: 'Designations'
     };
     const result = this.designationsService
     .addDesignationright(requestModel).then(

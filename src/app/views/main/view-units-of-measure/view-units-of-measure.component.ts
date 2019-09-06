@@ -27,7 +27,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   unitsOfMeasure: ListUnitsOfMeasureRequest = {
     userID: 3,
     specificUnitOfMeasureID: -1,
-    rightName: 'UnitOfMeasures',
     filter: '',
     orderBy: 'Name',
     orderByDirection: 'ASC',
@@ -268,7 +267,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       const requestModel: UpdateUnitOfMeasureRequest = {
         userID: 3,
         unitOfMeasureID: this.focusUnitId,
-        rightName: 'UnitOfMeasures',
         name: this.focusUnitName,
         description: this.focusUnitDescription,
         isDeleted: 0,
@@ -282,7 +280,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
           this.unitsOfMeasure = {
             userID: 3,
             specificUnitOfMeasureID: -1,
-            rightName: 'UnitOfMeasures',
             filter: '',
             orderBy: 'Name',
             orderByDirection: 'ASC',

@@ -26,7 +26,6 @@ export class ViewCompanyInfoComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'CompanyAddInfoList';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -64,7 +63,6 @@ export class ViewCompanyInfoComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -173,7 +171,6 @@ export class ViewCompanyInfoComponent implements OnInit {
       specificCompanyID: this.companyID,
       specificCompanyAddInfoID: -1,
       specificCompanyAddInfoTypeID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

@@ -49,7 +49,6 @@ export class ViewPlacesComponent implements OnInit {
     orderByDirection: 'ASC',
     rowStart: 1,
     rowEnd: 10000,
-    rightName: 'Places',
     userID: 4,
   };
 
@@ -177,7 +176,6 @@ export class ViewPlacesComponent implements OnInit {
     const requestModel = {
       userID: this.currentUser.userID,
       name: this.newLocationName,
-      rightName: 'Places',
     };
 
     this.placeService.addCountry(requestModel).then(
@@ -199,7 +197,6 @@ export class ViewPlacesComponent implements OnInit {
       userID: this.currentUser.userID,
       countryID: this.locationParentID,
       name: this.newLocationName,
-      rightName: 'Places',
     };
 
     this.placeService.addRegion(requestModel).then(
@@ -221,7 +218,6 @@ export class ViewPlacesComponent implements OnInit {
       userID: this.currentUser.userID,
       regionID: this.locationParentID,
       name: this.newLocationName,
-      rightName: 'Places',
     };
 
     this.placeService.addCity(requestModel).then(
@@ -247,7 +243,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         name: this.locationName,
         countryID: this.locationID,
-        rightName: 'Places',
         isDeleted: true,
       };
 
@@ -270,7 +265,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         name: this.locationName,
         regionID: this.locationID,
-        rightName: 'Places',
         isDeleted: true,
       };
 
@@ -293,7 +287,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         cityID: this.locationID,
         name: this.locationName,
-        rightName: 'Places',
         isDeleted: true,
       };
 
@@ -320,7 +313,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         name: this.locationName,
         countryID: this.locationID,
-        rightName: 'Places',
       };
 
       this.placeService.updateCountry(requestModel).then(
@@ -342,7 +334,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         name: this.locationName,
         regionID: this.locationID,
-        rightName: 'Places',
       };
 
       this.placeService.updateRegion(requestModel).then(
@@ -364,7 +355,6 @@ export class ViewPlacesComponent implements OnInit {
         userID: this.currentUser.userID,
         cityID: this.locationID,
         name: this.locationName,
-        rightName: 'Places',
       };
 
       this.placeService.updateCity(requestModel).then(

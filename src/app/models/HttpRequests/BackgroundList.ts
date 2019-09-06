@@ -1,7 +1,6 @@
 export class BackgroundListRequest {
   userID: number;
-  specificBackgroundID: number;
-  rightName: string;
+  specificBackgroundID: number; 
   filter: string;
   orderBy: string;
   orderByDirection: string;

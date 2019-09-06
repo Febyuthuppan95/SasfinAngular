@@ -59,7 +59,6 @@ export class ViewBackgroundsListComponent implements OnInit {
     this.backgroundRequestModel = {
       userID: 3, // Default User ID for testing
       specificBackgroundID: -1,
-      rightName: 'Backgrounds',
       filter: '',
       orderBy: 'Name',
       orderByDirection: 'ASC',
@@ -174,8 +173,7 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3,
-        'Backgrounds'
+        3
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {

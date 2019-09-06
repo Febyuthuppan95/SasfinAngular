@@ -39,7 +39,6 @@ export class ViewUserListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Users';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -121,7 +120,6 @@ export class ViewUserListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderDirection: string;
@@ -152,7 +150,6 @@ export class ViewUserListComponent implements OnInit {
       orderByDirection: 'DESC',
       rowStart: 1,
       rowEnd: 1000,
-      rightName: 'Designations',
       specificDesignationID: -1,
       filter: ''
     };
@@ -232,7 +229,6 @@ export class ViewUserListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       specificUserID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -478,7 +474,6 @@ export class ViewUserListComponent implements OnInit {
           email: this.selectedEmail,
           password: this.password,
           specificDesignationID: +this.selectDesignationID,
-          rightName: 'AddUser',
           profileImage: ImageName
         };
 
@@ -535,7 +530,6 @@ export class ViewUserListComponent implements OnInit {
       empNo: this.EmpNo,
       specificDesignationID: +this.selectedDesignation,
       specificStatusID: +this.selectedStatus,
-      rightName: 'UpdateUser',
       profileImage: ImageName
     };
 

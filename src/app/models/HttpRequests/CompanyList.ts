@@ -1,7 +1,6 @@
 export class CompanyList {      
     userID: number;
-    specificCompanyID: number;
-    rightName: string;
+    specificCompanyID: number;    
     filter: string;
     rowStart: number;
     rowEnd: number;

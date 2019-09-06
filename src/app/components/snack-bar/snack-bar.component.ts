@@ -90,7 +90,6 @@ export class SnackBarComponent implements OnInit {
       userID: this.currentUser.userID,
       objectHelpID: this.focus.id,
       name: this.settings.title,
-      rightName: 'ObjectHelp',
       description: this.settings.content
     };
 

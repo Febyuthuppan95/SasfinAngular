@@ -128,8 +128,7 @@ export class TransactionService {
       type,
       transactionID,
       userID,
-      company,
-      rightName: 'Attachments'
+      company      
     };
 
     const formData = new FormData();
@@ -144,14 +143,13 @@ export class TransactionService {
     });
   }
 
-  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string, rightName: string) {
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string) {
     const requestModel: CreateTransactionRequest = {
       userID,
       specificCompanyID: companyID,
       specificTransactioTypeID: typeID,
       specificTransactioStatusID: statusID,
-      name,
-      rightName
+      name
     };
 
     return new Promise(async (resolve, reject) => {

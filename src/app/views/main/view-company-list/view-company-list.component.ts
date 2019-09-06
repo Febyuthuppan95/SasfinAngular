@@ -28,7 +28,6 @@ export class ViewCompanyListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Companies';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -82,7 +81,6 @@ export class ViewCompanyListComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -177,7 +175,6 @@ export class ViewCompanyListComponent implements OnInit {
     const model: CompanyList = {     
       userID: this.currentUser.userID,
       specificCompanyID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       filter: this.filter,
       rowEnd: this.rowEnd,
@@ -312,7 +309,6 @@ export class ViewCompanyListComponent implements OnInit {
     const requestModel: AddCompany = {      
       userID: this.currentUser.userID,
       Name: this.CompanyName,
-      rightName: 'CompanyAdd',
       RegNo: this.RegNo,
       ExportRegNo: this.ExportRegNo,
       VATNo: this.VATNo      
@@ -348,7 +344,6 @@ export class ViewCompanyListComponent implements OnInit {
       userID: this.currentUser.userID,
       SpesificCopmanyID: this.focusCompanyID,
       Name: this.CompanyName,
-      rightName: 'CompanyAdd',
       RegNo: this.RegNo,
       ExportRegNo: this.ExportRegNo,
       VATNo: this.VATNo      

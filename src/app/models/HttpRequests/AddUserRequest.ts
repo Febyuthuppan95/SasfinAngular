@@ -6,6 +6,5 @@ export class AddUserRequest {
     email: string;
     password: string;
     specificDesignationID: number;    
-    profileImage: string;
-    rightName: string;
+    profileImage: string;    
 }

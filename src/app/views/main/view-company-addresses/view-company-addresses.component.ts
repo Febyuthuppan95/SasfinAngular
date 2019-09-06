@@ -26,7 +26,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'CompanyAddressList';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -64,7 +63,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -179,7 +177,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
       specificCompanyID: this.companyID,
       specificAddressID: -1,
       specificAddressTypeID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

@@ -29,7 +29,6 @@ export class ViewDesignationsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Designation';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -84,7 +83,6 @@ export class ViewDesignationsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -165,7 +163,6 @@ export class ViewDesignationsListComponent implements OnInit {
     const model: GetDesignationList = {
       rowEnd: this.rowEnd,
       rowStart: this.rowStart,
-      rightName: this.rightName,
       filter: this.filter,
       userID: this.currentUser.userID,
       orderBy: this.orderBy,

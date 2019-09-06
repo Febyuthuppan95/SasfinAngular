@@ -43,7 +43,6 @@ export class ViewUserRightsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Rights';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -95,7 +94,6 @@ export class ViewUserRightsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -198,7 +196,6 @@ export class ViewUserRightsListComponent implements OnInit {
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      rightName: this.rightName,
       rowStart: 1,
       rowEnd: 100000000000000000000000000000000000,
       specificRightID: -1,
@@ -239,7 +236,6 @@ export class ViewUserRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificUserID: this.specificUser,
-      rightName: 'Users',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
@@ -343,11 +339,9 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmRemove(content, id, Name) {
     this.rightId = id;
-    this.rightName = 'Users';
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
-      // console.log(this.rightName);
-      this.removeRight(this.rightId, this.rightName);
+      this.removeRight(this.rightId);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -357,22 +351,12 @@ export class ViewUserRightsListComponent implements OnInit {
 
   confirmAdd() {
     this.openAddModal.nativeElement.click();
-    
-    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //   // console.log(result);
-    //   // this.addNewRight(this.rightId, this.rightName);
-    //   // Remove the right
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
   }
-  removeRight(id: number, name: string) {
+  removeRight(id: number,) {
 
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
       userRightID: id,
-      rightName: 'Users'
     };
     const result = this.userService
     .updateUserRight(requestModel).then(
@@ -408,7 +392,6 @@ export class ViewUserRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       addedUserID:this.specificUser,
       rightID: id,
-      rightName: 'Users'
     };
     console.log(requestModel);
     const result = this.userService
