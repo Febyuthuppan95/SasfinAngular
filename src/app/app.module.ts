@@ -147,16 +147,12 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
     CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
-<<<<<<< HEAD
     ViewAddressTypesListComponent,
-    ViewAddressTypesListComponent
-=======
     ViewCompanyInfoComponent,
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
     FormCustomReleaseComponent
->>>>>>> c0d891fac5f7b88877d22cc758b0fc72c0ed5045
   ],
   imports: [
     BrowserModule,

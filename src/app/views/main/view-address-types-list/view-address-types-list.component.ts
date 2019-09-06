@@ -93,28 +93,28 @@ export class ViewAddressTypesListComponent implements OnInit {
   }
 
   loadUnitsOfMeasures() {
-    this.unitService.list(this.unitsOfMeasure).then(
-      (res: ListUnitsOfMeasure) => {
-        this.showLoader = false;
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.dataset = res.unitOfMeasureList;
-          this.rowCount = res.rowCount;
+    //this.unitService.list(this.unitsOfMeasure).then(
+    //   (res: ListUnitsOfMeasure) => {
+    //     this.showLoader = false;
+    //     if (res.outcome.outcome === 'SUCCESS') {
+    //       this.dataset = res.unitOfMeasureList;
+    //       this.rowCount = res.rowCount;
 
-          if (res.rowCount > this.selectRowDisplay) {
-            this.totalDisplayCount = res.unitOfMeasureList.length;
-          } else {
-            this.totalDisplayCount = res.rowCount;
-          }
+    //       if (res.rowCount > this.selectRowDisplay) {
+    //         this.totalDisplayCount = res.unitOfMeasureList.length;
+    //       } else {
+    //         this.totalDisplayCount = res.rowCount;
+    //       }
 
-        } else {
-          this.noData = true;
-        }
-      },
-      (msg) => {
-        this.showLoader = false;
-        this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
-      }
-    );
+    //     } else {
+    //       this.noData = true;
+    //     }
+    //   },
+    //   (msg) => {
+    //     this.showLoader = false;
+    //     this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
+    //   }
+    // );
   }
 
   pageChange(pageNumber: number) {
@@ -254,20 +254,20 @@ export class ViewAddressTypesListComponent implements OnInit {
         isDeleted: 0,
       };
 
-      this.unitService.update(requestModel).then(
-        (res: UpdateUnitsOfMeasureResponse) => {
-          this.closeModal.nativeElement.click();
+      // this.unitService.update(requestModel).then(
+      //   (res: UpdateUnitsOfMeasureResponse) => {
+      //     this.closeModal.nativeElement.click();
 
-          this.unitsOfMeasure.rowStart = 1;
-          this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+      //     this.unitsOfMeasure.rowStart = 1;
+      //     this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+      //     this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
-          this.loadUnitsOfMeasures();
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', msg.message);
-        }
-      );
+      //     this.loadUnitsOfMeasures();
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', msg.message);
+      //   }
+      // );
     } else {
       this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
     }
