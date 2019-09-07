@@ -41,7 +41,30 @@ export class CaptureLayoutComponent implements OnInit {
   }
 
   openBottomSheet(): void {
+    // tslint:disable-next-line: no-use-before-declare
     this.bottomSheet.open(CompanySheetComponent);
+  }
+
+  /* Key Handler Directive Outputs */
+  exitCaptureScreen() {
+    this.router.navigate(['transaction', 'attachments', 2]);
+  }
+  companyInfo() {
+    console.log('Toggle company info');
+  }
+  PDFZoomIn() {
+    console.log('Toggle company info');
+  }
+  PDFZoomOut() {
+    console.log('Toggle company info');
+  }
+  PDFScrollDown() {
+
+
+
+  }
+  PDFScrollUp() {
+
   }
 }
 

@@ -295,7 +295,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a unit of measure item.');
     }
   }
 }

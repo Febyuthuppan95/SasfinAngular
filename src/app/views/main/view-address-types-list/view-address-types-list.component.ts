@@ -248,7 +248,6 @@ export class ViewAddressTypesListComponent implements OnInit {
       const requestModel: UpdateUnitOfMeasureRequest = {
         userID: 3,
         unitOfMeasureID: this.focusUnitId,
-        rightName: 'UnitOfMeasures',
         name: this.focusUnitName,
         description: this.focusUnitDescription,
         isDeleted: 0,

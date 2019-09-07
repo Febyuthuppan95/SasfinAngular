@@ -163,7 +163,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Edit</h5>
+        <h5 class="modal-title" id="modalContent">Edit {{this.selectedFirstName}} {{this.selectedSurName}}</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -192,22 +192,20 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event)">
-              <option selected value="-1">Select a designation</option>
-              <option *ngFor="let des of this.designations" [ngValue]="des.designationID">{{des.name}}</option>
+            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
+              <option *ngFor="let des of this.designations" [value]="des.designationID" [selected]="des.designationID === selectedDesignation">{{des.name}}</option>
             </select>
           </div>
         <div class="form-group">
           <label class="control-label">Status:</label>
-          <select class="form-control" (change)="onStatusChange($event)">
-              <option selected value="-1">Select a status</option>
+          <select class="form-control" (change)="onStatusChange($event.target.value)">
             <option *ngFor="let stat of this.statusList" [ngValue]="stat.id" [selected]="stat.id === this.selectedStatus">{{stat.name}}</option>
           </select>
         </div>
         <div class="form-group">
             <label class="control-label">Profile Image:</label>
           <div class="row" style="margin-left:0px;">
-          <label for="editUserImage" class="col-md-10" style="height:18px;padding: 14px;">
+            <label for="editUserImage" class="col-md-10" style="height:18px;padding: 14px;">
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
             <input hidden id="editUserImage" type="file" placeholder="Profile Image" class="form-control text-right col-md-10"
@@ -271,7 +269,7 @@
         <div class="form-group">
             <label class="control-label">Designation:</label>
             <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
-              <option selected value="-1">Select a designation</option>
+              <option selected value="-1" [disabled]="disableDesSelect">Select a designation</option>
               <option *ngFor="let des of this.designations" [value]="des.designationID">{{des.name}}</option>
             </select>
           </div>
