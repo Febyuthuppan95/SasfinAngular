@@ -597,3 +597,8 @@ p {
 .btn-add i:hover {
   color:#fff;
 }
+
+.modal-body {
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+}

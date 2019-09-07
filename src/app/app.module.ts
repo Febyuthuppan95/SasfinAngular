@@ -85,6 +85,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
+import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
@@ -93,6 +94,7 @@ import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
+
 
 
 
@@ -146,6 +148,7 @@ import { KeyHandlerDirective } from './directives/key-handler.directive';
     CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
+    ViewAddressTypesListComponent,
     ViewCompanyInfoComponent,
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
