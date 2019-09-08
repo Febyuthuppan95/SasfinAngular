@@ -14,6 +14,7 @@ import { AddressTypesListRequest } from 'src/app/models/HttpRequests/AddressType
 import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes';
 import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
 import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
+import { AddressType } from 'src/app/models/HttpResponses/AddressType';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -56,7 +57,7 @@ export class ViewAddressTypesListComponent implements OnInit {
   prevPageState: boolean;
   totalRowCount: number;
   totalDisplayCount: number;
-  dataset: UnitsOfMeasure[];
+  dataset: AddressType[];
 
   rowStart: number;
   rowEnd: number;
