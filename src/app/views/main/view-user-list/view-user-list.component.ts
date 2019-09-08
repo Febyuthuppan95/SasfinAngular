@@ -89,7 +89,7 @@ export class ViewUserListComponent implements OnInit {
   selectedStatus = -1;
   selectedStatusIndex = 0;
   EmpNo = '';
-  Extension = '';
+  Extension = null;
   ProfileImage = '';
   selectedUserID = -1;
   password = null;
@@ -415,6 +415,7 @@ export class ViewUserListComponent implements OnInit {
     this.selectedStatusIndex = 0;
     this.disableDesSelect = false;
     this.preview = null;
+    this.Extension = null;
     this.openAddModal.nativeElement.click();
   }
 
@@ -464,6 +465,9 @@ export class ViewUserListComponent implements OnInit {
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
+    if (this.Extension === null || this.Extension === undefined) {
+      errors++;
+    }
 
     if (errors === 0) {
       if (this.password === this.confirmpassword) {
@@ -475,7 +479,8 @@ export class ViewUserListComponent implements OnInit {
           email: this.selectedEmail,
           password: this.password,
           specificDesignationID: +this.selectedDesignation,
-          profileImage: ImageName
+          profileImage: ImageName,
+          extension: this.Extension
         };
 
         this.userService.UserAdd(requestModel).then(
@@ -539,13 +544,13 @@ export class ViewUserListComponent implements OnInit {
     if (this.selectedEmail === null || this.selectedEmail === undefined) {
       errors++;
     }
-    if (this.password === null || this.password === undefined) {
-      errors++;
-    }
-    if (this.confirmpassword === null || this.confirmpassword === undefined) {
-      errors++;
-    }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
+      errors++;
+    }
+    if (this.Extension === null || this.Extension === undefined) {
+      errors++;
+    }
+    if (this.selectedStatus === null || this.selectedStatus === undefined) {
       errors++;
     }
 
@@ -559,7 +564,8 @@ export class ViewUserListComponent implements OnInit {
         empNo: this.EmpNo,
         specificDesignationID: +this.selectedDesignation,
         specificStatusID: +this.selectedStatus,
-        profileImage: ImageName
+        profileImage: ImageName,
+        extension: this.Extension
       };
 
       this.userService.UserUpdate(requestModel).then(

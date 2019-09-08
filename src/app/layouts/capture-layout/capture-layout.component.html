@@ -1,6 +1,10 @@
+<div  appKeyHandler
+tabindex="-1"
+(companyInfoEmit)="companyInfo()"
+(exitScreenEmit)="exitCaptureScreen()">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" style="height: 7vh;">
     <button (click)="goBack()" mat-mini-fab class="bg-warning"
-  matTooltip="Exit" matTooltipPosition="below"><span class="mdi mdi-close text-dark"></span>
+  matTooltip="Exit (CTRL + ALT + O)" matTooltipPosition="below" style="background: #fc8c03 !important;"><span class="mdi mdi-close text-dark"></span>
   </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -9,38 +13,24 @@
       <ul class="navbar-nav mr-auto"></ul>
       <ul class="navbar-nav md-auto">
         <li class="nav-item">
-          <button [matMenuTriggerFor]="appMenu" class="nav-item btn btn-dark">Company Info</button>
-            <mat-menu #appMenu="matMenu">
-                  <p style="padding: 12px;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, autem rem eveniet sapiente natus aspernatur possimus perspiciatis similique tempora id omnis</p>
-            </mat-menu>
+          <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
         </li>
       </ul>
     </div>
   </nav>
-<div
-  class="row"
-  [style.backgroundImage]="'url(' + currentBackground + ')'"
-  #screenWrapper
-  appKeyHandler
-  tabindex="-1"
-  (companyInfoEmit)="companyInfo()"
-  (exitScreenEmit)="exitCaptureScreen()">
+<div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
 <div class="col-6 bg-light">
   <div class="reader-line"></div>
   <app-document-viewer></app-document-viewer>
 </div>
-<div class="col-6 bg-transparent" style="padding: 24px; overflow-y: auto;">
+<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 24px; overflow-y: auto;">
   <router-outlet></router-outlet>
+  <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
+    <div class="company-info bg-primary text-light text-left">
+      <h4>Company Info</h4>
+      <p class="text-justify">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error quidem accusantium harum laborum, dolor fuga, esse ipsum aspernatur voluptatem saepe exercitationem eaque minima at voluptate itaque repellat officia excepturi nulla.</p>
+    </div>
+  </div>
 </div>
 </div>
-
-<!-- <div class="company-container">
-  <button matTooltip="Company Info" matTooltipPosition="above" (click)="openBottomSheet()" class=" btn btn-primary company-bottom"><span class="mdi mdi-information" style="font-size: 20px;"></span>&nbsp;</button>
-</div> -->
-
-<!-- <div class="exit-container">
-  <button (click)="goBack()" mat-mini-fab class="bg-warning"
-  matTooltip="Exit" matTooltipPosition="before"><span class="mdi mdi-close text-light"></span>
-  </button>
-</div> -->
-<!-- <input type="text" app-key-handler /> -->
+</div>

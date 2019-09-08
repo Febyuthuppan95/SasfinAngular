@@ -3,13 +3,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
-import { UnitMeasureService } from 'src/app/services/Units.Service';
-import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
-import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
-import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
-import { AddressTypesService } from 'src/app/services/AddressTypesService';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -18,7 +12,7 @@ import { AddressTypesService } from 'src/app/services/AddressTypesService';
 })
 export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private unitService: AddressTypesService) {}
+  constructor(private themeService: ThemeService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -35,8 +29,6 @@ export class ViewAddressTypesListComponent implements OnInit {
     rowEnd: 15
   };
 
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -226,7 +218,7 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editUnitOfMeasure($event) {
+  editUnitOfMeasure() {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
@@ -245,13 +237,6 @@ export class ViewAddressTypesListComponent implements OnInit {
     }
 
     if (errors === 0) {
-      const requestModel: UpdateUnitOfMeasureRequest = {
-        userID: 3,
-        unitOfMeasureID: this.focusUnitId,
-        name: this.focusUnitName,
-        description: this.focusUnitDescription,
-        isDeleted: 0,
-      };
 
       // this.unitService.update(requestModel).then(
       //   (res: UpdateUnitsOfMeasureResponse) => {

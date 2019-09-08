@@ -42,15 +42,15 @@ export class KeyHandlerDirective {
         this.executeShortcut();
 
         // Reset control variables
-        this.previousKey = -1;
-        this.enteredCount = 0;
-        this.enteredShortcut = [];
+        this.clearShortcut();
       }
     }
+
+    this.timeoutClear();
   }
 
   // Determine shortcut entered
-  executeShortcut() {
+  executeShortcut(): void {
     if (this.match(this.shortcutCompanyInfo)) {
       this.companyInfo();
     } else if (this.match(this.shortcutExitCapture)) {
@@ -77,6 +77,16 @@ export class KeyHandlerDirective {
     }
 
     return true;
+  }
+
+  clearShortcut(): void {
+    this.previousKey = -1;
+    this.enteredCount = 0;
+    this.enteredShortcut = [];
+  }
+
+  timeoutClear(): void {
+    setTimeout(() => this.clearShortcut(), 3000);
   }
 
   /*

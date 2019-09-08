@@ -14,13 +14,29 @@ export class CompanyService {
    *
    */
   constructor(private httpClient: HttpClient) {
-    this.selectedCompany = new BehaviorSubject<SelectedCompany>(null);
+    let sessionData: SelectedCompany = null;
+
+    if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
+      sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
+    }
+
+    this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
   }
 
   selectedCompany: BehaviorSubject<SelectedCompany>;
 
-  setCompany(company: SelectedCompany) { this.selectedCompany.next(company); }
-  observeCompany() {return this.selectedCompany.asObservable(); }
+  setCompany(company: SelectedCompany) {
+    this.selectedCompany.next(company);
+    sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
+  }
+
+  observeCompany() {
+    return this.selectedCompany.asObservable();
+  }
+
+  flushCompanySession() {
+    sessionStorage.removeItem(`${environment.Sessions.companyData}`);
+  }
 
   /**
    * list

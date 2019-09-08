@@ -67,7 +67,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
-import { CaptureLayoutComponent, CompanySheetComponent } from './layouts/capture-layout/capture-layout.component';
+import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 import { DocumentService } from './services/Document.Service';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
@@ -94,6 +94,7 @@ import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { AddressTypesService } from './services/AddressTypes.Service';
 
 
 
@@ -145,7 +146,6 @@ import { KeyHandlerDirective } from './directives/key-handler.directive';
     ContextMenuTransactionFileComponent,
     ContextMenuTransactionAttachmentComponent,
     ViewCaptureTransactionComponent,
-    CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
     ViewAddressTypesListComponent,
@@ -154,7 +154,7 @@ import { KeyHandlerDirective } from './directives/key-handler.directive';
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
     FormCustomReleaseComponent,
-    KeyHandlerDirective
+    KeyHandlerDirective,
   ],
   imports: [
     BrowserModule,
@@ -191,6 +191,7 @@ import { KeyHandlerDirective } from './directives/key-handler.directive';
     UserService,
     AnonGuard,
     ThemeService,
+    AddressTypesService,
     DesignationService,
     RightService,
     MenuService,
@@ -212,7 +213,6 @@ import { KeyHandlerDirective } from './directives/key-handler.directive';
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
-    CompanySheetComponent
   ]
 })
 export class AppModule { }

@@ -13,7 +13,9 @@ import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-shee
 })
 export class CaptureLayoutComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private userService: UserService, private router: Router,
+  constructor(private themeService: ThemeService,
+              private userService: UserService,
+              private router: Router,
               private bottomSheet: MatBottomSheet) { }
 
   @ViewChild('screenWrapper', { static: true })
@@ -23,8 +25,11 @@ export class CaptureLayoutComponent implements OnInit {
   currentTheme: string;
   currentUser: User;
   translateY: '120px';
+  companyShowToggle: boolean;
 
   ngOnInit() {
+    this.companyShowToggle = false;
+
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground().subscribe((result: string) => {
       if (result !== undefined) {
@@ -34,15 +39,10 @@ export class CaptureLayoutComponent implements OnInit {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
-    }
+  }
 
   goBack() {
     this.router.navigate(['transaction', 'attachments', 2]);
-  }
-
-  openBottomSheet(): void {
-    // tslint:disable-next-line: no-use-before-declare
-    this.bottomSheet.open(CompanySheetComponent);
   }
 
   /* Key Handler Directive Outputs */
@@ -50,7 +50,7 @@ export class CaptureLayoutComponent implements OnInit {
     this.router.navigate(['transaction', 'attachments', 2]);
   }
   companyInfo() {
-    console.log('Toggle company info');
+    this.companyShowToggle = !this.companyShowToggle;
   }
   PDFZoomIn() {
     console.log('Toggle company info');
@@ -59,24 +59,7 @@ export class CaptureLayoutComponent implements OnInit {
     console.log('Toggle company info');
   }
   PDFScrollDown() {
-
-
-
   }
   PDFScrollUp() {
-
-  }
-}
-
-@Component({
-  selector: 'app-company-sheet',
-  templateUrl: 'company-bottom-sheet.html',
-})
-export class CompanySheetComponent {
-  constructor(private bottomSheet: MatBottomSheetRef<CompanySheetComponent>) {}
-
-  openLink(event: MouseEvent): void {
-    this.bottomSheet.dismiss();
-    event.preventDefault();
   }
 }
