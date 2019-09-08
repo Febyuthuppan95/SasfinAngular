@@ -1,0 +1,51 @@
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Injectable } from '@angular/core';
+import { AddressTypesListRequest } from '../models/HttpRequests/AddressTypesList';
+import { UpdateAddressTypeRequest } from '../models/HttpRequests/UpdateAddressTypes';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AddressTypesService {
+  // update(requestModel: import("../models/HttpRequests/UpdateAddressTypes").UpdateAddressTypeRequest) {
+  //   throw new Error("Method not implemented.");
+  
+  constructor(private httpClient: HttpClient) {}
+
+  public list(params: AddressTypesListRequest) {
+    const requestModel = JSON.parse(JSON.stringify(params));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/addressTypes/list`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public update(request: UpdateAddressTypeRequest) {
+    const requestModel = JSON.parse(JSON.stringify(request));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/addressTypes/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+}

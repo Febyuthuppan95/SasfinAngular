@@ -8,7 +8,7 @@
       <br />
       <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
           class="mdi mdi-filter"></i> &nbsp;Filters</button>
-      <h4 class="card-title ls-text-{{ currentTheme }}">Units of Measure</h4>
+      <h4 class="card-title ls-text-{{ currentTheme }}">Address Types</h4>
       <br />
       <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
         <form class="form-inline">
@@ -21,7 +21,7 @@
           </select>
           <input type="text"
             class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-            placeholder="Search" (keyup)="searchBar()" [(ngModel)]="unitsOfMeasure.filter" [ngModelOptions]="{standalone: true}" />
+            placeholder="Search" (keyup)="searchBar()" [(ngModel)]="addressTypes.filter" [ngModelOptions]="{standalone: true}" />
         </form>
       </div>
       <br />
@@ -40,7 +40,7 @@
                     </span>
                   </button>
                 </th>
-              <th scope="col">
+              <!-- <th scope="col">
                 <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
                   <p class="headerText">Description</p>
                   <span class="headerSpan">
@@ -48,15 +48,15 @@
                     <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
                   </span>
                 </button>
-              </th>
+              </th> -->
             </tr>
           </thead>
   
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let unit of dataset; let i=index" class="userRecord" (click)="popClick($event, unit.unitOfMeasureID, unit.name, unit.description); setClickedRow(i)" [class.active]="i == selectedRow">
+            <tr *ngFor="let addressType of dataset; let i=index" class="userRecord" (click)="popClick($event, addressType.addressTypeID, addressType.name); setClickedRow(i)" [class.active]="i == selectedRow">
               <td>{{unit.rowNum}}</td>
               <td>{{unit.name}}</td>
-              <td>{{unit.description}}</td>
+              <!-- <td>{{unit.description}}</td> -->
             </tr>
           </tbody>
           <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -88,7 +88,7 @@
         </ul>
       </nav>
       <br />
-      <p class="ls-text-{{ currentTheme }}">Showing {{ unitsOfMeasure.rowStart }} to {{ totalDisplayCount }} of
+      <p class="ls-text-{{ currentTheme }}">Showing {{ addressTypes.rowStart }} to {{ totalDisplayCount }} of
         {{ rowCount }}</p>
     </div>
   </div>
@@ -98,21 +98,21 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="uploadBackgroundLabel">Update Unit Of Measure</h5>
+          <h5 class="modal-title" id="uploadBackgroundLabel">Update Address Type</h5>
           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form (submit)="updateUnit()" enctype="multipart/form-data">
+        <form (submit)="updateAddressType()" enctype="multipart/form-data">
         <div class="modal-body">
         <div class="form-group">
-            <input type="text" placeholder="Unit Name" class="form-control"
-              [(ngModel)]="this.focusUnitName" [ngModelOptions]="{standalone: true}" required/>
+            <input type="text" placeholder="Address Type" class="form-control"
+              [(ngModel)]="this.focusAddressTypeName" [ngModelOptions]="{standalone: true}" required/>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <input type="text" placeholder="Unit Description" class="form-control"
               [(ngModel)]="this.focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
-          </div>
+          </div> -->
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
@@ -126,6 +126,6 @@
   <app-notification></app-notification>
   <!-- <app-modal-component></app-modal-component> -->
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
+  <app-context-menu-address-types (editUnit)="editAddressType($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusAddressTypeID" [unitName]="focusAddressTypeName"></app-context-menu-address-types>
   </div>
   

@@ -9,7 +9,11 @@ import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
 import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
 import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
-import { AddressTypesService } from 'src/app/services/AddressTypesService';
+import { AddressTypesService } from 'src/app/services/AddressTypes.Service';
+import { AddressTypesListRequest } from 'src/app/models/HttpRequests/AddressTypesList';
+import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes';
+import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
+import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -18,16 +22,16 @@ import { AddressTypesService } from 'src/app/services/AddressTypesService';
 })
 export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private unitService: AddressTypesService) {}
+  constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
   currentTheme = 'light';
 
-  unitsOfMeasure: ListUnitsOfMeasureRequest = {
+  addressTypes: AddressTypesListRequest = {
     userID: 3,
-    specificUnitOfMeasureID: -1,
+    specificAddressTypeID: -1,
     filter: '',
     orderBy: 'Name',
     orderByDirection: 'ASC',
@@ -72,10 +76,9 @@ export class ViewAddressTypesListComponent implements OnInit {
   sidebarCollapsed = true;
   selectedRow = -1;
 
-  focusUnitId: number;
-  focusUnitName: string;
-  focusUnitDescription: string;
-
+  focusAddressTypeId: number;
+  focusAddressTypeName: string;
+  
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
@@ -83,7 +86,7 @@ export class ViewAddressTypesListComponent implements OnInit {
 
     this.selectRowDisplay = 15;
 
-    this.loadUnitsOfMeasures();
+    this.loadAddressTypes();
 
     this.activePage = +1;
     this.prevPageState = true;
@@ -92,35 +95,56 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.nextPage = +this.activePage + 1;
   }
 
-  loadUnitsOfMeasures() {
-    //this.unitService.list(this.unitsOfMeasure).then(
-    //   (res: ListUnitsOfMeasure) => {
-    //     this.showLoader = false;
-    //     if (res.outcome.outcome === 'SUCCESS') {
-    //       this.dataset = res.unitOfMeasureList;
-    //       this.rowCount = res.rowCount;
+  loadAddressTypes() {
+    this.addressTypeService.list(this.addressTypes).then(
+      (res: ListAddressTypes) => {
+        this.showLoader = false;
+        //if()
+        {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+        }
 
-    //       if (res.rowCount > this.selectRowDisplay) {
-    //         this.totalDisplayCount = res.unitOfMeasureList.length;
-    //       } else {
-    //         this.totalDisplayCount = res.rowCount;
-    //       }
 
-    //     } else {
-    //       this.noData = true;
-    //     }
-    //   },
-    //   (msg) => {
-    //     this.showLoader = false;
-    //     this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
-    //   }
-    // );
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.dataset = res.addressTypeList;
+          this.rowCount = res.rowCount;
+
+          if (res.rowCount > this.selectRowDisplay) {
+            this.totalDisplayCount = res.addressTypeList.length;
+          } else {
+            this.totalDisplayCount = res.rowCount;
+          }
+
+        } else {
+          this.noData = true;
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server'
+         );
+      }
+    );
   }
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
-    this.unitsOfMeasure.rowStart = page.rowStart;
-    this.unitsOfMeasure.rowEnd = page.rowEnd;
+    this.addressTypes.rowStart = page.rowStart;
+    this.addressTypes.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;
     this.prevPage = +this.activePage - 1;
     this.nextPage = +this.activePage + 1;
@@ -145,7 +169,7 @@ export class ViewAddressTypesListComponent implements OnInit {
     }
 
     this.updatePagination();
-    this.loadUnitsOfMeasures();
+    this.loadAddressTypes();
   }
 
   updatePagination() {
@@ -160,7 +184,7 @@ export class ViewAddressTypesListComponent implements OnInit {
         const page = new Pagination();
         page.page = 1;
         page.rowStart = 1;
-        page.rowEnd = this.unitsOfMeasure.rowEnd;
+        page.rowEnd = this.addressTypes.rowEnd;
         this.showingPages[1] = page;
       }
     }
@@ -171,25 +195,25 @@ export class ViewAddressTypesListComponent implements OnInit {
   }
 
   updateSort(orderBy: string) {
-    if (this.unitsOfMeasure.orderBy === orderBy) {
-      if (this.unitsOfMeasure.orderByDirection === 'ASC') {
-        this.unitsOfMeasure.orderByDirection = 'DESC';
+    if (this.addressTypes.orderBy === orderBy) {
+      if (this.addressTypes.orderByDirection === 'ASC') {
+        this.addressTypes.orderByDirection = 'DESC';
       } else {
-        this.unitsOfMeasure.orderByDirection = 'ASC';
+        this.addressTypes.orderByDirection = 'ASC';
       }
     } else {
-      this.unitsOfMeasure.orderByDirection = 'ASC';
+      this.addressTypes.orderByDirection = 'ASC';
     }
 
-    this.unitsOfMeasure.orderBy = orderBy;
-    this.orderIndicator = `${this.unitsOfMeasure.orderBy}_${this.unitsOfMeasure.orderByDirection}`;
-    this.loadUnitsOfMeasures();
+    this.addressTypes.orderBy = orderBy;
+    this.orderIndicator = `${this.addressTypes.orderBy}_${this.addressTypes.orderByDirection}`;
+    this.loadAddressTypes();
   }
 
   searchBar() {
-    this.unitsOfMeasure.rowStart = 1;
-    this.unitsOfMeasure.rowEnd = this.selectRowDisplay;
-    this.loadUnitsOfMeasures();
+    this.addressTypes.rowStart = 1;
+    this.addressTypes.rowEnd = this.selectRowDisplay;
+    this.loadAddressTypes();
   }
 
   toggleFilters() {
@@ -205,10 +229,9 @@ export class ViewAddressTypesListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusUnitId = id;
-    this.focusUnitName = name;
-    this.focusUnitDescription = description;
-
+    this.focusAddressTypeId = id;
+    this.focusAddressTypeName = name;
+    
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -226,48 +249,43 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editUnitOfMeasure($event) {
+  editAddressTypes($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
     console.log('open modal');
   }
 
-  updateUnit() {
+  updateAddressType() {
     let errors = 0;
 
-    if (this.focusUnitName === '' || this.focusUnitName === undefined) {
+    if (this.focusAddressTypeName === '' || this.focusAddressTypeName === undefined) {
       errors++;
     }
 
-    if (this.focusUnitDescription === '' || this.focusUnitDescription === undefined) {
-      errors++;
-    }
 
     if (errors === 0) {
-      const requestModel: UpdateUnitOfMeasureRequest = {
+      const requestModel: UpdateAddressTypeRequest = {
         userID: 3,
-        unitOfMeasureID: this.focusUnitId,
-        rightName: 'UnitOfMeasures',
-        name: this.focusUnitName,
-        description: this.focusUnitDescription,
+        addressTypeID: this.focusAddressTypeId,
+        name: this.focusAddressTypeName,
         isDeleted: 0,
       };
 
-      // this.unitService.update(requestModel).then(
-      //   (res: UpdateUnitsOfMeasureResponse) => {
-      //     this.closeModal.nativeElement.click();
+      this.addressTypeService.update(requestModel).then(
+        (res: UpdateAddressTypesResponse) => {
+          this.closeModal.nativeElement.click();
 
-      //     this.unitsOfMeasure.rowStart = 1;
-      //     this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
-      //     this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.addressTypes.rowStart = 1;
+          this.addressTypes.rowEnd = this.rowCountPerPage;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
-      //     this.loadUnitsOfMeasures();
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', msg.message);
-      //   }
-      // );
+          this.loadAddressTypes();
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', msg.message);
+        }
+      );
     } else {
       this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
     }

@@ -1,9 +1,5 @@
-export class AddressTypesList {
-  rowEnd: number;
-  rowStart: number;  
-  filter: string;
-  userID: number;
+import { ListBase } from './ListBase';
+
+export class AddressTypesListRequest extends ListBase {
   specificAddressTypeID: number;
-  orderBy: string;
-  orderDirection: string;
 }
