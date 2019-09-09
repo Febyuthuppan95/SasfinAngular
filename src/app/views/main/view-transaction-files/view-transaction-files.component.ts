@@ -70,6 +70,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   focusPath: string;
   disableAttachmentType: boolean;
   attachmentTypeIndex: number;
+  preview: string;
 
   rowStart: number;
   rowEnd: number;
@@ -108,6 +109,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   ];
   attachmentName: string;
   attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
+  attachmentQueueDisplay: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
@@ -320,7 +322,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.router.navigate(['companies']);
   }
 
-   uploadAttachments() {
+  uploadAttachments() {
     this.uploading = true;
     this.attachmentQueue.forEach((attach) => {
       attach.status = 'Uploading';
@@ -352,6 +354,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   onFileChange(files: FileList) {
+    this.preview = files.item(0).name;
     this.attachmentQueue[this.currentAttachment] = {
       name: this.attachmentName,
       type: this.transactionTypes[this.selectedTransactionType - 1].name,
@@ -359,16 +362,25 @@ export class ViewTransactionFilesComponent implements OnInit {
       uploading: false,
       status: 'Pending Upload'
     };
+  }
+
+  onTypeSelect(id: number) {
+    this.selectedTransactionType = id;
+    this.disableAttachmentType = true;
+  }
+
+  addToQueue() {
+    this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
+    this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
+    this.attachmentQueue[this.currentAttachment].uploading = false;
+    this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+
+    this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
 
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
     this.currentAttachment++;
     this.disableAttachmentType = false;
     this.attachmentTypeIndex = 0;
-  }
-
-  onTypeSelect(id: number) {
-    this.selectedTransactionType = id;
-    this.disableAttachmentType = true;
   }
 }

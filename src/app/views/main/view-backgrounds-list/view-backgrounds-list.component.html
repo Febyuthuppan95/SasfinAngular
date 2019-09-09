@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-sm-3" *ngFor="let image of backgroundList">
         <div class="background-item shadow-sm ls-tile-{{ currentTheme }}">
-          <img src="{{ backgroundPath }}/{{ image.image }}" alt="">
+          <img src="{{ backgroundPath }}/{{ image.image }}">
           <div class="controls-top-right form-inline">
             <!-- <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
               <div class="form-group">
@@ -102,6 +102,22 @@
         <button type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>
+    </div>
+  </div>
+</div>
+
+<button class="hide" data-toggle="modal" data-target="#viewBackground" #openViewBackgroundModal></button>
+<div class="modal fade" id="viewBackground" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-lg modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="modal-body text-center tile-frost" style="width: 100%; height:auto">
+            <button type="button" class="close-button top-right" data-dismiss="modal" aria-label="Close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <img [src]="srcImage" class="modal-image"/>
+          </div>
+      </div>
     </div>
   </div>
 </div>

@@ -105,6 +105,11 @@ export class ViewTransactionsComponent implements OnInit {
   transactionTypes: TransactionTypes[];
   transactionStatus: TransactionStatus[];
 
+  selectedTypeIndex: number;
+  selectedStatusIndex: number;
+  statusDisable: boolean;
+  typesDisable: boolean;
+
   newTransaction = {
     name: '',
     transactionTypeID: -1,
@@ -162,6 +167,7 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   onStatusChange(id: number) {
+    this.statusDisable = true;
     this.selectedStatus = id;
   }
 
@@ -181,6 +187,7 @@ export class ViewTransactionsComponent implements OnInit {
 
   onTypeChange(id: number) {
     this.selectedType = id;
+    this.typesDisable = true;
   }
 
   paginateData() {

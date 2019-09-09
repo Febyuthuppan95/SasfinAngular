@@ -28,12 +28,14 @@ tabindex="-1"
   <div class="reader-line"></div>
   <app-document-viewer></app-document-viewer>
 </div>
-<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 24px; overflow-y: auto;">
+<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px; overflow-y: auto;">
   <router-outlet></router-outlet>
   <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
     <div class="company-info bg-light shadow text-dark text-left">
       <p><strong>Company Info</strong></p>
       <p class="text-left">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error quidem accusantium harum laborum, dolor fuga, esse ipsum aspernatur voluptatem saepe exercitationem eaque minima at voluptate itaque repellat officia excepturi nulla.</p>
+      <hr>
+      <p class="text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere repudiandae et odit voluptate aspernatur quia pariatur amet temporibus laboriosam cumque, ullam sit asperiores maxime accusantium dolorum nam alias aut libero?</p>
     </div>
   </div>
 </div>

@@ -95,6 +95,7 @@ import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
+import { ImageDirective } from './directives/image.directive';
 
 
 
@@ -155,6 +156,7 @@ import { AddressTypesService } from './services/AddressTypes.Service';
     ContextMenuCompanyInfoComponent,
     FormCustomReleaseComponent,
     KeyHandlerDirective,
+    ImageDirective
   ],
   imports: [
     BrowserModule,

@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit {
   @Input() showattachments = false;
   @Input() showcompanyContactsList = false;
   @Input() showcompanyAddressList = false;
-  
+
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
   @Output() snackBar = new EventEmitter<string>();
@@ -87,7 +87,7 @@ export class SidebarComponent implements OnInit {
     this.snackbarService.setHelpContext(newContext);
   }
 
-  loadUserRights() {    
+  loadUserRights() {
     const uRModel: GetUserRightsList = {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
@@ -101,8 +101,7 @@ export class SidebarComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success 
-        console.log(res.userRightsList);
+        // Process Success
         res.userRightsList.forEach(uRight => {
           if(uRight.name === "Users")
           {
@@ -195,20 +194,18 @@ export class SidebarComponent implements OnInit {
           if(uRight.name === "CompanyAddressList")
           {
             this.showcompanyAddressList = true
-          }      
-        });           
-        console.log(this.showbackgrounds);
+          }
+        });
       },
       msg => {
         // Process Failure
         this.showLoader = false;
-        
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-      }      
-    );    
-    
+      }
+    );
+
   }
 }

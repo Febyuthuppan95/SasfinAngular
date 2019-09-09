@@ -110,14 +110,14 @@
             [(ngModel)]="this.newTransaction.name" [ngModelOptions]="{standalone: true}" required/>
       </div>
       <div class="form-group">
-          <select class="form-control" (change)="onTypeChange($event)" [(ngModel)]="this.newTransaction.transactionTypeID" [ngModelOptions]="{standalone: true}" required *ngIf="this.transactionTypes !== undefined">
-            <option selected value="-1">Select a transaction type</option>
+          <select class="form-control" (change)="onTypeChange($event)" required *ngIf="this.transactionTypes !== undefined" [selectedIndex]="selectedTypeIndex">
+            <option selected value="-1" [disabled]="typesDisable">Select a transaction type</option>
             <option *ngFor="let type of transactionTypes" [value]="type.transactionTypeID">{{type.name}}</option>
           </select>
       </div>
       <div class="form-group">
-          <select class="form-control" (change)="onTypeChange($event)" [(ngModel)]="this.newTransaction.transactionStatusID" [ngModelOptions]="{standalone: true}" required *ngIf="this.transactionStatus !== undefined">
-            <option selected value="-1">Select a status type</option>
+          <select class="form-control" (change)="onStatusChange($event)" required *ngIf="this.transactionStatus !== undefined" [selectedIndex]="selectedStatusIndex">
+            <option selected value="-1" [disabled]="statusDisable">Select a status type</option>
             <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
           </select>
       </div>
