@@ -96,9 +96,7 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
 import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
 import { ImageDirective } from './directives/image.directive';
-
-
-
+import { ContextMenuAddressTypesComponent } from './components/context-menu-address-types/context-menu-address-types.component';
 
 @NgModule({
   declarations: [
@@ -156,7 +154,8 @@ import { ImageDirective } from './directives/image.directive';
     ContextMenuCompanyInfoComponent,
     FormCustomReleaseComponent,
     KeyHandlerDirective,
-    ImageDirective
+    ImageDirective,
+    ContextMenuAddressTypesComponent
   ],
   imports: [
     BrowserModule,
