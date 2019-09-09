@@ -8,11 +8,11 @@
 }
 
 .company-container {
-  position: fixed;
+  position: absolute;
   bottom: auto;
-  right: 24px;
-  top: 90px;
-  width: 382px;
+  right: 0;
+  top: 0;
+  width: 256px;
   text-align: center;
   z-index: 9999;
   opacity: 0;
@@ -33,7 +33,9 @@
 
 .company-info {
   padding: 24px;
-  border-radius: 3px;
+  border-radius: 0px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
   background: rgba($color: #f2f2f2, $alpha: 0.5);
   transition: ease-in-out 0.3s;
 }
@@ -66,4 +68,21 @@
 
 .capture-right {
   border-radius: 0 !important;
+}
+
+.shortcut-highlighter-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  left: 24px;
+}
+
+.shortcut-highlighter {
+  margin: auto;
+  padding: 24px;
+  width: 164px;
+  text-align: center;
+  border-radius: 24px;
+  background: rgba($color: #4d83ff, $alpha: 0.8);
+  color: #f2f2f2 !important;
 }

@@ -165,7 +165,11 @@ export class ViewBackgroundsListComponent implements OnInit {
   uploadBackground() {
     let errors = 0;
 
-    if (this.fileName === '' || this.fileName === undefined) {
+    if (this.fileName === '' ||  undefined) {
+      errors++;
+    }
+
+    if (this.fileToUpload === null || undefined) {
       errors++;
     }
 
@@ -194,7 +198,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Missing fields', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
     }
   }
 

@@ -18,18 +18,22 @@ export class CaptureLayoutComponent implements OnInit {
               private router: Router,
               private bottomSheet: MatBottomSheet) { }
 
-  @ViewChild('screenWrapper', { static: true })
-  screenWrapper: ElementRef;
+  @ViewChild('openModal', { static: true })
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  closeModal: ElementRef;
 
   currentBackground: string;
   currentTheme: string;
   currentUser: User;
   translateY: '120px';
   companyShowToggle: boolean;
+  currentShortcutLabel: string = null;
+  currentShortcutSequence: string[] = [];
 
   ngOnInit() {
     this.companyShowToggle = false;
-
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground().subscribe((result: string) => {
       if (result !== undefined) {
@@ -45,6 +49,10 @@ export class CaptureLayoutComponent implements OnInit {
     this.router.navigate(['transaction', 'attachments', 2]);
   }
 
+  showHelp() {
+    this.openModal.nativeElement.click();
+  }
+
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
     this.router.navigate(['transaction', 'attachments', 2]);
@@ -52,14 +60,25 @@ export class CaptureLayoutComponent implements OnInit {
   companyInfo() {
     this.companyShowToggle = !this.companyShowToggle;
   }
-  PDFZoomIn() {
-    console.log('Toggle company info');
-  }
-  PDFZoomOut() {
-    console.log('Toggle company info');
-  }
   PDFScrollDown() {
   }
   PDFScrollUp() {
+  }
+  currentShortcut($event: string) {
+    if ($event === null || undefined) {
+      this.flushCurrentShortcut();
+    } else {
+      if ($event === 'Control') {
+          this.currentShortcutLabel = $event;
+      } else if ($event === 'Alt') {
+          this.currentShortcutLabel += ` + ${$event}`;
+      } else if ($event === 'l') {
+        this.currentShortcutLabel += ` + ${$event.toLocaleUpperCase()}`;
+      }
+    }
+  }
+
+  flushCurrentShortcut() {
+    setTimeout(() => this.currentShortcutLabel = null, 2000);
   }
 }

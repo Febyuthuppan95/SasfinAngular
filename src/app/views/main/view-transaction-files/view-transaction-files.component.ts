@@ -68,6 +68,8 @@ export class ViewTransactionFilesComponent implements OnInit {
   prevPage: number;
   prevPageState: boolean;
   focusPath: string;
+  disableAttachmentType: boolean;
+  attachmentTypeIndex: number;
 
   rowStart: number;
   rowEnd: number;
@@ -361,5 +363,12 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
     this.currentAttachment++;
+    this.disableAttachmentType = false;
+    this.attachmentTypeIndex = 0;
+  }
+
+  onTypeSelect(id: number) {
+    this.selectedTransactionType = id;
+    this.disableAttachmentType = true;
   }
 }

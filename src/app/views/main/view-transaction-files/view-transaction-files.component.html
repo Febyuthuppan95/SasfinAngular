@@ -109,8 +109,8 @@
                 [(ngModel)]="this.attachmentName" [ngModelOptions]="{standalone: true}" required/>
             </div>
         <div class="form-group">
-          <select [(ngModel)]="this.selectedTransactionType" [ngModelOptions]="{standalone: true}" class="form-control" required>
-            <option value="-1" selected disabled>Please select an attachment type</option>
+          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [selectedIndex]="attachmentTypeIndex">
+            <option value="-1" [disabled]="this.disableAttachmentType" selected>Please select an attachment type</option>
             <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.name}}</option>
           </select>
         </div>

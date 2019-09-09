@@ -10,7 +10,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Designations</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="padding-top:7px;">Designations</h4></div>
     <!-- <h4 class="card-title ls-text-{{ currentTheme }}">Designations</h4> -->
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -21,7 +21,7 @@
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
-        </select> 
+        </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
           placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />

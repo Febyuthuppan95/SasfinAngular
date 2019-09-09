@@ -12,11 +12,13 @@ export class KeyHandlerDirective {
   shortcutPDFZoomIn = [17, 18, 107]; // CTRL + ALT + '+'
   shortcutPDFScrollDown = [17, 18, 40]; // CTRL + ALT + ArrowDown
   shortcutPDFScrollUp = [17, 18, 38]; // CTRL + ALT + ArrowUp
+
   // Control variables
   enteredShortcut: number[] = [];
   enteredCount = 0;
   previousKey = -1;
   sequenceLimit = 3;
+  sequenceLabel: string = null;
 
   // Output declarations
   @Output() exitScreenEmit = new EventEmitter<void>();
@@ -25,15 +27,18 @@ export class KeyHandlerDirective {
   @Output() pdfZoomOutEmit = new EventEmitter<void>();
   @Output() pdfScrollDownEmit = new EventEmitter<void>();
   @Output() pdfScrollUpEmit = new EventEmitter<void>();
+  @Output() currentShortcutSequence = new EventEmitter<string>();
 
   @HostListener('keydown', ['$event']) onKeyDown(e) {
     // Prevents duplicate keys
     if (this.previousKey !== e.keyCode) {
       this.previousKey = e.keyCode;
+      this.sequenceLabel = `${e.key}`;
 
       // Add key to entered shortcut sequence
       this.enteredShortcut[this.enteredCount] = e.keyCode;
       this.enteredCount++;
+      this.currentShortcutSequence.emit(this.sequenceLabel);
 
       // Checks if entered keys equals shortcut sequence limit
       if (this.enteredShortcut.length === this.sequenceLimit) {
@@ -83,6 +88,8 @@ export class KeyHandlerDirective {
     this.previousKey = -1;
     this.enteredCount = 0;
     this.enteredShortcut = [];
+    this.sequenceLabel = null;
+    this.currentShortcutSequence.emit(null);
   }
 
   timeoutClear(): void {
