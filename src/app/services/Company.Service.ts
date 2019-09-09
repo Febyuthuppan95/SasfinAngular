@@ -20,7 +20,10 @@ export class CompanyService {
   selectedCompany: BehaviorSubject<SelectedCompany>;
 
   setCompany(company: SelectedCompany) { this.selectedCompany.next(company); }
-  observeCompany() {return this.selectedCompany.asObservable(); }
+  
+  observeCompany() {
+    return this.selectedCompany.asObservable();
+   }
 
   /**
    * list
