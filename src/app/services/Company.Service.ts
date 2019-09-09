@@ -25,13 +25,6 @@ export class CompanyService {
 
   selectedCompany: BehaviorSubject<SelectedCompany>;
 
-<<<<<<< HEAD
-  setCompany(company: SelectedCompany) { this.selectedCompany.next(company); }
-  
-  observeCompany() {
-    return this.selectedCompany.asObservable();
-   }
-=======
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
     sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
@@ -44,7 +37,6 @@ export class CompanyService {
   flushCompanySession() {
     sessionStorage.removeItem(`${environment.Sessions.companyData}`);
   }
->>>>>>> e8d8d17a75ec5dee54765706c69ef96b3e0e0792
 
   /**
    * list
