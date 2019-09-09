@@ -3,6 +3,6 @@ import { AddressType } from './AddressType';
 
 export class ListAddressTypes {
   outcome: Outcome;
-  addressTypeList: AddressType[];
+  addressTypesList: AddressType[];
   rowCount: number;
 }

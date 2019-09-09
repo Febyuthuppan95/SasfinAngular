@@ -8,7 +8,7 @@
       <br />
       <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
           class="mdi mdi-filter"></i> &nbsp;Filters</button>
-      <h4 class="card-title ls-text-{{ currentTheme }}">Address Types</h4>
+      <h4 class="card-title ls-text-{{ currentTheme }}">Address Types</h4><span style="margin-left:10px;"><button (click)="addNewUser()"  class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
       <br />
       <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
         <form class="form-inline">
@@ -25,7 +25,7 @@
         </form>
       </div>
       <br />
-  
+
       <div class="">
         <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
           <thead>
@@ -51,11 +51,11 @@
               </th> -->
             </tr>
           </thead>
-  
+
           <tbody *ngIf="(!noData)">
             <tr *ngFor="let addressType of dataset; let i=index" class="userRecord" (click)="popClick($event, addressType.addressTypeID, addressType.name); setClickedRow(i)" [class.active]="i == selectedRow">
-              <td>{{unit.rowNum}}</td>
-              <td>{{unit.name}}</td>
+              <td>{{addressType.rowNum}}</td>
+              <td>{{addressType.name}}</td>
               <!-- <td>{{unit.description}}</td> -->
             </tr>
           </tbody>
@@ -92,7 +92,7 @@
         {{ rowCount }}</p>
     </div>
   </div>
-  
+
   <button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
   <div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -122,10 +122,9 @@
       </div>
     </div>
   </div>
-  
+
   <app-notification></app-notification>
   <!-- <app-modal-component></app-modal-component> -->
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-address-types (editUnit)="editAddressType($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusAddressTypeID" [unitName]="focusAddressTypeName"></app-context-menu-address-types>
+  <app-context-menu-address-types (editAddressType)="editAddressTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressTypeID]="focusAddressTypeID" [addressTypeName]="focusAddressTypeName"></app-context-menu-address-types>
   </div>
-  

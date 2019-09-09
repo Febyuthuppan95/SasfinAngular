@@ -94,6 +94,7 @@ import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 import { AddressTypesService } from './services/AddressTypes.Service';
+import { ContextMenuAddressTypesComponent } from './components/context-menu-address-types/context-menu-address-types.component';
 
 
 
@@ -153,7 +154,8 @@ import { AddressTypesService } from './services/AddressTypes.Service';
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
-    FormCustomReleaseComponent
+    FormCustomReleaseComponent,
+    ContextMenuAddressTypesComponent
   ],
   imports: [
     BrowserModule,

@@ -79,7 +79,7 @@ export class ViewAddressTypesListComponent implements OnInit {
 
   focusAddressTypeId: number;
   focusAddressTypeName: string;
-  
+
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
@@ -119,11 +119,11 @@ export class ViewAddressTypesListComponent implements OnInit {
 
 
         if (res.outcome.outcome === 'SUCCESS') {
-          this.dataset = res.addressTypeList;
+          this.dataset = res.addressTypesList;
           this.rowCount = res.rowCount;
 
           if (res.rowCount > this.selectRowDisplay) {
-            this.totalDisplayCount = res.addressTypeList.length;
+            this.totalDisplayCount = res.addressTypesList.length;
           } else {
             this.totalDisplayCount = res.rowCount;
           }
@@ -221,7 +221,7 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id: number, name: string, description: string) {
+  popClick(event, id: number, name: string) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -232,7 +232,7 @@ export class ViewAddressTypesListComponent implements OnInit {
 
     this.focusAddressTypeId = id;
     this.focusAddressTypeName = name;
-    
+
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -278,7 +278,7 @@ export class ViewAddressTypesListComponent implements OnInit {
           this.closeModal.nativeElement.click();
 
           this.addressTypes.rowStart = 1;
-          this.addressTypes.rowEnd = this.rowCountPerPage;
+          this.addressTypes.rowEnd = this.selectRowDisplay;
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
           this.loadAddressTypes();
