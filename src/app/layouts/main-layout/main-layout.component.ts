@@ -86,7 +86,7 @@ export class MainLayoutComponent implements OnInit {
     // this.userIdle.startWatching();
 
     // // Start watching when user idle is starting.
-    // this.userIdle.onTimerStart().subscribe(count => {
+    // this.userIdle.onTimerStart().subscribe(count => { // Uncomment
     //   this.TriggerSessionTimeout(count);
     // });
 

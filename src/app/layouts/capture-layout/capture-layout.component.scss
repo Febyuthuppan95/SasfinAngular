@@ -9,18 +9,33 @@
 
 .company-container {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: auto;
+  right: 24px;
+  top: 90px;
+  width: 382px;
   text-align: center;
   z-index: 9999;
+  opacity: 0;
+  transition: ease-in-out 0.3s;
+  display: none;
 }
 
-.company-bottom {
-  padding-left: 64px;
-  padding-right: 64px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.show-company-container {
+  opacity: 0.8;
+  display: block;
+  transition: ease-in-out 0.3s;
+}
+
+.company-info:hover {
+  background: rgba($color: #f2f2f2, $alpha: 0.9);
+  transition: ease-in-out 0.3s;
+}
+
+.company-info {
+  padding: 24px;
+  border-radius: 3px;
+  background: rgba($color: #f2f2f2, $alpha: 0.5);
+  transition: ease-in-out 0.3s;
 }
 
 .company-bottom .active {
@@ -41,4 +56,14 @@
   right: 0;
   padding: 48px;
   z-index: 9999999999999;
+}
+
+.reader-line-dragger {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.capture-right {
+  border-radius: 0 !important;
 }

@@ -8,4 +8,5 @@ export class UpdateUserRequest {
     specificDesignationID: number;
     specificStatusID: number;
     profileImage: string;
+    extension: string;
 }

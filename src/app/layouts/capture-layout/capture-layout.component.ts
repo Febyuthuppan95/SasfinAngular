@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -13,14 +13,23 @@ import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-shee
 })
 export class CaptureLayoutComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private userService: UserService, private router: Router,
+  constructor(private themeService: ThemeService,
+              private userService: UserService,
+              private router: Router,
               private bottomSheet: MatBottomSheet) { }
+
+  @ViewChild('screenWrapper', { static: true })
+  screenWrapper: ElementRef;
 
   currentBackground: string;
   currentTheme: string;
   currentUser: User;
+  translateY: '120px';
+  companyShowToggle: boolean;
 
   ngOnInit() {
+    this.companyShowToggle = false;
+
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground().subscribe((result: string) => {
       if (result !== undefined) {
@@ -36,27 +45,21 @@ export class CaptureLayoutComponent implements OnInit {
     this.router.navigate(['transaction', 'attachments', 2]);
   }
 
-  openBottomSheet(): void {
-    this.bottomSheet.open(CompanySheetComponent);
+  /* Key Handler Directive Outputs */
+  exitCaptureScreen() {
+    this.router.navigate(['transaction', 'attachments', 2]);
   }
-
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.key) {
-
-    }
+  companyInfo() {
+    this.companyShowToggle = !this.companyShowToggle;
   }
-}
-
-@Component({
-  selector: 'app-company-sheet',
-  templateUrl: 'company-bottom-sheet.html',
-})
-export class CompanySheetComponent {
-  constructor(private bottomSheet: MatBottomSheetRef<CompanySheetComponent>) {}
-
-  openLink(event: MouseEvent): void {
-    this.bottomSheet.dismiss();
-    event.preventDefault();
+  PDFZoomIn() {
+    console.log('Toggle company info');
+  }
+  PDFZoomOut() {
+    console.log('Toggle company info');
+  }
+  PDFScrollDown() {
+  }
+  PDFScrollUp() {
   }
 }

@@ -85,12 +85,11 @@ export class ViewUserListComponent implements OnInit {
   selectedFirstName = null;
   selectedSurName = null;
   selectedEmail = null;
-  selectDesignationID = -1;
-  selectedDesignation = '';
+  selectedDesignation = -1;
   selectedStatus = -1;
   selectedStatusIndex = 0;
   EmpNo = '';
-  Extension = '';
+  Extension = null;
   ProfileImage = '';
   selectedUserID = -1;
   password = null;
@@ -132,6 +131,7 @@ export class ViewUserListComponent implements OnInit {
   selectedDesignationIndex = 0;
   fileToUpload: File = null;
   preview: any;
+  disableDesSelect: boolean = false;
 
 
   ngOnInit() {
@@ -308,7 +308,9 @@ export class ViewUserListComponent implements OnInit {
   }
 
   onDesignationChange(id: number) {
-    this.selectDesignationID = id;
+    console.log(id);
+    this.selectedDesignation = id;
+    this.disableDesSelect = true;
   }
 
   onStatusChange(id: number) {
@@ -362,16 +364,14 @@ export class ViewUserListComponent implements OnInit {
     this.selectedUserID = +user.userId;
 
     for (let index = 0; index < this.designations.length; index++) {
-      if (this.designations[index].name == user.designation)
-      {
-        this.selectedDesignation = this.designations[index].designationID;
+      if (this.designations[index].name === user.designation) {
+        let des = this.designations[index];
+        this.selectedDesignation = des.designationID;
       }
     }
 
-    for(let index = 0; index < this.statusList.length; index++)
-    {
-      if(this.statusList[index].name == user.status)
-      {
+    for(let index = 0; index < this.statusList.length; index++) {
+      if(this.statusList[index].name === user.status) {
         this.selectedStatus = +this.statusList[index].id;
       }
     }
@@ -413,7 +413,9 @@ export class ViewUserListComponent implements OnInit {
     this.EmployeeNumb = null;
     this.selectedDesignationIndex = 0;
     this.selectedStatusIndex = 0;
+    this.disableDesSelect = false;
     this.preview = null;
+    this.Extension = null;
     this.openAddModal.nativeElement.click();
   }
 
@@ -460,7 +462,10 @@ export class ViewUserListComponent implements OnInit {
     if (this.confirmpassword === null || this.confirmpassword === undefined) {
       errors++;
     }
-    if (this.selectDesignationID === null || this.selectDesignationID === undefined && this.selectDesignationID === -1) {
+    if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
+      errors++;
+    }
+    if (this.Extension === null || this.Extension === undefined) {
       errors++;
     }
 
@@ -473,8 +478,9 @@ export class ViewUserListComponent implements OnInit {
           surname: this.selectedSurName,
           email: this.selectedEmail,
           password: this.password,
-          specificDesignationID: +this.selectDesignationID,
-          profileImage: ImageName
+          specificDesignationID: +this.selectedDesignation,
+          profileImage: ImageName,
+          extension: this.Extension
         };
 
         this.userService.UserAdd(requestModel).then(
@@ -493,7 +499,6 @@ export class ViewUserListComponent implements OnInit {
                 );
               } else {
                 this.notify.successmsg('Success', 'User has been Added');
-
                 this.closeAddModal.nativeElement.click();
                 this.loadUsers(false);
               }
@@ -521,46 +526,77 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    const requestModel: UpdateUserRequest = {
-      userID: this.currentUser.userID,
-      specificUserID: this.selectedUserID,
-      firstName: this.selectedFirstName,
-      surname: this.selectedSurName,
-      email: this.selectedEmail,
-      empNo: this.EmpNo,
-      specificDesignationID: +this.selectedDesignation,
-      specificStatusID: +this.selectedStatus,
-      profileImage: ImageName
-    };
+    let errors = 0;
 
+    if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {
+      ImageName = this.fileToUpload.name;
+    }
 
-    this.userService.UserUpdate(requestModel).then(
-      (res: {outcome: Outcome}) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          if (this.fileToUpload !== undefined && this.fileToUpload !== null) {
-            this.userService.UserUpdateProfileImage(this.fileToUpload).then(
-              (uploadRes) => {
-                this.notify.successmsg('Success', 'User has been updated');
-                this.closeModal.nativeElement.click();
-                this.loadUsers(false);
-              },
-              (uploadMsg) => {
-                this.notify.errorsmsg('Failure', 'User record updated, but image failed to upload');
-              }
-            );
+    if (this.EmpNo === null || this.EmpNo === undefined) {
+      errors++;
+    }
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+      errors++;
+    }
+    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+      errors++;
+    }
+    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+      errors++;
+    }
+    if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
+      errors++;
+    }
+    if (this.Extension === null || this.Extension === undefined) {
+      errors++;
+    }
+    if (this.selectedStatus === null || this.selectedStatus === undefined) {
+      errors++;
+    }
+
+    if (errors === 0) {
+      const requestModel: UpdateUserRequest = {
+        userID: this.currentUser.userID,
+        specificUserID: this.selectedUserID,
+        firstName: this.selectedFirstName,
+        surname: this.selectedSurName,
+        email: this.selectedEmail,
+        empNo: this.EmpNo,
+        specificDesignationID: +this.selectedDesignation,
+        specificStatusID: +this.selectedStatus,
+        profileImage: ImageName,
+        extension: this.Extension
+      };
+
+      this.userService.UserUpdate(requestModel).then(
+        (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+            if (this.fileToUpload !== undefined && this.fileToUpload !== null) {
+              this.userService.UserUpdateProfileImage(this.fileToUpload).then(
+                (uploadRes) => {
+                  this.notify.successmsg('Success', 'User has been updated');
+                  this.closeModal.nativeElement.click();
+                  this.loadUsers(false);
+                },
+                (uploadMsg) => {
+                  this.notify.errorsmsg('Failure', 'User record updated, but image failed to upload');
+                }
+              );
+            } else {
+              this.closeModal.nativeElement.click();
+              this.loadUsers(false);
+              this.notify.successmsg('Success', 'User has been updated');
+            }
           } else {
-            this.notify.successmsg('Success', 'User has been updated');
-
-            this.closeModal.nativeElement.click();
-            this.loadUsers(false);
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'User not updated');
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'User not updated');
-      }
-    );
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please complete form before submitting');
+    }
   }
 }

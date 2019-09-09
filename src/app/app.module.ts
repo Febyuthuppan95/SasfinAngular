@@ -67,7 +67,7 @@ import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
 import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
-import { CaptureLayoutComponent, CompanySheetComponent } from './layouts/capture-layout/capture-layout.component';
+import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 import { DocumentService } from './services/Document.Service';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
@@ -85,6 +85,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
+import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
@@ -92,6 +93,9 @@ import { ContextMenuCompanyInfoComponent } from './components/context-menu-compa
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
+import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { AddressTypesService } from './services/AddressTypes.Service';
+
 
 
 
@@ -142,14 +146,15 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
     ContextMenuTransactionFileComponent,
     ContextMenuTransactionAttachmentComponent,
     ViewCaptureTransactionComponent,
-    CompanySheetComponent,
     ContextMenuUserrightsComponent,
     ContextMenuDesignationrightsComponent,
+    ViewAddressTypesListComponent,
     ViewCompanyInfoComponent,
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
-    FormCustomReleaseComponent
+    FormCustomReleaseComponent,
+    KeyHandlerDirective,
   ],
   imports: [
     BrowserModule,
@@ -186,6 +191,7 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
     UserService,
     AnonGuard,
     ThemeService,
+    AddressTypesService,
     DesignationService,
     RightService,
     MenuService,
@@ -207,7 +213,6 @@ import { FormCustomReleaseComponent } from './components/form-custom-release/for
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
-    CompanySheetComponent
   ]
 })
 export class AppModule { }

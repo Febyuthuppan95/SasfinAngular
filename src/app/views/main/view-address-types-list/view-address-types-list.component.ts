@@ -3,21 +3,16 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
-import { UnitMeasureService } from 'src/app/services/Units.Service';
-import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
-import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
-import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
 
 @Component({
-  selector: 'app-view-units-of-measure',
-  templateUrl: './view-units-of-measure.component.html',
-  styleUrls: ['./view-units-of-measure.component.scss']
+  selector: 'app-view-address-types-list',
+  templateUrl: './view-address-types-list.component.html',
+  styleUrls: ['./view-address-types-list.component.scss']
 })
-export class ViewUnitsOfMeasureComponent implements OnInit {
+export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private unitService: UnitMeasureService) {}
+  constructor(private themeService: ThemeService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -34,8 +29,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     rowEnd: 15
   };
 
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -92,49 +85,28 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   }
 
   loadUnitsOfMeasures() {
-    this.unitService.list(this.unitsOfMeasure).then(
-      (res: ListUnitsOfMeasure) => {
-        this.showLoader = false;
-        //if()
-        {
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-        }
+    //this.unitService.list(this.unitsOfMeasure).then(
+    //   (res: ListUnitsOfMeasure) => {
+    //     this.showLoader = false;
+    //     if (res.outcome.outcome === 'SUCCESS') {
+    //       this.dataset = res.unitOfMeasureList;
+    //       this.rowCount = res.rowCount;
 
+    //       if (res.rowCount > this.selectRowDisplay) {
+    //         this.totalDisplayCount = res.unitOfMeasureList.length;
+    //       } else {
+    //         this.totalDisplayCount = res.rowCount;
+    //       }
 
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.dataset = res.unitOfMeasureList;
-          this.rowCount = res.rowCount;
-
-          if (res.rowCount > this.selectRowDisplay) {
-            this.totalDisplayCount = res.unitOfMeasureList.length;
-          } else {
-            this.totalDisplayCount = res.rowCount;
-          }
-
-        } else {
-          this.noData = true;
-        }
-      },
-      (msg) => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server'
-         );
-      }
-    );
+    //     } else {
+    //       this.noData = true;
+    //     }
+    //   },
+    //   (msg) => {
+    //     this.showLoader = false;
+    //     this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
+    //   }
+    // );
   }
 
   pageChange(pageNumber: number) {
@@ -246,10 +218,11 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editUnitOfMeasure($event) {
+  editUnitOfMeasure() {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
+    console.log('open modal');
   }
 
   updateUnit() {
@@ -264,38 +237,24 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     }
 
     if (errors === 0) {
-      const requestModel: UpdateUnitOfMeasureRequest = {
-        userID: 3,
-        unitOfMeasureID: this.focusUnitId,
-        name: this.focusUnitName,
-        description: this.focusUnitDescription,
-        isDeleted: 0,
-      };
 
-      this.unitService.update(requestModel).then(
-        (res: UpdateUnitsOfMeasureResponse) => {
-          console.log(res);
-          this.closeModal.nativeElement.click();
+      // this.unitService.update(requestModel).then(
+      //   (res: UpdateUnitsOfMeasureResponse) => {
+      //     this.closeModal.nativeElement.click();
 
-          this.unitsOfMeasure = {
-            userID: 3,
-            specificUnitOfMeasureID: -1,
-            filter: '',
-            orderBy: 'Name',
-            orderByDirection: 'ASC',
-            rowStart: 1,
-            rowEnd: 15
-          };
+      //     this.unitsOfMeasure.rowStart = 1;
+      //     this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+      //     this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadUnitsOfMeasures();
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', msg.message);
-        }
-      );
+      //     this.loadUnitsOfMeasures();
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', msg.message);
+      //   }
+      // );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a unit of measure item.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
     }
   }
 }
+
