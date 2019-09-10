@@ -8,7 +8,7 @@ import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
@@ -187,21 +187,21 @@ export class ViewDesignationsListComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
-          
+
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
             this.noData = true;
             this.rowCount = 0;
             this.showingRecords = 1;
-            this.totalShowing = 0;            
+            this.totalShowing = 0;
           } else {
             this.noData = false;
             this.designationList = res.designationList;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;
-            this.totalShowing = +this.rowStart + this.designationList.length - 1;            
+            this.totalShowing = +this.rowStart + this.designationList.length - 1;
             this.paginateData();
           }
         },

@@ -4,7 +4,7 @@ import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequ
 import { Status } from './../../../models/Enums/Statuses';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { ContextMenuUserComponent } from './../../../components/context-menu-user/context-menu-user.component';
+import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';

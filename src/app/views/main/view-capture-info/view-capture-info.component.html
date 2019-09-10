@@ -1,0 +1,74 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <br />
+    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
+        class="mdi mdi-filter"></i> &nbsp;Filters</button>
+        <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+          <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Capture Information</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+          </div>    <br />
+    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
+      <form class="form-inline">
+        <select [value]='15' [(ngModel)]="recordsPerPage" [ngModelOptions]="{standalone: true}"
+          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+          (change)="loadDataset()">
+          <option value='15' selected>Showing 15</option>
+          <option value='25'>Showing 25</option>
+          <option value='50'>Showing 50</option>
+        </select>
+        <input type="text"
+          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="this.requestModel.filter" [ngModelOptions]="{standalone: true}" />
+      </form>
+    </div>
+    <br />
+    <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">
+            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
+              <p class="headerText">Information</p>
+              <span class="headerSpan">
+                <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
+                <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
+              </span>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf="(!noData) && this.dataset !== undefined">
+        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); setClickedRow(i)" [class.active]="i == selectedRow">
+          <td>{{info.rowNum}}</td>
+          <td>{{info.info}}</td>
+        </tr>
+      </tbody>
+      <tbody class="tbodyPop" *ngIf="(noData)" >
+        <tr>
+          <td scope="col"></td>
+          <td scope="col">No data to display..</td>
+          <td scope="col"></td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <br />
+    <app-pagination
+    *ngIf="dataset !== undefined"
+    [currentTheme]="this.currentTheme"
+    [recordCount]="this.dataset.captureInfo.length"
+    [recordsPerPage]="this.recordsPerPage"
+    [rowStart]="this.requestModel.rowStart"
+    [rowEnd]="this.requestModel.rowEnd"
+    (pageChangeEvent)="pageChange($event)"></app-pagination>
+  </div>
+</div>
+<app-menu [contextShow]="this.contextMenu" (resetContext)="resetContext()">
+  <app-context-menu-capture-info [x]="this.contextMenuX" [y]="this.contextMenuY"></app-context-menu-capture-info>
+</app-menu>
+
+<app-notification></app-notification>

@@ -5,6 +5,9 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { UserService } from 'src/app/services/user.Service';
 import { Router } from '@angular/router';
 import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { TransactionService } from 'src/app/services/Transaction.Service';
+import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 
 @Component({
   selector: 'app-capture-layout',
@@ -16,7 +19,8 @@ export class CaptureLayoutComponent implements OnInit {
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private router: Router,
-              private bottomSheet: MatBottomSheet) { }
+              private transactionService: TransactionService,
+              private companyService: CompanyService) { }
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -31,6 +35,11 @@ export class CaptureLayoutComponent implements OnInit {
   companyShowToggle: boolean;
   currentShortcutLabel: string = null;
   currentShortcutSequence: string[] = [];
+  companyInfoList: CaptureInfoResponse;
+  company: {
+    id: number;
+    name: string;
+  };
 
   ngOnInit() {
     this.companyShowToggle = false;
@@ -43,6 +52,14 @@ export class CaptureLayoutComponent implements OnInit {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
+    this.companyService.observeCompany().subscribe((data: SelectedCompany) => {
+      this.company = {
+        id: data.companyID,
+        name: data.companyName
+      };
+
+      this.loadCaptureInfo();
+    });
   }
 
   goBack() {
@@ -51,6 +68,30 @@ export class CaptureLayoutComponent implements OnInit {
 
   showHelp() {
     this.openModal.nativeElement.click();
+  }
+
+  loadCaptureInfo() {
+    const requestModel = {
+      userID: this.userService.getCurrentUser().userID,
+      companyID: this.company.id,
+      doctypeID: 2,
+      filter: '',
+      orderBy: '',
+      orderByDirection: 'ASC',
+      rowStart: 1,
+      rowEnd: 15,
+      specificCaptureInfoID: -1
+    };
+
+    this.transactionService.captureInfo(requestModel).then(
+      (res: CaptureInfoResponse) => {
+        this.companyInfoList = res;
+        console.log(JSON.stringify(res));
+      },
+      (msg) => {
+        console.log(JSON.stringify(msg));
+      }
+    );
   }
 
   /* Key Handler Directive Outputs */

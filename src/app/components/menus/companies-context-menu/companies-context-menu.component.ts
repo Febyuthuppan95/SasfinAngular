@@ -39,6 +39,10 @@ export class CompaniesContextMenuComponent implements OnInit {
     this.router.navigate(['companies', 'contacts']);
   }
 
+  captureInfo() {
+    this.router.navigate(['companies', 'capture', 'info']);
+  }
+
   Edit() {
     this.EditCompony.emit(JSON.stringify({
       companyID: this.companyID

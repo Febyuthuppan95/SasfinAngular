@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { NotificationComponent } from '../notification/notification.component';
+import { NotificationComponent } from '../../notification/notification.component';
 
 @Component({
   selector: 'app-form-custom-release',

@@ -1,4 +1,4 @@
-import { ContextMenuUserComponent } from './components/context-menu-user/context-menu-user.component';
+import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -46,7 +46,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { DatatableComponent } from './components/datatable/datatable.component';
 import { ViewRightsListComponent } from './views/main/view-rights-list/view-rights-list.component';
 import { ViewDesignationsListComponent } from './views/main/view-designations-list/view-designations-list.component';
 import { ViewBackgroundsListComponent } from './views/main/view-backgrounds-list/view-backgrounds-list.component';
@@ -54,49 +53,55 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { AccountComponent } from './layouts/account/account.component';
 import { RightService } from './services/Right.Service';
 import { ViewDesignationsRightsListComponent } from './views/main/view-designations-rights-list/view-designations-rights-list.component';
-import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+import { ContextMenuComponent } from './components/menus/context-menu/context-menu.component';
 import { UserRightService } from './services/UserRight.service';
 import { ViewHelpGlossaryComponent } from './views/main/view-help-glossary/view-help-glossary.component';
 import { HelpGlossaryService } from './services/HelpGlossary.Service';
-import { HelpGlossaryContextMenuComponent } from './components/help-glossary-context-menu/help-glossary-context-menu.component';
+import { HelpGlossaryContextMenuComponent } from './components/menus/help-glossary-context-menu/help-glossary-context-menu.component';
 import { HelpSnackbar } from './services/HelpSnackbar.service';
 import { ViewUnitsOfMeasureComponent } from './views/main/view-units-of-measure/view-units-of-measure.component';
-import { ContextMenuUnitsOfMeasureComponent } from './components/context-menu-units-of-measure/context-menu-units-of-measure.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuUnitsOfMeasureComponent } from './components/menus/context-menu-units-of-measure/context-menu-units-of-measure.component';
 import { ModalStandardComponent } from './components/modal-standard/modal-standard.component';
 import { ViewUserRightsListComponent } from './views/main/view-user-rights-list/view-user-rights-list.component';
 import { ViewPlacesComponent } from './views/main/view-places/view-places.component';
 import { PlaceService } from './services/Place.Service';
-import { ContextMenuLocationComponent } from './components/context-menu-location/context-menu-location.component';
+import { ContextMenuLocationComponent } from './components/menus/context-menu-location/context-menu-location.component';
 import { CaptureLayoutComponent } from './layouts/capture-layout/capture-layout.component';
 import { DocumentViewerComponent } from './components/document-viewer/document-viewer.component';
 import { DocumentService } from './services/Document.Service';
 import { ViewCompanyListComponent } from './views/main/view-company-list/view-company-list.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { CompaniesContextMenuComponent } from './components/companies-context-menu/companies-context-menu.component';
+import { CompaniesContextMenuComponent } from './components/menus/companies-context-menu/companies-context-menu.component';
 import { ViewTransactionsComponent } from './views/main/view-transactions/view-transactions.component';
 import { ViewTransactionFilesComponent } from './views/main/view-transaction-files/view-transaction-files.component';
 import { TransactionService } from './services/Transaction.Service';
-import { ContextMenuTransactionComponent } from './components/context-menu-transaction/context-menu-transaction.component';
-import { ContextMenuTransactionFileComponent } from './components/context-menu-transaction-file/context-menu-transaction-file.component';
+import { ContextMenuTransactionComponent } from './components/menus/context-menu-transaction/context-menu-transaction.component';
 // tslint:disable-next-line: max-line-length
-import { ContextMenuTransactionAttachmentComponent } from './components/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
+import { ContextMenuTransactionFileComponent } from './components/menus/context-menu-transaction-file/context-menu-transaction-file.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuTransactionAttachmentComponent } from './components/menus/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { ContextMenuUserrightsComponent } from './components/context-menu-userrights/context-menu-userrights.component';
+import { ContextMenuUserrightsComponent } from './components/menus/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
-import { ContextMenuDesignationrightsComponent } from './components/context-menu-designationrights/context-menu-designationrights.component';
+import { ContextMenuDesignationrightsComponent } from './components/menus/context-menu-designationrights/context-menu-designationrights.component';
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
-import { ContextMenuCompanyInfoComponent } from './components/context-menu-company-info/context-menu-company-info.component';
+import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
-import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
+import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
 import { ImageDirective } from './directives/image.directive';
-import { ContextMenuAddressTypesComponent } from './components/context-menu-address-types/context-menu-address-types.component';
+import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
+import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
+import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu-capture-info/context-menu-capture-info.component';
+import { MenuComponent } from './components/menus/menu/menu.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +123,6 @@ import { ContextMenuAddressTypesComponent } from './components/context-menu-addr
     FloatingButtonComponent,
     EditDashboardStyleComponent,
     MainLayoutComponent,
-    DatatableComponent,
     ViewRightsListComponent,
     ViewDesignationsListComponent,
     ViewBackgroundsListComponent,
@@ -155,7 +159,11 @@ import { ContextMenuAddressTypesComponent } from './components/context-menu-addr
     FormCustomReleaseComponent,
     KeyHandlerDirective,
     ImageDirective,
-    ContextMenuAddressTypesComponent
+    ContextMenuAddressTypesComponent,
+    ViewCaptureInfoComponent,
+    ContextMenuCaptureInfoComponent,
+    MenuComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

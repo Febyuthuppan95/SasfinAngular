@@ -171,4 +171,13 @@ export class TransactionService {
         .then(res => resolve(res), msg => reject(msg));
     });
   }
+
+  public captureInfo(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
 }
