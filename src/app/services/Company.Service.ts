@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 import { AddCompany } from '../models/HttpRequests/AddCompany';
 import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
 import { CompanyList } from '../models/HttpRequests/CompanyList';
+import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
+import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -114,6 +116,44 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public AddInfo(model: AddCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoadd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateInfo(model: UpdateCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoupdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
 

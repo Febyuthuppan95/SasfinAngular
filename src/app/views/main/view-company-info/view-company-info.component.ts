@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,6 +9,9 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyInfoResponse, CompanyInfo } from 'src/app/models/HttpResponses/CompanyInfoResponse';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { AddCompanyInfo } from 'src/app/models/HttpRequests/AddCompanyInfo';
+import { UpdateCompanyInfo } from 'src/app/models/HttpRequests/UpdateCompanyInfo';
 
 @Component({
   selector: 'app-view-company-info',
@@ -44,12 +47,24 @@ export class ViewCompanyInfoComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  @ViewChild('openaddModal', {static: true})
+  openaddModal: ElementRef;
+
+  @ViewChild('closeaddModal', {static: true})
+  closeaddModal: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-
+  selectedInfoIndex = 0;
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompanyInfoResponse;
@@ -59,6 +74,11 @@ export class ViewCompanyInfoComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
+  Info = '';
+  Type = 0;  
+  focusCompanyInfoID = 0;
+  disableInfoSelect = false;
+  focusCompTypeID = 0;
 
   rowStart: number;
   rowEnd: number;
@@ -72,8 +92,8 @@ export class ViewCompanyInfoComponent implements OnInit {
   showingRecords: number;
   activePage: number;
 
-  focusHelp: number;
-  focusHelpName: string;
+  focusCompID: number;
+  focusCompType: number;
   focusDescription: string;
 
   noData = false;
@@ -88,12 +108,19 @@ export class ViewCompanyInfoComponent implements OnInit {
 
   companyName: string;
   companyID: number;
+  TypesList: any[] = [];
+
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
-
+    const temp = {
+      TypeID: 1,
+      TypeName: "General"
+    };
+    this.TypesList.push(temp);
+    console.log(this.TypesList);
 
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
@@ -168,7 +195,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: this.companyID,
+      specificCompanyID: -1,
       specificCompanyAddInfoID: -1,
       specificCompanyAddInfoTypeID: -1,
       rowStart: this.rowStart,
@@ -254,7 +281,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name, description) {
+  popClick(event, id,infoid, type, typeID, description) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -263,9 +290,11 @@ export class ViewCompanyInfoComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusHelp = id;
-    this.focusHelpName = name;
-    this.focusDescription = description;
+    this.focusCompID = id;
+    this.focusCompanyInfoID = infoid;
+    this.focusCompTypeID = typeID;
+    this.focusCompType = type;
+    this.focusDescription = description;  
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -282,6 +311,95 @@ export class ViewCompanyInfoComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  Add()
+  {
+    this.Info = '';
+    this.Type = 0;
+    this.disableInfoSelect = false;
+    this.selectedInfoIndex = 0;
+    this.openaddModal.nativeElement.click();
+  }
+
+  addCompanyInfo(type){
+    const requestModel: AddCompanyInfo = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      companyInfo: this.Info,
+      infoType: this.Type
+      
+    };
+
+    this.companyService.AddInfo(requestModel).then(
+      (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome !== 'SUCCESS') {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+          else
+          {
+            this.notify.successmsg('SUCCESS','Company info successfully added');
+            this.loadCompanyInfoList()
+            this.closeaddModal.nativeElement.click();
+          }
+
+
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+          this.closeaddModal.nativeElement.click();
+        }
+      );
+  }
+
+  editCompanyInfo($event)
+  {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.Info = this.focusDescription;
+    this.Type =  this.focusCompTypeID;
+    this.openeditModal.nativeElement.click();
+
+  }
+
+  UpdateCompany(){
+    const requestModel: UpdateCompanyInfo = {
+      userID: this.currentUser.userID,
+      specificCompanyInfoID: this.focusCompanyInfoID,
+      companyInfo: this.Info,
+      type: this.Type    };
+
+
+
+    this.companyService.UpdateInfo(requestModel).then(
+      (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome !== 'SUCCESS') {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+          else
+          {
+            this.notify.successmsg('SUCCESS','Company info successfully Updated');          
+            this.closeeditModal.nativeElement.click();    
+            this.loadCompanyInfoList()
+          }                         
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );              
+        }
+      );
+  } 
+
+  onChange(id: number)
+  {
+    this.disableInfoSelect = true;
+    this.Type = id;
+    console.log(this.Type);
   }
 
 }
