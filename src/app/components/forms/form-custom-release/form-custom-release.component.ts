@@ -54,7 +54,6 @@ export class FormCustomReleaseComponent implements OnInit {
     this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
-        console.log(this.attachmentID);
       }
     });
   }
@@ -79,11 +78,11 @@ export class FormCustomReleaseComponent implements OnInit {
     this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {
         console.log(res);
-          if (res.outcome === 'SUCCESS') {
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
-          } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-          }
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');

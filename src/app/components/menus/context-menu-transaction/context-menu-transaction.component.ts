@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { TransactionService } from 'src/app/services/Transaction.Service';
 
 @Component({
   selector: 'app-context-menu-transaction',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ContextMenuTransactionComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private transactionService: TransactionService) { }
 
   @Input() x: number;
   @Input() y: number;
@@ -21,7 +22,8 @@ export class ContextMenuTransactionComponent implements OnInit {
   }
 
   viewTransactionAttachments() {
-    this.router.navigate(['transaction', 'attachments', this.transactionID]);
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1 });
+    this.router.navigate(['transaction', 'attachments']);
   }
 
 }

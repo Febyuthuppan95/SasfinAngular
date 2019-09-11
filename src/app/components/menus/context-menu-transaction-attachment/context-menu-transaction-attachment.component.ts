@@ -27,7 +27,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   capture() {
     this.docService.loadDocumentToViewer(this.docPath);
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID });
-    this.router.navigate(['capture', 'transaction', 'attachment', this.transactionID]);
+    this.router.navigate(['capture', 'transaction', 'attachment']);
   }
 
 }

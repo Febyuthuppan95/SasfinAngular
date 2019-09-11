@@ -125,6 +125,12 @@ export class ViewTransactionFilesComponent implements OnInit {
       this.transactionID = +params.get('id');
     });
 
+    this.transationService.observerCurrentAttachment().subscribe((data) => {
+      if (data !== null || data !== undefined) {
+        this.transactionID = data.transactionID;
+      }
+    });
+
     this.loadAttachments();
   }
 
@@ -319,7 +325,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   backToCompanies() {
-    this.router.navigate(['companies']);
+    this.router.navigate(['companies', 'transactions']);
   }
 
   uploadAttachments() {

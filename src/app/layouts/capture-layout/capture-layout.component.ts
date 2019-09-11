@@ -63,7 +63,7 @@ export class CaptureLayoutComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['transaction', 'attachments', 2]);
+    this.router.navigate(['transaction', 'attachments']);
   }
 
   showHelp() {
@@ -94,7 +94,7 @@ export class CaptureLayoutComponent implements OnInit {
 
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
-    this.router.navigate(['transaction', 'attachments', 2]);
+    this.router.navigate(['transaction', 'attachments']);
   }
   companyInfo() {
     this.companyShowToggle = !this.companyShowToggle;
