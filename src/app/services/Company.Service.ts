@@ -5,6 +5,10 @@ import { BehaviorSubject } from 'rxjs';
 import { AddCompany } from '../models/HttpRequests/AddCompany';
 import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
 import { CompanyList } from '../models/HttpRequests/CompanyList';
+import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
+import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
+import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
+import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
 
 @Injectable({
   providedIn: 'root'
@@ -116,6 +120,44 @@ export class CompanyService {
     });
   }
 
+  public AddInfo(model: AddCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoadd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateInfo(model: UpdateCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoupdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
 
   /**
    * contacts
@@ -155,6 +197,44 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public AddAddress(model: AddCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addaddress`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateAddress(model: UpdateCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addressupdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
   /**

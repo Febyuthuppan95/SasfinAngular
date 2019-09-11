@@ -11,5 +11,6 @@ export class CompanyInfo {
   companyInfoID: number;
   company: string;
   companyInfo: string;
-  companyInfoType: string;
+  companyInfoTypeID: number;
+  companyInfoType: number;
 }

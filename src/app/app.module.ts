@@ -17,6 +17,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './material.module';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -93,6 +94,7 @@ import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-ca
 import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu-capture-info/context-menu-capture-info.component';
 import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { CitiesService } from './services/Cities.Service';
 
 @NgModule({
   declarations: [
@@ -195,6 +197,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
+    CitiesService,
     CompanyService,
     {
       provide: HTTP_INTERCEPTORS,
