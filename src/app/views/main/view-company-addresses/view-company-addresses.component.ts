@@ -45,10 +45,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.totalShowing = 0;
     this.loadCompanyInfoList();
   }
-
-
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+ 
 
   @ViewChild('openeditModal', {static: true})
   openeditModal: ElementRef;
@@ -122,6 +119,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
 
   companyName: string;
   companyID: number;
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -280,12 +280,13 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.noData = false;     
             this.Citiesset = res;      
             this.CitiesList = res.citiesLists;
-            this.rowCount = res.rowCount;
+            //this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.citiesLists.length;
-            this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
+            //this.showingRecords = res.citiesLists.length;
+            //this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
            
           }
+          console.log( this.CitiesList);
         },
         msg => {
           this.showLoader = false;

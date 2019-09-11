@@ -103,7 +103,7 @@
             <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
               (click)="pageChange(nextPage)">Next</button>
           </li>
-        </ul>
+        </ul>       
       </nav>
       <br />
       <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
@@ -172,18 +172,17 @@
                   <input type="text" placeholder="PO Box" class="form-control"
                   [(ngModel)]="this.POBox" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
               </div>  
-              <div class="form-group">
-
-                  <input type="text" (keyup)="CitysearchBar()" id="Citiessearch" list="dynmicCities" />
-                  <datalist id="dynmicCities">
-                     <option *ngFor="let item of this.CitiesList" [value]="item">{{item.Name}}</option>
-                  </datalist>
-              <!-- <input type="text" class="form-control" placeholder="City" (keyup)="CitysearchBar()" [(ngModel)]="CitySearch" [ngModelOptions]="{standalone: true}" />   
-              
-              <select >
-                  <option *ngFor="let city of this.CitiesList" [value]="city.id">{{city.name}}</option>
-                </select>     -->
+              <div class="example-form">                
+                  <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="this.CitySearch" type="text"(keyup)="CitysearchBar()"  placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let City of CitiesList" [value]="City.name">
+                          {{City.name}} , {{City.}}
+                        </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>    
               </div>
+
               <div class="form-group">
                 <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
                 <option selected value="-1" [disabled]="disableInfoSelect">Select a Type</option>
