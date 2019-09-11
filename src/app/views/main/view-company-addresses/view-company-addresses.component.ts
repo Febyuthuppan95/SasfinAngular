@@ -110,6 +110,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
+  disableInfoSelect = false;
+  selectedInfoIndex: number;
 
   contextMenu = false;
   contextMenuX = 0;
@@ -465,5 +467,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
         }
       );
   } 
+
+  onChange(id: number) {
+    
+  }
 
 }
