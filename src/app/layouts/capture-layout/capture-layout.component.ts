@@ -86,10 +86,8 @@ export class CaptureLayoutComponent implements OnInit {
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
-        console.log(JSON.stringify(res));
-      },
+     },
       (msg) => {
-        console.log(JSON.stringify(msg));
       }
     );
   }

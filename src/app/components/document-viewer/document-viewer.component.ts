@@ -25,9 +25,7 @@ export class DocumentViewerComponent implements OnInit {
             this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
             this.displayPDF = true;
           },
-          (msg) => {
-            console.log(msg);
-          }
+          (msg) => {}
         );
       } else {
         this.notify.errorsmsg('Failure', 'No PDF was selected.');

@@ -31,9 +31,10 @@ tabindex="-1"
 <div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px; overflow-y: auto;">
   <router-outlet></router-outlet>
   <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
-    <div class="company-info bg-light shadow text-dark text-left">
+    <div class="company-info bg-light shadow text-dark text-left" *ngIf="this.companyInfoList !== undefined">
       <div *ngFor="let info of this.companyInfoList.captureInfo">
         <p>{{info.info}}</p>
+        <hr>
       </div>
     </div>
   </div>
@@ -72,3 +73,5 @@ tabindex="-1"
     {{currentShortcutLabel}}
   </div>
 </div>
+
+<app-notification></app-notification>
