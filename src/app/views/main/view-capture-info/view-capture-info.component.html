@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody *ngIf="(!noData) && this.dataset !== undefined">
-        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); setClickedRow(i)" [class.active]="i == selectedRow">
+        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); selectedRowChange(i, { id: info.captureID, info: info.info });" [class.active]="i == selectedRow">
           <td>{{info.rowNum}}</td>
           <td>{{info.info}}</td>
         </tr>
@@ -55,8 +55,6 @@
         </tr>
       </tbody>
     </table>
-    <br />
-    <br />
     <app-pagination
       *ngIf="dataset !== undefined"
       [currentTheme]="this.currentTheme"
@@ -66,6 +64,17 @@
       [rowEnd]="this.requestModel.rowEnd"
       (pageChangeEvent)="pageChange($event)">
     </app-pagination>
+    <br>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
   </div>
 </div>
 
@@ -74,7 +83,34 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-capture-info></app-context-menu-capture-info>
+  <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo($event)"></app-context-menu-capture-info>
 </app-menu>
 
 <app-notification></app-notification>
+
+<!-- Edit Capture Info -->
+<button class="hide" data-toggle="modal" data-target="#editGlossary" #openEditModal></button>
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true" *ngIf="this.captureInfo !== undefined || this.captureInfo !== null">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Edit</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="editInfo()">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Information" class="form-control"
+            [(ngModel)]="this.captureInfo.info" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeEditModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

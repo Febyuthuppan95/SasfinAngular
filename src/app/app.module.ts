@@ -2,7 +2,7 @@ import { ContextMenuUserComponent } from './components/menus/context-menu-user/c
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -15,15 +15,7 @@ import { BackgroundService } from './services/Background.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatMenuModule } from '@angular/material/menu';
+import { MaterialModule } from './material.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,7 +27,6 @@ import { ViewChangePasswordComponent } from './views/account/view-change-passwor
 import { ViewUserListComponent } from './views/main/view-user-list/view-user-list.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationComponent } from './components/notification/notification.component';
 import { LoaderComponent } from './components/loader/loader.component';
@@ -170,7 +161,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    BrowserAnimationsModule,
+    ReactiveFormsModule,
     PdfViewerModule,
     UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
@@ -183,16 +174,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ),
     NgbModule,
     NgxPaginationModule,
-    MatTooltipModule,
-    MatButtonModule,
     NgxExtendedPdfViewerModule,
-    MatIconModule,
-    MatChipsModule,
-    MatBottomSheetModule,
-    MatListModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatMenuModule
+    MaterialModule
   ],
   providers: [
     CookieService,

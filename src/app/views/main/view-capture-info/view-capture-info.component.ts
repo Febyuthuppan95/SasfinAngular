@@ -14,6 +14,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateCompany } from 'src/app/models/HttpRequests/UpdateCompany';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -28,8 +29,17 @@ export class ViewCaptureInfoComponent implements OnInit {
     private themeService: ThemeService,
     private transactionService: TransactionService) {}
 
+    myControl = new FormControl();
+    options: string[] = ['One', 'Two', 'Three'];
+
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('openEditModal', { static: true })
+  private openEditModal: ElementRef;
+
+  @ViewChild('closeEditModal', { static: true })
+  private closeEditModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -37,7 +47,7 @@ export class ViewCaptureInfoComponent implements OnInit {
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   dataset: CaptureInfoResponse;
-  recordsPerPage: number;
+  recordsPerPage = 15;
 
   noData = false;
   showLoader = true;
@@ -49,6 +59,11 @@ export class ViewCaptureInfoComponent implements OnInit {
   contextMenuY = 0;
   sidebarCollapsed = true;
   selectedRow = -1;
+
+  captureInfo: {
+    id: number,
+    info: string,
+  };
 
   company: {
     id: number,
@@ -80,6 +95,11 @@ export class ViewCaptureInfoComponent implements OnInit {
 
       this.loadDataset();
     });
+
+    this.captureInfo = {
+      id: -1,
+      info: ''
+    };
   }
 
   searchBar() {
@@ -133,19 +153,24 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
-
-    console.log(this.contextMenu);
-    console.log(this.contextMenuX);
-    console.log(this.contextMenuY);
-  }
-
-  setClickedRow(index) {
-    this.selectedRow = index;
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.requestModel.rowStart = $event.rowStart;
     this.requestModel.rowEnd = $event.rowEnd;
     this.loadDataset();
+  }
+
+  editCaptureInfo() {
+    this.openEditModal.nativeElement.click();
+  }
+
+  editInfo() {
+    this.closeEditModal.nativeElement.click();
+  }
+
+  selectedRowChange(index: number, capture: { id: number, info: string }) {
+    this.selectedRow = index;
+    this.captureInfo = capture;
   }
 }

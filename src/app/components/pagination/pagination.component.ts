@@ -22,6 +22,7 @@ export class PaginationComponent implements OnInit {
   prevPageState: boolean;
   pages: Pagination[];
   showingPages: Pagination[];
+  recordEnd: number;
 
   constructor() { }
 
@@ -44,6 +45,8 @@ export class PaginationComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.recordsPerPage;
     }
+
+    this.recordEnd = +this.rowStart + +this.recordsPerPage - 1;
 
     this.updatePagination();
   }
@@ -109,7 +112,10 @@ export class PaginationComponent implements OnInit {
         this.showingPages[2] = this.pages[+this.activePage + 1];
       }
     }
+
+    this.recordEnd = +this.rowStart + +this.recordsPerPage - 1;
   }
+
 }
 
 export class Pagination {
