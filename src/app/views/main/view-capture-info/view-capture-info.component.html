@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody *ngIf="(!noData) && this.dataset !== undefined">
-        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); selectedRowChange(i, { id: info.captureID, info: info.info });" [class.active]="i == selectedRow">
+        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); selectedRowChange(i, { id: info.captureInfoID, info: info.info });" [class.active]="i == selectedRow">
           <td>{{info.rowNum}}</td>
           <td>{{info.info}}</td>
         </tr>
@@ -64,17 +64,6 @@
       [rowEnd]="this.requestModel.rowEnd"
       (pageChangeEvent)="pageChange($event)">
     </app-pagination>
-    <br>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of options" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
   </div>
 </div>
 
@@ -90,7 +79,7 @@
 
 <!-- Edit Capture Info -->
 <button class="hide" data-toggle="modal" data-target="#editGlossary" #openEditModal></button>
-<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true" *ngIf="this.captureInfo !== undefined || this.captureInfo !== null">
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">

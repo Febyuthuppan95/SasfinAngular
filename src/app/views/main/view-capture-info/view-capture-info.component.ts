@@ -2,19 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { CompaniesContextMenuComponent } from 'src/app/components/menus/companies-context-menu/companies-context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
-import { Company, CompaniesListResponse } from 'src/app/models/HttpResponses/CompaniesListResponse';
-import { Pagination } from 'src/app/models/Pagination';
-import { CompanyList } from 'src/app/models/HttpRequests/CompanyList';
-import { AddCompany } from 'src/app/models/HttpRequests/AddCompany';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompany } from 'src/app/models/HttpRequests/UpdateCompany';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionService } from 'src/app/services/Transaction.Service';
-import { FormControl } from '@angular/forms';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -28,9 +21,6 @@ export class ViewCaptureInfoComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private transactionService: TransactionService) {}
-
-    myControl = new FormControl();
-    options: string[] = ['One', 'Two', 'Three'];
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -166,11 +156,31 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   editInfo() {
-    this.closeEditModal.nativeElement.click();
+    const requestModel = {
+      userID: this.currentUser.userID,
+      captureID: this.captureInfo.id,
+      info: this.captureInfo.info
+    };
+
+    this.transactionService.captureInfoUpdate(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeEditModal.nativeElement.click();
+          this.loadDataset();
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    )
   }
 
   selectedRowChange(index: number, capture: { id: number, info: string }) {
     this.selectedRow = index;
     this.captureInfo = capture;
+    console.log(this.captureInfo);
   }
 }

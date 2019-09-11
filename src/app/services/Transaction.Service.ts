@@ -2,6 +2,7 @@ import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angula
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { CreateTransactionRequest } from '../models/HttpRequests/TransactionRequests';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ export class TransactionService {
    *
    */
   constructor(private httpClient: HttpClient) {}
+
+  currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number }>(null);
+  public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number }) { this.currentAttachment.next(next); }
 
   /**
    * list
@@ -175,6 +180,24 @@ export class TransactionService {
   public captureInfo(requestModel) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public captureInfoUpdate(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo/update`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public customsReleaseUpdate(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/update/customsrelease`;
       this.httpClient.post(apiURL, requestModel)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
