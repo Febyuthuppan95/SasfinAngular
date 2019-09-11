@@ -31,6 +31,9 @@ export class ViewBackgroundsListComponent implements OnInit {
   @ViewChild('closeUploadModal', { static: true })
   closeUploadModal: ElementRef;
 
+  @ViewChild('openViewBackgroundModal', { static: true })
+  openViewBackgroundModal: ElementRef;
+
   currentTheme = 'light';
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
@@ -49,6 +52,7 @@ export class ViewBackgroundsListComponent implements OnInit {
   uploadForm: FormGroup;
   fileToUpload: File = null;
   preview: any;
+  srcImage: any;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -97,10 +101,8 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   viewBackground(src: string) {
-    const options = new ImageModalOptions();
-    options.width = '.modal-lg';
-
-    this.imageModal.open(`${environment.ApiBackgroundImages}/${src}`, options);
+    this.srcImage = `${environment.ApiBackgroundImages}/${src}`;
+    this.openViewBackgroundModal.nativeElement.click();
   }
 
   searchBar() {
@@ -165,7 +167,11 @@ export class ViewBackgroundsListComponent implements OnInit {
   uploadBackground() {
     let errors = 0;
 
-    if (this.fileName === '' || this.fileName === undefined) {
+    if (this.fileName === '' ||  undefined) {
+      errors++;
+    }
+
+    if (this.fileToUpload === null || undefined) {
       errors++;
     }
 
@@ -194,7 +200,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Missing fields', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
     }
   }
 

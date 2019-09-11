@@ -26,6 +26,7 @@ import { ViewCaptureTransactionComponent } from './views/capture/view-capture-tr
 import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
+import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 
 const routes: Routes = [
   {
@@ -62,7 +63,8 @@ const routes: Routes = [
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
           { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
-          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },          
+          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
+          { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

@@ -33,7 +33,7 @@
             <th></th>
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('File')">
-                <p class="headerText">File</p>
+                <p class="headerText">Name</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'File_ASC')?'order-active':'order-not-active'"></i>
                   <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'File_DESC')?'order-active':'order-not-active'"></i>
@@ -109,17 +109,23 @@
                 [(ngModel)]="this.attachmentName" [ngModelOptions]="{standalone: true}" required/>
             </div>
         <div class="form-group">
-          <select [(ngModel)]="this.selectedTransactionType" [ngModelOptions]="{standalone: true}" class="form-control" required>
-            <option value="-1" selected disabled>Please select an attachment type</option>
+          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [selectedIndex]="attachmentTypeIndex">
+            <option value="-1" [disabled]="this.disableAttachmentType" selected>Please select an attachment type</option>
             <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.name}}</option>
           </select>
         </div>
           <div class="form-group">
-              <input type="file" (change)="onFileChange($event.target.files)" required/>
-            </div>
+              <span *ngIf="preview !== undefined || preview !== null" class="float-right">{{preview}}</span>
+              <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
+                <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+              </label>
+              <br>
+              <button type="button" mat-button (click)="addToQueue()">Add to queue</button>
+              <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files)" required>
+          </div>
         <hr/>
         <div class="attachment-queue">
-          <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueue">
+          <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueueDisplay">
               <span class="float-right">{{attach.status}}</span>
               <p>{{attach.name}}</p>
               <small>{{attach.type}}</small><br/>
@@ -132,7 +138,7 @@
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+        <button type="submit" class="btn btn-primary btn-sm">Start Uploading</button>
       </div>
     </form>
     </div>

@@ -128,7 +128,7 @@ export class TransactionService {
       type,
       transactionID,
       userID,
-      company      
+      company
     };
 
     const formData = new FormData();
@@ -138,6 +138,18 @@ export class TransactionService {
     return new Promise(async (resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/attachment/upload`;
       await this.httpClient.post(apiURL, formData)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  /**
+   * updateAttachment
+   */
+  public updateAttachment(requestModel: object) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/attachment/update`;
+      this.httpClient.post(apiURL, requestModel)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
     });
@@ -157,6 +169,15 @@ export class TransactionService {
       this.httpClient.post(apiURL, requestModel)
         .toPromise()
         .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public captureInfo(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
     });
   }
 }

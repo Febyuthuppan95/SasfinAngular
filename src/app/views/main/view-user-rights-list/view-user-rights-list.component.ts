@@ -22,7 +22,7 @@ import { RightListResponse } from 'src/app/models/HttpResponses/RightListRespons
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Subscription } from 'rxjs';
-import { ContextMenuUserrightsComponent } from './../../../components/context-menu-userrights/context-menu-userrights.component';
+import { ContextMenuUserrightsComponent } from '../../../components/menus/context-menu-userrights/context-menu-userrights.component';
 
 @Component({
   selector: 'app-view-user-rights-list',

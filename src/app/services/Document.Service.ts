@@ -34,7 +34,7 @@ export class DocumentService {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiDocuments}/${docName}`;
       this.httpClient
-        .get(apiURL, {responseType: 'text'})
+        .get(apiURL, {responseType: 'arraybuffer'})
         .toPromise()
         .then(
           res => {

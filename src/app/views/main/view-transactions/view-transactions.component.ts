@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -105,6 +105,11 @@ export class ViewTransactionsComponent implements OnInit {
   transactionTypes: TransactionTypes[];
   transactionStatus: TransactionStatus[];
 
+  selectedTypeIndex: number;
+  selectedStatusIndex: number;
+  statusDisable: boolean;
+  typesDisable: boolean;
+
   newTransaction = {
     name: '',
     transactionTypeID: -1,
@@ -162,6 +167,7 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   onStatusChange(id: number) {
+    this.statusDisable = true;
     this.selectedStatus = id;
   }
 
@@ -181,6 +187,7 @@ export class ViewTransactionsComponent implements OnInit {
 
   onTypeChange(id: number) {
     this.selectedType = id;
+    this.typesDisable = true;
   }
 
   paginateData() {
