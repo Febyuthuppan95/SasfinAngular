@@ -7,6 +7,8 @@ import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
 import { CompanyList } from '../models/HttpRequests/CompanyList';
 import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
 import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
+import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
+import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
 
 @Injectable({
   providedIn: 'root'
@@ -195,6 +197,44 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public AddAddress(model: AddCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addaddress`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateAddress(model: UpdateCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addressupdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
   /**

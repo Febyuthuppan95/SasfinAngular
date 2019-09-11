@@ -119,8 +119,7 @@ export class ViewCompanyInfoComponent implements OnInit {
       TypeID: 1,
       TypeName: "General"
     };
-    this.TypesList.push(temp);
-    console.log(this.TypesList);
+    this.TypesList.push(temp);   
 
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;

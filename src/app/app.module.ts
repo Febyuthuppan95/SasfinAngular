@@ -24,7 +24,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -95,6 +99,7 @@ import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
+import { CitiesService } from './services/Cities.Service';
 
 
 
@@ -161,6 +166,7 @@ import { AddressTypesService } from './services/AddressTypes.Service';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     PdfViewerModule,
     UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
@@ -183,7 +189,10 @@ import { AddressTypesService } from './services/AddressTypes.Service';
     MatListModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatFormFieldModule 
   ],
   providers: [
     CookieService,
@@ -203,6 +212,7 @@ import { AddressTypesService } from './services/AddressTypes.Service';
     HelpSnackbar,
     DocumentService,
     AuthenticationService,
+    CitiesService,
     CompanyService,
     {
       provide: HTTP_INTERCEPTORS,
