@@ -4,6 +4,7 @@ import { NotificationComponent } from '../../notification/notification.component
 import { UserService } from 'src/app/services/user.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-custom-release',
@@ -12,7 +13,8 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 })
 export class FormCustomReleaseComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService) { }
+  constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
+              private router: Router) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -80,6 +82,7 @@ export class FormCustomReleaseComponent implements OnInit {
         console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
+          setTimeout(() => { this.router.navigate(['transactions', 'attachments']); }, 2000);
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
