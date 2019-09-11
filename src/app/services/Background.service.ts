@@ -27,12 +27,11 @@ export class BackgroundService {
     });
   }
 
-  public addBackgrounds(fileName: string, src: File, userID: number, rightName: string) {
+  public addBackgrounds(fileName: string, src: File, userID: number) {
     const requestModel = {
       name: fileName,
       image: src.name,
-      userId: userID,
-      rightName
+      userId: userID,     
     };
 
     const formData = new FormData();
@@ -55,10 +54,9 @@ export class BackgroundService {
     });
   }
 
-  public removeBackgrounds(backgroundID, rightName, userID) {
+  public removeBackgrounds(backgroundID, userID) {
     const requestModel = {
-      userID,
-      rightName,
+      userID,    
       backgroundID
     };
 

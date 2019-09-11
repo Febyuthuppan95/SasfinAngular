@@ -1,20 +1,16 @@
-import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
-import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
-import { UserList } from '../../../models/HttpResponses/UserList';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { Config } from './../../../../assets/config.json';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
 import { HelpGlossaryService } from 'src/app/services/HelpGlossary.Service';
 import { ListHelpGlossary } from 'src/app/models/HttpRequests/ListHelpGlossary';
 import { ListHelpGlossaryResponse, ListHelpGlossaryItem } from 'src/app/models/HttpResponses/ListHelpGlossaryResponse';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { UpdateHelpGlossary } from 'src/app/models/HttpRequests/UpdateHelpGlossary';
 import { UpdateHelpGlossaryResponse } from 'src/app/models/HttpResponses/UpdateHelpGlossaryResponse';
 
@@ -32,7 +28,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'HelpGlossary';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -51,8 +46,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
 
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -78,7 +71,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -173,7 +165,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
       // userID: this.currentUser.userID,
       userID: 3,
       specificHelpGlossaryID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -197,7 +188,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
             this.paginateData();
           }
         },
-        msg => {
+        () => {
           this.showLoader = false;
           this.notify.errorsmsg(
             'Server Error',
@@ -292,7 +283,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editHelp($event) {
+  editHelp() {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
@@ -313,7 +304,6 @@ export class ViewHelpGlossaryComponent implements OnInit {
       const requestModel: UpdateHelpGlossary = {
         userID: 3,
         helpGlossaryID: this.focusHelp,
-        rightName: 'HelpGlossary',
         name: this.focusHelpName,
         description: this.focusDescription
       };
@@ -324,7 +314,7 @@ export class ViewHelpGlossaryComponent implements OnInit {
           this.loadHelpGlossary();
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         },
-        (msg) => {
+        () => {
           this.notify.errorsmsg('Failure', 'Cannot reach server.');
         }
       );

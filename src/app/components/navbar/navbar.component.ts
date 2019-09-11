@@ -3,6 +3,7 @@ import { UserService } from '../../services/user.Service';
 import { User } from '../../models/HttpResponses/User';
 import {SnackbarModel} from '../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../services/HelpSnackbar.service';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +12,9 @@ import {HelpSnackbar} from '../../services/HelpSnackbar.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private userService: UserService, private snackbarService: HelpSnackbar) { }
+  constructor(private userService: UserService,
+              private userIdle: UserIdleService,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser: User = this.userService.getCurrentUser();
   activateSidebar = false;
@@ -24,6 +27,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
 
   logout() {
+    this.userIdle.resetTimer();
+    this.userIdle.stopTimer();
+    this.userIdle.stopWatching();
     this.userService.logout();
   }
 

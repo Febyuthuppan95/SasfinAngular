@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -10,6 +10,10 @@ import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/Com
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction, TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { TransactionTypes, TransactionTypesResponse } from 'src/app/models/HttpResponses/TransactionTypesList';
+import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/HttpResponses/TransactionStatusList';
 
 @Component({
   selector: 'app-view-transactions',
@@ -24,10 +28,10 @@ export class ViewTransactionsComponent implements OnInit {
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private companyService: CompanyService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Companies';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -44,6 +48,12 @@ export class ViewTransactionsComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('openModal', { static: true })
+  private openModal: ElementRef;
+
+  @ViewChild('closeModal', { static: true })
+  private closeModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -64,7 +74,6 @@ export class ViewTransactionsComponent implements OnInit {
   rowStart: number;
   rowEnd: number;
   filter: string;
-  rightName: string;
   orderBy: string;
   orderDirection: string;
 
@@ -90,20 +99,96 @@ export class ViewTransactionsComponent implements OnInit {
 
   companyID: number;
   companyName: string;
+  selectedStatus: number;
+  selectedType: number;
+
+  transactionTypes: TransactionTypes[];
+  transactionStatus: TransactionStatus[];
+
+  selectedTypeIndex: number;
+  selectedStatusIndex: number;
+  statusDisable: boolean;
+  typesDisable: boolean;
+
+  newTransaction = {
+    name: '',
+    transactionTypeID: -1,
+    transactionStatusID: -1
+  };
+
+  transactionStatusRequest = {
+    rowStart: 1,
+    rowEnd: 100,
+    filter: '',
+    orderBy: '',
+    orderByDirection: '',
+    userID: this.userService.getCurrentUser().userID,
+    specificTransactionStatusID: -1
+  };
+
+  transactionTypeRequest = {
+    rowStart: 1,
+    rowEnd: 100,
+    filter: '',
+    orderBy: '',
+    orderByDirection: '',
+    userID: this.userService.getCurrentUser().userID,
+    specificTransactionTypesID: -1
+  };
+
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
-    this.activatedRoute.paramMap
-    .subscribe(params => {
-      this.companyID = +params.get('id');
-      this.companyName = params.get('name');
+
+    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+      this.companyID = obj.companyID;
+      this.companyName = obj.companyName;
     });
 
     this.loadTransactions();
+    this.loadStatuses();
+    this.loadTypes();
   }
 
+  loadStatuses() {
+    this.transationService.statusList(this.transactionStatusRequest).then(
+      (res: TransactionStatusesResponse) => {
+        this.transactionStatus = res.transactionStatuses;
+      },
+      (msg) => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  onStatusChange(id: number) {
+    this.statusDisable = true;
+    this.selectedStatus = id;
+  }
+
+  loadTypes() {
+    this.transationService.typessList(this.transactionTypeRequest).then(
+      (res: TransactionTypesResponse) => {
+        this.transactionTypes = res.transactionTypes;
+      },
+      (msg) => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  onTypeChange(id: number) {
+    this.selectedType = id;
+    this.typesDisable = true;
+  }
 
   paginateData() {
     let rowStart = 1;
@@ -170,17 +255,29 @@ export class ViewTransactionsComponent implements OnInit {
       userID: this.currentUser.userID,
       companyID: this.companyID,
       specificTransactionID: -1,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
 
+    console.log(JSON.stringify(model));
+
     this.transationService
       .list(model)
       .then(
         (res: TransactionListResponse) => {
+          if(res.outcome.outcome === 'FAILURE'){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          } else {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -283,6 +380,32 @@ export class ViewTransactionsComponent implements OnInit {
 
   backToCompanies() {
     this.router.navigate(['companies']);
+  }
+
+  addTransaction() {
+    this.transationService.createdTransaction(
+      this.currentUser.userID,
+      this.companyID,
+      1,
+      1,
+      this.newTransaction.name,
+    ).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadTransactions();
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeModal.nativeElement.click();
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Could not reach server');
+        this.closeModal.nativeElement.click();
+      }
+    );
+  }
+
+  addTransactionModal() {
+    this.openModal.nativeElement.click();
   }
 
 }

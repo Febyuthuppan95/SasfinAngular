@@ -31,6 +31,9 @@ export class ViewBackgroundsListComponent implements OnInit {
   @ViewChild('closeUploadModal', { static: true })
   closeUploadModal: ElementRef;
 
+  @ViewChild('openViewBackgroundModal', { static: true })
+  openViewBackgroundModal: ElementRef;
+
   currentTheme = 'light';
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
@@ -48,6 +51,8 @@ export class ViewBackgroundsListComponent implements OnInit {
   fileName: string;
   uploadForm: FormGroup;
   fileToUpload: File = null;
+  preview: any;
+  srcImage: any;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -58,7 +63,6 @@ export class ViewBackgroundsListComponent implements OnInit {
     this.backgroundRequestModel = {
       userID: 3, // Default User ID for testing
       specificBackgroundID: -1,
-      rightName: 'Backgrounds',
       filter: '',
       orderBy: 'Name',
       orderByDirection: 'ASC',
@@ -97,10 +101,8 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   viewBackground(src: string) {
-    const options = new ImageModalOptions();
-    options.width = '.modal-lg';
-
-    this.imageModal.open(`${environment.ApiBackgroundImages}/${src}`, options);
+    this.srcImage = `${environment.ApiBackgroundImages}/${src}`;
+    this.openViewBackgroundModal.nativeElement.click();
   }
 
   searchBar() {
@@ -165,7 +167,11 @@ export class ViewBackgroundsListComponent implements OnInit {
   uploadBackground() {
     let errors = 0;
 
-    if (this.fileName === '' || this.fileName === undefined) {
+    if (this.fileName === '' ||  undefined) {
+      errors++;
+    }
+
+    if (this.fileToUpload === null || undefined) {
       errors++;
     }
 
@@ -173,8 +179,7 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3,
-        'Backgrounds'
+        3
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
@@ -185,6 +190,7 @@ export class ViewBackgroundsListComponent implements OnInit {
                 this.backgroundRequestModel.rowEnd = 15;
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
+                this.preview = null;
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -194,12 +200,24 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Missing fields', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
     }
   }
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+  }
+
+  readFile(event): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.preview = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   updateHelpContext(slug: string) {

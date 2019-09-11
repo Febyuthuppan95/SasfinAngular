@@ -552,16 +552,16 @@ button p .headerText {
 
 
 tr td {
-  font-size: 0.95rem !important;
+  font-size: 1.01rem !important;
 }
 tr {
   cursor: pointer;
 }
 p {
-  font-size:0.95rem !important;
+  font-size:1.05rem !important;
 }
 .pagination-sm .page-link {
-  font-size: 0.95rem !important;
+  font-size: 1.01rem !important;
 }
 .footer {
   font-size: 0.95rem;
@@ -596,4 +596,9 @@ p {
 }
 .btn-add i:hover {
   color:#fff;
+}
+
+.modal-body {
+  max-height: 70vh !important;
+  overflow-y: auto !important;
 }

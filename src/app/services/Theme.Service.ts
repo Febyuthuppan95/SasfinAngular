@@ -115,8 +115,7 @@ export class ThemeService {
       const requestModel = {
         userID: currentUser.userID,
         specificUserID: currentUser.userID,
-        backgroundID: background.backgroundID,
-        rightName: 'BackgroundUser',
+        backgroundID: background.backgroundID
       };
 
       this.httpClient
