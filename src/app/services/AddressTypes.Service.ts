@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { AddressTypesListRequest } from '../models/HttpRequests/AddressTypesList';
 import { UpdateAddressTypeRequest } from '../models/HttpRequests/UpdateAddressTypes';
+import { AddAddressTypesRequest } from '../models/HttpRequests/AddAddressTypesRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { UpdateAddressTypeRequest } from '../models/HttpRequests/UpdateAddressTy
 export class AddressTypesService {
   // update(requestModel: import("../models/HttpRequests/UpdateAddressTypes").UpdateAddressTypeRequest) {
   //   throw new Error("Method not implemented.");
-  
+
   constructor(private httpClient: HttpClient) {}
 
   public list(params: AddressTypesListRequest) {
@@ -47,5 +48,24 @@ export class AddressTypesService {
           }
         );
     });
+  }
+
+  public add(model: AddAddressTypesRequest) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/addressTypes/add`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 }

@@ -15,6 +15,9 @@ import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes'
 import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
 import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
 import { AddressType } from 'src/app/models/HttpResponses/AddressType';
+import { AddAddressTypesRequest } from 'src/app/models/HttpRequests/AddAddressTypesRequest';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -23,7 +26,7 @@ import { AddressType } from 'src/app/models/HttpResponses/AddressType';
 })
 export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService) {}
+  constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService, private userService: UserService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -48,6 +51,14 @@ export class ViewAddressTypesListComponent implements OnInit {
 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
+
+  @ViewChild('addModalOpen', { static: true })
+  addModalOpen: ElementRef;
+
+  @ViewChild('addModalClose', { static: true })
+  addModalClose: ElementRef;
+
+  currentUser = this.userService.getCurrentUser();
 
   selectRowDisplay: number;
   rowCount: number;
@@ -79,6 +90,8 @@ export class ViewAddressTypesListComponent implements OnInit {
 
   focusAddressTypeId: number;
   focusAddressTypeName: string;
+
+  newAddressTypeName: string;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -291,5 +304,77 @@ export class ViewAddressTypesListComponent implements OnInit {
       this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
     }
   }
-}
+
+
+  /* Add Handlers from context menu */
+
+  addAddressTypesModal($event) {
+    this.addModalOpen.nativeElement.click();
+    this.newAddressTypeName = 'addressType';
+  }
+
+  addAddressType() {
+     const requestModel = {
+       userID: this.currentUser.userID,
+       name: this.newAddressTypeName
+     };
+
+     this.addressTypeService.add(requestModel).then(
+       (res: Outcome) => {
+         if (res.outcome === 'SUCCESS') {
+           this.newAddressTypeName = '';
+           this.addModalClose.nativeElement.click();
+           this.loadAddressTypes();
+         } else {
+           alert('Error Adding');
+         }
+       },
+       (msg) => {
+         alert('Error');
+       }
+     );
+    }
+   }
+
+
+
+
+
+  // addAddressType($event) {
+  //   let errors = 0;
+
+  //   // if (this.focusAddressTypeId !== null  && this.focusAddressTypeId !== undefined) {
+  //   //   errors++;
+  //   // }
+  //   if (this.focusAddressTypeName === null || this.focusAddressTypeName === undefined) {
+  //     errors++;
+  //   }
+
+
+  //   if (errors === 0) {
+  //       const requestModel: AddAddressTypesRequest = {
+  //         userID: 4,
+  //         name: this.focusAddressTypeName
+  //       };
+
+  //       this.addressTypeService.add(requestModel).then(
+  //         (res: UpdateAddressTypesResponse) => {
+  //           this.closeModal.nativeElement.click();
+  //           this.addressTypes.rowStart = 1;
+  //           this.addressTypes.rowEnd = this.selectRowDisplay;
+  //           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+
+  //           this.loadAddressTypes();
+  //         },
+  //         (msg) => {
+  //           this.notify.errorsmsg('Failure', msg.message);
+  //         }
+  //       );
+  //     } else {
+  //       this.notify.toastrwarning('Warning', 'Please enter all fields when adding a help glossary item.');
+  //     }
+  //   }
+
+
+
 
