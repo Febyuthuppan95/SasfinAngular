@@ -129,29 +129,18 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   popClick(event) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
 
-    if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true);
-      this.contextMenu = true;
-    } else {
-      this.themeService.toggleContextMenu(false);
-      this.contextMenu = false;
-    }
+    console.log(this.contextMenu);
+    console.log(this.contextMenuX);
+    console.log(this.contextMenuY);
   }
 
   setClickedRow(index) {
     this.selectedRow = index;
-  }
-
-  resetContext() {
-    this.selectedRow = -1;
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {

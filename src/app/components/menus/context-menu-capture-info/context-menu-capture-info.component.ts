@@ -10,8 +10,6 @@ export class ContextMenuCaptureInfoComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  @Input() x: number;
-  @Input() y: number;
   @Input() captureID: number;
   @Input() captureInfo: string;
   @Input() currentTheme: string;

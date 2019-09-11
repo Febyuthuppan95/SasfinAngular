@@ -58,17 +58,19 @@
     <br />
     <br />
     <app-pagination
-    *ngIf="dataset !== undefined"
-    [currentTheme]="this.currentTheme"
-    [recordCount]="this.dataset.captureInfo.length"
-    [recordsPerPage]="this.recordsPerPage"
-    [rowStart]="this.requestModel.rowStart"
-    [rowEnd]="this.requestModel.rowEnd"
-    (pageChangeEvent)="pageChange($event)"></app-pagination>
+      *ngIf="dataset !== undefined"
+      [currentTheme]="this.currentTheme"
+      [recordCount]="this.dataset.captureInfo.length"
+      [recordsPerPage]="this.recordsPerPage"
+      [rowStart]="this.requestModel.rowStart"
+      [rowEnd]="this.requestModel.rowEnd"
+      (pageChangeEvent)="pageChange($event)">
+    </app-pagination>
   </div>
 </div>
-<app-menu [contextShow]="this.contextMenu" (resetContext)="resetContext()">
-  <app-context-menu-capture-info [x]="this.contextMenuX" [y]="this.contextMenuY"></app-context-menu-capture-info>
+
+<app-menu [contextShow]="this.contextMenu" [x]="this.contextMenuX" [y]="this.contextMenuY" (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+  <app-context-menu-capture-info></app-context-menu-capture-info>
 </app-menu>
 
 <app-notification></app-notification>

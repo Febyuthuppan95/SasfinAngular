@@ -8,6 +8,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class MenuComponent implements OnInit {
 
   @Input() contextShow: boolean;
+  @Input() x: number;
+  @Input() y: number;
 
   @Output() resetContext = new EventEmitter<void>();
 
