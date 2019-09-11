@@ -69,7 +69,11 @@
   </div>
 </div>
 
-<app-menu [contextShow]="this.contextMenu" [x]="this.contextMenuX" [y]="this.contextMenuY" (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+<app-menu
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
   <app-context-menu-capture-info></app-context-menu-capture-info>
 </app-menu>
 
