@@ -221,7 +221,7 @@ export class CompanyService {
   public UpdateAddress(model: UpdateCompanyAddress) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/addressupdate`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateaddress`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()

@@ -11,11 +11,12 @@ import { Pagination } from 'src/app/models/Pagination';
 import { CompanyAddressResponse, Address } from 'src/app/models/HttpResponses/CompanyAddressResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
-import { AddCompanyAddress } from 'src/app/models/HttpRequests/AddCompanyAddress';
+import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
 import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesService } from 'src/app/services/Cities.Service';
-import {FormControl} from '@angular/forms'
+import {FormControl} from '@angular/forms';
+import { MatAutocomplete } from '@angular/material';
 
 @Component({
   selector: 'app-view-company-addresses',
@@ -45,7 +46,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.totalShowing = 0;
     this.loadCompanyInfoList();
   }
- 
 
   @ViewChild('openeditModal', {static: true})
   openeditModal: ElementRef;
@@ -64,6 +64,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+  @ViewChild('auto', {static: false})
+  private autoComplete: MatAutocomplete;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -105,19 +107,23 @@ export class ViewCompanyAddressesComponent implements OnInit {
   focusAddress2 = '';
   focusPOBox = '';
   focusAddressType = '';
-  focusAddresTypeID = 0
+  focusAddresTypeID = 0;
+  focusCityID = 0;
+  focusCityName = '';
+  cityID = 0;
   AddressTypesList: any[] = [];
   noData = false;
   showLoader = true;
   displayFilter = false;
-  disableInfoSelect = false;
-  selectedInfoIndex: number;
+  disableAddressSelect = false;
+  selectedAddressIndex: number;
 
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
   selectedRow = -1;
+  Type = 0;
 
   companyName: string;
   companyID: number;
@@ -132,9 +138,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
 
     const temp = {
       TypeID: 1,
-      TypeName: "Office Building"
+      TypeName: 'Office Building'
     };
-    this.AddressTypesList.push(temp); 
+    this.AddressTypesList.push(temp);
 
     // this.activatedRoute.paramMap
     // .subscribe(params => {
@@ -209,9 +215,13 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.loadCompanyInfoList();
   }
 
-  CitysearchBar() {
+  CityBar() {
+
     this.rowStart = 1;
     this.loadCitiesList();
+  }
+  selectedCity(cityid) {
+    this.cityID = cityid;
   }
 
   loadCompanyInfoList() {
@@ -245,6 +255,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
             this.paginateData();
           }
+
+          console.log(res);
         },
         msg => {
           this.showLoader = false;
@@ -279,16 +291,14 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.noData = true;
             this.showLoader = false;
           } else {
-            this.noData = false;     
-            this.Citiesset = res;      
+            this.noData = false;
+            this.Citiesset = res;
             this.CitiesList = res.citiesLists;
-            //this.rowCount = res.rowCount;
+            // this.rowCount = res.rowCount;
             this.showLoader = false;
-            //this.showingRecords = res.citiesLists.length;
-            //this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
-           
+            // this.showingRecords = res.citiesLists.length;
+            // this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
           }
-          console.log( this.CitiesList);
         },
         msg => {
           this.showLoader = false;
@@ -349,7 +359,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name, address1, address2, poBox, addressType, addressTypeID) {
+  popClick(event, id, focusCompName, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -359,12 +369,13 @@ export class ViewCompanyAddressesComponent implements OnInit {
     }
 
     this.focusAddressID = id;
-    this.focusCompName = name;
     this.focusAddress1 = address1;
     this.focusAddress2 = address2;
     this.focusPOBox = poBox;
     this.focusAddressType = addressType;
     this.focusAddresTypeID = addressTypeID;
+    this.focusCityID = cityid;
+    this.focusCityName = cityname;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -383,34 +394,35 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  Add()
-  {
-    // this.Info = '';
-    // this.Type = 0;
-    // this.disableInfoSelect = false;
-    // this.selectedInfoIndex = 0;
+  Add() {
+    this.Address1 = '';
+    this.Address2 = '';
+    this.POBox = '';
+    this.Type = 0;
+    this.disableAddressSelect = false;
+    this.selectedAddressIndex = 0;
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyAddress(type){
+  addCompanyAddress() {
+
     const requestModel: AddCompanyAddress = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
       address1: this.Address1,
       address2: this.Address2,
-      POBox: this.POBox
-      
+      POBox: this.POBox,
+      addressTypeID: this.Type,
+      cityID: this.cityID,
     };
 
     this.companyService.AddAddress(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-          else
-          {
-            this.notify.successmsg('SUCCESS','Company info successfully added');
-            this.loadCompanyInfoList()
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company address successfully added');
+            this.loadCompanyInfoList();
             this.closeaddModal.nativeElement.click();
           }
         },
@@ -424,52 +436,48 @@ export class ViewCompanyAddressesComponent implements OnInit {
       );
   }
 
-  editCompanyAddress($event)
-  {
+  editCompanyAddress($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    // this.Info = this.focusDescription;
-    // this.Type =  this.focusCompTypeID;
+    this.Type =  this.focusAddresTypeID;
+    this.CitySearch = this.focusCityName;
+    this.cityID = this.focusCityID;
+    this.Address1 = this.focusAddress1;
+    this.Address2 = this.focusAddress2;
+    this.POBox = this.focusPOBox;
     this.openeditModal.nativeElement.click();
-
   }
 
-  UpdateCAddress(){
+  UpdateCompanyAddress() {
     const requestModel: UpdateCompanyAddress = {
       userID: this.currentUser.userID,
-      specificCompanyAddressID: this.focusAddressID,
+      spesificAddressID: this.focusAddressID,
       address1: this.Address1,
       address2: this.Address2,
-      POBox: this.POBox
-      
-        
+      POBox: this.POBox,
+      addressTypeID: this.Type,
+      cityID: this.cityID,
     };
-
-
-
+    console.log(requestModel);
     this.companyService.UpdateAddress(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-          else
-          {
-            this.notify.successmsg('SUCCESS','Company info successfully Updated');          
-            this.closeeditModal.nativeElement.click();    
-            this.loadCompanyInfoList()
-          }                         
-        },
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
+            this.closeeditModal.nativeElement.click();
+            this.loadCompanyInfoList();
+        }
+      },
         msg => {
           this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );              
-        }
-      );
-  } 
+          'Server Error', 'Something went wrong while trying to access the server.');
+      });
+  }
 
-  onChange(id: number) {
-    
+  onChange(id: number)   {
+    this.disableAddressSelect = true;
+    this.Type = id;
   }
 
 }

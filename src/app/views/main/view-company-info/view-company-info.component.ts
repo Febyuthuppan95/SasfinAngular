@@ -75,7 +75,7 @@ export class ViewCompanyInfoComponent implements OnInit {
   prevPage: number;
   prevPageState: boolean;
   Info = '';
-  Type = 0;  
+  Type = 0;
   focusCompanyInfoID = 0;
   disableInfoSelect = false;
   focusCompTypeID = 0;
@@ -117,9 +117,9 @@ export class ViewCompanyInfoComponent implements OnInit {
     });
     const temp = {
       TypeID: 1,
-      TypeName: "General"
+      TypeName: 'General'
     };
-    this.TypesList.push(temp);   
+    this.TypesList.push(temp);
 
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
@@ -280,7 +280,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id,infoid, type, typeID, description) {
+  popClick(event, id, infoid, type, typeID, description) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -293,7 +293,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.focusCompanyInfoID = infoid;
     this.focusCompTypeID = typeID;
     this.focusCompType = type;
-    this.focusDescription = description;  
+    this.focusDescription = description;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -312,8 +312,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  Add()
-  {
+  Add() {
     this.Info = '';
     this.Type = 0;
     this.disableInfoSelect = false;
@@ -321,24 +320,21 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyInfo(type){
+  addCompanyInfo() {
     const requestModel: AddCompanyInfo = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
       companyInfo: this.Info,
       infoType: this.Type
-      
     };
 
     this.companyService.AddInfo(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-          else
-          {
-            this.notify.successmsg('SUCCESS','Company info successfully added');
-            this.loadCompanyInfoList()
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company info successfully added');
+            this.loadCompanyInfoList();
             this.closeaddModal.nativeElement.click();
           }
 
@@ -354,8 +350,7 @@ export class ViewCompanyInfoComponent implements OnInit {
       );
   }
 
-  editCompanyInfo($event)
-  {
+  editCompanyInfo($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.Info = this.focusDescription;
@@ -364,7 +359,7 @@ export class ViewCompanyInfoComponent implements OnInit {
 
   }
 
-  UpdateCompany(){
+  UpdateCompany() {
     const requestModel: UpdateCompanyInfo = {
       userID: this.currentUser.userID,
       specificCompanyInfoID: this.focusCompanyInfoID,
@@ -377,25 +372,22 @@ export class ViewCompanyInfoComponent implements OnInit {
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-          else
-          {
-            this.notify.successmsg('SUCCESS','Company info successfully Updated');          
-            this.closeeditModal.nativeElement.click();    
-            this.loadCompanyInfoList()
-          }                         
-        },
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company info successfully Updated');
+            this.closeeditModal.nativeElement.click();
+            this.loadCompanyInfoList();
+        }
+      },
         msg => {
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'
-          );              
+          );
         }
       );
-  } 
+  }
 
-  onChange(id: number)
-  {
+  onChange(id: number)   {
     this.disableInfoSelect = true;
     this.Type = id;
     console.log(this.Type);
