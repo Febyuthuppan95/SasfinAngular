@@ -6,6 +6,15 @@
   transition: ease-in-out 0.3s;
 }
 
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
 .userRecord:hover>td>img {
   border: 1px #4d83ff solid;
   transition: ease-in-out 0.3s;

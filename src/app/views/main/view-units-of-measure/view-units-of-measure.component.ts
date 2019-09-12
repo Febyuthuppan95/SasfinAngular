@@ -6,7 +6,7 @@ import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnits
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
 import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
 
@@ -295,7 +295,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a unit of measure item.');
     }
   }
 }

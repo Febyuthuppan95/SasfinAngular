@@ -5,6 +5,10 @@ import { BehaviorSubject } from 'rxjs';
 import { AddCompany } from '../models/HttpRequests/AddCompany';
 import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
 import { CompanyList } from '../models/HttpRequests/CompanyList';
+import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
+import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
+import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
+import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +18,29 @@ export class CompanyService {
    *
    */
   constructor(private httpClient: HttpClient) {
-    this.selectedCompany = new BehaviorSubject<SelectedCompany>(null);
+    let sessionData: SelectedCompany = null;
+
+    if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
+      sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
+    }
+
+    this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
   }
 
   selectedCompany: BehaviorSubject<SelectedCompany>;
 
-  setCompany(company: SelectedCompany) { this.selectedCompany.next(company); }
-  observeCompany() {return this.selectedCompany.asObservable(); }
+  setCompany(company: SelectedCompany) {
+    this.selectedCompany.next(company);
+    sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
+  }
+
+  observeCompany() {
+    return this.selectedCompany.asObservable();
+  }
+
+  flushCompanySession() {
+    sessionStorage.removeItem(`${environment.Sessions.companyData}`);
+  }
 
   /**
    * list
@@ -100,6 +120,44 @@ export class CompanyService {
     });
   }
 
+  public AddInfo(model: AddCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoadd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateInfo(model: UpdateCompanyInfo) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/infoupdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
 
   /**
    * contacts
@@ -139,6 +197,44 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public AddAddress(model: AddCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addaddress`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateAddress(model: UpdateCompanyAddress) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updateaddress`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
   }
 
   /**

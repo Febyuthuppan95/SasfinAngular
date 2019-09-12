@@ -1,3 +1,5 @@
+import { UUID } from 'angular2-uuid';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -9,7 +11,22 @@ export const environment = {
   ApiEndpoint: 'https://localhost:44397/api/v1.0',
   ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://localhost:44397/api/v1.0/public/document'
+  ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
+  Sessions: {
+    companyData: '41d516a5-9339-4b7c-a810-be1ce3150722',
+    transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
+    attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5'
+  },
+
+  // We should consider doing this for api endpoints -- Ashton
+  api: {
+    users: {
+      list: 'https://localhost:44397/api/v1.0/users/list',
+      create: 'https://localhost:44397/api/v1.0/users/add',
+      update: 'https://localhost:44397/api/v1.0/users/update',
+      upload: 'https://localhost:44397/api/v1.0/users/upload'
+    }
+  }
 };
 
 /*

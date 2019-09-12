@@ -2,15 +2,29 @@ import { HttpClient, HttpEventType, HttpErrorResponse, HttpEvent } from '@angula
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { CreateTransactionRequest } from '../models/HttpRequests/TransactionRequests';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  /**
-   *
-   */
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    let sessionData = null;
+
+    if (sessionStorage.getItem(`${environment.Sessions.transactionData}`) !== null) {
+      sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.transactionData}`));
+    }
+
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number }>(sessionData);
+  }
+
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number }>;
+  public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
+
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number }) {
+    this.currentAttachment.next(next);
+    sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+  }
 
   /**
    * list
@@ -128,7 +142,7 @@ export class TransactionService {
       type,
       transactionID,
       userID,
-      company      
+      company
     };
 
     const formData = new FormData();
@@ -138,6 +152,18 @@ export class TransactionService {
     return new Promise(async (resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/attachment/upload`;
       await this.httpClient.post(apiURL, formData)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  /**
+   * updateAttachment
+   */
+  public updateAttachment(requestModel: object) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/attachment/update`;
+      this.httpClient.post(apiURL, requestModel)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
     });
@@ -157,6 +183,33 @@ export class TransactionService {
       this.httpClient.post(apiURL, requestModel)
         .toPromise()
         .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public captureInfo(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public captureInfoUpdate(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo/update`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public customsReleaseUpdate(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/update/customsrelease`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
     });
   }
 }

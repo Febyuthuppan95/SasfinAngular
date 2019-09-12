@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CompanyService } from 'src/app/services/Company.Service';
-import { CompaniesContextMenuComponent } from 'src/app/components/companies-context-menu/companies-context-menu.component';
+import { CompaniesContextMenuComponent } from 'src/app/components/menus/companies-context-menu/companies-context-menu.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
@@ -184,7 +184,7 @@ export class ViewCompanyListComponent implements OnInit {
 
     this.companyService
       .list(model).then(
-        (res: CompaniesListResponse) => {        
+        (res: CompaniesListResponse) => {
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -197,7 +197,7 @@ export class ViewCompanyListComponent implements OnInit {
             this.showingRecords = res.companies.length;
             this.totalShowing = +this.rowStart + +this.dataset.companies.length - 1;
             this.paginateData();
-           
+
           }
         },
         msg => {
@@ -206,7 +206,7 @@ export class ViewCompanyListComponent implements OnInit {
             'Server Error',
             'Something went wrong while trying to access the server.'
           );
-         
+
         }
       );
   }
@@ -273,7 +273,7 @@ export class ViewCompanyListComponent implements OnInit {
     this.CompanyName = company.name;
     this.RegNo = company.regNo;
     this.ExportRegNo = company.regExportNo;
-    this.VATNo = company.vatNo;  
+    this.VATNo = company.vatNo;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -292,19 +292,23 @@ export class ViewCompanyListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  EditCompony($event)
-  {
+  EditCompony($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openeditModal.nativeElement.click();
   }
 
-  Add()
-  {
+  Add() {
+    this.CompanyName = null;
+    this.RegNo = null;
+    this.ExportRegNo = null;
+    this.VATNo = null;
     this.openaddModal.nativeElement.click();
   }
 
-  addCompany(){
+  addCompany() {
+    const errors = this.validateCompany();
+    if (errors === 0) {
     const requestModel: AddCompany = {
       userID: this.currentUser.userID,
       Name: this.CompanyName,
@@ -317,11 +321,9 @@ export class ViewCompanyListComponent implements OnInit {
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-          else
-          {
+          } else {
             this.notify.successmsg('SUCCESS','Company successfully added');
-            this.loadCompanies()
+            this.loadCompanies();
             this.closeaddModal.nativeElement.click();
           }
 
@@ -335,37 +337,65 @@ export class ViewCompanyListComponent implements OnInit {
           this.closeaddModal.nativeElement.click();
         }
       );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields');
+    }
   }
 
 
   UpdateCompany(){
-    const requestModel: UpdateCompany = {
-      userID: this.currentUser.userID,
-      SpesificCopmanyID: this.focusCompanyID,
-      Name: this.CompanyName,
-      RegNo: this.RegNo,
-      ExportRegNo: this.ExportRegNo,
-      VATNo: this.VATNo
-    };
+    const errors = this.validateCompany();
+    if (errors === 0) {
+      const requestModel: UpdateCompany = {
+        userID: this.currentUser.userID,
+        SpesificCopmanyID: this.focusCompanyID,
+        Name: this.CompanyName,
+        RegNo: this.RegNo,
+        ExportRegNo: this.ExportRegNo,
+        VATNo: this.VATNo
+      };
 
-    this.companyService.Update(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+      this.companyService.Update(requestModel).then(
+        (res: {outcome: Outcome}) => {
+            if (res.outcome.outcome !== 'SUCCESS') {
+              this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            } else {
+              this.notify.successmsg('SUCCESS', 'Company successfully Updated');
+              this.closeeditModal.nativeElement.click();
+              this.loadCompanies();
+            }
+          },
+          msg => {
+            this.notify.errorsmsg(
+              'Server Error',
+              'Something went wrong while trying to access the server.'
+            );
           }
-          else
-          {
-            this.notify.successmsg('SUCCESS','Company successfully Updated');          
-            this.closeeditModal.nativeElement.click();    
-            this.loadCompanies()
-          }                         
-        },
-        msg => {
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );              
-        }
-      );
+        );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields');
+    }
+  }
+
+  validateCompany(): number {
+    let errors = 0;
+
+    if (this.CompanyName === null || this.CompanyName === undefined) {
+      errors++;
+    }
+
+    if (this.RegNo === null || this.CompanyName === undefined) {
+      errors++;
+    }
+
+    if (this.ExportRegNo === null || this.CompanyName === undefined) {
+      errors++;
+    }
+
+    if (this.VATNo === null || this.CompanyName === undefined) {
+      errors++;
+    }
+
+    return errors;
   }
 }
