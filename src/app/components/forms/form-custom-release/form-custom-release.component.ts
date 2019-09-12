@@ -82,7 +82,7 @@ export class FormCustomReleaseComponent implements OnInit {
         console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          setTimeout(() => { this.router.navigate(['transactions', 'attachments']); }, 2000);
+          this.router.navigate(['transaction', 'attachments']);
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }

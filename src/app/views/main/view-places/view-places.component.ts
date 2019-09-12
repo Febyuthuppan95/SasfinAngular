@@ -48,8 +48,8 @@ export class ViewPlacesComponent implements OnInit {
     orderBy: 'Name',
     orderByDirection: 'ASC',
     rowStart: 1,
-    rowEnd: 10000,
-    userID: 4,
+    rowEnd: 300,
+    userID: 3,
   };
 
   locationID: number;

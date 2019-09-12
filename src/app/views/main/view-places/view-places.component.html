@@ -19,7 +19,7 @@
         </div>
       <br />
       <div class="row">
-      <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult">
+      <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult" style="margin-bottom: 18px;">
         <div class="tile shadow-sm ls-tile-{{ currentTheme }}">
           <div class="location-country">
         <h4 (click)="popClick($event, country.countryID, country.name, 'country'); setSelectedRow(country.hash)" [ngClass]="{activeCountry: selectedRow === country.hash}" class="country-name">
@@ -51,7 +51,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Update {{this.locationName}}</h5>
+        <h5 class="modal-title" id="uploadBackgroundLabel">Edit {{this.locationName}}</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
