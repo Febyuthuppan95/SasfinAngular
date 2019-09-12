@@ -177,7 +177,7 @@ export class ViewCaptureInfoComponent implements OnInit {
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
-    )
+    );
   }
 
   selectedRowChange(index: number, capture: { id: number, info: string }) {

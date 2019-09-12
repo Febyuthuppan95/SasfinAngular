@@ -320,7 +320,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyInfo(type) {
+  addCompanyInfo() {
     const requestModel: AddCompanyInfo = {
       userID: this.currentUser.userID,
       companyID: this.companyID,

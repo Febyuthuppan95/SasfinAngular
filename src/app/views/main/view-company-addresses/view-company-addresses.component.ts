@@ -404,7 +404,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyAddress(type) {
+  addCompanyAddress() {
 
     const requestModel: AddCompanyAddress = {
       userID: this.currentUser.userID,
