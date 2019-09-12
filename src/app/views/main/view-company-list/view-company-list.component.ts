@@ -295,6 +295,7 @@ export class ViewCompanyListComponent implements OnInit {
   EditCompony($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
+
     this.openeditModal.nativeElement.click();
   }
 
