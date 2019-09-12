@@ -25,7 +25,7 @@
         </form>
       </div>
       <br />
-  
+
       <div class="">
         <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
           <thead>
@@ -51,7 +51,7 @@
               </th>
             </tr>
           </thead>
-  
+
           <tbody *ngIf="(!noData)">
             <tr *ngFor="let unit of dataset; let i=index" class="userRecord" (click)="popClick($event, unit.unitOfMeasureID, unit.name, unit.description); setClickedRow(i)" [class.active]="i == selectedRow">
               <td>{{unit.rowNum}}</td>
@@ -92,7 +92,7 @@
         {{ rowCount }}</p>
     </div>
   </div>
-  
+
   <button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
   <div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -122,10 +122,9 @@
       </div>
     </div>
   </div>
-  
+
   <app-notification></app-notification>
   <!-- <app-modal-component></app-modal-component> -->
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
   <app-context-menu-units-of-measure (editUnit)="editUnitOfMeasure($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [unitId]="focusUnitId" [unitName]="focusUnitName" [unitDescription]="focusUnitDescription"></app-context-menu-units-of-measure>
   </div>
-  
