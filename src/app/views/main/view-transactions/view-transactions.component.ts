@@ -143,8 +143,10 @@ export class ViewTransactionsComponent implements OnInit {
     });
 
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
-      this.companyID = obj.companyID;
-      this.companyName = obj.companyName;
+      if (obj !== null || obj !== undefined) {
+        this.companyID = obj.companyID;
+        this.companyName = obj.companyName;
+      }
     });
 
     this.loadTransactions();
@@ -405,6 +407,11 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   addTransactionModal() {
+    this.newTransaction.name = null;
+    this.newTransaction.transactionStatusID = -1;
+    this.newTransaction.transactionTypeID = -1;
+    this.selectedStatusIndex = 0;
+    this.selectedTypeIndex = 0;
     this.openModal.nativeElement.click();
   }
 

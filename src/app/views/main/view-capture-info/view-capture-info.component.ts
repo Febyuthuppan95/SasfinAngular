@@ -8,6 +8,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -20,7 +21,8 @@ export class ViewCaptureInfoComponent implements OnInit {
     private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
-    private transactionService: TransactionService) {}
+    private transactionService: TransactionService,
+    private router: Router) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -182,5 +184,9 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.selectedRow = index;
     this.captureInfo = capture;
     console.log(this.captureInfo);
+  }
+
+  backToAttachments() {
+    this.router.navigate(['companies']);
   }
 }

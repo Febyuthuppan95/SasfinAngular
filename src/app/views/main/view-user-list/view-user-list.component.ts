@@ -23,6 +23,8 @@ import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationLi
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
 import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
+import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
+import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 
 @Component({
   selector: 'app-view-user-list',
@@ -35,7 +37,8 @@ export class ViewUserListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private location: Location,
-    private DIDesignationService: DesignationService
+    private DIDesignationService: DesignationService,
+    private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -599,4 +602,14 @@ export class ViewUserListComponent implements OnInit {
       this.notify.toastrwarning('Warning', 'Please complete form before submitting');
     }
   }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug,
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
+
 }

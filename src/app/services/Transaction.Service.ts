@@ -8,14 +8,23 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class TransactionService {
-  /**
-   *
-   */
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    let sessionData = null;
 
-  currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number }>(null);
+    if (sessionStorage.getItem(`${environment.Sessions.transactionData}`) !== null) {
+      sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.transactionData}`));
+    }
+
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number }>(sessionData);
+  }
+
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number }>;
   public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number }) { this.currentAttachment.next(next); }
+
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number }) {
+    this.currentAttachment.next(next);
+    sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+  }
 
   /**
    * list
