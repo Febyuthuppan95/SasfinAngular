@@ -1,14 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyAddressResponse, Address } from 'src/app/models/HttpResponses/CompanyAddressResponse';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
+import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
+import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
+import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
+import { CitiesService } from 'src/app/services/Cities.Service';
+import {FormControl} from '@angular/forms';
+import { MatAutocomplete } from '@angular/material';
 
 @Component({
   selector: 'app-view-company-addresses',
@@ -19,6 +27,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
+    private cityService: CitiesService,
     private userService: UserService,
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
@@ -38,11 +47,25 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.loadCompanyInfoList();
   }
 
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  @ViewChild('openaddModal', {static: true})
+  openaddModal: ElementRef;
+
+  @ViewChild('closeaddModal', {static: true})
+  closeaddModal: ElementRef;
+
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+  @ViewChild('auto', {static: false})
+  private autoComplete: MatAutocomplete;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -53,7 +76,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompanyAddressResponse;
+  Citiesset: CitiesResponse;
   dataList: Address[] = [];
+  CitiesList: Cities[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -65,34 +90,57 @@ export class ViewCompanyAddressesComponent implements OnInit {
   filter: string;
   orderBy: string;
   orderDirection: string;
-
+  CitySearch: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
   showingRecords: number;
   activePage: number;
 
-  focusHelp: number;
-  focusHelpName: string;
+  focusAddressID: number;
+  focusCompName: string;
   focusDescription: string;
-
+  Address1 = '';
+  Address2 = '';
+  POBox = '';
+  focusAddress1 = '';
+  focusAddress2 = '';
+  focusPOBox = '';
+  focusAddressType = '';
+  focusAddresTypeID = 0;
+  focusCityID = 0;
+  focusCityName = '';
+  cityID = 0;
+  AddressTypesList: any[] = [];
   noData = false;
   showLoader = true;
   displayFilter = false;
+  disableAddressSelect = false;
+  selectedAddressIndex: number;
 
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
   selectedRow = -1;
+  Type = 0;
 
   companyName: string;
   companyID: number;
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
+
+    const temp = {
+      TypeID: 1,
+      TypeName: 'Office Building'
+    };
+    this.AddressTypesList.push(temp);
 
     // this.activatedRoute.paramMap
     // .subscribe(params => {
@@ -167,6 +215,15 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.loadCompanyInfoList();
   }
 
+  CityBar() {
+
+    this.rowStart = 1;
+    this.loadCitiesList();
+  }
+  selectedCity(cityid) {
+    this.cityID = cityid;
+  }
+
   loadCompanyInfoList() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
@@ -174,7 +231,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: this.companyID,
+      specificCompanyID: -1,
       specificAddressID: -1,
       specificAddressTypeID: -1,
       rowStart: this.rowStart,
@@ -183,9 +240,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
       orderByDirection: this.orderDirection
     };
 
-    this.companyService
-      .address(model)
-      .then(
+    this.companyService.address(model).then(
         (res: CompanyAddressResponse) => {
           if (res.rowCount === 0) {
             this.noData = true;
@@ -199,6 +254,50 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.showingRecords = res.addresses.length;
             this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
             this.paginateData();
+          }
+
+          console.log(res);
+        },
+        msg => {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+          console.log(JSON.stringify(msg));
+        }
+      );
+  }
+
+  loadCitiesList() {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+
+    const model = {
+      filter: this.CitySearch,
+      userID: this.currentUser.userID,
+      specificCityID: -1,
+      specificRegionID: -1,
+      specificCountryID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+
+    this.cityService.list(model).then(
+        (res: CitiesResponse) => {
+          if (res.rowCount === 0) {
+            this.noData = true;
+            this.showLoader = false;
+          } else {
+            this.noData = false;
+            this.Citiesset = res;
+            this.CitiesList = res.citiesLists;
+            // this.rowCount = res.rowCount;
+            this.showLoader = false;
+            // this.showingRecords = res.citiesLists.length;
+            // this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
           }
         },
         msg => {
@@ -260,7 +359,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name, description) {
+  popClick(event, id, focusCompName, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -269,9 +368,14 @@ export class ViewCompanyAddressesComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusHelp = id;
-    this.focusHelpName = name;
-    this.focusDescription = description;
+    this.focusAddressID = id;
+    this.focusAddress1 = address1;
+    this.focusAddress2 = address2;
+    this.focusPOBox = poBox;
+    this.focusAddressType = addressType;
+    this.focusAddresTypeID = addressTypeID;
+    this.focusCityID = cityid;
+    this.focusCityName = cityname;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -288,6 +392,92 @@ export class ViewCompanyAddressesComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  Add() {
+    this.Address1 = '';
+    this.Address2 = '';
+    this.POBox = '';
+    this.Type = 0;
+    this.disableAddressSelect = false;
+    this.selectedAddressIndex = 0;
+    this.openaddModal.nativeElement.click();
+  }
+
+  addCompanyAddress() {
+
+    const requestModel: AddCompanyAddress = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      address1: this.Address1,
+      address2: this.Address2,
+      POBox: this.POBox,
+      addressTypeID: this.Type,
+      cityID: this.cityID,
+    };
+
+    this.companyService.AddAddress(requestModel).then(
+      (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome !== 'SUCCESS') {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company address successfully added');
+            this.loadCompanyInfoList();
+            this.closeaddModal.nativeElement.click();
+          }
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+          this.closeaddModal.nativeElement.click();
+        }
+      );
+  }
+
+  editCompanyAddress($event) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.Type =  this.focusAddresTypeID;
+    this.CitySearch = this.focusCityName;
+    this.cityID = this.focusCityID;
+    this.Address1 = this.focusAddress1;
+    this.Address2 = this.focusAddress2;
+    this.POBox = this.focusPOBox;
+    this.openeditModal.nativeElement.click();
+  }
+
+  UpdateCompanyAddress() {
+    const requestModel: UpdateCompanyAddress = {
+      userID: this.currentUser.userID,
+      spesificAddressID: this.focusAddressID,
+      address1: this.Address1,
+      address2: this.Address2,
+      POBox: this.POBox,
+      addressTypeID: this.Type,
+      cityID: this.cityID,
+    };
+    console.log(requestModel);
+    this.companyService.UpdateAddress(requestModel).then(
+      (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome !== 'SUCCESS') {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          } else {
+            this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
+            this.closeeditModal.nativeElement.click();
+            this.loadCompanyInfoList();
+        }
+      },
+        msg => {
+          this.notify.errorsmsg(
+          'Server Error', 'Something went wrong while trying to access the server.');
+      });
+  }
+
+  onChange(id: number)   {
+    this.disableAddressSelect = true;
+    this.Type = id;
   }
 
 }

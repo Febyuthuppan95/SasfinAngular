@@ -3,21 +3,8 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
-import { UnitMeasureService } from 'src/app/services/Units.Service';
-import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
-import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
-import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
-import { AddressTypesService } from 'src/app/services/AddressTypes.Service';
-import { AddressTypesListRequest } from 'src/app/models/HttpRequests/AddressTypesList';
-import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes';
-import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
 import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
-import { AddressType } from 'src/app/models/HttpResponses/AddressType';
-import { AddAddressTypesRequest } from 'src/app/models/HttpRequests/AddAddressTypesRequest';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -26,7 +13,7 @@ import { UserService } from 'src/app/services/user.Service';
 })
 export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService, private userService: UserService) {}
+  constructor(private themeService: ThemeService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -43,8 +30,6 @@ export class ViewAddressTypesListComponent implements OnInit {
     rowEnd: 15
   };
 
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -263,7 +248,7 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editAddressTypes($event) {
+  editUnitOfMeasure() {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
@@ -279,12 +264,6 @@ export class ViewAddressTypesListComponent implements OnInit {
 
 
     if (errors === 0) {
-      const requestModel: UpdateAddressTypeRequest = {
-        userID: 3,
-        addressTypeID: this.focusAddressTypeId,
-        name: this.focusAddressTypeName,
-        isDeleted: 0,
-      };
 
       this.addressTypeService.update(requestModel).then(
         (res: UpdateAddressTypesResponse) => {

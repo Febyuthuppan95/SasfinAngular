@@ -22,7 +22,7 @@ import { RightListResponse } from 'src/app/models/HttpResponses/RightListRespons
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Subscription } from 'rxjs';
-import { ContextMenuUserrightsComponent } from './../../../components/context-menu-userrights/context-menu-userrights.component';
+import { ContextMenuUserrightsComponent } from '../../../components/menus/context-menu-userrights/context-menu-userrights.component';
 
 @Component({
   selector: 'app-view-user-rights-list',
@@ -245,7 +245,7 @@ export class ViewUserRightsListComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success 
+        // Process Success
         if(!this.openAddModal)
         {
           if(res.outcome.outcome === "FAILURE"){
@@ -261,9 +261,9 @@ export class ViewUserRightsListComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
-        }           
-        
-        
+        }
+
+
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
         this.showLoader = false;
@@ -273,8 +273,8 @@ export class ViewUserRightsListComponent implements OnInit {
           this.noData = true;
         } else {
           this.noData = false;
-        }       
-       
+        }
+
         this.loadAvailableRights();
         this.paginateData();
       },
@@ -361,8 +361,8 @@ export class ViewUserRightsListComponent implements OnInit {
     const result = this.userService
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
-        
-        if(res.outcome.outcome === "FAILURE"){
+
+        if(res.outcome.outcome === 'FAILURE'){
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
@@ -377,7 +377,7 @@ export class ViewUserRightsListComponent implements OnInit {
         }
 
         this.loadUserRights();
-        
+
       },
       msg => {
         this.notify.errorsmsg(
@@ -397,7 +397,7 @@ export class ViewUserRightsListComponent implements OnInit {
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        if(res.outcome.outcome === "FAILURE"){
+        if(res.outcome.outcome === 'FAILURE'){
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage

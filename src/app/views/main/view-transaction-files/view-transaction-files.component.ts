@@ -3,7 +3,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -68,6 +68,9 @@ export class ViewTransactionFilesComponent implements OnInit {
   prevPage: number;
   prevPageState: boolean;
   focusPath: string;
+  disableAttachmentType: boolean;
+  attachmentTypeIndex: number;
+  preview: string;
 
   rowStart: number;
   rowEnd: number;
@@ -106,6 +109,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   ];
   attachmentName: string;
   attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
+  attachmentQueueDisplay: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
@@ -119,6 +123,12 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.activatedRoute.paramMap
     .subscribe(params => {
       this.transactionID = +params.get('id');
+    });
+
+    this.transationService.observerCurrentAttachment().subscribe((data) => {
+      if (data !== null || data !== undefined) {
+        this.transactionID = data.transactionID;
+      }
     });
 
     this.loadAttachments();
@@ -315,10 +325,10 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   backToCompanies() {
-    this.router.navigate(['companies']);
+    this.router.navigate(['companies', 'transactions']);
   }
 
-   uploadAttachments() {
+  uploadAttachments() {
     this.uploading = true;
     this.attachmentQueue.forEach((attach) => {
       attach.status = 'Uploading';
@@ -350,6 +360,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   onFileChange(files: FileList) {
+    this.preview = files.item(0).name;
     this.attachmentQueue[this.currentAttachment] = {
       name: this.attachmentName,
       type: this.transactionTypes[this.selectedTransactionType - 1].name,
@@ -357,9 +368,25 @@ export class ViewTransactionFilesComponent implements OnInit {
       uploading: false,
       status: 'Pending Upload'
     };
+  }
+
+  onTypeSelect(id: number) {
+    this.selectedTransactionType = id;
+    this.disableAttachmentType = true;
+  }
+
+  addToQueue() {
+    this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
+    this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
+    this.attachmentQueue[this.currentAttachment].uploading = false;
+    this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+
+    this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
 
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
     this.currentAttachment++;
+    this.disableAttachmentType = false;
+    this.attachmentTypeIndex = 0;
   }
 }

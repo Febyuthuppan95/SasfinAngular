@@ -1,0 +1,9 @@
+<div class="contextOverlay" *ngIf="(contextShow)" (click)="popOff()">
+  <div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}" style="cursor: pointer">
+    <div class="card">
+      <div class="popBodyNav">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

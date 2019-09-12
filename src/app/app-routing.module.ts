@@ -27,6 +27,7 @@ import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-co
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
+import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 
 const routes: Routes = [
   {
@@ -61,14 +62,13 @@ const routes: Routes = [
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
-          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },
-          { path: 'transactions/:id/:name', component: ViewTransactionsComponent },
-          { path: 'transaction/attachments/:id', component: ViewTransactionFilesComponent },   
-          { path: 'addressTypes', component: ViewAddressTypesListComponent },       
+          { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
+          { path: 'transactions/', component: ViewTransactionsComponent },
+          { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
-        { path: 'transaction/attachment/:transactionID', component: ViewCaptureTransactionComponent }
+        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent }
       ]},
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
     ]

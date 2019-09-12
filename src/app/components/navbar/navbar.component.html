@@ -1,17 +1,17 @@
 <nav class="navbar col-lg-12 col-12 p-0 d-flex flex-row shadow fixed-top">
   <div class="navbar-brand-wrapper d-flex justify-content-center ls-tile-{{currentTheme}} border-0">
     <div class="navbar-brand-inner-wrapper d-flex justify-content-left align-items-center w-100">
-      <button class="navbar-toggler navbar-toggler align-self-center ls-text-{{ currentTheme }}" type="button"
+      <button class="navbar-toggler navbar-toggler align-self-center ls-text-{{ currentTheme }}" (mouseover)="updateHelpContext('navbar-hamburger')" type="button"
       data-toggle="minimize" (click)="collapseSidebarEvent()">
       <span class="mdi mdi-sort-variant"></span>
       </button>
-      <a style="display: inline-block; padding-left: 26px !important;"  class="brand-logo " routerLink="/users"><img height="40px" src="../../../assets/dist/images/logo.png"
+      <a style="display: inline-block; padding-left: 26px !important;"  class="brand-logo" (mouseover)="updateHelpContext('navbar-logo-link')" routerLink="/users"><img height="40px" width="132px" src="../../../assets/dist/images/logo_half.png"
           alt="logo" /></a>
       <a class="navbar-brand brand-logo-mini" routerLink="/users"><img src="../../../assets/dist/images/favicon.png"
         alt="logo" /></a>
     </div>
   </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{currentTheme}} border-0 ls-text-{{currentTheme}}">
+  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end ls-tile-{{currentTheme}} border-0 ls-text-{{currentTheme}}"(mouseover)="updateHelpContext('navbar-searchbox')">
     <ul class="navbar-nav mr-lg-4 w-100">
       <li class="nav-item nav-search d-none d-lg-block w-100 nav-search-flex">
         <div class="input-group">
@@ -20,7 +20,7 @@
               <i class="mdi mdi-magnify"></i>
             </span>
           </div>
-          <input type="text" class="form-control" placeholder="Search now" aria-label="search"
+          <input type="text" class="form-control" placeholder="Search" aria-label="search"
             aria-describedby="search">
         </div>
       </li>
@@ -105,7 +105,7 @@
           </a>
         </div>
       </li>
-      <li class="nav-item nav-profile dropdown">
+      <li class="nav-item nav-profile dropdown" (mouseover)="updateHelpContext('navbar-user-information')">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
           <img src="{{ currentUser.profileImage }}" alt="profile" />
           <span class="nav-profile-name ls-text-{{ currentTheme }}">{{ currentUser.firstName }}

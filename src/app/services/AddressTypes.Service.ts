@@ -1,20 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ListUnitsOfMeasureRequest } from '../models/HttpRequests/ListUnitsOfMeasure';
 import { Injectable } from '@angular/core';
-import { AddressTypesListRequest } from '../models/HttpRequests/AddressTypesList';
-import { UpdateAddressTypeRequest } from '../models/HttpRequests/UpdateAddressTypes';
-import { AddAddressTypesRequest } from '../models/HttpRequests/AddAddressTypesRequest';
+import { UpdateUnitOfMeasureRequest } from '../models/HttpRequests/UpdateUnitsOfMeasure';
+import { AddressTypesList } from '../models/HttpRequests/AddressTypesList';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressTypesService {
-  // update(requestModel: import("../models/HttpRequests/UpdateAddressTypes").UpdateAddressTypeRequest) {
-  //   throw new Error("Method not implemented.");
-
   constructor(private httpClient: HttpClient) {}
 
-  public list(params: AddressTypesListRequest) {
+  public list(params: AddressTypesList) {
     const requestModel = JSON.parse(JSON.stringify(params));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/addressTypes/list`;
@@ -32,40 +29,21 @@ export class AddressTypesService {
     });
   }
 
-  public update(request: UpdateAddressTypeRequest) {
-    const requestModel = JSON.parse(JSON.stringify(request));
-    return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/addressTypes/update`;
-      this.httpClient
-        .post(apiURL, requestModel)
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          msg => {
-            reject(msg);
-          }
-        );
-    });
-  }
-
-  public add(model: AddAddressTypesRequest) {
-    const requestModel = JSON.parse(JSON.stringify(model));
-    const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/addressTypes/add`;
-      this.httpClient
-      .post(apiURL, requestModel)
-      .toPromise()
-      .then(
-        res => {
-          resolve(res);
-        },
-        msg => {
-          reject(msg);
-        }
-      );
-    });
-    return promise;
-  }
+  // public update(request: UpdateUnitOfMeasureRequest) {
+  //   const requestModel = JSON.parse(JSON.stringify(request));
+  //   return new Promise((resolve, reject) => {
+  //     const apiURL = `${environment.ApiEndpoint}/unitofmeasure/update`;
+  //     this.httpClient
+  //       .post(apiURL, requestModel)
+  //       .toPromise()
+  //       .then(
+  //         res => {
+  //           resolve(res);
+  //         },
+  //         msg => {
+  //           reject(msg);
+  //         }
+  //       );
+  //   });
+  // }
 }
