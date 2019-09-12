@@ -7,7 +7,7 @@ export class CitiesResponse  {
 }
 
 export class Cities {
-  rowNum: number;  
+  rowNum: number;
   name: string;
   cityID: number;
   regionID: number;
@@ -15,5 +15,4 @@ export class Cities {
   region: string;
   poBox: string;
   country: string;
-  
 }

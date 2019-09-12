@@ -69,7 +69,7 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.company, address.address1, address.address2, address.poBox, address.addressType, address.addressTypeID); setClickedRow(i)" [class.active]="i == selectedRow">
+            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.company, address.address1, address.address2, address.poBox, address.addressType, address.addressTypeID, address.cityID, address.city); setClickedRow(i)" [class.active]="i == selectedRow">
               <td>{{address.rowNum}}</td>
               <td>{{address.address1}}</td>
               <td>{{address.address2}}</td>
@@ -103,7 +103,7 @@
             <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
               (click)="pageChange(nextPage)">Next</button>
           </li>
-        </ul>       
+        </ul>
       </nav>
       <br />
       <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
@@ -124,20 +124,41 @@
       </div>
       <form>
       <div class="modal-body">
-          <div class="modal-body"> 
-              <div class="form-group">
-                  <label class="control-label">Company Information:</label>
-                  <textarea type="text" placeholder="Company Information" class="form-control"
-                  [(ngModel)]="this.Info" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required></textarea>
-                </div>            
-               <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
-                  <option *ngFor="let type of this.TypesList" [value]="type.TypeID" [selected]="type.TypeID === this.Type">{{type.TypeName}}</option>
-              </select>
+            <div class="form-group">
+            <label class="control-label">Address 1:</label>
+            <input type="text" placeholder="Address 1" class="form-control"
+            [(ngModel)]="this.Address1" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
           </div>
-      </div>
+          <div class="form-group">
+              <label class="control-label">Address 2:</label>
+              <input type="text" placeholder="Address 2" class="form-control"
+              [(ngModel)]="this.Address2" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">PO Box:</label>
+                <input type="text" placeholder="PO Box" class="form-control"
+                [(ngModel)]="this.POBox" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+            <div class="example-form">
+                <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="this.CitySearch" type="text"(keyup)="CityBar()"  placeholder="City" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" >
+                      <mat-option *ngFor="let City of CitiesList" [value]="City.name" (onSelectionChange)="selectedCity(City.cityID)">
+                        {{City.name}}, {{City.region}}, {{City.country}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+              <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedAddressIndex">
+                  <option *ngFor="let type of this.AddressTypesList" [value]="type.TypeID" [selected]="type.TypeID === this.Type">{{type.TypeName}}</option>
+              </select>
+            </div>
+        </div>
+
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-        <button type="button" (click)="UpdateCompany()" class="btn btn-primary btn-sm">Save</button>
+        <button type="button" (click)="UpdateCompanyAddress()" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>
     </div>
@@ -156,36 +177,36 @@
         </button>
       </div>
       <form >
-        <div class="modal-body">           
+        <div class="modal-body">
             <div class="form-group">
               <label class="control-label">Address 1:</label>
               <input type="text" placeholder="Address 1" class="form-control"
               [(ngModel)]="this.Address1" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
-            </div>   
+            </div>
             <div class="form-group">
                 <label class="control-label">Address 2:</label>
                 <input type="text" placeholder="Address 2" class="form-control"
                 [(ngModel)]="this.Address2" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
-              </div>  
+              </div>
               <div class="form-group">
                   <label class="control-label">PO Box:</label>
                   <input type="text" placeholder="PO Box" class="form-control"
                   [(ngModel)]="this.POBox" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
-              </div>  
-              <div class="example-form">                
+              </div>
+              <div class="example-form">
                   <mat-form-field class="example-full-width">
-                      <input [(ngModel)]="this.CitySearch" type="text"(keyup)="CitysearchBar()"  placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                      <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngFor="let City of CitiesList" [value]="City.name">
-                          {{City.name}} , {{City.}}
+                      <input [(ngModel)]="this.CitySearch" type="text"(keyup)="CityBar()"  placeholder="City" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete" >
+                        <mat-option *ngFor="let City of CitiesList" [value]="City.name" (onSelectionChange)="selectedCity(City.cityID)">
+                          {{City.name}}, {{City.region}}, {{City.country}}
                         </mat-option>
                       </mat-autocomplete>
-                  </mat-form-field>    
+                  </mat-form-field>
               </div>
 
               <div class="form-group">
-                <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
-                <option selected value="-1" [disabled]="disableInfoSelect">Select a Type</option>
+                <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedAddressIndex">
+                <option selected value="-1" [disabled]="disableAddressSelect">Select a Type</option>
                 <option *ngFor="let type of this.AddressTypesList" [value]="type.TypeID">{{type.TypeName}}</option>
                 </select>
               </div>
@@ -202,5 +223,5 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-company-info [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyID]="focusHelp" [companyName]="focusHelpName"></app-context-menu-company-info>
+  <app-context-menu-address-types (editAddressType)="editCompanyAddress($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressID]="focusAddressID"></app-context-menu-address-types>
   </div>

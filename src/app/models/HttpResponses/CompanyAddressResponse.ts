@@ -15,4 +15,6 @@ export class Address {
   poBox: string;
   addressType: string;
   addressTypeID: number;
+  city: string;
+  cityID: number;
 }
