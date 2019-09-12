@@ -11,6 +11,8 @@ export class ContextMenuAddressTypesComponent implements OnInit {
 
   @Input() x: number;
   @Input() y: number;
+
+  @Input() addressID: number;
   @Input() addressTypeID: number;
   @Input() addressTypeName: string;
   @Input() currentTheme: string;
@@ -21,8 +23,9 @@ export class ContextMenuAddressTypesComponent implements OnInit {
 
   edit() {
     this.editAddressType.emit(JSON.stringify({
+      addressID: this.addressID,
       addressTypeID: this.addressTypeID,
-      name: this.addressTypeName      
+      name: this.addressTypeName
     }));
   }
 }
