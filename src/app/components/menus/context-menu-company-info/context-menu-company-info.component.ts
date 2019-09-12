@@ -16,7 +16,7 @@ export class ContextMenuCompanyInfoComponent implements OnInit {
   @Input() companyName: string;
   @Input() currentTheme: string;
 
-  @Output() viewTransactionsEmit = new EventEmitter<string>();
+  @Output() EditCompanyInfo = new EventEmitter<string>();
 
   ngOnInit() {
   }
@@ -26,7 +26,9 @@ export class ContextMenuCompanyInfoComponent implements OnInit {
   }
 
   editInfo() {
-    alert('Not implemented');
+    this.EditCompanyInfo.emit(JSON.stringify({
+      companyID: this.companyID
+    }));
   }
 
 }
