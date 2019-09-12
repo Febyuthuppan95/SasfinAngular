@@ -310,7 +310,7 @@ export class ViewAddressTypesListComponent implements OnInit {
 
   addAddressTypesModal($event) {
     this.addModalOpen.nativeElement.click();
-    this.newAddressTypeName = 'addressType';
+    this.newAddressTypeName = '';
   }
 
   addAddressType() {
