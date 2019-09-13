@@ -58,6 +58,7 @@ const routes: Routes = [
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
+           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },

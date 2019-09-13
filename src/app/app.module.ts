@@ -85,9 +85,9 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
-import { FormCustomReleaseComponent } from './components/form-custom-release/form-custom-release.component';
+import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
 import { AddressTypesService } from './services/AddressTypes.Service';
-import { ContextMenuAddressTypesComponent } from './components/context-menu-address-types/context-menu-address-types.component';
+import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { ImageDirective } from './directives/image.directive';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';

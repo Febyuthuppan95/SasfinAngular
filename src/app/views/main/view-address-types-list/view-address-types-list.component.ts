@@ -5,6 +5,13 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
+import { AddressTypesListRequest } from 'src/app/models/HttpRequests/AddressTypesList';
+import { AddressType } from 'src/app/models/HttpResponses/AddressType';
+import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
+import { AddressTypesService } from 'src/app/services/AddressTypes.Service';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-address-types-list',
@@ -13,7 +20,7 @@ import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateA
 })
 export class ViewAddressTypesListComponent implements OnInit {
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService, private userService: UserService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -261,8 +268,12 @@ export class ViewAddressTypesListComponent implements OnInit {
     if (this.focusAddressTypeName === '' || this.focusAddressTypeName === undefined) {
       errors++;
     }
-
-
+    const requestModel: UpdateAddressTypeRequest = {
+      userID: 1,
+      addressTypeID: 9,
+      name: '',
+      isDeleted: 1
+    };
     if (errors === 0) {
 
       this.addressTypeService.update(requestModel).then(
