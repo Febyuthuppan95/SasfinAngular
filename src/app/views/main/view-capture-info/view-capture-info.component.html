@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToAttachments()" class="btn-back btn" style="padding-right: 0px; padding-top: 7px;"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{this.company.name}} - Capture Info</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToAttachments()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{this.company.name}} - Capture Info</h4><span style="margin-left:10px;"><button (click)="addCaptureInfoModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
 
            <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -72,7 +72,7 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()"></app-context-menu-capture-info>
+  <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()" (removeCaptureInfo)="removeCapture($event)"></app-context-menu-capture-info>
 </app-menu>
 
 <app-notification></app-notification>
@@ -97,6 +97,39 @@
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeEditModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Capture Info -->
+<button class="hide" data-toggle="modal" data-target="#addCaptureInfo" #openAddModal></button>
+<div class="modal fade" id="addCaptureInfo" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="addCapture()">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Information" class="form-control"
+            [(ngModel)]="this.requestModelAddInfo.info" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+        <div class="form-group">
+          <select class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
+            <option value="-1" selected>Please select a document type</option>
+            <option *ngFor="let doctype of this.doctypeResponse.doctypes" [value]="doctype.doctypeID">{{doctype.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
         <button type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>

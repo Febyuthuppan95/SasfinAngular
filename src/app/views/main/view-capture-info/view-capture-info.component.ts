@@ -9,6 +9,7 @@ import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInf
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
+import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -33,6 +34,12 @@ export class ViewCaptureInfoComponent implements OnInit {
   @ViewChild('closeEditModal', { static: true })
   private closeEditModal: ElementRef;
 
+  @ViewChild('openAddModal', { static: true })
+  private openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', { static: true })
+  private closeAddModal: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -51,6 +58,9 @@ export class ViewCaptureInfoComponent implements OnInit {
   contextMenuY = 0;
   sidebarCollapsed = true;
   selectedRow = -1;
+  showedSuccess: boolean;
+
+  doctypeSelectedIndex: number;
 
   captureInfo: {
     id: number,
@@ -64,7 +74,7 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   requestModel = {
     userID: this.currentUser.userID,
-    companyID: 1,
+    companyID: -1,
     doctypeID: -1,
     specificCaptureInfoID: -1,
     filter: '',
@@ -74,7 +84,27 @@ export class ViewCaptureInfoComponent implements OnInit {
     rowEnd: 15,
   };
 
+  requestModelAddInfo = {
+    userID: this.currentUser.userID,
+    companyID: -1,
+    doctypeID: -1,
+    info: ''
+  };
+
+  requestModelDoctypeList = {
+    userID: this.currentUser.userID,
+    specificDoctypeID: -1,
+    filter: '',
+    orderBy: '',
+    orderByDirection: '',
+    rowStart: 1,
+    rowEnd: 15,
+  };
+
+  doctypeResponse: DoctypeListResponse;
+
   ngOnInit() {
+    this.showedSuccess = false;
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -85,6 +115,8 @@ export class ViewCaptureInfoComponent implements OnInit {
         name: data.companyName
       };
 
+      this.requestModelAddInfo.companyID = data.companyID;
+      this.requestModel.companyID = data.companyID;
       this.loadDataset();
     });
 
@@ -92,6 +124,8 @@ export class ViewCaptureInfoComponent implements OnInit {
       id: -1,
       info: ''
     };
+
+    this.loadDoctypes();
   }
 
   searchBar() {
@@ -107,10 +141,14 @@ export class ViewCaptureInfoComponent implements OnInit {
         this.showLoader = false;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          if (!this.showedSuccess) {
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            this.showedSuccess = true;
+          }
           this.dataset = res;
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.showedSuccess = false;
         }
       },
       (msg) => {
@@ -183,10 +221,69 @@ export class ViewCaptureInfoComponent implements OnInit {
   selectedRowChange(index: number, capture: { id: number, info: string }) {
     this.selectedRow = index;
     this.captureInfo = capture;
-    console.log(this.captureInfo);
   }
 
   backToAttachments() {
     this.router.navigate(['companies']);
+  }
+
+  addCaptureInfoModal() {
+    this.doctypeSelectedIndex = 0;
+    this.requestModelAddInfo.info = null;
+    this.requestModelAddInfo.doctypeID = -1;
+    this.openAddModal.nativeElement.click();
+  }
+
+  addCapture() {
+    this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.loadDataset();
+          this.closeAddModal.nativeElement.click();
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot Reach Server');
+      }
+    );
+  }
+
+  onDoctypeChange(id: number) {
+    this.requestModelAddInfo.doctypeID = id;
+  }
+
+  loadDoctypes() {
+    this.transactionService.doctypeList(this.requestModelDoctypeList).then(
+      (res: DoctypeListResponse) => {
+          this.doctypeResponse = res;
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot Reach Server');
+      }
+    );
+  }
+
+  removeCapture(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      captureID: this.captureInfo.id,
+      isDeleted: 1,
+      info: this.captureInfo.info,
+    };
+
+    this.transactionService.captureInfoUpdate(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.loadDataset();
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
   }
 }

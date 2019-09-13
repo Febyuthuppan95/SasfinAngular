@@ -323,12 +323,10 @@ export class ViewCompanyListComponent implements OnInit {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS','Company successfully added');
+            this.notify.successmsg('SUCCESS', 'Company successfully added');
             this.loadCompanies();
             this.closeaddModal.nativeElement.click();
           }
-
-
         },
         msg => {
           this.notify.errorsmsg(

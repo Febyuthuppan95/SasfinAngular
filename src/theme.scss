@@ -346,9 +346,10 @@ $peachThemeText: #121212;
 }
 .contextmenu .card {
   border:2px solid #4d83ff;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: #4d83ff;
   color: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .contextOverlay {
   position: fixed !important;
@@ -365,10 +366,11 @@ $peachThemeText: #121212;
 }
 .context-item {
   color:#fff !important;
-  border-radius: 10px !important;
+  border-radius: 5px !important;
 }
 .context-item:hover {
   background-color: #F5F5F5 !important;
   color:#4d83ff !important;
   transition: 0.3s !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }

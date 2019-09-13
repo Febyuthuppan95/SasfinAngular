@@ -385,25 +385,43 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   addTransaction() {
-    this.transationService.createdTransaction(
-      this.currentUser.userID,
-      this.companyID,
-      1,
-      1,
-      this.newTransaction.name,
-    ).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadTransactions();
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.closeModal.nativeElement.click();
-        }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Could not reach server');
-        this.closeModal.nativeElement.click();
-      }
-    );
+    console.log(this.selectedStatus);
+    let errors = 0;
+
+    if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
+      errors++;
+    }
+
+    if (this.selectedStatus <= 0 || this.selectedStatus === undefined) {
+      errors++;
+    }
+
+    if (this.selectedType <= 0 || this.selectedStatus === undefined) {
+      errors++;
+    }
+    if (errors === 0) {
+      this.transationService.createdTransaction(
+          this.currentUser.userID,
+          this.companyID,
+          this.selectedType,
+          this.selectedStatus,
+          this.newTransaction.name,
+        ).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.loadTransactions();
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.closeModal.nativeElement.click();
+            }
+          },
+          (msg) => {
+            this.notify.errorsmsg('Failure', 'Could not reach server');
+            this.closeModal.nativeElement.click();
+          }
+        );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+    }
   }
 
   addTransactionModal() {
