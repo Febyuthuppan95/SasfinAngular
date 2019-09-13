@@ -1,0 +1,21 @@
+<nav aria-label="Pagination" class="float-right" style="margin-top:48px;">
+  <ul class="pagination pagination-sm">
+    <li class="page-item">
+      <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+        (click)="pageChange(prevPage)">Prev</button>
+    </li>
+    <li *ngFor="let page of showingPages" class="page-item">
+      <button [class.active-page]="activePage == page.page"
+        class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+        type="button" (click)="pageChange(page.page)">{{page.page}}</button>
+    </li>
+    <li class="page-item">
+      <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+        (click)="pageChange(nextPage)">Next</button>
+    </li>
+  </ul>
+</nav>
+<br />
+<p class="ls-text-{{ currentTheme }}" style="margin-top:36px;">Showing {{ this.rowStart }} to {{  this.recordCount }} of
+  {{ this.recordCount }}
+</p>

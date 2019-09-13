@@ -1,4 +1,5 @@
 import { Outcome } from './Outcome';
+import { UserRightsListResponse } from './UserRightsListResponse';
 
 export class LoginResponse {
   authenticated: boolean;
@@ -14,4 +15,5 @@ export class LoginResponse {
   designation: string;
   extension?: any;
   outcome: Outcome;
+  userRights: UserRightsListResponse;
 }

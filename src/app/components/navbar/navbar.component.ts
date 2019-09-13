@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user.Service';
 import { User } from '../../models/HttpResponses/User';
+import {SnackbarModel} from '../../models/StateModels/SnackbarModel';
+import {HelpSnackbar} from '../../services/HelpSnackbar.service';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +12,9 @@ import { User } from '../../models/HttpResponses/User';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+              private userIdle: UserIdleService,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser: User = this.userService.getCurrentUser();
   activateSidebar = false;
@@ -19,9 +24,12 @@ export class NavbarComponent implements OnInit {
   @Output() collapseSidebar = new EventEmitter<string>();
   @Output() offcanvas = new EventEmitter<string>();
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   logout() {
+    this.userIdle.resetTimer();
+    this.userIdle.stopTimer();
+    this.userIdle.stopWatching();
     this.userService.logout();
   }
 
@@ -32,6 +40,20 @@ export class NavbarComponent implements OnInit {
   public offcanvasSidebar() {
     this.offcanvas.emit('offcanvas');
     // console.log('event emmited from navbar');
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug,
+    };
+
+    // something along these lines
+    // function isAdmin() {
+    //   return `<div data-val-id="${question.questionNumber}"> ${question.questionText} </div>`;
+    // }
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
 }

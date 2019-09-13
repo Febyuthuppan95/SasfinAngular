@@ -1,0 +1,77 @@
+<div  appKeyHandler
+tabindex="-1"
+(companyInfoEmit)="companyInfo()"
+(exitScreenEmit)="exitCaptureScreen()"
+(currentShortcutSequence)="currentShortcut($event)">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" style="height: 7vh;">
+    <button (click)="goBack()" mat-button
+  matTooltip="Exit (CTRL + ALT + O)" matTooltipPosition="below"><span class="mdi mdi-close text-light"></span>
+  </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto"></ul>
+      <ul class="navbar-nav md-auto">
+        <li class="nav-item">
+          <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
+        </li>
+        <li class="nav-item">
+          <button (click)="showHelp()" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below"><span class="mdi mdi-help-circle"></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
+<div class="col-6 bg-light">
+  <div class="reader-line"></div>
+  <app-document-viewer></app-document-viewer>
+</div>
+<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px; overflow-y: auto;">
+  <router-outlet></router-outlet>
+  <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
+    <div class="company-info bg-light shadow text-dark text-left" *ngIf="this.companyInfoList !== undefined">
+      <div *ngFor="let info of this.companyInfoList.captureInfo">
+        <p>{{info.info}}</p>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<button class="hide" data-toggle="modal" data-target="#shortcuts" #openModal></button>
+<div class="modal fade" id="shortcuts" tabindex="-1" role="dialog" aria-labelledby="shortcuts" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Shortcuts</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-light">
+        <ul class="list-unstyled">
+          <li>
+            <strong class="text-muted">(CTRL + ALT + L)</strong> - Show company info
+          </li>
+          <li>
+            <strong class="text-muted">(CTRL + ALT + O)</strong> - Exit capture screen
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="shortcut-highlighter-container" *ngIf="currentShortcutLabel !== null || undefined">
+  <div class="shortcut-highlighter shadow text-light">
+    {{currentShortcutLabel}}
+  </div>
+</div>
+
+<app-notification></app-notification>

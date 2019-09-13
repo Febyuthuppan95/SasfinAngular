@@ -1,6 +1,6 @@
 export class DesignationList {
-  rowNum: string;
-  designationID: string;
+  rowNum: number;
+  designationID: number;
   name: string;
   description: string;
 }

@@ -24,7 +24,18 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets/dist/images/favicon.png",
-              "src/assets/dist/"
+              "src/assets/dist/",
+              "src/assets",
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ngx-extended-pdf-viewer/assets/locale",
+                  "output": "/assets/locale/"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ngx-extended-pdf-viewer/assets/images",
+                  "output": "/assets/images/"
+                }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -33,7 +44,11 @@
               "src/theme.scss",
               "src/mobile.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.worker.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/viewer.js"
+            ]
           },
           "configurations": {
             "production": {

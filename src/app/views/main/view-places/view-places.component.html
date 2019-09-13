@@ -1,27 +1,40 @@
 <div class="shadow tile ls-tile-{{ currentTheme }}">
     <div class="ls-card-body">
-      <div class="float-right">
-        <ng-container *ngIf="showLoader">
-          <app-loader></app-loader>
-        </ng-container>
-      </div>
+        <div class="float-right">
+            <ng-container *ngIf="showLoader">
+              <app-loader></app-loader>
+            </ng-container>
+          </div>
+          <br />
       <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
         <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Locations</h4><span style="margin-left:10px;"><button (click)="addCountryModal($event)" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
         </div>
       <br />
+      <div class="filters">
+          <form class="form-inline">
+            <input type="text"
+              class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+              placeholder="Search" (keyup)="loadData()" [(ngModel)]="request.filter" [ngModelOptions]="{standalone: true}" />
+          </form>
+        </div>
       <br />
       <div class="row">
-      <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult">
-        <div class="tile shadow-sm">
+      <div class="col-md-4 col-sm-12" *ngFor="let country of dataResult" style="margin-bottom: 18px;">
+        <div class="tile shadow-sm ls-tile-{{ currentTheme }}">
           <div class="location-country">
-        <h4 (click)="popClick($event, country.countryID, country.name, 'country'); setSelectedRow(country.hash)" [ngClass]="{activeCountry: selectedRow === country.hash}" class="country-name">{{ country.name }}
+        <h4 (click)="popClick($event, country.countryID, country.name, 'country'); setSelectedRow(country.hash)" [ngClass]="{activeCountry: selectedRow === country.hash}" class="country-name">
+            <span class="location-hint" style="margin-top: 4px;">(Country)</span>
+          {{ country.name }}
         </h4>
       </div>
-        <div class="locations-list">
+      <hr>
+        <div class="location-list">
         <div *ngFor="let region of country.regions">
-          <p class="country-name" (click)="popClick($event, region.id, region.name, 'region'); setSelectedRow(region.hash)" [ngClass]="{activeRegion: selectedRow === region.hash}"><strong>{{ region.name }}</strong></p>
+          <p class="country-name" (click)="popClick($event, region.id, region.name, 'region'); setSelectedRow(region.hash)" [ngClass]="{activeRegion: selectedRow === region.hash}">
+              <span class="location-hint">(Region)</span><strong>{{ region.name }}</strong></p>
           <ul class="list-unstyled">
             <li *ngFor="let city of region.cities;" (click)="popClick($event, city.id, city.name, 'city'); setSelectedRow(city.hash)" class="location-city" [ngClass]="{active: selectedRow === city.hash}">
+                <span class="location-hint">(City)</span>
               {{city.name}}
             </li>
           </ul>
@@ -38,7 +51,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Update Location</h5>
+        <h5 class="modal-title" id="uploadBackgroundLabel">Edit {{this.locationName}}</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -72,8 +85,7 @@
       <form (submit)="addLocation()">
       <div class="modal-body">
       <div class="form-group">
-          <input type="text" placeholder="Name" class="form-control"
-            [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
+          <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
         </div>
       </div>
       <div class="modal-footer bg-dark">

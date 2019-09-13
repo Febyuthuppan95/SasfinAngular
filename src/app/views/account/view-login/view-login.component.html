@@ -1,6 +1,6 @@
- <div class="text-left tile-frost tile shadow full-form">
+ <div class="text-left tile-frost tile shadow full-form" #login>
             <div class="brand-logo">
-              <img src="./../../../assets/dist/images/logo.png" alt="logo">
+              <img width="450px" height="150px" src="./../../../assets/dist/images/logo.png" alt="logo">
             </div>
             <h4 style="margin-bottom: 5px;margin-top:26px;">Welcome Back!</h4>
             <h6 class="font-weight-light">Happy to see you again</h6>
@@ -37,8 +37,15 @@
                 </div>
               </div>
               <div class="my-3">
+                <div class="text-center">
+                <app-loader *ngIf="pendingRequest"></app-loader>
+              </div>
                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                  [disabled]="pendingRequest">Login</button>
+                  [disabled]="pendingRequest">
+                  <span *ngIf="pendingRequest">Logging in...</span>
+                  <span *ngIf="!pendingRequest">Login</span>
+
+                </button>
               </div>
               <div class="my-2 text-center">
                 <a routerLink="/account/forgotpassword" class="auth-link text-behance">Forgot Password?</a>
@@ -46,3 +53,4 @@
             </form>
           </div>
 <app-notification></app-notification>
+<!-- <app-main-layout></app-main-layout> -->

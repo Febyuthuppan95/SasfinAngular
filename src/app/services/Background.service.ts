@@ -1,9 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Config} from '../../assets/config.json';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';
-import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -29,15 +27,14 @@ export class BackgroundService {
     });
   }
 
-  public addBackgrounds(fileName: string, src: File, userID: number, rightName: string) {
+  public addBackgrounds(fileName: string, src: File, userID: number) {
     const requestModel = {
       name: fileName,
       image: src.name,
-      userId: userID,
-      rightName
+      userId: userID,     
     };
 
-    const formData: FormData = new FormData();
+    const formData = new FormData();
     formData.append('file', src);
     formData.append('requestModel', JSON.stringify(requestModel));
 
@@ -57,10 +54,9 @@ export class BackgroundService {
     });
   }
 
-  public removeBackgrounds(backgroundID, rightName, userID) {
+  public removeBackgrounds(backgroundID, userID) {
     const requestModel = {
-      userID,
-      rightName,
+      userID,    
       backgroundID
     };
 

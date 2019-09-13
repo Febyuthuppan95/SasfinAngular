@@ -1,7 +1,6 @@
 export class GetDesignationList {
   rowEnd: number;
-  rowStart: number;
-  rightName: string;
+  rowStart: number;  
   filter: string;
   userID: number;
   specificDesignationID: number;

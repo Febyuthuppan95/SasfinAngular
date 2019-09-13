@@ -6,7 +6,7 @@ import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnits
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
 import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
 
@@ -27,7 +27,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   unitsOfMeasure: ListUnitsOfMeasureRequest = {
     userID: 3,
     specificUnitOfMeasureID: -1,
-    rightName: 'UnitOfMeasures',
     filter: '',
     orderBy: 'Name',
     orderByDirection: 'ASC',
@@ -96,6 +95,24 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.unitService.list(this.unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
         this.showLoader = false;
+        //if()
+        {
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+        }
+
+
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.unitOfMeasureList;
           this.rowCount = res.rowCount;
@@ -111,7 +128,10 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       },
       (msg) => {
         this.showLoader = false;
-        this.notify.errorsmsg('Failure', 'We couldn\'t reach the server');
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server'
+         );
       }
     );
   }
@@ -229,17 +249,16 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
-    console.log('open modal');
   }
 
   updateUnit() {
     let errors = 0;
 
-    if (this.focusUnitName === '') {
+    if (this.focusUnitName === '' || this.focusUnitName === undefined) {
       errors++;
     }
 
-    if (this.focusUnitDescription === '') {
+    if (this.focusUnitDescription === '' || this.focusUnitDescription === undefined) {
       errors++;
     }
 
@@ -247,7 +266,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
       const requestModel: UpdateUnitOfMeasureRequest = {
         userID: 3,
         unitOfMeasureID: this.focusUnitId,
-        rightName: 'UnitOfMeasures',
         name: this.focusUnitName,
         description: this.focusUnitDescription,
         isDeleted: 0,
@@ -255,20 +273,28 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
       this.unitService.update(requestModel).then(
         (res: UpdateUnitsOfMeasureResponse) => {
+          console.log(res);
           this.closeModal.nativeElement.click();
 
-          this.unitsOfMeasure.rowStart = 1;
-          this.unitsOfMeasure.rowEnd = this.rowCountPerPage;
+          this.unitsOfMeasure = {
+            userID: 3,
+            specificUnitOfMeasureID: -1,
+            filter: '',
+            orderBy: 'Name',
+            orderByDirection: 'ASC',
+            rowStart: 1,
+            rowEnd: 15
+          };
 
-          this.loadUnitsOfMeasures();
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadUnitsOfMeasures();
         },
         (msg) => {
           this.notify.errorsmsg('Failure', msg.message);
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a unit of measure item.');
     }
   }
 }

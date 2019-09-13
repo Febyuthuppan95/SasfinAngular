@@ -1,8 +1,7 @@
 export class GetDesignationRightsList {
   userID: number;
   specificRightID: number;
-  specificDesignationID: number;
-  rightName: string;
+  specificDesignationID: number; 
   filter: string;
   orderBy: string;
   orderByDirection: string;

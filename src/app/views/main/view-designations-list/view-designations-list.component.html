@@ -10,7 +10,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Designations</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="padding-top:7px;">Designations</h4></div>
     <!-- <h4 class="card-title ls-text-{{ currentTheme }}">Designations</h4> -->
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
@@ -64,7 +64,7 @@
         <tbody class="tbodyPop" *ngIf="(noData)" >
           <tr>
             <td scope="col"></td>
-            <td scope="col">Not found..</td>
+            <td scope="col">No data to display..</td>
             <td scope="col"></td>
           </tr>
         </tbody>

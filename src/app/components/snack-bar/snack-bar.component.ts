@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { NotificationComponent } from '../notification/notification.component';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
@@ -9,24 +10,32 @@ import { UpdateObjectHelpResponse } from 'src/app/models/HttpResponses/UpdateObj
 import { GetObjectHelpRequest } from 'src/app/models/HttpRequests/GetObjectHelpRequest';
 import { GetObjectHelpResponse } from 'src/app/models/HttpResponses/GetObjectHelpResponse';
 
+
 @Component({
   selector: 'app-snack-bar',
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss']
 })
 export class SnackBarComponent implements OnInit {
-  constructor(private helpSnackbarService: HelpSnackbar, private objectHelpService: ObjectHelpService,
-              private userService: UserService) {
+  constructor(
+    private helpSnackbarService: HelpSnackbar,
+    private objectHelpService: ObjectHelpService,
+    private userService: UserService
+  ) {
     this.settings = new SnackbarModel();
     this.focus = new SnackbarModel();
   }
 
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
+
+
 
   settings: SnackbarModel;
   focus: SnackbarModel;
@@ -78,23 +87,39 @@ export class SnackBarComponent implements OnInit {
 
   updateObjectHelp() {
     const request: UpdateObjectHelpRequest = {
-      userID: 3,
+      userID: this.currentUser.userID,
       objectHelpID: this.focus.id,
       name: this.settings.title,
-      rightName: 'ObjectHelp',
       description: this.settings.content
     };
 
-    this.objectHelpService.update(request).then(
+    this.objectHelpService
+    .update(request)
+    .then(
       (res: UpdateObjectHelpResponse) => {
-        if (res.outcome.outcome === 'Object help successfully updated') {
-          this.closeModal.nativeElement.click();
-        } else {
-          alert(JSON.stringify(res));
+        
+        if(res.outcome.outcome === "Access denied"){
+          this.notify.errorsmsg(
+            'Error',
+            res.outcome.outcome
+          );
         }
+        else
+        {
+          this.notify.successmsg(
+            'Success',
+            res.outcome.outcome
+            
+          );
+          this.closeModal.nativeElement.click();
+        }        
       },
-      (msg) => {
-        console.log(JSON.stringify(msg));
+      msg => {
+                
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
       });
   }
 }

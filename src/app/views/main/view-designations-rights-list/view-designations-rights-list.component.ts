@@ -18,8 +18,8 @@ import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
 import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
-
-
+import { MenuService } from 'src/app/services/Menu.Service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -45,13 +45,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
-
+  contextMenu = false;
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection = 'ASC';
@@ -61,6 +60,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   selectedRow = -1;
+  currentRightID: number;
+  sidebarCollapsed = true;
+  subscription: Subscription;
+  contextMenuX = 0;
+  contextMenuY = 0;
 
   // Modal
   closeResult: string;
@@ -73,12 +77,12 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
     private location: Location,
-    private rightsService: RightService
+    private rightsService: RightService,
+    private IMenuService: MenuService
 
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
-      this.rightName = 'Designation';
       this.activePage = +1;
       this.prevPageState = true;
       this.nextPageState = false;
@@ -89,7 +93,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
 
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+        // console.log(result);
+        this.sidebarCollapsed = result;
+      });
     }
+
+  
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
@@ -103,7 +113,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-      console.log(this.currentDesignation);
+    
     });
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -121,7 +131,6 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      rightName: this.rightName,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       specificRightID: -1,
@@ -132,13 +141,13 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-        console.log(res);
-        console.log(this.designationRightsList);
         this.rightsList = res.rightList;
+        console.log(this.designationRightsList);
+        console.log(this.rightsList);
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (dRight.rightID !== right.rightID) {
+            if (dRight.rightID === right.rightID) {              
               this.rightsList.splice(count, 1);
             } else {
               count ++;
@@ -162,17 +171,31 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificRightID: -1, // default
       specificDesignationID: this.currentDesignation,
-      rightName: 'Designation',
       filter: this.filter,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
+   
     this.designationsService
     .getDesignationRightsList(dRModel).then(
-      (res: DesignationRightsListResponse) => {
-        console.log(res);
+      (res: DesignationRightsListResponse) => {   
+        
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -182,16 +205,21 @@ export class ViewDesignationsRightsListComponent implements OnInit {
           this.rowCount = 0;
           this.showingRecords = 1;
           this.totalShowing = 0;
+          
         } else {
         this.noData = false;
         // Process Success
-        // console.log(res.designationRightsList);
+      
         this.designationRightsList = res.designationRightsList;
+        
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
-        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
+        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;        
+
         this.paginateData();
+        
+        this.loadAvailableRights();
         }
       },
       msg => {
@@ -203,7 +231,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
-    this.loadAvailableRights();
+    
   }
 
   pageChange(pageNumber: number) {
@@ -315,13 +343,35 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
+  popClick(event, uRight) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
+    this.currentRightID = uRight;
+    // Will only toggle on if off
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true); // Set true
+      this.contextMenu = true;
+      // Show menu
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+
   confirmRemove(content, id, Name) {
-    this.rightId = id;
-    this.rightName = 'Designations';
+    this.rightId = id;    
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
-      // console.log(this.rightName);
-      this.removeRight(this.rightId, this.rightName);
+      this.removeRight(this.rightId);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -330,27 +380,30 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmAdd(add) {
-    this.openAddModal.nativeElement.click();
-    // this.addNewRight(this.rightId, this.rightName);
-    // this.modalService.open(add, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //   // console.log(result);
-    //   // this.addNewRight(this.rightId, this.rightName);
-    //   // Remove the right
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
+    this.openAddModal.nativeElement.click();   
   }
-  removeRight(id: number, name: string) {
+  removeRight(id: number) {
     const requestModel: UpdateDesignationRight = {
       userID: this.currentUser.userID,
       designationRightID: id,
-      rightName: 'Designations'
     };
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
       (res: DesignationRightReponse) => {
-        // console.log(res);
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        
         this.loadDesignationRights();
       },
       msg => {
@@ -366,11 +419,23 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       userID: this.currentUser.userID,
       designationID: this.currentDesignation,
       rightID: id,
-      rightName: 'Designations'
     };
     const result = this.designationsService
     .addDesignationright(requestModel).then(
       (res: DesignationRightReponse) => {
+        if(res.outcome.outcome === "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        else
+        {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
         this.loadDesignationRights();
       },
       msg => {

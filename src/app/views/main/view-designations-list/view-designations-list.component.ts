@@ -8,7 +8,7 @@ import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ContextMenuComponent } from 'src/app/components/context-menu/context-menu.component';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
@@ -29,7 +29,6 @@ export class ViewDesignationsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
-    this.rightName = 'Designation';
     this.activePage = +1;
     this.prevPageState = true;
     this.nextPageState = false;
@@ -84,7 +83,6 @@ export class ViewDesignationsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;
-  rightName: string;
   activePage: number;
   orderBy: string;
   orderByDirection: string;
@@ -165,7 +163,6 @@ export class ViewDesignationsListComponent implements OnInit {
     const model: GetDesignationList = {
       rowEnd: this.rowEnd,
       rowStart: this.rowStart,
-      rightName: this.rightName,
       filter: this.filter,
       userID: this.currentUser.userID,
       orderBy: this.orderBy,
@@ -176,6 +173,21 @@ export class ViewDesignationsListComponent implements OnInit {
       .getDesignationList(model)
       .then(
         (res: DesignationListResponse) => {
+
+          if(res.outcome.outcome === "FAILURE"){
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+          else
+          {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+
           if (res.rowCount === 0) {
             this.rowStart = 0;
             this.showLoader = false;
