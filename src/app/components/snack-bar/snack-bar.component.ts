@@ -97,25 +97,20 @@ export class SnackBarComponent implements OnInit {
     .update(request)
     .then(
       (res: UpdateObjectHelpResponse) => {
-        
-        if(res.outcome.outcome === "Access denied"){
+        if (res.outcome.outcome === 'Access denied'){
           this.notify.errorsmsg(
             'Error',
             res.outcome.outcome
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             'Success',
             res.outcome.outcome
-            
           );
           this.closeModal.nativeElement.click();
-        }        
+        }
       },
       msg => {
-                
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'

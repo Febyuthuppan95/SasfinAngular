@@ -136,6 +136,8 @@ export class ViewUserListComponent implements OnInit {
   preview: any;
   disableDesSelect: boolean = false;
 
+  isAdmin: false;
+
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -603,13 +605,21 @@ export class ViewUserListComponent implements OnInit {
     }
   }
 
-  updateHelpContext(slug: string) {
-    const newContext: SnackbarModel = {
-      display: true,
-      slug,
-    };
+  updateHelpContext(slug: string, $event?) {
+    if (this.isAdmin) {
+      const newContext: SnackbarModel = {
+        display: true,
+        slug,
+      };
 
-    this.snackbarService.setHelpContext(newContext);
+      this.snackbarService.setHelpContext(newContext);
+    } else {
+      if ($event.target.attributes.matTooltip !== undefined && $event.target !== undefined) {
+        $event.target.setAttribute('mattooltip', 'New Tooltip');
+        $event.srcElement.setAttribute('matTooltip', 'New Tooltip');
+      }
+    }
+
   }
 
 }

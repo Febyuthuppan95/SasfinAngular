@@ -293,6 +293,8 @@ export class ViewTransactionsComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.transactions.length - 1;
             this.paginateData();
           }
+
+          console.log(this.selectedTypeIndex);
         },
         msg => {
           this.showLoader = false;
@@ -428,8 +430,12 @@ export class ViewTransactionsComponent implements OnInit {
     this.newTransaction.name = null;
     this.newTransaction.transactionStatusID = -1;
     this.newTransaction.transactionTypeID = -1;
+    this.typesDisable = false;
+    this.statusDisable = false;
     this.selectedStatusIndex = 0;
     this.selectedTypeIndex = 0;
+
+    console.log(this.selectedTypeIndex);
     this.openModal.nativeElement.click();
   }
 
