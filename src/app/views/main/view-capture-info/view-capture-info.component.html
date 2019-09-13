@@ -72,7 +72,7 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()"></app-context-menu-capture-info>
+  <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()" (removeCaptureInfo)="removeCapture($event)"></app-context-menu-capture-info>
 </app-menu>
 
 <app-notification></app-notification>

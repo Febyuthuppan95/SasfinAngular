@@ -48,6 +48,11 @@ export class NavbarComponent implements OnInit {
       slug,
     };
 
+    // something along these lines
+    // function isAdmin() {
+    //   return `<div data-val-id="${question.questionNumber}"> ${question.questionText} </div>`;
+    // }
+
     this.snackbarService.setHelpContext(newContext);
   }
 
