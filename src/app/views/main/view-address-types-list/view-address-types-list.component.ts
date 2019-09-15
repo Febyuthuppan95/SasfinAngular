@@ -255,9 +255,9 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  editUnitOfMeasure() {
+  editAddressTypes($event) {
     this.themeService.toggleContextMenu(false);
-    this.contextMenu = false;
+    /*this.contextMenu = false;*/
     this.openModal.nativeElement.click();
     console.log('open modal');
   }
@@ -269,10 +269,10 @@ export class ViewAddressTypesListComponent implements OnInit {
       errors++;
     }
     const requestModel: UpdateAddressTypeRequest = {
-      userID: 1,
-      addressTypeID: 9,
-      name: '',
-      isDeleted: 1
+      userID: 3,
+      addressTypeID: this.focusAddressTypeId,
+      name: this.focusAddressTypeName,
+      isDeleted: 0
     };
     if (errors === 0) {
 
@@ -298,12 +298,12 @@ export class ViewAddressTypesListComponent implements OnInit {
 
   /* Add Handlers from context menu */
 
-  addAddressTypesModal($event) {
-    this.addModalOpen.nativeElement.click();
+  addAddressTypesModal() {
     this.newAddressTypeName = '';
+    this.addModalOpen.nativeElement.click();
   }
 
-  addAddressType() {
+  addAddressType($event) {
      const requestModel = {
        userID: this.currentUser.userID,
        name: this.newAddressTypeName
