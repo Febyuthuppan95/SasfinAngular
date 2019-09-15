@@ -10,6 +10,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { TableHeading, SelectedRecord } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -103,6 +104,25 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   doctypeResponse: DoctypeListResponse;
 
+  tableData = null;
+  tableHeadings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      }
+    },
+    {
+      title: 'Information',
+      propertyName: 'info',
+      order: {
+        enable: true,
+        tag: 'Info'
+      }
+    },
+  ];
+
   ngOnInit() {
     this.showedSuccess = false;
     this.themeService.observeTheme().subscribe((theme) => {
@@ -144,6 +164,7 @@ export class ViewCaptureInfoComponent implements OnInit {
           if (!this.showedSuccess) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.showedSuccess = true;
+            this.tableData = res.captureInfo;
           }
           this.dataset = res;
         } else {
@@ -178,11 +199,17 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event) {
+  popClick(event, obj) {
+    this.captureInfo = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
+  }
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {

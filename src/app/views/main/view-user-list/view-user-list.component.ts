@@ -25,6 +25,7 @@ import { DesignationListResponse } from 'src/app/models/HttpResponses/Designatio
 import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
+import { TableHeading, SelectedRecord } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-user-list',
@@ -80,7 +81,71 @@ export class ViewUserListComponent implements OnInit {
   closeAddModal: ElementRef;
 
 
-
+  tableHeadings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      }
+    },
+    {
+      title: 'Emp No',
+      propertyName: 'empNo',
+      order: {
+        enable: true,
+        tag: 'EmpNo'
+      }
+    },
+    {
+      title: 'First Name',
+      propertyName: 'firstName',
+      order: {
+        enable: true,
+        tag: 'FirstName'
+      }
+    },
+    {
+      title: 'Surname',
+      propertyName: 'surname',
+      order: {
+        enable: true,
+        tag: 'Surname'
+      }
+    },
+    {
+      title: 'Email',
+      propertyName: 'email',
+      order: {
+        enable: true,
+        tag: 'Email'
+      }
+    },
+    {
+      title: 'Ext',
+      propertyName: 'extension',
+      order: {
+        enable: true,
+        tag: 'Extension'
+      }
+    },
+    {
+      title: 'Designation',
+      propertyName: 'designation',
+      order: {
+        enable: true,
+        tag: 'Designation'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'status',
+      order: {
+        enable: true,
+        tag: 'Status'
+      }
+    },
+  ];
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
@@ -110,7 +175,7 @@ export class ViewUserListComponent implements OnInit {
   currentUserName: string;
   pages: Pagination[];
   showingPages: Pagination[];
-  userList: UserList[];
+  userList: UserList[] = null;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -191,34 +256,9 @@ export class ViewUserListComponent implements OnInit {
     this.updatePagination();
   }
 
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
-
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
-
-    let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    const mod = +this.rowCount % +this.rowCountPerPage;
-
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.rowStart = $event.rowStart;
+    this.rowEnd = $event.rowEnd;
     this.loadUsers(false);
   }
 
@@ -270,10 +310,11 @@ export class ViewUserListComponent implements OnInit {
             this.showLoader = false;
           } else {
             this.noData = false;
-            this.userList = res.userList;
             this.rowCount = res.rowCount;
-            this.showLoader = false;
             this.showingRecords = res.userList.length;
+            console.log('Update userlist');
+            this.userList = res.userList;
+            this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
 
             this.paginateData();
@@ -348,7 +389,7 @@ export class ViewUserListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, user: UserList) {
+  popClick(event, user) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -396,8 +437,10 @@ export class ViewUserListComponent implements OnInit {
     this.contextMenu = false;
     this.selectedRow = -1;
   }
-  setClickedRow(index) {
-    this.selectedRow = index;
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
   }
 
   editUser($event) {

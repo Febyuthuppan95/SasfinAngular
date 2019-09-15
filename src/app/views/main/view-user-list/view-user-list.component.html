@@ -28,7 +28,7 @@
     </div>
     <br />
 
-    <div class="">
+    <!-- <div class="">
       <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
         <thead>
           <tr>
@@ -161,7 +161,20 @@
     <br />
     <p class="ls-text-{{ currentTheme }}"(mouseover)="updateHelpContext('pagination-showing-text')">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
-  </div>
+  </div> -->
+  <app-table
+    *ngIf="this.userList"
+    [dataset]="this.userList"
+    [headings]="this.tableHeadings"
+    [recordsPerPage]="this.showingRecords"
+    [rowStart]="this.rowStart"
+    [rowEnd]="this.rowEnd"
+    [rowCount]="this.rowCount"
+    [orderBy]="this.orderBy"
+    [orderByDirection]="this.orderDirection"
+    (selectedRecord)="selectedRecord($event)"
+    (pageChange)="pageChange($event)">
+  </app-table>
 </div>
 
 <!--Edit Modal-->
