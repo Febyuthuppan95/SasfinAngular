@@ -105,5 +105,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.orderIndicator = `${this.orderBy}_${this.orderByDirection}`;
   }
 
+  // Table Events
   pageChangeEvent = ($event) => this.pageChange.emit($event);
 }
