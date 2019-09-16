@@ -95,6 +95,8 @@ import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+
 
 @NgModule({
   declarations: [
@@ -157,7 +159,8 @@ import { TableComponent } from './components/table/table.component';
     ContextMenuCaptureInfoComponent,
     MenuComponent,
     TableComponent,
-    PaginationComponent
+    PaginationComponent,
+    ViewContactTypesListComponent
   ],
   imports: [
     BrowserModule,

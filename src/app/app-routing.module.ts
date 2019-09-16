@@ -28,7 +28,7 @@ import { ViewCompanyAddressesComponent } from './views/main/view-company-address
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
-
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -52,14 +52,14 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
+          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
-           { path: 'addresstypes', component: ViewAddressTypesListComponent },
+          { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
@@ -67,6 +67,7 @@ const routes: Routes = [
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
           { path: 'transactions/', component: ViewTransactionsComponent },
           { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
+          { path: 'contacttypes', component: ViewContactTypesListComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
