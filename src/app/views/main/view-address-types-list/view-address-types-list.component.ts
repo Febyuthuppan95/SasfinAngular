@@ -1,3 +1,5 @@
+import { AddAddressTypesResponse } from './../../../models/HttpResponses/AddAddressTypesResponse';
+import { AddressTypesListResponse } from './../../../models/HttpResponses/AddressTypesListResponse';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
@@ -310,8 +312,9 @@ export class ViewAddressTypesListComponent implements OnInit {
      };
 
      this.addressTypeService.add(requestModel).then(
-       (res: Outcome) => {
-         if (res.outcome === 'SUCCESS') {
+       (res: AddAddressTypesResponse) => {
+         console.log(res);
+         if (res.outcome.outcome === 'SUCCESS') {
            this.newAddressTypeName = '';
            this.addModalClose.nativeElement.click();
            this.loadAddressTypes();
