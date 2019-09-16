@@ -166,7 +166,7 @@ import { TableComponent } from './components/table/table.component';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
+    UserIdleModule.forRoot({idle: 45, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,
