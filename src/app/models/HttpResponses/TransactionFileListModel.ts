@@ -13,4 +13,6 @@ export class TransactionFile {
   file: string;
   fileType: string;
   name: string;
+  status: string;
+  statusID: number;
 }

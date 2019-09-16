@@ -75,6 +75,7 @@ export class FormCustomReleaseComponent implements OnInit {
       supplierRef: this.form.supplierRef.value,
       mrn: this.form.MRN.value,
       isDeleted: 0,
+      attachmentStatusID: 2,
     };
 
     this.transactionService.customsReleaseUpdate(requestModel).then(

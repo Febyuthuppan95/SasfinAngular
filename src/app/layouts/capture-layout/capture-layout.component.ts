@@ -31,7 +31,10 @@ export class CaptureLayoutComponent implements OnInit {
   currentBackground: string;
   currentTheme: string;
   currentUser: User;
-  translateY: '120px';
+  currentReaderPOS: { x: number, y: number } = {
+    x: 0,
+    y: 0,
+  };
   companyShowToggle: boolean;
   currentShortcutLabel: string = null;
   currentShortcutSequence: string[] = [];
@@ -42,7 +45,7 @@ export class CaptureLayoutComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.companyShowToggle = false;
+    this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground().subscribe((result: string) => {
       if (result !== undefined) {
@@ -103,6 +106,14 @@ export class CaptureLayoutComponent implements OnInit {
   }
   PDFScrollUp() {
   }
+
+  @HostListener('keydown', ['$event']) onKeyDown(e) {
+    if (e.keyCode === 190) {
+      this.currentReaderPOS.y++;
+      console.log(`New Reader pos: ${this.currentReaderPOS.y}`);
+    }
+  }
+
   currentShortcut($event: string) {
     if ($event === null || undefined) {
       this.flushCurrentShortcut();
