@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - Transactions</h4><span style="margin-left:10px;"><button (click)="addTransactionModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToCompanies()" class="btn-back btn" style="padding-right: 0px; padding-top: 7px;"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - Transactions</h4><span style="margin-left:10px;"><button (click)="addTransactionModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
         <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -94,7 +94,7 @@
 
 
 <button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
-<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true" *ngIf="this.transactionStatus !== undefined && this.transactionTypes !== undefined">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -110,13 +110,13 @@
             [(ngModel)]="this.newTransaction.name" [ngModelOptions]="{standalone: true}" required/>
       </div>
       <div class="form-group">
-          <select class="form-control" (change)="onTypeChange($event)" required *ngIf="this.transactionTypes !== undefined" [selectedIndex]="selectedTypeIndex">
+          <select class="form-control" (change)="onTypeChange($event.target.value)" [selectedIndex]="this.selectedTypeIndex">
             <option selected value="-1" [disabled]="typesDisable">Select a transaction type</option>
             <option *ngFor="let type of transactionTypes" [value]="type.transactionTypeID">{{type.name}}</option>
           </select>
       </div>
       <div class="form-group">
-          <select class="form-control" (change)="onStatusChange($event)" required *ngIf="this.transactionStatus !== undefined" [selectedIndex]="selectedStatusIndex">
+          <select class="form-control" (change)="onStatusChange($event.target.value)" [selectedIndex]="this.selectedStatusIndex">
             <option selected value="-1" [disabled]="statusDisable">Select a status type</option>
             <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
           </select>

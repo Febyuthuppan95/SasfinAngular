@@ -1,4 +1,4 @@
-<nav aria-label="Pagination" class="float-right" style="margin-top:48px;">
+<nav aria-label="Pagination" class="float-right" style="margin-top:48px;" *ngIf="this.showPagination">
   <ul class="pagination pagination-sm">
     <li class="page-item">
       <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
@@ -16,6 +16,6 @@
   </ul>
 </nav>
 <br />
-<p class="ls-text-{{ currentTheme }}" style="margin-top:36px;">Showing {{ this.rowStart }} to {{  this.recordEnd }} of
-  {{ this.recordCount }}
+<p class="ls-text-{{ currentTheme }}" style="margin-top:36px;">Showing {{ this.rowStart }} to {{  this.recordCount }} of
+  {{ this.rowCount }}
 </p>

@@ -136,6 +136,7 @@ export class ViewTransactionFilesComponent implements OnInit {
 
 
   paginateData() {
+    
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -210,14 +211,12 @@ export class ViewTransactionFilesComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          if(res.outcome.outcome === "FAILURE"){
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -227,12 +226,17 @@ export class ViewTransactionFilesComponent implements OnInit {
             this.noData = true;
             this.showLoader = false;
           } else {
+            this.rowCount = res.attachments.length > 0 ? res.attachments.length : 0;
             this.noData = false;
             this.dataset = res;
             this.dataList = res.attachments;
-            this.rowCount = res.rowCount;
+            console.log(res.attachments.length);
+            this.rowStart = res.attachments.length > 0 ? 1 : 0;
+            this.showingRecords = res.attachments.length > 0 ? res.attachments.length : 1;
+
+            // this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.attachments.length;
+            // this.showingRecords = res.attachments.length;
             this.totalShowing = +this.rowStart + +this.dataset.attachments.length - 1;
             this.paginateData();
           }

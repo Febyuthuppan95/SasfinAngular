@@ -19,27 +19,30 @@ export class CompaniesContextMenuComponent implements OnInit {
 
   @Output() EditCompony = new EventEmitter<string>();
 
-  ngOnInit() {
-    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-  }
+  ngOnInit() {}
 
   viewTransactions() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
     this.router.navigate(['companies', 'transactions']);
   }
 
   companyInfo() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
     this.router.navigate(['companies', 'info']);
   }
 
   companyAddresses() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
     this.router.navigate(['companies', 'addresses']);
   }
 
   companyContacts() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
     this.router.navigate(['companies', 'contacts']);
   }
 
   captureInfo() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
     this.router.navigate(['companies', 'capture', 'info']);
   }
 

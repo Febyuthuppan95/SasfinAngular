@@ -204,6 +204,24 @@ export class TransactionService {
     });
   }
 
+  public captureInfoAdd(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/captureinfo/add`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
+  public doctypeList(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/doctypes`;
+      this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+
   public customsReleaseUpdate(requestModel) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/update/customsrelease`;

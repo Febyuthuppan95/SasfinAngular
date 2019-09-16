@@ -15,11 +15,16 @@ export class ContextMenuCaptureInfoComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() editCaptureInfo = new EventEmitter<string>();
+  @Output() removeCaptureInfo = new EventEmitter<number>();
 
   ngOnInit() {
   }
 
   editInfo() {
     this.editCaptureInfo.emit(JSON.stringify({ captureInfoID: this.captureID, info: this.captureInfo }));
+  }
+
+  remove() {
+    this.removeCaptureInfo.emit(+this.captureID);
   }
 }

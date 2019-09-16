@@ -82,7 +82,7 @@ export class MainLayoutComponent implements OnInit {
       this.toggleHelpValue = toggle;
     });
 
-    // // Start watching for user inactivity.
+    // Start watching for user inactivity.
     // this.userIdle.startWatching();
 
     // // Start watching when user idle is starting.

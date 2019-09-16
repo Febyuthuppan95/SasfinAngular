@@ -17,7 +17,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './material.module';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -95,6 +94,7 @@ import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu
 import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   declarations: [
@@ -156,6 +156,7 @@ import { CitiesService } from './services/Cities.Service';
     ViewCaptureInfoComponent,
     ContextMenuCaptureInfoComponent,
     MenuComponent,
+    TableComponent,
     PaginationComponent
   ],
   imports: [
@@ -165,7 +166,7 @@ import { CitiesService } from './services/Cities.Service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
+    UserIdleModule.forRoot({idle: 45, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,

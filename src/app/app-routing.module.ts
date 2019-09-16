@@ -48,6 +48,7 @@ const routes: Routes = [
         component: MainLayoutComponent,
         canActivate: [AuthenticationGuard],
         children: [
+          { path: '', redirectTo: 'users', pathMatch: 'full' },
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },

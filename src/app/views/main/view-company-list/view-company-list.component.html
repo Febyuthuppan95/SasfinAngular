@@ -119,7 +119,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Edit</h5>
+        <h5 class="modal-title" id="modalContent">Edit {{this.focusHelpName}}</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -129,22 +129,22 @@
           <div class="modal-body">
               <div class="form-group">
                   <label class="control-label">Name:</label>
-                  <input type="text" placeholder="Company Name" class="form-control"
+                  <input type="text" placeholder="Name" class="form-control"
                   [(ngModel)]="this.CompanyName" [ngModelOptions]="{standalone: true}"  required/>
                 </div>
             <div class="form-group">
               <label class="control-label">Registration No:</label>
-              <input type="text" placeholder="Registration Number" class="form-control"
+              <input type="text" placeholder="Registration No" class="form-control"
               [(ngModel)]="this.RegNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             <div class="form-group">
               <label class="control-label">Registration Export No:</label>
-              <input type="text" placeholder="Registration Export Number" class="form-control"
+              <input type="text" placeholder="Registration Export No" class="form-control"
               [(ngModel)]="this.ExportRegNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             <div class="form-group">
               <label class="control-label">VAT No:</label>
-              <input type="text" placeholder="Vat Number" class="form-control"
+              <input type="text" placeholder="Vat No" class="form-control"
               [(ngModel)]="this.VATNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             </div>
@@ -173,22 +173,22 @@
         <div class="modal-body">
             <div class="form-group">
                 <label class="control-label">Name:</label>
-                <input type="text" placeholder="Company Name" class="form-control"
+                <input type="text" placeholder="Name" class="form-control"
                 [(ngModel)]="this.CompanyName" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             <div class="form-group">
               <label class="control-label">Registration No:</label>
-              <input type="text" placeholder="Registration Number" class="form-control"
+              <input type="text" placeholder="Registration No" class="form-control"
               [(ngModel)]="this.RegNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             <div class="form-group">
-              <label class="control-label">Export Registration No:</label>
-              <input type="text" placeholder="Registration Export Number" class="form-control"
+              <label class="control-label">Registration Export No:</label>
+              <input type="text" placeholder="Registration Export No" class="form-control"
               [(ngModel)]="this.ExportRegNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
             <div class="form-group">
               <label class="control-label">VAT No:</label>
-              <input type="text" placeholder="Vat Number" class="form-control"
+              <input type="text" placeholder="Vat No" class="form-control"
               [(ngModel)]="this.VATNo" [ngModelOptions]="{standalone: true}"  required/>
             </div>
       </div>
