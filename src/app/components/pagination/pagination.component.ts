@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 
 export class Pagination {
@@ -13,7 +13,7 @@ export class Pagination {
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnChanges {
 
   @Input() recordsPerPage: number;
   @Input() recordCount: number;
@@ -33,13 +33,22 @@ export class PaginationComponent implements OnInit {
   showingPages: Pagination[];
   recordEnd: number;
   showPagination: boolean;
+  recordsPerPageTemp: number;
 
   constructor() { }
 
   ngOnInit() {
+    this.recordsPerPageTemp = this.recordsPerPage;
     this.paginateData();
   }
 
+  ngOnChanges() {
+    if (this.recordsPerPage !== this.recordsPerPageTemp) {
+      this.recordsPerPageTemp = this.recordsPerPage;
+      this.activePage = 1;
+      this.paginateData();
+    }
+  }
 
   paginateData() {
     let rowStart = 1;

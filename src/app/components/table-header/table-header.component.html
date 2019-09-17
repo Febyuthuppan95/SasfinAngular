@@ -1,0 +1,39 @@
+<div *ngIf="this.tableHeader">
+  <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()">
+    <i class="mdi mdi-filter"></i> &nbsp;Filters
+  </button>
+<br>
+  <div class="col-md-3" style="padding-left:0px;">
+    <span style="float:left; margin-right:5px;"></span>
+    <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{ tableHeader.title }}</h4>
+    <span *ngIf="this.tableHeader.addButton.enable" style="margin-left:10px;">
+      <button (click)="addButton()" class="btn-add btn" ><i class="mdi mdi-plus"></i></button>
+    </span>
+  </div>
+<br>
+<br>
+  <div class="filters" [ngClass]="(toggleFilter)? 'filters-show': ''">
+    <form class="form-inline">
+      <select
+        *ngIf="this.tableHeader.filters.selectRowCount"
+        [value]='15'
+        [(ngModel)]="recordsPerPage"
+        [ngModelOptions]="{standalone: true}"
+        class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+        (change)="recordsPerPageChange($event.target.value)">
+          <option value='15'  selected>Showing 15</option>
+          <option value='25'>Showing 25</option>
+          <option value='50'>Showing 50</option>
+      </select>
+      <input
+        *ngIf="this.tableHeader.filters.search"
+        type="text"
+        class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+        placeholder="Search"
+        (keyup)="search()"
+        [(ngModel)]="searchQuery"
+        [ngModelOptions]="{standalone: true}"/>
+    </form>
+  </div>
+  <br>
+</div>

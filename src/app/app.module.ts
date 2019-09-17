@@ -15,7 +15,7 @@ import { BackgroundService } from './services/Background.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './modules/material.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -97,6 +97,7 @@ import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
+import { TableHeaderComponent } from './components/table-header/table-header.component';
 
 @NgModule({
   declarations: [
@@ -160,7 +161,8 @@ import { AngularDraggableModule } from 'angular2-draggable';
     MenuComponent,
     TableComponent,
     AttachmentCaptureStatusBlockComponent,
-    PaginationComponent
+    PaginationComponent,
+    TableHeaderComponent
   ],
   imports: [
     BrowserModule,

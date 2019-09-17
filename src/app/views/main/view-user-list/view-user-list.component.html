@@ -5,177 +5,25 @@
         <app-loader></app-loader>
       </ng-container>
     </div>
-    <br />
-    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
-        class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;" (mouseover)="updateHelpContext('users-list-header')">Users</h4><span style="margin-left:10px;"><button (click)="addNewUser()"  class="btn-add btn" (mouseover)="updateHelpContext('users-list-addBtn')"><i class="mdi mdi-plus"></i></button></span>
-    </div>
-    <br />
-    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
-      <form class="form-inline">
-        <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
-          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}" (mouseover)="updateHelpContext('users-list-orderBy-selection')"
-          (change)="loadUsers(false)">
-          <option value='15'  selected>Showing 15</option>
-          <option value='25'>Showing 25</option>
-          <option value='50'>Showing 50</option>
-        </select>
-        <input type="text"
-          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" (mouseover)="updateHelpContext('users-list-searchBar')"/>
-      </form>
-    </div>
-    <br />
-
-    <!-- <div class="">
-      <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')" matTooltip="Test" matTooltipPosition="above" [matTooltipDisabled]="this.isAdmin"
-                      (mouseover)="updateHelpContext('users-list-EmpNo-header', $event)">
-                <p class="headerText">Emp No</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')"
-                      (mouseover)="updateHelpContext('users-list-firstName-header', $event.target)">
-                <p class="headerText">First Name</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Surname')"
-                      (mouseover)="updateHelpContext('users-list-surname-header', $event.target)">
-                <p class="headerText">Surname</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Email')"
-                      (mouseover)="updateHelpContext('users-list-email-header', $event.target)">
-                <p class="headerText">Email</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Extension')"
-                    (mouseover)="updateHelpContext('users-list-Ext-header', $event.target)">
-              <p class="headerText">Ext</p>
-              <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-            </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Designation')"
-                      (mouseover)="updateHelpContext('users-list-designation-header', $event.target)">
-              <p class="headerText">Designation</p>
-              <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-
-            <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')"
-                      (mouseover)="updateHelpContext('users-list-status-header', $event.target)">
-                <p class="headerText">Status</p>
-                <span class="headerSpan">
-                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
-                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
-                </span>
-              </button>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody *ngIf="(!noData)">
-          <tr *ngFor="let user of userList; let i=index"  class="userRecord" (click)="popClick($event, user); setClickedRow(i)" [class.active]="i == selectedRow">
-            <td (mouseover)="updateHelpContext('users-list-rowCount')">{{user.rowNum}}</td>
-            <td class="hover-pointer" (click)="inspectUserImage(user.profileImage)">
-              <img class="profile-image shadow" [src]="user.profileImage" (mouseover)="updateHelpContext('users-list-profileImage-entry')"/>
-            </td>
-            <td>{{user.empNo}}</td>
-            <td>{{user.firstName}}</td>
-            <td>{{user.surname}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.extension}}</td>
-            <td>{{user.designation}}</td>
-            <td><span class="badge" [class.badge-success]="user.status == 'Active'"
-                [class.badge-danger]="user.status == 'Inactive'"(mouseover)="updateHelpContext('users-list-statusBadge-entry')">{{user.status}}</span></td>
-          </tr>
-        </tbody>
-        <tbody class="tbodyPop" *ngIf="(noData)" >
-          <tr (mouseover)="updateHelpContext('general-noData-entry')">
-            <td scope="col"></td>
-            <td scope="col">No data to display..</td>
-            <td scope="col"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <br />
-    <br />
-    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
-      <ul class="pagination pagination-sm">
-        <li class="page-item">
-          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
-            (click)="pageChange(prevPage)" (mouseover)="updateHelpContext('pagination-previous-button')">Prev</button>
-        </li>
-        <li *ngFor="let page of showingPages" class="page-item">
-          <button [class.active-page]="activePage == page.page"
-            class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
-            type="button" (click)="pageChange(page.page)">{{page.page}}</button>
-        </li>
-        <li class="page-item">
-          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
-            (click)="pageChange(nextPage)"(mouseover)="updateHelpContext('pagination-next-button')">Next</button>
-        </li>
-      </ul>
-    </nav>
-    <br />
-    <p class="ls-text-{{ currentTheme }}"(mouseover)="updateHelpContext('pagination-showing-text')">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
-      {{ rowCount }}</p>
-  </div> -->
-  <app-table
-    *ngIf="this.userList"
-    [dataset]="this.userList"
-    [headings]="this.tableHeadings"
-    [recordsPerPage]="this.showingRecords"
-    [rowStart]="this.rowStart"
-    [rowEnd]="this.rowEnd"
-    [rowCount]="this.rowCount"
-    [orderBy]="this.orderBy"
-    [orderByDirection]="this.orderDirection"
-    (selectedRecord)="selectedRecord($event)"
-    (orderChange)="orderChange($event)"
-    (pageChange)="pageChange($event)">
-  </app-table>
+    <app-table
+      *ngIf="this.userList"
+      [dataset]="this.userList"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.showingRecords"
+      [rowStart]="this.rowStart"
+      [rowEnd]="this.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (addButtonEvent)="addNewUser()"
+      (searchEvent)="searchEvent($event)">
+    </app-table>
+  </div>
 </div>
 
 <!--Edit Modal-->
@@ -324,8 +172,18 @@
     </div>
   </div>
 </div>
+
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-user (editUser)="editUser($event)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userID]="currentUserID" [userName]="currentUserName"></app-context-menu-user>
+  <app-context-menu-user
+    *ngIf="(contextMenu)"
+    [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv"
+    [x]="contextMenuX"
+    [y]="contextMenuY"
+    [userID]="currentUserID"
+    [userName]="currentUserName"
+    (editUser)="editUser($event)">
+  </app-context-menu-user>
 </div>
+
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

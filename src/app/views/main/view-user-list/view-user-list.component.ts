@@ -25,7 +25,7 @@ import { DesignationListResponse } from 'src/app/models/HttpResponses/Designatio
 import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, SelectedRecord, Order } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-user-list',
@@ -37,7 +37,6 @@ export class ViewUserListComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private location: Location,
     private DIDesignationService: DesignationService,
     private snackbarService: HelpSnackbar
   ) {
@@ -54,7 +53,6 @@ export class ViewUserListComponent implements OnInit {
     this.totalShowing = 0;
     this.loadUsers(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
-      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }
@@ -80,6 +78,19 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
 
+  tableHeader: TableHeader = {
+    title: 'Users',
+    addButton: {
+     enable: true,
+    },
+    backButton: {
+      enable: false
+    },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
 
   tableHeadings: TableHeading[] = [
     {
@@ -199,7 +210,7 @@ export class ViewUserListComponent implements OnInit {
   selectedDesignationIndex = 0;
   fileToUpload: File = null;
   preview: any;
-  disableDesSelect: boolean = false;
+  disableDesSelect = false;
 
   isAdmin: false;
 
@@ -236,24 +247,6 @@ export class ViewUserListComponent implements OnInit {
         );
       }
     );
-  }
-  paginateData() {
-    let rowStart = 1;
-    let rowEnd = +this.rowCountPerPage;
-    const pageCount = +this.rowCount / +this.rowCountPerPage;
-    this.pages = new Array<Pagination>();
-
-    for (let i = 0; i < pageCount; i++) {
-      const item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
-      rowStart = +rowEnd + 1;
-      rowEnd += +this.rowCountPerPage;
-    }
-
-    this.updatePagination();
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
@@ -316,8 +309,6 @@ export class ViewUserListComponent implements OnInit {
             this.userList = res.userList;
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
-
-            this.paginateData();
           }
         },
         msg => {
@@ -328,22 +319,6 @@ export class ViewUserListComponent implements OnInit {
           );
         }
       );
-  }
-
-  updateSort(orderBy: string) {
-    if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
-      } else {
-        this.orderDirection = 'ASC';
-      }
-    } else {
-      this.orderDirection = 'ASC';
-    }
-
-    this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadUsers(false);
   }
 
   inspectUserImage(src: string) {
@@ -363,30 +338,16 @@ export class ViewUserListComponent implements OnInit {
     this.selectedStatus = id;
   }
 
-  updatePagination() {
-    this.showingPages = Array<Pagination>();
-    this.showingPages[0] = this.pages[this.activePage - 1];
-    const pagenumber = +this.rowCount / +this.rowCountPerPage;
-
-    if (this.activePage < pagenumber) {
-      this.showingPages[1] = this.pages[+this.activePage];
-
-      if (this.showingPages[1] === undefined) {
-        const page = new Pagination();
-        page.page = 1;
-        page.rowStart = 1;
-        page.rowEnd = this.rowEnd;
-        this.showingPages[1] = page;
-      }
-    }
-
-    if (+this.activePage + 1 <= pagenumber) {
-      this.showingPages[2] = this.pages[+this.activePage + 1];
-    }
-  }
-
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadUsers(false);
   }
 
   popClick(event, user) {
@@ -662,14 +623,16 @@ export class ViewUserListComponent implements OnInit {
         $event.srcElement.setAttribute('matTooltip', 'New Tooltip');
       }
     }
-
   }
 
-  orderChange($event: Order) {
-    this.orderBy = $event.orderBy;
-    this.orderDirection = $event.orderByDirection;
+  recordsPerPageChange(recordsPerPage: number) {
+    this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.rowEnd = this.rowCountPerPage;
+    this.loadUsers(true);
+  }
+
+  searchEvent(query: string) {
+    this.filter = query;
     this.loadUsers(false);
   }
 
