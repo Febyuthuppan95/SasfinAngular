@@ -95,6 +95,8 @@ import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
+import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
+import { AngularDraggableModule } from 'angular2-draggable';
 
 @NgModule({
   declarations: [
@@ -157,6 +159,7 @@ import { TableComponent } from './components/table/table.component';
     ContextMenuCaptureInfoComponent,
     MenuComponent,
     TableComponent,
+    AttachmentCaptureStatusBlockComponent,
     PaginationComponent
   ],
   imports: [
@@ -178,7 +181,8 @@ import { TableComponent } from './components/table/table.component';
     NgbModule,
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
-    MaterialModule
+    MaterialModule,
+    AngularDraggableModule
   ],
   providers: [
     CookieService,

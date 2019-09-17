@@ -25,7 +25,7 @@ import { DesignationListResponse } from 'src/app/models/HttpResponses/Designatio
 import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, SelectedRecord } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, Order } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-user-list',
@@ -664,6 +664,14 @@ export class ViewUserListComponent implements OnInit {
       }
     }
 
+  }
+
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadUsers(false);
   }
 
 }

@@ -8,7 +8,38 @@ tabindex="-1"
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto"></ul>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-yellow"></i>&nbsp;ICI
+          </span>
+        </li>
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-orange"></i>&nbsp;CRN
+          </span>
+        </li>
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-green"></i>&nbsp;SAD500
+          </span>
+        </li>
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-none"></i>&nbsp;SHIP
+          </span>
+        </li>
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-red"></i>&nbsp;ICI
+          </span>
+        </li>
+        <li class="nav-item" style="padding-top: 2px;">
+          <span class="attachment-status d-inline">
+            <i class="mdi mdi-checkbox-blank status-none"></i>&nbsp;ICI
+          </span>
+        </li>
+      </ul>
       <ul class="navbar-nav md-auto">
         <li class="nav-item">
           <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
@@ -31,7 +62,7 @@ tabindex="-1"
   </nav>
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
 <div class="col-6 bg-light">
-  <div class="reader-line"></div>
+  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="this.currentReaderPOS"></div>
   <app-document-viewer></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px; overflow-y: auto;">
