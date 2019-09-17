@@ -102,7 +102,7 @@ export class ViewBackgroundsListComponent implements OnInit {
 
   removeBackground(backgroundID: number) {
     console.log(+backgroundID);
-    this.backgroundService.removeBackgrounds(backgroundID, this.currentUser.userID).then(
+    this.backgroundService.removeBackgrounds(+backgroundID, this.currentUser.userID).then(
       (res: BackgroundListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg( res.outcome.outcome, res.outcome.outcomeMessage);
