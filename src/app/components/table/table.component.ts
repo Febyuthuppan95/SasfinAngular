@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableHeading, SelectedRecord, Order } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-table',
@@ -17,10 +17,16 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() rowCount: number;
   @Input() orderBy: string;
   @Input() orderByDirection: string;
+  @Input() tableHeader: TableHeader;
 
   @Output() selectedRecord = new EventEmitter<SelectedRecord>();
   @Output() orderChange = new EventEmitter<Order>();
   @Output() pageChange = new EventEmitter<string>();
+
+  @Output() addButtonEvent = new EventEmitter<void>();
+  @Output() backButtonEvent = new EventEmitter<void>();
+  @Output() showingRecordsEvent = new EventEmitter<number>();
+  @Output() searchEvent = new EventEmitter<string>();
 
   displayData: any[] = [];
   currentTheme: string;
@@ -112,5 +118,10 @@ export class TableComponent implements OnInit, OnChanges {
     this.updateSort(orderBy);
     this.orderChange.emit({ orderBy, orderByDirection: this.orderByDirection });
   }
+
+  addButton = () => this.addButtonEvent.emit();
+  backButton = () => this.backButtonEvent.emit();
+  search = ($event) => this.searchEvent.emit($event);
+  recordsPerPageChange = ($event) => this.showingRecordsEvent.emit($event);
 
 }

@@ -1,5 +1,6 @@
 export class TableConfig {
   headings: TableHeading[];
+  header: TableHeader;
 }
 
 export class TableHeading {
@@ -24,4 +25,18 @@ export class SelectedRecord {
 export class Order {
   orderBy: string;
   orderByDirection: string;
+}
+
+export class TableHeader {
+  title: string;
+  addButton: {
+    enable: boolean
+  };
+  backButton: {
+    enable: boolean;
+  };
+  filters: {
+    search: boolean,
+    selectRowCount: boolean,
+  };
 }
