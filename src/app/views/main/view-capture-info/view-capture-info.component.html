@@ -10,7 +10,7 @@
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
         <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToAttachments()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{this.company.name}} - Capture Info</h4><span style="margin-left:10px;"><button (click)="addCaptureInfoModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
 
-           <br />
+    <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="recordsPerPage" [ngModelOptions]="{standalone: true}"
@@ -26,44 +26,16 @@
       </form>
     </div>
     <br />
-    <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
-      <thead>
-        <tr>
-          <th></th>
-          <th scope="col">
-            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
-              <p class="headerText">Information</p>
-              <span class="headerSpan">
-                <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
-                <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
-              </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody *ngIf="(!noData) && this.dataset !== undefined">
-        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); selectedRowChange(i, { id: info.captureInfoID, info: info.info });" [class.active]="i == selectedRow">
-          <td>{{info.rowNum}}</td>
-          <td>{{info.info}}</td>
-        </tr>
-      </tbody>
-      <tbody class="tbodyPop" *ngIf="(noData)" >
-        <tr>
-          <td scope="col"></td>
-          <td scope="col">No data to display..</td>
-          <td scope="col"></td>
-        </tr>
-      </tbody>
-    </table>
-    <app-pagination
-      *ngIf="dataset !== undefined"
-      [currentTheme]="this.currentTheme"
-      [recordCount]="this.dataset.captureInfo.length"
+    <app-table
+      *ngIf="this.tableData"
+      [dataset]="this.tableData"
+      [headings]="this.tableHeadings"
       [recordsPerPage]="this.recordsPerPage"
       [rowStart]="this.requestModel.rowStart"
       [rowEnd]="this.requestModel.rowEnd"
+      (selectedRecord)="selectedRecord($event)"
       (pageChangeEvent)="pageChange($event)">
-    </app-pagination>
+    </app-table>
   </div>
 </div>
 

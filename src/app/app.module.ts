@@ -17,7 +17,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './material.module';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -86,15 +85,16 @@ import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
-import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
-import { ImageDirective } from './directives/image.directive';
 import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
+import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { ImageDirective } from './directives/image.directive';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu-capture-info/context-menu-capture-info.component';
 import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
   declarations: [
@@ -156,6 +156,7 @@ import { CitiesService } from './services/Cities.Service';
     ViewCaptureInfoComponent,
     ContextMenuCaptureInfoComponent,
     MenuComponent,
+    TableComponent,
     PaginationComponent
   ],
   imports: [
@@ -165,7 +166,11 @@ import { CitiesService } from './services/Cities.Service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
+<<<<<<< HEAD
     UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
+=======
+    UserIdleModule.forRoot({idle: 45, timeout: 12, ping: 5}),
+>>>>>>> d484d7bc611372e99fa0dbd34f8aabc9caeef2df
     ToastrModule.forRoot(
       {
         closeButton: false,
@@ -199,6 +204,7 @@ import { CitiesService } from './services/Cities.Service';
     AuthenticationService,
     CitiesService,
     CompanyService,
+    AddressTypesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

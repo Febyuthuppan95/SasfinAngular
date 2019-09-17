@@ -28,7 +28,7 @@
     </div>
     <br />
 
-    <div class="">
+    <!-- <div class="">
       <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
         <thead>
           <tr>
@@ -36,8 +36,8 @@
             <th></th>
 
             <th scope="col">
-              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')"
-                      (mouseover)="updateHelpContext('users-list-EmpNo-header')">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')" matTooltip="Test" matTooltipPosition="above" [matTooltipDisabled]="this.isAdmin"
+                      (mouseover)="updateHelpContext('users-list-EmpNo-header', $event)">
                 <p class="headerText">Emp No</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
@@ -48,7 +48,7 @@
 
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('FirstName')"
-                      (mouseover)="updateHelpContext('users-list-firstName-header')">
+                      (mouseover)="updateHelpContext('users-list-firstName-header', $event.target)">
                 <p class="headerText">First Name</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'FirstName_ASC')?'order-active':'order-not-active'"></i>
@@ -59,7 +59,7 @@
 
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Surname')"
-                      (mouseover)="updateHelpContext('users-list-surname-header')">
+                      (mouseover)="updateHelpContext('users-list-surname-header', $event.target)">
                 <p class="headerText">Surname</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Surname_ASC')?'order-active':'order-not-active'"></i>
@@ -70,7 +70,7 @@
 
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Email')"
-                      (mouseover)="updateHelpContext('users-list-email-header')">
+                      (mouseover)="updateHelpContext('users-list-email-header', $event.target)">
                 <p class="headerText">Email</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Email_ASC')?'order-active':'order-not-active'"></i>
@@ -81,7 +81,7 @@
 
             <th scope="col">
             <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Extension')"
-                    (mouseover)="updateHelpContext('users-list-Ext-header')">
+                    (mouseover)="updateHelpContext('users-list-Ext-header', $event.target)">
               <p class="headerText">Ext</p>
               <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Extension_ASC')?'order-active':'order-not-active'"></i>
@@ -92,7 +92,7 @@
 
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Designation')"
-                      (mouseover)="updateHelpContext('users-list-designation-header')">
+                      (mouseover)="updateHelpContext('users-list-designation-header', $event.target)">
               <p class="headerText">Designation</p>
               <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Designation_ASC')?'order-active':'order-not-active'"></i>
@@ -103,7 +103,7 @@
 
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')"
-                      (mouseover)="updateHelpContext('users-list-status-header')">
+                      (mouseover)="updateHelpContext('users-list-status-header', $event.target)">
                 <p class="headerText">Status</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
@@ -161,7 +161,20 @@
     <br />
     <p class="ls-text-{{ currentTheme }}"(mouseover)="updateHelpContext('pagination-showing-text')">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
-  </div>
+  </div> -->
+  <app-table
+    *ngIf="this.userList"
+    [dataset]="this.userList"
+    [headings]="this.tableHeadings"
+    [recordsPerPage]="this.showingRecords"
+    [rowStart]="this.rowStart"
+    [rowEnd]="this.rowEnd"
+    [rowCount]="this.rowCount"
+    [orderBy]="this.orderBy"
+    [orderByDirection]="this.orderDirection"
+    (selectedRecord)="selectedRecord($event)"
+    (pageChange)="pageChange($event)">
+  </app-table>
 </div>
 
 <!--Edit Modal-->
