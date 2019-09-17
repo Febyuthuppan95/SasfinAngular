@@ -20,3 +20,8 @@ export class SelectedRecord {
   record: object;
   index: number;
 }
+
+export class Order {
+  orderBy: string;
+  orderByDirection: string;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableHeading, SelectedRecord } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, Order } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-table',
@@ -19,6 +19,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() orderByDirection: string;
 
   @Output() selectedRecord = new EventEmitter<SelectedRecord>();
+  @Output() orderChange = new EventEmitter<Order>();
   @Output() pageChange = new EventEmitter<string>();
 
   displayData: any[] = [];
@@ -107,4 +108,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   // Table Events
   pageChangeEvent = ($event) => this.pageChange.emit($event);
+  orderChangeEvent = (orderBy: string) => {
+    this.updateSort(orderBy);
+    this.orderChange.emit({ orderBy, orderByDirection: this.orderByDirection });
+  }
+
 }

@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th *ngFor="let heading of headings">
-        <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort(heading.order.tag)">
+        <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="orderChangeEvent(heading.order.tag)">
           <p class="headerText">{{heading.title}}</p>
           <span class="headerSpan" *ngIf="heading.order.enable">
             <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === heading.order.tag + '_ASC')?'order-active':'order-not-active'"></i>

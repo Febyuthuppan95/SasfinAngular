@@ -602,3 +602,8 @@ p {
   max-height: 70vh !important;
   overflow-y: auto !important;
 }
+
+.tile {
+  overflow-x: auto;
+  width: 100%;
+}
