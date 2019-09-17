@@ -165,7 +165,7 @@ import { CitiesService } from './services/Cities.Service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
+    UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,

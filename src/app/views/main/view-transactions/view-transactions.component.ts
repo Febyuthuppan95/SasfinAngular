@@ -428,8 +428,11 @@ export class ViewTransactionsComponent implements OnInit {
     this.newTransaction.name = null;
     this.newTransaction.transactionStatusID = -1;
     this.newTransaction.transactionTypeID = -1;
+    this.statusDisable = false;
     this.selectedStatusIndex = 0;
     this.selectedTypeIndex = 0;
+    this.selectedType = 0;
+    this.selectedStatus = 0;
     this.openModal.nativeElement.click();
   }
 

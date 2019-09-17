@@ -31,7 +31,7 @@ export class BackgroundService {
     const requestModel = {
       name: fileName,
       image: src.name,
-      userId: userID,     
+      userId: userID,
     };
 
     const formData = new FormData();
@@ -56,7 +56,7 @@ export class BackgroundService {
 
   public removeBackgrounds(backgroundID, userID) {
     const requestModel = {
-      userID,    
+      userID,
       backgroundID
     };
 

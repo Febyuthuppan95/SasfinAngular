@@ -13,6 +13,8 @@ import { FormGroup } from '@angular/forms';
 import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { User } from 'src/app/models/HttpResponses/User';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-backgrounds-list',
@@ -20,7 +22,12 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
 export class ViewBackgroundsListComponent implements OnInit {
-  constructor(private themeService: ThemeService, private backgroundService: BackgroundService, private snackbarService: HelpSnackbar) {}
+  constructor(
+    private themeService: ThemeService,
+    private backgroundService: BackgroundService,
+    private snackbarService: HelpSnackbar,
+    private userService: UserService,
+    ) {}
 
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
@@ -38,6 +45,7 @@ export class ViewBackgroundsListComponent implements OnInit {
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
   backgroundRequestModel: BackgroundListRequest;
+  currentUser: User = this.userService.getCurrentUser();
   selectRowDisplay: number;
   totalRowCount: number;
   totalDisplayCount: number;
@@ -61,7 +69,7 @@ export class ViewBackgroundsListComponent implements OnInit {
 
     this.selectRowDisplay = 15;
     this.backgroundRequestModel = {
-      userID: 3, // Default User ID for testing
+      userID: this.currentUser.userID, // Default User ID for testing
       specificBackgroundID: -1,
       filter: '',
       orderBy: 'Name',
@@ -93,12 +101,22 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   removeBackground(backgroundID: number) {
-
+    console.log(+backgroundID);
+    this.backgroundService.removeBackgrounds(backgroundID, this.currentUser.userID).then(
+      (res: BackgroundListResponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+            this.notify.successmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => {
+        console.log(JSON.stringify(msg));
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      });
   }
 
-  editBackground(backgroundID: number) {
 
-  }
 
   viewBackground(src: string) {
     this.srcImage = `${environment.ApiBackgroundImages}/${src}`;
