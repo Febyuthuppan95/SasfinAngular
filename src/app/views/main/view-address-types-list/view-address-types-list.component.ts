@@ -107,23 +107,19 @@ export class ViewAddressTypesListComponent implements OnInit {
     this.addressTypeService.list(this.addressTypes).then(
       (res: ListAddressTypes) => {
         this.showLoader = false;
-        //if()
         {
-          if(res.outcome.outcome === "FAILURE"){
+          if (res.outcome.outcome === 'FAILURE'){
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
           }
         }
-
 
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.addressTypesList;
