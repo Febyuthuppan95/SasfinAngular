@@ -66,7 +66,7 @@
     <span class="menu-title">Companies</span>
   </a>
   </li>
-  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  <li *ngIf="showservices" class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-companies-link')"
   matTooltip="Services" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/services" [routerLinkActive]="['active-item']">

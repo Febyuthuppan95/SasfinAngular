@@ -69,6 +69,7 @@ export class SidebarComponent implements OnInit {
   @Input() showattachments = false;
   @Input() showcompanyContactsList = false;
   @Input() showcompanyAddressList = false;
+  @Input() showservices = false;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -171,6 +172,9 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'CompanyAddressList') {
             this.showcompanyAddressList = true;
+          }
+          if (uRight.name === 'Services') {
+            this.showservices = true;
           }
         });
       },

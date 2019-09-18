@@ -49,17 +49,10 @@ export class ContextMenuServiceListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  @ViewChild(ImageModalComponent, { static: true })
-  private imageModal: ImageModalComponent;
-
-  @ViewChild(ContextMenuUserComponent, {static: true})
-  private contextMenuUser: ContextMenuUserComponent;
-
-
   tableHeader: TableHeader = {
     title: 'Services',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
@@ -134,13 +127,14 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
     const model: GetServiceLList = {
+      filter: this.filter,
       userID: this.currentUser.userID,
-      orderBy: 'Name',
-      orderByDirection: 'DESC',
-      rowStart: 1,
-      rowEnd: 15,
       specificServiceID: -1,
-      filter: ''
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
     };
     this.ServiceService
     .getServiceList(model)
@@ -154,9 +148,11 @@ export class ContextMenuServiceListComponent implements OnInit {
             res.outcome.outcomeMessage
           );
         } else {
-          this.notify.successmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage);
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+            }
           }
 
           if (res.rowCount === 0) {
