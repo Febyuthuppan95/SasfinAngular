@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit {
     this.userIdle.resetTimer();
     this.userIdle.stopTimer();
     this.userIdle.stopWatching();
+    this.closeHelpContext();
     this.userService.logout();
   }
 
@@ -40,6 +41,14 @@ export class NavbarComponent implements OnInit {
   public offcanvasSidebar() {
     this.offcanvas.emit('offcanvas');
     // console.log('event emmited from navbar');
+  }
+
+  closeHelpContext() {
+    const newContext: SnackbarModel = {
+      display: false,
+      slug: '',
+    };
+    this.snackbarService.setHelpContext(newContext);
   }
 
   updateHelpContext(slug: string) {

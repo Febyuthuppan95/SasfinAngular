@@ -108,6 +108,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           this.notify.errorsmsg( res.outcome.outcome, res.outcome.outcomeMessage);
         } else {
             this.notify.successmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+            this.loadBackgrounds();
         }
       },
       (msg) => {
@@ -197,7 +198,7 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3
+        this.currentUser.userID
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
@@ -209,6 +210,8 @@ export class ViewBackgroundsListComponent implements OnInit {
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
                 this.preview = null;
+                this.fileToUpload = null;
+                this.loadBackgrounds();
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -218,7 +221,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please choose an image before saving.');
     }
   }
 
@@ -245,5 +248,9 @@ export class ViewBackgroundsListComponent implements OnInit {
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+  Closemodal() {
+    this.preview = null;
+    this.fileToUpload = null;
   }
 }
