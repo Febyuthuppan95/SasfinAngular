@@ -1,11 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { PlaceService } from 'src/app/services/Place.Service';
-import { ListCountriesRequest } from 'src/app/models/HttpRequests/ListCountriesRequest';
 import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/HttpResponses/LocationsList';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateRegionRequest, UpdateCountryRequest, UpdateCityRequest } from 'src/app/models/HttpRequests/UpdateLocationRequest';
+import { ListCountriesRequest } from 'src/app/models/HttpRequests/Locations';
 
 @Component({
   selector: 'app-view-places',

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { BackgroundList } from 'src/app/models/HttpResponses/BackgroundList';
 import { BackgroundService } from 'src/app/services/Background.service';
-import { BackgroundListRequest } from 'src/app/models/HttpRequests/BackgroundList';
-import { BackgroundListResponse } from 'src/app/models/HttpResponses/BackgroundListResponse';
 import { environment } from 'src/environments/environment';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { CookieService } from 'ngx-cookie-service';
+import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
+import { BackgroundList, BackgroundListResponse } from 'src/app/models/HttpResponses/Backgrounds';
 
 @Component({
   selector: 'app-edit-dashboard-style',

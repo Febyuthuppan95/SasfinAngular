@@ -4,9 +4,9 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { UserRightService } from 'src/app/services/UserRight.service';
 import { UserService } from 'src/app/services/user.Service';
 import { User } from 'src/app/models/HttpResponses/User';
-import { GetUserRightsList } from 'src/app/models/HttpRequests/GetUserRightsList';
 import { UserRightsListResponse } from 'src/app/models/HttpResponses/UserRightsListResponse';
 import { NotificationComponent } from '../notification/notification.component';
+import { GetUserRightsList } from 'src/app/models/HttpRequests/UserRights';
 
 @Component({
   selector: 'app-sidebar',

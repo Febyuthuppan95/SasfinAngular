@@ -2,13 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { AddCompany } from '../models/HttpRequests/AddCompany';
-import { UpdateCompany } from '../models/HttpRequests/UpdateCompany';
-import { CompanyList } from '../models/HttpRequests/CompanyList';
-import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
-import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
-import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
-import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
+import { CompanyList, UpdateCompany, AddCompany, AddCompanyInfo, UpdateCompanyInfo, AddCompanyAddress, UpdateCompanyAddress } from '../models/HttpRequests/Company';
 
 @Injectable({
   providedIn: 'root'
