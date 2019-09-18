@@ -33,12 +33,16 @@ export class PaginationComponent implements OnInit, OnChanges {
   showingPages: Pagination[];
   recordEnd: number;
   showPagination: boolean;
+
+  // Temporary Properties
   recordsPerPageTemp: number;
+  rowCountTemp: number;
 
   constructor() { }
 
   ngOnInit() {
     this.recordsPerPageTemp = this.recordsPerPage;
+    this.rowCountTemp = this.rowCount;
     this.paginateData();
   }
 
@@ -48,16 +52,23 @@ export class PaginationComponent implements OnInit, OnChanges {
       this.activePage = 1;
       this.paginateData();
     }
+
+    if (this.rowCountTemp !== this.rowCount) {
+      this.rowCountTemp = this.rowCount;
+      this.activePage = 1;
+      this.paginateData();
+    }
   }
 
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.recordsPerPage;
+    let item: Pagination;
     const pageCount = +this.rowCount / +this.recordsPerPage;
     this.pages = Array<Pagination>();
 
     for (let i = 0; i < pageCount; i++) {
-      const item = new Pagination();
+      item = new Pagination();
       item.page = i + 1;
       item.rowStart = +rowStart;
       item.rowEnd = +rowEnd;
