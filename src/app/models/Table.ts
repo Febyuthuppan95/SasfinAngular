@@ -10,10 +10,6 @@ export class TableHeading {
     enable: boolean,
     tag?: string,
   };
-  styles?: {
-    positive: string,
-    negative: string,
-  };
 }
 
 export class SelectedRecord {
