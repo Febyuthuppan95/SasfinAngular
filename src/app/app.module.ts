@@ -98,6 +98,7 @@ import { TableComponent } from './components/table/table.component';
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
+import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
     TableComponent,
     AttachmentCaptureStatusBlockComponent,
     PaginationComponent,
-    TableHeaderComponent
+    TableHeaderComponent,
+    ContextMenuServiceListComponent
   ],
   imports: [
     BrowserModule,

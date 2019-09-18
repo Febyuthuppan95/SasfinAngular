@@ -63,7 +63,7 @@ export class ViewCompanyListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-  dataList: Company[]
+  dataList: Company[];
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompaniesListResponse;
@@ -342,7 +342,7 @@ export class ViewCompanyListComponent implements OnInit {
   }
 
 
-  UpdateCompany(){
+  UpdateCompany() {
     const errors = this.validateCompany();
     if (errors === 0) {
       const requestModel: UpdateCompany = {
