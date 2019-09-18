@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DesignationService } from './../../../services/Designation.service';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
@@ -9,8 +8,6 @@ import { ImageModalComponent } from '../../../components/image-modal/image-modal
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
