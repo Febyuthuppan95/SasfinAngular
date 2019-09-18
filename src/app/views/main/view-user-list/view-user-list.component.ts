@@ -313,7 +313,6 @@ export class ViewUserListComponent implements OnInit {
         },
         msg => {
           this.showLoader = false;
-          console.log('here');
           this.notify.errorsmsg(
             'Server Error',
             'Something went wrong while trying to access the server.'

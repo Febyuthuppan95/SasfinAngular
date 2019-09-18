@@ -17,6 +17,7 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
 import { Service } from 'src/app/models/HttpResponses/Service';
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServicesService } from '../../../services/Services.Service';
+import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 
 @Component({
   selector: 'app-context-menu-service-list',
@@ -134,6 +135,8 @@ export class ContextMenuServiceListComponent implements OnInit {
   }
 
   loadServices(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
     const model: GetServiceLList = {
       userID: this.currentUser.userID,
       orderBy: 'Name',
@@ -146,7 +149,9 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.ServiceService
     .getServiceList(model)
     .then(
-      (res: DesignationListResponse) => {
+      (res: ServiceListResponse) => {
+        console.log(res);
+
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -157,8 +162,21 @@ export class ContextMenuServiceListComponent implements OnInit {
             res.outcome.outcome,
             res.outcome.outcomeMessage);
           }
+
+          if (res.rowCount === 0) {
+            this.noData = true;
+            this.showLoader = false;
+          } else {
+            this.noData = false;
+            this.rowCount = res.rowCount;
+            this.showingRecords = res.ServiceList.length;
+            this.servicelist = res.ServiceList;
+            this.showLoader = false;
+            this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
+          }
       },
       msg => {
+        this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
