@@ -1,4 +1,5 @@
 export class Service {
-    userID: number;
-    ServiceName: string;
+    rowNum: number;
+    serviceID: number;
+    serviceName: string;
 }

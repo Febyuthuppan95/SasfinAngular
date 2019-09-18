@@ -8,26 +8,23 @@ import { environment } from '../../environments/environment';
 import { ThemeService } from './theme.Service';
 import { GetServiceLList } from '../models/HttpRequests/GetServiceLList';
 
-
 @Injectable({
   providedIn: 'root'
 })
+
 export class ServicesService {
   constructor(
-    private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router,
   ) {}
 
   /**
    * service list
    */
   public getServiceList(model: GetServiceLList) {
-    const requestModel = JSON.parse(JSON.stringify(model));
-    const promise = new Promise((resolve, reject) => {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/services`;
-      this.httpClient
-        .post(apiURL, requestModel)
+      this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
           res => {
@@ -39,7 +36,6 @@ export class ServicesService {
         );
     });
 
-    return promise;
   }
 
 }

@@ -1,8 +1,8 @@
 import {Outcome} from './Outcome';
-import { Service } from './Service';
+import { Service } from './service';
 
 export class ServiceListResponse {
   outcome: Outcome;
-  ServiceList: Service[];
+  serviceses: Service[];
   rowCount: number;
 }

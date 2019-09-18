@@ -30,7 +30,6 @@ export class ContextMenuServiceListComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private DIDesignationService: DesignationService,
     private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
@@ -150,7 +149,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     .getServiceList(model)
     .then(
       (res: ServiceListResponse) => {
-        console.log(res);
+        console.log(res.serviceses);
 
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
@@ -169,8 +168,8 @@ export class ContextMenuServiceListComponent implements OnInit {
           } else {
             this.noData = false;
             this.rowCount = res.rowCount;
-            this.showingRecords = res.ServiceList.length;
-            this.servicelist = res.ServiceList;
+            this.showingRecords = res.serviceses.length;
+            this.servicelist = res.serviceses;
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
           }
@@ -209,36 +208,34 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.loadServices(false);
   }
 
-  popClick(event, user) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+  // popClick(event, user) {
+  //   if (this.sidebarCollapsed) {
+  //     this.contextMenuX = event.clientX + 3;
+  //     this.contextMenuY = event.clientY + 5;
+  //   } else {
+  //     this.contextMenuX = event.clientX + 3;
+  //     this.contextMenuY = event.clientY + 5;
+  //   }
 
-    // Will only toggle on if off
-    if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true); // Set true
-      this.contextMenu = true;
-      // Show menu
-    } else {
-      this.themeService.toggleContextMenu(false);
-      this.contextMenu = false;
-    }
-  }
-  popOff() {
-    this.contextMenu = false;
-    this.selectedRow = -1;
-  }
+  //   // Will only toggle on if off
+  //   if (!this.contextMenu) {
+  //     this.themeService.toggleContextMenu(true); // Set true
+  //     this.contextMenu = true;
+  //     // Show menu
+  //   } else {
+  //     this.themeService.toggleContextMenu(false);
+  //     this.contextMenu = false;
+  //   }
+  // }
+  // popOff() {
+  //   this.contextMenu = false;
+  //   this.selectedRow = -1;
+  // }
 
-  selectedRecord(obj: SelectedRecord) {
-    this.selectedRow = obj.index;
-    this.popClick(obj.event, obj.record);
-  }
-
-
+  // selectedRecord(obj: SelectedRecord) {
+  //   this.selectedRow = obj.index;
+  //   this.popClick(obj.event, obj.record);
+  // }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {
