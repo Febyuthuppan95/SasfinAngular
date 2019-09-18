@@ -10,6 +10,8 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { BackgroundList, BackgroundListResponse, BackgroundsAdd } from 'src/app/models/HttpResponses/Backgrounds';
 import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
+import { User } from 'src/app/models/HttpResponses/User';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-backgrounds-list',
@@ -17,7 +19,12 @@ import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
 export class ViewBackgroundsListComponent implements OnInit {
-  constructor(private themeService: ThemeService, private backgroundService: BackgroundService, private snackbarService: HelpSnackbar) {}
+  constructor(
+    private themeService: ThemeService,
+    private backgroundService: BackgroundService,
+    private snackbarService: HelpSnackbar,
+    private userService: UserService,
+    ) {}
 
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
@@ -35,6 +42,7 @@ export class ViewBackgroundsListComponent implements OnInit {
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
   backgroundRequestModel: BackgroundListRequest;
+  currentUser: User = this.userService.getCurrentUser();
   selectRowDisplay: number;
   totalRowCount: number;
   totalDisplayCount: number;
@@ -58,7 +66,7 @@ export class ViewBackgroundsListComponent implements OnInit {
 
     this.selectRowDisplay = 15;
     this.backgroundRequestModel = {
-      userID: 3, // Default User ID for testing
+      userID: this.currentUser.userID, // Default User ID for testing
       specificBackgroundID: -1,
       filter: '',
       orderBy: 'Name',
@@ -90,12 +98,23 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   removeBackground(backgroundID: number) {
-
+    console.log(+backgroundID);
+    this.backgroundService.removeBackgrounds(+backgroundID, this.currentUser.userID).then(
+      (res: BackgroundListResponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+            this.notify.successmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+            this.loadBackgrounds();
+        }
+      },
+      (msg) => {
+        console.log(JSON.stringify(msg));
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      });
   }
 
-  editBackground(backgroundID: number) {
 
-  }
 
   viewBackground(src: string) {
     this.srcImage = `${environment.ApiBackgroundImages}/${src}`;
@@ -176,7 +195,7 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3
+        this.currentUser.userID
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
@@ -188,6 +207,8 @@ export class ViewBackgroundsListComponent implements OnInit {
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
                 this.preview = null;
+                this.fileToUpload = null;
+                this.loadBackgrounds();
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -197,7 +218,7 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please choose an image before saving.');
     }
   }
 
@@ -224,5 +245,9 @@ export class ViewBackgroundsListComponent implements OnInit {
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+  Closemodal() {
+    this.preview = null;
+    this.fileToUpload = null;
   }
 }

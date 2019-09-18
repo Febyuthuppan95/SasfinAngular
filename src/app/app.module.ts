@@ -85,10 +85,10 @@ import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
 import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
-import { KeyHandlerDirective } from './directives/key-handler.directive';
 import { AddressTypesService } from './services/AddressTypes.Service';
-import { ImageDirective } from './directives/image.directive';
 import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
+import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { ImageDirective } from './directives/image.directive';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu-capture-info/context-menu-capture-info.component';
 import { MenuComponent } from './components/menus/menu/menu.component';
@@ -98,6 +98,7 @@ import { TableComponent } from './components/table/table.component';
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
+import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
     TableComponent,
     AttachmentCaptureStatusBlockComponent,
     PaginationComponent,
-    TableHeaderComponent
+    TableHeaderComponent,
+    ContextMenuServiceListComponent
   ],
   imports: [
     BrowserModule,
@@ -171,7 +173,7 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 45, timeout: 12, ping: 5}),
+    UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,
@@ -206,6 +208,7 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
     AuthenticationService,
     CitiesService,
     CompanyService,
+    AddressTypesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

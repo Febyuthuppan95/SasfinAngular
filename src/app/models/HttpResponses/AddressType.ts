@@ -1,5 +1,5 @@
 export class AddressType {
   rowNum: number;
-  AdressTypeID: number;
+  addressTypeID: number;
   name: string;
 }

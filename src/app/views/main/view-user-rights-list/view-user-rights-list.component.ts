@@ -127,7 +127,7 @@ export class ViewUserRightsListComponent implements OnInit {
   }
 
   paginateData() {
-    if(this.rowCount > 0){
+    if (this.rowCount > 0) {
     let rowStart = this.rowStart;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -142,8 +142,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
-  }
-  else {
+  } else {
     this.rowStart = 0;
     this.showingRecords = 1;
     const item = new Pagination();
@@ -197,7 +196,7 @@ export class ViewUserRightsListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       rowStart: 1,
-      rowEnd: 100000000000000000000000000000000000,
+      rowEnd: 1000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
@@ -206,7 +205,6 @@ export class ViewUserRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-        console.log(res.rightList)
         this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
@@ -246,16 +244,13 @@ export class ViewUserRightsListComponent implements OnInit {
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
-        if(!this.openAddModal)
-        {
-          if(res.outcome.outcome === "FAILURE"){
+        if (!this.openAddModal) {
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -352,7 +347,7 @@ export class ViewUserRightsListComponent implements OnInit {
   confirmAdd() {
     this.openAddModal.nativeElement.click();
   }
-  removeRight(id: number,) {
+  removeRight(id: number) {
 
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
@@ -362,14 +357,12 @@ export class ViewUserRightsListComponent implements OnInit {
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
 
-        if(res.outcome.outcome === 'FAILURE'){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
@@ -390,21 +383,19 @@ export class ViewUserRightsListComponent implements OnInit {
   addNewRight(id, name) {
     const requestModel: AddUserRight = {
       userID: this.currentUser.userID,
-      addedUserID:this.specificUser,
+      addedUserID: this.specificUser,
       rightID: id,
     };
     console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        if(res.outcome.outcome === 'FAILURE'){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage

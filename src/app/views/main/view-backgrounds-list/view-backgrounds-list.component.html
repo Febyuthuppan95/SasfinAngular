@@ -30,17 +30,12 @@
         <div class="background-item shadow-sm ls-tile-{{ currentTheme }}">
           <img src="{{ backgroundPath }}/{{ image.image }}">
           <div class="controls-top-right form-inline">
-            <!-- <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
+            <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
               <div class="form-group">
                 <button class="btn btn-danger btn-sm" type="submit"><span class="mdi mdi-trash-can"></span> REMOVE</button>
               </div>
             </form>
             &nbsp;
-            <form (submit)="editBackground([image.backgroundID])" class="form-inline">
-              <div class="form-group">
-                <button class="btn btn-info btn-sm" type="submit"><span class="mdi mdi-circle-edit-outline"></span> Edit</button>
-              </div>
-            </form> -->
           </div>
           <br>
         <div class="background-info">
@@ -78,27 +73,29 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="uploadBackgroundLabel">Upload Background</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)='Closemodal()' class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form (submit)="uploadBackground()" enctype="multipart/form-data">
       <div class="modal-body">
-          <div class="form-group">
+          <!-- <div class="form-group">
               <input type="text" placeholder="Background name" class="form-control"
                 [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}" required/>
-            </div>
+            </div> -->
           <div class="form-group">
-          <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
+              <input type="file" name="file" id="addBackgroundImage" class="upload" (change)="onFileChange($event.target.files); readFile($event)" required/>
+              <label for="addBackgroundImage">Choose a file</label>
+          <!-- <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
-            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files); readFile($event)" required>
+            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files); readFile($event)" required> -->
           </div>
           <p *ngIf="this.preview !== null && this.preview !== undefined">Preview: </p>
           <img *ngIf="this.preview !== null && this.preview !== undefined" [src]="preview" style="width: 100%;height:250px;"/>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
+        <button type="button" (click)='Closemodal()' class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
         <button type="submit" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>

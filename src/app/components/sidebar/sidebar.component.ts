@@ -69,6 +69,7 @@ export class SidebarComponent implements OnInit {
   @Input() showattachments = false;
   @Input() showcompanyContactsList = false;
   @Input() showcompanyAddressList = false;
+  @Input() showservices = false;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -103,97 +104,77 @@ export class SidebarComponent implements OnInit {
       (res: UserRightsListResponse) => {
         // Process Success
         res.userRightsList.forEach(uRight => {
-          if(uRight.name === "Users")
-          {
-            this.showusers = true
+          if (uRight.name === 'Users') {
+            this.showusers = true;
           }
-          if(uRight.name === "Rights")
-          {
-            this.showrights = true
+          if (uRight.name === 'Rights') {
+            this.showrights = true;
           }
-          if(uRight.name === "Backgrounds")
-          {
-            this.showbackgrounds = true
+          if (uRight.name === 'Backgrounds') {
+            this.showbackgrounds = true;
           }
-          if(uRight.name === "Designations")
-          {
+          if (uRight.name === 'Designations') {
             this.showdesignation = true;
           }
-          if(uRight.name === "BackgroundUser")
-          {
-            this.showbackgroundUser = true
+          if (uRight.name === 'BackgroundUser') {
+            this.showbackgroundUser = true;
           }
-          if(uRight.name === "BackgroundColorUser")
-          {
-            this.showbackgroundColorUser = true
+          if (uRight.name === 'BackgroundColorUser') {
+            this.showbackgroundColorUser = true;
           }
-          if(uRight.name === "ObjectHelp")
-          {
-            this.showobjectHelp = true
+          if (uRight.name === 'ObjectHelp') {
+            this.showobjectHelp = true;
           }
-          if(uRight.name === "HelpGlossary")
-          {
-            this.showhelpglossary = true
+          if (uRight.name === 'HelpGlossary') {
+            this.showhelpglossary = true;
           }
-          if(uRight.name === "UnitOfMeasures")
-          {
-            this.showunitofmeasures = true
+          if (uRight.name === 'UnitOfMeasures') {
+            this.showunitofmeasures = true;
           }
-          if(uRight.name === "Countries")
-          {
-            this.showcountries = true
+          if (uRight.name === 'Countries') {
+            this.showcountries = true;
           }
-          if(uRight.name === "Regions")
-          {
-            this.showregions = true
+          if (uRight.name === 'Regions') {
+            this.showregions = true;
           }
-          if(uRight.name === "Cities")
-          {
-            this.showcities = true
+          if (uRight.name === 'Cities') {
+            this.showcities = true;
           }
-          if(uRight.name === "ContactTypes")
-          {
-            this.showcontactTypes = true
+          if (uRight.name === 'ContactTypes') {
+            this.showcontactTypes = true;
           }
-          if(uRight.name === "Currencies")
-          {
-            this.showcurrencies = true
+          if (uRight.name === 'Currencies') {
+            this.showcurrencies = true;
           }
-          if(uRight.name === "Companies")
-          {
-            this.showcompanies = true
+          if (uRight.name === 'Companies') {
+            this.showcompanies = true;
           }
-          if(uRight.name === "CompanyAddInfoTypes")
-          {
-            this.showcompanyAddInfoTypes = true
+          if (uRight.name === 'CompanyAddInfoTypes') {
+            this.showcompanyAddInfoTypes = true;
           }
-          if(uRight.name === "CompanyAddInfoList")
-          {
-            this.showcompanyAddInfoList = true
+          if (uRight.name === 'CompanyAddInfoList') {
+            this.showcompanyAddInfoList = true;
           }
-          if(uRight.name === "AddressTypes")
-          {
-            this.showaddressTypes = true
+          if (uRight.name === 'AddressTypes') {
+            this.showaddressTypes = true;
           }
-          if(uRight.name === "Places")
-          {
-            this.showplaces = true
+          if (uRight.name === 'Places') {
+            this.showplaces = true;
           }
-          if(uRight.name === "Transactions")
-          {
-            this.showtransactions = true
+          if (uRight.name === 'Transactions') {
+            this.showtransactions = true;
           }
-          if(uRight.name === "Attachments")
-          {
-            this.showattachments = true
+          if (uRight.name === 'Attachments') {
+            this.showattachments = true;
           }
-          if(uRight.name === "CompanyContactsList")
-          {
-            this.showcompanyContactsList = true
+          if (uRight.name === 'CompanyContactsList') {
+            this.showcompanyContactsList = true;
           }
-          if(uRight.name === "CompanyAddressList")
-          {
-            this.showcompanyAddressList = true
+          if (uRight.name === 'CompanyAddressList') {
+            this.showcompanyAddressList = true;
+          }
+          if (uRight.name === 'Services') {
+            this.showservices = true;
           }
         });
       },
