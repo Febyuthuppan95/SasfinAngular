@@ -96,6 +96,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+import { ContactTypesService } from './services/ContactTypes.Service';
 
 
 @NgModule({
@@ -204,6 +205,7 @@ import { ViewContactTypesListComponent } from './views/main/view-contact-types-l
     CitiesService,
     CompanyService,
     AddressTypesService,
+    ContactTypesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

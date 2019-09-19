@@ -9,20 +9,20 @@
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
     <!-- <h4 class="card-title ls-text-{{ currentTheme }}">Address Types</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span> -->
-    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Address Types</h4><span style="margin-left:10px;"><button (click)="addAddressTypesModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+    <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Contact Types</h4><span style="margin-left:10px;"><button (click)="addContactTypesModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
         <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadUnitsOfMeasures()">
+          (change)="loadContactTypes()">
           <option value='15' selected>Showing 15</option>
           <option value='25'>Showing 25</option>
           <option value='50'>Showing 50</option>
         </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="addressTypes.filter" [ngModelOptions]="{standalone: true}" />
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="contactTypes.filter" [ngModelOptions]="{standalone: true}" />
       </form>
     </div>
     <br />
@@ -41,7 +41,7 @@
                   </span>
                 </button>
               </th>
-            <!-- <th scope="col">
+            <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
                 <p class="headerText">Description</p>
                 <span class="headerSpan">
@@ -49,15 +49,15 @@
                   <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
                 </span>
               </button>
-            </th> -->
+            </th>
           </tr>
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let addressType of dataset; let i=index" class="userRecord" (click)="popClick($event, addressType.addressTypeID, addressType.name); setClickedRow(i)" [class.active]="i == selectedRow">
-            <td>{{addressType.rowNum}}</td>
-            <td>{{addressType.name}}</td>
-            <!-- <td>{{unit.description}}</td> -->
+          <tr *ngFor="let contactType of dataset; let i=index" class="userRecord" (click)="popClick($event, contactType.contactTypeID, contactType.name, contactType.description); setClickedRow(i)" [class.active]="i == selectedRow">
+            <td>{{contactType.rowNum}}</td>
+            <td>{{contactType.name}}</td>
+            <td>{{contactType.description}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -89,7 +89,13 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ addressTypes.rowStart }} to {{ totalDisplayCount }} of
+    <p class="ls-text-{{ currentTheme }}">Showing {{ contactTypes.rowStart }} to {{ totalDisplayCount }} of
       {{ rowCount }}</p>
   </div>
+
+  <app-notification></app-notification>
+  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-context-menu-contact-types (editContactType)="editContactTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [contactTypeID]="focusContactTypeID" [contactTypeName]="focusContactTypeName" [contactTypeDescription]="focusContactTypeDescription"
+                                  (addContactType)="addContactTypesModal($event)">
+  </app-context-menu-contact-types>
 </div>
