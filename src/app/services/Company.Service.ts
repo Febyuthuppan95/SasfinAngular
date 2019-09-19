@@ -9,6 +9,8 @@ import { AddCompanyInfo } from '../models/HttpRequests/AddCompanyInfo';
 import { UpdateCompanyInfo } from '../models/HttpRequests/UpdateCompanyInfo';
 import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
 import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
+import { AddCompanyService } from '../models/HttpRequests/AddCompanyService';
+import { UpdateCompanyService } from '../models/HttpRequests/UpdateCompanyService';
 
 @Injectable({
   providedIn: 'root'
@@ -222,6 +224,64 @@ export class CompanyService {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/updateaddress`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  /**
+   * service
+   */
+  public service(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/companyservice`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public AddService(model: AddCompanyService) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyservice`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateService(model: UpdateCompanyService) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyservice`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()

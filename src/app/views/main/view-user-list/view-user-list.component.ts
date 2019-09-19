@@ -305,7 +305,6 @@ export class ViewUserListComponent implements OnInit {
             this.noData = false;
             this.rowCount = res.rowCount;
             this.showingRecords = res.userList.length;
-            console.log('Update userlist');
             this.userList = res.userList;
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;

@@ -67,11 +67,19 @@
   </a>
   </li>
   <li *ngIf="showservices" class="nav-item ls-btn-hover-{{ currentTheme }}"
-  (mouseover)="updateHelpContext('sidebar-companies-link')"
+  (mouseover)="updateHelpContext('sidebar-services-link')"
   matTooltip="Services" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/services" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-wrench menu-icon"></i>
     <span class="menu-title">Services</span>
+  </a>
+  </li>
+  <li *ngIf="showtariffs" class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-tariffs-link')"
+  matTooltip="Services" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/tariffs" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-wrench menu-icon"></i>
+    <span class="menu-title">Tariffs</span>
   </a>
   </li>
   <!-- <li class="nav-item ls-btn-hover-{{ currentTheme }}"

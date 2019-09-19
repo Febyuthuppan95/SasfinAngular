@@ -15,15 +15,19 @@ import { Service } from 'src/app/models/HttpResponses/Service';
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServicesService } from '../../../services/Services.Service';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
+import { TariffService } from 'src/app/services/Tariff.Service';
+import { TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
 
 @Component({
-  selector: 'app-context-menu-service-list',
-  templateUrl: './context-menu-service-list.component.html',
-  styleUrls: ['./context-menu-service-list.component.scss']
+  selector: 'app-context-tariffs-list',
+  templateUrl: './context-tariffs-list.component.html',
+  styleUrls: ['./context-tariffs-list.component.scss']
 })
-export class ContextMenuServiceListComponent implements OnInit {
+export class ContextTariffsListComponent implements OnInit {
+  tarifflist: any;
   constructor(
-    private ServiceService: ServicesService,
+    private tariffService: TariffService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -40,7 +44,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadServices(true);
+    this.loadTariffs(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -50,9 +54,9 @@ export class ContextMenuServiceListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Services',
+    title: 'Tariffs',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -72,17 +76,53 @@ export class ContextMenuServiceListComponent implements OnInit {
       }
     },
     {
-      title: 'Service Name',
-      propertyName: 'serviceName',
+      title: 'Tariff Code',
+      propertyName: 'tariffCode',
       order: {
         enable: true,
-        tag: 'ServiceName'
+        tag: 'TariffCode'
+      }
+    },
+    {
+      title: 'Tariff Name',
+      propertyName: 'tariffName',
+      order: {
+        enable: true,
+        tag: 'TariffName'
+      }
+    },
+    {
+      title: 'Duty %',
+      propertyName: 'duty',
+      order: {
+        enable: true,
+        tag: 'Duty'
+      }
+    },
+    {
+      title: 'HS Unit',
+      propertyName: 'hsUnit',
+      order: {
+        enable: true,
+        tag: 'HSUnit'
+      }
+    },
+    {
+      title: 'Quality 538',
+      propertyName: 'quality538',
+      order: {
+        enable: true,
+        tag: 'Quality538'
       }
     }
   ];
 
   selectedRow = -1;
-  ServiceName = '';
+  TariffCode = '';
+  TariffName = '';
+  Duty = 0;
+  HSUnit = '';
+  Quality538 = '';
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -120,27 +160,27 @@ export class ContextMenuServiceListComponent implements OnInit {
     });
 
 
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
-  loadServices(displayGrowl: boolean) {
+  loadTariffs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetServiceLList = {
+    const model: GetTariffList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificServiceID: -1,
+      specificTariffID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
 
     };
-    this.ServiceService
-    .getServiceList(model)
+    this.tariffService
+    .getTariffList(model)
     .then(
-      (res: ServiceListResponse) => {
-        console.log(res.serviceses);
+      (res: TariffListResponse) => {
+        console.log(res.tariffs);
 
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
@@ -161,10 +201,10 @@ export class ContextMenuServiceListComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceses.length;
-          this.servicelist = res.serviceses;
+          this.showingRecords = res.tariffs.length;
+          this.tarifflist = res.tariffs;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
+          this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }
       },
       msg => {
@@ -180,12 +220,12 @@ export class ContextMenuServiceListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
 
@@ -198,7 +238,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
   // popClick(event, user) {
@@ -249,13 +289,14 @@ export class ContextMenuServiceListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadServices(true);
+    this.loadTariffs(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
 }
+
 

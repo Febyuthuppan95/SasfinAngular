@@ -99,6 +99,8 @@ import { AttachmentCaptureStatusBlockComponent } from './components/attachment-c
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 
 @NgModule({
   declarations: [
@@ -164,7 +166,9 @@ import { ContextMenuServiceListComponent } from './views/main/context-menu-servi
     AttachmentCaptureStatusBlockComponent,
     PaginationComponent,
     TableHeaderComponent,
-    ContextMenuServiceListComponent
+    ContextMenuServiceListComponent,
+    ContextCompanyServiceListComponent,
+    ContextTariffsListComponent
   ],
   imports: [
     BrowserModule,

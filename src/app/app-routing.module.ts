@@ -29,6 +29,8 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 
 const routes: Routes = [
   {
@@ -61,9 +63,11 @@ const routes: Routes = [
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
           { path: 'services', component: ContextMenuServiceListComponent },
+          { path: 'tariff', component: ContextTariffsListComponent },
            { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
+          { path: 'companies/services', component: ContextCompanyServiceListComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
