@@ -92,6 +92,37 @@
     <p class="ls-text-{{ currentTheme }}">Showing {{ contactTypes.rowStart }} to {{ totalDisplayCount }} of
       {{ rowCount }}</p>
   </div>
+</div>
+
+ <!--Start of adding an ContactType-->
+ <button class="hide" data-toggle="modal" data-target="#addContactType" #addModalOpen></button>
+ <div class="modal fade" id="addContactType" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="uploadBackgroundLabel">Add Contact Type</h5>
+         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <form (submit)="addContactType($event)">
+       <div class="modal-body">
+       <div class="form-group">
+           <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newAddressTypeName" [ngModelOptions]="{standalone: true}" required/>
+         </div>
+         <div class="form-group">
+          <input type="text" placeholder="Description" class="form-control" [(ngModel)]="this.newAddressTypeDescription" [ngModelOptions]="{standalone: true}" required/>
+        </div>
+       </div>
+       <div class="modal-footer bg-dark">
+         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #addModalClose>Close</button>
+         <button type="submit" class="btn btn-primary btn-sm">Save</button>
+       </div>
+     </form>
+     </div>
+   </div>
+ </div>
+ <!--End of Adding an ContactType-->
 
   <app-notification></app-notification>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
