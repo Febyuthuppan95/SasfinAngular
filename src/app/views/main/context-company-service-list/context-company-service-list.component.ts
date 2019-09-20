@@ -285,10 +285,15 @@ export class ContextCompanyServiceListComponent implements OnInit {
               Name: user.firstName
             };
 
+            const temp2: ResponsibleCapturer = {
+              id: +user.userId,
+              Name: user.firstName
+            };
+
             if (user.designation === 'Consultant') {
               this.ResConsultants.push(temp);
             } else if (user.designation === 'Capturer') {
-              this.ResCapturers.push(temp);
+              this.ResCapturers.push(temp2);
             }
           }
         },
