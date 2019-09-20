@@ -1,17 +1,11 @@
-import { UpdateUserRequest } from './../models/HttpRequests/UpdateUserRequest';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
-import { User } from '../models/HttpResponses/User';
 import { Router } from '@angular/router';
-import { AddUserRight } from '../models/HttpRequests/AddUserRight.js';
-import { Config } from '../../assets/config.json';
 import { environment } from '../../environments/environment';
-import { ThemeService } from './theme.Service';
-import { GetUserList } from '../models/HttpRequests/GetUserList';
-import { UpdateUserRight } from '../models/HttpRequests/UpdateUserRight.js';
-import { AddUserRequest } from '../models/HttpRequests/AddUserRequest';
-
+import { User } from '../models/HttpResponses/User';
+import { AddUserRight, UpdateUserRight } from '../models/HttpRequests/UserRights';
+import { GetUserList, UpdateUserRequest, AddUserRequest } from '../models/HttpRequests/Users';
 
 @Injectable({
   providedIn: 'root'

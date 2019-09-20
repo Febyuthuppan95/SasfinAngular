@@ -7,7 +7,7 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
+import { GetRightList } from 'src/app/models/HttpRequests/Rights';
 
 @Component({
   selector: 'app-view-rights-list',

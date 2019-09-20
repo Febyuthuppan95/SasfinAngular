@@ -13,7 +13,7 @@ import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
 import { Subscription } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
+import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
 
 @Component({
   selector: 'app-view-designations-list',

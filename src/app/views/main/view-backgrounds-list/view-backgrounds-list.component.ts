@@ -1,18 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { BackgroundService } from 'src/app/services/Background.service';
-import { BackgroundList } from 'src/app/models/HttpResponses/BackgroundList';
-import { BackgroundListRequest } from 'src/app/models/HttpRequests/BackgroundList';
-import { BackgroundListResponse } from 'src/app/models/HttpResponses/BackgroundListResponse';
 import { environment } from 'src/environments/environment';
 import { ImageModalComponent } from 'src/app/components/image-modal/image-modal.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { FormGroup } from '@angular/forms';
-import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { BackgroundList, BackgroundListResponse, BackgroundsAdd } from 'src/app/models/HttpResponses/Backgrounds';
+import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
 import { User } from 'src/app/models/HttpResponses/User';
 import { UserService } from 'src/app/services/user.Service';
 

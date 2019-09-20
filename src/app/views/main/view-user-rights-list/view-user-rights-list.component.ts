@@ -9,20 +9,18 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../../models/HttpResponses/User';
 import {Pagination} from '../../../models/Pagination';
 import {UserRightService} from '../../../services/UserRight.service';
-import {GetUserRightsList} from '../../../models/HttpRequests/GetUserRightsList';
 import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
 import {UserRightsList} from '../../../models/HttpResponses/UserRightsList';
 import { ActivatedRoute } from '@angular/router';
-import { UpdateUserRight } from 'src/app/models/HttpRequests/UpdateUserRight';
 import { UserRightReponse } from 'src/app/models/HttpResponses/UserRightResponse';
-import { AddUserRight } from 'src/app/models/HttpRequests/AddUserRight';
-import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Subscription } from 'rxjs';
 import { ContextMenuUserrightsComponent } from '../../../components/menus/context-menu-userrights/context-menu-userrights.component';
+import { GetRightList } from 'src/app/models/HttpRequests/Rights';
+import { GetUserRightsList, UpdateUserRight, AddUserRight } from 'src/app/models/HttpRequests/UserRights';
 
 @Component({
   selector: 'app-view-user-rights-list',

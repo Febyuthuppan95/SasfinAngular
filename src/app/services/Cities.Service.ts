@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { CitiesList } from '../models/HttpRequests/CitiesList';
+import { CitiesList } from '../models/HttpRequests/Locations';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CitiesService {
    *
    */
   constructor(private httpClient: HttpClient) {
-  
+
   }
 
 
@@ -73,7 +73,7 @@ export class CitiesService {
   //   });
   //   return promise;
   // }
-  
+
 }
 
 export class SelectedCompany {

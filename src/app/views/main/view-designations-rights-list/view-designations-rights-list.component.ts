@@ -6,20 +6,18 @@ import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Pagination } from '../../../models/Pagination';
 import { DesignationRightsList } from '../../../models/HttpResponses/DesignationRightsList';
-import { GetDesignationRightsList } from 'src/app/models/HttpRequests/GetDesignationRightsList';
 import { DesignationRightsListResponse } from 'src/app/models/HttpResponses/DesignationRightsListResponse';
 import { User } from 'src/app/models/HttpResponses/User';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { UpdateDesignationRight } from 'src/app/models/HttpRequests/UpdateDesignationRight';
 import { DesignationRightReponse } from 'src/app/models/HttpResponses/DesignationRightResponse';
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
-import { AddDesignationRight } from 'src/app/models/HttpRequests/AddDesignationRight';
-import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Subscription } from 'rxjs';
+import { GetRightList } from 'src/app/models/HttpRequests/Rights';
+import { GetDesignationRightsList, UpdateDesignationRight, AddDesignationRight } from 'src/app/models/HttpRequests/Designations';
 
 
 @Component({
@@ -99,7 +97,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       });
     }
 
-  
+
 
     @ViewChild(NotificationComponent, {static: true })
     private notify: NotificationComponent;
@@ -113,7 +111,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
-    
+
     });
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -121,7 +119,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
     });
 
     this.loadDesignationRights();
-    
+
   }
   /**
    * Load Designation Rights
@@ -147,7 +145,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
-            if (dRight.rightID === right.rightID) {              
+            if (dRight.rightID === right.rightID) {
               this.rightsList.splice(count, 1);
             } else {
               count ++;
@@ -177,11 +175,11 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
-   
+
     this.designationsService
     .getDesignationRightsList(dRModel).then(
-      (res: DesignationRightsListResponse) => {   
-        
+      (res: DesignationRightsListResponse) => {
+
         if(res.outcome.outcome === "FAILURE"){
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -205,20 +203,20 @@ export class ViewDesignationsRightsListComponent implements OnInit {
           this.rowCount = 0;
           this.showingRecords = 1;
           this.totalShowing = 0;
-          
+
         } else {
         this.noData = false;
         // Process Success
-      
+
         this.designationRightsList = res.designationRightsList;
-        
+
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
-        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;        
+        this.totalShowing += this.rowStart + this.designationRightsList.length - 1;
 
         this.paginateData();
-        
+
         this.loadAvailableRights();
         }
       },
@@ -231,7 +229,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
         );
       }
     );
-    
+
   }
 
   pageChange(pageNumber: number) {
@@ -368,7 +366,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmRemove(content, id, Name) {
-    this.rightId = id;    
+    this.rightId = id;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
       this.removeRight(this.rightId);
@@ -380,7 +378,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   }
 
   confirmAdd(add) {
-    this.openAddModal.nativeElement.click();   
+    this.openAddModal.nativeElement.click();
   }
   removeRight(id: number) {
     const requestModel: UpdateDesignationRight = {
@@ -403,7 +401,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
             res.outcome.outcomeMessage
           );
         }
-        
+
         this.loadDesignationRights();
       },
       msg => {

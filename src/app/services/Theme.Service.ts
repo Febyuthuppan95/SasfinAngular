@@ -1,17 +1,11 @@
-import { Injectable, HostListener, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { BackgroundResponse } from 'src/app/models/HttpResponses/BackgroundGet.js';
 import { User } from 'src/app/models/HttpResponses/User.js';
-import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { ContextMenu } from '../models/StateModels/ContextMenu';
 import { UserService } from './user.Service.js';
-import { GetUserBackground } from '../models/HttpRequests/GetUserBackground';
-import { BackgroundList } from '../models/HttpResponses/BackgroundList';
-
-
+import { BackgroundList } from '../models/HttpResponses/Backgrounds';
 
 @Injectable({
   providedIn: 'root'

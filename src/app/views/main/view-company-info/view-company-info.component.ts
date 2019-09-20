@@ -10,8 +10,7 @@ import { Pagination } from 'src/app/models/Pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyInfoResponse, CompanyInfo } from 'src/app/models/HttpResponses/CompanyInfoResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { AddCompanyInfo } from 'src/app/models/HttpRequests/AddCompanyInfo';
-import { UpdateCompanyInfo } from 'src/app/models/HttpRequests/UpdateCompanyInfo';
+import { AddCompanyInfo, UpdateCompanyInfo } from 'src/app/models/HttpRequests/Company';
 
 @Component({
   selector: 'app-view-company-info',

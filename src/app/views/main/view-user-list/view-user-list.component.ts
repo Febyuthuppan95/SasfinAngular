@@ -1,6 +1,5 @@
 //import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
 import { DesignationService } from './../../../services/Designation.service';
-import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequest';
 import { Status } from './../../../models/Enums/Statuses';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
@@ -12,20 +11,18 @@ import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
-import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
-import { Location } from '@angular/common';
 import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
-import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
-import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
-import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
+import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
+import { GetUserList, AddUserRequest, UpdateUserRequest } from 'src/app/models/HttpRequests/Users';
+import { User } from 'src/app/models/HttpResponses/User';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-view-user-list',

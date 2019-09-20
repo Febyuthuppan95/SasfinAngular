@@ -8,11 +8,8 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { AddCompany } from 'src/app/models/HttpRequests/AddCompany';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { TouchSequence } from 'selenium-webdriver';
-import { UpdateCompany } from 'src/app/models/HttpRequests/UpdateCompany';
-import { CompanyList } from 'src/app/models/HttpRequests/CompanyList';
+import { CompanyList, AddCompany, UpdateCompany } from 'src/app/models/HttpRequests/Company';
 
 @Component({
   selector: 'app-view-company-list',

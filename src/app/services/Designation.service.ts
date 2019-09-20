@@ -1,12 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { GetDesignationRightsList } from '../models/HttpRequests/GetDesignationRightsList';
 import { environment } from 'src/environments/environment.js';
-import { AddDesignationRight } from '../models/HttpRequests/AddDesignationRight.js';
-import { UpdateDesignationRight } from '../models/HttpRequests/UpdateDesignationRight.js';
-import { DesignationListResponse } from '../models/HttpResponses/DesignationListResponse';
-import { GetDesignationList } from '../models/HttpRequests/GetDesignationList';
 import { BehaviorSubject } from 'rxjs';
+import { GetDesignationList, GetDesignationRightsList, UpdateDesignationRight, AddDesignationRight } from '../models/HttpRequests/Designations';
 
 @Injectable()
 export class DesignationService {

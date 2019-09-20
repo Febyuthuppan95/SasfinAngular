@@ -10,13 +10,12 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyAddressResponse, Address } from 'src/app/models/HttpResponses/CompanyAddressResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
-import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
 import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesService } from 'src/app/services/Cities.Service';
 import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
+import { AddCompanyAddress, UpdateCompanyAddress } from 'src/app/models/HttpRequests/Company';
 
 @Component({
   selector: 'app-view-company-addresses',

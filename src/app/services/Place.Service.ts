@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ListCountriesRequest } from '../models/HttpRequests/ListCountriesRequest';
 import { environment } from 'src/environments/environment';
 import { Regions, LocationsList, Cities, LocationItems } from '../models/HttpResponses/LocationsList';
 import { UpdateCountryRequest, UpdateRegionRequest, UpdateCityRequest } from '../models/HttpRequests/UpdateLocationRequest';
 import { UUID } from 'angular2-uuid';
+import { ListCountriesRequest } from '../models/HttpRequests/Locations';
 
 @Injectable({
   providedIn: 'root'
