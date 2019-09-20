@@ -11,7 +11,7 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { ItemsService } from 'src/app/services/ItemsService';
+import { ItemsService } from 'src/app/services/Items.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 
