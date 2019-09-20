@@ -11,6 +11,8 @@ import { AddCompanyAddress } from '../models/HttpRequests/AddCompanyAddress';
 import { UpdateCompanyAddress } from '../models/HttpRequests/UpdateCompanyAddress';
 import { AddCompanyService } from '../models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from '../models/HttpRequests/UpdateCompanyService';
+import { AddCompanyItem } from '../models/HttpRequests/AddCompanyItem';
+import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 
 @Injectable({
   providedIn: 'root'
@@ -295,6 +297,57 @@ export class CompanyService {
       );
     });
     return promise;
+  }
+
+  public items(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/companyitems`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public additem(model: AddCompanyItem) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyitem`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public updateitem(model: UpdateCompanyItem) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyitem`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 
   /**

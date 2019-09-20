@@ -5,31 +5,25 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
-import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
-import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
-import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
 import { CompanyServiceResponse, Service } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { AddCompanyService } from 'src/app/models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from 'src/app/models/HttpRequests/UpdateCompanyService';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
-import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
-import { UserList } from 'src/app/models/HttpResponses/UserList';
-import { ResponsibleCapturer } from 'src/app/models/HttpResponses/ResponsibleCapturer';
-import { ResponsibleConsultant } from 'src/app/models/HttpResponses/ResponsibleConsultant';
+import { CompanyItemsResponse } from 'src/app/models/HttpResponses/CompanyItemsResponse';
+import { Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { AddCompanyItem } from 'src/app/models/HttpRequests/AddCompanyItem';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateCompanyItem } from 'src/app/models/HttpRequests/UpdateCompanyItem';
 
 @Component({
-  selector: 'app-context-company-service-list',
-  templateUrl: './context-company-service-list.component.html',
-  styleUrls: ['./context-company-service-list.component.scss']
+  selector: 'app-context-company-items-list',
+  templateUrl: './context-company-items-list.component.html',
+  styleUrls: ['./context-company-items-list.component.scss']
 })
-export class ContextCompanyServiceListComponent implements OnInit {
+export class ContextCompanyItemsListComponent implements OnInit {
 
 
   constructor(
@@ -50,7 +44,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyServiceList();
+    this.loadCompanyItemsList();
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -73,63 +67,55 @@ export class ContextCompanyServiceListComponent implements OnInit {
   @ViewChild('auto', {static: false})
   private autoComplete: MatAutocomplete;
 
-  defaultProfile =
-    `${environment.ApiProfileImages}/default.jpg`;
-
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
 
   pages: Pagination[];
   showingPages: Pagination[];
-  dataset: CompanyServiceResponse;
-  Citiesset: CitiesResponse;
-  dataList: Service[] = [];
+  dataset: CompanyItemsResponse;
+  dataList: Items[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
   prevPage: number;
   prevPageState: boolean;
-  ServiceName: string;
   rowStart: number;
   rowEnd: number;
   filter: string;
   orderBy: string;
   orderDirection: string;
-  CitySearch: string;
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
   showingRecords: number;
   activePage: number;
-  focusServiceID: number;
-  ResConsultant: string;
-  ResCapturer: string;
-  StartDate: string;
-  EndDate: string;
-  ResConsultants: ResponsibleConsultant[] = [];
-  ResCapturers: ResponsibleCapturer[] = [];
-  selectedConsultant: string;
-  selectedCapturer: string;
-  userList: UserList[] = null;
-
+  focusItemID: number;
+  selectedRow = -1;
+  Item = '';
+  Discription = '';
+  Tariff = 0;
+  Type = '';
+  Usage = '';
+  MIDP = -1;
+  PI = '';
+  Vulnerable = '';
+  N521 = 0;
+  N536 = '';
+  N31761 = '';
+  N31762 = '';
+  N31702 = '';
   noData = false;
   showLoader = true;
   displayFilter = false;
-  disableAddressSelect = false;
-  selectedAddressIndex: number;
 
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
-  selectedRow = -1;
-  Type = 0;
+
 
   companyName: string;
   companyID: number;
-
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -194,16 +180,16 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
     this.updatePagination();
 
-    this.loadCompanyServiceList();
+    this.loadCompanyItemsList();
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyServiceList();
+    this.loadCompanyItemsList();
   }
 
 
-  loadCompanyServiceList() {
+  loadCompanyItemsList() {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
@@ -211,30 +197,28 @@ export class ContextCompanyServiceListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       specificCompanyID: -1,
-      specificServiceID: -1,
+      specificItemID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
 
-    this.companyService.service(model).then(
-        (res: CompanyServiceResponse) => {
+    this.companyService.items(model).then(
+        (res: CompanyItemsResponse) => {
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.services;
+            this.dataList = res.items;
             this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.services.length;
-            this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
+            this.showingRecords = res.items.length;
+            this.totalShowing = +this.rowStart + +this.dataset.items.length - 1;
             this.paginateData();
           }
-
-          console.log(res);
         },
         msg => {
           this.showLoader = false;
@@ -243,58 +227,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
             'Something went wrong while trying to access the server.'
           );
           console.log(JSON.stringify(msg));
-        }
-      );
-  }
-
-  loadUsers() {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
-    const model: GetUserList = {
-      filter: this.filter,
-      userID: this.currentUser.userID,
-      specificUserID: -1,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderDirection: this.orderDirection
-    };
-    this.userService
-      .getUserList(model)
-      .then(
-        (res: UserListResponse) => {
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          if (res.rowCount === 0) {
-            this.noData = true;
-            this.showLoader = false;
-          } else {
-            this.noData = false;
-            this.rowCount = res.rowCount;
-            this.showingRecords = res.userList.length;
-            this.userList = res.userList;
-            this.showLoader = false;
-            this.totalShowing = +this.rowStart + +this.userList.length - 1;
-          }
-
-          for (const user of res.userList) {
-            if (user.designation === 'Consultant') {
-              this.ResConsultants.push(user.firstName);
-            } else if (user.designation === 'Capturer') {
-              this.ResCapturers.push(user.firstName);
-            }
-          }
-        },
-        msg => {
-          this.showLoader = false;
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
         }
       );
   }
@@ -312,11 +244,11 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadCompanyServiceList();
+    this.loadCompanyItemsList();
   }
 
   updatePagination() {
-    if (this.dataset.services.length <= this.totalShowing) {
+    if (this.dataset.items.length <= this.totalShowing) {
       this.prevPageState = false;
       this.nextPageState = false;
     } else {
@@ -356,7 +288,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusServiceID = id;
+    this.focusItemID = id;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -379,26 +311,21 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyAddress() {
+  addCompanyItem() {
 
-    const requestModel: AddCompanyService = {
+    const requestModel: AddCompanyItem = {
       userID: this.currentUser.userID,
-      spesificCompanyID: this.focusServiceID,
-      spesificServiceID: this.focusServiceID,
-      ServiceName: this.ServiceName,
-      ResConsultant: this.ResConsultant,
-      ResCapturer: this.ResCapturer,
-      StartDate: this.StartDate,
-      EndDate: this.EndDate,
+      companyID: this.companyID,
+      spesificitemID: this.focusItemID,
     };
 
-    this.companyService.AddService(requestModel).then(
+    this.companyService.additem(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company address successfully added');
-            this.loadCompanyServiceList();
+            this.notify.successmsg('SUCCESS', 'Company item successfully added');
+            this.loadCompanyItemsList();
             this.closeaddModal.nativeElement.click();
           }
         },
@@ -418,24 +345,20 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateCompanyAddress() {
-    const requestModel: UpdateCompanyService = {
+  UpdateCompanyItem() {
+    const requestModel: UpdateCompanyItem = {
       userID: this.currentUser.userID,
-      spesificServiceID: this.focusServiceID,
-      ServiceName: this.ServiceName,
-      ResConsultant: this.ResConsultant,
-      ResCapturer: this.ResCapturer,
-      StartDate: this.StartDate,
-      EndDate: this.EndDate,
+      spesificitemID: this.focusItemID,
+
     };
-    this.companyService.UpdateService(requestModel).then(
+    this.companyService.updateitem(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
+            this.notify.successmsg('SUCCESS', 'Company item successfully Updated');
             this.closeeditModal.nativeElement.click();
-            this.loadCompanyServiceList();
+            this.loadCompanyItemsList();
         }
       },
         msg => {
@@ -444,15 +367,16 @@ export class ContextCompanyServiceListComponent implements OnInit {
       });
   }
 
-  onConsultantChange(id: number)   {
-    this.disableAddressSelect = true;
-    this.Type = id;
-  }
+  // onConsultantChange(id: number)   {
+  //   this.disableAddressSelect = true;
+  //   this.Type = id;
+  // }
 
-  onCapturerChange(id: number)   {
-    this.disableAddressSelect = true;
-    this.Type = id;
-  }
+  // onCapturerChange(id: number)   {
+  //   this.disableAddressSelect = true;
+  //   this.Type = id;
+  // }
 
 }
+
 

@@ -55,4 +55,9 @@ export class CompaniesContextMenuComponent implements OnInit {
       this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
       this.router.navigate(['companies', 'services']);
   }
+
+  companyItems() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+    this.router.navigate(['companies', 'items']);
+}
 }

@@ -32,6 +32,7 @@ import { ContextMenuServiceListComponent } from './views/main/context-menu-servi
 import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,7 @@ const routes: Routes = [
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },
+          { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },

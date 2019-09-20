@@ -142,13 +142,13 @@
             <div class="form-group">
                 <label class="control-label">Responsible Consultant:</label>
                 <select class="form-control" (change)="onConsultantChange($event.target.value)">
-                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.id === this.selectedConsultant">{{ResConsultant.name}}</option>
+                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.Name === this.selectedConsultant">{{ResConsultant.Name}}</option>
                 </select>
             </div>
             <div class="form-group">
                   <label class="control-label">Responsible Capturer:</label>
                   <select class="form-control" (change)="onCapturerChange($event.target.value)">
-                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.id === this.selectedCapturer">{{ResCapturer.name}}</option>
+                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.Name === this.selectedCapturer">{{ResCapturer.Name}}</option>
                   </select>
             </div>
             <div class="form-group">
@@ -193,13 +193,13 @@
             <div class="form-group">
                 <label class="control-label">Responsible Consultant:</label>
                 <select class="form-control" (change)="onConsultantChange($event.target.value)">
-                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.id === this.selectedConsultant">{{ResConsultant.name}}</option>
+                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.Name === this.selectedConsultant">{{ResConsultant.Name}}</option>
                 </select>
             </div>
             <div class="form-group">
                   <label class="control-label">Responsible Capturer:</label>
                   <select class="form-control" (change)="onCapturerChange($event.target.value)">
-                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.id === this.selectedCapturer">{{ResCapturer.name}}</option>
+                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.Name === this.selectedCapturer">{{ResCapturer.Name}}</option>
                   </select>
             </div>
             <div class="form-group">
