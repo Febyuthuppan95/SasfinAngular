@@ -312,7 +312,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   addCompanyItem() {
-
     const requestModel: AddCompanyItem = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
