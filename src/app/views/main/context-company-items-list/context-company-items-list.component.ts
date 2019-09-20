@@ -54,8 +54,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
+  // @ViewChild(ContextMenuComponent, {static: true } )
+  // private contextmenu: ContextMenuComponent;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -305,30 +305,30 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   addCompanyItem() {
-    const requestModel: AddCompanyItem = {
-      userID: this.currentUser.userID,
-      companyID: this.companyID,
-      spesificitemID: this.focusItemID,
-    };
+    // const requestModel: AddCompanyItem = {
+    //   userID: this.currentUser.userID,
+    //   companyID: this.companyID,
+    //   spesificitemID: this.focusItemID,
+    // };
 
-    this.companyService.additem(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg('SUCCESS', 'Company item successfully added');
-            this.loadCompanyItemsList();
-            this.closeaddModal.nativeElement.click();
-          }
-        },
-        msg => {
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-          this.closeaddModal.nativeElement.click();
-        }
-      );
+    // this.companyService.additem(requestModel).then(
+    //   (res: {outcome: Outcome}) => {
+    //       if (res.outcome.outcome !== 'SUCCESS') {
+    //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+    //       } else {
+    //         this.notify.successmsg('SUCCESS', 'Company item successfully added');
+    //         this.loadCompanyItemsList();
+    //         this.closeaddModal.nativeElement.click();
+    //       }
+    //     },
+    //     msg => {
+    //       this.notify.errorsmsg(
+    //         'Server Error',
+    //         'Something went wrong while trying to access the server.'
+    //       );
+    //       this.closeaddModal.nativeElement.click();
+    //     }
+    //   );
   }
 
   editCompanyAddress($event) {
@@ -338,26 +338,26 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   UpdateCompanyItem() {
-    const requestModel: UpdateCompanyItem = {
-      userID: this.currentUser.userID,
-      spesificitemID: this.focusItemID,
+    // const requestModel: UpdateCompanyItem = {
+    //   userID: this.currentUser.userID,
+    //   spesificitemID: this.focusItemID,
 
-    };
-    this.companyService.updateitem(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg('SUCCESS', 'Company item successfully Updated');
-            this.closeeditModal.nativeElement.click();
-            this.loadCompanyItemsList();
-        }
-      },
-        msg => {
-          this.notify.errorsmsg(
-          'Server Error', 'Something went wrong while trying to access the server.');
-      });
-  }
+  //   };
+  //   this.companyService.updateitem(requestModel).then(
+  //     (res: {outcome: Outcome}) => {
+  //         if (res.outcome.outcome !== 'SUCCESS') {
+  //           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+  //         } else {
+  //           this.notify.successmsg('SUCCESS', 'Company item successfully Updated');
+  //           this.closeeditModal.nativeElement.click();
+  //           this.loadCompanyItemsList();
+  //       }
+  //     },
+  //       msg => {
+  //         this.notify.errorsmsg(
+  //         'Server Error', 'Something went wrong while trying to access the server.');
+  //     });
+  // }
 
   // onConsultantChange(id: number)   {
   //   this.disableAddressSelect = true;
@@ -369,6 +369,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   //   this.Type = id;
   // }
 
+  }
+
 }
-
-
