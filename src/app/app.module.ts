@@ -99,6 +99,9 @@ import { AttachmentCaptureStatusBlockComponent } from './components/attachment-c
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
+import { ChatOverlayComponent } from './components/chat/chat-overlay/chat-overlay.component';
+import { ChatUserTileComponent } from './components/chat/chat-user-tile/chat-user-tile.component';
+import { ChatBubbleComponent } from './components/chat/chat-bubble/chat-bubble.component';
 
 @NgModule({
   declarations: [
@@ -164,7 +167,10 @@ import { ContextMenuServiceListComponent } from './views/main/context-menu-servi
     AttachmentCaptureStatusBlockComponent,
     PaginationComponent,
     TableHeaderComponent,
-    ContextMenuServiceListComponent
+    ContextMenuServiceListComponent,
+    ChatOverlayComponent,
+    ChatUserTileComponent,
+    ChatBubbleComponent
   ],
   imports: [
     BrowserModule,
