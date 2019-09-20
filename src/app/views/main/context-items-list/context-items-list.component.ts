@@ -11,19 +11,19 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
-import { TariffService } from 'src/app/services/Tariff.Service';
-import { TariffListResponse, Tariffs } from 'src/app/models/HttpResponses/TariffListResponse';
+import { ItemsService } from 'src/app/services/ItemsService';
+import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
+import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 
 @Component({
-  selector: 'app-context-tariffs-list',
-  templateUrl: './context-tariffs-list.component.html',
-  styleUrls: ['./context-tariffs-list.component.scss']
+  selector: 'app-context-items-list',
+  templateUrl: './context-items-list.component.html',
+  styleUrls: ['./context-items-list.component.scss']
 })
-export class ContextTariffsListComponent implements OnInit {
+export class ContextItemsListComponent implements OnInit {
 
   constructor(
-    private tariffService: TariffService,
+    private ItemService: ItemsService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -40,7 +40,7 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadTariffs(true);
+    this.loadItems(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -50,7 +50,7 @@ export class ContextTariffsListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Tariffs',
+    title: 'Items',
     addButton: {
      enable: true,
     },
@@ -72,54 +72,127 @@ export class ContextTariffsListComponent implements OnInit {
       }
     },
     {
-      title: 'Tariff Code',
-      propertyName: 'tariffCode',
+      title: 'Item',
+      propertyName: 'item',
       order: {
         enable: true,
-        tag: 'TariffCode'
+        tag: 'Item'
       }
     },
     {
-      title: 'Tariff Name',
-      propertyName: 'tariffName',
+      title: 'Discription',
+      propertyName: 'discription',
       order: {
         enable: true,
-        tag: 'TariffName'
+        tag: 'Discription'
       }
     },
     {
-      title: 'Duty %',
-      propertyName: 'duty',
+      title: 'Tariff',
+      propertyName: 'tariff',
       order: {
         enable: true,
-        tag: 'Duty'
+        tag: 'Tariff'
       }
     },
     {
-      title: 'HS Unit',
-      propertyName: 'hsUnit',
+      title: 'Type',
+      propertyName: 'type',
       order: {
         enable: true,
-        tag: 'HSUnit'
+        tag: 'Type'
       }
     },
     {
-      title: 'Quality 538',
-      propertyName: 'quality538',
+      title: 'Usage',
+      propertyName: 'usage',
       order: {
         enable: true,
-        tag: 'Quality538'
+        tag: 'Usage'
+      }
+    },
+    {
+      title: 'MIDP',
+      propertyName: 'midp',
+      order: {
+        enable: true,
+        tag: 'MIDP'
+      }
+    },
+    {
+      title: 'PI',
+      propertyName: 'pi',
+      order: {
+        enable: true,
+        tag: 'PI'
+      }
+    },
+    {
+      title: 'Vulnerable',
+      propertyName: 'vulnerable',
+      order: {
+        enable: true,
+        tag: 'Vulnerable'
+      }
+    },
+    {
+      title: '521',
+      propertyName: '521',
+      order: {
+        enable: true,
+        tag: '521'
+      }
+    },
+    {
+      title: '536',
+      propertyName: '536',
+      order: {
+        enable: true,
+        tag: '536'
+      }
+    },
+    {
+      title: '317.6.1',
+      propertyName: '317.6.1',
+      order: {
+        enable: true,
+        tag: '317.6.1'
+      }
+    },
+    {
+      title: '317.6.2',
+      propertyName: '317.6.2',
+      order: {
+        enable: true,
+        tag: '317.6.2'
+      }
+    },
+    {
+      title: '317.02',
+      propertyName: '317.02',
+      order: {
+        enable: true,
+        tag: '317.02'
       }
     }
   ];
 
   selectedRow = -1;
-  TariffCode = '';
-  TariffName = '';
-  Duty = 0;
-  HSUnit = '';
-  Quality538 = '';
-  tarifflist: Tariffs[] = [];
+  Item = '';
+  Discription = '';
+  Tariff = 0;
+  Type = '';
+  Usage = '';
+  MIDP = -1;
+  PI = '';
+  Vulnerable = '';
+  N521 = 0;
+  N536 = '';
+  N31761 = '';
+  N31762 = '';
+  N31702 = '';
+
+  items: Items[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -156,28 +229,26 @@ export class ContextTariffsListComponent implements OnInit {
     });
 
 
-    this.loadTariffs(false);
+    this.loadItems(false);
   }
 
-  loadTariffs(displayGrowl: boolean) {
+  loadItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetTariffList = {
+    const model: GetItemList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificTariffID: -1,
+      specificItemID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
 
     };
-    this.tariffService
-    .getTariffList(model)
+    this.ItemService
+    .getItemList(model)
     .then(
-      (res: TariffListResponse) => {
-        console.log(res.tariffs);
-
+      (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -197,10 +268,10 @@ export class ContextTariffsListComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.tariffs.length;
-          this.tarifflist = res.tariffs;
+          this.showingRecords = res.items.length;
+          this.items = res.items;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
+          this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
       },
       msg => {
@@ -216,12 +287,12 @@ export class ContextTariffsListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadTariffs(false);
+    this.loadItems(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadTariffs(false);
+    this.loadItems(false);
   }
 
 
@@ -234,7 +305,7 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadTariffs(false);
+    this.loadItems(false);
   }
 
   // popClick(event, user) {
@@ -285,14 +356,15 @@ export class ContextTariffsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadTariffs(true);
+    this.loadItems(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadTariffs(false);
+    this.loadItems(false);
   }
 
 }
+
 
 

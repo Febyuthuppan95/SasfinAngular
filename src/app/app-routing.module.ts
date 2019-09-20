@@ -31,6 +31,7 @@ import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-ca
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
 import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 
 const routes: Routes = [
   {
@@ -64,7 +65,8 @@ const routes: Routes = [
           { path: 'companies', component: ViewCompanyListComponent },
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariff', component: ContextTariffsListComponent },
-           { path: 'addresstypes', component: ViewAddressTypesListComponent },
+          { path: 'item', component: ContextItemsListComponent },
+          { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },

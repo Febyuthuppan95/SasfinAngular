@@ -101,6 +101,7 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
 import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 
 @NgModule({
   declarations: [
@@ -168,7 +169,8 @@ import { ContextTariffsListComponent } from './views/main/context-tariffs-list/c
     TableHeaderComponent,
     ContextMenuServiceListComponent,
     ContextCompanyServiceListComponent,
-    ContextTariffsListComponent
+    ContextTariffsListComponent,
+    ContextItemsListComponent
   ],
   imports: [
     BrowserModule,
