@@ -7,11 +7,7 @@ import { ContextMenuComponent } from 'src/app/components/menus/context-menu/cont
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
-import { CompanyServiceResponse, Service } from 'src/app/models/HttpResponses/CompanyServiceResponse';
-import { AddCompanyService } from 'src/app/models/HttpRequests/AddCompanyService';
-import { UpdateCompanyService } from 'src/app/models/HttpRequests/UpdateCompanyService';
 import { CompanyItemsResponse } from 'src/app/models/HttpResponses/CompanyItemsResponse';
 import { Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { AddCompanyItem } from 'src/app/models/HttpRequests/AddCompanyItem';
@@ -30,7 +26,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
     private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
   ) {
     this.rowStart = 1;
@@ -64,8 +59,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-  @ViewChild('auto', {static: false})
-  private autoComplete: MatAutocomplete;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
