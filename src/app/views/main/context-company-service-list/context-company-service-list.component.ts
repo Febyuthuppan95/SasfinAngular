@@ -9,8 +9,6 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
-import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
 import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import {FormControl} from '@angular/forms';
@@ -18,7 +16,7 @@ import { MatAutocomplete } from '@angular/material';
 import { CompanyServiceResponse, Service } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { AddCompanyService } from 'src/app/models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from 'src/app/models/HttpRequests/UpdateCompanyService';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
+import { GetUserList } from 'src/app/models/HttpRequests/Users';
 import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 import { ResponsibleCapturer } from 'src/app/models/HttpResponses/ResponsibleCapturer';
@@ -282,10 +280,15 @@ export class ContextCompanyServiceListComponent implements OnInit {
           }
 
           for (const user of res.userList) {
+            const temp: ResponsibleConsultant = {
+              id: +user.userId,
+              Name: user.firstName
+            };
+
             if (user.designation === 'Consultant') {
-              this.ResConsultants.push(user.firstName);
+              this.ResConsultants.push(temp);
             } else if (user.designation === 'Capturer') {
-              this.ResCapturers.push(user.firstName);
+              this.ResCapturers.push(temp);
             }
           }
         },
