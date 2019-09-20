@@ -2,17 +2,12 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
+import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { MatAutocomplete } from '@angular/material';
 import { CompanyItemsResponse } from 'src/app/models/HttpResponses/CompanyItemsResponse';
 import { Items } from 'src/app/models/HttpResponses/ItemsListResponse';
-import { AddCompanyItem } from 'src/app/models/HttpRequests/AddCompanyItem';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompanyItem } from 'src/app/models/HttpRequests/UpdateCompanyItem';
 
 @Component({
   selector: 'app-context-company-items-list',
