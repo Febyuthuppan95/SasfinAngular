@@ -97,6 +97,7 @@ import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 import { ContactTypesService } from './services/ContactTypes.Service';
+import { ContextMenuContactTypesComponent } from './components/menus/context-menu-contact-types/context-menu-contact-types.component';
 
 
 @NgModule({
@@ -161,7 +162,8 @@ import { ContactTypesService } from './services/ContactTypes.Service';
     MenuComponent,
     TableComponent,
     PaginationComponent,
-    ViewContactTypesListComponent
+    ViewContactTypesListComponent,
+    ContextMenuContactTypesComponent
   ],
   imports: [
     BrowserModule,

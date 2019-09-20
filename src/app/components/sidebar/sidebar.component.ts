@@ -195,6 +195,10 @@ export class SidebarComponent implements OnInit {
           {
             this.showcompanyAddressList = true
           }
+          if(uRight.name === "ContactTypes")
+          {
+            this.showcontactTypes = true
+          }
         });
       },
       msg => {

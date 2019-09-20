@@ -8,6 +8,8 @@ import { ContactType } from 'src/app/models/HttpResponses/ContactType';
 import { Pagination } from 'src/app/models/Pagination';
 import { ListContactTypes } from 'src/app/models/HttpResponses/ListContactTypes';
 import { AddContactTypesResponse } from 'src/app/models/HttpResponses/AddContactTypesResponse';
+import { UpdateContactTypeRequest } from 'src/app/models/HttpRequests/UpdateContactTypes';
+import { UpdateContactTypesResponse } from 'src/app/models/HttpResponses/UpdateContactTypesResponse';
 
 @Component({
   selector: 'app-view-contact-types-list',
@@ -252,45 +254,49 @@ export class ViewContactTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  // editAddressTypes($event) {
-  //   this.themeService.toggleContextMenu(false);
-  //   /*this.contextMenu = false;*/
-  //   this.openModal.nativeElement.click();
-  //   console.log('open modal');
-  // }
+  editContactTypes($event) {
+    this.themeService.toggleContextMenu(false);
+    /*this.contextMenu = false;*/
+    this.openModal.nativeElement.click();
+    console.log('open modal');
+  }
 
-  // updateAddressType() {
-  //   let errors = 0;
+  updateContactType() {
+    let errors = 0;
 
-  //   if (this.focusAddressTypeName === '' || this.focusAddressTypeName === undefined) {
-  //     errors++;
-  //   }
-  //   const requestModel: UpdateAddressTypeRequest = {
-  //     userID: 3,
-  //     addressTypeID: this.focusAddressTypeId,
-  //     name: this.focusAddressTypeName,
-  //     isDeleted: 0
-  //   };
-  //   if (errors === 0) {
+    if (this.focusContactTypeName === '' || this.focusContactTypeName === undefined) {
+      errors++;
+    }
+    if(this.focusContactTypeDescription === '' || this.focusContactTypeDescription === undefined){
+      errors++;
+    }
+    const requestModel: UpdateContactTypeRequest = {
+      userID: 3,
+      contactTypeID: this.focusContactTypeId,
+      name: this.focusContactTypeName,
+      description: this.focusContactTypeDescription,
+      isDeleted: 0
+    };
+    if (errors === 0) {
 
-  //     this.addressTypeService.update(requestModel).then(
-  //       (res: UpdateAddressTypesResponse) => {
-  //         this.closeModal.nativeElement.click();
+      this.contactTypeService.update(requestModel).then(
+        (res: UpdateContactTypesResponse) => {
+          this.closeModal.nativeElement.click();
 
-  //         this.addressTypes.rowStart = 1;
-  //         this.addressTypes.rowEnd = this.selectRowDisplay;
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.contactTypes.rowStart = 1;
+          this.contactTypes.rowEnd = this.selectRowDisplay;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
-  //         this.loadAddressTypes();
-  //       },
-  //       (msg) => {
-  //         this.notify.errorsmsg('Failure', msg.message);
-  //       }
-  //     );
-  //   } else {
-  //     this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
-  //   }
-  // }
+          this.loadContactTypes();
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', msg.message);
+        }
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    }
+  }
 
 
 

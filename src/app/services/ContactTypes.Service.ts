@@ -3,6 +3,8 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { ContactTypesListRequest } from '../models/HttpRequests/ContactTypesList';
 import { AddContactTypesRequest } from '../models/HttpRequests/AddContactTypesRequest';
+import { UpdateAddressTypeRequest } from '../models/HttpRequests/UpdateAddressTypes';
+import { UpdateContactTypeRequest } from '../models/HttpRequests/UpdateContactTypes';
 
 @Injectable({
   providedIn: 'root'
@@ -30,23 +32,23 @@ export class ContactTypesService {
   }
 
   /*Update*/
-  // public update(request: UpdateAddressTypeRequest) {
-  //   const requestModel = JSON.parse(JSON.stringify(request));
-  //   return new Promise((resolve, reject) => {
-  //     const apiURL = `${environment.ApiEndpoint}/addressTypes/update`;
-  //     this.httpClient
-  //       .post(apiURL, requestModel)
-  //       .toPromise()
-  //       .then(
-  //         res => {
-  //           resolve(res);
-  //         },
-  //         msg => {
-  //           reject(msg);
-  //         }
-  //       );
-  //   });
-  // }
+  public update(request: UpdateContactTypeRequest) {
+    const requestModel = JSON.parse(JSON.stringify(request));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/contactType/update`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
 
   /*Add*/
