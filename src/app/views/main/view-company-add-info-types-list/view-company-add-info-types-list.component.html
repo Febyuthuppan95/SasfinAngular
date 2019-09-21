@@ -54,7 +54,7 @@
         </thead>
 
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let companyAddInfoType of dataset; let i=index" class="userRecord" (click)="popClick($event, companyAdddInfoType.companyAddInfoTypeID, companyAdddInfoType.name); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let companyAddInfoType of dataset; let i=index" class="userRecord" (click)="popClick($event, companyAddInfoType.companyAddInfoTypeID, companyAddInfoType.name); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{companyAddInfoType.rowNum}}</td>
             <td>{{companyAddInfoType.name}}</td>
             <!-- <td>{{unit.description}}</td> -->
