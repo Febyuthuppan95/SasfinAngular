@@ -18,6 +18,7 @@ import { CompanyAddInfoTypesListRequest } from 'src/app/models/HttpRequests/Comp
 import { CompanyAddInfoTypesService } from 'src/app/services/CompanyAddInfoTypes.Service';
 import { CompanyAddInfoType } from 'src/app/models/HttpResponses/CompanyAddInfoType';
 import { ListCompanyAddInfoTypes } from 'src/app/models/HttpResponses/ListCompanyAddInfoTypes';
+import { AddCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/AddCompanyAddInfoTypesResponse';
 
 @Component({
   selector: 'app-view-company-add-info-types-list',
@@ -260,74 +261,74 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  // editCompanyAddInfoTypes($event) {
-  //   this.themeService.toggleContextMenu(false);
-  //   /*this.contextMenu = false;*/
-  //   this.openModal.nativeElement.click();
-  //   console.log('open modal');
-  // }
+  editCompanyAddInfoTypes($event) {
+    this.themeService.toggleContextMenu(false);
+    /*this.contextMenu = false;*/
+    this.openModal.nativeElement.click();
+    console.log('open modal');
+  }
 
-  // updateCompanyAddInfoType() {
-  //   let errors = 0;
+  updateCompanyAddInfoType() {
+    let errors = 0;
 
-  //   if (this.focusCompanyAddInfoTypeName === '' || this.focusCompanyAddInfoTypeName === undefined) {
-  //     errors++;
-  //   }
-  //   const requestModel: UpdateCompanyAddInfoTypeRequest = {
-  //     userID: 3,
-  //     addressTypeID: this.focusCompanyAddInfoTypeId,
-  //     name: this.focusCompanyAddInfoTypeName,
-  //     isDeleted: 0
-  //   };
-  //   if (errors === 0) {
+    if (this.focusCompanyAddInfoTypeName === '' || this.focusCompanyAddInfoTypeName === undefined) {
+      errors++;
+    }
+    const requestModel: UpdateCompanyAddInfoTypeRequest = {
+      userID: 3,
+      addressTypeID: this.focusCompanyAddInfoTypeId,
+      name: this.focusCompanyAddInfoTypeName,
+      isDeleted: 0
+    };
+    if (errors === 0) {
 
-  //     this.companyAddInfoTypeService.update(requestModel).then(
-  //       (res: UpdateCompanyAddInfoTypesResponse) => {
-  //         this.closeModal.nativeElement.click();
+      this.companyAddInfoTypeService.update(requestModel).then(
+        (res: UpdateCompanyAddInfoTypesResponse) => {
+          this.closeModal.nativeElement.click();
 
-  //         this.companyAddInfoTypes.rowStart = 1;
-  //         this.companyAddInfoTypes.rowEnd = this.selectRowDisplay;
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.companyAddInfoTypes.rowStart = 1;
+          this.companyAddInfoTypes.rowEnd = this.selectRowDisplay;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
-  //         this.loadCompanyAddInfoTypes();
-  //       },
-  //       (msg) => {
-  //         this.notify.errorsmsg('Failure', msg.message);
-  //       }
-  //     );
-  //   } else {
-  //     this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
-  //   }
-  // }
+          this.loadCompanyAddInfoTypes();
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', msg.message);
+        }
+      );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    }
+  }
 
 
   // /* Add Handlers from context menu */
 
-  // addCompanyAddInfoTypesModal() {
-  //   this.newCompanyAddInfoTypeName = '';
-  //   this.addModalOpen.nativeElement.click();
-  // }
+  addCompanyAddInfoTypesModal() {
+    this.newCompanyAddInfoTypeName = '';
+    this.addModalOpen.nativeElement.click();
+  }
 
-  // addCompanyAddInfoType($event) {
-  //    const requestModel = {
-  //      userID: this.currentUser.userID,
-  //      name: this.newCompanyAddInfoTypeName
-  //    };
+  addCompanyAddInfoType($event) {
+     const requestModel = {
+       userID: this.currentUser.userID,
+       name: this.newCompanyAddInfoTypeName
+     };
 
-  //    this.companyAddInfoTypeService.add(requestModel).then(
-  //      (res: AddCompanyAddInfoTypesResponse) => {
-  //        console.log(res);
-  //        if (res.outcome.outcome === 'SUCCESS') {
-  //          this.newCompanyAddInfoTypeName = '';
-  //          this.addModalClose.nativeElement.click();
-  //          this.loadCompanyAddInfoTypes();
-  //        } else {
-  //          alert('Error Adding');
-  //        }
-  //      },
-  //      (msg) => {
-  //        alert('Error');
-  //     }
-  //   );
-  // }
+     this.companyAddInfoTypeService.add(requestModel).then(
+       (res: AddCompanyAddInfoTypesResponse) => {
+         console.log(res);
+         if (res.outcome.outcome === 'SUCCESS') {
+           this.newCompanyAddInfoTypeName = '';
+           this.addModalClose.nativeElement.click();
+           this.loadCompanyAddInfoTypes();
+         } else {
+           alert('Error Adding');
+         }
+       },
+       (msg) => {
+         alert('Error');
+      }
+    );
+  }
 }
