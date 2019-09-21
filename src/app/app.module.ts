@@ -98,6 +98,11 @@ import { TableComponent } from './components/table/table.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 import { ContactTypesService } from './services/ContactTypes.Service';
 import { ContextMenuContactTypesComponent } from './components/menus/context-menu-contact-types/context-menu-contact-types.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyAddInfoTypesComponent } from './components/menus/context-menu-company-add-info-types/context-menu-company-add-info-types.component';
+import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Service';
 
 
 @NgModule({
@@ -163,7 +168,9 @@ import { ContextMenuContactTypesComponent } from './components/menus/context-men
     TableComponent,
     PaginationComponent,
     ViewContactTypesListComponent,
-    ContextMenuContactTypesComponent
+    ContextMenuContactTypesComponent,
+    ViewCompanyAddInfoTypesListComponent,
+    ContextMenuCompanyAddInfoTypesComponent
   ],
   imports: [
     BrowserModule,
@@ -208,6 +215,7 @@ import { ContextMenuContactTypesComponent } from './components/menus/context-men
     CompanyService,
     AddressTypesService,
     ContactTypesService,
+    CompanyAddInfoTypesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
