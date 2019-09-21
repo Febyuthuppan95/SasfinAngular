@@ -5,20 +5,14 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
-import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
-import { UpdateAddressTypesResponse } from 'src/app/models/HttpResponses/UpdateAddressTypesResponse';
-import { AddressTypesListRequest } from 'src/app/models/HttpRequests/AddressTypesList';
-import { AddressType } from 'src/app/models/HttpResponses/AddressType';
-import { ListAddressTypes } from 'src/app/models/HttpResponses/ListAddressTypes';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
-import { AddressTypesService } from 'src/app/services/AddressTypes.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CompanyAddInfoTypesListRequest } from 'src/app/models/HttpRequests/CompanyAddInfoTypesList';
 import { CompanyAddInfoTypesService } from 'src/app/services/CompanyAddInfoTypes.Service';
 import { CompanyAddInfoType } from 'src/app/models/HttpResponses/CompanyAddInfoType';
 import { ListCompanyAddInfoTypes } from 'src/app/models/HttpResponses/ListCompanyAddInfoTypes';
 import { AddCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/AddCompanyAddInfoTypesResponse';
+import { UpdateCompanyAddInfoTypeRequest } from 'src/app/models/HttpRequests/UpdateCompanyAddInfoTypes';
+import { UpdateCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/UpdateCompanyAddInfoTypesResponse';
 
 @Component({
   selector: 'app-view-company-add-info-types-list',
@@ -27,6 +21,7 @@ import { AddCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/Add
 })
 export class ViewCompanyAddInfoTypesListComponent implements OnInit {
 
+  // tslint:disable-next-line: max-line-length
   constructor(private themeService: ThemeService, private companyAddInfoTypeService: CompanyAddInfoTypesService, private userService: UserService) {}
 
   @ViewChild(NotificationComponent, { static: true })
@@ -276,7 +271,7 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit {
     }
     const requestModel: UpdateCompanyAddInfoTypeRequest = {
       userID: 3,
-      addressTypeID: this.focusCompanyAddInfoTypeId,
+      companyAddInfoTypeID: this.focusCompanyAddInfoTypeId,
       name: this.focusCompanyAddInfoTypeName,
       isDeleted: 0
     };
