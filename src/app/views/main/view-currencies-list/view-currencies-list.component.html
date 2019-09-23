@@ -22,7 +22,7 @@
         </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="currenciesList.filter" [ngModelOptions]="{standalone: true}" />
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="currencies.filter" [ngModelOptions]="{standalone: true}" />
       </form>
     </div>
     <br />
@@ -99,7 +99,7 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ currency.rowStart }} to {{ totalDisplayCount }} of
+    <p class="ls-text-{{ currentTheme }}">Showing {{ currencies.rowStart }} to {{ totalDisplayCount }} of
       {{ rowCount }}</p>
   </div>
 </div>
