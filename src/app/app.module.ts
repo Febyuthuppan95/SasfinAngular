@@ -103,6 +103,9 @@ import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyAddInfoTypesComponent } from './components/menus/context-menu-company-add-info-types/context-menu-company-add-info-types.component';
 import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Service';
+import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-currencies/context-menu-currencies.component';
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { CurrenciesService } from './services/Currencies.Service';
 
 
 @NgModule({
@@ -170,7 +173,9 @@ import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Servi
     ViewContactTypesListComponent,
     ContextMenuContactTypesComponent,
     ViewCompanyAddInfoTypesListComponent,
-    ContextMenuCompanyAddInfoTypesComponent
+    ContextMenuCompanyAddInfoTypesComponent,
+    ContextMenuCurrenciesComponent,
+    ViewCurrenciesListComponent
   ],
   imports: [
     BrowserModule,
@@ -216,6 +221,7 @@ import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Servi
     AddressTypesService,
     ContactTypesService,
     CompanyAddInfoTypesService,
+    CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -90,5 +90,13 @@
     <span class="menu-title">Company Add Info Types</span>
   </a>
   </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-company-add-info-types-link')"
+  matTooltip="Currencies" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/currencies" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-home-modern menu-icon"></i>
+    <span class="menu-title">Currencies</span>
+  </a>
+  </li>
   </ul>
 </nav>

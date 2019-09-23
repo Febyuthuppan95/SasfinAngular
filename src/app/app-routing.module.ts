@@ -31,6 +31,7 @@ import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-ca
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -70,7 +71,8 @@ const routes: Routes = [
           { path: 'transactions/', component: ViewTransactionsComponent },
           { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
           { path: 'contacttypes', component: ViewContactTypesListComponent },
-          { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent }
+          { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent },
+          { path: 'currencies', component: ViewCurrenciesListComponent}
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
