@@ -69,9 +69,9 @@ export class SidebarComponent implements OnInit {
   @Input() showattachments = false;
   @Input() showcompanyContactsList = false;
   @Input() showcompanyAddressList = false;
-  @Input() showservices = false;
-  @Input() showtariffs = false;
-  @Input() showitems = false;
+  @Input() showservices = true;
+  @Input() showtariffs = true;
+  @Input() showitems = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])

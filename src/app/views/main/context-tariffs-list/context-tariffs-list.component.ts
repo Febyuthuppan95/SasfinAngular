@@ -172,11 +172,12 @@ export class ContextTariffsListComponent implements OnInit {
       orderByDirection: this.orderDirection
 
     };
+
     this.tariffService
     .getTariffList(model)
     .then(
       (res: TariffListResponse) => {
-        console.log(res.tariffs);
+        console.log('this  happens');
 
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(

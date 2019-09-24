@@ -15,7 +15,7 @@
         <form class="form-inline">
           <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
             class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-            (change)="loadUnitsOfMeasures()">
+            (change)="loadAddressTypes()">
             <option value='15' selected>Showing 15</option>
             <option value='25'>Showing 25</option>
             <option value='50'>Showing 50</option>
@@ -152,7 +152,7 @@
   <app-notification></app-notification>
   <!-- <app-modal-component></app-modal-component> -->
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-address-types (editAddressType)="editAddressTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressTypeID]="focusAddressTypeID" [addressTypeName]="focusAddressTypeName"
+  <app-context-menu-address-types (editAddressType)="editAddressTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressTypeID]="focusAddressTypeId" [addressTypeName]="focusAddressTypeName"
                                   (addAddressType)="addAddressTypesModal($event)">
   </app-context-menu-address-types>
   </div>

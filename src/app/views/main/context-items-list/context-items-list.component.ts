@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
@@ -200,7 +198,6 @@ export class ContextItemsListComponent implements OnInit {
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
-  pages: Pagination[];
   showingPages: Pagination[];
   rowCount: number;
   nextPage: number;
