@@ -102,6 +102,10 @@ import { ContextMenuServiceListComponent } from './views/main/context-menu-servi
 import { ChatOverlayComponent } from './components/chat/chat-overlay/chat-overlay.component';
 import { ChatUserTileComponent } from './components/chat/chat-user-tile/chat-user-tile.component';
 import { ChatBubbleComponent } from './components/chat/chat-bubble/chat-bubble.component';
+import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 
 @NgModule({
   declarations: [
@@ -170,7 +174,11 @@ import { ChatBubbleComponent } from './components/chat/chat-bubble/chat-bubble.c
     ContextMenuServiceListComponent,
     ChatOverlayComponent,
     ChatUserTileComponent,
-    ChatBubbleComponent
+    ChatBubbleComponent,
+    ContextCompanyServiceListComponent,
+    ContextTariffsListComponent,
+    ContextItemsListComponent,
+    ContextCompanyItemsListComponent
   ],
   imports: [
     BrowserModule,

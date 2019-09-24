@@ -11,19 +11,19 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { Service } from 'src/app/models/HttpResponses/Service';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { ServicesService } from '../../../services/Services.Service';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { ItemsService } from 'src/app/services/Items.Service';
+import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
+import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 
 @Component({
-  selector: 'app-context-menu-service-list',
-  templateUrl: './context-menu-service-list.component.html',
-  styleUrls: ['./context-menu-service-list.component.scss']
+  selector: 'app-context-items-list',
+  templateUrl: './context-items-list.component.html',
+  styleUrls: ['./context-items-list.component.scss']
 })
-export class ContextMenuServiceListComponent implements OnInit {
+export class ContextItemsListComponent implements OnInit {
+
   constructor(
-    private ServiceService: ServicesService,
+    private ItemService: ItemsService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -40,7 +40,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadServices(true);
+    this.loadItems(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -50,9 +50,9 @@ export class ContextMenuServiceListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Services',
+    title: 'Items',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -72,17 +72,127 @@ export class ContextMenuServiceListComponent implements OnInit {
       }
     },
     {
-      title: 'Service Name',
-      propertyName: 'serviceName',
+      title: 'Item',
+      propertyName: 'item',
       order: {
         enable: true,
-        tag: 'ServiceName'
+        tag: 'Item'
+      }
+    },
+    {
+      title: 'Discription',
+      propertyName: 'discription',
+      order: {
+        enable: true,
+        tag: 'Discription'
+      }
+    },
+    {
+      title: 'Tariff',
+      propertyName: 'tariff',
+      order: {
+        enable: true,
+        tag: 'Tariff'
+      }
+    },
+    {
+      title: 'Type',
+      propertyName: 'type',
+      order: {
+        enable: true,
+        tag: 'Type'
+      }
+    },
+    {
+      title: 'Usage',
+      propertyName: 'usage',
+      order: {
+        enable: true,
+        tag: 'Usage'
+      }
+    },
+    {
+      title: 'MIDP',
+      propertyName: 'midp',
+      order: {
+        enable: true,
+        tag: 'MIDP'
+      }
+    },
+    {
+      title: 'PI',
+      propertyName: 'pi',
+      order: {
+        enable: true,
+        tag: 'PI'
+      }
+    },
+    {
+      title: 'Vulnerable',
+      propertyName: 'vulnerable',
+      order: {
+        enable: true,
+        tag: 'Vulnerable'
+      }
+    },
+    {
+      title: '521',
+      propertyName: '521',
+      order: {
+        enable: true,
+        tag: '521'
+      }
+    },
+    {
+      title: '536',
+      propertyName: '536',
+      order: {
+        enable: true,
+        tag: '536'
+      }
+    },
+    {
+      title: '317.6.1',
+      propertyName: '317.6.1',
+      order: {
+        enable: true,
+        tag: '317.6.1'
+      }
+    },
+    {
+      title: '317.6.2',
+      propertyName: '317.6.2',
+      order: {
+        enable: true,
+        tag: '317.6.2'
+      }
+    },
+    {
+      title: '317.02',
+      propertyName: '317.02',
+      order: {
+        enable: true,
+        tag: '317.02'
       }
     }
   ];
 
   selectedRow = -1;
-  ServiceName = '';
+  Item = '';
+  Discription = '';
+  Tariff = 0;
+  Type = '';
+  Usage = '';
+  MIDP = -1;
+  PI = '';
+  Vulnerable = '';
+  N521 = 0;
+  N536 = '';
+  N31761 = '';
+  N31762 = '';
+  N31702 = '';
+
+  items: Items[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -92,7 +202,6 @@ export class ContextMenuServiceListComponent implements OnInit {
   contextMenuY = 0;
   pages: Pagination[];
   showingPages: Pagination[];
-  servicelist: Service[] = null;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -120,28 +229,26 @@ export class ContextMenuServiceListComponent implements OnInit {
     });
 
 
-    this.loadServices(false);
+    this.loadItems(false);
   }
 
-  loadServices(displayGrowl: boolean) {
+  loadItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetServiceLList = {
+    const model: GetItemList = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificServiceID: -1,
+      specificItemID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
 
     };
-    this.ServiceService
-    .getServiceList(model)
+    this.ItemService
+    .getItemList(model)
     .then(
-      (res: ServiceListResponse) => {
-        console.log(res.serviceses);
-
+      (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -161,10 +268,10 @@ export class ContextMenuServiceListComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceses.length;
-          this.servicelist = res.serviceses;
+          this.showingRecords = res.items.length;
+          this.items = res.items;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
+          this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
       },
       msg => {
@@ -180,12 +287,12 @@ export class ContextMenuServiceListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadServices(false);
+    this.loadItems(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadServices(false);
+    this.loadItems(false);
   }
 
 
@@ -198,7 +305,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadServices(false);
+    this.loadItems(false);
   }
 
   // popClick(event, user) {
@@ -249,13 +356,15 @@ export class ContextMenuServiceListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadServices(true);
+    this.loadItems(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadServices(false);
+    this.loadItems(false);
   }
 
 }
+
+
 

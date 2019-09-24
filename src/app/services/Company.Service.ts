@@ -2,7 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { CompanyList, UpdateCompany, AddCompany, AddCompanyInfo, UpdateCompanyInfo, AddCompanyAddress, UpdateCompanyAddress } from '../models/HttpRequests/Company';
+import { AddCompany } from '../models/HttpRequests/Company';
+import { UpdateCompany } from '../models/HttpRequests/Company';
+import { CompanyList } from '../models/HttpRequests/Company';
+import { AddCompanyInfo } from '../models/HttpRequests/Company';
+import { UpdateCompanyInfo } from '../models/HttpRequests/Company';
+import { AddCompanyAddress } from '../models/HttpRequests/Company';
+import { UpdateCompanyAddress } from '../models/HttpRequests/Company';
+import { AddCompanyService } from '../models/HttpRequests/AddCompanyService';
+import { UpdateCompanyService } from '../models/HttpRequests/UpdateCompanyService';
+import { AddCompanyItem } from '../models/HttpRequests/AddCompanyItem';
+import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 
 @Injectable({
   providedIn: 'root'
@@ -229,6 +239,115 @@ export class CompanyService {
       );
     });
     return promise;
+  }
+
+  /**
+   * service
+   */
+  public service(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/companyservice`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public AddService(model: AddCompanyService) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyservice`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public UpdateService(model: UpdateCompanyService) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyservice`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  public items(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/companyitems`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public additem(model: AddCompanyItem) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyitem`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public updateitem(model: UpdateCompanyItem) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyitem`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 
   /**
