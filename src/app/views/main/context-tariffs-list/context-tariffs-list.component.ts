@@ -119,7 +119,7 @@ export class ContextTariffsListComponent implements OnInit {
   Duty = 0;
   HSUnit = '';
   Quality538 = '';
-  tarifflist: Tariffs[] = [];
+  tarifflist: Tariffs[];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;

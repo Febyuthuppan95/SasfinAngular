@@ -37,6 +37,8 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
+    console.log(this.recordsPerPage);
+    console.log(this.rowCount);
     this.loadTable();
   }
 
@@ -88,7 +90,10 @@ export class TableComponent implements OnInit, OnChanges {
       this.displayData.push(record);
     });
 
-    this.paginate = true;
+    if (this.rowCount !== undefined) {
+      this.paginate = true;
+    }
+
     this.updateSort(this.orderBy);
     this.themeService.observeTheme().subscribe(theme => this.currentTheme = theme);
   }
