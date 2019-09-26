@@ -9,19 +9,19 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { ItemType } from 'src/app/models/HttpResponses/ItemType';
+import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
+import { GetItemTypeList } from 'src/app/models/HttpRequests/GetItemTypeList';
+import { ItemTypesService } from 'src/app/services/ItemTypes.Service';
 
 @Component({
-  selector: 'app-context-items-list',
-  templateUrl: './context-items-list.component.html',
-  styleUrls: ['./context-items-list.component.scss']
+  selector: 'app-view-item-types-list',
+  templateUrl: './view-item-types-list.component.html',
+  styleUrls: ['./view-item-types-list.component.scss']
 })
-export class ContextItemsListComponent implements OnInit {
-
+export class ViewItemTypesListComponent implements OnInit {
   constructor(
-    private companyService: CompanyService,
+    private itemTypesService: ItemTypesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -38,7 +38,7 @@ export class ContextItemsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadItems(true);
+    this.loadItemTypes(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -48,9 +48,9 @@ export class ContextItemsListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Items',
+    title: 'Item Types',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
@@ -70,127 +70,17 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'Item',
-      propertyName: 'item',
+      title: 'Item Type',
+      propertyName: 'itemType',
       order: {
         enable: true,
-        tag: 'Item'
+        tag: 'ItemType'
       }
     }
-    // {
-    //   title: 'Discription',
-    //   propertyName: 'discription',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Discription'
-    //   }
-    // },
-    // {
-    //   title: 'Tariff',
-    //   propertyName: 'tariff',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Tariff'
-    //   }
-    // },
-    // {
-    //   title: 'Type',
-    //   propertyName: 'type',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Type'
-    //   }
-    // },
-    // {
-    //   title: 'Usage',
-    //   propertyName: 'usage',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Usage'
-    //   }
-    // },
-    // {
-    //   title: 'MIDP',
-    //   propertyName: 'midp',
-    //   order: {
-    //     enable: true,
-    //     tag: 'MIDP'
-    //   }
-    // },
-    // {
-    //   title: 'PI',
-    //   propertyName: 'pi',
-    //   order: {
-    //     enable: true,
-    //     tag: 'PI'
-    //   }
-    // },
-    // {
-    //   title: 'Vulnerable',
-    //   propertyName: 'vulnerable',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Vulnerable'
-    //   }
-    // },
-    // {
-    //   title: '521',
-    //   propertyName: '521',
-    //   order: {
-    //     enable: true,
-    //     tag: '521'
-    //   }
-    // },
-    // {
-    //   title: '536',
-    //   propertyName: '536',
-    //   order: {
-    //     enable: true,
-    //     tag: '536'
-    //   }
-    // },
-    // {
-    //   title: '317.6.1',
-    //   propertyName: '317.6.1',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.6.1'
-    //   }
-    // },
-    // {
-    //   title: '317.6.2',
-    //   propertyName: '317.6.2',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.6.2'
-    //   }
-    // },
-    // {
-    //   title: '317.02',
-    //   propertyName: '317.02',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.02'
-    //   }
-    // }
   ];
 
   selectedRow = -1;
-  Item = '';
-  Discription = '';
-  Tariff = 0;
-  Type = '';
-  Usage = '';
-  MIDP = -1;
-  PI = '';
-  Vulnerable = '';
-  N521 = 0;
-  N536 = '';
-  N31761 = '';
-  N31762 = '';
-  N31702 = '';
-
-  items: Items[] = [];
+  ItemTypeName = '';
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -198,7 +88,9 @@ export class ContextItemsListComponent implements OnInit {
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
+  pages: Pagination[];
   showingPages: Pagination[];
+  itemTypelist: ItemType[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -226,27 +118,27 @@ export class ContextItemsListComponent implements OnInit {
     });
 
 
-    this.loadItems(false);
+    this.loadItemTypes(false);
   }
 
-  loadItems(displayGrowl: boolean) {
+  loadItemTypes(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetItemList = {
-      userID: this.currentUser.userID,
+    const model: GetItemTypeList = {
       filter: this.filter,
-      specificItemID: -1,
+      userID: this.currentUser.userID,
+      specificItemTypeID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
-    this.companyService
-    .getItemList(model)
+
+    this.itemTypesService
+    .getItemTypeList(model)
     .then(
-      (res: ItemsListResponse) => {
-        console.log(res.itemsLists.length);
+      (res: ItemTypeListResponse) => {
+
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -266,12 +158,11 @@ export class ContextItemsListComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.itemsLists.length;
-          this.items = res.itemsLists;
+          this.showingRecords = res.itemTypeLists.length;
+          this.itemTypelist = res.itemTypeLists;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.items.length - 1;
+          this.totalShowing = +this.rowStart + +this.itemTypelist.length - 1;
         }
-
       },
       msg => {
         this.showLoader = false;
@@ -286,12 +177,12 @@ export class ContextItemsListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadItems(false);
+    this.loadItemTypes(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadItems(false);
+    this.loadItemTypes(false);
   }
 
 
@@ -304,7 +195,7 @@ export class ContextItemsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadItems(false);
+    this.loadItemTypes(false);
   }
 
   // popClick(event, user) {
@@ -355,15 +246,14 @@ export class ContextItemsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadItems(true);
+    this.loadItemTypes(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadItems(false);
+    this.loadItemTypes(false);
   }
 
 }
-
 
 

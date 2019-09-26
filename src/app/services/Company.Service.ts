@@ -13,6 +13,8 @@ import { AddCompanyService } from '../models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from '../models/HttpRequests/UpdateCompanyService';
 import { AddCompanyItem } from '../models/HttpRequests/AddCompanyItem';
 import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
+import { GetItemList } from '../models/HttpRequests/GetItemList';
+import { GetTariffList } from '../models/HttpRequests/GetTariffList';
 
 @Injectable({
   providedIn: 'root'
@@ -348,6 +350,41 @@ export class CompanyService {
           }
         );
     });
+  }
+
+  public getItemList(model: GetItemList) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/items`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getTariffList(model: GetTariffList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/tariffs`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
   }
 
   /**

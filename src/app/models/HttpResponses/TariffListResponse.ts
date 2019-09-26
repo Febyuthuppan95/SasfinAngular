@@ -2,11 +2,11 @@ import {Outcome} from './Outcome';
 
 export class TariffListResponse {
   outcome: Outcome;
-  tariffs: Tariffs[];
+  tariffsLists: Tariff[];
   rowCount: number;
 }
 
-export class Tariffs {
+export class Tariff {
   rowNum: number;
   tariffID: number;
   tariffCode: string;

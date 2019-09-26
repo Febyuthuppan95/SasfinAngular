@@ -6,7 +6,6 @@ export class CompanyServiceResponse {
   services: Service[];
 }
 
-
 export class Service {
   rowNum: number;
   serviceID: number;

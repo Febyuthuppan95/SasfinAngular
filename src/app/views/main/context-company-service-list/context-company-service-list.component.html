@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - services</h4><span style="margin-left:10px;"><button class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - services</h4><span style="margin-left:10px;"><button (click)="Add()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
         <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -192,14 +192,16 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Responsible Consultant:</label>
-                <select class="form-control" (change)="onConsultantChange($event.target.value)">
-                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.Name === this.selectedConsultant">{{ResConsultant.Name}}</option>
+                <select class="form-control"  (change)="onConsultantChange($event.target.value)">
+                    <option selected value="-1" [disabled]="disableConSelect">Select a Consultant</option>
+                    <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id">{{ResConsultant.Name}}</option>
                 </select>
             </div>
             <div class="form-group">
                   <label class="control-label">Responsible Capturer:</label>
-                  <select class="form-control" (change)="onCapturerChange($event.target.value)">
-                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.Name === this.selectedCapturer">{{ResCapturer.Name}}</option>
+                  <select class="form-control"  (change)="onCapturerChange($event.target.value)">
+                      <option selected value="-1" [disabled]="disableCapSelect">Select a Capturer</option>
+                  <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id">{{ResCapturer.Name}}</option>
                   </select>
             </div>
             <div class="form-group">

@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
@@ -12,8 +10,8 @@ import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
-import { TariffService } from 'src/app/services/Tariff.Service';
-import { TariffListResponse, Tariffs } from 'src/app/models/HttpResponses/TariffListResponse';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 
 @Component({
   selector: 'app-context-tariffs-list',
@@ -23,7 +21,7 @@ import { TariffListResponse, Tariffs } from 'src/app/models/HttpResponses/Tariff
 export class ContextTariffsListComponent implements OnInit {
 
   constructor(
-    private tariffService: TariffService,
+    private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -119,7 +117,7 @@ export class ContextTariffsListComponent implements OnInit {
   Duty = 0;
   HSUnit = '';
   Quality538 = '';
-  tarifflist: Tariffs[];
+  tarifflist: Tariff[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -173,12 +171,10 @@ export class ContextTariffsListComponent implements OnInit {
 
     };
 
-    this.tariffService
+    this.companyService
     .getTariffList(model)
     .then(
       (res: TariffListResponse) => {
-        console.log('this  happens');
-
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -191,15 +187,15 @@ export class ContextTariffsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-
+        console.log(res);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.tariffs.length;
-          this.tarifflist = res.tariffs;
+          this.showingRecords = res.tariffsLists.length;
+          this.tarifflist = res.tariffsLists;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }

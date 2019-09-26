@@ -1,9 +1,9 @@
 export class GetItemList {
-  rowEnd: number;
-  rowStart: number;
-  filter: string;
   userID: number;
   specificItemID: number;
-  orderByDirection: string;
+  filter: string;
   orderBy: string;
+  orderByDirection: string;
+  rowStart: number;
+  rowEnd: number;
 }

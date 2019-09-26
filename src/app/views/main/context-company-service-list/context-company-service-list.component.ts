@@ -30,6 +30,8 @@ import { ResponsibleConsultant } from 'src/app/models/HttpResponses/ResponsibleC
 export class ContextCompanyServiceListComponent implements OnInit {
 
 
+
+
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
@@ -48,7 +50,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyServiceList();
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -109,12 +110,12 @@ export class ContextCompanyServiceListComponent implements OnInit {
   selectedConsultant: string;
   selectedCapturer: string;
   userList: UserList[] = null;
+  disableConSelect: boolean;
+  disableCapSelect: boolean;
 
   noData = false;
   showLoader = true;
   displayFilter = false;
-  disableAddressSelect = false;
-  selectedAddressIndex: number;
 
   contextMenu = false;
   contextMenuX = 0;
@@ -138,6 +139,9 @@ export class ContextCompanyServiceListComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+
+    this.loadCompanyServiceList();
+    this.loadUsers();
   }
 
   backToCompanies() {
@@ -208,7 +212,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificServiceID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
@@ -232,7 +236,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
             this.paginateData();
           }
 
-          console.log(res);
         },
         msg => {
           this.showLoader = false;
@@ -296,6 +299,8 @@ export class ContextCompanyServiceListComponent implements OnInit {
               this.ResCapturers.push(temp2);
             }
           }
+
+          console.log(this.ResConsultants);
         },
         msg => {
           this.showLoader = false;
@@ -383,6 +388,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.selectedRow = index;
   }
 
+
   Add() {
     this.openaddModal.nativeElement.click();
   }
@@ -453,12 +459,12 @@ export class ContextCompanyServiceListComponent implements OnInit {
   }
 
   onConsultantChange(id: number)   {
-    this.disableAddressSelect = true;
+    this.disableConSelect = true;
     this.Type = id;
   }
 
   onCapturerChange(id: number)   {
-    this.disableAddressSelect = true;
+    this.disableCapSelect = true;
     this.Type = id;
   }
 

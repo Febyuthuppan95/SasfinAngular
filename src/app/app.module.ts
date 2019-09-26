@@ -106,6 +106,7 @@ import { ContextCompanyServiceListComponent } from './views/main/context-company
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
+import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { ContextCompanyItemsListComponent } from './views/main/context-company-i
     ContextCompanyServiceListComponent,
     ContextTariffsListComponent,
     ContextItemsListComponent,
-    ContextCompanyItemsListComponent
+    ContextCompanyItemsListComponent,
+    ViewItemTypesListComponent
   ],
   imports: [
     BrowserModule,

@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import { Config } from '../../assets/config.json';
 import { environment } from '../../environments/environment';
 import { ThemeService } from './theme.Service';
-import { GetItemList } from '../models/HttpRequests/GetItemList';
+import { GetServiceLList } from '../models/HttpRequests/GetServiceLList';
+import { GetItemTypeList } from '../models/HttpRequests/GetItemTypeList';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ItemsService {
+export class ItemTypesService {
   constructor(
     private httpClient: HttpClient,
   ) {}
@@ -20,10 +21,10 @@ export class ItemsService {
   /**
    * service list
    */
-  public getItemList(model: GetItemList) {
+  public getItemTypeList(model: GetItemTypeList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/items`;
+      const apiURL = `${environment.ApiEndpoint}/itemtypes/list`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
