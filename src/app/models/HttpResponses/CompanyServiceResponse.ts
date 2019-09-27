@@ -3,10 +3,10 @@ import { Outcome } from './Outcome';
 export class CompanyServiceResponse {
   outcome: Outcome;
   rowCount: number;
-  services: Service[];
+  services: CompService[];
 }
 
-export class Service {
+export class CompService {
   rowNum: number;
   serviceID: number;
   companyID: string;

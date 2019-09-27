@@ -13,7 +13,7 @@ import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
-import { CompanyServiceResponse, Service } from 'src/app/models/HttpResponses/CompanyServiceResponse';
+import { CompanyServiceResponse, CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { AddCompanyService } from 'src/app/models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from 'src/app/models/HttpRequests/UpdateCompanyService';
 import { GetUserList } from 'src/app/models/HttpRequests/Users';
@@ -21,6 +21,10 @@ import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse'
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 import { ResponsibleCapturer } from 'src/app/models/HttpResponses/ResponsibleCapturer';
 import { ResponsibleConsultant } from 'src/app/models/HttpResponses/ResponsibleConsultant';
+import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
+import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { ServicesService } from 'src/app/services/Services.Service';
+import { Service } from 'src/app/models/HttpResponses/Service';
 
 @Component({
   selector: 'app-context-company-service-list',
@@ -29,12 +33,10 @@ import { ResponsibleConsultant } from 'src/app/models/HttpResponses/ResponsibleC
 })
 export class ContextCompanyServiceListComponent implements OnInit {
 
-
-
-
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
+    private ServiceService: ServicesService,
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -82,7 +84,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
   showingPages: Pagination[];
   dataset: CompanyServiceResponse;
   Citiesset: CitiesResponse;
-  dataList: Service[] = [];
+  dataList: CompService[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -103,8 +105,8 @@ export class ContextCompanyServiceListComponent implements OnInit {
   focusServiceID: number;
   ResConsultant: string;
   ResCapturer: string;
-  StartDate: string;
-  EndDate: string;
+  StartDate: Date;
+  EndDate: Date;
   ResConsultants: ResponsibleConsultant[] = [];
   ResCapturers: ResponsibleCapturer[] = [];
   selectedConsultant: string;
@@ -112,6 +114,11 @@ export class ContextCompanyServiceListComponent implements OnInit {
   userList: UserList[] = null;
   disableConSelect: boolean;
   disableCapSelect: boolean;
+  disableSerSelect: boolean;
+  ConID: number;
+  CapID: number;
+  SerID: number;
+  serviceslist: Service[] = [];
 
   noData = false;
   showLoader = true;
@@ -141,7 +148,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
     });
 
     this.loadCompanyServiceList();
-    this.loadUsers();
+
   }
 
   backToCompanies() {
@@ -236,6 +243,9 @@ export class ContextCompanyServiceListComponent implements OnInit {
             this.paginateData();
           }
 
+          this.loadUsers();
+          this.loadServices(false);
+
         },
         msg => {
           this.showLoader = false;
@@ -310,6 +320,58 @@ export class ContextCompanyServiceListComponent implements OnInit {
           );
         }
       );
+  }
+
+  loadServices(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetServiceLList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificServiceID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.ServiceService
+    .getServiceList(model)
+    .then(
+      (res: ServiceListResponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        } else {
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
+        console.log(res.serviceses);
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.serviceses.length;
+          this.serviceslist = res.serviceses;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.serviceslist.length - 1;
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
   updateSort(orderBy: string) {
@@ -393,18 +455,18 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.openaddModal.nativeElement.click();
   }
 
-  addCompanyAddress() {
+  addCompanyService() {
 
     const requestModel: AddCompanyService = {
       userID: this.currentUser.userID,
-      spesificCompanyID: this.focusServiceID,
-      spesificServiceID: this.focusServiceID,
-      ServiceName: this.ServiceName,
-      ResConsultant: this.ResConsultant,
-      ResCapturer: this.ResCapturer,
-      StartDate: this.StartDate,
-      EndDate: this.EndDate,
+      spesificCompanyID: this.companyID,
+      spesificServiceID: this.SerID,
+      resConsultantID: this.ConID,
+      resCapturerID: this.CapID,
+      startDate: this.StartDate,
+      endDate: this.EndDate,
     };
+
 
     this.companyService.AddService(requestModel).then(
       (res: {outcome: Outcome}) => {
@@ -460,12 +522,18 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
   onConsultantChange(id: number)   {
     this.disableConSelect = true;
-    this.Type = id;
+    this.ConID = id;
   }
 
   onCapturerChange(id: number)   {
     this.disableCapSelect = true;
-    this.Type = id;
+    this.CapID = id;
+  }
+
+  onServiceChange(id: number)   {
+    console.log(id);
+    this.disableSerSelect = true;
+    this.SerID = id;
   }
 
 }

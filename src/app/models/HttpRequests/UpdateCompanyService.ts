@@ -4,8 +4,8 @@ export class UpdateCompanyService {
     ServiceName: string;
     ResConsultant: string;
     ResCapturer: string;
-    StartDate: string;
-    EndDate: string;
+    StartDate: Date;
+    EndDate: Date;
 }
 
 

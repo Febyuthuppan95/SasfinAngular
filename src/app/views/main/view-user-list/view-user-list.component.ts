@@ -1,4 +1,3 @@
-//import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
 import { DesignationService } from './../../../services/Designation.service';
 import { Status } from './../../../models/Enums/Statuses';
 import { Subscription } from 'rxjs';
@@ -373,8 +372,8 @@ export class ViewUserListComponent implements OnInit {
       }
     }
 
-    for(let index = 0; index < this.statusList.length; index++) {
-      if(this.statusList[index].name === user.status) {
+    for (let index = 0; index < this.statusList.length; index++) {
+      if (this.statusList[index].name === user.status) {
         this.selectedStatus = +this.statusList[index].id;
       }
     }
