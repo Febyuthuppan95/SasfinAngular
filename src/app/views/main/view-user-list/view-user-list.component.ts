@@ -354,6 +354,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
+    this.selectedStatus = user.statusID;
     this.currentUserID = +user.userId;
     this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
@@ -364,6 +365,8 @@ export class ViewUserListComponent implements OnInit {
     this.ProfileImage = user.profileImage;
     this.preview = user.profileImage;
     this.selectedUserID = +user.userId;
+
+    console.log(this.selectedStatus);
 
     for (let index = 0; index < this.designations.length; index++) {
       if (this.designations[index].name === user.designation) {
