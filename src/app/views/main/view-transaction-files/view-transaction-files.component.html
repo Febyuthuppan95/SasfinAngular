@@ -79,14 +79,14 @@
     </div>
     <br />
     <br />
-    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;" *ngIf="this.showingPages">
       <ul class="pagination pagination-sm">
         <li class="page-item">
           <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
             (click)="pageChange(prevPage)">Prev</button>
         </li>
         <li *ngFor="let page of showingPages" class="page-item">
-          <button [class.active-page]="activePage == page.page"
+          <button *ngIf="this.page !== undefined" [class.active-page]="activePage == page.page"
             class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
             type="button" (click)="pageChange(page.page)">{{page.page}}</button>
         </li>
@@ -124,15 +124,16 @@
             <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.name}}</option>
           </select>
         </div>
-          <div class="form-group">
-              <span *ngIf="preview !== undefined || preview !== null" class="float-right">{{preview}}</span>
-              <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
-                <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-              </label>
-              <br>
-              <button type="button" mat-button (click)="addToQueue()">Add to queue</button>
-              <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files)" required>
-          </div>
+        <div class="form-group d-inline">
+            <span *ngIf="this.preview" style="margin-top: 6px" class="float-right">&nbsp;{{preview}}</span>
+            <label for="addBackgroundImage" style="height:18px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()">Add to queue</button>
+            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files)" required>
+        </div>
+        <br>
+        <br>
         <hr/>
         <div class="attachment-queue">
           <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueueDisplay">
@@ -148,7 +149,7 @@
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Start Uploading</button>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="this.attachmentQueueDisplay.length === 0">Start Uploading</button>
       </div>
     </form>
     </div>
