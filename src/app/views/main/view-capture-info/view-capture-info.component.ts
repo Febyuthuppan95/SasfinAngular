@@ -11,6 +11,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { TableHeading, SelectedRecord } from 'src/app/models/Table';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -106,21 +107,9 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   tableData = null;
   tableHeadings: TableHeading[] = [
-    {
-      title: '',
-      propertyName: 'rowNum',
-      order: {
-        enable: false,
-      }
-    },
-    {
-      title: 'Information',
-      propertyName: 'info',
-      order: {
-        enable: true,
-        tag: 'Info'
-      }
-    },
+    { title: '', propertyName: 'rowNum', order: { enable: false } },
+    { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
+    { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
   ];
 
   ngOnInit() {
@@ -174,8 +163,8 @@ export class ViewCaptureInfoComponent implements OnInit {
       },
       (msg) => {
         this.showLoader = false;
+        console.log(stringify(msg));
         this.notify.errorsmsg('Failure', 'Bad request');
-        console.log(JSON.stringify(msg));
       }
     );
   }

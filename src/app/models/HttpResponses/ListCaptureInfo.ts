@@ -12,5 +12,6 @@ export class CaptureInfoItem {
   companyID: number;
   doctypeID: number;
   info: string;
+  doctype: string;
 }
 
