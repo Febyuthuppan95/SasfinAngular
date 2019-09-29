@@ -33,5 +33,4 @@ export class TableHeaderComponent implements OnInit {
   backButton = () => this.backButtonEvent.emit();
   search = () => this.searchEvent.emit(this.searchQuery);
   recordsPerPageChange = (recordNum: number) => this.showingRecordsEvent.emit(recordNum);
-
 }

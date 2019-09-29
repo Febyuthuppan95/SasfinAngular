@@ -28,8 +28,10 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() showingRecordsEvent = new EventEmitter<number>();
   @Output() searchEvent = new EventEmitter<string>();
 
-  displayData: any[] = [];
   currentTheme: string;
+  toggleFilter = true;
+  searchQuery: string;
+  displayData: any[] = [];
   selectedRow: number;
   paginate: boolean;
   orderIndicator: string;
@@ -37,8 +39,6 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
-    console.log(this.recordsPerPage);
-    console.log(this.rowCount);
     this.loadTable();
   }
 
@@ -123,10 +123,9 @@ export class TableComponent implements OnInit, OnChanges {
     this.updateSort(orderBy);
     this.orderChange.emit({ orderBy, orderByDirection: this.orderByDirection });
   }
-
   addButton = () => this.addButtonEvent.emit();
   backButton = () => this.backButtonEvent.emit();
-  search = ($event) => this.searchEvent.emit($event);
+  search = () => this.searchEvent.emit(this.searchQuery);
   recordsPerPageChange = ($event) => this.showingRecordsEvent.emit($event);
-
+  toggleFilters = () => this.toggleFilter = !this.toggleFilter;
 }
