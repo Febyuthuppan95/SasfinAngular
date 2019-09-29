@@ -376,19 +376,19 @@ export class ViewCompanyListComponent implements OnInit {
   validateCompany(): number {
     let errors = 0;
 
-    if (this.CompanyName === null || this.CompanyName === undefined) {
+    if (this.CompanyName === null || this.CompanyName === undefined || this.CompanyName === '') {
       errors++;
     }
 
-    if (this.RegNo === null || this.CompanyName === undefined) {
+    if (this.RegNo === null || this.RegNo === undefined || this.RegNo === '') {
       errors++;
     }
 
-    if (this.ExportRegNo === null || this.CompanyName === undefined) {
+    if (this.ExportRegNo === null || this.ExportRegNo === undefined || this.ExportRegNo === '') {
       errors++;
     }
 
-    if (this.VATNo === null || this.CompanyName === undefined) {
+    if (this.VATNo === null || this.VATNo === undefined || this.VATNo === '') {
       errors++;
     }
 

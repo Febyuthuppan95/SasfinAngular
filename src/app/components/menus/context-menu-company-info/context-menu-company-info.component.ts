@@ -17,12 +17,15 @@ export class ContextMenuCompanyInfoComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() EditCompanyInfo = new EventEmitter<string>();
+  @Output() ViewCompanyInfo = new EventEmitter<string>();
 
   ngOnInit() {
   }
 
   viewInfo() {
-    alert('Not implemented');
+    this.ViewCompanyInfo.emit(JSON.stringify({
+      companyID: this.companyID
+    }));
   }
 
   editInfo() {
