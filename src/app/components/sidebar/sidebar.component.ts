@@ -106,6 +106,7 @@ export class SidebarComponent implements OnInit {
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
+        console.log(res.userRightsList);
         res.userRightsList.forEach(uRight => {
           if (uRight.name === 'Users') {
             this.showusers = true;
@@ -115,6 +116,7 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'Backgrounds') {
             this.showbackgrounds = true;
+
           }
           if (uRight.name === 'Designations') {
             this.showdesignation = true;

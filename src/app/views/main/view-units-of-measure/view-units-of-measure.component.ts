@@ -95,16 +95,13 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.unitService.list(this.unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
         this.showLoader = false;
-        //if()
         {
-          if(res.outcome.outcome === "FAILURE"){
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -116,6 +113,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.unitOfMeasureList;
           this.rowCount = res.rowCount;
+          this.noData = false;
 
           if (res.rowCount > this.selectRowDisplay) {
             this.totalDisplayCount = res.unitOfMeasureList.length;

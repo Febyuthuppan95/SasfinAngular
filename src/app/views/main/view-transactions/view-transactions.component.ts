@@ -269,7 +269,7 @@ export class ViewTransactionsComponent implements OnInit {
       .list(model)
       .then(
         (res: TransactionListResponse) => {
-          if(res.outcome.outcome === 'FAILURE'){
+          if (res.outcome.outcome === 'FAILURE'){
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage

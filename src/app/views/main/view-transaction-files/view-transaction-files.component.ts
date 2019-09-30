@@ -362,6 +362,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   upload() {
+    this.attachmentName = '';
     this.openModal.nativeElement.click();
   }
 
