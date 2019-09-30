@@ -10,7 +10,8 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { TableHeading, SelectedRecord } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, TableHeader } from 'src/app/models/Table';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -106,22 +107,24 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   tableData = null;
   tableHeadings: TableHeading[] = [
-    {
-      title: '',
-      propertyName: 'rowNum',
-      order: {
-        enable: false,
-      }
-    },
-    {
-      title: 'Information',
-      propertyName: 'info',
-      order: {
-        enable: true,
-        tag: 'Info'
-      }
-    },
+    { title: '', propertyName: 'rowNum', order: { enable: false } },
+    { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
+    { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
   ];
+
+  tableHeader: TableHeader = {
+    title: 'Capture Info',
+    addButton: {
+     enable: true,
+    },
+    backButton: {
+      enable: false
+    },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
 
   ngOnInit() {
     this.showedSuccess = false;
@@ -148,10 +151,11 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.loadDoctypes();
   }
 
-  searchBar() {
-    this.requestModel.rowStart = 1;
+  searchEvent(query: string) {
+    this.requestModel.filter = query;
     this.loadDataset();
   }
+
 
   loadDataset() {
     this.showLoader = true;
@@ -166,16 +170,17 @@ export class ViewCaptureInfoComponent implements OnInit {
             this.showedSuccess = true;
             this.tableData = res.captureInfo;
           }
+          this.tableData = res.captureInfo;
           this.dataset = res;
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.showedSuccess = false;
+          this.tableData = [];
         }
       },
       (msg) => {
         this.showLoader = false;
         this.notify.errorsmsg('Failure', 'Bad request');
-        console.log(JSON.stringify(msg));
       }
     );
   }

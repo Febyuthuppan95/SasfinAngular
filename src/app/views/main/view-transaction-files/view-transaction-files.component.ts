@@ -109,8 +109,8 @@ export class ViewTransactionFilesComponent implements OnInit {
     { name: 'VOC', value: 4 },
   ];
   attachmentName: string;
-  attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
-  attachmentQueueDisplay: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
+  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
+  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
@@ -231,7 +231,6 @@ export class ViewTransactionFilesComponent implements OnInit {
             this.noData = false;
             this.dataset = res;
             this.dataList = res.attachments;
-            console.log(res.attachments.length);
             this.rowStart = res.attachments.length > 0 ? 1 : 0;
             this.showingRecords = res.attachments.length > 0 ? res.attachments.length : 1;
 
@@ -367,12 +366,9 @@ export class ViewTransactionFilesComponent implements OnInit {
 
   onFileChange(files: FileList) {
     this.preview = files.item(0).name;
+
     this.attachmentQueue[this.currentAttachment] = {
-      name: this.attachmentName,
-      type: this.transactionTypes[this.selectedTransactionType - 1].name,
       file: files.item(0),
-      uploading: false,
-      status: 'Pending Upload'
     };
   }
 

@@ -4,10 +4,10 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { UserService } from 'src/app/services/user.Service';
 import { Router } from '@angular/router';
-import { MatBottomSheetRef, MatBottomSheet } from '@angular/material/bottom-sheet';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
+import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
 
 @Component({
   selector: 'app-capture-layout',
@@ -43,6 +43,9 @@ export class CaptureLayoutComponent implements OnInit {
     id: number;
     name: string;
   };
+  attachmentList: TransactionFile[];
+  transactionID: number;
+  attachmentID: number;
 
   ngOnInit() {
     this.companyShowToggle = true;
@@ -62,6 +65,14 @@ export class CaptureLayoutComponent implements OnInit {
       };
 
       this.loadCaptureInfo();
+    });
+
+    this.transactionService.observerCurrentAttachment().subscribe (obj => {
+      this.transactionID = obj.transactionID;
+      this.attachmentID = obj.attachmentID;
+
+      console.log(this.attachmentID);
+      this.loadAttachments();
     });
   }
 
@@ -94,6 +105,30 @@ export class CaptureLayoutComponent implements OnInit {
       }
     );
   }
+
+  loadAttachments() {
+    const model = {
+      filter: '',
+      userID: this.currentUser.userID,
+      specificTransactionID: this.transactionID,
+      specificAttachmentID: -1,
+      rowStart: 1,
+      rowEnd: 25,
+      orderBy: '',
+      orderByDirection: ''
+    };
+
+    this.transactionService
+      .listAttatchments(model)
+      .then(
+        (res: TransactionFileListResponse) => {
+          console.log(res);
+          this.attachmentList = res.attachments;
+        },
+        (msg) => {}
+      );
+  }
+
 
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {

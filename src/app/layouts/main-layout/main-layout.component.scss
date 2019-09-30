@@ -1,7 +1,7 @@
 
 .row {
   display: flex;
-  
+
 }
 /*Side Nav*/
 .side-div {
@@ -118,4 +118,10 @@ padding-left: 100px;
     min-width: 80px;
     margin-right:0px;
     }
+}
+
+.toggle-chat {
+  position: fixed;
+  bottom: 58px;
+  right: 8px;
 }

@@ -84,7 +84,7 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
-import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
+import { FormCustomReleaseComponent } from './components/forms/capture/form-custom-release/form-custom-release.component';
 import { AddressTypesService } from './services/AddressTypes.Service';
 import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
@@ -99,14 +99,20 @@ import { AttachmentCaptureStatusBlockComponent } from './components/attachment-c
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
 import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
-import { ChatOverlayComponent } from './components/chat/chat-overlay/chat-overlay.component';
-import { ChatUserTileComponent } from './components/chat/chat-user-tile/chat-user-tile.component';
-import { ChatBubbleComponent } from './components/chat/chat-bubble/chat-bubble.component';
+import { ChatOverlayComponent } from './modules/chat/components/chat-overlay/chat-overlay.component';
+import { ChatUserTileComponent } from './modules/chat/components/chat-user-tile/chat-user-tile.component';
+import { ChatBubbleComponent } from './modules/chat/components/chat-bubble/chat-bubble.component';
 import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
+import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
+import { FormSAD500Component } from './components/forms/capture/form-sad500/form-sad500.component';
+import { ChatService } from './modules/chat/services/chat.service';
+import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
+import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
+import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +186,12 @@ import { ViewItemTypesListComponent } from './views/main/view-item-types-list/vi
     ContextTariffsListComponent,
     ContextItemsListComponent,
     ContextCompanyItemsListComponent,
-    ViewItemTypesListComponent
+    ViewItemTypesListComponent,
+    FormImportClearingInstructionComponent,
+    FormSAD500Component,
+    ChatConversationListComponent,
+    ChatContactListComponent,
+    ChatConversationTileComponent
   ],
   imports: [
     BrowserModule,
@@ -230,6 +241,7 @@ import { ViewItemTypesListComponent } from './views/main/view-item-types-list/vi
       useClass: AuthInterceptor,
       multi: true
     },
+    ChatService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
