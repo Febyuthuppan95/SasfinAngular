@@ -8,6 +8,8 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { MatDialog } from '@angular/material';
+import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -20,7 +22,8 @@ export class CaptureLayoutComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private transactionService: TransactionService,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService,
+              private dialog: MatDialog) { }
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -165,5 +168,13 @@ export class CaptureLayoutComponent implements OnInit {
 
   flushCurrentShortcut() {
     setTimeout(() => this.currentShortcutLabel = null, 2000);
+  }
+
+  previewCapture(src: string) {
+    const dialogRef = this.dialog.open(CapturePreviewComponent, {
+      data: { src },
+      width: '380px',
+      height: '512px;'
+    });
   }
 }

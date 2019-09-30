@@ -2,8 +2,9 @@
   <div class="form-group">
     <input type="text"
       [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }} form-control-invalid"
       placeholder="Serial No" />
+      <p class="invalid-control-label">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam doloremque, molestias quas eos tempora accusamus, ipsum, voluptatibus ad eius labore vitae officiis explicabo perferendis quia provident maxime eaque quo nisi!</p>
   </div>
   <div class="form-group">
     <input type="text"

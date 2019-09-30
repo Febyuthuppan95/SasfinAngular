@@ -8,10 +8,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-view-transaction-files',

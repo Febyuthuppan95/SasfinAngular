@@ -1,0 +1,27 @@
+<div mat-dialog-content style="padding:0;overflow: hide !important;">
+  <ngx-extended-pdf-viewer
+  *ngIf="displayPDF"
+  [height]="'512px'"
+  [src]="pdfSRC"
+  [useBrowserLocale]="true"
+  [showZoomButtons]="false"
+  [showSpreadButton]="false"
+  [showSidebarOnLoad]="false"
+  [showSidebarButton]="false"
+  [showSecondaryToolbarButton]="false"
+  [showScrollingButton]="false"
+  [showRotateButton]="false"
+  [showPropertiesButton]="false"
+  [showPrintButton]="false"
+  [showPresentationModeButton]="false"
+  [showPagingButtons]="false"
+  [showOpenFileButton]="false"
+  [showHandToolButton]="false"
+  [showFindButton]="false"
+  [showDownloadButton]="false"
+  [showBookmarkButton]="false">
+</ngx-extended-pdf-viewer>
+  <div style="padding: 24px;" *ngIf="!this.displayPDF">
+    <p>Loading document</p>
+  </div>
+</div>

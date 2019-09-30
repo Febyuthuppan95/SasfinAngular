@@ -112,6 +112,7 @@ import { ChatService } from './modules/chat/services/chat.service';
 import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
 import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
 import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
+import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
 
 @NgModule({
   declarations: [
@@ -189,7 +190,8 @@ import { ChatConversationTileComponent } from './modules/chat/components/chat-co
     FormSAD500Component,
     ChatConversationListComponent,
     ChatContactListComponent,
-    ChatConversationTileComponent
+    ChatConversationTileComponent,
+    CapturePreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -244,6 +246,7 @@ import { ChatConversationTileComponent } from './modules/chat/components/chat-co
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
+    CapturePreviewComponent
   ]
 })
 export class AppModule { }
