@@ -62,6 +62,7 @@ export class MainLayoutComponent implements OnInit {
   innerWidth: any;
   tableContextMenu = false;
   count = 0;
+  showChat = false;
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
@@ -169,5 +170,9 @@ export class MainLayoutComponent implements OnInit {
     this.opentimeoutModal.nativeElement.click();
 
    }
+  }
+
+  toggleChat() {
+    this.showChat = !this.showChat;
   }
 }

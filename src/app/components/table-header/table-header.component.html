@@ -30,9 +30,9 @@
         type="text"
         class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
         placeholder="Search"
-        (keyup)="search()"
-        [(ngModel)]="searchQuery"
-        [ngModelOptions]="{standalone: true}"/>
+        [(ngModel)]="this.searchQuery"
+        [ngModelOptions]="{standalone: true}"
+        (keydown)="search()"/>
     </form>
   </div>
   <br>

@@ -37,7 +37,6 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyInfoList();
   }
 
   @ViewChild(ContextMenuComponent, {static: true } )
@@ -123,6 +122,8 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
+
+      this.loadCompanyInfoList();
     });
   }
 
@@ -193,7 +194,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificCompanyAddInfoID: -1,
       specificCompanyAddInfoTypeID: -1,
       rowStart: this.rowStart,
@@ -202,10 +203,14 @@ export class ViewCompanyInfoComponent implements OnInit {
       orderByDirection: this.orderDirection
     };
 
+    console.log(model);
+
     this.companyService
       .info(model)
       .then(
         (res: CompanyInfoResponse) => {
+          console.log(res);
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -390,6 +395,10 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.disableInfoSelect = true;
     this.Type = id;
     console.log(this.Type);
+  }
+
+  viewCaptureInfo($event) {
+    this.notify.toastrwarning('Warning', 'Feature is not implemented');
   }
 
 }

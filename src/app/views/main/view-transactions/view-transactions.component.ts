@@ -14,6 +14,7 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { TransactionTypes, TransactionTypesResponse } from 'src/app/models/HttpResponses/TransactionTypesList';
 import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/HttpResponses/TransactionStatusList';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-transactions',
@@ -105,10 +106,13 @@ export class ViewTransactionsComponent implements OnInit {
   transactionTypes: TransactionTypes[];
   transactionStatus: TransactionStatus[];
 
-  selectedTypeIndex: number;
-  selectedStatusIndex: number;
+  selectedTypeIndex = 0;
+  selectedStatusIndex = 0;
   statusDisable: boolean;
   typesDisable: boolean;
+
+  selectTypeControl = new FormControl(0);
+  selectStatusControl = new FormControl(0);
 
   newTransaction = {
     name: '',
@@ -263,15 +267,13 @@ export class ViewTransactionsComponent implements OnInit {
       orderByDirection: this.orderDirection
     };
 
-    console.log(JSON.stringify(model));
-
     this.transationService
       .list(model)
       .then(
         (res: TransactionListResponse) => {
-          if (res.outcome.outcome === 'FAILURE'){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
+          if (res.transactions.length === 0) {
+            this.notify.toastrwarning(
+              'Warning',
               res.outcome.outcomeMessage
             );
           } else {
@@ -293,8 +295,6 @@ export class ViewTransactionsComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.transactions.length - 1;
             this.paginateData();
           }
-
-          console.log(this.selectedTypeIndex);
         },
         msg => {
           this.showLoader = false;
@@ -432,10 +432,9 @@ export class ViewTransactionsComponent implements OnInit {
     this.newTransaction.transactionTypeID = -1;
     this.typesDisable = false;
     this.statusDisable = false;
-    this.selectedStatusIndex = 0;
-    this.selectedTypeIndex = 0;
+    this.selectStatusControl.reset(0);
+    this.selectTypeControl.reset(0);
 
-    console.log(this.selectedTypeIndex);
     this.openModal.nativeElement.click();
   }
 

@@ -1,21 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
+import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
 import { GetUserList } from 'src/app/models/HttpRequests/Users';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-chat-overlay',
-  templateUrl: './chat-overlay.component.html',
-  styleUrls: ['./chat-overlay.component.scss']
+  selector: 'app-chat-contact-list',
+  templateUrl: './chat-contact-list.component.html',
+  styleUrls: ['./chat-contact-list.component.scss']
 })
-export class ChatOverlayComponent implements OnInit {
+export class ChatContactListComponent implements OnInit {
 
-  @Input() enableChat: boolean;
-  @Input() showChat: boolean;
+  @Output() showConversations = new EventEmitter<void>();
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private chatService: ChatService) { }
 
   contactList: { designation: string, users: UserList[] }[];
   userListResponse: UserListResponse;
@@ -32,8 +32,16 @@ export class ChatOverlayComponent implements OnInit {
     filter: ''
   };
 
+  selectedUser: number = null;
+
   ngOnInit() {
     this.loadContacts();
+
+    this.chatService.observeConversation().subscribe((conv) => {
+      if (conv !== null) {
+        this.selectedUser = conv.userID;
+      }
+    });
   }
 
   loadContacts() {
@@ -65,6 +73,14 @@ export class ChatOverlayComponent implements OnInit {
         }
       }
     );
+  }
+
+  contactSearch() {
+    this.loadContacts();
+  }
+
+  showConversationsEvent() {
+    this.showConversations.emit();
   }
 
 }

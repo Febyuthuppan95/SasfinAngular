@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { environment } from 'src/environments/environment.test';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
+import { ChatService } from 'src/app/modules/chat/services/chat.service';
 
 @Component({
   selector: 'app-chat-user-tile',
@@ -9,7 +10,7 @@ import { UserList } from 'src/app/models/HttpResponses/UserList';
 })
 export class ChatUserTileComponent implements OnInit {
 
-  constructor() { }
+  constructor(private chatService: ChatService) { }
 
   @Input() user: UserList;
 
@@ -19,6 +20,10 @@ export class ChatUserTileComponent implements OnInit {
     if (this.user.profileImage !== null && this.user.profileImage !== undefined) {
       this.imageURL = `${environment.ApiProfileImages}/${this.user.profileImage}`;
     }
+  }
+
+  selectConversation(userID: number) {
+    this.chatService.setConverastion({ userID });
   }
 
 }
