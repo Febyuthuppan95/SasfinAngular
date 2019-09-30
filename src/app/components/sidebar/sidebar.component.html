@@ -99,12 +99,37 @@
   </a>
   </li>
   <!-- <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-places-link')"
   matTooltip="AddressTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/addresstypes" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-    <span class="menu-title">AddressTypes</span>
+    <span class="menu-title">Address Types</span>
   </a>
-  </li> -->
+  </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-contact-types-link')"
+  matTooltip="ContactTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/contacttypes" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-phone menu-icon"></i>
+    <span class="menu-title">Contact Types</span>
+  </a>
+  </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-company-add-info-types-link')"
+  matTooltip="CompanyAddInfoTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/companyaddinfotypes" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-home-modern menu-icon"></i>
+    <span class="menu-title">Company Add Info Types</span>
+  </a>
+  </li>
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-currencies-link')"
+  matTooltip="Currencies" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/currencies" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-home-modern menu-icon"></i>
+    <span class="menu-title">Currencies</span>
+  </a>
+  </li>
   </ul>
 </nav>

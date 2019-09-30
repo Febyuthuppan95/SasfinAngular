@@ -113,6 +113,18 @@ import { ChatService } from './modules/chat/services/chat.service';
 import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
 import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
 import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+import { ContactTypesService } from './services/ContactTypes.Service';
+import { ContextMenuContactTypesComponent } from './components/menus/context-menu-contact-types/context-menu-contact-types.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyAddInfoTypesComponent } from './components/menus/context-menu-company-add-info-types/context-menu-company-add-info-types.component';
+import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Service';
+import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-currencies/context-menu-currencies.component';
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { CurrenciesService } from './services/Currencies.Service';
+
 
 @NgModule({
   declarations: [
@@ -191,7 +203,14 @@ import { ChatConversationTileComponent } from './modules/chat/components/chat-co
     FormSAD500Component,
     ChatConversationListComponent,
     ChatContactListComponent,
-    ChatConversationTileComponent
+    ChatConversationTileComponent,
+    PaginationComponent,
+    ViewContactTypesListComponent,
+    ContextMenuContactTypesComponent,
+    ViewCompanyAddInfoTypesListComponent,
+    ContextMenuCompanyAddInfoTypesComponent,
+    ContextMenuCurrenciesComponent,
+    ViewCurrenciesListComponent
   ],
   imports: [
     BrowserModule,
@@ -236,6 +255,9 @@ import { ChatConversationTileComponent } from './modules/chat/components/chat-co
     CitiesService,
     CompanyService,
     AddressTypesService,
+    ContactTypesService,
+    CompanyAddInfoTypesService,
+    CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -34,7 +34,10 @@ import { ContextTariffsListComponent } from './views/main/context-tariffs-list/c
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
-
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -58,7 +61,7 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
+          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
@@ -79,6 +82,9 @@ const routes: Routes = [
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
           { path: 'transactions/', component: ViewTransactionsComponent },
           { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
+          { path: 'contacttypes', component: ViewContactTypesListComponent },
+          { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent },
+          { path: 'currencies', component: ViewCurrenciesListComponent}
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
