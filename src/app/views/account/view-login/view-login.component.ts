@@ -17,7 +17,6 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
   pendingRequest = false;
-  
 
   constructor(
     private router: Router,
@@ -25,24 +24,22 @@ export class ViewLoginComponent implements OnInit {
     private themeService: ThemeService,
     private renderer: Renderer2,
      private elRef : ElementRef
-  
     ) { }
 
-  @ViewChild('login', { static: true }) 
+  @ViewChild('login', { static: true })
   elRefs: ElementRef;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
   typePassword: boolean;
 
-  ngOnInit() { 
-    var elem = document.getElementsByClassName("modal-backdrop")
+  ngOnInit() {
+    var elem = document.getElementsByClassName('modal-backdrop')
 
-    if(elem.length > 0)
-    {
+    if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
-    }  
-  }   
+    }
+  }
 
   onLoginSubmit() {
     if (this.txtEmail === '' || this.txtPassword === '') {
@@ -57,11 +54,11 @@ export class ViewLoginComponent implements OnInit {
 
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
-          if (res.authenticated) {            
+          if (res.authenticated) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             this.router.navigate(['users']);
-          } else {            
+          } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
           this.pendingRequest = false;
