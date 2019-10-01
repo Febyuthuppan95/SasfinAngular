@@ -38,7 +38,6 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadTariffs(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -153,7 +152,6 @@ export class ContextTariffsListComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-
     this.loadTariffs(false);
   }
 
@@ -168,13 +166,13 @@ export class ContextTariffsListComponent implements OnInit {
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
 
     this.companyService
     .getTariffList(model)
     .then(
       (res: TariffListResponse) => {
+        console.log(res.tariffsLists);
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
