@@ -95,6 +95,7 @@ import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
 import { TableComponent } from './components/table/table.component';
+// tslint:disable-next-line: max-line-length
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
@@ -107,6 +108,7 @@ import { ContextTariffsListComponent } from './views/main/context-tariffs-list/c
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
+// tslint:disable-next-line: max-line-length
 import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
 import { FormSAD500Component } from './components/forms/capture/form-sad500/form-sad500.component';
 import { ChatService } from './modules/chat/services/chat.service';
@@ -115,6 +117,18 @@ import { ChatContactListComponent } from './modules/chat/components/chat-contact
 import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
 import { ContextMenuCompanyAddressComponent } from './components/menus/context-menu-company-address/context-menu-company-address.component';
 import { ContextMenuCompanyServiceComponent } from './components/menus/context-menu-company-service/context-menu-company-service.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+import { ContactTypesService } from './services/ContactTypes.Service';
+import { ContextMenuContactTypesComponent } from './components/menus/context-menu-contact-types/context-menu-contact-types.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyAddInfoTypesComponent } from './components/menus/context-menu-company-add-info-types/context-menu-company-add-info-types.component';
+import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Service';
+import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-currencies/context-menu-currencies.component';
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { CurrenciesService } from './services/Currencies.Service';
+
 
 @NgModule({
   declarations: [
@@ -195,7 +209,13 @@ import { ContextMenuCompanyServiceComponent } from './components/menus/context-m
     ChatContactListComponent,
     ChatConversationTileComponent,
     ContextMenuCompanyAddressComponent,
-    ContextMenuCompanyServiceComponent
+    ContextMenuCompanyServiceComponent,
+    ViewContactTypesListComponent,
+    ContextMenuContactTypesComponent,
+    ViewCompanyAddInfoTypesListComponent,
+    ContextMenuCompanyAddInfoTypesComponent,
+    ContextMenuCurrenciesComponent,
+    ViewCurrenciesListComponent
   ],
   imports: [
     BrowserModule,
@@ -240,6 +260,9 @@ import { ContextMenuCompanyServiceComponent } from './components/menus/context-m
     CitiesService,
     CompanyService,
     AddressTypesService,
+    ContactTypesService,
+    CompanyAddInfoTypesService,
+    CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -190,6 +190,14 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'ItemsTypes') {
             this.showitemstypes = true;
           }
+          if(uRight.name === "ContactTypes")
+          {
+            this.showcontactTypes = true
+          }
+          if(uRight.name === "CompanyAddInfoTypes")
+          {
+            this.showcompanyAddInfoTypes = true
+          }
         });
       },
       msg => {

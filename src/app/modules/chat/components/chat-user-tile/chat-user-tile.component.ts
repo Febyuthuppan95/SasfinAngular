@@ -22,7 +22,7 @@ export class ChatUserTileComponent implements OnInit {
     }
   }
 
-  selectConversation(userID: number) {
+  selectConversation(userID: any) {
     this.chatService.setConverastion({ userID });
   }
 
