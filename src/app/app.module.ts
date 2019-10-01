@@ -113,6 +113,8 @@ import { ChatService } from './modules/chat/services/chat.service';
 import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
 import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
 import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
+import { ContextMenuCompanyAddressComponent } from './components/menus/context-menu-company-address/context-menu-company-address.component';
+import { ContextMenuCompanyServiceComponent } from './components/menus/context-menu-company-service/context-menu-company-service.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +193,9 @@ import { ChatConversationTileComponent } from './modules/chat/components/chat-co
     FormSAD500Component,
     ChatConversationListComponent,
     ChatContactListComponent,
-    ChatConversationTileComponent
+    ChatConversationTileComponent,
+    ContextMenuCompanyAddressComponent,
+    ContextMenuCompanyServiceComponent
   ],
   imports: [
     BrowserModule,

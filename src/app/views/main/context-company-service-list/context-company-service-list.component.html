@@ -78,13 +78,13 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let service of dataList; let i=index" class="userRecord"  [class.active]="i == selectedRow">
+          <tr *ngFor="let service of dataList; let i=index" (click)="popClick($event, service.componyServiceID, service.serviceID, service.serviceName, service.resConsultantID, service.resCapturerID, service.startDate, service.endDate); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
             <td>{{service.rowNum}}</td>
             <td>{{service.serviceName}}</td>
             <td>{{service.resConsultantID}}</td>
             <td>{{service.resCapturerID}}</td>
-            <td>{{service.startDate}}</td>
-            <td>{{service.EndtDate}}</td>
+            <td>{{service.startDate | date}}</td>
+            <td>{{service.endDate | date}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -123,7 +123,7 @@
 
 <!--Edit Modal-->
 <button class="hide" data-toggle="modal" data-target="#editService" #openeditModal></button>
-<div class="modal fade" id="editAddress" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal fade" id="editService" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
@@ -135,37 +135,39 @@
     <form>
         <div class="modal-body">
             <div class="form-group">
-                  <label class="control-label">Service Name:</label>
-                  <input type="text" placeholder="Service Name" class="form-control"
-                  [(ngModel)]="this.ServiceName" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+                <label class="control-label">Service:</label>
+                <select class="form-control"  (change)="onServiceChange($event.target.value)">
+                    <option selected value="-1" [disabled]="disableSerSelect">Select a Service</option>
+                    <option *ngFor="let service of this.serviceslist" [value]="service.serviceID" [selected]="service.serviceID === this.SerID">{{service.serviceName}}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label class="control-label">Responsible Consultant:</label>
                 <select class="form-control" (change)="onConsultantChange($event.target.value)">
-                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.Name === this.selectedConsultant">{{ResConsultant.Name}}</option>
+                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.id === this.ConID">{{ResConsultant.Name}}</option>
                 </select>
             </div>
             <div class="form-group">
                   <label class="control-label">Responsible Capturer:</label>
                   <select class="form-control" (change)="onCapturerChange($event.target.value)">
-                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.Name === this.selectedCapturer">{{ResCapturer.Name}}</option>
+                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.id === this.CapID">{{ResCapturer.Name}}</option>
                   </select>
             </div>
             <div class="form-group">
-                  <label class="control-label">Start Date:</label>
-                  <input type="text" placeholder="Start Date" class="form-control"
-                  [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+              <label class="control-label">Start Date:</label>
+              <input type="date" class="form-control"
+              [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
             </div>
 
             <div class="form-group">
                   <label class="control-label">End Date:</label>
-                  <input type="text" placeholder="End Date" class="form-control"
+                  <input type="date" class="form-control"
                   [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
             </div>
         </div>
         <div class="modal-footer bg-dark">
             <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-            <button type="button" (click)="UpdateCompanyAddress()" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" (click)="UpdateCompanyServices()" class="btn btn-primary btn-sm">Save</button>
         </div>
   </form>
   </div>
@@ -173,8 +175,8 @@
 </div>
 
 <!--Add Modal-->
-<button class="hide" data-toggle="modal" data-target="#addAddress" #openaddModal></button>
-<div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<button class="hide" data-toggle="modal" data-target="#addService" #openaddModal></button>
+<div class="modal fade" id="addService" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
@@ -229,6 +231,6 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
-<!-- <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-context-menu-address-types (editAddressType)="editCompanyAddress($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressID]="focusAddressID"></app-context-menu-address-types>
-</div> -->
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+<app-context-menu-company-service (editService)="editCompanyService($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [serviceID]="focusServiceID"></app-context-menu-company-service>
+</div>

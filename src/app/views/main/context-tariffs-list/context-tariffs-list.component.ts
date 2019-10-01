@@ -187,7 +187,6 @@ export class ContextTariffsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        console.log(res);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;

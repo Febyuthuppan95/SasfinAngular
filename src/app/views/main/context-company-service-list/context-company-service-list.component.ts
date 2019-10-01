@@ -32,7 +32,6 @@ import { Service } from 'src/app/models/HttpResponses/Service';
   styleUrls: ['./context-company-service-list.component.scss']
 })
 export class ContextCompanyServiceListComponent implements OnInit {
-
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
@@ -103,14 +102,14 @@ export class ContextCompanyServiceListComponent implements OnInit {
   showingRecords: number;
   activePage: number;
   focusServiceID: number;
-  ResConsultant: string;
-  ResCapturer: string;
+  ResConsultant: number;
+  ResCapturer: number;
   StartDate: Date;
   EndDate: Date;
   ResConsultants: ResponsibleConsultant[] = [];
   ResCapturers: ResponsibleCapturer[] = [];
-  selectedConsultant: string;
-  selectedCapturer: string;
+  selectedConsultant: number;
+  selectedCapturer: number;
   userList: UserList[] = null;
   disableConSelect: boolean;
   disableCapSelect: boolean;
@@ -119,6 +118,12 @@ export class ContextCompanyServiceListComponent implements OnInit {
   CapID: number;
   SerID: number;
   serviceslist: Service[] = [];
+  focusService: string;
+  focusconsultant: number;
+  focuscapturer: number;
+  focusstart: Date;
+  focusend: Date;
+  focuscompserviceID: number;
 
   noData = false;
   showLoader = true;
@@ -253,7 +258,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
             'Server Error',
             'Something went wrong while trying to access the server.'
           );
-          console.log(JSON.stringify(msg));
         }
       );
   }
@@ -266,7 +270,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificUserID: -1,
       rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      rowEnd: 10000,
       orderBy: this.orderBy,
       orderDirection: this.orderDirection
     };
@@ -291,8 +295,11 @@ export class ContextCompanyServiceListComponent implements OnInit {
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
+          this.ResConsultants.splice(0, this.ResConsultants.length);
+          this.ResCapturers.splice(0, this.ResCapturers.length);
 
           for (const user of res.userList) {
+
             const temp: ResponsibleConsultant = {
               id: +user.userId,
               Name: user.firstName
@@ -309,8 +316,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
               this.ResCapturers.push(temp2);
             }
           }
-
-          console.log(this.ResConsultants);
         },
         msg => {
           this.showLoader = false;
@@ -351,7 +356,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        console.log(res.serviceses);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -422,7 +426,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, CSid, id, service, consultant, capturer, start, end) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -431,7 +435,14 @@ export class ContextCompanyServiceListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
+    this.focuscompserviceID = CSid;
     this.focusServiceID = id;
+    this.focusService = service;
+    this.focusconsultant = consultant;
+    this.focuscapturer = capturer;
+    this.focusstart = start;
+    this.focusend = end;
+
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -488,28 +499,33 @@ export class ContextCompanyServiceListComponent implements OnInit {
       );
   }
 
-  editCompanyAddress($event) {
+  editCompanyService($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
+    this.ConID = this.focusconsultant;
+    this.CapID = this.focuscapturer;
+    this.SerID = this.focusServiceID;
+    this.StartDate = this.focusstart;
+    this.EndDate = this.focusend;
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateCompanyAddress() {
+  UpdateCompanyServices() {
     const requestModel: UpdateCompanyService = {
       userID: this.currentUser.userID,
-      spesificServiceID: this.focusServiceID,
-      ServiceName: this.ServiceName,
-      ResConsultant: this.ResConsultant,
-      ResCapturer: this.ResCapturer,
-      StartDate: this.StartDate,
-      EndDate: this.EndDate,
+      spesificCompanyServiceID: this.focuscompserviceID,
+      spesificServiceID: this.SerID,
+      ResConsultantID: this.ConID,
+      ResCapturerID: this.CapID,
+      startDate: this.StartDate,
+      endDate: this.EndDate,
     };
     this.companyService.UpdateService(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
+            this.notify.successmsg('SUCCESS', 'Company service successfully Updated');
             this.closeeditModal.nativeElement.click();
             this.loadCompanyServiceList();
         }
@@ -531,7 +547,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
   }
 
   onServiceChange(id: number)   {
-    console.log(id);
     this.disableSerSelect = true;
     this.SerID = id;
   }

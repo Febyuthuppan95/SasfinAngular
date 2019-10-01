@@ -8,11 +8,12 @@ export class CompanyServiceResponse {
 
 export class CompService {
   rowNum: number;
+  componyServiceID: number;
   serviceID: number;
   companyID: string;
   serviceName: string;
   resConsultantID: string;
   resCapturerID: string;
   startDate: string;
-  EndtDate: number;
+  endDate: string;
 }

@@ -43,7 +43,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyInfoList();
+
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -152,6 +152,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+
+    this.loadCompanyInfoList();
   }
 
   backToCompanies() {
@@ -230,7 +232,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificAddressID: -1,
       specificAddressTypeID: -1,
       rowStart: this.rowStart,
@@ -358,7 +360,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, focusCompName, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
+  popClick(event, id, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
