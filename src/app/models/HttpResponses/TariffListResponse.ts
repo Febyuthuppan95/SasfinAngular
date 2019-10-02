@@ -2,16 +2,18 @@ import {Outcome} from './Outcome';
 
 export class TariffListResponse {
   outcome: Outcome;
-  tariffsLists: Tariff[];
+  tariffList: Tariff[];
   rowCount: number;
 }
 
 export class Tariff {
-  rowNum: number;
-  tariffID: number;
-  tariffCode: string;
-  tariffName: string;
+  // rowNum: number;
+  // tariffID: number;
+  // tariffCode: string;
+  // tariffName: string;
+  Amount: number;
+  Description: string;
   Duty: number;
-  hSUnit: string;
-  quality538: string;
+  Unit: string;
+  // quality538: string;
 }

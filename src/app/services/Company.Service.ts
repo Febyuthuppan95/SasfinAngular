@@ -369,11 +369,11 @@ export class CompanyService {
     });
   }
 
-  public getTariffList(model: GetTariffList) {
-    const json = JSON.parse(JSON.stringify(model));
+  public getTariffList() { // model: GetTariffList
+    // const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/tariffs`;
-      this.httpClient.post(apiURL, json)
+      const apiURL = `${environment.ApiEndpoint}/tariffs/list`;
+      this.httpClient.get(apiURL) // ,json
         .toPromise()
         .then(
           res => {

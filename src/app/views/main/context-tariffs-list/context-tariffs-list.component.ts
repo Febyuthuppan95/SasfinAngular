@@ -61,27 +61,44 @@ export class ContextTariffsListComponent implements OnInit {
   };
 
   tableHeadings: TableHeading[] = [
+    // {
+    //   title: '',
+    //   propertyName: 'rowNum',
+    //   order: {
+    //     enable: false,
+    //   }
+    // },
+
+    // {
+    //   title: 'Tariff Code',
+    //   propertyName: 'tariffCode',
+    //   order: {
+    //     enable: true,
+    //     tag: 'TariffCode'
+    //   }
+    // },
+    // {
+    //   title: 'Tariff Name',
+    //   propertyName: 'tariffName',
+    //   order: {
+    //     enable: true,
+    //     tag: 'TariffName'
+    //   }
+    // },
     {
-      title: '',
-      propertyName: 'rowNum',
+      title: 'Amount',
+      propertyName: 'amount',
       order: {
-        enable: false,
+        enable: true,
+        tag: 'Amount'
       }
     },
     {
-      title: 'Tariff Code',
-      propertyName: 'tariffCode',
+      title: 'Description',
+      propertyName: 'description',
       order: {
         enable: true,
-        tag: 'TariffCode'
-      }
-    },
-    {
-      title: 'Tariff Name',
-      propertyName: 'tariffName',
-      order: {
-        enable: true,
-        tag: 'TariffName'
+        tag: 'Description'
       }
     },
     {
@@ -93,29 +110,32 @@ export class ContextTariffsListComponent implements OnInit {
       }
     },
     {
-      title: 'HS Unit',
-      propertyName: 'hsUnit',
+      title: 'Unit',
+      propertyName: 'unit',
       order: {
         enable: true,
-        tag: 'HSUnit'
-      }
-    },
-    {
-      title: 'Quality 538',
-      propertyName: 'quality538',
-      order: {
-        enable: true,
-        tag: 'Quality538'
+        tag: 'Unit'
       }
     }
+    // },
+    // {
+    //   title: 'Quality 538',
+    //   propertyName: 'quality538',
+    //   order: {
+    //     enable: true,
+    //     tag: 'Quality538'
+    //   }
+    // }
   ];
 
   selectedRow = -1;
-  TariffCode = '';
-  TariffName = '';
+  // TariffCode = '';
+  // TariffName = '';
+  Amount = 0;
+  Description = '';
   Duty = 0;
-  HSUnit = '';
-  Quality538 = '';
+  Unit = '';
+  // Quality538 = '';
   tarifflist: Tariff[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
@@ -158,21 +178,21 @@ export class ContextTariffsListComponent implements OnInit {
   loadTariffs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetTariffList = {
-      filter: this.filter,
-      userID: this.currentUser.userID,
-      specificTariffID: -1,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-    };
+    // const model: GetTariffList = {
+    //   filter: this.filter,
+    //   userID: this.currentUser.userID,
+    //   specificTariffID: -1,
+    //   rowStart: this.rowStart,
+    //   rowEnd: this.rowEnd,
+    //   orderBy: this.orderBy,
+    //   orderByDirection: this.orderDirection
+    // };
 
     this.companyService
-    .getTariffList(model)
+    .getTariffList()// model
     .then(
       (res: TariffListResponse) => {
-        console.log(res.tariffsLists);
+
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -191,11 +211,13 @@ export class ContextTariffsListComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.tariffsLists.length;
-          this.tarifflist = res.tariffsLists;
+          this.showingRecords = res.tariffList.length;
+          this.tarifflist = res.tariffList;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }
+        // console.log(this.showingRecords);
+
       },
       msg => {
         this.showLoader = false;

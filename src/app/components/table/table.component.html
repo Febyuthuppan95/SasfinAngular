@@ -11,6 +11,7 @@
     </button>
   <br>
     <div class="col-md-3" style="padding-left:0px;">
+        <span *ngIf="this.tableHeader.backButton.enable" style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backButton()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span>
       <span style="float:left; margin-right:5px;"></span>
       <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{ tableHeader.title }}</h4>
       <span *ngIf="this.tableHeader.addButton.enable" style="margin-left:10px;">
@@ -59,7 +60,7 @@
       </th>
     </tr>
   </thead>
-  <tbody *ngIf="(this.dataset === undefined || this.dataset === null || this.dataset.length === 0) && this.dataset !== undefined">
+  <tbody *ngIf="(this.dataset !== undefined || this.dataset !== null || this.dataset.length !== 0)">
     <tr *ngFor="let record of this.displayData; let i=index" class="userRecord" [class.active]="i == this.selectedRow" (click)="recordChangeEvent($event, this.dataset[i], i)">
       <td *ngFor="let item of this.record">{{item.value}}</td>
     </tr>

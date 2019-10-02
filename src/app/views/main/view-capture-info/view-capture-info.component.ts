@@ -118,7 +118,7 @@ export class ViewCaptureInfoComponent implements OnInit {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -296,6 +296,10 @@ export class ViewCaptureInfoComponent implements OnInit {
         this.notify.errorsmsg('Failure', 'Cannot Reach Server');
       }
     );
+  }
+
+  backToCompanies() {
+    this.router.navigate(['companies']);
   }
 
   removeCapture(id: number) {

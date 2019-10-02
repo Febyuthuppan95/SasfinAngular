@@ -80,6 +80,7 @@ export class TableComponent implements OnInit, OnChanges {
               value: objectValues[i]
             };
 
+
             // Push object to record array
             record.push(field);
           }
