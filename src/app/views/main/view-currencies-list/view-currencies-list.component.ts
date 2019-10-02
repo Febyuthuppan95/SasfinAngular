@@ -116,14 +116,12 @@ export class ViewCurrenciesListComponent implements OnInit {
       (res: ListCurrencies) => {
         this.showLoader = false;
         {
-          if(res.outcome.outcome === "FAILURE"){
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -266,12 +264,12 @@ export class ViewCurrenciesListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  // editAddressTypes($event) {
-  //   this.themeService.toggleContextMenu(false);
-  //   /*this.contextMenu = false;*/
-  //   this.openModal.nativeElement.click();
+   editCurrenciesList($event) {
+     this.themeService.toggleContextMenu(false);
+     this.contextMenu = false;
+     this.openModal.nativeElement.click();
   //   console.log('open modal');
-  // }
+   }
 
   // updateAddressType() {
   //   let errors = 0;
@@ -309,10 +307,10 @@ export class ViewCurrenciesListComponent implements OnInit {
 
   // /* Add Handlers from context menu */
 
-  // addAddressTypesModal() {
+  addCurrenciesListModal() {
   //   this.newAddressTypeName = '';
-  //   this.addModalOpen.nativeElement.click();
-  // }
+     this.addModalOpen.nativeElement.click();
+   }
 
   // addAddressType($event) {
   //    const requestModel = {

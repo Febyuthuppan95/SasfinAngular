@@ -23,7 +23,7 @@ export class ViewLoginComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private renderer: Renderer2,
-     private elRef : ElementRef
+    private elRef: ElementRef
     ) { }
 
   @ViewChild('login', { static: true })
@@ -34,7 +34,7 @@ export class ViewLoginComponent implements OnInit {
   typePassword: boolean;
 
   ngOnInit() {
-    var elem = document.getElementsByClassName('modal-backdrop')
+    const elem = document.getElementsByClassName('modal-backdrop');
 
     if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
@@ -66,7 +66,7 @@ export class ViewLoginComponent implements OnInit {
         (msg) => {
 
           this.pendingRequest = false;
-          this.notify.errorsmsg('Failure', 'No Authorization.');
+          this.notify.errorsmsg('Failure', 'Username or password is incorrect.');
         });
     }
 

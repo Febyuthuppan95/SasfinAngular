@@ -305,6 +305,7 @@ export class ViewUserListComponent implements OnInit {
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
+          console.log(this.userList);
         },
         msg => {
           this.showLoader = false;
