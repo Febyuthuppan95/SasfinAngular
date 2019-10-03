@@ -19,14 +19,29 @@ export class CapturePreviewComponent implements OnInit {
 
   pdfSRC: Blob;
   displayPDF = false;
+  failedToLoad = false;
 
   ngOnInit() {
+    this.failedToLoad = false;
+
     this.docService.get(this.data.src).then(
       (res: string) => {
+        if (res === null) {
+          this.failedToLoad = true;
+        } else {
+          this.failedToLoad = false;
+        }
+
         this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
         this.displayPDF = true;
       },
-      (msg) => {}
+      (msg) => {
+        this.failedToLoad = true;
+      }
     );
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

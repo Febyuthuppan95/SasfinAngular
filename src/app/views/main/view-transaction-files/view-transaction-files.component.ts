@@ -85,6 +85,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   focusHelpName: string;
   focusDescription: string;
   focusStatusID: number;
+  focusType: string;
 
   noData = false;
   showLoader = true;
@@ -296,7 +297,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, fileName, statusID) {
+  popClick(event, id, fileName, statusID, doctype?) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -308,6 +309,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.focusHelp = id;
     this.focusPath = fileName;
     this.focusStatusID = statusID;
+    this.focusType = doctype;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

@@ -125,7 +125,16 @@ export class CaptureLayoutComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          console.log(res);
+
+          res.attachments.forEach((attach) => {
+            attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
+            attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
+            attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
+            attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+
+            this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+          });
+
           this.attachmentList = res.attachments;
         },
         (msg) => {}
@@ -170,11 +179,13 @@ export class CaptureLayoutComponent implements OnInit {
     setTimeout(() => this.currentShortcutLabel = null, 2000);
   }
 
-  previewCapture(src: string) {
-    const dialogRef = this.dialog.open(CapturePreviewComponent, {
-      data: { src },
-      width: '380px',
-      height: '512px;'
-    });
+  previewCapture(src: string, id: number) {
+    if (id !== this.attachmentID) {
+      this.dialog.open(CapturePreviewComponent, {
+        data: { src },
+        width: '380px',
+        height: '512px;'
+      });
+    }
   }
 }
