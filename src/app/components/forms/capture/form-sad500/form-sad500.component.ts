@@ -30,9 +30,6 @@ currentTheme: string;
   LRN: {
   value: null,
   },
-  importersCode: {
-  value: null,
-  },
   PCC: {
   value: null,
   },
@@ -61,35 +58,34 @@ currentTheme: string;
   }
 
 submit($event) {
-$event.preventDefault();
+  $event.preventDefault();
 
-const requestModel = {
-userID: this.currentUser.userID,
-specificCustomsReleaseID: this.attachmentID,
-serialNo: this.form.serialNo.value,
-lrn: this.form.LRN.value,
-importersCode: this.form.importersCode.value,
-pcc: this.form.PCC.value,
-waybillNo: this.form.waybillNo.value,
-supplierRef: this.form.supplierRef.value,
-mrn: this.form.MRN.value,
-isDeleted: 0,
-attachmentStatusID: 2,
-};
+  const requestModel = {
+    userID: this.currentUser.userID,
+    specificCustomsReleaseID: this.attachmentID,
+    serialNo: this.form.serialNo.value,
+    lrn: this.form.LRN.value,
+    pcc: this.form.PCC.value,
+    waybillNo: this.form.waybillNo.value,
+    supplierRef: this.form.supplierRef.value,
+    totalCustomsValue: this.form.totalCustomsValue.value,
+    mrn: this.form.MRN.value,
+    isDeleted: 0,
+    attachmentStatusID: 2,
+  };
 
-this.transactionService.customsReleaseUpdate(requestModel).then(
-(res: Outcome) => {
-console.log(res);
-if (res.outcome === 'SUCCESS') {
-this.notify.successmsg(res.outcome, res.outcomeMessage);
-this.router.navigate(['transaction', 'attachments']);
-} else {
-this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-}
-},
-(msg) => {
-this.notify.errorsmsg('Failure', 'Cannot reach server');
-}
-);
-}
+  this.transactionService.customsReleaseUpdate(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.router.navigate(['transaction', 'attachments']);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    );
+  }
 }
