@@ -8,10 +8,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -88,6 +85,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   focusHelpName: string;
   focusDescription: string;
   focusStatusID: number;
+  focusType: string;
 
   noData = false;
   showLoader = true;
@@ -299,7 +297,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, fileName, statusID) {
+  popClick(event, id, fileName, statusID, doctype?) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -311,6 +309,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.focusHelp = id;
     this.focusPath = fileName;
     this.focusStatusID = statusID;
+    this.focusType = doctype;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

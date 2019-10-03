@@ -129,6 +129,7 @@ import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-
 import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 import { CurrenciesService } from './services/Currencies.Service';
 
+import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
 
 @NgModule({
   declarations: [
@@ -215,7 +216,8 @@ import { CurrenciesService } from './services/Currencies.Service';
     ViewCompanyAddInfoTypesListComponent,
     ContextMenuCompanyAddInfoTypesComponent,
     ContextMenuCurrenciesComponent,
-    ViewCurrenciesListComponent
+    ViewCurrenciesListComponent,
+    CapturePreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -273,6 +275,7 @@ import { CurrenciesService } from './services/Currencies.Service';
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
+    CapturePreviewComponent
   ]
 })
 export class AppModule { }

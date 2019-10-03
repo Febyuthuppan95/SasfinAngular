@@ -9,7 +9,9 @@ tabindex="-1"
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" style="padding-top: 2px;" *ngFor="let attach of this.attachmentList">
+        <li class="nav-item" style="padding-top: 2px;cursor: pointer;" *ngFor="let attach of this.attachmentList"
+          [matTooltip]="attach.tooltip"
+          (click)="previewCapture(attach.file, attach.attachmentID)">
           <span class="attachment-status d-inline">
             <i class="mdi mdi-checkbox-blank"
               [ngClass]="{statusYellow: attach.attachmentID === this.attachmentID, statusNone: attach.statusID === 1, statusOrange: attach.statusID === 2,

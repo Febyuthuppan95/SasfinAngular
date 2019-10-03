@@ -1,1 +1,49 @@
-<p>form-sad500 works!</p>
+<form (submit)="submit($event); $event.preventDefault()">
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="Serial No" />
+    </div>
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="LRN" />
+    </div>
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="PCC" />
+    </div>
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="Waybill No" />
+    </div>
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="Supplier Ref" />
+    </div>
+    <div class="form-group">
+      <input type="text"
+        [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        placeholder="MRN" />
+    </div>
+    <div class="form-group">
+        <input type="text"
+          [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
+          class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+          placeholder="Total Customs Value" />
+      </div>
+    <div class="form-group text-right">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+
+  <app-notification></app-notification>

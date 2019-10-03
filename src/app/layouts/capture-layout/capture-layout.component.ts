@@ -8,6 +8,8 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { MatDialog } from '@angular/material';
+import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -20,7 +22,8 @@ export class CaptureLayoutComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private transactionService: TransactionService,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService,
+              private dialog: MatDialog) { }
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -122,7 +125,16 @@ export class CaptureLayoutComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          console.log(res);
+
+          res.attachments.forEach((attach) => {
+            attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
+            attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
+            attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
+            attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+
+            this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+          });
+
           this.attachmentList = res.attachments;
         },
         (msg) => {}
@@ -165,5 +177,15 @@ export class CaptureLayoutComponent implements OnInit {
 
   flushCurrentShortcut() {
     setTimeout(() => this.currentShortcutLabel = null, 2000);
+  }
+
+  previewCapture(src: string, id: number) {
+    if (id !== this.attachmentID) {
+      this.dialog.open(CapturePreviewComponent, {
+        data: { src },
+        width: '380px',
+        height: '512px;'
+      });
+    }
   }
 }

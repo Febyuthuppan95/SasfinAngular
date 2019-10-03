@@ -22,7 +22,7 @@ export class ContextMenuTransactionComponent implements OnInit {
   }
 
   viewTransactionAttachments() {
-    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1 });
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '' });
     this.router.navigate(['transaction', 'attachments']);
   }
 
