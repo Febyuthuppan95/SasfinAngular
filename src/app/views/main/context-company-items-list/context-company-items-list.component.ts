@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { CompanyItemsResponse } from 'src/app/models/HttpResponses/CompanyItemsResponse';
-import { Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { CompanyItemsResponse, Item } from 'src/app/models/HttpResponses/CompanyItemsResponse';
 
 @Component({
   selector: 'app-context-company-items-list',
@@ -61,7 +60,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompanyItemsResponse;
-  dataList: Items[] = [];
+  dataList: Item[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
