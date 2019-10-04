@@ -7,6 +7,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyItemsResponse, Item } from 'src/app/models/HttpResponses/CompanyItemsResponse';
+import { SelectedRecord } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-context-company-items-list',
@@ -266,25 +267,19 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
-
-    this.focusItemID = id;
-
-    if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true);
-      this.contextMenu = true;
-    } else {
-      this.themeService.toggleContextMenu(false);
-      this.contextMenu = false;
-    }
+  popClick(event, obj) {
+    this.captureInfo = obj;
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
   }
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
+  }
+
 
   popOff() {
     this.contextMenu = false;

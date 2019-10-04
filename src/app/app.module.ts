@@ -128,6 +128,7 @@ import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Servi
 import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-currencies/context-menu-currencies.component';
 import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 import { CurrenciesService } from './services/Currencies.Service';
+import { ContextMenuCompanyItemsComponent } from './components/menus/context-menu-company-items/context-menu-company-items.component';
 
 
 @NgModule({
@@ -215,7 +216,8 @@ import { CurrenciesService } from './services/Currencies.Service';
     ViewCompanyAddInfoTypesListComponent,
     ContextMenuCompanyAddInfoTypesComponent,
     ContextMenuCurrenciesComponent,
-    ViewCurrenciesListComponent
+    ViewCurrenciesListComponent,
+    ContextMenuCompanyItemsComponent
   ],
   imports: [
     BrowserModule,
