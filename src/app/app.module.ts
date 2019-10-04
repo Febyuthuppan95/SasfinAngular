@@ -131,6 +131,10 @@ import { CurrenciesService } from './services/Currencies.Service';
 import { ContextMenuCompanyItemsComponent } from './components/menus/context-menu-company-items/context-menu-company-items.component';
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 
+import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
+import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
+import { ApiService } from './services/api.service';
+import { CaptureService } from './services/capture.service';
 
 @NgModule({
   declarations: [
@@ -219,7 +223,9 @@ import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/v
     ContextMenuCurrenciesComponent,
     ViewCurrenciesListComponent,
     ContextMenuCompanyItemsComponent,
-    ViewAlternateItemsComponent
+    ViewAlternateItemsComponent,
+    CapturePreviewComponent,
+    FormShippingDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -266,17 +272,20 @@ import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/v
     AddressTypesService,
     ContactTypesService,
     CompanyAddInfoTypesService,
+    ApiService,
     CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     },
-    ChatService
+    ChatService,
+    CaptureService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
+    CapturePreviewComponent
   ]
 })
 export class AppModule { }

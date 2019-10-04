@@ -15,4 +15,5 @@ export class TransactionFile {
   name: string;
   status: string;
   statusID: number;
+  tooltip?: string;
 }

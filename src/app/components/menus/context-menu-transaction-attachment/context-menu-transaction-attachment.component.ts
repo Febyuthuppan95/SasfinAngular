@@ -19,6 +19,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() currentTheme: string;
   @Input() statusID: number;
   @Input() docPath: string;
+  @Input() fileType: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
 
@@ -28,7 +29,8 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   capture() {
     if (this.statusID === 1) {
       this.docService.loadDocumentToViewer(this.docPath);
-      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID });
+      // tslint:disable-next-line: max-line-length
+      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
       this.router.navigate(['capture', 'transaction', 'attachment']);
     }
   }
