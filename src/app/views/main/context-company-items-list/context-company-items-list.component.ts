@@ -299,6 +299,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   alternates($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openeditModal.nativeElement.click();
+    this.router.navigateByUrl(`/alternates`);
   }
 }

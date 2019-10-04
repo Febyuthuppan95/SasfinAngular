@@ -38,6 +38,7 @@ import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 const routes: Routes = [
   {
     path: '',
@@ -71,6 +72,7 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
+          { path: 'alternates', component: ViewAlternateItemsComponent },
           { path: 'itemstypes', component: ViewItemTypesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
