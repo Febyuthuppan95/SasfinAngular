@@ -267,17 +267,24 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, obj) {
-    this.captureInfo = obj;
-    this.contextMenuX = event.clientX + 3;
-    this.contextMenuY = event.clientY + 5;
-    this.themeService.toggleContextMenu(!this.contextMenu);
-    this.contextMenu = true;
-  }
+  popClick(event, id) {
+    if (this.sidebarCollapsed) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    } else {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+    }
 
-  selectedRecord(obj: SelectedRecord) {
-    this.selectedRow = obj.index;
-    this.popClick(obj.event, obj.record);
+    this.focusItemID = id;
+
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
   }
 
 
@@ -289,75 +296,9 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  Add() {
-    this.openaddModal.nativeElement.click();
-  }
-
-  addCompanyItem() {
-    // const requestModel: AddCompanyItem = {
-    //   userID: this.currentUser.userID,
-    //   companyID: this.companyID,
-    //   spesificitemID: this.focusItemID,
-    // };
-
-    // this.companyService.additem(requestModel).then(
-    //   (res: {outcome: Outcome}) => {
-    //       if (res.outcome.outcome !== 'SUCCESS') {
-    //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-    //       } else {
-    //         this.notify.successmsg('SUCCESS', 'Company item successfully added');
-    //         this.loadCompanyItemsList();
-    //         this.closeaddModal.nativeElement.click();
-    //       }
-    //     },
-    //     msg => {
-    //       this.notify.errorsmsg(
-    //         'Server Error',
-    //         'Something went wrong while trying to access the server.'
-    //       );
-    //       this.closeaddModal.nativeElement.click();
-    //     }
-    //   );
-  }
-
-  editCompanyAddress($event) {
+  alternates($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openeditModal.nativeElement.click();
   }
-
-  UpdateCompanyItem() {
-    // const requestModel: UpdateCompanyItem = {
-    //   userID: this.currentUser.userID,
-    //   spesificitemID: this.focusItemID,
-
-  //   };
-  //   this.companyService.updateitem(requestModel).then(
-  //     (res: {outcome: Outcome}) => {
-  //         if (res.outcome.outcome !== 'SUCCESS') {
-  //           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         } else {
-  //           this.notify.successmsg('SUCCESS', 'Company item successfully Updated');
-  //           this.closeeditModal.nativeElement.click();
-  //           this.loadCompanyItemsList();
-  //       }
-  //     },
-  //       msg => {
-  //         this.notify.errorsmsg(
-  //         'Server Error', 'Something went wrong while trying to access the server.');
-  //     });
-  // }
-
-  // onConsultantChange(id: number)   {
-  //   this.disableAddressSelect = true;
-  //   this.Type = id;
-  // }
-
-  // onCapturerChange(id: number)   {
-  //   this.disableAddressSelect = true;
-  //   this.Type = id;
-  // }
-
-  }
-
 }
