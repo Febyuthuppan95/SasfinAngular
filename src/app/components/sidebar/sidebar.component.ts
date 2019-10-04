@@ -100,13 +100,14 @@ export class SidebarComponent implements OnInit {
       orderBy: 'Name',
       orderByDirection: 'DESC',
       rowStart: 1,
-      rowEnd: 30
+      rowEnd: 1000
     };
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
         res.userRightsList.forEach(uRight => {
+
           if (uRight.name === 'Users') {
             this.showusers = true;
           }

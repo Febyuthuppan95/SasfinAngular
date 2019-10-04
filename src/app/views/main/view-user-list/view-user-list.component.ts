@@ -305,7 +305,6 @@ export class ViewUserListComponent implements OnInit {
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
-          console.log(this.userList);
         },
         msg => {
           this.showLoader = false;
@@ -325,7 +324,6 @@ export class ViewUserListComponent implements OnInit {
   }
 
   onDesignationChange(id: number) {
-    console.log(id);
     this.selectedDesignation = id;
     this.disableDesSelect = true;
   }
@@ -367,7 +365,6 @@ export class ViewUserListComponent implements OnInit {
     this.preview = user.profileImage;
     this.selectedUserID = +user.userId;
 
-    console.log(this.selectedStatus);
 
     for (let index = 0; index < this.designations.length; index++) {
       if (this.designations[index].name === user.designation) {

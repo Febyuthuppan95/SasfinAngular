@@ -35,10 +35,12 @@ export class TableComponent implements OnInit, OnChanges {
   selectedRow: number;
   paginate: boolean;
   orderIndicator: string;
+  count = 0;
 
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
+    console.log(this.dataset);
     this.loadTable();
   }
 
@@ -57,6 +59,8 @@ export class TableComponent implements OnInit, OnChanges {
 
     // Iterate through each object in our dataset list
     this.dataset.forEach((obj) => {
+
+
 
       // Obtain object keys and values for each record
       objectKeys = Object.keys(obj);

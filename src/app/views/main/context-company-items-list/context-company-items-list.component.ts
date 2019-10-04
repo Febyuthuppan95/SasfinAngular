@@ -33,7 +33,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyItemsList();
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -113,6 +112,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+    this.loadCompanyItemsList();
   }
 
   backToCompanies() {
@@ -183,7 +183,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificItemID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,

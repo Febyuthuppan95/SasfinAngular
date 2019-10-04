@@ -38,7 +38,6 @@ export class ContextItemsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadItems(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -76,103 +75,103 @@ export class ContextItemsListComponent implements OnInit {
         enable: true,
         tag: 'Item'
       }
+    },
+    {
+      title: 'Discription',
+      propertyName: 'discription',
+      order: {
+        enable: true,
+        tag: 'Discription'
+      }
+    },
+    {
+      title: 'Tariff',
+      propertyName: 'tariff',
+      order: {
+        enable: true,
+        tag: 'Tariff'
+      }
+    },
+    {
+      title: 'Type',
+      propertyName: 'type',
+      order: {
+        enable: true,
+        tag: 'Type'
+      }
+    },
+    {
+      title: 'Usage',
+      propertyName: 'usage',
+      order: {
+        enable: true,
+        tag: 'Usage'
+      }
+    },
+    {
+      title: 'MIDP',
+      propertyName: 'midp',
+      order: {
+        enable: true,
+        tag: 'MIDP'
+      }
+    },
+    {
+      title: 'PI',
+      propertyName: 'pi',
+      order: {
+        enable: true,
+        tag: 'PI'
+      }
+    },
+    {
+      title: 'Vulnerable',
+      propertyName: 'vulnerable',
+      order: {
+        enable: true,
+        tag: 'Vulnerable'
+      }
+    },
+    {
+      title: '521',
+      propertyName: 'n521',
+      order: {
+        enable: true,
+        tag: 'n521'
+      }
+    },
+    {
+      title: '536',
+      propertyName: 'n536',
+      order: {
+        enable: true,
+        tag: 'n536'
+      }
+    },
+    {
+      title: '317.6.1',
+      propertyName: 'n31761',
+      order: {
+        enable: true,
+        tag: 'n31761'
+      }
+    },
+    {
+      title: '317.6.2',
+      propertyName: 'n31762',
+      order: {
+        enable: true,
+        tag: 'n31762'
+      }
+    },
+    {
+      title: '317.02',
+      propertyName: 'n31702',
+      order: {
+        enable: true,
+        tag: 'n31702'
+      }
     }
-    // {
-    //   title: 'Discription',
-    //   propertyName: 'discription',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Discription'
-    //   }
-    // },
-    // {
-    //   title: 'Tariff',
-    //   propertyName: 'tariff',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Tariff'
-    //   }
-    // },
-    // {
-    //   title: 'Type',
-    //   propertyName: 'type',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Type'
-    //   }
-    // },
-    // {
-    //   title: 'Usage',
-    //   propertyName: 'usage',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Usage'
-    //   }
-    // },
-    // {
-    //   title: 'MIDP',
-    //   propertyName: 'midp',
-    //   order: {
-    //     enable: true,
-    //     tag: 'MIDP'
-    //   }
-    // },
-    // {
-    //   title: 'PI',
-    //   propertyName: 'pi',
-    //   order: {
-    //     enable: true,
-    //     tag: 'PI'
-    //   }
-    // },
-    // {
-    //   title: 'Vulnerable',
-    //   propertyName: 'vulnerable',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Vulnerable'
-    //   }
-    // },
-    // {
-    //   title: '521',
-    //   propertyName: '521',
-    //   order: {
-    //     enable: true,
-    //     tag: '521'
-    //   }
-    // },
-    // {
-    //   title: '536',
-    //   propertyName: '536',
-    //   order: {
-    //     enable: true,
-    //     tag: '536'
-    //   }
-    // },
-    // {
-    //   title: '317.6.1',
-    //   propertyName: '317.6.1',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.6.1'
-    //   }
-    // },
-    // {
-    //   title: '317.6.2',
-    //   propertyName: '317.6.2',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.6.2'
-    //   }
-    // },
-    // {
-    //   title: '317.02',
-    //   propertyName: '317.02',
-    //   order: {
-    //     enable: true,
-    //     tag: '317.02'
-    //   }
-    // }
   ];
 
   selectedRow = -1;
@@ -181,14 +180,14 @@ export class ContextItemsListComponent implements OnInit {
   Tariff = 0;
   Type = '';
   Usage = '';
-  MIDP = -1;
+  MIDP = '';
   PI = '';
   Vulnerable = '';
-  N521 = 0;
-  N536 = '';
-  N31761 = '';
-  N31762 = '';
-  N31702 = '';
+  n521 = '';
+  n536 = '';
+  n31761 = '';
+  n31762 = '';
+  n31702 = '';
 
   items: Items[] = [];
 
@@ -225,8 +224,7 @@ export class ContextItemsListComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-
-    this.loadItems(false);
+    this.loadItems(true);
   }
 
   loadItems(displayGrowl: boolean) {
@@ -246,7 +244,7 @@ export class ContextItemsListComponent implements OnInit {
     .getItemList(model)
     .then(
       (res: ItemsListResponse) => {
-        console.log(res.itemsLists.length);
+        console.log(res.itemsLists);
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
