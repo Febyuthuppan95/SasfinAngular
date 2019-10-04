@@ -130,6 +130,9 @@ import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/v
 import { CurrenciesService } from './services/Currencies.Service';
 
 import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
+import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
+import { ApiService } from './services/api.service';
+import { CaptureService } from './services/capture.service';
 
 @NgModule({
   declarations: [
@@ -217,7 +220,8 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
     ContextMenuCompanyAddInfoTypesComponent,
     ContextMenuCurrenciesComponent,
     ViewCurrenciesListComponent,
-    CapturePreviewComponent
+    CapturePreviewComponent,
+    FormShippingDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -264,13 +268,15 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
     AddressTypesService,
     ContactTypesService,
     CompanyAddInfoTypesService,
+    ApiService,
     CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     },
-    ChatService
+    ChatService,
+    CaptureService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
