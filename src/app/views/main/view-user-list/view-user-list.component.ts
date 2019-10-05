@@ -150,6 +150,12 @@ export class ViewUserListComponent implements OnInit {
       order: {
         enable: true,
         tag: 'Status'
+      },
+      style: {
+        posClass: 'badge badge-success',
+        negClass: 'badge badge-danger',
+        pos: 'Active',
+        neg: 'Inactive'
       }
     },
   ];

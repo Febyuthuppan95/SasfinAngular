@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateRegionRequest, UpdateCountryRequest, UpdateCityRequest } from 'src/app/models/HttpRequests/UpdateLocationRequest';
 import { ListCountriesRequest } from 'src/app/models/HttpRequests/Locations';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-view-places',
@@ -34,6 +35,9 @@ export class ViewPlacesComponent implements OnInit {
 
   @ViewChild('deleteModalClose', { static: true })
   deleteModalClose: ElementRef;
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   currentUser = this.userService.getCurrentUser();
 
@@ -172,69 +176,86 @@ export class ViewPlacesComponent implements OnInit {
   /* END Delete Handlers from context menu */
 
   addLocation() {
-   if (this.locationType === 'country') {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      name: this.newLocationName,
-    };
+    event.preventDefault();
+    let errors = 0;
 
-    this.placeService.addCountry(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.newLocationName = '';
-          this.addModalClose.nativeElement.click();
-          this.loadData();
-        } else {
-          alert('Error Adding');
-        }
-      },
-      (msg) => {
-        alert('Error');
-      }
-    );
-   } else if (this.locationType === 'region') {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      countryID: this.locationParentID,
-      name: this.newLocationName,
-    };
+    if (this.newLocationName === '' || this.newLocationName === undefined) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Please enter the name field');
+    }
 
-    this.placeService.addRegion(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.newLocationName = '';
-          this.addModalClose.nativeElement.click();
-          this.loadData();
-        } else {
-          alert('Error Adding');
-        }
-      },
-      (msg) => {
-        alert('Error');
-      }
-    );
-   } else {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      regionID: this.locationParentID,
-      name: this.newLocationName,
-    };
+    const lettersOnly = new RegExp('^[a-zA-Z]+$');
 
-    this.placeService.addCity(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.newLocationName = '';
-          this.addModalClose.nativeElement.click();
-          this.loadData();
-        } else {
-          alert('Error Adding');
-        }
-      },
-      (msg) => {
-        alert('Error');
+    if (!lettersOnly.test(this.newLocationName)) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Only letters are allowed');
+    }
+
+    if (errors === 0) {
+      if (this.locationType === 'country') {
+        const requestModel = {
+          userID: this.currentUser.userID,
+          name: this.newLocationName,
+        };
+
+        this.placeService.addCountry(requestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.newLocationName = '';
+              this.addModalClose.nativeElement.click();
+              this.loadData();
+            } else {
+              alert('Error Adding');
+            }
+          },
+          (msg) => {
+            alert('Error');
+          }
+        );
+      } else if (this.locationType === 'region') {
+        const requestModel = {
+          userID: this.currentUser.userID,
+          countryID: this.locationParentID,
+          name: this.newLocationName,
+        };
+
+        this.placeService.addRegion(requestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.newLocationName = '';
+              this.addModalClose.nativeElement.click();
+              this.loadData();
+            } else {
+              alert('Error Adding');
+            }
+          },
+          (msg) => {
+            alert('Error');
+          }
+        );
+      } else {
+        const requestModel = {
+          userID: this.currentUser.userID,
+          regionID: this.locationParentID,
+          name: this.newLocationName,
+        };
+
+        this.placeService.addCity(requestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.newLocationName = '';
+              this.addModalClose.nativeElement.click();
+              this.loadData();
+            } else {
+              alert('Error Adding');
+            }
+          },
+          (msg) => {
+            alert('Error');
+          }
+        );
       }
-    );
-   }
+    }
   }
 
   deleteLocation() {
