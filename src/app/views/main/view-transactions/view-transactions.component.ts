@@ -411,9 +411,11 @@ export class ViewTransactionsComponent implements OnInit {
         ).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
+              this.openModal.nativeElement.click();
               this.loadTransactions();
               this.notify.successmsg(res.outcome, res.outcomeMessage);
-              this.closeModal.nativeElement.click();
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
           },
           (msg) => {
