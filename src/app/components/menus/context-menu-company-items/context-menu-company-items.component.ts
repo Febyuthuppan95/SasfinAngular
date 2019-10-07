@@ -18,6 +18,7 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
 
   @Output() Alternates = new EventEmitter<string>();
   ngOnInit() {
+
   }
 
   alternates() {

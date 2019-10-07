@@ -8,10 +8,10 @@
 }
 
 .company-container {
-  position: absolute;
+  position: fixed;
   bottom: auto;
   right: 0;
-  top: 0;
+  top: 5vh;
   width: 256px;
   text-align: center;
   z-index: 9999;
@@ -68,6 +68,7 @@
 
 .capture-right {
   border-radius: 0 !important;
+  background: #ffffff !important;
 }
 
 .shortcut-highlighter-container {

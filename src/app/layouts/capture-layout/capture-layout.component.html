@@ -25,12 +25,11 @@ tabindex="-1"
           <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
         </li>
         <li class="nav-item">
-          <button (click)="showHelp()" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below"><span class="mdi mdi-help-circle"></span>
-          </button>
+          <button (click)="showHelp()" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below">Help</button>
         </li>
         <li>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" (click)="goBack()"
-            matTooltip="Exit (CTRL + ALT + O)" matTooltipPosition="below" style="margin-top: 5px;">
+            <button type="button" mat-buttom class="close text-light" data-dismiss="modal" aria-label="Close" (click)="goBack()"
+            matTooltip="Exit (CTRL + ALT + O)" matTooltipPosition="below" style="margin-top: 5px;margin-left: 12px;">
                 <span aria-hidden="true">&times;</span>
               </button>
           <!-- <button class="btnbg" (click)="goBack()"
@@ -45,7 +44,7 @@ tabindex="-1"
   <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="this.currentReaderPOS"></div>
   <app-document-viewer></app-document-viewer>
 </div>
-<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px; overflow-y: auto;">
+<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px;overflow-y: auto">
   <router-outlet></router-outlet>
   <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
     <div class="company-info bg-light shadow text-dark text-left" *ngIf="this.companyInfoList !== undefined">

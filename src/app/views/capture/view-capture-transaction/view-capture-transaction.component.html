@@ -1,6 +1,5 @@
 <div class="capture-form" *ngIf="this.currentDoctype">
   <h1 class="capture-form-title">{{this.currentDoctype}}</h1>
-  <p class="capture-form-subtitle text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
   <hr>
   <app-form-custom-release *ngIf="this.currentDoctype === 'Customs Release Notification'"></app-form-custom-release>
   <app-form-import-clearing-instruction *ngIf="this.currentDoctype === 'Import Clearing Instruction'"></app-form-import-clearing-instruction>
