@@ -62,6 +62,7 @@ form = {
     this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
+        this.loadCapture();
       }
     });
   }
@@ -99,11 +100,12 @@ submit($event) {
   }
 
   loadCapture() {
-    this.captureService.customsReleaseGet({
+    this.captureService.sad500Get({
       specificID: this.attachmentID,
       userID: 3
     }).then(
       (res: SAD500Get) => {
+        console.log(res);
         this.form.MRN.value = res.mrn;
         this.form.MRN.error = res.mrnError;
         this.form.serialNo.value = res.serialNo;
