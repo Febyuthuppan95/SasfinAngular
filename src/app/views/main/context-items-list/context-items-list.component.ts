@@ -240,11 +240,8 @@ export class ContextItemsListComponent implements OnInit {
       orderByDirection: this.orderDirection
 
     };
-    this.companyService
-    .getItemList(model)
-    .then(
+    this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
-        console.log(res.itemsLists);
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,

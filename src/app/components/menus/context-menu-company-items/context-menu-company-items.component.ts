@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-context-menu-company-items',
@@ -7,21 +9,27 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ContextMenuCompanyItemsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private companyService: CompanyService) { }
 
   @Input() x: number;
   @Input() y: number;
 
   @Input() itemID: number;
-  @Input() service: string;
+  @Input() groupID: number;
+  @Input() item: string;
   @Input() currentTheme: string;
 
-  @Output() Alternates = new EventEmitter<string>();
+  @Output() addtoGroup = new EventEmitter<string>();
   ngOnInit() {
   }
 
-  alternates() {
-    this.Alternates.emit(JSON.stringify({
+  companyItems() {
+    this.companyService.setItem({ groupID: this.groupID, itemName: this.item });
+    this.router.navigateByUrl('companies/items/alternates');
+}
+
+  AddtoGroup() {
+    this.addtoGroup.emit(JSON.stringify({
       itemID: this.itemID
     }));
   }

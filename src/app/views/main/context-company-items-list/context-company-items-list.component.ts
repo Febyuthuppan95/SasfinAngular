@@ -8,6 +8,11 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyItemsResponse, Item } from 'src/app/models/HttpResponses/CompanyItemsResponse';
 import { SelectedRecord } from 'src/app/models/Table';
+import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
+import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
+import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
+import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
 
 @Component({
   selector: 'app-context-company-items-list',
@@ -15,6 +20,8 @@ import { SelectedRecord } from 'src/app/models/Table';
   styleUrls: ['./context-company-items-list.component.scss']
 })
 export class ContextCompanyItemsListComponent implements OnInit {
+
+  specificUser: any;
 
 
   constructor(
@@ -48,8 +55,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
-  // @ViewChild(ContextMenuComponent, {static: true } )
-  // private contextmenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: true } )
+  private contextmenu: ContextMenuComponent;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -57,6 +64,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
 
+  items: Items[] = [];
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompanyItemsResponse;
@@ -76,6 +84,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   rowCountPerPage: number;
   showingRecords: number;
   activePage: number;
+  focusItemGroupID: number;
   focusItemID: number;
   selectedRow = -1;
   Item = '';
@@ -114,6 +123,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
       this.companyName = obj.companyName;
     });
     this.loadCompanyItemsList();
+
+    this.loadItems(false);
   }
 
   backToCompanies() {
@@ -219,6 +230,57 @@ export class ContextCompanyItemsListComponent implements OnInit {
       );
   }
 
+  loadItems(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetItemList = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      specificItemID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.companyService.getItemList(model).then(
+      (res: ItemsListResponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        } else {
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.itemsLists.length;
+          this.items = res.itemsLists;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.items.length - 1;
+        }
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
   updateSort(orderBy: string) {
     if (this.orderBy === orderBy) {
       if (this.orderDirection === 'ASC') {
@@ -267,7 +329,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, groupid, itemid) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -276,8 +338,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
-    this.focusItemID = id;
-
+    this.focusItemGroupID = groupid;
+    this.focusItemID = itemid;
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -296,9 +358,40 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.selectedRow = index;
   }
 
-  alternates($event) {
+  OpenGroup($event) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.router.navigateByUrl(`/alternates`);
+    this.openaddModal.nativeElement.click();
+  }
+
+  addtoGroup(groupid, itemid) {
+    const requestModel: AddItemGroup = {
+      userID: this.currentUser.userID,
+      specificItemID: this.focusItemID,
+      specificSelectedItemID: itemid,
+      specificGroupID: groupid,
+    };
+    this.companyService
+    .addtoGroup(requestModel).then(
+      (res: ItemGroupReponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        } else {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 }

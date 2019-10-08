@@ -6,8 +6,8 @@
       </ng-container>
     </div>
     <app-table
-      *ngIf="this.items"
-      [dataset]="this.items"
+      *ngIf="this.alternateitems"
+      [dataset]="this.alternateitems"
       [headings]="this.tableHeadings"
       [recordsPerPage]="this.showingRecords"
       [rowStart]="this.rowStart"
@@ -19,7 +19,8 @@
       (orderChange)="orderChange($event)"
       (pageChange)="pageChange($event)"
       (showingRecordsEvent)="recordsPerPageChange($event)"
-      (searchEvent)="searchEvent($event)">
+      (searchEvent)="searchEvent($event)"
+      (backButtonEvent)="backToItems()">
     </app-table>
   </div>
 </div>
