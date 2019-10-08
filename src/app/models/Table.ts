@@ -10,6 +10,12 @@ export class TableHeading {
     enable: boolean,
     tag?: string,
   };
+  style?: {
+    posClass?: string,
+    negClass?: string,
+    neg: string,
+    pos: string
+  };
 }
 
 export class SelectedRecord {

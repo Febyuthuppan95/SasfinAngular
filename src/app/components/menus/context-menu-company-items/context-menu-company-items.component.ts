@@ -21,6 +21,7 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
 
   @Output() addtoGroup = new EventEmitter<string>();
   ngOnInit() {
+
   }
 
   companyItems() {

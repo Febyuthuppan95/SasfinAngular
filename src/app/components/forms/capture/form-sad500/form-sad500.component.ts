@@ -5,6 +5,8 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { CaptureService } from 'src/app/services/capture.service';
+import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 
 @Component({
   selector: 'app-form-sad500',
@@ -14,7 +16,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 export class FormSAD500Component implements OnInit {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router) { }
+              private router: Router, private captureService: CaptureService) { }
 
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
@@ -23,28 +25,35 @@ currentUser = this.userService.getCurrentUser();
 attachmentID: number;
 
 currentTheme: string;
-  form = {
+
+form = {
   serialNo: {
-  value: null,
+    value: null,
+    error: null,
   },
   LRN: {
-  value: null,
+    value: null,
+    error: null,
   },
   PCC: {
-  value: null,
-  },
-  waybillNo: {
-  value: null,
-  error: null
-  },
-  supplierRef: {
-  value: null,
-  },
-  MRN: {
-  value: null,
+    value: null,
+    error: null,
   },
   totalCustomsValue: {
     value: null,
+    error: null,
+  },
+  waybillNo: {
+    value: null,
+    error: null,
+  },
+  supplierRef: {
+    value: null,
+    error: null,
+  },
+  MRN: {
+    value: null,
+    error: null,
   },
 };
 
@@ -88,4 +97,33 @@ submit($event) {
       }
     );
   }
+
+  loadCapture() {
+    this.captureService.customsReleaseGet({
+      specificID: this.attachmentID,
+      userID: 3
+    }).then(
+      (res: SAD500Get) => {
+        this.form.MRN.value = res.mrn;
+        this.form.MRN.error = res.mrnError;
+        this.form.serialNo.value = res.serialNo;
+        this.form.serialNo.error = res.serialNoError;
+        this.form.totalCustomsValue.value = res.importersCode;
+        this.form.totalCustomsValue.error = res.importersCodeError;
+        this.form.waybillNo.value = res.waybillNo;
+        this.form.waybillNo.error = res.waybillNoError;
+        this.form.supplierRef.value = res.supplierRef;
+        this.form.supplierRef.error = res.supplierRefError;
+        this.form.LRN.value = res.lrn;
+        this.form.LRN.error = res.lrnError;
+        this.form.PCC.value = res.pcc;
+        this.form.PCC.error = res.pccError;
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
+  }
+
+
 }
