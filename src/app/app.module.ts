@@ -135,6 +135,7 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
 import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
+import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 
 @NgModule({
   declarations: [
@@ -225,7 +226,8 @@ import { CaptureService } from './services/capture.service';
     ContextMenuCompanyItemsComponent,
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
-    FormShippingDocumentComponent
+    FormShippingDocumentComponent,
+    ContextMenuItemsGroupComponent,
   ],
   imports: [
     BrowserModule,

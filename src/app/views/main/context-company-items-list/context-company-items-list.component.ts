@@ -86,6 +86,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   activePage: number;
   focusItemGroupID: number;
   focusItemID: number;
+  focusItemName: string;
   selectedRow = -1;
   Item = '';
   Discription = '';
@@ -202,6 +203,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
+    console.log(model);
 
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
@@ -329,7 +331,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, groupid, itemid) {
+  popClick(event, groupid, itemid, itemname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -340,6 +342,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
     this.focusItemGroupID = groupid;
     this.focusItemID = itemid;
+    this.focusItemName = itemname;
+
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -384,6 +388,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
+          this.closeaddModal.nativeElement.click();
         }
       },
       msg => {
