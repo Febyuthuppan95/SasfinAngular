@@ -34,6 +34,7 @@ import { ContextTariffsListComponent } from './views/main/context-tariffs-list/c
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 // tslint:disable-next-line: max-line-length
