@@ -59,14 +59,16 @@
         <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
 
     </div>
-    <div class="form-group text-right">
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
   </form>
   <br>
   <app-form-sad500-line (submitSADLine)="addToQueue($event)"></app-form-sad500-line>
   <br>
-  <div style="padding: 12px;">
-    <button *ngFor="let item of this.sad500LineQueue; let i = index" mat-button-raised class="btn-primary" (click)="revisitSAD500Line(item)">{{i + 1}}</button>
+  <div style="padding: 12px 0;" class="line-list">
+    <p *ngIf="this.sad500LineQueue.length === 0">No SA500 Lines Added</p>
+    <button *ngFor="let item of this.sad500LineQueue; let i = index" class="btn btn-primary btn-sm" (click)="revisitSAD500Line(item)">{{i + 1}}</button>
+  </div>
+  <br>
+  <div class="form-group text-right">
+    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
   </div>
   <app-notification></app-notification>

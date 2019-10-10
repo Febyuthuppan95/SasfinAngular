@@ -5,6 +5,11 @@
   padding: 24px;
 }
 
-.form-group {
-  margin: auto;
+.form-inline .form-group {
+  margin: 0;
+  width: 25%;
+  padding: 2px;
+}
+.form-inline .form-group input{
+  width: 100%;
 }

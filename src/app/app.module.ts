@@ -138,6 +138,7 @@ import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
 import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
+import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-preview/sad500-line-preview.component';
 
 @NgModule({
   declarations: [
@@ -230,7 +231,8 @@ import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/
     CapturePreviewComponent,
     FormShippingDocumentComponent,
     Sad500LinesComponent,
-    FormSAD500LineComponent
+    FormSAD500LineComponent,
+    Sad500LinePreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -291,7 +293,8 @@ import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
-    CapturePreviewComponent
+    CapturePreviewComponent,
+    Sad500LinePreviewComponent
   ]
 })
 export class AppModule { }

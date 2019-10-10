@@ -1,4 +1,7 @@
 <form (submit)="submit(); $event.preventDefault()" class="capture-tile shadow" *ngIf="this.form !== undefined">
+  <div class="form-group">
+    <h4>SAD500 Line</h4>
+  </div>
   <div class="form-inline">
   <div class="form-group" *ngIf="this.form.cpc != undefined">
     <input type="text"
@@ -32,15 +35,13 @@
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
       placeholder="Tariff" />
   </div>
-  <br>
   <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
     <input type="text"
       [(ngModel)]="this.form.unitOfMeasure" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
       placeholder="Unit Of Measure" />
   </div>
-  <br>
-  <div class="form-group text-right">
+  <div class="form-group text-right" style="margin: 0;">
     <button type="submit" class="btn btn-primary btn-sm">Add</button>
   </div>
 </form>

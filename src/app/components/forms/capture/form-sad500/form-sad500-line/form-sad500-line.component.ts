@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 import { ThemeService } from 'src/app/services/theme.Service';
 
@@ -12,7 +12,8 @@ export class FormSAD500LineComponent implements OnInit {
   constructor(private themeService: ThemeService) { }
 
   currentTheme: string;
-  submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
+
+  @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
 
   form = {
     cpc: '',

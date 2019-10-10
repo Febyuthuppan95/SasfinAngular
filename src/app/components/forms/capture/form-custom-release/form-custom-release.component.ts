@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { NotificationComponent } from '../../../notification/notification.component';
 import { UserService } from 'src/app/services/user.Service';
@@ -7,13 +7,14 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CRNGet } from 'src/app/models/HttpResponses/CRNGet';
+import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-form-custom-release',
   templateUrl: './form-custom-release.component.html',
   styleUrls: ['./form-custom-release.component.scss']
 })
-export class FormCustomReleaseComponent implements OnInit {
+export class FormCustomReleaseComponent implements OnInit, AfterViewInit {
 
   constructor(private themeService: ThemeService,
               private userService: UserService,
@@ -23,6 +24,11 @@ export class FormCustomReleaseComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
+  shortcuts: ShortcutInput[] = [];
+
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -74,9 +80,20 @@ export class FormCustomReleaseComponent implements OnInit {
     });
   }
 
-  submit($event) {
-    $event.preventDefault();
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + s',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.submit()
+        },
+    );
 
+    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
+  }
+
+  submit() {
     const requestModel = {
       userID: this.currentUser.userID,
       specificCustomsReleaseID: this.attachmentID,

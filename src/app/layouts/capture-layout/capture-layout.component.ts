@@ -85,13 +85,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-            key: 'ctrl + alt + i',
+            key: 'alt + i',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.companyInfo()
         },
         {
-          key: 'ctrl + alt + e',
+          key: 'alt + o',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.exitCaptureScreen()
@@ -175,31 +175,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   }
   PDFScrollUp() {
   }
-
-  // @HostListener('keydown', ['$event']) onKeyDown(e) {
-  //   if (e.keyCode === 190) {
-  //     this.currentReaderPOS.y++;
-  //     console.log(`New Reader pos: ${this.currentReaderPOS.y}`);
-  //   }
-  // }
-
-  // currentShortcut($event: string) {
-  //   if ($event === null || undefined) {
-  //     this.flushCurrentShortcut();
-  //   } else {
-  //     if ($event === 'Control') {
-  //         this.currentShortcutLabel = $event;
-  //     } else if ($event === 'Alt') {
-  //         this.currentShortcutLabel += ` + ${$event}`;
-  //     } else if ($event === 'l') {
-  //       this.currentShortcutLabel += ` + ${$event.toLocaleUpperCase()}`;
-  //     }
-  //   }
-  // }
-
-  // flushCurrentShortcut() {
-  //   setTimeout(() => this.currentShortcutLabel = null, 2000);
-  // }
 
   previewCapture(src: string, id: number) {
     if (id !== this.attachmentID) {

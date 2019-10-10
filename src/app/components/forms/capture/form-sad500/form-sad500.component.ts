@@ -8,6 +8,8 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
+import { MatDialog } from '@angular/material';
+import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
 
 @Component({
   selector: 'app-form-sad500',
@@ -17,7 +19,7 @@ import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line'
 export class FormSAD500Component implements OnInit {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService) { }
+              private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
 
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
@@ -135,7 +137,10 @@ form = {
   }
 
   revisitSAD500Line(item: SAD500LineCreateRequest) {
-    alert('Feautre not implemented');
+    this.dialog.open(Sad500LinePreviewComponent, {
+      data: item,
+      width: '380px'
+    });
   }
 
 }
