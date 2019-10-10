@@ -63,5 +63,10 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
-
+  <br>
+  <app-form-sad500-line (submitSADLine)="addToQueue($event)"></app-form-sad500-line>
+  <br>
+  <div style="padding: 12px;">
+    <button *ngFor="let item of this.sad500LineQueue; let i = index" mat-button-raised class="btn-primary" (click)="revisitSAD500Line(item)">{{i + 1}}</button>
+  </div>
   <app-notification></app-notification>

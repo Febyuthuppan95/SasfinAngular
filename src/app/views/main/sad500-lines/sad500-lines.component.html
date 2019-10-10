@@ -1,0 +1,22 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.dataset"
+      [dataset]="this.dataset"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.displayRecords"
+      [rowStart]="this.rowStart"
+      [rowEnd]="this.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderByDirection"
+      [tableHeader]="this.tableHeader"
+       (backButtonEvent)="back()">
+    </app-table>
+  </div>
+</div>

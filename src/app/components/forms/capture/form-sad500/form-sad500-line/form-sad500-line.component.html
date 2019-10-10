@@ -1,0 +1,46 @@
+<form (submit)="submit(); $event.preventDefault()" class="capture-tile shadow" *ngIf="this.form !== undefined">
+  <div class="form-inline">
+  <div class="form-group" *ngIf="this.form.cpc != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.cpc" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="CPC" />
+  </div>
+  <div class="form-group" *ngIf="this.form.lineNo != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="Line No" />
+  </div>
+  <div class="form-group" *ngIf="this.form.productCode != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.productCode" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="Product Code" />
+  </div>
+  <div class="form-group" *ngIf="this.form.value != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="Value" />
+  </div>
+</div>
+<br>
+  <div class="form-group" *ngIf="this.form.tariff != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.tariff" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="Tariff" />
+  </div>
+  <br>
+  <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.unitOfMeasure" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+      placeholder="Unit Of Measure" />
+  </div>
+  <br>
+  <div class="form-group text-right">
+    <button type="submit" class="btn btn-primary btn-sm">Add</button>
+  </div>
+</form>

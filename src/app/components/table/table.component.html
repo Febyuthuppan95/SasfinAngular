@@ -1,10 +1,3 @@
-<!-- <app-table-header
-  [tableHeader]="this.tableHeader"
-  (addButtonEvent)="addButton()"
-  (backButtonEvent)="backButton()"
-  (searchEvent)="search($event)"
-  (showingRecordsEvent)="recordsPerPageChange($event)">
-</app-table-header> -->
 <div *ngIf="this.tableHeader">
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()">
       <i class="mdi mdi-filter"></i> &nbsp;Filters

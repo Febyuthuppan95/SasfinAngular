@@ -16,6 +16,7 @@ import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -135,6 +136,8 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
 import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
+import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
+import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
 
 @NgModule({
   declarations: [
@@ -225,7 +228,9 @@ import { CaptureService } from './services/capture.service';
     ContextMenuCompanyItemsComponent,
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
-    FormShippingDocumentComponent
+    FormShippingDocumentComponent,
+    Sad500LinesComponent,
+    FormSAD500LineComponent
   ],
   imports: [
     BrowserModule,
@@ -247,7 +252,8 @@ import { CaptureService } from './services/capture.service';
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     MaterialModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    KeyboardShortcutsModule
   ],
   providers: [
     CookieService,
@@ -280,7 +286,7 @@ import { CaptureService } from './services/capture.service';
       multi: true
     },
     ChatService,
-    CaptureService
+    CaptureService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

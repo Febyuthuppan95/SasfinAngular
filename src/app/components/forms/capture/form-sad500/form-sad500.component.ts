@@ -7,6 +7,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
+import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 
 @Component({
   selector: 'app-form-sad500',
@@ -25,6 +26,8 @@ currentUser = this.userService.getCurrentUser();
 attachmentID: number;
 
 currentTheme: string;
+
+sad500LineQueue: SAD500LineCreateRequest[] = [];
 
 form = {
   serialNo: {
@@ -67,24 +70,24 @@ form = {
     });
   }
 
-submit($event) {
-  $event.preventDefault();
+  submit($event) {
+    $event.preventDefault();
 
-  const requestModel = {
-    userID: this.currentUser.userID,
-    specificCustomsReleaseID: this.attachmentID,
-    serialNo: this.form.serialNo.value,
-    lrn: this.form.LRN.value,
-    pcc: this.form.PCC.value,
-    waybillNo: this.form.waybillNo.value,
-    supplierRef: this.form.supplierRef.value,
-    totalCustomsValue: this.form.totalCustomsValue.value,
-    mrn: this.form.MRN.value,
-    isDeleted: 0,
-    attachmentStatusID: 2,
-  };
+    const requestModel = {
+      userID: this.currentUser.userID,
+      specificCustomsReleaseID: this.attachmentID,
+      serialNo: this.form.serialNo.value,
+      lrn: this.form.LRN.value,
+      pcc: this.form.PCC.value,
+      waybillNo: this.form.waybillNo.value,
+      supplierRef: this.form.supplierRef.value,
+      totalCustomsValue: this.form.totalCustomsValue.value,
+      mrn: this.form.MRN.value,
+      isDeleted: 0,
+      attachmentStatusID: 2,
+    };
 
-  this.transactionService.customsReleaseUpdate(requestModel).then(
+    this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -127,5 +130,12 @@ submit($event) {
     );
   }
 
+  addToQueue(obj: SAD500LineCreateRequest) {
+    this.sad500LineQueue.push(obj);
+  }
+
+  revisitSAD500Line(item: SAD500LineCreateRequest) {
+    alert('Feautre not implemented');
+  }
 
 }
