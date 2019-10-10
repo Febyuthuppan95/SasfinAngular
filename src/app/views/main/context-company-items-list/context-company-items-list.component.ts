@@ -123,7 +123,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
-    this.loadCompanyItemsList();
+    this.loadCompanyItemsList(true);
 
     this.loadItems(false);
   }
@@ -180,16 +180,16 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
     this.updatePagination();
 
-    this.loadCompanyItemsList();
+    this.loadCompanyItemsList(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyItemsList();
+    this.loadCompanyItemsList(false);
   }
 
 
-  loadCompanyItemsList() {
+  loadCompanyItemsList(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
@@ -203,10 +203,22 @@ export class ContextCompanyItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    console.log(model);
-
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
+
+          if (res.outcome.outcome === 'FAILURE') {
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          } else {
+            if (displayGrowl) {
+              this.notify.successmsg(
+                res.outcome.outcome,
+                res.outcome.outcomeMessage);
+              }
+          }
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -219,6 +231,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
             this.showingRecords = res.items.length;
             this.totalShowing = +this.rowStart + +this.dataset.items.length - 1;
             this.paginateData();
+            console.log(this.dataList);
           }
         },
         msg => {
@@ -248,10 +261,12 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
+          if (displayGrowl) {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
+          }
         } else {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -260,18 +275,9 @@ export class ContextCompanyItemsListComponent implements OnInit {
           }
         }
 
-        if (res.rowCount === 0) {
-          this.noData = true;
-          this.showLoader = false;
-        } else {
-          this.noData = false;
-          this.rowCount = res.rowCount;
-          this.showingRecords = res.itemsLists.length;
+        if (res.rowCount !== 0) {
           this.items = res.itemsLists;
-          this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
-
       },
       msg => {
         this.showLoader = false;
@@ -296,7 +302,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadCompanyItemsList();
+    this.loadCompanyItemsList(false);
   }
 
   updatePagination() {
@@ -373,7 +379,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificItemID: this.focusItemID,
       specificSelectedItemID: itemid,
-      specificGroupID: groupid,
+      specificGroupID: this.focusItemGroupID,
+      specificSelectedGroupID: groupid
     };
     this.companyService
     .addtoGroup(requestModel).then(
@@ -389,6 +396,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
             res.outcome.outcomeMessage
           );
           this.closeaddModal.nativeElement.click();
+          this.loadCompanyItemsList(false);
         }
       },
       msg => {

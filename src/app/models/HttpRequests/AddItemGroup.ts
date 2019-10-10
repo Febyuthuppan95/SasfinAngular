@@ -3,6 +3,7 @@ export class AddItemGroup {
     specificItemID: number;
     specificSelectedItemID: number;
     specificGroupID: number;
+    specificSelectedGroupID: number;
 }
 
 

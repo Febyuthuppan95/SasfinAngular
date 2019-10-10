@@ -14,6 +14,7 @@ import { AlternateItemsListResponse, AlternateItems } from 'src/app/models/HttpR
 import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
 
 @Component({
   selector: 'app-view-alternate-items',
@@ -270,6 +271,7 @@ export class ViewAlternateItemsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.alternateitems = res.alternateitems;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -278,7 +280,6 @@ export class ViewAlternateItemsComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.alternateitems.length;
-          this.alternateitems = res.alternateitems;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.alternateitems.length - 1;
         }
@@ -371,12 +372,12 @@ export class ViewAlternateItemsComponent implements OnInit {
     };
 
     this.companyService.alternatItemsUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
+      (res: UpdateGrouplist) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadAlternateItems(false);
         } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
