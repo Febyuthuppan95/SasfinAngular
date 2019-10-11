@@ -21,4 +21,7 @@ export class SAD500LineCreateRequest {
   unitOfMeasure: string;
   productCode: string;
   value: string;
+  saved?: boolean;
+  failed?: boolean;
+  updateSubmit?: boolean;
 }

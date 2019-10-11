@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -10,26 +10,36 @@ import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog } from '@angular/material';
 import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
+import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
   styleUrls: ['./form-sad500.component.scss']
 })
-export class FormSAD500Component implements OnInit {
+export class FormSAD500Component implements OnInit, AfterViewInit {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
 
+shortcuts: ShortcutInput[] = [];
+
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
 
+@ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
+
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
+linePreview = -1;
+lines = -1;
 
 currentTheme: string;
 
 sad500LineQueue: SAD500LineCreateRequest[] = [];
+sad500CreatedLines: SAD500Line[] = [];
 
 form = {
   serialNo: {
@@ -68,8 +78,28 @@ form = {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.loadCapture();
+        this.loadLines();
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + .',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.nextLine()
+        },
+        {
+          key: 'alt + ,',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.prevLine()
+      },
+    );
+
+    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
   submit($event) {
@@ -132,15 +162,68 @@ form = {
     );
   }
 
-  addToQueue(obj: SAD500LineCreateRequest) {
-    this.sad500LineQueue.push(obj);
+  loadLines() {
+    this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
+      (res: SPSAD500LineList) => {
+        this.sad500CreatedLines = res.lines;
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
   }
 
-  revisitSAD500Line(item: SAD500LineCreateRequest) {
-    this.dialog.open(Sad500LinePreviewComponent, {
-      data: item,
-      width: '380px'
-    });
+  addToQueue(obj: SAD500LineCreateRequest) {
+
+    obj.userID = this.currentUser.userID;
+    obj.sad500ID = this.attachmentID;
+
+    this.sad500LineQueue.push(obj);
+    const lastIndex = this.sad500LineQueue.length - 1;
+
+    this.captureService.sad500LineAdd(obj).then(
+      (res: { outcome: string; outcomeMessage: string; }) => {
+        if (res.outcome === 'SUCCESS') {
+          this.sad500LineQueue[lastIndex].saved = true;
+          this.sad500LineQueue[lastIndex].failed = false;
+
+        } else {
+          this.sad500LineQueue[lastIndex].saved = false;
+          this.sad500LineQueue[lastIndex].failed = true;
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.sad500LineQueue[lastIndex].failed = true;
+        this.notify.errorsmsg('Failure', 'Server error');
+      }
+    );
+  }
+
+  revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
+    this.lines = i;
+    console.log(i);
+    console.log(this.lines);
+    // this.dialog.open(Sad500LinePreviewComponent, {
+    //   data: item,
+    //   width: '380px'
+    // });
+  }
+
+  prevLine() {
+    if (this.lines >= 1) {
+      this.lines--;
+    }
+  }
+
+  nextLine() {
+    if (this.lines < this.sad500CreatedLines.length -1) {
+      this.lines++;
+    }
+
+    if (this.lines === -1) {
+      this.lines++;
+    }
   }
 
 }
