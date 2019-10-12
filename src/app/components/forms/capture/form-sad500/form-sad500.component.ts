@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -30,11 +30,13 @@ private notify: NotificationComponent;
 
 @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
-
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
 linePreview = -1;
 lines = -1;
+focusMainForm: boolean;
+focusLineForm: boolean;
+focusLineData: SAD500Line = null;
 
 currentTheme: string;
 
@@ -96,7 +98,27 @@ form = {
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.prevLine()
-      },
+        },
+        {
+          key: 'alt + m',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusMainForm = !this.focusMainForm;
+            this.focusLineData = null;
+            this.lines = -1;
+          }
+        },
+        {
+          key: 'alt + n',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusLineForm = !this.focusLineForm;
+            this.focusLineData = null;
+            this.lines = -1;
+          }
+        },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -186,6 +208,8 @@ form = {
         if (res.outcome === 'SUCCESS') {
           this.sad500LineQueue[lastIndex].saved = true;
           this.sad500LineQueue[lastIndex].failed = false;
+          this.loadLines();
+          this.sad500LineQueue = [];
 
         } else {
           this.sad500LineQueue[lastIndex].saved = false;
@@ -213,16 +237,19 @@ form = {
   prevLine() {
     if (this.lines >= 1) {
       this.lines--;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
     }
   }
 
   nextLine() {
-    if (this.lines < this.sad500CreatedLines.length -1) {
+    if (this.lines < this.sad500CreatedLines.length - 1) {
       this.lines++;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
     }
 
     if (this.lines === -1) {
       this.lines++;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
     }
   }
 

@@ -4,7 +4,7 @@
   </div>
   <div class="form-inline">
   <div class="form-group" *ngIf="this.form.cpc != undefined">
-    <input type="text"
+    <input type="text" [focus]="this.focusSADLine"
       [(ngModel)]="this.form.cpc" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
       placeholder="CPC" />
