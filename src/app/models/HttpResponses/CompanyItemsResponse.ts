@@ -9,6 +9,8 @@ export class CompanyItemsResponse {
 export class Item {
   rowNum: number;
   itemID: number;
+  companyID: number;
+  groupID: number;
   item: string;
   description: string;
   tariff: number;

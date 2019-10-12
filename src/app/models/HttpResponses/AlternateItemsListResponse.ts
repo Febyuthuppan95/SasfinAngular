@@ -2,7 +2,7 @@ import {Outcome} from './Outcome';
 
 export class AlternateItemsListResponse {
   outcome: Outcome;
-  alternateitemsLists: AlternateItems[];
+  alternateitems: AlternateItems[];
   rowCount: number;
 }
 

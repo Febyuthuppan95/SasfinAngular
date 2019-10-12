@@ -459,7 +459,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
       addressTypeID: this.Type,
       cityID: this.cityID,
     };
-    console.log(requestModel);
     this.companyService.UpdateAddress(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {

@@ -15,6 +15,8 @@ import { AddCompanyItem } from '../models/HttpRequests/AddCompanyItem';
 import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 import { GetItemList } from '../models/HttpRequests/GetItemList';
 import { GetTariffList } from '../models/HttpRequests/GetTariffList';
+import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
+import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +27,48 @@ export class CompanyService {
    */
   constructor(private httpClient: HttpClient) {
     let sessionData: SelectedCompany = null;
+    let sessionData2: SelectedItem = null;
 
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
     }
 
+    if (sessionStorage.getItem(`${environment.Sessions.itemData}`) !== undefined || null) {
+      sessionData2 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.itemData}`));
+    }
+
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
+    this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
   }
 
   selectedCompany: BehaviorSubject<SelectedCompany>;
+  selectedItem: BehaviorSubject<SelectedItem>;
 
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
     sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
   }
+  setItem(item: SelectedItem) {
+    this.selectedItem.next(item);
+    sessionStorage.setItem(`${environment.Sessions.itemData}`, JSON.stringify(item));
+  }
+
 
   observeCompany() {
     return this.selectedCompany.asObservable();
+  }
+  observeItem() {
+    return this.selectedItem.asObservable();
   }
 
   flushCompanySession() {
     sessionStorage.removeItem(`${environment.Sessions.companyData}`);
   }
+  flushItemSession() {
+    sessionStorage.removeItem(`${environment.Sessions.itemData}`);
+  }
+
+
 
   /**
    * list
@@ -369,6 +391,45 @@ export class CompanyService {
     });
   }
 
+  public getAlternateItemList(model: GetIAlternateItemList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/alternateitems`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+
+  }
+
+  public addtoGroup(model: AddItemGroup) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/additemgroup`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+
+
   public getTariffList() { // model: GetTariffList
     // const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
@@ -420,4 +481,9 @@ export class SelectedCompany {
   companyID: number;
   companyName: string;
   selectedTransactionID?: number;
+}
+
+export class SelectedItem {
+  groupID: number;
+  itemName: string;
 }

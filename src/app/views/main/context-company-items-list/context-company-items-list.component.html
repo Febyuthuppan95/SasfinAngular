@@ -150,7 +150,7 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.itemID); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
+            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.groupID, item.itemID); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
               <td>{{item.rowNum}}</td>
               <td>{{item.item}}</td>
               <td>{{item.description}}</td>
@@ -230,35 +230,39 @@
   </div> -->
 
   <!--Add Modal-->
-  <!-- <button class="hide" data-toggle="modal" data-target="#addAddress" #openaddModal></button>
-  <div class="modal fade" id="addAddress" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<button class="hide" data-toggle="modal" data-target="#addtogroup" #openaddModal></button>
+<div class="modal fade" id="addtogroup" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Add</h5>
+        <h5 class="modal-title" id="modalContent">Add to Item Group</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form >
-           <div class="modal-body">
-              <div class="form-group">
-                    <label class="control-label">Item Name:</label>
-                    <input type="text" placeholder="Item Name" class="form-control"
-                    [(ngModel)]="this.Item" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+      <div class="modal-body">
+        <div class="row">
+          <form class="form-group add-scroll col-md-11 text-center">
+              <h5 class="control-label">Items list:</h5>
+              <div class="modal-list-rights">
+                <ul class="right-list">
+                  <li (click)="addtoGroup(item.groupID, item.itemID)" *ngFor="let item of items"><a><span>{{item.item}}</span></a></li>
+                </ul>
               </div>
-          </div>
-          <div class="modal-footer bg-dark">
-            <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
-            <button type="button" (click)="addCompanyItem()"  class="btn btn-primary btn-sm">Save</button>
-          </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+      </div>
     </form>
     </div>
   </div>
-  </div> -->
+</div>
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-company-items (Alternates)="alternates($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [itemID]="focusItemID"></app-context-menu-company-items>
+  <app-context-menu-company-items (addtoGroup)="OpenGroup($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [groupID]="focusItemGroupID"></app-context-menu-company-items>
   </div>

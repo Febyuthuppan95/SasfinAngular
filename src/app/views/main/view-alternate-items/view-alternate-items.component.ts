@@ -8,12 +8,11 @@ import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { TableHeading, Order, TableHeader } from 'src/app/models/Table';
 import { GetIAlternateItemList } from 'src/app/models/HttpRequests/GetIAlternateItemList';
-import { AlternateItemsListResponse } from 'src/app/models/HttpResponses/AlternateItemsListResponse';
+import { AlternateItemsListResponse, AlternateItems } from 'src/app/models/HttpResponses/AlternateItemsListResponse';
+import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-alternate-items',
@@ -27,7 +26,8 @@ export class ViewAlternateItemsComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private router: Router
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -49,12 +49,12 @@ export class ViewAlternateItemsComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Items',
+    title: `Alternate Items`,
     addButton: {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -191,7 +191,7 @@ export class ViewAlternateItemsComponent implements OnInit {
   n31762 = '';
   n31702 = '';
 
-  items: Items[] = [];
+  alternateitems: AlternateItems[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -219,6 +219,8 @@ export class ViewAlternateItemsComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
+  groupID = 0;
+  itemName = '';
 
   ngOnInit() {
 
@@ -226,16 +228,21 @@ export class ViewAlternateItemsComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.loadItems(true);
+    this.companyService.observeItem().subscribe((obj: SelectedItem) => {
+      this.groupID = obj.groupID;
+      this.itemName = obj.itemName;
+    });
+    console.log(this.groupID);
+    this.loadAlternateItems(true);
   }
 
-  loadItems(displayGrowl: boolean) {
+  loadAlternateItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
     const model: GetIAlternateItemList = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      specificAlternateItemID: -1,
+      specificAlternateItemID: this.groupID,
       specificItemID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
@@ -243,9 +250,7 @@ export class ViewAlternateItemsComponent implements OnInit {
       orderByDirection: this.orderDirection
 
     };
-    this.companyService
-    .getItemList(model)
-    .then(
+    this.companyService.getAlternateItemList(model).then(
       (res: AlternateItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
@@ -266,10 +271,10 @@ export class ViewAlternateItemsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.alternateitemsLists.length;
-          this.items = res.alternateitemsLists;
+          this.showingRecords = res.alternateitems.length;
+          this.alternateitems = res.alternateitems;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.items.length - 1;
+          this.totalShowing = +this.rowStart + +this.alternateitems.length - 1;
         }
 
       },
@@ -286,12 +291,12 @@ export class ViewAlternateItemsComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadItems(false);
+    this.loadAlternateItems(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadItems(false);
+    this.loadAlternateItems(false);
   }
 
 
@@ -304,7 +309,7 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadItems(false);
+    this.loadAlternateItems(false);
   }
 
   // popClick(event, user) {
@@ -355,12 +360,17 @@ export class ViewAlternateItemsComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadItems(true);
+    this.loadAlternateItems(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadItems(false);
+    this.loadAlternateItems(false);
+  }
+
+  backToItems()
+  {
+    this.router.navigate(['companies/items']);
   }
 
 }
