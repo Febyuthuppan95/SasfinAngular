@@ -7,7 +7,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
-import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
+import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog } from '@angular/material';
 import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
@@ -42,6 +42,7 @@ currentTheme: string;
 
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
+lineState: string;
 
 form = {
   serialNo: {
@@ -100,6 +101,12 @@ form = {
           command: e => this.prevLine()
         },
         {
+          key: 'alt + /',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusLineForm = !this.focusLineForm
+        },
+        {
           key: 'alt + m',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
@@ -156,6 +163,42 @@ form = {
     );
   }
 
+  updateLine(obj: SAD500Line) {
+    this.lineState = 'Saving';
+    const requestModel: SAD500LineUpdateModel = {
+      userID: this.currentUser.userID,
+      sad500ID: this.attachmentID,
+      specificSAD500LineID: obj.sad500LineID,
+      unitOfMeasure: obj.unitOfMeasure,
+      unitOfMeasureID: obj.unitOfMeasureID,
+      tariff: obj.tariff,
+      tariffID: obj.tariffID,
+      value: obj.value,
+      customsValue: obj.customsValue,
+      productCode: obj. productCode,
+      cpc: obj.cpc,
+      isDeleted: 0,
+      lineNo: obj.lineNo
+    };
+
+    this.captureService.sad500LineUpdate(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadLines();
+          this.lineState = 'Updated successfully';
+
+          setTimeout(() => this.lineState = '', 3000);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        this.lineState = 'Update failed';
+
+        setTimeout(() => this.lineState = '', 3000);
+      }
+    );
+  }
+
   loadCapture() {
     this.captureService.sad500Get({
       specificID: this.attachmentID,
@@ -188,6 +231,9 @@ form = {
     this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
+        if (this.lines > -1) {
+          this.focusLineData = this.sad500CreatedLines[this.lines];
+        }
       },
       (msg) => {
         console.log(msg);
@@ -196,30 +242,29 @@ form = {
   }
 
   addToQueue(obj: SAD500LineCreateRequest) {
+    this.lineState = 'Saving new line';
 
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentID;
 
-    this.sad500LineQueue.push(obj);
-    const lastIndex = this.sad500LineQueue.length - 1;
-
     this.captureService.sad500LineAdd(obj).then(
       (res: { outcome: string; outcomeMessage: string; }) => {
         if (res.outcome === 'SUCCESS') {
-          this.sad500LineQueue[lastIndex].saved = true;
-          this.sad500LineQueue[lastIndex].failed = false;
           this.loadLines();
-          this.sad500LineQueue = [];
 
+          this.lineState = 'Saved successfully';
+
+          setTimeout(() => this.lineState = '', 3000);
         } else {
-          this.sad500LineQueue[lastIndex].saved = false;
-          this.sad500LineQueue[lastIndex].failed = true;
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          this.lineState = 'Failed to save';
+
+          setTimeout(() => this.lineState = '', 3000);
         }
       },
       (msg) => {
-        this.sad500LineQueue[lastIndex].failed = true;
-        this.notify.errorsmsg('Failure', 'Server error');
+        this.lineState = 'Failed to save';
+
+        setTimeout(() => this.lineState = '', 3000);
       }
     );
   }

@@ -54,6 +54,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   attachmentList: TransactionFile[];
   transactionID: number;
   attachmentID: number;
+  showHelp: boolean = false;
 
   ngOnInit() {
     this.companyShowToggle = true;
@@ -95,7 +96,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.exitCaptureScreen()
-      },
+        },
+        {
+          key: 'alt + h',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.showHelp = !this.showHelp
+        },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -103,10 +110,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
 
   goBack() {
     this.router.navigate(['transaction', 'attachments']);
-  }
-
-  showHelp() {
-    this.openModal.nativeElement.click();
   }
 
   loadCaptureInfo() {

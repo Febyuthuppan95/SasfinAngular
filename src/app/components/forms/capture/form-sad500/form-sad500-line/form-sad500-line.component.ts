@@ -95,6 +95,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         value: '',
       };
     }
+
+    console.log(this.isUpdate);
   }
 
   loadUnits(): void {
@@ -130,20 +132,20 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         productCode: this.form.productCode,
         value: this.form.value,
       });
+    } else {
+      this.submitSADLine.emit({
+        userID: -1,
+        sad500ID: -1,
+        cpc: this.form.cpc,
+        tariffID: 1,
+        tariff: this.form.tariff,
+        customsValue: this.form.customsValue,
+        lineNo: this.form.lineNo,
+        unitOfMeasureID: 1,
+        unitOfMeasure: this.form.unitOfMeasure,
+        productCode: this.form.productCode,
+        value: this.form.value,
+      });
     }
-    this.submitSADLine.emit({
-      userID: -1,
-      sad500ID: -1,
-      cpc: this.form.cpc,
-      tariffID: 1,
-      tariff: this.form.tariff,
-      customsValue: this.form.customsValue,
-      lineNo: this.form.lineNo,
-      unitOfMeasureID: 1,
-      unitOfMeasure: this.form.unitOfMeasure,
-      productCode: this.form.productCode,
-      value: this.form.value,
-    });
   }
-
 }

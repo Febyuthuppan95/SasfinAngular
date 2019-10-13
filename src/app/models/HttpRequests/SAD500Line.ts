@@ -25,3 +25,19 @@ export class SAD500LineCreateRequest {
   failed?: boolean;
   updateSubmit?: boolean;
 }
+
+export class SAD500LineUpdateModel {
+    userID: number;
+    sad500ID: number;
+    specificSAD500LineID: number;
+    tariff: string;
+    tariffID: number;
+    unitOfMeasure: string;
+    unitOfMeasureID: number;
+    cpc: string;
+    productCode: string;
+    value: string;
+    customsValue: number;
+    lineNo: string;
+    isDeleted: number;
+}

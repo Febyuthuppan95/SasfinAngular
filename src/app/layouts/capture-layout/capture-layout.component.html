@@ -1,10 +1,5 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
-<!-- <div  appKeyHandler
-tabindex="-1"
-(companyInfoEmit)="companyInfo()"
-(exitScreenEmit)="exitCaptureScreen()"
-(currentShortcutSequence)="currentShortcut($event)"> -->
 <div>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" style="height: 5vh;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +23,7 @@ tabindex="-1"
           <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
         </li>
         <li class="nav-item">
-          <button (click)="showHelp()" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below">Help</button>
+          <button (click)="this.showHelp = !this.showHelp" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below">Help</button>
         </li>
         <li>
             <button type="button" mat-buttom class="close text-light" data-dismiss="modal" aria-label="Close" (click)="goBack()"
@@ -58,35 +53,9 @@ tabindex="-1"
 </div>
 </div>
 
-<button class="hide" data-toggle="modal" data-target="#shortcuts" #openModal></button>
-<div class="modal fade" id="shortcuts" tabindex="-1" role="dialog" aria-labelledby="shortcuts" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Shortcuts</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body bg-light">
-        <ul class="list-unstyled">
-          <li>
-            <strong class="text-muted">(CTRL + ALT + I)</strong> - Show company info
-          </li>
-          <li>
-            <strong class="text-muted">(CTRL + ALT + O)</strong> - Exit capture screen
-          </li>
-        </ul>
-      </div>
-      <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="shortcut-highlighter-container" *ngIf="currentShortcutLabel !== null || undefined">
-  <div class="shortcut-highlighter shadow text-light">
-    {{currentShortcutLabel}}
+<div class="shortcutView" *ngIf="this.showHelp">
+  <div class="overlay">
+    <img src="./../../../assets/svg/keyboard-shortcuts/SAD500.svg" />
   </div>
 </div>
 

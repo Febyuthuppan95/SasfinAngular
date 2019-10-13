@@ -48,6 +48,7 @@
       placeholder="Unit Of Measure" />
   </div>
   <div class="form-group text-right" style="margin: 0;">
-    <button type="submit" class="btn btn-primary btn-sm">Add</button>
+    <button *ngIf="!this.isUpdate" type="submit" class="btn btn-primary btn-sm">Add</button>
+    <button *ngIf="this.isUpdate" type="submit" class="btn btn-primary btn-sm">Update</button>
   </div>
 </form>
