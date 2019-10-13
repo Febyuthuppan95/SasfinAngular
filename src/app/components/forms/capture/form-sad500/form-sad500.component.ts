@@ -253,7 +253,8 @@ form = {
           this.loadLines();
 
           this.lineState = 'Saved successfully';
-
+          this.lines = -1;
+          this.focusLineData = null;
           setTimeout(() => this.lineState = '', 3000);
         } else {
           this.lineState = 'Failed to save';
@@ -271,12 +272,6 @@ form = {
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
     this.lines = i;
-    console.log(i);
-    console.log(this.lines);
-    // this.dialog.open(Sad500LinePreviewComponent, {
-    //   data: item,
-    //   width: '380px'
-    // });
   }
 
   prevLine() {
