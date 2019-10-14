@@ -126,17 +126,21 @@ form = {
             this.lines = -1;
           }
         },
+        {
+          key: 'alt + s',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.submit()
+        },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
-  submit($event) {
-    $event.preventDefault();
-
+  submit() {
     const requestModel = {
       userID: this.currentUser.userID,
-      specificCustomsReleaseID: this.attachmentID,
+      specificSAD500ID: this.attachmentID,
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       pcc: this.form.PCC.value,
@@ -148,7 +152,7 @@ form = {
       attachmentStatusID: 2,
     };
 
-    this.transactionService.customsReleaseUpdate(requestModel).then(
+    this.captureService.sad500Update(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);

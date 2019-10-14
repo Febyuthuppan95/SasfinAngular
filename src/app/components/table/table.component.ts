@@ -18,11 +18,11 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() orderBy: string;
   @Input() orderByDirection: string;
   @Input() tableHeader: TableHeader;
+  @Input() selectedRecordIndex?: number;
 
   @Output() selectedRecord = new EventEmitter<SelectedRecord>();
   @Output() orderChange = new EventEmitter<Order>();
   @Output() pageChange = new EventEmitter<string>();
-
   @Output() addButtonEvent = new EventEmitter<void>();
   @Output() backButtonEvent = new EventEmitter<void>();
   @Output() showingRecordsEvent = new EventEmitter<number>();
@@ -46,6 +46,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.loadTable();
+    if (this.selectedRecordIndex !== undefined) {
+      this.selectedRow = this.selectedRecordIndex;
+    }
   }
 
   loadTable() {

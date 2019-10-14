@@ -14,7 +14,7 @@ export class CaptureService {
   customsReleaseUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/customsrelease`, requestModel);
   customsReleaseGet = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/crn/get`, requestModel);
 
-  sad500Update = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/sad500`, requestModel);
+  sad500Update = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500/update`, requestModel);
   sad500Get = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500/get`, requestModel);
 
   // tslint:disable-next-line: max-line-length

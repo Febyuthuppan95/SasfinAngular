@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TableHeader, TableHeading } from 'src/app/models/Table';
+import { TableHeader, TableHeading, SelectedRecord } from 'src/app/models/Table';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { environment } from 'src/environments/environment';
-import { SPSAD500LineList } from 'src/app/models/HttpResponses/SAD500Line';
+import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,12 @@ export class Sad500LinesComponent implements OnInit {
   displayRecords = 15;
   showLoader: boolean;
   attachmentID: number;
+  contextMenuEnable = false;
+  recordIndex: number = -1;
+
+  contextMenuX: number;
+  contextMenuY: number;
+  currentRecord: SAD500Line = null;
 
   tableHeader: TableHeader = {
     title: 'SAD500 - Lines',
@@ -81,5 +87,12 @@ export class Sad500LinesComponent implements OnInit {
 
   back() {
     this.router.navigate(['transaction', 'attachments']);
+  }
+
+  selectedRecord($event: SelectedRecord) {
+    this.contextMenuX = $event.event.clientX + 3;
+    this.contextMenuY = $event.event.clientY + 5;
+    this.contextMenuEnable = true;
+    this.currentRecord = $event.record;
   }
 }

@@ -20,7 +20,7 @@ export class TableHeading {
 
 export class SelectedRecord {
   event: any;
-  record: object;
+  record: any | object;
   index: number;
 }
 

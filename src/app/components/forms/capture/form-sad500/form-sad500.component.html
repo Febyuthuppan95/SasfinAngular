@@ -1,6 +1,6 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
-<form (submit)="submit($event); $event.preventDefault()" style="overflow-y: auto" *ngIf="this.form !== undefined">
+<form (submit)="submit(); $event.preventDefault()" style="overflow-y: auto" *ngIf="this.form !== undefined">
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
       <input [focus]="this.focusMainForm" type="text"
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"

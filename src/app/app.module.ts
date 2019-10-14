@@ -140,6 +140,10 @@ import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.com
 import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
 import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { FocusDirective } from './directives/focus.directive';
+import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
+import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
+import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
+import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 
 @NgModule({
   declarations: [
@@ -234,7 +238,11 @@ import { FocusDirective } from './directives/focus.directive';
     Sad500LinesComponent,
     FormSAD500LineComponent,
     Sad500LinePreviewComponent,
-    FocusDirective
+    FocusDirective,
+    FormInvoiceComponent,
+    FormVOCComponent,
+    FormVocLinesComponent,
+    ContextMenuSADLinesComponent
   ],
   imports: [
     BrowserModule,
