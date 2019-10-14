@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TableHeader, TableHeading, SelectedRecord } from 'src/app/models/Table';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -6,6 +6,10 @@ import { environment } from 'src/environments/environment';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
+import { SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UserService } from 'src/app/services/user.Service';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-sad500-lines',
@@ -15,7 +19,7 @@ import { Router } from '@angular/router';
 export class Sad500LinesComponent implements OnInit {
 
   constructor(private themeService: ThemeService, private captureService: CaptureService,
-              private transactionService: TransactionService, private router: Router) { }
+              private transactionService: TransactionService, private router: Router, private userService: UserService) { }
 
   currentTheme: string;
 
@@ -30,6 +34,7 @@ export class Sad500LinesComponent implements OnInit {
   attachmentID: number;
   contextMenuEnable = false;
   recordIndex: number = -1;
+  currentUser = this.userService.getCurrentUser();
 
   contextMenuX: number;
   contextMenuY: number;
@@ -59,6 +64,9 @@ export class Sad500LinesComponent implements OnInit {
     { title: 'ProductCode', propertyName: 'productCode', order: { enable: true, tag: 'Tariff' } },
     { title: 'Value', propertyName: 'value', order: { enable: true, tag: 'Tariff' } },
   ];
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe(theme => {
@@ -95,4 +103,35 @@ export class Sad500LinesComponent implements OnInit {
     this.contextMenuEnable = true;
     this.currentRecord = $event.record;
   }
+
+  update(obj: SAD500Line) {
+      const requestModel: SAD500LineUpdateModel = {
+        userID: this.currentUser.userID,
+        sad500ID: this.attachmentID,
+        specificSAD500LineID: obj.sad500LineID,
+        unitOfMeasure: obj.unitOfMeasure,
+        unitOfMeasureID: obj.unitOfMeasureID,
+        tariff: obj.tariff,
+        tariffID: obj.tariffID,
+        value: obj.value,
+        customsValue: obj.customsValue,
+        productCode: obj. productCode,
+        cpc: obj.cpc,
+        isDeleted: 0,
+        lineNo: obj.lineNo
+      };
+
+      this.captureService.sad500LineUpdate(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.loadDataset();
+          } else {
+
+          }
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    }
 }
