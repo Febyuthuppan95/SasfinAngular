@@ -33,13 +33,13 @@ import { ContextCompanyServiceListComponent } from './views/main/context-company
 import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
 import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
-import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
 const routes: Routes = [
   {
     path: '',
@@ -73,13 +73,13 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
-          { path: 'itemstypes', component: ViewItemTypesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
+          { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },

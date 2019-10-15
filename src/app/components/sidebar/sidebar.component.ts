@@ -72,7 +72,6 @@ export class SidebarComponent implements OnInit {
   @Input() showservices = false;
   @Input() showtariffs = false;
   @Input() showitems = false;
-  @Input() showitemstypes = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -186,9 +185,6 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'Items') {
             this.showitems = true;
-          }
-          if (uRight.name === 'ItemsTypes') {
-            this.showitemstypes = true;
           }
           if (uRight.name === 'ContactTypes') {
             this.showcontactTypes = true;

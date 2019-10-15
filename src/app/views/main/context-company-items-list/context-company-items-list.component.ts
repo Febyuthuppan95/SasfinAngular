@@ -13,6 +13,7 @@ import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsList
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
 import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-context-company-items-list',
@@ -31,16 +32,25 @@ export class ContextCompanyItemsListComponent implements OnInit {
     private router: Router,
   ) {
     this.rowStart = 1;
+    this.itemsrowStart = 1;
     this.rowCountPerPage = 15;
+    this.itemsrowCountPerPage = 5;
     this.activePage = +1;
+    this.itemsactivePage = +1;
     this.prevPageState = true;
+    this.itemsprevPageState = true;
     this.nextPageState = false;
+    this.itemsnextPageState = false;
     this.prevPage = +this.activePage - 1;
+    this.itemsprevPage = +this.itemsactivePage - 1;
     this.nextPage = +this.activePage + 1;
+    this.itemsnextPage = +this.itemsactivePage + 1;
     this.filter = '';
+    this.itemsfilter = '';
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
+    this.itemstotalShowing = 0;
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -55,6 +65,12 @@ export class ContextCompanyItemsListComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
+  @ViewChild('openviewModal', {static: true})
+  openviewModal: ElementRef;
+
+  @ViewChild('closeviewModal', {static: true})
+  closeviewModal: ElementRef;
+
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
 
@@ -64,26 +80,41 @@ export class ContextCompanyItemsListComponent implements OnInit {
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
 
+  itemsdraft: Items[] = [];
   items: Items[] = [];
   pages: Pagination[];
+  itemspages: Pagination[];
   showingPages: Pagination[];
+  itemsshowingPages: Pagination[];
   dataset: CompanyItemsResponse;
+  itemsdataset: ItemsListResponse;
   dataList: Item[] = [];
   rowCount: number;
+  itemsrowCount: number;
   nextPage: number;
+  itemsnextPage: number;
   nextPageState: boolean;
+  itemsnextPageState: boolean;
   prevPage: number;
+  itemsprevPage: number;
   prevPageState: boolean;
+  itemsprevPageState: boolean;
   rowStart: number;
+  itemsrowStart: number;
   rowEnd: number;
+  itemsrowEnd: number;
   filter: string;
   orderBy: string;
   orderDirection: string;
   totalShowing: number;
+  itemstotalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
+  itemsrowCountPerPage: number;
   showingRecords: number;
+  itemsshowingRecords: number;
   activePage: number;
+  itemsactivePage: number;
   focusItemGroupID: number;
   focusItemID: number;
   focusItemName: string;
@@ -102,8 +133,17 @@ export class ContextCompanyItemsListComponent implements OnInit {
   N31762 = '';
   N31702 = '';
   noData = false;
+  noitemData = false;
   showLoader = true;
   displayFilter = false;
+  itemsfilter = '';
+
+  ItemName = '';
+  ItemDescription = '';
+  ItemType = '';
+  ItemPrice = '';
+  ItemDate = '';
+  FreeComp = false;
 
   contextMenu = false;
   contextMenuX = 0;
@@ -151,6 +191,25 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.updatePagination();
   }
 
+  itemspaginateData() {
+    let itemsrowStart = 1;
+    let itemsrowEnd = +this.itemsrowCountPerPage;
+    const pageCount = +this.itemsrowCount / +this.itemsrowCountPerPage;
+    this.itemspages = Array<Pagination>();
+
+    for (let i = 0; i < pageCount; i++) {
+      const item = new Pagination();
+      item.page = i + 1;
+      item.rowStart = +itemsrowStart;
+      item.rowEnd = +itemsrowEnd;
+      this.itemspages[i] = item;
+      itemsrowStart = +itemsrowEnd + 1;
+      itemsrowEnd += +this.itemsrowCountPerPage;
+    }
+
+    this.updateitemsPagination();
+  }
+
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
     this.rowStart = page.rowStart;
@@ -183,11 +242,47 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.loadCompanyItemsList(false);
   }
 
+  itemspageChange(itemspageNumber: number) {
+    const itemspage = this.itemspages[+itemspageNumber - 1];
+    this.itemsrowStart = itemspage.rowStart;
+    this.itemsrowEnd = itemspage.rowEnd;
+    this.itemsactivePage = +itemspageNumber;
+    this.itemsprevPage = +this.itemsactivePage - 1;
+    this.itemsnextPage = +this.itemsactivePage + 1;
+
+    if (this.itemsprevPage < 1) {
+      this.itemsprevPageState = true;
+    } else {
+      this.itemsprevPageState = false;
+    }
+
+    let itemspagenumber = +this.itemsrowCount / +this.itemsrowCountPerPage;
+    const mod = +this.itemsrowCount % +this.itemsrowCountPerPage;
+
+    if (mod > 0) {
+      itemspagenumber++;
+    }
+
+    if (this.itemsnextPage > itemspagenumber) {
+      this.itemsnextPageState = true;
+    } else {
+      this.itemsnextPageState = false;
+    }
+
+    this.updateitemsPagination();
+
+    this.loadItems(false);
+  }
+
   searchBar() {
     this.rowStart = 1;
     this.loadCompanyItemsList(false);
   }
 
+  searchitemsBar() {
+    this.itemsrowStart = 1;
+    this.loadItems(false);
+  }
 
   loadCompanyItemsList(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
@@ -231,7 +326,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
             this.showingRecords = res.items.length;
             this.totalShowing = +this.rowStart + +this.dataset.items.length - 1;
             this.paginateData();
-            console.log(this.dataList);
           }
         },
         msg => {
@@ -246,14 +340,13 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   loadItems(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
+    this.itemsrowEnd = +this.itemsrowStart + +this.itemsrowCountPerPage - 1;
     const model: GetItemList = {
       userID: this.currentUser.userID,
-      filter: this.filter,
+      filter: this.itemsfilter,
       specificItemID: -1,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      rowStart: this.itemsrowStart,
+      rowEnd: this.itemsrowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
 
@@ -276,11 +369,19 @@ export class ContextCompanyItemsListComponent implements OnInit {
         }
 
         if (res.rowCount !== 0) {
-          this.items = res.itemsLists;
+          this.noitemData = false;
+          this.itemsdataset = res;
+          this.itemsdraft = res.itemsLists;
+          this.itemsrowCount = res.rowCount;
+          this.itemsshowingRecords = res.itemsLists.length;
+          this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
+          this.itemspaginateData();
+        } else {
+          this.noitemData = true;
         }
+        this.Finalitemlist();
       },
       msg => {
-        this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
@@ -333,6 +434,34 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   }
 
+  updateitemsPagination() {
+    if (this.itemsdataset.itemsLists.length <= this.itemstotalShowing) {
+      this.itemsprevPageState = false;
+      this.itemsnextPageState = false;
+    } else {
+      this.itemsshowingPages = Array<Pagination>();
+      this.itemsshowingPages[0] = this.itemspages[this.itemsactivePage - 1];
+      const itemspagenumber = +this.itemsrowCount / +this.itemsrowCountPerPage;
+
+      if (this.itemsactivePage < itemspagenumber) {
+        this.itemsshowingPages[1] = this.itemspages[+this.itemsactivePage];
+
+        if (this.itemsshowingPages[1] === undefined) {
+          const itemspage = new Pagination();
+          itemspage.page = 1;
+          itemspage.rowStart = 1;
+          itemspage.rowEnd = this.itemsrowEnd;
+          this.itemsshowingPages[1] = itemspage;
+        }
+      }
+
+      if (+this.itemsactivePage + 1 <= itemspagenumber) {
+        this.itemsshowingPages[2] = this.itemspages[+this.itemsactivePage + 1];
+      }
+    }
+
+  }
+
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
@@ -359,6 +488,20 @@ export class ContextCompanyItemsListComponent implements OnInit {
     }
   }
 
+  Finalitemlist() {
+    this.items.splice(0, this.items.length);
+    let count = 0;
+    this.itemsdraft.forEach((item, index) => {
+      if (item.itemID !== this.focusItemID) {
+        count++;
+        this.items.push(item);
+      }
+    });
+
+    this.itemsrowCount = count;
+    this.itemsshowingRecords = count;
+  }
+
 
   popOff() {
     this.contextMenu = false;
@@ -369,6 +512,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   OpenGroup($event) {
+
+    this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddModal.nativeElement.click();
@@ -377,10 +522,8 @@ export class ContextCompanyItemsListComponent implements OnInit {
   addtoGroup(groupid, itemid) {
     const requestModel: AddItemGroup = {
       userID: this.currentUser.userID,
-      specificItemID: this.focusItemID,
-      specificSelectedItemID: itemid,
-      specificGroupID: this.focusItemGroupID,
-      specificSelectedGroupID: groupid
+      itemID: this.focusItemID,
+      addedItemID: itemid
     };
     this.companyService
     .addtoGroup(requestModel).then(

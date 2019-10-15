@@ -16,6 +16,7 @@ import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 import { GetItemList } from '../models/HttpRequests/GetItemList';
 import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
+import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 
 @Injectable({
   providedIn: 'root'
@@ -444,6 +445,39 @@ export class CompanyService {
     return promise;
   }
 
+  public getItemValueList(model: GetItemValuesList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvalues`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public UpdateItemValueList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesupdate`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
 
   public getTariffList() { // model: GetTariffList
@@ -500,7 +534,7 @@ export class SelectedCompany {
 }
 
 export class SelectedItem {
-  groupID: number;
+  groupID: string;
   itemID: number;
   itemName: string;
 }

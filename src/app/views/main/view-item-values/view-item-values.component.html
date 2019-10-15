@@ -1,0 +1,74 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.itemvalues"
+      [dataset]="this.itemvalues"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.showingRecords"
+      [rowStart]="this.rowStart"
+      [rowEnd]="this.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchEvent($event)"
+      (backButtonEvent)="backToItems()">
+    </app-table>
+  </div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
+<app-menu
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+  <app-context-menu-items-values (removeItemValue)="removeItemValue($event)" (editItemValue)="editItemValue($event)"></app-context-menu-items-values>
+</app-menu>
+
+<!--Edit Modal-->
+<button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
+<div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Edit values</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+      <div class="modal-body">
+          <div class="modal-body">
+              <div class="form-group">
+                  <label class="control-label">Price:</label>
+                  <input type="text" placeholder="Name" class="form-control"
+                  [(ngModel)]="this.Price" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Free Component:</label>
+              <select class="form-control" [selectedIndex]="selectedFreecomp" (change)="onFreecompChange($event.target.value)">
+                <option *ngFor="let state of this.freecomp" [value]="state" [selected]="state === FreeComponent">{{state}}</option>
+              </select>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        <button type="button" (click)="UpdateItemValue()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+

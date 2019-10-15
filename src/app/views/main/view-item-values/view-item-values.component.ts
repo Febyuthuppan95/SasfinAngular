@@ -15,13 +15,16 @@ import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
+import { GetItemValuesList } from 'src/app/models/HttpRequests/GetItemValuesList';
+import { ItemValuesListResponse, ItemValue } from 'src/app/models/HttpResponses/ItemValuesListResponse';
+import { UpdateItemValue } from 'src/app/models/HttpResponses/UpdateItemValue';
 
 @Component({
-  selector: 'app-view-alternate-items',
-  templateUrl: './view-alternate-items.component.html',
-  styleUrls: ['./view-alternate-items.component.scss']
+  selector: 'app-view-item-values',
+  templateUrl: './view-item-values.component.html',
+  styleUrls: ['./view-item-values.component.scss']
 })
-export class ViewAlternateItemsComponent implements OnInit {
+export class ViewItemValuesComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
@@ -43,20 +46,29 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
-      this.sidebarCollapsed = result;
+    this.sidebarCollapsed = result;
     });
   }
+
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  GroupItem: {
-    itemID: number,
-    item: string,
+  ItemValue: {
+    itemValueID: number,
+    itemPrice: string,
+    freeComponent: string
   };
 
+
+
   tableHeader: TableHeader = {
-    title: `Item Group`,
+    title: `Item Values`,
     addButton: {
      enable: true,
     },
@@ -78,128 +90,37 @@ export class ViewAlternateItemsComponent implements OnInit {
       }
     },
     {
-      title: 'Item',
-      propertyName: 'item',
+      title: 'Item Price',
+      propertyName: 'itemPrice',
       order: {
         enable: true,
-        tag: 'Item'
+        tag: 'ItemPrice'
       }
     },
     {
-      title: 'Discription',
-      propertyName: 'discription',
+      title: 'Date Added',
+      propertyName: 'dateAdded',
       order: {
         enable: true,
-        tag: 'Discription'
+        tag: 'DateAdded'
       }
     },
     {
-      title: 'Tariff',
-      propertyName: 'tariff',
+      title: 'FreeComponent',
+      propertyName: 'freeComponent',
       order: {
         enable: true,
-        tag: 'Tariff'
-      }
-    },
-    {
-      title: 'Type',
-      propertyName: 'type',
-      order: {
-        enable: true,
-        tag: 'Type'
-      }
-    },
-    {
-      title: 'Usage',
-      propertyName: 'usage',
-      order: {
-        enable: true,
-        tag: 'Usage'
-      }
-    },
-    {
-      title: 'MIDP',
-      propertyName: 'midp',
-      order: {
-        enable: true,
-        tag: 'MIDP'
-      }
-    },
-    {
-      title: 'PI',
-      propertyName: 'pi',
-      order: {
-        enable: true,
-        tag: 'PI'
-      }
-    },
-    {
-      title: 'Vulnerable',
-      propertyName: 'vulnerable',
-      order: {
-        enable: true,
-        tag: 'Vulnerable'
-      }
-    },
-    {
-      title: '521',
-      propertyName: 'n521',
-      order: {
-        enable: true,
-        tag: 'n521'
-      }
-    },
-    {
-      title: '536',
-      propertyName: 'n536',
-      order: {
-        enable: true,
-        tag: 'n536'
-      }
-    },
-    {
-      title: '317.6.1',
-      propertyName: 'n31761',
-      order: {
-        enable: true,
-        tag: 'n31761'
-      }
-    },
-    {
-      title: '317.6.2',
-      propertyName: 'n31762',
-      order: {
-        enable: true,
-        tag: 'n31762'
-      }
-    },
-    {
-      title: '317.02',
-      propertyName: 'n31702',
-      order: {
-        enable: true,
-        tag: 'n31702'
+        tag: 'FreeComponent'
       }
     }
   ];
 
   selectedRow = -1;
-  Item = '';
-  Discription = '';
-  Tariff = 0;
-  Type = '';
-  Usage = '';
-  MIDP = '';
-  PI = '';
-  Vulnerable = '';
-  n521 = '';
-  n536 = '';
-  n31761 = '';
-  n31762 = '';
-  n31702 = '';
+  Price = '';
+  FreeComponent = '';
 
-  alternateitems: AlternateItems[] = [];
-
+  selectedFreecomp = 0;
+  itemvalues: ItemValue[] = [];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   sidebarCollapsed = true;
@@ -226,8 +147,9 @@ export class ViewAlternateItemsComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  groupID = '';
+  itemID = 0;
   itemName = '';
+  freecomp: string[] = ['true', 'false'];
 
   ngOnInit() {
 
@@ -236,32 +158,31 @@ export class ViewAlternateItemsComponent implements OnInit {
     });
 
     this.companyService.observeItem().subscribe((obj: SelectedItem) => {
-      this.groupID = obj.groupID;
+      this.itemID = obj.itemID;
       this.itemName = obj.itemName;
 
-      if (this.groupID === '') {
-        this.groupID = null;
-      }
+      // if (this.groupID === '') {
+      //   this.groupID = null;
+      // }
     });
 
-    this.loadAlternateItems(true);
+    this.loadItemsValues(true);
   }
 
-  loadAlternateItems(displayGrowl: boolean) {
+  loadItemsValues(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetIAlternateItemList = {
+    const model: GetItemValuesList = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      specificAlternateItemID: this.groupID,
-      specificItemID: -1,
+      itemID: this.itemID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getAlternateItemList(model).then(
-      (res: AlternateItemsListResponse) => {
+    this.companyService.getItemValueList(model).then(
+      (res: ItemValuesListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
@@ -274,7 +195,7 @@ export class ViewAlternateItemsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.alternateitems = res.alternateitems;
+        this.itemvalues = res.itemValues;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -282,9 +203,9 @@ export class ViewAlternateItemsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.alternateitems.length;
+          this.showingRecords = res.itemValues.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.alternateitems.length - 1;
+          this.totalShowing = +this.rowStart + +this.itemvalues.length - 1;
         }
 
       },
@@ -301,12 +222,12 @@ export class ViewAlternateItemsComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadAlternateItems(false);
+    this.loadItemsValues(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadAlternateItems(false);
+    this.loadItemsValues(false);
   }
 
 
@@ -319,11 +240,11 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadAlternateItems(false);
+    this.loadItemsValues(false);
   }
 
   popClick(event, obj) {
-    this.GroupItem = obj;
+    this.ItemValue = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -354,29 +275,40 @@ export class ViewAlternateItemsComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadAlternateItems(true);
+    this.loadItemsValues(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadAlternateItems(false);
+    this.loadItemsValues(false);
   }
 
   backToItems() {
     this.router.navigate(['companies/items']);
   }
 
-  removeItemGroup(id: number) {
+  editItemValue(id: number) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.Price = this.ItemValue.itemPrice;
+    this.FreeComponent = this.ItemValue.freeComponent;
+    this.openeditModal.nativeElement.click();
+  }
+
+  UpdateItemValue(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      itemID: this.GroupItem.itemID
+      itemValueID: this.ItemValue.itemValueID,
+      price: this.Price,
+      freeComp: this.FreeComponent
     };
+    console.log(requestModel);
 
-    this.companyService.alternatItemsUpdate(requestModel).then(
-      (res: UpdateGrouplist) => {
+    this.companyService.UpdateItemValueList(requestModel).then(
+      (res: UpdateItemValue) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadAlternateItems(false);
+          this.loadItemsValues(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
@@ -384,6 +316,30 @@ export class ViewAlternateItemsComponent implements OnInit {
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
   }
+
+  removeItemValue(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemValueID: this.ItemValue.itemValueID
+    };
+
+    this.companyService.alternatItemsUpdate(requestModel).then(
+      (res: UpdateGrouplist) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItemsValues(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  onFreecompChange(state: string) {
+    this.FreeComponent = state;
+  }
+
 
 }
 

@@ -33,6 +33,6 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-items-group (removeCaptureInfo)="removeCapture($event)"></app-context-menu-items-group>
+  <app-context-menu-items-group (removeItemGroup)="removeItemGroup($event)"></app-context-menu-items-group>
 </app-menu>
 

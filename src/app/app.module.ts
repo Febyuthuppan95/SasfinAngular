@@ -136,6 +136,8 @@ import { FormShippingDocumentComponent } from './components/forms/capture/form-s
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
 
 @NgModule({
   declarations: [
@@ -228,6 +230,8 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
     CapturePreviewComponent,
     FormShippingDocumentComponent,
     ContextMenuItemsGroupComponent,
+    ViewItemValuesComponent,
+    ContextMenuItemsValuesComponent,
   ],
   imports: [
     BrowserModule,
