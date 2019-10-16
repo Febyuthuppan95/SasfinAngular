@@ -238,8 +238,9 @@ export class ContextItemsListComponent implements OnInit {
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
+
+
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
@@ -254,6 +255,7 @@ export class ContextItemsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.items = res.itemsLists;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -262,7 +264,7 @@ export class ContextItemsListComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.itemsLists.length;
-          this.items = res.itemsLists;
+
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
@@ -355,6 +357,7 @@ export class ContextItemsListComponent implements OnInit {
 
   searchEvent(query: string) {
     this.filter = query;
+    console.log(query);
     this.loadItems(false);
   }
 
