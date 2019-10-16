@@ -106,6 +106,10 @@ export class ContextCompanyServiceListComponent implements OnInit {
   ResCapturer: number;
   StartDate: Date;
   EndDate: Date;
+  capturerIndex = 0;
+  serviceIndex = 0;
+  consultantIndex = 0;
+
   ResConsultants: ResponsibleConsultant[] = [];
   ResCapturers: ResponsibleCapturer[] = [];
   selectedConsultant: number;
@@ -463,6 +467,15 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
 
   Add() {
+    this.StartDate = null;
+    this.EndDate = null;
+    this.ConID = -1;
+    this.CapID =  -1;
+    this.SerID =  -1;
+    this.serviceIndex = 0;
+    this.capturerIndex = 0;
+    this.consultantIndex = 0;
+
     this.openaddModal.nativeElement.click();
   }
 

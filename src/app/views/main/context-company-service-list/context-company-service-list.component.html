@@ -189,21 +189,21 @@
          <div class="modal-body">
             <div class="form-group">
                 <label class="control-label">Service:</label>
-                <select class="form-control"  (change)="onServiceChange($event.target.value)">
+                <select class="form-control"  (change)="onServiceChange($event.target.value)" #selectService>
                     <option selected value="-1" [disabled]="disableSerSelect">Select a Service</option>
                     <option *ngFor="let service of this.serviceslist" [value]="service.serviceID">{{service.serviceName}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label class="control-label">Responsible Consultant:</label>
-                <select class="form-control"  (change)="onConsultantChange($event.target.value)">
+                <select class="form-control"  (change)="onConsultantChange($event.target.value)" #selectConsultant>
                     <option selected value="-1" [disabled]="disableConSelect">Select a Consultant</option>
                     <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id">{{ResConsultant.Name}}</option>
                 </select>
             </div>
             <div class="form-group">
                   <label class="control-label">Responsible Capturer:</label>
-                  <select class="form-control"  (change)="onCapturerChange($event.target.value)">
+                  <select class="form-control" (change)="onCapturerChange($event.target.value)" #selectCapturer>
                       <option selected value="-1" [disabled]="disableCapSelect">Select a Capturer</option>
                   <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id">{{ResCapturer.Name}}</option>
                   </select>
@@ -222,7 +222,7 @@
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
-          <button type="button" (click)="addCompanyService()"  class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="addCompanyService(); selectConsultant.selectedIndex = 0; selectCapturer.selectedIndex = 0; selectService.selectedIndex = 0;"  class="btn btn-primary btn-sm">Save</button>
         </div>
   </form>
   </div>
