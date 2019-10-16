@@ -52,8 +52,7 @@
           <div class="modal-body">
               <div class="form-group">
                   <label class="control-label">Price:</label>
-                  <input type="text" placeholder="Name" class="form-control"
-                  [(ngModel)]="this.Price" [ngModelOptions]="{standalone: true}"  required/>
+                  <input class="form-control" currencyMask [(ngModel)]="this.Price"  [ngModelOptions]="{standalone: true}" required/>
             </div>
             <div class="form-group">
               <label class="control-label">Free Component:</label>

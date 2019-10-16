@@ -46,6 +46,23 @@ export class ContextItemsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  Item: {
+    itemID: number,
+    item: string,
+    discription: string,
+    tariff: string,
+    type: string,
+    usage: string,
+    midp: string,
+    pi: string,
+    vulnerable: string,
+    n521: string,
+    n536: string,
+    n31761: string,
+    n31762: string,
+    n31702: string
+  };
+
   tableHeader: TableHeader = {
     title: 'Items',
     addButton: {
@@ -175,7 +192,7 @@ export class ContextItemsListComponent implements OnInit {
   ];
 
   selectedRow = -1;
-  Item = '';
+  ItemName = '';
   Discription = '';
   Tariff = 0;
   Type = '';
@@ -304,34 +321,19 @@ export class ContextItemsListComponent implements OnInit {
     this.loadItems(false);
   }
 
-  // popClick(event, user) {
-  //   if (this.sidebarCollapsed) {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   } else {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   }
+  popClick(event, obj) {
+    this.Item = obj;
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
+    console.log(this.Item);
+  }
 
-  //   // Will only toggle on if off
-  //   if (!this.contextMenu) {
-  //     this.themeService.toggleContextMenu(true); // Set true
-  //     this.contextMenu = true;
-  //     // Show menu
-  //   } else {
-  //     this.themeService.toggleContextMenu(false);
-  //     this.contextMenu = false;
-  //   }
-  // }
-  // popOff() {
-  //   this.contextMenu = false;
-  //   this.selectedRow = -1;
-  // }
-
-  // selectedRecord(obj: SelectedRecord) {
-  //   this.selectedRow = obj.index;
-  //   this.popClick(obj.event, obj.record);
-  // }
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
+  }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {
@@ -357,7 +359,6 @@ export class ContextItemsListComponent implements OnInit {
 
   searchEvent(query: string) {
     this.filter = query;
-    console.log(query);
     this.loadItems(false);
   }
 

@@ -448,7 +448,7 @@ export class CompanyService {
   public getItemValueList(model: GetItemValuesList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/itemvalues`;
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvalueslist`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -466,6 +466,23 @@ export class CompanyService {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesupdate`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public RemoveItemValueList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesremove`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(

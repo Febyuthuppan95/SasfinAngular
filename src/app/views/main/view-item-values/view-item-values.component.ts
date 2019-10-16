@@ -61,7 +61,7 @@ export class ViewItemValuesComponent implements OnInit {
 
   ItemValue: {
     itemValueID: number,
-    itemPrice: string,
+    itemPrice: number,
     freeComponent: string
   };
 
@@ -116,7 +116,7 @@ export class ViewItemValuesComponent implements OnInit {
   ];
 
   selectedRow = -1;
-  Price = '';
+  Price = 0;
   FreeComponent = '';
 
   selectedFreecomp = 0;
@@ -292,8 +292,9 @@ export class ViewItemValuesComponent implements OnInit {
   editItemValue(id: number) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.Price = this.ItemValue.itemPrice;
+    this.Price = 13.00; // this.ItemValue.itemPrice;
     this.FreeComponent = this.ItemValue.freeComponent;
+    console.log(this.Price);
     this.openeditModal.nativeElement.click();
   }
 
@@ -322,11 +323,12 @@ export class ViewItemValuesComponent implements OnInit {
   removeItemValue(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      itemValueID: this.ItemValue.itemValueID
+      itemValueID: this.ItemValue.itemValueID,
+      isDeleted: 1
     };
 
-    this.companyService.alternatItemsUpdate(requestModel).then(
-      (res: UpdateGrouplist) => {
+    this.companyService.RemoveItemValueList(requestModel).then(
+      (res: UpdateItemValue) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadItemsValues(false);

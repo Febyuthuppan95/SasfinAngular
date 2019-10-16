@@ -138,6 +138,7 @@ import { CaptureService } from './services/capture.service';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
 import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [
@@ -240,6 +241,7 @@ import { ContextMenuItemsValuesComponent } from './components/menus/context-menu
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
+    NgxCurrencyModule,
     UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
