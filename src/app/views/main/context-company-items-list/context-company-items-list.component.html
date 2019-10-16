@@ -316,5 +316,5 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-company-items (iteminformation)="ShowItemInfo($event)" (addtoGroup)="OpenGroup($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [groupID]="focusItemGroupID" [itemID]="focusItemID" [item]="focusItemName"></app-context-menu-company-items>
+  <app-context-menu-company-items (addtoGroup)="OpenGroup($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [groupID]="focusItemGroupID" [itemID]="focusItemID" [item]="focusItemName"></app-context-menu-company-items>
   </div>

@@ -298,6 +298,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
+    console.log(model);
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
 

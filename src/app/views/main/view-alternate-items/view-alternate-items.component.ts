@@ -201,6 +201,7 @@ export class ViewAlternateItemsComponent implements OnInit {
   alternateitems: AlternateItems[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
+  recordsPerPage = 15;
   currentTheme: string;
   sidebarCollapsed = true;
   contextMenu = false;

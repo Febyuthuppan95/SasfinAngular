@@ -120,6 +120,7 @@ export class ViewItemValuesComponent implements OnInit {
   FreeComponent = '';
 
   selectedFreecomp = 0;
+  recordsPerPage = 15;
   itemvalues: ItemValue[] = [];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -280,6 +281,7 @@ export class ViewItemValuesComponent implements OnInit {
 
   searchEvent(query: string) {
     this.filter = query;
+    console.log(query);
     this.loadItemsValues(false);
   }
 
