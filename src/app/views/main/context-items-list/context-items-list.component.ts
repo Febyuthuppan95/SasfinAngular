@@ -12,6 +12,7 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
 import { CompanyService } from 'src/app/services/Company.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
 
 @Component({
   selector: 'app-context-items-list',
@@ -46,21 +47,22 @@ export class ContextItemsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
   Item: {
     itemID: number,
     item: string,
-    discription: string,
-    tariff: string,
+    description: string,
+    tariff: number,
     type: string,
-    usage: string,
-    midp: string,
-    pi: string,
+    mIDP: string,
+    pI: string,
     vulnerable: string,
-    n521: string,
-    n536: string,
-    n31761: string,
-    n31762: string,
-    n31702: string
+
   };
 
   tableHeader: TableHeader = {
@@ -192,19 +194,14 @@ export class ContextItemsListComponent implements OnInit {
   ];
 
   selectedRow = -1;
-  ItemName = '';
-  Discription = '';
-  Tariff = 0;
-  Type = '';
-  Usage = '';
-  MIDP = '';
-  PI = '';
-  Vulnerable = '';
-  n521 = '';
-  n536 = '';
-  n31761 = '';
-  n31762 = '';
-  n31702 = '';
+  itemID = 0;
+  item = '';
+  description = '';
+  tariff = 0;
+  type = '';
+  mIDP = '';
+  pI = '';
+  vulnerable = '';
 
   items: Items[] = [];
 
@@ -360,6 +357,68 @@ export class ContextItemsListComponent implements OnInit {
   searchEvent(query: string) {
     this.filter = query;
     this.loadItems(false);
+  }
+
+  editItem(id: number) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.itemID = this.Item.itemID;
+    this.item = this.Item.item;
+    this.description = this.Item.description;
+    this.tariff = this.Item.tariff;
+    this.type = this.Item.type;
+    this.mIDP = this.Item.mIDP;
+    this.pI = this.Item.pI;
+    this.vulnerable = this.Item.vulnerable;
+    this.openeditModal.nativeElement.click();
+    console.log(this.Item.mIDP);
+    console.log(this.pI);
+  }
+
+  UpdateItem(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.itemID,
+      itemName: this.item,
+      description: this.description,
+      tariff: this.tariff,
+      type: this.type,
+      mIDP: this.mIDP,
+      pI: this.pI,
+      vulnerable: this.vulnerable,
+    };
+
+    this.companyService.UpdateItemValueList(requestModel).then(
+      (res: UpdateItemResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  removeItemValue(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.Item.itemID,
+      isDeleted: 1
+    };
+
+    this.companyService.RemoveItemList(requestModel).then(
+      (res: UpdateItemResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
   }
 
 }

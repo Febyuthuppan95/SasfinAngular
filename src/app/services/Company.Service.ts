@@ -357,11 +357,28 @@ export class CompanyService {
     });
   }
 
-  public updateitem(model: UpdateCompanyItem) {
+  public itemupdate(model: UpdateCompanyItem) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyitem`;
       this.httpClient
         .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public RemoveItemList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/removeitem`;
+      this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
           res => {
@@ -478,6 +495,7 @@ export class CompanyService {
         );
     });
   }
+
 
   public RemoveItemValueList(model) {
     const json = JSON.parse(JSON.stringify(model));

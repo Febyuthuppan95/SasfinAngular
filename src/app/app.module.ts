@@ -139,6 +139,7 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
 import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
 
 @NgModule({
   declarations: [
@@ -233,6 +234,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     ContextMenuItemsGroupComponent,
     ViewItemValuesComponent,
     ContextMenuItemsValuesComponent,
+    ContextMenuItemsComponent,
   ],
   imports: [
     BrowserModule,
