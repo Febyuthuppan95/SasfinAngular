@@ -8,11 +8,13 @@ import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, Order, TableHeader } from 'src/app/models/Table';
+import { TableHeading, Order, TableHeader, SelectedRecord } from 'src/app/models/Table';
 import { GetIAlternateItemList } from 'src/app/models/HttpRequests/GetIAlternateItemList';
 import { AlternateItemsListResponse, AlternateItems } from 'src/app/models/HttpResponses/AlternateItemsListResponse';
 import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
 
 @Component({
   selector: 'app-view-alternate-items',
@@ -47,6 +49,11 @@ export class ViewAlternateItemsComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  GroupItem: {
+    itemID: number,
+    item: string,
+  };
 
   tableHeader: TableHeader = {
     title: `Alternate Items`,
@@ -264,6 +271,7 @@ export class ViewAlternateItemsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.alternateitems = res.alternateitems;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -272,7 +280,6 @@ export class ViewAlternateItemsComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.alternateitems.length;
-          this.alternateitems = res.alternateitems;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.alternateitems.length - 1;
         }
@@ -312,34 +319,18 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.loadAlternateItems(false);
   }
 
-  // popClick(event, user) {
-  //   if (this.sidebarCollapsed) {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   } else {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   }
+  popClick(event, obj) {
+    this.GroupItem = obj;
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
+  }
 
-  //   // Will only toggle on if off
-  //   if (!this.contextMenu) {
-  //     this.themeService.toggleContextMenu(true); // Set true
-  //     this.contextMenu = true;
-  //     // Show menu
-  //   } else {
-  //     this.themeService.toggleContextMenu(false);
-  //     this.contextMenu = false;
-  //   }
-  // }
-  // popOff() {
-  //   this.contextMenu = false;
-  //   this.selectedRow = -1;
-  // }
-
-  // selectedRecord(obj: SelectedRecord) {
-  //   this.selectedRow = obj.index;
-  //   this.popClick(obj.event, obj.record);
-  // }
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
+  }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {
@@ -368,9 +359,29 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.loadAlternateItems(false);
   }
 
-  backToItems()
-  {
+  backToItems() {
     this.router.navigate(['companies/items']);
+  }
+
+  removeCapture(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      specificItemID: this.GroupItem.itemID,
+      SpecificGroupID: this.groupID,
+      isDeleted: 1
+    };
+
+    this.companyService.alternatItemsUpdate(requestModel).then(
+      (res: UpdateGrouplist) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadAlternateItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
   }
 
 }

@@ -144,6 +144,7 @@ import { FormInvoiceComponent } from './components/forms/capture/form-invoice/fo
 import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
 import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
+import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 
 @NgModule({
   declarations: [
@@ -242,7 +243,8 @@ import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sa
     FormInvoiceComponent,
     FormVOCComponent,
     FormVocLinesComponent,
-    ContextMenuSADLinesComponent
+    ContextMenuSADLinesComponent,
+    ContextMenuItemsGroupComponent,
   ],
   imports: [
     BrowserModule,

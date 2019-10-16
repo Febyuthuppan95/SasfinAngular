@@ -150,7 +150,7 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.groupID, item.itemID); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
+            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.groupID, item.itemID, item.item); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
               <td>{{item.rowNum}}</td>
               <td>{{item.item}}</td>
               <td>{{item.description}}</td>
@@ -254,7 +254,7 @@
         </div>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
       </div>
     </form>
     </div>
@@ -264,5 +264,5 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-company-items (addtoGroup)="OpenGroup($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [groupID]="focusItemGroupID"></app-context-menu-company-items>
+  <app-context-menu-company-items (addtoGroup)="OpenGroup($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [groupID]="focusItemGroupID" [itemID]="focusItemID" [item]="focusItemName"></app-context-menu-company-items>
   </div>

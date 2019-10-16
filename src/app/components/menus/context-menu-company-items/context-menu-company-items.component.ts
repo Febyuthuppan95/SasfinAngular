@@ -25,7 +25,7 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
   }
 
   companyItems() {
-    this.companyService.setItem({ groupID: this.groupID, itemName: this.item });
+    this.companyService.setItem({ groupID: this.groupID, itemName: this.item, itemID: this.itemID });
     this.router.navigateByUrl('companies/items/alternates');
 }
 

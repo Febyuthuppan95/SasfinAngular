@@ -16,6 +16,7 @@
       [orderBy]="this.orderBy"
       [orderByDirection]="this.orderDirection"
       [tableHeader]="this.tableHeader"
+      (selectedRecord)="selectedRecord($event)"
       (orderChange)="orderChange($event)"
       (pageChange)="pageChange($event)"
       (showingRecordsEvent)="recordsPerPageChange($event)"
@@ -27,3 +28,11 @@
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+<app-menu
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+  <app-context-menu-items-group (removeCaptureInfo)="removeCapture($event)"></app-context-menu-items-group>
+</app-menu>
+

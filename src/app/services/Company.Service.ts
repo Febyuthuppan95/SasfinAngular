@@ -14,7 +14,6 @@ import { UpdateCompanyService } from '../models/HttpRequests/UpdateCompanyServic
 import { AddCompanyItem } from '../models/HttpRequests/AddCompanyItem';
 import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 import { GetItemList } from '../models/HttpRequests/GetItemList';
-import { GetTariffList } from '../models/HttpRequests/GetTariffList';
 import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 
@@ -406,7 +405,24 @@ export class CompanyService {
           }
         );
     });
+  }
 
+  public alternatItemsUpdate(model) {
+    console.log(model);
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updatealternateitems`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 
   public addtoGroup(model: AddItemGroup) {
@@ -485,5 +501,6 @@ export class SelectedCompany {
 
 export class SelectedItem {
   groupID: number;
+  itemID: number;
   itemName: string;
 }
