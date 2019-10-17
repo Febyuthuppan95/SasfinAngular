@@ -145,6 +145,9 @@ import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.c
 import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
+import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
+import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
 
 @NgModule({
   declarations: [
@@ -245,6 +248,9 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
     FormVocLinesComponent,
     ContextMenuSADLinesComponent,
     ContextMenuItemsGroupComponent,
+    ViewImportClearingInstructionsComponent,
+    ViewCustomReleaseNotificationsComponent,
+    ViewSAD500Component,
   ],
   imports: [
     BrowserModule,

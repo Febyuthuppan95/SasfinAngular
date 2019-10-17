@@ -41,6 +41,8 @@ import { ViewContactTypesListComponent } from './views/main/view-contact-types-l
 import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
+// tslint:disable-next-line: max-line-length
+import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
 const routes: Routes = [
   {
     path: '',
@@ -89,7 +91,8 @@ const routes: Routes = [
           { path: 'contacttypes', component: ViewContactTypesListComponent },
           { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent },
           { path: 'currencies', component: ViewCurrenciesListComponent},
-          { path: 'sad500/lines', component: Sad500LinesComponent}
+          { path: 'sad500/lines', component: Sad500LinesComponent },
+          { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

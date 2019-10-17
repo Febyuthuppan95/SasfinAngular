@@ -1,0 +1,13 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.tableConfig.dataset"
+      [(config)]="this.tableConfig">
+    </app-table>
+  </div>
+</div>

@@ -1,6 +1,13 @@
 export class TableConfig {
   headings: TableHeading[];
   header: TableHeader;
+  dataset: object[];
+  recordsPerPage: number;
+  rowStart?: number;
+  rowEnd?: number;
+  rowCount?: number;
+  orderBy?: string;
+  orderByDirection?: string;
 }
 
 export class TableHeading {

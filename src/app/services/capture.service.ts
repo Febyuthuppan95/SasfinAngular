@@ -23,6 +23,12 @@ export class CaptureService {
   sad500LineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/create`, requestModel);
 
   importClearingUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/ici`, requestModel);
+
+  // Import Clearing Instructions
+  iciList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/list`, requestModel);
+  iciUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/update`, requestModel);
+  iciAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/add`, requestModel);
+
   // tslint:disable-next-line: max-line-length
   shippingDocumentUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/shipping`, requestModel);
 }
