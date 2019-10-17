@@ -48,7 +48,6 @@
         </button>
       </div>
       <form>
-      <div class="modal-body">
           <div class="modal-body">
             <div class="form-group">
               <label class="control-label">Item:</label>
@@ -80,14 +79,13 @@
               <input type="text" placeholder="Vulnerable" class="form-control"
                [(ngModel)]="this.vulnerable" [ngModelOptions]="{standalone: true}"  required/>
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label class="control-label">Free Component:</label>
               <select class="form-control" [selectedIndex]="selectedFreecomp" (change)="onFreecompChange($event.target.value)">
-                <option *ngFor="let state of this.freecomp" [value]="state" [selected]="state === FreeComponent">{{state}}</option>
+                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === FreeComponent">{{state}}</option>
               </select>
-            </div> -->
+            </div>
         </div>
-      </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
         <button type="button" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>

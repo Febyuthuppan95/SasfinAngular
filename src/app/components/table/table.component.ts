@@ -72,6 +72,8 @@ export class TableComponent implements OnInit, OnChanges {
       // Determine what values need to be displayed
       this.headings.forEach((heading) => {
 
+
+
         // Iterate through object keys of a single record
         objectKeys.forEach((element: string, i: number) => {
 

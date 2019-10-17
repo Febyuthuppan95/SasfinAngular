@@ -81,7 +81,7 @@ export class ContextItemsListComponent implements OnInit {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '',
+      title: '#',
       propertyName: 'rowNum',
       order: {
         enable: false,
@@ -96,11 +96,11 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'Discription',
-      propertyName: 'discription',
+      title: 'Description',
+      propertyName: 'description',
       order: {
         enable: true,
-        tag: 'Discription'
+        tag: 'Description'
       }
     },
     {
@@ -120,16 +120,8 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'Usage',
-      propertyName: 'usage',
-      order: {
-        enable: true,
-        tag: 'Usage'
-      }
-    },
-    {
       title: 'MIDP',
-      propertyName: 'midp',
+      propertyName: 'mIDP',
       order: {
         enable: true,
         tag: 'MIDP'
@@ -137,7 +129,7 @@ export class ContextItemsListComponent implements OnInit {
     },
     {
       title: 'PI',
-      propertyName: 'pi',
+      propertyName: 'pI',
       order: {
         enable: true,
         tag: 'PI'
@@ -152,43 +144,11 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: '521',
-      propertyName: 'n521',
+      title: 'Services',
+      propertyName: 'services',
       order: {
         enable: true,
-        tag: 'n521'
-      }
-    },
-    {
-      title: '536',
-      propertyName: 'n536',
-      order: {
-        enable: true,
-        tag: 'n536'
-      }
-    },
-    {
-      title: '317.6.1',
-      propertyName: 'n31761',
-      order: {
-        enable: true,
-        tag: 'n31761'
-      }
-    },
-    {
-      title: '317.6.2',
-      propertyName: 'n31762',
-      order: {
-        enable: true,
-        tag: 'n31762'
-      }
-    },
-    {
-      title: '317.02',
-      propertyName: 'n31702',
-      order: {
-        enable: true,
-        tag: 'n31702'
+        tag: 'Services'
       }
     }
   ];
@@ -231,6 +191,7 @@ export class ContextItemsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
+  YESNO: string[] = ['Yes', 'No'];
 
   ngOnInit() {
 
@@ -253,8 +214,6 @@ export class ContextItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-
-
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
@@ -270,6 +229,8 @@ export class ContextItemsListComponent implements OnInit {
           }
         }
         this.items = res.itemsLists;
+
+        console.log(this.items);
 
         if (res.rowCount === 0) {
           this.noData = true;
