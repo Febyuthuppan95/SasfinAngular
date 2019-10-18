@@ -337,7 +337,7 @@ export class ContextItemsListComponent implements OnInit {
     console.log(this.pI);
   }
 
-  UpdateItem(id: number) {
+  UpdateItem() {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
