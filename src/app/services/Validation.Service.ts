@@ -11,8 +11,43 @@ export class ValidateService {
   public emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
   public passwordRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
 
+  private requiredField = 'This field is required.';
+  private emailFormatIncorrect = '';
+  private passwordFormatIncorrect = 'This field is required.';
+
+
   // Regex Check
   public regexTest = (regexRule: RegExp, inputValue: string): boolean => regexRule.test(inputValue);
+  public isEmpty = (value: any): boolean => {
+    if (value === undefined) {
+      return true;
+    } else if (value === null) {
+      return true;
+    } else if (value === '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public model = (obj: object): { errors: object[]; count: number } => {
+    const objectKeys = Object.keys(obj);
+    const objectValues = Object.values(obj);
+    const errors: { error: string }[] = [];
+    let count = 0;
+    let type;
+
+    objectKeys.forEach((key, index) => {
+      if (this.isEmpty(objectValues[index])) {
+        errors.push({ error: this.requiredField });
+        count++;
+      } else {
+        errors.push({ error: null });
+      }
+    });
+
+    return { errors, count };
+  }
 }
 
 

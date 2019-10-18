@@ -334,7 +334,7 @@ export class ViewTransactionFilesComponent implements OnInit {
 
   uploadAttachments() {
     this.uploading = true;
-    this.attachmentQueue.forEach((attach) => {
+    this.attachmentQueue.forEach((attach, index) => {
       attach.status = 'Uploading';
       attach.uploading = false;
 
@@ -344,12 +344,17 @@ export class ViewTransactionFilesComponent implements OnInit {
         attach.type,
         this.transactionID,
         this.currentUser.userID,
-        'The Boring Company'
+        'The Boring Company' // Change to company name
       ).then(
         (res) => {
             attach.uploading = false;
             attach.status = 'Complete';
             this.loadAttachments();
+            this.attachmentQueue.splice(index, 1);
+            this.attachmentQueueDisplay.splice(index, 1);
+            this.preview = null;
+            this.attachmentName = null;
+
         },
         (msg) => {
           attach.uploading = false;
@@ -360,7 +365,10 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   upload() {
-    this.attachmentName = '';
+    this.attachmentName = null;
+    this.attachmentTypeIndex = 0;
+    this.attachmentQueue = [];
+    this.attachmentQueueDisplay = [];
     this.openModal.nativeElement.click();
   }
 
@@ -389,6 +397,8 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.selectedTransactionType = - 1;
     this.currentAttachment++;
     this.disableAttachmentType = false;
+    this.attachmentTypeIndex = 0;
+    this.preview = null;
     this.attachmentTypeIndex = 0;
   }
 }
