@@ -218,7 +218,6 @@ export class ViewUserListComponent implements OnInit {
 
   isAdmin: false;
 
-
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
@@ -457,7 +456,7 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined) {
+    if (this.validateService.isEmpty(this.EmployeeNumb)) {
       errors++;
     }
     if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
@@ -487,6 +486,21 @@ export class ViewUserListComponent implements OnInit {
     if (!emailCheck) {
       errors++;
     }
+
+
+    const requestModelTest: AddUserRequest = {
+      userID: this.currentUser.userID,
+      empNo: this.EmployeeNumb,
+      firstName: this.selectedFirstName,
+      surname: this.selectedSurName,
+      email: this.selectedEmail,
+      password: this.password,
+      specificDesignationID: +this.selectedDesignation,
+      profileImage: ImageName,
+      extension: this.Extension
+    };
+
+    const validateResponse = this.validateService.model(requestModelTest);
 
     if (errors === 0) {
       if (this.password === this.confirmpassword) {
@@ -544,6 +558,9 @@ export class ViewUserListComponent implements OnInit {
 
   updateUser($event) {
     $event.preventDefault();
+
+
+
     let ImageName = null;
 
     if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {

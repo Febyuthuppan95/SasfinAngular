@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
@@ -53,7 +53,7 @@ export class ViewTransactionsComponent implements OnInit {
   @ViewChild('openModal', { static: true })
   private openModal: ElementRef;
 
-  @ViewChild('closeModal', { static: true })
+  @ViewChild('closeModal', {static: false})
   private closeModal: ElementRef;
 
   defaultProfile =
@@ -387,7 +387,6 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   addTransaction() {
-    console.log(this.selectedStatus);
     let errors = 0;
 
     if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
@@ -411,9 +410,9 @@ export class ViewTransactionsComponent implements OnInit {
         ).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
-              this.openModal.nativeElement.click();
               this.loadTransactions();
               this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.closeModal.nativeElement.click();
             } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
