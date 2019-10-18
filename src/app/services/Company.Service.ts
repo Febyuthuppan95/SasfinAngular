@@ -357,9 +357,9 @@ export class CompanyService {
     });
   }
 
-  public itemupdate(model: UpdateCompanyItem) {
+  public itemupdate(model) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyitem`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateitem`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()

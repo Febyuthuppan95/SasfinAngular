@@ -340,16 +340,18 @@ export class ContextItemsListComponent implements OnInit {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
-      itemName: this.item,
+      item: this.item,
       description: this.description,
       tariff: this.tariff,
       type: this.type,
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
+      service: ''
     };
+    console.log(requestModel);
 
-    this.companyService.UpdateItemValueList(requestModel).then(
+    this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -380,6 +382,18 @@ export class ContextItemsListComponent implements OnInit {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
+  }
+
+  onVulnerablestateChange(state: string) {
+    this.vulnerable = state;
+  }
+
+  onPIstateChange(state: string) {
+    this.pI = state;
+  }
+
+  onMIDPstateChange(state: string) {
+    this.mIDP = state;
   }
 
 }
