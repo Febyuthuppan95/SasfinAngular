@@ -15,7 +15,57 @@
     [rowCount]="this.tableConfig.rowCount"
     [orderBy]="this.tableConfig.orderBy"
     [orderByDirection]="this.tableConfig.orderByDirection"
-    [tableHeader]="this.tableConfig.header">
+    [tableHeader]="this.tableConfig.header"
+    (addButtonEvent)="addICIModal()">
     </app-table>
   </div>
 </div>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#AddUser" #openAddModal></button>
+<div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="addICI()" enctype="multipart/form-data">
+      <div class="modal-body">
+          <div class="form-group">
+              <label class="control-label">Supplier Ref:</label>
+              <input type="text" placeholder="Supplier Ref" maxlength="5"  class="form-control"
+              [(ngModel)]="this.addRequest.supplierRef" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+        <div class="form-group">
+          <label class="control-label">Importers Code:</label>
+          <input type="text" placeholder="Importers Code" class="form-control"
+          [(ngModel)]="this.addRequest.importersCode" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Waybill No:</label>
+          <input type="text" placeholder="Waybill No" class="form-control"
+          [(ngModel)]="this.addRequest.waybillNo" [ngModelOptions]="{standalone: true}"  required/>
+        </div>
+        <div class="form-group">
+          <div class="row" style="margin-left:0px;">
+            <label for="addDocument">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload Document</span>
+            </label>
+            <input hidden id="addDocument" type="file" class="form-control text-right col-md-10"
+             (change)="onFileChange($event.target.files)"/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<app-notification></app-notification>

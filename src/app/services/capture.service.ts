@@ -27,7 +27,7 @@ export class CaptureService {
   // Import Clearing Instructions
   iciList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/list`, requestModel);
   iciUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/update`, requestModel);
-  iciAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/add`, requestModel);
+  iciAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/ici/create`, requestModel);
 
   // tslint:disable-next-line: max-line-length
   shippingDocumentUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/shipping`, requestModel);
