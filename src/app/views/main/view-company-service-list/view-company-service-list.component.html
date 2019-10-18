@@ -1,0 +1,236 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="this.showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <br />
+    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
+        class="mdi mdi-filter"></i> &nbsp;Filters</button>
+        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - services</h4><span style="margin-left:10px;"><button (click)="Add()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+        <br />
+    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
+      <form class="form-inline">
+        <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
+          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+          (change)="loadCompanyServiceList()">
+          <option value='15' selected>Showing 15</option>
+          <option value='25'>Showing 25</option>
+          <option value='50'>Showing 50</option>
+        </select>
+        <input type="text"
+          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+      </form>
+    </div>
+    <br />
+    <div class="">
+      <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
+        <thead>
+          <tr>
+            <th></th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfo')">
+                <p class="headerText">Service</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address1_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address1_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+            <th scope="col">
+                <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                  <p class="headerText">Consultant</p>
+                  <span class="headerSpan">
+                    <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address2_ASC')?'order-active':'order-not-active'"></i>
+                    <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address2_DESC')?'order-active':'order-not-active'"></i>
+                  </span>
+                </button>
+              </th>
+              <th scope="col">
+                  <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                    <p class="headerText">Capturer</p>
+                    <span class="headerSpan">
+                      <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'POBox_ASC')?'order-active':'order-not-active'"></i>
+                      <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'POBox_DESC')?'order-active':'order-not-active'"></i>
+                    </span>
+                  </button>
+                </th>
+                <th scope="col">
+                    <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                      <p class="headerText">Start Date</p>
+                      <span class="headerSpan">
+                        <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'AddressType_ASC')?'order-active':'order-not-active'"></i>
+                        <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'AddressType_DESC')?'order-active':'order-not-active'"></i>
+                      </span>
+                    </button>
+                  </th>
+                  <th scope="col">
+                    <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                      <p class="headerText">End Date</p>
+                      <span class="headerSpan">
+                        <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'AddressType_ASC')?'order-active':'order-not-active'"></i>
+                        <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'AddressType_DESC')?'order-active':'order-not-active'"></i>
+                      </span>
+                    </button>
+                  </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="(!noData)">
+          <tr *ngFor="let service of dataList; let i=index" (click)="popClick($event, service.componyServiceID, service.serviceID, service.serviceName, service.resConsultantID, service.resCapturerID, service.startDate, service.endDate); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
+            <td>{{service.rowNum}}</td>
+            <td>{{service.serviceName}}</td>
+            <td>{{service.resConsultantID}}</td>
+            <td>{{service.resCapturerID}}</td>
+            <td>{{service.startDate | date}}</td>
+            <td>{{service.endDate | date}}</td>
+          </tr>
+        </tbody>
+        <tbody class="tbodyPop" *ngIf="(noData)" >
+          <tr>
+            <td scope="col"></td>
+            <td scope="col">No data to display..</td>
+            <td scope="col"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <br />
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+      <ul class="pagination pagination-sm">
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+            (click)="pageChange(prevPage)">Prev</button>
+        </li>
+        <li *ngFor="let page of showingPages" class="page-item">
+          <button [class.active-page]="activePage == page.page"
+            class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+            type="button" (click)="pageChange(page.page)">{{page.page}}</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+            (click)="pageChange(nextPage)">Next</button>
+        </li>
+      </ul>
+    </nav>
+    <br />
+    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+      {{ rowCount }}</p>
+  </div>
+</div>
+
+<!--Edit Modal-->
+<button class="hide" data-toggle="modal" data-target="#editService" #openeditModal></button>
+<div class="modal fade" id="editService" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalContent">Edit</h5>
+      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="control-label">Service:</label>
+                <select class="form-control"  (change)="onServiceChange($event.target.value)">
+                    <option selected value="-1" [disabled]="disableSerSelect">Select a Service</option>
+                    <option *ngFor="let service of this.serviceslist" [value]="service.serviceID" [selected]="service.serviceID === this.SerID">{{service.serviceName}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Responsible Consultant:</label>
+                <select class="form-control" (change)="onConsultantChange($event.target.value)">
+                  <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id" [selected]="ResConsultant.id === this.ConID">{{ResConsultant.Name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                  <label class="control-label">Responsible Capturer:</label>
+                  <select class="form-control" (change)="onCapturerChange($event.target.value)">
+                    <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.id === this.CapID">{{ResCapturer.Name}}</option>
+                  </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Start Date:</label>
+              <input type="date" class="form-control"
+              [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+
+            <div class="form-group">
+                  <label class="control-label">End Date:</label>
+                  <input type="date" class="form-control"
+                  [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+        </div>
+        <div class="modal-footer bg-dark">
+            <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+            <button type="button" (click)="UpdateCompanyServices()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#addService" #openaddModal></button>
+<div class="modal fade" id="addService" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalContent">Add</h5>
+      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form >
+         <div class="modal-body">
+            <div class="form-group">
+                <label class="control-label">Service:</label>
+                <select class="form-control"  (change)="onServiceChange($event.target.value)" #selectService>
+                    <option selected value="-1" [disabled]="disableSerSelect">Select a Service</option>
+                    <option *ngFor="let service of this.serviceslist" [value]="service.serviceID">{{service.serviceName}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Responsible Consultant:</label>
+                <select class="form-control"  (change)="onConsultantChange($event.target.value)" #selectConsultant>
+                    <option selected value="-1" [disabled]="disableConSelect">Select a Consultant</option>
+                    <option *ngFor="let ResConsultant of this.ResConsultants" [value]="ResConsultant.id">{{ResConsultant.Name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                  <label class="control-label">Responsible Capturer:</label>
+                  <select class="form-control" (change)="onCapturerChange($event.target.value)" #selectCapturer>
+                      <option selected value="-1" [disabled]="disableCapSelect">Select a Capturer</option>
+                  <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id">{{ResCapturer.Name}}</option>
+                  </select>
+            </div>
+            <div class="form-group">
+                  <label class="control-label">Start Date:</label>
+                  <input type="date" class="form-control"
+                  [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+
+            <div class="form-group">
+                  <label class="control-label">End Date:</label>
+                  <input type="date" class="form-control"
+                  [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
+          <button type="button" (click)="addCompanyService(); selectConsultant.selectedIndex = 0; selectCapturer.selectedIndex = 0; selectService.selectedIndex = 0;"  class="btn btn-primary btn-sm">Save</button>
+        </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+<app-context-menu-company-service (editService)="editCompanyService($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [serviceID]="focusServiceID"></app-context-menu-company-service>
+</div>

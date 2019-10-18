@@ -115,3 +115,30 @@
 .statusNone {
   color: #ffffff;
 }
+
+.shortcutView {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 9999999;
+  text-align: center;
+}
+
+.shortcutView .overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: inherit;
+  background: rgba($color: #000000, $alpha: 0.5);
+}
+
+.shortcutView img {
+  width: 80%;
+  height: auto;
+  margin-top: 2%;
+  z-index: 9999999999999 !important;
+}

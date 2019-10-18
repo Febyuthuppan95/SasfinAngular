@@ -1,0 +1,12 @@
+.line-list button{
+  margin-right: 8px;
+}
+
+.btn {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.active-line {
+  padding: 12px;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}

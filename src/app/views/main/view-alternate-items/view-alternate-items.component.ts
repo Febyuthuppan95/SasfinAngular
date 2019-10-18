@@ -56,7 +56,7 @@ export class ViewAlternateItemsComponent implements OnInit {
   };
 
   tableHeader: TableHeader = {
-    title: `Alternate Items`,
+    title: `Item Group`,
     addButton: {
      enable: true,
     },
@@ -201,6 +201,7 @@ export class ViewAlternateItemsComponent implements OnInit {
   alternateitems: AlternateItems[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
+  recordsPerPage = 15;
   currentTheme: string;
   sidebarCollapsed = true;
   contextMenu = false;
@@ -226,7 +227,7 @@ export class ViewAlternateItemsComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  groupID = 0;
+  groupID = '';
   itemName = '';
 
   ngOnInit() {
@@ -238,8 +239,12 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.companyService.observeItem().subscribe((obj: SelectedItem) => {
       this.groupID = obj.groupID;
       this.itemName = obj.itemName;
+
+      if (this.groupID === '') {
+        this.groupID = null;
+      }
     });
-    console.log(this.groupID);
+
     this.loadAlternateItems(true);
   }
 
@@ -255,7 +260,6 @@ export class ViewAlternateItemsComponent implements OnInit {
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
     this.companyService.getAlternateItemList(model).then(
       (res: AlternateItemsListResponse) => {
@@ -363,12 +367,10 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.router.navigate(['companies/items']);
   }
 
-  removeCapture(id: number) {
+  removeItemGroup(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      specificItemID: this.GroupItem.itemID,
-      SpecificGroupID: this.groupID,
-      isDeleted: 1
+      itemID: this.GroupItem.itemID
     };
 
     this.companyService.alternatItemsUpdate(requestModel).then(

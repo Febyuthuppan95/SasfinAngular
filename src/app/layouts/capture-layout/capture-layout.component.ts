@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -10,26 +10,31 @@ import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInf
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
 import { MatDialog } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
+import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
   styleUrls: ['./capture-layout.component.scss']
 })
-export class CaptureLayoutComponent implements OnInit {
+export class CaptureLayoutComponent implements OnInit, AfterViewInit {
 
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private router: Router,
               private transactionService: TransactionService,
               private companyService: CompanyService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {}
+
+  shortcuts: ShortcutInput[] = [];
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
+
+  @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   currentBackground: string;
   currentTheme: string;
@@ -49,6 +54,7 @@ export class CaptureLayoutComponent implements OnInit {
   attachmentList: TransactionFile[];
   transactionID: number;
   attachmentID: number;
+  showHelp: boolean = false;
 
   ngOnInit() {
     this.companyShowToggle = true;
@@ -73,18 +79,37 @@ export class CaptureLayoutComponent implements OnInit {
     this.transactionService.observerCurrentAttachment().subscribe (obj => {
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
-
-      console.log(this.attachmentID);
       this.loadAttachments();
     });
   }
 
-  goBack() {
-    this.router.navigate(['transaction', 'attachments']);
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + i',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.companyInfo()
+        },
+        {
+          key: 'alt + o',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.exitCaptureScreen()
+        },
+        {
+          key: 'alt + h',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.showHelp = !this.showHelp
+        },
+    );
+
+    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
-  showHelp() {
-    this.openModal.nativeElement.click();
+  goBack() {
+    this.router.navigate(['transaction', 'attachments']);
   }
 
   loadCaptureInfo() {
@@ -152,31 +177,6 @@ export class CaptureLayoutComponent implements OnInit {
   PDFScrollDown() {
   }
   PDFScrollUp() {
-  }
-
-  @HostListener('keydown', ['$event']) onKeyDown(e) {
-    if (e.keyCode === 190) {
-      this.currentReaderPOS.y++;
-      console.log(`New Reader pos: ${this.currentReaderPOS.y}`);
-    }
-  }
-
-  currentShortcut($event: string) {
-    if ($event === null || undefined) {
-      this.flushCurrentShortcut();
-    } else {
-      if ($event === 'Control') {
-          this.currentShortcutLabel = $event;
-      } else if ($event === 'Alt') {
-          this.currentShortcutLabel += ` + ${$event}`;
-      } else if ($event === 'l') {
-        this.currentShortcutLabel += ` + ${$event.toLocaleUpperCase()}`;
-      }
-    }
-  }
-
-  flushCurrentShortcut() {
-    setTimeout(() => this.currentShortcutLabel = null, 2000);
   }
 
   previewCapture(src: string, id: number) {

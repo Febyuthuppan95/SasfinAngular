@@ -16,6 +16,7 @@ import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -99,14 +100,14 @@ import { TableComponent } from './components/table/table.component';
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
-import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
+import { ContextMenuServiceListComponent } from './views/main/view-service-list/view-service-list.component';
 import { ChatOverlayComponent } from './modules/chat/components/chat-overlay/chat-overlay.component';
 import { ChatUserTileComponent } from './modules/chat/components/chat-user-tile/chat-user-tile.component';
 import { ChatBubbleComponent } from './modules/chat/components/chat-bubble/chat-bubble.component';
-import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
-import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
-import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
-import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/view-company-service-list/view-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
@@ -135,7 +136,23 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
 import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
+import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
+import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
+import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-preview/sad500-line-preview.component';
+import { FocusDirective } from './directives/focus.directive';
+import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
+import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
+import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
+import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
+import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
+import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+import { ValidateService } from './services/Validation.Service';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
 
 @NgModule({
   declarations: [
@@ -227,7 +244,21 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
     FormShippingDocumentComponent,
+    Sad500LinesComponent,
+    FormSAD500LineComponent,
+    Sad500LinePreviewComponent,
+    FocusDirective,
+    FormInvoiceComponent,
+    FormVOCComponent,
+    FormVocLinesComponent,
+    ContextMenuSADLinesComponent,
     ContextMenuItemsGroupComponent,
+    ViewImportClearingInstructionsComponent,
+    ViewCustomReleaseNotificationsComponent,
+    ViewSAD500Component,
+    ViewItemValuesComponent,
+    ContextMenuItemsValuesComponent,
+    ContextMenuItemsComponent,
   ],
   imports: [
     BrowserModule,
@@ -236,6 +267,7 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
+    NgxCurrencyModule,
     UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
@@ -249,7 +281,8 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
     MaterialModule,
-    AngularDraggableModule
+    AngularDraggableModule,
+    KeyboardShortcutsModule
   ],
   providers: [
     CookieService,
@@ -282,12 +315,14 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
       multi: true
     },
     ChatService,
-    CaptureService
+    CaptureService,
+    ValidateService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
-    CapturePreviewComponent
+    CapturePreviewComponent,
+    Sad500LinePreviewComponent
   ]
 })
 export class AppModule { }

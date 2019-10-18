@@ -1,17 +1,10 @@
-<!-- <app-table-header
-  [tableHeader]="this.tableHeader"
-  (addButtonEvent)="addButton()"
-  (backButtonEvent)="backButton()"
-  (searchEvent)="search($event)"
-  (showingRecordsEvent)="recordsPerPageChange($event)">
-</app-table-header> -->
 <div *ngIf="this.tableHeader">
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()">
       <i class="mdi mdi-filter"></i> &nbsp;Filters
     </button>
   <br>
     <div class="col-md-3" style="padding-left:0px;">
-        <span *ngIf="this.tableHeader.backButton.enable" style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backButton()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span>
+        <span *ngIf="this.tableHeader.backButton.enable" style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backButton()" class="btn-back btn"><i class="mdi mdi-arrow-left ls-text-{{ currentTheme }}"></i></button></span>
       <span style="float:left; margin-right:5px;"></span>
       <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{ tableHeader.title }}</h4>
       <span *ngIf="this.tableHeader.addButton.enable" style="margin-left:10px;">
@@ -49,7 +42,7 @@
 <table class="table table-hover table-striped table-{{ currentTheme }}">
   <thead>
     <tr>
-      <th *ngFor="let heading of headings">
+      <th *ngFor="let heading of headings" scope="col" [ngClass]="{'col-row-num': heading.propertyName === 'rowNum'}">
         <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="orderChangeEvent(heading.order.tag)">
           <p class="headerText">{{heading.title}}</p>
           <span class="headerSpan" *ngIf="heading.order.enable">

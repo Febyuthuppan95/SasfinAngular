@@ -93,19 +93,3 @@
   top: 5px;
   right: 5px;
 }
-
-.close-button {
-  background: rgb(240, 240, 240);
-  color: rgb(46, 46, 46);
-  border-radius: 100%;
-  padding: 2px;
-  width: 36px;
-  height: 36px;
-  opacity: .7;
-  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
-}
-
-.close-button:hover {
-  opacity: 1;
-  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
-}

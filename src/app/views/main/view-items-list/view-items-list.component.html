@@ -1,0 +1,108 @@
+  <div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <app-table
+        *ngIf="this.items"
+        [dataset]="this.items"
+        [headings]="this.tableHeadings"
+        [recordsPerPage]="this.recordsPerPage"
+        [rowStart]="this.rowStart"
+        [rowEnd]="this.rowEnd"
+        [rowCount]="this.rowCount"
+        [orderBy]="this.orderBy"
+        [orderByDirection]="this.orderDirection"
+        [tableHeader]="this.tableHeader"
+        (selectedRecord)="selectedRecord($event)"
+        (orderChange)="orderChange($event)"
+        (pageChange)="pageChange($event)"
+        (showingRecordsEvent)="recordsPerPageChange($event)"
+        (searchEvent)="searchEvent($event)">
+      </app-table>
+    </div>
+  </div>
+
+  <app-notification></app-notification>
+  <app-modal-component></app-modal-component>
+
+  <app-menu
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+  <app-context-menu-items (editItem)="editItem($event)"></app-context-menu-items>
+</app-menu>
+
+<!--Edit Modal-->
+<button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
+<div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Edit values</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label">Item:</label>
+              <input type="text" placeholder="Item" class="form-control"
+               [(ngModel)]="this.item" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Item Description:</label>
+              <textarea type="text" placeholder="Item Description" class="form-control"
+               [(ngModel)]="this.description" [ngModelOptions]="{standalone: true}"  required></textarea>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Type:</label>
+              <input type="text" placeholder="Type" class="form-control"
+               [(ngModel)]="this.type" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+            <!-- <div class="form-group">
+              <label class="control-label">MIDP:</label>
+              <input type="text" placeholder="MIDP" class="form-control"
+               [(ngModel)]="this.mIDP" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">PI:</label>
+              <input type="text" placeholder="PI" class="form-control"
+               [(ngModel)]="this.pI" [ngModelOptions]="{standalone: true}"  required/>
+            </div> -->
+            <!-- <div class="form-group">
+              <label class="control-label">MIDP:</label>
+              <select class="form-control" (change)="onMIDPstateChange($event.target.value)">
+                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.mIDP">{{state}}</option>
+              </select>
+            </div><div class="form-group">
+              <label class="control-label">PI:</label>
+              <select class="form-control" (change)="onPIstateChange($event.target.value)">
+                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.pI">{{state}}</option>
+              </select>
+            </div> -->
+            <div class="form-group">
+              <label class="control-label">Vulnerable:</label>
+              <select class="form-control" (change)="onVulnerablestateChange($event.target.value)">
+                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Services:</label>
+              <select class="form-control" (change)="onVulnerablestateChange($event.target.value)">
+                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
+              </select>
+            </div>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        <button type="button" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

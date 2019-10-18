@@ -22,6 +22,7 @@ import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
 import { GetUserList, AddUserRequest, UpdateUserRequest } from 'src/app/models/HttpRequests/Users';
 import { User } from 'src/app/models/HttpResponses/User';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { ValidateService } from 'src/app/services/Validation.Service';
 
 @Component({
   selector: 'app-view-user-list',
@@ -34,7 +35,8 @@ export class ViewUserListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private DIDesignationService: DesignationService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private validateService: ValidateService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -215,7 +217,6 @@ export class ViewUserListComponent implements OnInit {
   disableDesSelect = false;
 
   isAdmin: false;
-
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -455,30 +456,51 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined) {
+    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined  || this.EmployeeNumb === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined  || this.selectedEmail === '') {
       errors++;
     }
-    if (this.password === null || this.password === undefined) {
+    if (this.password === null || this.password === undefined || this.password === '') {
       errors++;
     }
-    if (this.confirmpassword === null || this.confirmpassword === undefined) {
+    if (this.confirmpassword === null || this.confirmpassword === undefined  || this.confirmpassword === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined || this.Extension === '') {
       errors++;
     }
+
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
+      errors++;
+    }
+
+
+    const requestModelTest: AddUserRequest = {
+      userID: this.currentUser.userID,
+      empNo: this.EmployeeNumb,
+      firstName: this.selectedFirstName,
+      surname: this.selectedSurName,
+      email: this.selectedEmail,
+      password: this.password,
+      specificDesignationID: +this.selectedDesignation,
+      profileImage: ImageName,
+      extension: this.Extension
+    };
+
+    const validateResponse = this.validateService.model(requestModelTest);
 
     if (errors === 0) {
       if (this.password === this.confirmpassword) {
@@ -525,12 +547,20 @@ export class ViewUserListComponent implements OnInit {
         this.notify.errorsmsg('Failure', 'Passwords do not match!');
       }
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }
+
     }
   }
 
   updateUser($event) {
     $event.preventDefault();
+
+
+
     let ImageName = null;
 
     if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {
@@ -543,25 +573,31 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmpNo === null || this.EmpNo === undefined) {
+    if (this.EmpNo === null || this.EmpNo === undefined || this.EmpNo === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined || this.selectedEmail === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined  || this.Extension === '') {
       errors++;
     }
     if (this.selectedStatus === null || this.selectedStatus === undefined) {
+      errors++;
+    }
+
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
       errors++;
     }
 
@@ -607,8 +643,11 @@ export class ViewUserListComponent implements OnInit {
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please complete form before submitting');
-    }
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }    }
   }
 
   updateHelpContext(slug: string, $event?) {

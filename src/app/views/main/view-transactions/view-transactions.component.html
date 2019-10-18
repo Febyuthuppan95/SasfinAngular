@@ -1,3 +1,43 @@
+
+
+<button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
+<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true" *ngIf="this.transactionStatus !== undefined && this.transactionTypes !== undefined">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Add Transaction</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="addTransaction()">
+      <div class="modal-body">
+      <div class="form-group">
+          <input type="text" placeholder="Name" class="form-control"
+            [(ngModel)]="this.newTransaction.name" [ngModelOptions]="{standalone: true}" required/>
+      </div>
+      <div class="form-group">
+          <select class="form-control" [selectedIndex]="this.selectedTypeIndex" [formControl]="selectTypeControl" (change)="onTypeChange($event.target.value)">
+            <option selected value="0" [disabled]="typesDisable">Select a transaction type</option>
+            <option *ngFor="let type of transactionTypes" [value]="type.transactionTypeID">{{type.name}}</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <select class="form-control" (change)="onStatusChange($event.target.value)" [formControl]="selectStatusControl" [selectedIndex]="this.selectedStatusIndex">
+            <option selected value="0" [disabled]="statusDisable">Select a status type</option>
+            <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
+          </select>
+      </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 <div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <div class="float-right">
@@ -101,46 +141,6 @@
       {{ rowCount }}</p>
   </div>
 </div>
-
-
-<button class="hide" data-toggle="modal" data-target="#editGlossary" #openModal></button>
-<div class="modal fade" id="editGlossary" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true" *ngIf="this.transactionStatus !== undefined && this.transactionTypes !== undefined">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Add Transaction</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form (submit)="addTransaction()">
-      <div class="modal-body">
-      <div class="form-group">
-          <input type="text" placeholder="Name" class="form-control"
-            [(ngModel)]="this.newTransaction.name" [ngModelOptions]="{standalone: true}" required/>
-      </div>
-      <div class="form-group">
-          <select class="form-control" [selectedIndex]="this.selectedTypeIndex" [formControl]="selectTypeControl" (change)="onTypeChange($event.target.value)">
-            <option selected value="0" [disabled]="typesDisable">Select a transaction type</option>
-            <option *ngFor="let type of transactionTypes" [value]="type.transactionTypeID">{{type.name}}</option>
-          </select>
-      </div>
-      <div class="form-group">
-          <select class="form-control" (change)="onStatusChange($event.target.value)" [formControl]="selectStatusControl" [selectedIndex]="this.selectedStatusIndex">
-            <option selected value="0" [disabled]="statusDisable">Select a status type</option>
-            <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
-          </select>
-      </div>
-      </div>
-      <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>

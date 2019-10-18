@@ -1,6 +1,13 @@
 export class TableConfig {
   headings: TableHeading[];
   header: TableHeader;
+  dataset: object[];
+  recordsPerPage: number;
+  rowStart?: number;
+  rowEnd?: number;
+  rowCount?: number;
+  orderBy?: string;
+  orderByDirection?: string;
 }
 
 export class TableHeading {
@@ -20,7 +27,7 @@ export class TableHeading {
 
 export class SelectedRecord {
   event: any;
-  record: object;
+  record: any | object;
   index: number;
 }
 

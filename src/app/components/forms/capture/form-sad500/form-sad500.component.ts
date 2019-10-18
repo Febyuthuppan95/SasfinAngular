@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -7,24 +7,42 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
+import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
+import { MatDialog } from '@angular/material';
+import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
+import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
   styleUrls: ['./form-sad500.component.scss']
 })
-export class FormSAD500Component implements OnInit {
+export class FormSAD500Component implements OnInit, AfterViewInit {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService) { }
+              private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
+
+shortcuts: ShortcutInput[] = [];
 
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
 
+@ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
+linePreview = -1;
+lines = -1;
+focusMainForm: boolean;
+focusLineForm: boolean;
+focusLineData: SAD500Line = null;
 
 currentTheme: string;
+
+sad500LineQueue: SAD500LineCreateRequest[] = [];
+sad500CreatedLines: SAD500Line[] = [];
+lineState: string;
 
 form = {
   serialNo: {
@@ -63,28 +81,78 @@ form = {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.loadCapture();
+        this.loadLines();
       }
     });
   }
 
-submit($event) {
-  $event.preventDefault();
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + .',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.nextLine()
+        },
+        {
+          key: 'alt + ,',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.prevLine()
+        },
+        {
+          key: 'alt + /',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusLineForm = !this.focusLineForm
+        },
+        {
+          key: 'alt + m',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusMainForm = !this.focusMainForm;
+            this.focusLineData = null;
+            this.lines = -1;
+          }
+        },
+        {
+          key: 'alt + n',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusLineForm = !this.focusLineForm;
+            this.focusLineData = null;
+            this.lines = -1;
+          }
+        },
+        {
+          key: 'alt + s',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.submit()
+        },
+    );
 
-  const requestModel = {
-    userID: this.currentUser.userID,
-    specificCustomsReleaseID: this.attachmentID,
-    serialNo: this.form.serialNo.value,
-    lrn: this.form.LRN.value,
-    pcc: this.form.PCC.value,
-    waybillNo: this.form.waybillNo.value,
-    supplierRef: this.form.supplierRef.value,
-    totalCustomsValue: this.form.totalCustomsValue.value,
-    mrn: this.form.MRN.value,
-    isDeleted: 0,
-    attachmentStatusID: 2,
-  };
+    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
+  }
 
-  this.transactionService.customsReleaseUpdate(requestModel).then(
+  submit() {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      specificSAD500ID: this.attachmentID,
+      serialNo: this.form.serialNo.value,
+      lrn: this.form.LRN.value,
+      pcc: this.form.PCC.value,
+      waybillNo: this.form.waybillNo.value,
+      supplierRef: this.form.supplierRef.value,
+      totalCustomsValue: this.form.totalCustomsValue.value,
+      mrn: this.form.MRN.value,
+      isDeleted: 0,
+      attachmentStatusID: 2,
+    };
+
+    this.captureService.sad500Update(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -95,6 +163,42 @@ submit($event) {
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    );
+  }
+
+  updateLine(obj: SAD500Line) {
+    this.lineState = 'Saving';
+    const requestModel: SAD500LineUpdateModel = {
+      userID: this.currentUser.userID,
+      sad500ID: this.attachmentID,
+      specificSAD500LineID: obj.sad500LineID,
+      unitOfMeasure: obj.unitOfMeasure,
+      unitOfMeasureID: obj.unitOfMeasureID,
+      tariff: obj.tariff,
+      tariffID: obj.tariffID,
+      value: obj.value,
+      customsValue: obj.customsValue,
+      productCode: obj. productCode,
+      cpc: obj.cpc,
+      isDeleted: 0,
+      lineNo: obj.lineNo
+    };
+
+    this.captureService.sad500LineUpdate(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadLines();
+          this.lineState = 'Updated successfully';
+
+          setTimeout(() => this.lineState = '', 3000);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        this.lineState = 'Update failed';
+
+        setTimeout(() => this.lineState = '', 3000);
       }
     );
   }
@@ -127,5 +231,70 @@ submit($event) {
     );
   }
 
+  loadLines() {
+    this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
+      (res: SPSAD500LineList) => {
+        this.sad500CreatedLines = res.lines;
+        if (this.lines > -1) {
+          this.focusLineData = this.sad500CreatedLines[this.lines];
+        }
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
+  }
+
+  addToQueue(obj: SAD500LineCreateRequest) {
+    this.lineState = 'Saving new line';
+
+    obj.userID = this.currentUser.userID;
+    obj.sad500ID = this.attachmentID;
+
+    this.captureService.sad500LineAdd(obj).then(
+      (res: { outcome: string; outcomeMessage: string; }) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadLines();
+
+          this.lineState = 'Saved successfully';
+          this.lines = -1;
+          this.focusLineData = null;
+          setTimeout(() => this.lineState = '', 3000);
+        } else {
+          this.lineState = 'Failed to save';
+
+          setTimeout(() => this.lineState = '', 3000);
+        }
+      },
+      (msg) => {
+        this.lineState = 'Failed to save';
+
+        setTimeout(() => this.lineState = '', 3000);
+      }
+    );
+  }
+
+  revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
+    this.lines = i;
+  }
+
+  prevLine() {
+    if (this.lines >= 1) {
+      this.lines--;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
+    }
+  }
+
+  nextLine() {
+    if (this.lines < this.sad500CreatedLines.length - 1) {
+      this.lines++;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
+    }
+
+    if (this.lines === -1) {
+      this.lines++;
+      this.focusLineData = this.sad500CreatedLines[this.lines];
+    }
+  }
 
 }

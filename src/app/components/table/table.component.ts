@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, Order, TableHeader, TableConfig } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-table',
@@ -8,6 +8,7 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit, OnChanges {
+  @Input() config: TableConfig;
   @Input() headings: TableHeading[];
   @Input() dataset: object[];
   @Input() enableFilters: boolean;
@@ -18,11 +19,11 @@ export class TableComponent implements OnInit, OnChanges {
   @Input() orderBy: string;
   @Input() orderByDirection: string;
   @Input() tableHeader: TableHeader;
+  @Input() selectedRecordIndex?: number;
 
   @Output() selectedRecord = new EventEmitter<SelectedRecord>();
   @Output() orderChange = new EventEmitter<Order>();
   @Output() pageChange = new EventEmitter<string>();
-
   @Output() addButtonEvent = new EventEmitter<void>();
   @Output() backButtonEvent = new EventEmitter<void>();
   @Output() showingRecordsEvent = new EventEmitter<number>();
@@ -40,12 +41,20 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
-    console.log(this.dataset);
+    if (this.config !== null && this.config !== undefined) {
+      if (this.config.dataset !== null && this.config.dataset !== undefined) {
+        this.dataset = this.config.dataset;
+      }
+    }
+
     this.loadTable();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.loadTable();
+    if (this.selectedRecordIndex !== undefined) {
+      this.selectedRow = this.selectedRecordIndex;
+    }
   }
 
   loadTable() {
@@ -71,6 +80,8 @@ export class TableComponent implements OnInit, OnChanges {
 
       // Determine what values need to be displayed
       this.headings.forEach((heading) => {
+
+
 
         // Iterate through object keys of a single record
         objectKeys.forEach((element: string, i: number) => {

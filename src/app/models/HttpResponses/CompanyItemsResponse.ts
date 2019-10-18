@@ -10,7 +10,7 @@ export class Item {
   rowNum: number;
   itemID: number;
   companyID: number;
-  groupID: number;
+  groupID: string;
   item: string;
   description: string;
   tariff: number;

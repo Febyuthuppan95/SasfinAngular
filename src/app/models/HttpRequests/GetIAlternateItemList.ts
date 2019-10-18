@@ -1,6 +1,6 @@
 export class GetIAlternateItemList {
   userID: number;
-  specificAlternateItemID: number;
+  specificAlternateItemID: string;
   specificItemID: number;
   filter: string;
   orderBy: string;

@@ -1,6 +1,8 @@
-<form (submit)="submit($event); $event.preventDefault()" style="overflow-y: auto" *ngIf="this.form !== undefined">
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+<form (submit)="submit(); $event.preventDefault()" style="overflow-y: auto" *ngIf="this.form !== undefined">
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
-      <input type="text"
+      <input [focus]="this.focusMainForm" type="text"
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }} form-control-invalid"
         [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
@@ -57,11 +59,22 @@
         [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
         placeholder="MRN" />
         <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
-
-    </div>
-    <div class="form-group text-right">
-      <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
-
+  <div class="form-group float-right">
+    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  </div>
+  <div style="padding: 4px 0 12px 0;" class="line-list">
+    <p *ngIf="this.sad500CreatedLines.length === 0">No SA500 Lines Added</p>
+    <p *ngIf="this.sad500CreatedLines.length !== 0">
+    <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+    <!-- <button *ngFor="let item of this.sad500CreatedLines; let i = index;" class="btn btn-sm btn-warning" (click)="revisitSAD500Line(item, i)" matTooltip="Error Saving Line" [matTooltipDisabled]="!item.failed" [ngClass]="{'active-line': lines === i}"></button> -->
+    <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
+    <span class="badge badge-primary" *ngIf="this.lines === -1">New SAD500 Line</span>
+    &nbsp;
+    <button (click)="nextLine()" class="btn btn-primary btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+    &nbsp;<span>{{this.lineState}}</span>
+  </p>
+  </div>
+  <app-form-sad500-line (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [updateSAD500Line]="focusLineData"></app-form-sad500-line>
   <app-notification></app-notification>

@@ -23,8 +23,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   capture() {
     if (this.statusID === 1) {
@@ -33,6 +32,12 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
       this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
       this.router.navigate(['capture', 'transaction', 'attachment']);
     }
+  }
+
+  lines() {
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+    this.router.navigate(['sad500/lines']);
   }
 
 }
