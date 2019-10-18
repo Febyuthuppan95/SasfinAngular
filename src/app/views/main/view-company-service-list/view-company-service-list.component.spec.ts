@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContextCompanyServiceListComponent } from './context-company-service-list.component';
+import { ContextCompanyServiceListComponent } from './view-company-service-list.component';
 
 describe('ContextCompanyServiceListComponent', () => {
   let component: ContextCompanyServiceListComponent;

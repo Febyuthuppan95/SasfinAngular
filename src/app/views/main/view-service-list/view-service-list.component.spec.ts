@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContextMenuServiceListComponent } from './context-menu-service-list.component';
+import { ContextMenuServiceListComponent } from './view-service-list.component';
 
 describe('ContextMenuServiceListComponent', () => {
   let component: ContextMenuServiceListComponent;

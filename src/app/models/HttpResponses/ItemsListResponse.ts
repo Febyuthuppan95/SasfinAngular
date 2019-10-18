@@ -7,7 +7,7 @@ export class ItemsListResponse {
 }
 
 export class Items {
-  rowNum: number;
+  itemsrowNum: number;
   itemID: number;
   groupID: number;
   item: string;

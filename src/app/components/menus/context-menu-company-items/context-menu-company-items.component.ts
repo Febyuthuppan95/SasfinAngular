@@ -15,11 +15,13 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
   @Input() y: number;
 
   @Input() itemID: number;
-  @Input() groupID: number;
+  @Input() groupID: string;
   @Input() item: string;
   @Input() currentTheme: string;
 
   @Output() addtoGroup = new EventEmitter<string>();
+  @Output() iteminformation = new EventEmitter<string>();
+
   ngOnInit() {
 
   }
@@ -34,6 +36,12 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
       itemID: this.itemID
     }));
   }
+
+  ItemValues() {
+    this.companyService.setItem({ groupID: this.groupID, itemName: this.item, itemID: this.itemID });
+    this.router.navigateByUrl('companies/items/itemvalues');
+  }
 }
+
 
 

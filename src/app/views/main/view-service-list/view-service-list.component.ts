@@ -1,27 +1,29 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
+import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
+import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
+import { Service } from 'src/app/models/HttpResponses/Service';
+import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
+import { ServicesService } from '../../../services/Services.Service';
+import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 
 @Component({
-  selector: 'app-context-tariffs-list',
-  templateUrl: './context-tariffs-list.component.html',
-  styleUrls: ['./context-tariffs-list.component.scss']
+  selector: 'app-view-service-list',
+  templateUrl: './view-service-list.component.html',
+  styleUrls: ['./view-service-list.component.scss']
 })
-export class ContextTariffsListComponent implements OnInit {
-
+export class ContextMenuServiceListComponent implements OnInit {
   constructor(
-    private companyService: CompanyService,
+    private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -38,6 +40,7 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
+    this.loadServices(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -47,9 +50,9 @@ export class ContextTariffsListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Tariffs',
+    title: 'Services',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
@@ -61,91 +64,36 @@ export class ContextTariffsListComponent implements OnInit {
   };
 
   tableHeadings: TableHeading[] = [
-    // {
-    //   title: '',
-    //   propertyName: 'rowNum',
-    //   order: {
-    //     enable: false,
-    //   }
-    // },
-
-    // {
-    //   title: 'Tariff Code',
-    //   propertyName: 'tariffCode',
-    //   order: {
-    //     enable: true,
-    //     tag: 'TariffCode'
-    //   }
-    // },
-    // {
-    //   title: 'Tariff Name',
-    //   propertyName: 'tariffName',
-    //   order: {
-    //     enable: true,
-    //     tag: 'TariffName'
-    //   }
-    // },
     {
-      title: 'Amount',
-      propertyName: 'amount',
+      title: '',
+      propertyName: 'rowNum',
       order: {
-        enable: true,
-        tag: 'Amount'
+        enable: false,
       }
     },
     {
-      title: 'Description',
-      propertyName: 'description',
+      title: 'Service Name',
+      propertyName: 'serviceName',
       order: {
         enable: true,
-        tag: 'Description'
-      }
-    },
-    {
-      title: 'Duty %',
-      propertyName: 'duty',
-      order: {
-        enable: true,
-        tag: 'Duty'
-      }
-    },
-    {
-      title: 'Unit',
-      propertyName: 'unit',
-      order: {
-        enable: true,
-        tag: 'Unit'
+        tag: 'ServiceName'
       }
     }
-    // },
-    // {
-    //   title: 'Quality 538',
-    //   propertyName: 'quality538',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Quality538'
-    //   }
-    // }
   ];
 
   selectedRow = -1;
-  // TariffCode = '';
-  // TariffName = '';
-  Amount = 0;
-  Description = '';
-  Duty = 0;
-  Unit = '';
-  // Quality538 = '';
-  tarifflist: Tariff[] = [];
+  ServiceName = '';
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  recordsPerPage = 15;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   pages: Pagination[];
   showingPages: Pagination[];
+  servicelist: Service[] = null;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -172,26 +120,28 @@ export class ContextTariffsListComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.loadTariffs(false);
+
+    this.loadServices(false);
   }
 
-  loadTariffs(displayGrowl: boolean) {
+  loadServices(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    // const model: GetTariffList = {
-    //   filter: this.filter,
-    //   userID: this.currentUser.userID,
-    //   specificTariffID: -1,
-    //   rowStart: this.rowStart,
-    //   rowEnd: this.rowEnd,
-    //   orderBy: this.orderBy,
-    //   orderByDirection: this.orderDirection
-    // };
+    const model: GetServiceLList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificServiceID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
 
-    this.companyService
-    .getTariffList()// model
+    };
+    this.ServiceService
+    .getServiceList(model)
     .then(
-      (res: TariffListResponse) => {
+      (res: ServiceListResponse) => {
+        console.log(res.serviceses);
 
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
@@ -205,19 +155,18 @@ export class ContextTariffsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.tariffList.length;
-          this.tarifflist = res.tariffList;
+          this.showingRecords = res.serviceses.length;
+          this.servicelist = res.serviceses;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
+          this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
         }
-        // console.log(this.showingRecords);
-
       },
       msg => {
         this.showLoader = false;
@@ -232,12 +181,12 @@ export class ContextTariffsListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadTariffs(false);
+    this.loadServices(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadTariffs(false);
+    this.loadServices(false);
   }
 
 
@@ -250,7 +199,7 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadTariffs(false);
+    this.loadServices(false);
   }
 
   // popClick(event, user) {
@@ -301,14 +250,13 @@ export class ContextTariffsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadTariffs(true);
+    this.loadServices(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadTariffs(false);
+    this.loadServices(false);
   }
 
 }
-
 

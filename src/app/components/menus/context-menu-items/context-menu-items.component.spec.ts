@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContextItemsListComponent } from './context-items-list.component';
+import { ContextMenuItemsComponent } from './context-menu-items.component';
 
-describe('ContextItemsListComponent', () => {
-  let component: ContextItemsListComponent;
-  let fixture: ComponentFixture<ContextItemsListComponent>;
+describe('ContextMenuItemsComponent', () => {
+  let component: ContextMenuItemsComponent;
+  let fixture: ComponentFixture<ContextMenuItemsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContextItemsListComponent ]
+      declarations: [ ContextMenuItemsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContextItemsListComponent);
+    fixture = TestBed.createComponent(ContextMenuItemsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

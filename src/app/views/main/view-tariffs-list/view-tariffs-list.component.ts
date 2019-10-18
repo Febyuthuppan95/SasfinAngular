@@ -1,29 +1,27 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
-import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { Service } from 'src/app/models/HttpResponses/Service';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { ServicesService } from '../../../services/Services.Service';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 
 @Component({
-  selector: 'app-context-menu-service-list',
-  templateUrl: './context-menu-service-list.component.html',
-  styleUrls: ['./context-menu-service-list.component.scss']
+  selector: 'app-view-tariffs-list',
+  templateUrl: './view-tariffs-list.component.html',
+  styleUrls: ['./view-tariffs-list.component.scss']
 })
-export class ContextMenuServiceListComponent implements OnInit {
+export class ContextTariffsListComponent implements OnInit {
+
   constructor(
-    private ServiceService: ServicesService,
+    private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -40,7 +38,6 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadServices(true);
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
@@ -50,9 +47,9 @@ export class ContextMenuServiceListComponent implements OnInit {
   private notify: NotificationComponent;
 
   tableHeader: TableHeader = {
-    title: 'Services',
+    title: 'Tariffs',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -64,25 +61,82 @@ export class ContextMenuServiceListComponent implements OnInit {
   };
 
   tableHeadings: TableHeading[] = [
+    // {
+    //   title: '',
+    //   propertyName: 'rowNum',
+    //   order: {
+    //     enable: false,
+    //   }
+    // },
+
+    // {
+    //   title: 'Tariff Code',
+    //   propertyName: 'tariffCode',
+    //   order: {
+    //     enable: true,
+    //     tag: 'TariffCode'
+    //   }
+    // },
+    // {
+    //   title: 'Tariff Name',
+    //   propertyName: 'tariffName',
+    //   order: {
+    //     enable: true,
+    //     tag: 'TariffName'
+    //   }
+    // },
     {
-      title: '',
-      propertyName: 'rowNum',
+      title: 'Amount',
+      propertyName: 'amount',
       order: {
-        enable: false,
+        enable: true,
+        tag: 'Amount'
       }
     },
     {
-      title: 'Service Name',
-      propertyName: 'serviceName',
+      title: 'Description',
+      propertyName: 'description',
       order: {
         enable: true,
-        tag: 'ServiceName'
+        tag: 'Description'
+      }
+    },
+    {
+      title: 'Duty %',
+      propertyName: 'duty',
+      order: {
+        enable: true,
+        tag: 'Duty'
+      }
+    },
+    {
+      title: 'Unit',
+      propertyName: 'unit',
+      order: {
+        enable: true,
+        tag: 'Unit'
       }
     }
+    // },
+    // {
+    //   title: 'Quality 538',
+    //   propertyName: 'quality538',
+    //   order: {
+    //     enable: true,
+    //     tag: 'Quality538'
+    //   }
+    // }
   ];
 
   selectedRow = -1;
-  ServiceName = '';
+  // TariffCode = '';
+  // TariffName = '';
+  Amount = 0;
+  Description = '';
+  Duty = 0;
+  Unit = '';
+  // Quality538 = '';
+  tarifflist: Tariff[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -92,7 +146,6 @@ export class ContextMenuServiceListComponent implements OnInit {
   contextMenuY = 0;
   pages: Pagination[];
   showingPages: Pagination[];
-  servicelist: Service[] = null;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -119,28 +172,26 @@ export class ContextMenuServiceListComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
-  loadServices(displayGrowl: boolean) {
+  loadTariffs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetServiceLList = {
-      filter: this.filter,
-      userID: this.currentUser.userID,
-      specificServiceID: -1,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
+    // const model: GetTariffList = {
+    //   filter: this.filter,
+    //   userID: this.currentUser.userID,
+    //   specificTariffID: -1,
+    //   rowStart: this.rowStart,
+    //   rowEnd: this.rowEnd,
+    //   orderBy: this.orderBy,
+    //   orderByDirection: this.orderDirection
+    // };
 
-    };
-    this.ServiceService
-    .getServiceList(model)
+    this.companyService
+    .getTariffList()// model
     .then(
-      (res: ServiceListResponse) => {
-        console.log(res.serviceses);
+      (res: TariffListResponse) => {
 
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
@@ -154,18 +205,19 @@ export class ContextMenuServiceListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceses.length;
-          this.servicelist = res.serviceses;
+          this.showingRecords = res.tariffList.length;
+          this.tarifflist = res.tariffList;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.servicelist.length - 1;
+          this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }
+        // console.log(this.showingRecords);
+
       },
       msg => {
         this.showLoader = false;
@@ -180,12 +232,12 @@ export class ContextMenuServiceListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
 
@@ -198,7 +250,7 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
   // popClick(event, user) {
@@ -249,13 +301,14 @@ export class ContextMenuServiceListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadServices(true);
+    this.loadTariffs(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadServices(false);
+    this.loadTariffs(false);
   }
 
 }
+
 

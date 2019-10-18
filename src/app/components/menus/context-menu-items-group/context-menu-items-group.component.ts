@@ -10,18 +10,17 @@ export class ContextMenuItemsGroupComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  @Input() captureID: number;
-  @Input() captureInfo: string;
+  @Input() itemID: number;
+  @Input() itemName: string;
   @Input() currentTheme: string;
 
-  @Output() editCaptureInfo = new EventEmitter<string>();
-  @Output() removeCaptureInfo = new EventEmitter<number>();
+  @Output() removeItemGroup = new EventEmitter<number>();
 
   ngOnInit() {
   }
 
   remove() {
-    this.removeCaptureInfo.emit(+this.captureID);
+    this.removeItemGroup.emit(+this.itemID);
   }
 }
 
