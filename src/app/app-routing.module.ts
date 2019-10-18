@@ -28,11 +28,11 @@ import { ViewCompanyAddressesComponent } from './views/main/view-company-address
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
 import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
-import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
-import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
-import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
-import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
-import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
+import { ContextMenuServiceListComponent } from './views/main/view-service-list/view-service-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/view-company-service-list/view-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
 import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';

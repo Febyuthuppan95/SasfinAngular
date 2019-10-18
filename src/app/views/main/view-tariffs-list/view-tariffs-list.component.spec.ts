@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContextTariffsListComponent } from './context-tariffs-list.component';
+import { ContextTariffsListComponent } from './view-tariffs-list.component';
 
 describe('ContextTariffsListComponent', () => {
   let component: ContextTariffsListComponent;

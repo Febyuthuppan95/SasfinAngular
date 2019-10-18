@@ -27,9 +27,9 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
 
 @Component({
-  selector: 'app-context-company-service-list',
-  templateUrl: './context-company-service-list.component.html',
-  styleUrls: ['./context-company-service-list.component.scss']
+  selector: 'app-view-company-service-list',
+  templateUrl: './view-company-service-list.component.html',
+  styleUrls: ['./view-company-service-list.component.scss']
 })
 export class ContextCompanyServiceListComponent implements OnInit {
   constructor(

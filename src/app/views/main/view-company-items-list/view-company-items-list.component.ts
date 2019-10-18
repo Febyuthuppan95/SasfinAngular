@@ -16,9 +16,9 @@ import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse'
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
-  selector: 'app-context-company-items-list',
-  templateUrl: './context-company-items-list.component.html',
-  styleUrls: ['./context-company-items-list.component.scss']
+  selector: 'app-view-company-items-list',
+  templateUrl: './view-company-items-list.component.html',
+  styleUrls: ['./view-company-items-list.component.scss']
 })
 export class ContextCompanyItemsListComponent implements OnInit {
 

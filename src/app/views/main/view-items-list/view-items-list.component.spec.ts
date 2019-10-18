@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContextItemsListComponent } from './context-items-list.component';
+import { ContextItemsListComponent } from './view-items-list.component';
 
 describe('ContextItemsListComponent', () => {
   let component: ContextItemsListComponent;

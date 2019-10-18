@@ -15,9 +15,9 @@ import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsList
 import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
 
 @Component({
-  selector: 'app-context-items-list',
-  templateUrl: './context-items-list.component.html',
-  styleUrls: ['./context-items-list.component.scss']
+  selector: 'app-view-items-list',
+  templateUrl: './view-items-list.component.html',
+  styleUrls: ['./view-items-list.component.scss']
 })
 export class ContextItemsListComponent implements OnInit {
 
