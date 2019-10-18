@@ -140,6 +140,7 @@ export class ContextTariffsListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  recordsPerPage = 15;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;
