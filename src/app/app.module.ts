@@ -100,14 +100,14 @@ import { TableComponent } from './components/table/table.component';
 import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TableHeaderComponent } from './components/table-header/table-header.component';
-import { ContextMenuServiceListComponent } from './views/main/context-menu-service-list/context-menu-service-list.component';
+import { ContextMenuServiceListComponent } from './views/main/view-service-list/view-service-list.component';
 import { ChatOverlayComponent } from './modules/chat/components/chat-overlay/chat-overlay.component';
 import { ChatUserTileComponent } from './modules/chat/components/chat-user-tile/chat-user-tile.component';
 import { ChatBubbleComponent } from './modules/chat/components/chat-bubble/chat-bubble.component';
-import { ContextCompanyServiceListComponent } from './views/main/context-company-service-list/context-company-service-list.component';
-import { ContextTariffsListComponent } from './views/main/context-tariffs-list/context-tariffs-list.component';
-import { ContextItemsListComponent } from './views/main/context-items-list/context-items-list.component';
-import { ContextCompanyItemsListComponent } from './views/main/context-company-items-list/context-company-items-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/view-company-service-list/view-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
 // tslint:disable-next-line: max-line-length
 import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
@@ -149,6 +149,10 @@ import { ViewImportClearingInstructionsComponent } from './views/main/view-trans
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
 import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
 import { ValidateService } from './services/Validation.Service';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
 
 @NgModule({
   declarations: [
@@ -252,6 +256,9 @@ import { ValidateService } from './services/Validation.Service';
     ViewImportClearingInstructionsComponent,
     ViewCustomReleaseNotificationsComponent,
     ViewSAD500Component,
+    ViewItemValuesComponent,
+    ContextMenuItemsValuesComponent,
+    ContextMenuItemsComponent,
   ],
   imports: [
     BrowserModule,
@@ -260,6 +267,7 @@ import { ValidateService } from './services/Validation.Service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
+    NgxCurrencyModule,
     UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {

@@ -14,9 +14,9 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 
 @Component({
-  selector: 'app-context-tariffs-list',
-  templateUrl: './context-tariffs-list.component.html',
-  styleUrls: ['./context-tariffs-list.component.scss']
+  selector: 'app-view-tariffs-list',
+  templateUrl: './view-tariffs-list.component.html',
+  styleUrls: ['./view-tariffs-list.component.scss']
 })
 export class ContextTariffsListComponent implements OnInit {
 
@@ -140,6 +140,7 @@ export class ContextTariffsListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  recordsPerPage = 15;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;

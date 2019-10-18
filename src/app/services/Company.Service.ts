@@ -16,6 +16,7 @@ import { UpdateCompanyItem } from '../models/HttpRequests/UpdateCompanyItem';
 import { GetItemList } from '../models/HttpRequests/GetItemList';
 import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
+import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 
 @Injectable({
   providedIn: 'root'
@@ -356,11 +357,28 @@ export class CompanyService {
     });
   }
 
-  public updateitem(model: UpdateCompanyItem) {
+  public itemupdate(model) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyitem`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateitem`;
       this.httpClient
         .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public RemoveItemList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/removeitem`;
+      this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
           res => {
@@ -444,6 +462,57 @@ export class CompanyService {
     return promise;
   }
 
+  public getItemValueList(model: GetItemValuesList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvalueslist`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public UpdateItemValueList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesupdate`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+
+  public RemoveItemValueList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesremove`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
 
   public getTariffList() { // model: GetTariffList
@@ -500,7 +569,7 @@ export class SelectedCompany {
 }
 
 export class SelectedItem {
-  groupID: number;
+  groupID: string;
   itemID: number;
   itemName: string;
 }

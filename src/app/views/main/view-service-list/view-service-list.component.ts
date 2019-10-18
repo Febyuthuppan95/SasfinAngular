@@ -17,9 +17,9 @@ import { ServicesService } from '../../../services/Services.Service';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 
 @Component({
-  selector: 'app-context-menu-service-list',
-  templateUrl: './context-menu-service-list.component.html',
-  styleUrls: ['./context-menu-service-list.component.scss']
+  selector: 'app-view-service-list',
+  templateUrl: './view-service-list.component.html',
+  styleUrls: ['./view-service-list.component.scss']
 })
 export class ContextMenuServiceListComponent implements OnInit {
   constructor(
@@ -86,6 +86,7 @@ export class ContextMenuServiceListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  recordsPerPage = 15;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;

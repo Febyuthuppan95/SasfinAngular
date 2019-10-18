@@ -12,11 +12,12 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
 import { CompanyService } from 'src/app/services/Company.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
 
 @Component({
-  selector: 'app-context-items-list',
-  templateUrl: './context-items-list.component.html',
-  styleUrls: ['./context-items-list.component.scss']
+  selector: 'app-view-items-list',
+  templateUrl: './view-items-list.component.html',
+  styleUrls: ['./view-items-list.component.scss']
 })
 export class ContextItemsListComponent implements OnInit {
 
@@ -46,6 +47,24 @@ export class ContextItemsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  Item: {
+    itemID: number,
+    item: string,
+    description: string,
+    tariff: number,
+    type: string,
+    mIDP: string,
+    pI: string,
+    vulnerable: string,
+
+  };
+
   tableHeader: TableHeader = {
     title: 'Items',
     addButton: {
@@ -62,7 +81,7 @@ export class ContextItemsListComponent implements OnInit {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '',
+      title: '#',
       propertyName: 'rowNum',
       order: {
         enable: false,
@@ -77,11 +96,11 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'Discription',
-      propertyName: 'discription',
+      title: 'Description',
+      propertyName: 'description',
       order: {
         enable: true,
-        tag: 'Discription'
+        tag: 'Description'
       }
     },
     {
@@ -101,16 +120,8 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'Usage',
-      propertyName: 'usage',
-      order: {
-        enable: true,
-        tag: 'Usage'
-      }
-    },
-    {
       title: 'MIDP',
-      propertyName: 'midp',
+      propertyName: 'mIDP',
       order: {
         enable: true,
         tag: 'MIDP'
@@ -118,7 +129,7 @@ export class ContextItemsListComponent implements OnInit {
     },
     {
       title: 'PI',
-      propertyName: 'pi',
+      propertyName: 'pI',
       order: {
         enable: true,
         tag: 'PI'
@@ -133,66 +144,30 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: '521',
-      propertyName: 'n521',
+      title: 'Services',
+      propertyName: 'services',
       order: {
         enable: true,
-        tag: 'n521'
-      }
-    },
-    {
-      title: '536',
-      propertyName: 'n536',
-      order: {
-        enable: true,
-        tag: 'n536'
-      }
-    },
-    {
-      title: '317.6.1',
-      propertyName: 'n31761',
-      order: {
-        enable: true,
-        tag: 'n31761'
-      }
-    },
-    {
-      title: '317.6.2',
-      propertyName: 'n31762',
-      order: {
-        enable: true,
-        tag: 'n31762'
-      }
-    },
-    {
-      title: '317.02',
-      propertyName: 'n31702',
-      order: {
-        enable: true,
-        tag: 'n31702'
+        tag: 'Services'
       }
     }
   ];
 
   selectedRow = -1;
-  Item = '';
-  Discription = '';
-  Tariff = 0;
-  Type = '';
-  Usage = '';
-  MIDP = '';
-  PI = '';
-  Vulnerable = '';
-  n521 = '';
-  n536 = '';
-  n31761 = '';
-  n31762 = '';
-  n31702 = '';
+  itemID = 0;
+  item = '';
+  description = '';
+  tariff = 0;
+  type = '';
+  mIDP = '';
+  pI = '';
+  vulnerable = '';
 
   items: Items[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
+  recordsPerPage = 15;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;
@@ -217,6 +192,7 @@ export class ContextItemsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
+  YESNO: string[] = ['Yes', 'No'];
 
   ngOnInit() {
 
@@ -238,7 +214,6 @@ export class ContextItemsListComponent implements OnInit {
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
@@ -254,6 +229,9 @@ export class ContextItemsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.items = res.itemsLists;
+
+        console.log(this.items);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -262,7 +240,7 @@ export class ContextItemsListComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.itemsLists.length;
-          this.items = res.itemsLists;
+
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
@@ -302,34 +280,19 @@ export class ContextItemsListComponent implements OnInit {
     this.loadItems(false);
   }
 
-  // popClick(event, user) {
-  //   if (this.sidebarCollapsed) {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   } else {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   }
+  popClick(event, obj) {
+    this.Item = obj;
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
+    console.log(this.Item);
+  }
 
-  //   // Will only toggle on if off
-  //   if (!this.contextMenu) {
-  //     this.themeService.toggleContextMenu(true); // Set true
-  //     this.contextMenu = true;
-  //     // Show menu
-  //   } else {
-  //     this.themeService.toggleContextMenu(false);
-  //     this.contextMenu = false;
-  //   }
-  // }
-  // popOff() {
-  //   this.contextMenu = false;
-  //   this.selectedRow = -1;
-  // }
-
-  // selectedRecord(obj: SelectedRecord) {
-  //   this.selectedRow = obj.index;
-  //   this.popClick(obj.event, obj.record);
-  // }
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
+  }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {
@@ -356,6 +319,82 @@ export class ContextItemsListComponent implements OnInit {
   searchEvent(query: string) {
     this.filter = query;
     this.loadItems(false);
+  }
+
+  editItem(id: number) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.itemID = this.Item.itemID;
+    this.item = this.Item.item;
+    this.description = this.Item.description;
+    this.tariff = this.Item.tariff;
+    this.type = this.Item.type;
+    this.mIDP = this.Item.mIDP;
+    this.pI = this.Item.pI;
+    this.vulnerable = this.Item.vulnerable;
+    this.openeditModal.nativeElement.click();
+    console.log(this.Item.mIDP);
+    console.log(this.pI);
+  }
+
+  UpdateItem(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.itemID,
+      item: this.item,
+      description: this.description,
+      tariff: this.tariff,
+      type: this.type,
+      mIDP: this.mIDP,
+      pI: this.pI,
+      vulnerable: this.vulnerable,
+      service: ''
+    };
+    console.log(requestModel);
+
+    this.companyService.itemupdate(requestModel).then(
+      (res: UpdateItemResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  removeItemValue(id: number) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.Item.itemID,
+      isDeleted: 1
+    };
+
+    this.companyService.RemoveItemList(requestModel).then(
+      (res: UpdateItemResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  onVulnerablestateChange(state: string) {
+    this.vulnerable = state;
+  }
+
+  onPIstateChange(state: string) {
+    this.pI = state;
+  }
+
+  onMIDPstateChange(state: string) {
+    this.mIDP = state;
   }
 
 }

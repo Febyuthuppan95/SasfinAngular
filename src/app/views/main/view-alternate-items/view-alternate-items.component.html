@@ -9,7 +9,7 @@
       *ngIf="this.alternateitems"
       [dataset]="this.alternateitems"
       [headings]="this.tableHeadings"
-      [recordsPerPage]="this.showingRecords"
+      [recordsPerPage]="this.recordsPerPage"
       [rowStart]="this.rowStart"
       [rowEnd]="this.rowEnd"
       [rowCount]="this.rowCount"
@@ -33,6 +33,6 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-items-group (removeCaptureInfo)="removeCapture($event)"></app-context-menu-items-group>
+  <app-context-menu-items-group (removeItemGroup)="removeItemGroup($event)"></app-context-menu-items-group>
 </app-menu>
 

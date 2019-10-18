@@ -456,28 +456,28 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.validateService.isEmpty(this.EmployeeNumb)) {
+    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined  || this.EmployeeNumb === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined  || this.selectedEmail === '') {
       errors++;
     }
-    if (this.password === null || this.password === undefined) {
+    if (this.password === null || this.password === undefined || this.password === '') {
       errors++;
     }
-    if (this.confirmpassword === null || this.confirmpassword === undefined) {
+    if (this.confirmpassword === null || this.confirmpassword === undefined  || this.confirmpassword === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined || this.Extension === '') {
       errors++;
     }
 
@@ -573,22 +573,22 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmpNo === null || this.EmpNo === undefined) {
+    if (this.EmpNo === null || this.EmpNo === undefined || this.EmpNo === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined || this.selectedEmail === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined  || this.Extension === '') {
       errors++;
     }
     if (this.selectedStatus === null || this.selectedStatus === undefined) {
