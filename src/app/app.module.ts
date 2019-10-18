@@ -148,6 +148,7 @@ import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-
 import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
 import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+import { ValidateService } from './services/Validation.Service';
 
 @NgModule({
   declarations: [
@@ -307,6 +308,7 @@ import { ViewSAD500Component } from './views/main/view-transaction-files/view-sa
     },
     ChatService,
     CaptureService,
+    ValidateService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [

@@ -65,7 +65,7 @@ export class ViewCaptureInfoComponent implements OnInit {
   doctypeSelectedIndex: number;
 
   captureInfo: {
-    id: number,
+    captureInfoID: number,
     info: string,
   };
 
@@ -144,7 +144,7 @@ export class ViewCaptureInfoComponent implements OnInit {
     });
 
     this.captureInfo = {
-      id: -1,
+      captureInfoID: -1,
       info: ''
     };
 
@@ -214,6 +214,7 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   selectedRecord(obj: SelectedRecord) {
     this.selectedRow = obj.index;
+    this.captureInfo = obj.record;
     this.popClick(obj.event, obj.record);
   }
 
@@ -230,7 +231,7 @@ export class ViewCaptureInfoComponent implements OnInit {
   editInfo() {
     const requestModel = {
       userID: this.currentUser.userID,
-      captureID: this.captureInfo.id,
+      captureID: this.captureInfo.captureInfoID,
       info: this.captureInfo.info
     };
 
@@ -250,10 +251,11 @@ export class ViewCaptureInfoComponent implements OnInit {
     );
   }
 
-  selectedRowChange(index: number, capture: { id: number, info: string }) {
-    this.selectedRow = index;
-    this.captureInfo = capture;
-  }
+  // selectedRowChange(selectedRecord: SelectedRecord) {
+  //   alert(selectedRecord.record.id);
+  //   this.selectedRow = selectedRecord.index;
+  //   this.captureInfo = selectedRecord.record;
+  // }
 
   backToAttachments() {
     this.router.navigate(['companies']);
@@ -303,9 +305,10 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   removeCapture(id: number) {
+    alert(this.captureInfo.captureInfoID);
     const requestModel = {
       userID: this.currentUser.userID,
-      captureID: this.captureInfo.id,
+      captureID: this.captureInfo.captureInfoID,
       isDeleted: 1,
       info: this.captureInfo.info,
     };

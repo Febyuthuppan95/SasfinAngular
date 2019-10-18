@@ -22,6 +22,7 @@ import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
 import { GetUserList, AddUserRequest, UpdateUserRequest } from 'src/app/models/HttpRequests/Users';
 import { User } from 'src/app/models/HttpResponses/User';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { ValidateService } from 'src/app/services/Validation.Service';
 
 @Component({
   selector: 'app-view-user-list',
@@ -34,7 +35,8 @@ export class ViewUserListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private DIDesignationService: DesignationService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private validateService: ValidateService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -480,6 +482,12 @@ export class ViewUserListComponent implements OnInit {
       errors++;
     }
 
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
+      errors++;
+    }
+
     if (errors === 0) {
       if (this.password === this.confirmpassword) {
         const requestModel: AddUserRequest = {
@@ -525,7 +533,12 @@ export class ViewUserListComponent implements OnInit {
         this.notify.errorsmsg('Failure', 'Passwords do not match!');
       }
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }
+
     }
   }
 
@@ -562,6 +575,12 @@ export class ViewUserListComponent implements OnInit {
       errors++;
     }
     if (this.selectedStatus === null || this.selectedStatus === undefined) {
+      errors++;
+    }
+
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
       errors++;
     }
 
@@ -607,8 +626,11 @@ export class ViewUserListComponent implements OnInit {
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please complete form before submitting');
-    }
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }    }
   }
 
   updateHelpContext(slug: string, $event?) {
