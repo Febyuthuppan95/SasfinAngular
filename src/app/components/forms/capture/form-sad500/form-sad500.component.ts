@@ -209,13 +209,12 @@ form = {
       userID: 3
     }).then(
       (res: SAD500Get) => {
-        console.log(res);
         this.form.MRN.value = res.mrn;
         this.form.MRN.error = res.mrnError;
         this.form.serialNo.value = res.serialNo;
         this.form.serialNo.error = res.serialNoError;
-        this.form.totalCustomsValue.value = res.importersCode;
-        this.form.totalCustomsValue.error = res.importersCodeError;
+        this.form.totalCustomsValue.value = res.totalCustomsValue;
+        this.form.totalCustomsValue.error = res.totalCustomsValueError;
         this.form.waybillNo.value = res.waybillNo;
         this.form.waybillNo.error = res.waybillNoError;
         this.form.supplierRef.value = res.supplierRef;

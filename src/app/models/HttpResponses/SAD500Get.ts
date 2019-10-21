@@ -11,7 +11,6 @@ export class SAD500Get {
   mrn: string;
   serialNoError: string;
   lrnError: string;
-  importersCodeError: string;
   pccError: string;
   totalCustomsValueError: string;
   waybillNoError: string;
