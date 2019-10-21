@@ -43,6 +43,7 @@ import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.com
 // tslint:disable-next-line: max-line-length
 import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
 const routes: Routes = [
   {
     path: '',
@@ -93,6 +94,7 @@ const routes: Routes = [
           { path: 'currencies', component: ViewCurrenciesListComponent},
           { path: 'sad500/lines', component: Sad500LinesComponent },
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
+          { path: 'transaction/sad500s', component: ViewSAD500Component },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
