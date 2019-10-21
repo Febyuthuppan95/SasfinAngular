@@ -13,6 +13,10 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
+import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
+import { ServicesService } from 'src/app/services/Services.Service';
+import { Service } from 'src/app/models/HttpResponses/Service';
 
 @Component({
   selector: 'app-view-items-list',
@@ -23,6 +27,7 @@ export class ContextItemsListComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
+    private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -120,22 +125,6 @@ export class ContextItemsListComponent implements OnInit {
       }
     },
     {
-      title: 'MIDP',
-      propertyName: 'mIDP',
-      order: {
-        enable: true,
-        tag: 'MIDP'
-      }
-    },
-    {
-      title: 'PI',
-      propertyName: 'pI',
-      order: {
-        enable: true,
-        tag: 'PI'
-      }
-    },
-    {
       title: 'Vulnerable',
       propertyName: 'vulnerable',
       order: {
@@ -193,6 +182,8 @@ export class ContextItemsListComponent implements OnInit {
   displayFilter = false;
   isAdmin: false;
   YESNO: string[] = ['Yes', 'No'];
+  servicelist: Service[] = null;
+  itemservicelist: Service[] = null;
 
   ngOnInit() {
 
@@ -201,6 +192,63 @@ export class ContextItemsListComponent implements OnInit {
     });
 
     this.loadItems(true);
+
+    this.loadServices(false);
+  }
+
+  loadServices(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetServiceLList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificServiceID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.ServiceService
+    .getServiceList(model)
+    .then(
+      (res: ServiceListResponse) => {
+
+        this.servicelist = res.serviceses;
+        this.itemservicelist = res.serviceses;
+        this.items.forEach(item => {
+          let count = 0;
+          this.servicelist.forEach(service => {
+            console.log(service.itemID);
+            console.log(item.itemID);
+            if (service.itemID === item.itemID) {
+              this.servicelist.splice(count, 1);
+            } else {
+              count ++;
+            }
+          });
+          count = 0;
+          this.itemservicelist.forEach(iservice => {
+            if (iservice.itemID !== item.itemID) {
+              this.itemservicelist.splice(count, 1);
+            } else {
+              count ++;
+            }
+          });
+        });
+        console.log('start');
+        console.log(this.servicelist);
+        console.log(this.itemservicelist);
+        console.log('done');
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
   loadItems(displayGrowl: boolean) {
