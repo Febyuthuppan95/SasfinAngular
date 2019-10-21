@@ -64,27 +64,6 @@
               <input type="text" placeholder="Type" class="form-control"
                [(ngModel)]="this.type" [ngModelOptions]="{standalone: true}"  required/>
             </div>
-            <!-- <div class="form-group">
-              <label class="control-label">MIDP:</label>
-              <input type="text" placeholder="MIDP" class="form-control"
-               [(ngModel)]="this.mIDP" [ngModelOptions]="{standalone: true}"  required/>
-            </div>
-            <div class="form-group">
-              <label class="control-label">PI:</label>
-              <input type="text" placeholder="PI" class="form-control"
-               [(ngModel)]="this.pI" [ngModelOptions]="{standalone: true}"  required/>
-            </div> -->
-            <!-- <div class="form-group">
-              <label class="control-label">MIDP:</label>
-              <select class="form-control" (change)="onMIDPstateChange($event.target.value)">
-                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.mIDP">{{state}}</option>
-              </select>
-            </div><div class="form-group">
-              <label class="control-label">PI:</label>
-              <select class="form-control" (change)="onPIstateChange($event.target.value)">
-                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.pI">{{state}}</option>
-              </select>
-            </div> -->
             <div class="form-group">
               <label class="control-label">Vulnerable:</label>
               <select class="form-control" (change)="onVulnerablestateChange($event.target.value)">

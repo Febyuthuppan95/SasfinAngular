@@ -13,10 +13,12 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
+import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
+import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
+import { ServicesService } from 'src/app/services/Services.Service';
 
 @Component({
   selector: 'app-view-items-list',
@@ -182,8 +184,9 @@ export class ContextItemsListComponent implements OnInit {
   displayFilter = false;
   isAdmin: false;
   YESNO: string[] = ['Yes', 'No'];
-  servicelist: Service[] = null;
-  itemservicelist: Service[] = null;
+  itemservicelist: ItemService[] = [];
+  servicelist: Service[] = [];
+
 
   ngOnInit() {
 
@@ -193,7 +196,47 @@ export class ContextItemsListComponent implements OnInit {
 
     this.loadItems(true);
 
-    this.loadServices(false);
+  }
+
+  loaditemServices(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetItemServiceList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      itemID: this.Item.itemID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.companyService
+    .itemservice(model)
+    .then(
+      (res: ItemServiceListResponse) => {
+        this.itemservicelist = res.itemservice;
+        console.log(this.itemservicelist);
+
+        this.servicelist.forEach((service, index) => {
+          this.itemservicelist.forEach(iservice => {
+            if (service.serviceID === iservice.serviceID) {
+                this.servicelist.splice(index, 1);
+            }
+          });
+        });
+
+        console.log(this.servicelist);
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
   loadServices(displayGrowl: boolean) {
@@ -215,31 +258,8 @@ export class ContextItemsListComponent implements OnInit {
       (res: ServiceListResponse) => {
 
         this.servicelist = res.serviceses;
-        this.itemservicelist = res.serviceses;
-        this.items.forEach(item => {
-          let count = 0;
-          this.servicelist.forEach(service => {
-            console.log(service.itemID);
-            console.log(item.itemID);
-            if (service.itemID === item.itemID) {
-              this.servicelist.splice(count, 1);
-            } else {
-              count ++;
-            }
-          });
-          count = 0;
-          this.itemservicelist.forEach(iservice => {
-            if (iservice.itemID !== item.itemID) {
-              this.itemservicelist.splice(count, 1);
-            } else {
-              count ++;
-            }
-          });
-        });
-        console.log('start');
-        console.log(this.servicelist);
-        console.log(this.itemservicelist);
-        console.log('done');
+        this.loaditemServices(false);
+
       },
       msg => {
         this.showLoader = false;
@@ -278,8 +298,6 @@ export class ContextItemsListComponent implements OnInit {
           }
         }
         this.items = res.itemsLists;
-
-        console.log(this.items);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -334,7 +352,6 @@ export class ContextItemsListComponent implements OnInit {
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
-    console.log(this.Item);
   }
 
   selectedRecord(obj: SelectedRecord) {
@@ -370,6 +387,9 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   editItem(id: number) {
+    this.loadServices(false);
+
+
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.itemID = this.Item.itemID;
@@ -381,8 +401,6 @@ export class ContextItemsListComponent implements OnInit {
     this.pI = this.Item.pI;
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
-    console.log(this.Item.mIDP);
-    console.log(this.pI);
   }
 
   UpdateItem(id: number) {
@@ -398,7 +416,6 @@ export class ContextItemsListComponent implements OnInit {
       vulnerable: this.vulnerable,
       service: ''
     };
-    console.log(requestModel);
 
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
