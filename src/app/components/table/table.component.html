@@ -57,10 +57,11 @@
     <tr *ngFor="let record of this.displayData; let i=index" class="userRecord" [class.active]="i == this.selectedRow" (click)="recordChangeEvent($event, this.dataset[i], i)">
       <td *ngFor="let item of this.record; let x = index">
         <span *ngIf="this.headings[x].style !== undefined" class="badge" [ngClass]="{'badge-success': item.value === this.headings[x].style.pos, 'badge-danger': item.value === this.headings[x].style.neg}">
-            {{item.value}}
+            <span>{{item.value}}</span>
         </span>
         <span *ngIf="this.headings[x].style === undefined">
-            {{item.value}}
+            <span *ngIf="item.value !== null && item.value !== undefined && item.value !== ''">{{item.value}}</span>
+            <span *ngIf="item.value === null || item.value === undefined || item.value === ''">-</span>
         </span>
       </td>
     </tr>

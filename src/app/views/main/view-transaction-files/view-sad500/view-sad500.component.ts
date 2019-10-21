@@ -5,10 +5,11 @@ import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
-import { TableConfig } from 'src/app/models/Table';
+import { TableConfig, Order } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-sad500',
@@ -17,7 +18,8 @@ import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
 })
 export class ViewSAD500Component implements OnInit {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService) { }
+              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
+              private router: Router) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -28,7 +30,7 @@ export class ViewSAD500Component implements OnInit {
     header:  {
       title: 'SAD500s',
       addButton: {
-       enable: true,
+       enable: false,
       },
       backButton: {
         enable: true
@@ -69,27 +71,8 @@ export class ViewSAD500Component implements OnInit {
     transactionID: -1,
   };
 
-  addRequest = {
-    fileName: null,
-    waybillNo: null,
-    supplierRef: null,
-    importersCode: null,
-    userID: this.currentUser.userID,
-    transactionID: -1,
-    company: null
-  };
-
-  preview: string = null;
-  fileToUpload: File = null;
-
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
-
-  @ViewChild('openAddModal', { static: false})
-  private openAddModal: ElementRef;
-
-  @ViewChild('closeAddModal', { static: false})
-  private closeAddModal: ElementRef;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -99,13 +82,8 @@ export class ViewSAD500Component implements OnInit {
     this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
-        this.addRequest.transactionID = data.transactionID;
         this.loadDataset();
       }
-    });
-
-    this.companyService.observeCompany().subscribe(data => {
-      this.addRequest.company = data.companyName;
     });
   }
 
@@ -126,36 +104,34 @@ export class ViewSAD500Component implements OnInit {
     );
   }
 
-  onFileChange(file: FileList) {
-    this.fileToUpload = file.item(0);
-    this.preview = file.item(0).name;
+  back() {
+    this.router.navigate(['companies', 'transactions']);
   }
 
-  addICIModal() {
-    this.preview = null;
-    this.addRequest.fileName = null;
-    this.addRequest.importersCode = null;
-    this.addRequest.supplierRef = null;
-    this.addRequest.waybillNo = null;
-    this.openAddModal.nativeElement.click();
+  searchFilter(query: string) {
+    this.listRequest.filter = query;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
+    this.loadDataset();
   }
 
-  addICI() {
-      const formData = new FormData();
-      formData.append('file', this.fileToUpload);
-      formData.append('requestModel', JSON.stringify(this.addRequest));
-
-      this.captureService.iciAdd(formData).then(
-        (res: Outcome) => {
-          this.closeAddModal.nativeElement.click();
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
+  orderChange($event: Order) {
+    this.listRequest.orderBy = $event.orderBy;
+    this.listRequest.orderDirection = $event.orderByDirection;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
+    this.loadDataset();
   }
 
+  recordsPerPageChange(recordsPerPage: number) {
+    this.tableConfig.recordsPerPage = recordsPerPage;
+    this.listRequest.rowStart = 1;
+    this.loadDataset();
+  }
 
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.listRequest.rowStart = $event.rowStart;
+    this.listRequest.rowEnd = $event.rowEnd;
+    this.loadDataset();
+  }
 }
