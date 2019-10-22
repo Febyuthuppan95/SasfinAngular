@@ -70,7 +70,7 @@
                 <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
               </select>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">Services:</label>
               <div class="list-box">
               <div class="row">
@@ -88,7 +88,27 @@
                 </div>
               </div>
             </div>
-            </div>
+            </div> -->
+
+                <div class="row ">
+                  <form class="form-group add-scroll col-md-6 text-center">
+                      <h5 class="control-label">Available Services</h5>
+                      <div class="modal-list-service" style="border: inset;">
+                        <ul class="service-list">
+                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of servicelist"><a><span>{{service.serviceName}}</span></a></li>
+                        </ul>
+                      </div>
+                  </form>
+                  <form class="form-group add-scroll col-md-6 text-center">
+                    <h5 class="control-label">Assigned Services</h5>
+                    <div class="modal-add-service" style="border: inset;">
+                      <ul class="service-list">
+                        <li (click)="removeservice(iservice.serviceID, iservice.serviceName)" *ngFor="let iservice of itemservicelist"><a><span>{{iservice.serviceName}}</span></a></li>
+                      </ul>
+                    </div>
+                  </form>
+                </div>
+
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>

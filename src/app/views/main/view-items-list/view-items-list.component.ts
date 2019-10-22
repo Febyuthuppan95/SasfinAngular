@@ -19,6 +19,8 @@ import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListRes
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
+import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
+import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 
 @Component({
   selector: 'app-view-items-list',
@@ -199,8 +201,6 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   loaditemServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetItemServiceList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -216,8 +216,6 @@ export class ContextItemsListComponent implements OnInit {
     .then(
       (res: ItemServiceListResponse) => {
         this.itemservicelist = res.itemservice;
-        console.log(this.itemservicelist);
-
         this.servicelist.forEach((service, index) => {
           this.itemservicelist.forEach(iservice => {
             if (service.serviceID === iservice.serviceID) {
@@ -225,9 +223,6 @@ export class ContextItemsListComponent implements OnInit {
             }
           });
         });
-
-        console.log(this.servicelist);
-
       },
       msg => {
         this.showLoader = false;
@@ -240,8 +235,6 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   loadServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -430,6 +423,46 @@ export class ContextItemsListComponent implements OnInit {
     );
   }
 
+  addNewservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      serviceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceadd(requestModel).then(
+      (res: AddItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  removeservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      serviceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceupdate(requestModel).then(
+      (res: UpdateItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadItems(false);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
   removeItemValue(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
@@ -452,14 +485,6 @@ export class ContextItemsListComponent implements OnInit {
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
-  }
-
-  onPIstateChange(state: string) {
-    this.pI = state;
-  }
-
-  onMIDPstateChange(state: string) {
-    this.mIDP = state;
   }
 
 }
