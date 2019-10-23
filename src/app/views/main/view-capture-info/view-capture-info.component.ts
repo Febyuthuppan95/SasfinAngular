@@ -107,7 +107,7 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   tableData = null;
   tableHeadings: TableHeading[] = [
-    { title: '', propertyName: 'rowNum', order: { enable: false } },
+    { title: '#', propertyName: 'rowNum', order: { enable: true } },
     { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
     { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
   ];
@@ -238,9 +238,9 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.transactionService.captureInfoUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          this.loadDataset();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeEditModal.nativeElement.click();
-          this.loadDataset();
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
