@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -68,6 +69,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   disableAttachmentType: boolean;
   attachmentTypeIndex: number;
   preview: string;
+  selectAttachmentType = new FormControl();
 
   rowStart: number;
   rowEnd: number;
@@ -354,6 +356,7 @@ export class ViewTransactionFilesComponent implements OnInit {
             this.attachmentQueueDisplay.splice(index, 1);
             this.preview = null;
             this.attachmentName = null;
+            this.selectAttachmentType.reset(-1);
 
         },
         (msg) => {
@@ -369,6 +372,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentTypeIndex = 0;
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
+    this.selectAttachmentType.reset(-1);
     this.openModal.nativeElement.click();
   }
 
@@ -400,5 +404,6 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentTypeIndex = 0;
     this.preview = null;
     this.attachmentTypeIndex = 0;
+    this.selectAttachmentType.reset(-1);
   }
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableConfig, TableHeader } from 'src/app/models/Table';
+import { TableConfig, TableHeader, Order, SelectedRecord } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
-import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
+import { ICIListResponse, ICI } from 'src/app/models/HttpResponses/ICI';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
@@ -74,17 +74,39 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     company: null
   };
 
+  updateRequest = {
+    fileName: null,
+    waybillNo: null,
+    supplierRef: null,
+    importersCode: null,
+    userID: this.currentUser.userID,
+    transactionID: -1,
+    company: null,
+    specificICIID: -1
+  };
+
+
   preview: string = null;
   fileToUpload: File = null;
+  selectedIndex: number;
+  currentRecord: ICI;
+
+  contextMenuX: number;
+  contextMenuY: number;
+  contextMenu: boolean;
 
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
   @ViewChild('openAddModal', { static: false})
   private openAddModal: ElementRef;
-
   @ViewChild('closeAddModal', { static: false})
   private closeAddModal: ElementRef;
+
+  @ViewChild('openEditModal', { static: false})
+  private openEditModal: ElementRef;
+  @ViewChild('closeEditModal', { static: false})
+  private closeEditModal: ElementRef;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -152,4 +174,72 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
       );
   }
 
+  editICIModal() {
+    this.preview = null;
+    this.updateRequest.fileName = null;
+    this.updateRequest.importersCode = null;
+    this.updateRequest.supplierRef = null;
+    this.updateRequest.waybillNo = null;
+    this.openEditModal.nativeElement.click();
+  }
+
+  editICI() {
+      const formData = new FormData();
+      formData.append('file', this.fileToUpload);
+      formData.append('requestModel', JSON.stringify(this.addRequest));
+
+      this.captureService.iciUpdate(formData).then(
+        (res: Outcome) => {
+          this.closeAddModal.nativeElement.click();
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.loadDataset();
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+        }
+      );
+  }
+
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.listRequest.rowStart = $event.rowStart;
+    this.listRequest.rowEnd = $event.rowEnd;
+    this.loadDataset();
+  }
+
+  orderChange($event: Order) {
+    this.listRequest.orderBy = $event.orderBy;
+    this.listRequest.orderDirection = $event.orderByDirection;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
+    this.loadDataset();
+  }
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedIndex = obj.index;
+    this.currentRecord = obj.record;
+    this.popClick(obj.event);
+  }
+
+  popClick(event) {
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(true);
+    this.contextMenu = true;
+  }
+
+  popOff() {
+    this.contextMenu = false;
+    this.selectedIndex = -1;
+  }
+
+  recordsPerPageChange(recordsPerPage: number) {
+    this.tableConfig.recordsPerPage = recordsPerPage;
+    this.listRequest.rowStart = 1;
+    this.loadDataset();
+  }
+
+  searchEvent(query: string) {
+    this.listRequest.filter = query;
+    this.loadDataset();
+  }
 }
