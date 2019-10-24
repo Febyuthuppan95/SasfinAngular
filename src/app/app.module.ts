@@ -154,6 +154,7 @@ import { ContextMenuItemsValuesComponent } from './components/menus/context-menu
 import { NgxCurrencyModule } from 'ngx-currency';
 import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
 import { ContextICIComponent } from './components/menus/context-ici/context-ici.component';
+import { ContextSAD500Component } from './components/menus/context-sad500/context-sad500.component';
 
 @NgModule({
   declarations: [
@@ -261,6 +262,7 @@ import { ContextICIComponent } from './components/menus/context-ici/context-ici.
     ContextMenuItemsValuesComponent,
     ContextMenuItemsComponent,
     ContextICIComponent,
+    ContextSAD500Component,
   ],
   imports: [
     BrowserModule,

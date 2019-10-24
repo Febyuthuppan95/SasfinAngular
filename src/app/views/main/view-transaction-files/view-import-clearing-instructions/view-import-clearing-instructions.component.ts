@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableConfig, TableHeader, Order, SelectedRecord } from 'src/app/models/Table';
+import { TableConfig, TableHeader, Order } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -9,6 +9,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',
@@ -17,7 +18,8 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 })
 export class ViewImportClearingInstructionsComponent implements OnInit {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService) { }
+              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
+              private router: Router) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -28,7 +30,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     header:  {
       title: 'Import Clearing Instruction',
       addButton: {
-       enable: true,
+       enable: false,
       },
       backButton: {
         enable: true
@@ -64,49 +66,8 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     transactionID: -1,
   };
 
-  addRequest = {
-    fileName: null,
-    waybillNo: null,
-    supplierRef: null,
-    importersCode: null,
-    userID: this.currentUser.userID,
-    transactionID: -1,
-    company: null
-  };
-
-  updateRequest = {
-    fileName: null,
-    waybillNo: null,
-    supplierRef: null,
-    importersCode: null,
-    userID: this.currentUser.userID,
-    transactionID: -1,
-    company: null,
-    specificICIID: -1
-  };
-
-
-  preview: string = null;
-  fileToUpload: File = null;
-  selectedIndex: number;
-  currentRecord: ICI;
-
-  contextMenuX: number;
-  contextMenuY: number;
-  contextMenu: boolean;
-
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
-
-  @ViewChild('openAddModal', { static: false})
-  private openAddModal: ElementRef;
-  @ViewChild('closeAddModal', { static: false})
-  private closeAddModal: ElementRef;
-
-  @ViewChild('openEditModal', { static: false})
-  private openEditModal: ElementRef;
-  @ViewChild('closeEditModal', { static: false})
-  private closeEditModal: ElementRef;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -116,13 +77,8 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
-        this.addRequest.transactionID = data.transactionID;
         this.loadDataset();
       }
-    });
-
-    this.companyService.observeCompany().subscribe(data => {
-      this.addRequest.company = data.companyName;
     });
   }
 
@@ -143,66 +99,14 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     );
   }
 
-  onFileChange(file: FileList) {
-    this.fileToUpload = file.item(0);
-    this.preview = file.item(0).name;
+  back() {
+    this.router.navigate(['companies', 'transactions']);
   }
 
-  addICIModal() {
-    this.preview = null;
-    this.addRequest.fileName = null;
-    this.addRequest.importersCode = null;
-    this.addRequest.supplierRef = null;
-    this.addRequest.waybillNo = null;
-    this.openAddModal.nativeElement.click();
-  }
-
-  addICI() {
-      const formData = new FormData();
-      formData.append('file', this.fileToUpload);
-      formData.append('requestModel', JSON.stringify(this.addRequest));
-
-      this.captureService.iciAdd(formData).then(
-        (res: Outcome) => {
-          this.closeAddModal.nativeElement.click();
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
-  }
-
-  editICIModal() {
-    this.preview = null;
-    this.updateRequest.fileName = null;
-    this.updateRequest.importersCode = null;
-    this.updateRequest.supplierRef = null;
-    this.updateRequest.waybillNo = null;
-    this.openEditModal.nativeElement.click();
-  }
-
-  editICI() {
-      const formData = new FormData();
-      formData.append('file', this.fileToUpload);
-      formData.append('requestModel', JSON.stringify(this.addRequest));
-
-      this.captureService.iciUpdate(formData).then(
-        (res: Outcome) => {
-          this.closeAddModal.nativeElement.click();
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
-  }
-
-  pageChange($event: {rowStart: number, rowEnd: number}) {
-    this.listRequest.rowStart = $event.rowStart;
-    this.listRequest.rowEnd = $event.rowEnd;
+  searchFilter(query: string) {
+    this.listRequest.filter = query;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
     this.loadDataset();
   }
 
@@ -214,27 +118,15 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     this.loadDataset();
   }
 
-  selectedRecord(obj: SelectedRecord) {
-    this.selectedIndex = obj.index;
-    this.currentRecord = obj.record;
-    this.popClick(obj.event);
-  }
-
-  popClick(event) {
-    this.contextMenuX = event.clientX + 3;
-    this.contextMenuY = event.clientY + 5;
-    this.themeService.toggleContextMenu(true);
-    this.contextMenu = true;
-  }
-
-  popOff() {
-    this.contextMenu = false;
-    this.selectedIndex = -1;
-  }
-
   recordsPerPageChange(recordsPerPage: number) {
     this.tableConfig.recordsPerPage = recordsPerPage;
     this.listRequest.rowStart = 1;
+    this.loadDataset();
+  }
+
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.listRequest.rowStart = $event.rowStart;
+    this.listRequest.rowEnd = $event.rowEnd;
     this.loadDataset();
   }
 

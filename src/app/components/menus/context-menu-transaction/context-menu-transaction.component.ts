@@ -28,7 +28,7 @@ export class ContextMenuTransactionComponent implements OnInit {
 
   viewSAD500s() {
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '' });
-    this.router.navigate(['transaction', 'sad500']);
+    this.router.navigate(['transaction', 'sad500s']);
   }
 
   viewImportClearin() {
