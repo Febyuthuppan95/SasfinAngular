@@ -45,6 +45,7 @@ import { ViewImportClearingInstructionsComponent } from './views/main/view-trans
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
 import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
 const routes: Routes = [
   {
     path: '',
@@ -97,6 +98,7 @@ const routes: Routes = [
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
+          { path: 'transaction/invoices', component: ViewInvoicesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

@@ -132,6 +132,26 @@ tr.active {
   min-width: 168px !important;
 }
 
-.col-row-num {
-  width: 48px !important;
+.col-row-num, td, tr {
+  width: 16px !important;
+}
+
+.img-table {
+  width: 42px;
+  height: 42px;
+}
+
+.user-profile {
+  transition: ease-in-out 0.3s;
+  z-index: 99999999999 !important;
+}
+
+.user-profile > img {
+  border: 2px solid #f2f2f2;
+  transition: ease-in-out 0.3s;
+}
+
+.user-profile:hover > img{
+  border: 2px solid #4d83ff;
+  transition: ease-in-out 0.3s;
 }

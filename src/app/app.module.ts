@@ -155,6 +155,8 @@ import { NgxCurrencyModule } from 'ngx-currency';
 import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
 import { ContextICIComponent } from './components/menus/context-ici/context-ici.component';
 import { ContextSAD500Component } from './components/menus/context-sad500/context-sad500.component';
+import { ImagePreviewDialogComponent } from './components/table/image-preview-dialog/image-preview-dialog.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
 
 @NgModule({
   declarations: [
@@ -263,6 +265,8 @@ import { ContextSAD500Component } from './components/menus/context-sad500/contex
     ContextMenuItemsComponent,
     ContextICIComponent,
     ContextSAD500Component,
+    ImagePreviewDialogComponent,
+    ViewInvoicesComponent,
   ],
   imports: [
     BrowserModule,
@@ -326,7 +330,8 @@ import { ContextSAD500Component } from './components/menus/context-sad500/contex
   entryComponents: [
     NgbdModalContent,
     CapturePreviewComponent,
-    Sad500LinePreviewComponent
+    Sad500LinePreviewComponent,
+    ImagePreviewDialogComponent
   ]
 })
 export class AppModule { }

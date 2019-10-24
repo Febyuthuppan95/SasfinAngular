@@ -99,6 +99,14 @@ export class ViewUserListComponent implements OnInit {
       }
     },
     {
+      title: '',
+      propertyName: 'profileImage',
+      order: {
+        enable: false,
+      },
+      styleType: 'user-profile'
+    },
+    {
       title: 'Emp No',
       propertyName: 'empNo',
       order: {
@@ -153,6 +161,7 @@ export class ViewUserListComponent implements OnInit {
         enable: true,
         tag: 'Status'
       },
+      styleType: 'badge',
       style: {
         posClass: 'badge badge-success',
         negClass: 'badge badge-danger',
@@ -304,6 +313,7 @@ export class ViewUserListComponent implements OnInit {
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
+            this.userList = [];
           } else {
             this.noData = false;
             this.rowCount = res.rowCount;

@@ -56,10 +56,13 @@
   <tbody *ngIf="(this.dataset !== undefined || this.dataset !== null || this.dataset.length !== 0)">
     <tr *ngFor="let record of this.displayData; let i=index" class="userRecord" [class.active]="i == this.selectedRow" (click)="recordChangeEvent($event, this.dataset[i], i)">
       <td *ngFor="let item of this.record; let x = index">
-        <span *ngIf="this.headings[x].style !== undefined" class="badge" [ngClass]="{'badge-success': item.value === this.headings[x].style.pos, 'badge-danger': item.value === this.headings[x].style.neg}">
+        <span *ngIf="this.headings[x].styleType !== undefined && this.headings[x].styleType === 'badge'" class="badge" [ngClass]="{'badge-success': item.value === this.headings[x].style.pos, 'badge-danger': item.value === this.headings[x].style.neg}">
             <span>{{item.value}}</span>
         </span>
-        <span *ngIf="this.headings[x].style === undefined">
+        <span *ngIf="this.headings[x].styleType !== undefined && this.headings[x].styleType === 'user-profile'" class="user-profile" (click)="previewImage(item.value)">
+            <img [src]="item.value" class="img-table"/>
+        </span>
+        <span *ngIf="this.headings[x].styleType === undefined">
             <span *ngIf="item.value !== null && item.value !== undefined && item.value !== ''">{{item.value}}</span>
             <span *ngIf="item.value === null || item.value === undefined || item.value === ''">-</span>
         </span>
