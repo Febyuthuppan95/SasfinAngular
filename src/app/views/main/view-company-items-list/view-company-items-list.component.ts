@@ -14,6 +14,7 @@ import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
 import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
+import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -53,23 +54,17 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.itemstotalShowing = 0;
   }
 
-  @ViewChild('openeditModal', {static: true})
-  openeditModal: ElementRef;
+  @ViewChild('openaddGroupModal', {static: true})
+  openaddGroupModal: ElementRef;
 
-  @ViewChild('closeeditModal', {static: true})
-  closeeditModal: ElementRef;
+  @ViewChild('closeaddGroupModal', {static: true})
+  closeaddGroupModal: ElementRef;
 
-  @ViewChild('openaddModal', {static: true})
-  openaddModal: ElementRef;
+  @ViewChild('openaddParentModal', {static: true})
+  openaddParentModal: ElementRef;
 
-  @ViewChild('closeaddModal', {static: true})
-  closeaddModal: ElementRef;
-
-  @ViewChild('openviewModal', {static: true})
-  openviewModal: ElementRef;
-
-  @ViewChild('closeviewModal', {static: true})
-  closeviewModal: ElementRef;
+  @ViewChild('closeaddParentModal', {static: true})
+  closeaddParentModal: ElementRef;
 
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
@@ -287,7 +282,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   loadCompanyItemsList(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -350,7 +344,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
       rowEnd: this.itemsrowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
@@ -513,11 +506,11 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   OpenGroup($event) {
-
+    console.log('works');
     this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openaddModal.nativeElement.click();
+    this.openaddGroupModal.nativeElement.click();
   }
 
   addtoGroup(groupid, itemid) {
@@ -539,7 +532,47 @@ export class ContextCompanyItemsListComponent implements OnInit {
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-          this.closeaddModal.nativeElement.click();
+          this.closeaddGroupModal.nativeElement.click();
+          this.loadCompanyItemsList(false);
+        }
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  OpenParent($event) {
+
+    this.Finalitemlist();
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openaddParentModal.nativeElement.click();
+  }
+
+  addtoParent(itemid) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.focusItemID,
+      parentID: itemid
+    };
+    this.companyService
+    .AddItemParent(requestModel).then(
+      (res: ItemParentAddReponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        } else {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+          this.closeaddParentModal.nativeElement.click();
           this.loadCompanyItemsList(false);
         }
       },

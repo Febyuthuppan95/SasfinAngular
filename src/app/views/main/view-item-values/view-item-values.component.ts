@@ -83,10 +83,10 @@ export class ViewItemValuesComponent implements OnInit {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '',
+      title: '#',
       propertyName: 'rowNum',
       order: {
-        enable: false,
+        enable: true,
       }
     },
     {
@@ -307,7 +307,7 @@ export class ViewItemValuesComponent implements OnInit {
     };
     console.log(requestModel);
 
-    this.companyService.UpdateItemValueList(requestModel).then(
+    this.companyService.UpdateItemValue(requestModel).then(
       (res: UpdateItemValue) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -327,7 +327,7 @@ export class ViewItemValuesComponent implements OnInit {
       isDeleted: 1
     };
 
-    this.companyService.RemoveItemValueList(requestModel).then(
+    this.companyService.RemoveItemValue(requestModel).then(
       (res: UpdateItemValue) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);

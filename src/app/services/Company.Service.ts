@@ -17,6 +17,7 @@ import { GetItemList } from '../models/HttpRequests/GetItemList';
 import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
+import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
 
 @Injectable({
   providedIn: 'root'
@@ -530,7 +531,7 @@ export class CompanyService {
     });
   }
 
-  public UpdateItemValueList(model) {
+  public UpdateItemValue(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesupdate`;
@@ -548,7 +549,7 @@ export class CompanyService {
   }
 
 
-  public RemoveItemValueList(model) {
+  public RemoveItemValue(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesremove`;
@@ -565,6 +566,74 @@ export class CompanyService {
     });
   }
 
+  public getItemParentsList(model: GetItemParentsList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemparentslist`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public AddItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemparentadd`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public UpdateItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemparentupdate`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+
+  public RemoveItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemparentremove`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
   public getTariffList() { // model: GetTariffList
     // const json = JSON.parse(JSON.stringify(model));

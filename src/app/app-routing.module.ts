@@ -44,7 +44,9 @@ import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.com
 import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
 import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 const routes: Routes = [
   {
     path: '',
@@ -85,6 +87,7 @@ const routes: Routes = [
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
           { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },
+          { path: 'companies/items/itemparents', component: ViewItemParentsComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
