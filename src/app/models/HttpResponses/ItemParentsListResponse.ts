@@ -18,4 +18,6 @@ export class ItemParent {
   unitsOfMeasureName: string;
   startDate: Date;
   endDate: Date;
+  startDateText?: string;
+  endDateText?: string;
 }

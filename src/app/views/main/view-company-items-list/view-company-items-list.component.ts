@@ -77,6 +77,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   itemsdraft: Items[] = [];
   items: Items[] = [];
+  itemparents: Items[] = [];
   pages: Pagination[];
   itemspages: Pagination[];
   showingPages: Pagination[];
@@ -112,6 +113,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   itemsactivePage: number;
   focusItemGroupID: number;
   focusItemID: number;
+  focusItemParentID: number;
   focusItemName: string;
   selectedRow = -1;
   Item = '';
@@ -292,7 +294,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    console.log(model);
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
 
@@ -309,13 +310,14 @@ export class ContextCompanyItemsListComponent implements OnInit {
               }
           }
 
+          this.dataList = res.items;
+          console.log(this.dataList);
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.items;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.items.length;
@@ -460,7 +462,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, groupid, itemid, itemname) {
+  popClick(event, groupid, itemid, itemname, itemparentid) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -472,6 +474,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.focusItemGroupID = groupid;
     this.focusItemID = itemid;
     this.focusItemName = itemname;
+    this.focusItemParentID = itemparentid;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -484,16 +487,33 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   Finalitemlist() {
     this.items.splice(0, this.items.length);
-    let count = 0;
+    let countitems = 0;
+
+
     this.itemsdraft.forEach((item, index) => {
       if (item.itemID !== this.focusItemID) {
-        count++;
+        countitems++;
         this.items.push(item);
       }
     });
 
-    this.itemsrowCount = count;
-    this.itemsshowingRecords = count;
+    this.itemsrowCount = countitems;
+    this.itemsshowingRecords = countitems;
+  }
+
+  Finalitemparentslist() {
+    this.itemparents.splice(0, this.itemparents.length);
+    let countitemparent = 0;
+
+    this.items.forEach((item, index) => {
+      if (item.itemID !== this.focusItemParentID) {
+        countitemparent++;
+        this.itemparents.push(item);
+      }
+    });
+
+    this.itemsrowCount = countitemparent;
+    this.itemsshowingRecords = countitemparent;
   }
 
 
@@ -506,7 +526,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   OpenGroup($event) {
-    console.log('works');
     this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -548,6 +567,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   OpenParent($event) {
 
     this.Finalitemlist();
+    this.Finalitemparentslist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddParentModal.nativeElement.click();

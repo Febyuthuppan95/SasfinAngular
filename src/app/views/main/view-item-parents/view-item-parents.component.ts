@@ -126,7 +126,7 @@ export class ViewItemParentsComponent implements OnInit {
     },
     {
       title: 'Start Date',
-      propertyName: 'startDate',
+      propertyName: 'startDateText',
       order: {
         enable: true,
         tag: 'StartDate'
@@ -134,7 +134,7 @@ export class ViewItemParentsComponent implements OnInit {
     },
     {
       title: 'End Date',
-      propertyName: 'endDate',
+      propertyName: 'endDateText',
       order: {
         enable: true,
         tag: 'EndDate'
@@ -231,6 +231,10 @@ export class ViewItemParentsComponent implements OnInit {
         }
 
         this.itemParents = res.itemParents;
+        this.itemParents.forEach((item) => {
+          item.startDateText = new Date(item.startDate).toDateString();
+          item.endDateText = new Date(item.endDate).toDateString();
+        });
         this.showLoader = false;
 
         if (res.rowCount === 0) {
@@ -358,7 +362,6 @@ export class ViewItemParentsComponent implements OnInit {
   }
 
   UpdateItemParent(id: number) {
-    console.log(this.StartDate);
     const requestModel = {
       userID: this.currentUser.userID,
       itemParentID: this.ItemParent.itemParentID,

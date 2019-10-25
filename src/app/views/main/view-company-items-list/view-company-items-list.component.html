@@ -78,7 +78,7 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.groupID, item.itemID, item.item); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
+            <tr *ngFor="let item of dataList; let i=index" (click)="popClick($event, item.groupID, item.itemID, item.item, item.parentID); setClickedRow(i)" class="userRecord"  [class.active]="i == selectedRow">
               <td>{{item.rowNum}}</td>
               <td>{{item.item}}</td>
               <td>{{item.description}}</td>
@@ -291,7 +291,7 @@
                     </tr>
                   </thead>
                   <tbody class="modal-list-rights" *ngIf="(!noitemData)">
-                    <tr *ngFor="let item of items; let i=index" (click)="addtoParent(item.itemID)" class="right-list-row"  >
+                    <tr *ngFor="let item of itemparents; let i=index" (click)="addtoParent(item.itemID)" class="right-list-row"  >
                       <td>{{item.item}}</td>
                       <td>{{item.description}}</td>
                       <td>{{item.tariff}}</td>
