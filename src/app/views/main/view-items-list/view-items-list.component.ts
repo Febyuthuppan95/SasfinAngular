@@ -409,7 +409,7 @@ export class ContextItemsListComponent implements OnInit {
       vulnerable: this.vulnerable,
       service: ''
     };
-
+    console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
