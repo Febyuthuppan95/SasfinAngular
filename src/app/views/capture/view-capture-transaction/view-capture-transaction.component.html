@@ -1,7 +1,5 @@
 <div class="capture-form" *ngIf="this.currentDoctype">
   <h1 class="capture-form-title">{{this.currentDoctype}}</h1>
   <hr>
-  <app-form-custom-release *ngIf="this.currentDoctype === 'Customs Release Notification'"></app-form-custom-release>
-  <app-form-import-clearing-instruction *ngIf="this.currentDoctype === 'Import Clearing Instruction'"></app-form-import-clearing-instruction>
-  <app-form-sad500 *ngIf="this.currentDoctype === 'SAD500'"></app-form-sad500>
+  <ng-template #captureForm></ng-template>
 </div>

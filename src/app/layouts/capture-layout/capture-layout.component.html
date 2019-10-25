@@ -36,8 +36,8 @@
   </nav>
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
 <div class="col-6 bg-light">
-  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="this.currentReaderPOS"></div>
-  <app-document-viewer></app-document-viewer>
+  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
+  <app-document-viewer [focus]="this.focusPDF"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px;overflow-y: auto">
   <router-outlet></router-outlet>

@@ -642,7 +642,7 @@ export class ViewUserListComponent implements OnInit {
             } else {
               this.closeModal.nativeElement.click();
               this.loadUsers(false);
-              this.notify.successmsg('Success', 'User has been updated');
+              this.notify.successmsg('Success', res.outcome.outcomeMessage);
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);

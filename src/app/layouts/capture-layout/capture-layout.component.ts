@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -55,6 +55,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   transactionID: number;
   attachmentID: number;
   showHelp: boolean = false;
+  focusPDF: boolean = false;
 
   ngOnInit() {
     this.companyShowToggle = true;
@@ -102,6 +103,24 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.showHelp = !this.showHelp
+        },
+        {
+          key: 'alt + p',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusPDF = !this.focusPDF
+        },
+        {
+          key: 'alt + down',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+          key: 'alt + up',
         },
     );
 

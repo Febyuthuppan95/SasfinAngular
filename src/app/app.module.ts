@@ -157,6 +157,8 @@ import { ContextICIComponent } from './components/menus/context-ici/context-ici.
 import { ContextSAD500Component } from './components/menus/context-sad500/context-sad500.component';
 import { ImagePreviewDialogComponent } from './components/table/image-preview-dialog/image-preview-dialog.component';
 import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
+import { CaptureFormDirective } from './directives/capture-form.directive';
+import { ComponentService } from './services/ComponentLoader.service';
 
 @NgModule({
   declarations: [
@@ -267,6 +269,7 @@ import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-
     ContextSAD500Component,
     ImagePreviewDialogComponent,
     ViewInvoicesComponent,
+    CaptureFormDirective,
   ],
   imports: [
     BrowserModule,
@@ -290,7 +293,7 @@ import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-
     NgxExtendedPdfViewerModule,
     MaterialModule,
     AngularDraggableModule,
-    KeyboardShortcutsModule
+    KeyboardShortcutsModule,
   ],
   providers: [
     CookieService,
@@ -325,13 +328,17 @@ import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-
     ChatService,
     CaptureService,
     ValidateService,
+    ComponentService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
     CapturePreviewComponent,
     Sad500LinePreviewComponent,
-    ImagePreviewDialogComponent
+    ImagePreviewDialogComponent,
+    FormSAD500Component,
+    FormImportClearingInstructionComponent,
+    FormCustomReleaseComponent
   ]
 })
 export class AppModule { }
