@@ -300,6 +300,7 @@ export class ViewUserListComponent implements OnInit {
               );
             }
           }
+          this.userList = res.userList;
 
           if (res.rowCount === 0) {
             this.noData = true;
@@ -308,7 +309,7 @@ export class ViewUserListComponent implements OnInit {
             this.noData = false;
             this.rowCount = res.rowCount;
             this.showingRecords = res.userList.length;
-            this.userList = res.userList;
+
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
