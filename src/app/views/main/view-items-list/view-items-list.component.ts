@@ -62,6 +62,11 @@ export class ContextItemsListComponent implements OnInit {
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
 
+  @ViewChild('openRemoveModal', {static: true})
+  openRemoveModal: ElementRef;
+  @ViewChild('closeRemoveModal', {static: true})
+  closeRemoveModal: ElementRef;
+
   Item: {
     itemID: number,
     item: string,
@@ -135,14 +140,6 @@ export class ContextItemsListComponent implements OnInit {
         enable: true,
         tag: 'Vulnerable'
       }
-    },
-    {
-      title: 'Services',
-      propertyName: 'services',
-      order: {
-        enable: true,
-        tag: 'Services'
-      }
     }
   ];
 
@@ -215,14 +212,22 @@ export class ContextItemsListComponent implements OnInit {
     .itemservice(model)
     .then(
       (res: ItemServiceListResponse) => {
-        this.itemservicelist = res.itemservice;
-        this.servicelist.forEach((service, index) => {
-          this.itemservicelist.forEach(iservice => {
-            if (service.serviceID === iservice.serviceID) {
-                this.servicelist.splice(index, 1);
-            }
-          });
-        });
+        if (res.outcome.outcome === 'SUCCESS') {
+            this.itemservicelist = res.itemServices;
+            this.servicelist.forEach((service, index) => {
+              this.itemservicelist.forEach(iservice => {
+                if (service.serviceID === iservice.serviceID) {
+                    this.servicelist.splice(index, 1);
+                }
+              });
+            });
+        } else {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Not Found',
+            'Item Service not found'
+          );
+        }
       },
       msg => {
         this.showLoader = false;
@@ -395,8 +400,15 @@ export class ContextItemsListComponent implements OnInit {
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
   }
+  removeItem(id: number) {
+    console.log(this.Item.itemID);
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.itemID = this.Item.itemID;
+    this.openRemoveModal.nativeElement.click();
+  }
 
-  UpdateItem(id: number) {
+  UpdateItem(deleted: boolean) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
@@ -407,7 +419,8 @@ export class ContextItemsListComponent implements OnInit {
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
-      service: ''
+      service: '',
+      isDeleted: deleted
     };
     console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
@@ -434,10 +447,11 @@ export class ContextItemsListComponent implements OnInit {
       (res: AddItemServiceResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItems(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.loadItems(false);
+        this.loadServices(false);
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
@@ -446,7 +460,7 @@ export class ContextItemsListComponent implements OnInit {
   removeservice(id, name) {
     const requestModel = {
       userID: this.currentUser.userID,
-      serviceID: id,
+      itemServiceID: id,
       itemID: this.itemID
     };
 
@@ -454,10 +468,12 @@ export class ContextItemsListComponent implements OnInit {
       (res: UpdateItemServiceResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItems(false);
+          
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.loadItems(false);
+        this.loadServices(false);
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
