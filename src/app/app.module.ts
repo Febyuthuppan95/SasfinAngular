@@ -153,9 +153,15 @@ import { ViewItemValuesComponent } from './views/main/view-item-values/view-item
 import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
+import { ContextICIComponent } from './components/menus/context-ici/context-ici.component';
 import { ContextSAD500Component } from './components/menus/context-sad500/context-sad500.component';
+import { ImagePreviewDialogComponent } from './components/table/image-preview-dialog/image-preview-dialog.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
+import { CaptureFormDirective } from './directives/capture-form.directive';
+import { ComponentService } from './services/ComponentLoader.service';
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
+import { TariffService } from './services/Tariff.service';
 
 @NgModule({
   declarations: [
@@ -262,7 +268,11 @@ import { ContextMenuItemsParentsComponent } from './components/menus/context-men
     ViewItemValuesComponent,
     ContextMenuItemsValuesComponent,
     ContextMenuItemsComponent,
+    ContextICIComponent,
     ContextSAD500Component,
+    ImagePreviewDialogComponent,
+    ViewInvoicesComponent,
+    CaptureFormDirective,
     ViewItemParentsComponent,
     ContextMenuItemsParentsComponent,
   ],
@@ -288,7 +298,7 @@ import { ContextMenuItemsParentsComponent } from './components/menus/context-men
     NgxExtendedPdfViewerModule,
     MaterialModule,
     AngularDraggableModule,
-    KeyboardShortcutsModule
+    KeyboardShortcutsModule,
   ],
   providers: [
     CookieService,
@@ -323,12 +333,18 @@ import { ContextMenuItemsParentsComponent } from './components/menus/context-men
     ChatService,
     CaptureService,
     ValidateService,
+    ComponentService,
+    TariffService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
     CapturePreviewComponent,
-    Sad500LinePreviewComponent
+    Sad500LinePreviewComponent,
+    ImagePreviewDialogComponent,
+    FormSAD500Component,
+    FormImportClearingInstructionComponent,
+    FormCustomReleaseComponent
   ]
 })
 export class AppModule { }

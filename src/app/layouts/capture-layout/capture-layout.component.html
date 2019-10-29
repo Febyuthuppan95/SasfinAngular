@@ -20,10 +20,10 @@
       </ul>
       <ul class="navbar-nav md-auto">
         <li class="nav-item">
-          <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (CTRL + ALT + L)" matTooltipPosition="below">Company Info</button>
+          <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (ALT + I)" matTooltipPosition="below">Company Info</button>
         </li>
         <li class="nav-item">
-          <button (click)="this.showHelp = !this.showHelp" class="nav-item text-light" mat-button matTooltip="Show Shortcuts" matTooltipPosition="below">Help</button>
+          <button (click)="this.showHelp = !this.showHelp" class="nav-item text-light" mat-button matTooltip="Show Shortcuts (ALT + H)" matTooltipPosition="below">Help</button>
         </li>
         <li>
             <button type="button" mat-buttom class="close text-light" data-dismiss="modal" aria-label="Close" (click)="goBack()"
@@ -36,8 +36,8 @@
   </nav>
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
 <div class="col-6 bg-light">
-  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="this.currentReaderPOS"></div>
-  <app-document-viewer></app-document-viewer>
+  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
+  <app-document-viewer [focus]="this.focusPDF"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 10px;overflow-y: auto">
   <router-outlet></router-outlet>

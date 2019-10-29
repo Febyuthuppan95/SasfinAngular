@@ -1,22 +1,23 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableConfig, TableHeader, Order } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
-import { ICIListResponse, ICI } from 'src/app/models/HttpResponses/ICI';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
-import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Router } from '@angular/router';
+import { TableConfig, Order } from 'src/app/models/Table';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
-  selector: 'app-view-import-clearing-instructions',
-  templateUrl: './view-import-clearing-instructions.component.html',
-  styleUrls: ['./view-import-clearing-instructions.component.scss']
+  selector: 'app-view-invoices',
+  templateUrl: './view-invoices.component.html',
+  styleUrls: ['./view-invoices.component.scss']
 })
-export class ViewImportClearingInstructionsComponent implements OnInit {
+export class ViewInvoicesComponent implements OnInit {
+
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
               private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
               private router: Router) { }
@@ -42,9 +43,9 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     },
     headings: [
       { title: '', propertyName: 'rowNum', order: { enable: false } },
-      { title: 'Supplier Ref', propertyName: 'supplierRef', order: { enable: false } },
-      { title: 'Importers Code', propertyName: 'importersCode', order: { enable: false } },
-      { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
+      { title: 'Invoice No', propertyName: 'invoiceNo', order: { enable: false } },
+      { title: 'From Company', propertyName: 'fromCompany', order: { enable: false } },
+      { title: 'To Company', propertyName: 'toCompany', order: { enable: false } },
       { title: 'Status', propertyName: 'status', order: { enable: false } }
     ],
     rowStart: 1,
@@ -52,12 +53,15 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     recordsPerPage: 15,
     orderBy: '',
     orderByDirection: '',
-    dataset: null
+    dataset: null,
+    events: {
+      backButton: () => this.router.navigate(['companies', 'transactions'])
+    }
   };
 
   listRequest = {
     userID: this.currentUser.userID,
-    specificICIID: -1,
+    invoiceID: -1,
     filter: '',
     rowStart: this.tableConfig.rowStart,
     rowEnd: this.tableConfig.rowEnd,
@@ -83,11 +87,12 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
   }
 
   loadDataset() {
-    this.captureService.iciList(this.listRequest).then(
-      (res: ICIListResponse) => {
-        this.tableConfig.dataset = res.clearingInstructions;
+    this.captureService.invoiceList(this.listRequest).then(
+      (res: { outcome: Outcome, invoices: [], rowCount: number }) => {
+        this.tableConfig.dataset = res.invoices;
+        this.tableConfig.rowCount = res.rowCount;
 
-        if (res.clearingInstructions.length === 0) {
+        if (res.invoices.length === 0) {
           this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -100,7 +105,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['companies', 'transactions']);
+    ;
   }
 
   searchFilter(query: string) {
@@ -134,4 +139,5 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     this.listRequest.filter = query;
     this.loadDataset();
   }
+
 }

@@ -31,6 +31,11 @@ export class CaptureService {
   iciUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/update`, requestModel);
   iciAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/ici/create`, requestModel);
 
+  // Invoices
+  invoiceList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/list`, requestModel);
+  invoiceUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/update`, requestModel);
+  invoiceAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/invoice/create`, requestModel);
+
   // tslint:disable-next-line: max-line-length
   shippingDocumentUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/shipping`, requestModel);
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -55,7 +55,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   transactionID: number;
   attachmentID: number;
   showHelp: boolean = false;
-
+  focusPDF: boolean = false;
+  attachmentType: string;
   ngOnInit() {
     this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
@@ -72,14 +73,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
         id: data.companyID,
         name: data.companyName
       };
-
-      this.loadCaptureInfo();
     });
 
     this.transactionService.observerCurrentAttachment().subscribe (obj => {
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
+      this.attachmentType = obj.docType;
       this.loadAttachments();
+      this.loadCaptureInfo();
     });
   }
 
@@ -103,6 +104,24 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.showHelp = !this.showHelp
         },
+        {
+          key: 'alt + p',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusPDF = !this.focusPDF
+        },
+        {
+          key: 'alt + down',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+          key: 'alt + up',
+        },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -113,10 +132,27 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   }
 
   loadCaptureInfo() {
+    let docTypeID = 1;
+
+    switch (this.attachmentType) {
+      case 'SAD500': {
+        docTypeID = 3;
+        break;
+      }
+      case 'Customs Release Notification': {
+        docTypeID = 2;
+        break;
+      }
+      case 'Import Clearing Instruction': {
+        docTypeID = 4;
+        break;
+      }
+    }
+
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
       companyID: this.company.id,
-      doctypeID: 2,
+      doctypeID: docTypeID,
       filter: '',
       orderBy: '',
       orderByDirection: 'ASC',

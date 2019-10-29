@@ -41,4 +41,9 @@ export class ContextMenuTransactionComponent implements OnInit {
     this.router.navigate(['transaction', 'custom-release-notification']);
   }
 
+  viewInvoices() {
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '' });
+    this.router.navigate(['transaction', 'invoices']);
+  }
+
 }
