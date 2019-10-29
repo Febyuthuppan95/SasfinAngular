@@ -159,6 +159,8 @@ import { ImagePreviewDialogComponent } from './components/table/image-preview-di
 import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
 import { CaptureFormDirective } from './directives/capture-form.directive';
 import { ComponentService } from './services/ComponentLoader.service';
+import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
+import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
 
 @NgModule({
   declarations: [
@@ -270,6 +272,8 @@ import { ComponentService } from './services/ComponentLoader.service';
     ImagePreviewDialogComponent,
     ViewInvoicesComponent,
     CaptureFormDirective,
+    ViewItemParentsComponent,
+    ContextMenuItemsParentsComponent,
   ],
   imports: [
     BrowserModule,

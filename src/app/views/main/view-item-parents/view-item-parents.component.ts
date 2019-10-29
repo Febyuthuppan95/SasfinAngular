@@ -9,25 +9,26 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, Order, TableHeader, SelectedRecord } from 'src/app/models/Table';
-import { GetIAlternateItemList } from 'src/app/models/HttpRequests/GetIAlternateItemList';
-import { AlternateItemsListResponse, AlternateItems } from 'src/app/models/HttpResponses/AlternateItemsListResponse';
 import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
-import { GetItemValuesList } from 'src/app/models/HttpRequests/GetItemValuesList';
-import { ItemValuesListResponse, ItemValue } from 'src/app/models/HttpResponses/ItemValuesListResponse';
-import { UpdateItemValue } from 'src/app/models/HttpResponses/UpdateItemValue';
+import { GetItemParentsList } from 'src/app/models/HttpRequests/GetItemParentsList';
+import { ItemParentsListResponse, ItemParent } from 'src/app/models/HttpResponses/ItemParentsListResponse';
+import { UpdateItemParent } from 'src/app/models/HttpResponses/UpdateItemParent';
+import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
+import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
+import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
+import { UnitMeasureService } from 'src/app/services/Units.Service';
 
 @Component({
-  selector: 'app-view-item-values',
-  templateUrl: './view-item-values.component.html',
-  styleUrls: ['./view-item-values.component.scss']
+  selector: 'app-view-item-parents',
+  templateUrl: './view-item-parents.component.html',
+  styleUrls: ['./view-item-parents.component.scss']
 })
-export class ViewItemValuesComponent implements OnInit {
+export class ViewItemParentsComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
+    private unitService: UnitMeasureService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -59,18 +60,20 @@ export class ViewItemValuesComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  ItemValue: {
-    itemValueID: number,
-    itemPrice: number,
-    freeComponent: string
+  ItemParent: {
+    itemParentID: number
+    parentID: number,
+    itemID: number,
+    unitsOfMeasureID: number,
+    quantity: number,
+    startDate: Date,
+    endDate: Date
   };
 
-
-
   tableHeader: TableHeader = {
-    title: `Item Values`,
+    title: `Item Parent`,
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: true
@@ -90,38 +93,69 @@ export class ViewItemValuesComponent implements OnInit {
       }
     },
     {
-      title: 'Item Price',
-      propertyName: 'itemPrice',
+      title: 'Parent Item',
+      propertyName: 'parentName',
       order: {
         enable: true,
-        tag: 'ItemPrice'
+        tag: 'ParentName'
       }
     },
     {
-      title: 'Date Added',
-      propertyName: 'dateAdded',
+      title: 'Child Item',
+      propertyName: 'itemName',
       order: {
         enable: true,
-        tag: 'DateAdded'
+        tag: 'ItemName'
       }
     },
     {
-      title: 'FreeComponent',
-      propertyName: 'freeComponent',
+      title: 'Quantity',
+      propertyName: 'quantity',
       order: {
         enable: true,
-        tag: 'FreeComponent'
+        tag: 'Quantity'
+      }
+    },
+    {
+      title: 'Units of Measure',
+      propertyName: 'unitsOfMeasureName',
+      order: {
+        enable: true,
+        tag: 'UnitsOfMeasureName'
+      }
+    },
+    {
+      title: 'Start Date',
+      propertyName: 'startDateText',
+      order: {
+        enable: true,
+        tag: 'StartDate'
+      }
+    },
+    {
+      title: 'End Date',
+      propertyName: 'endDateText',
+      order: {
+        enable: true,
+        tag: 'EndDate'
       }
     }
   ];
 
   selectedRow = -1;
-  Price = 0;
-  FreeComponent = '';
+  ParentItemID = 0;
+  ParentItem = '';
+  ChildItemID = 0;
+  ChildItem = '';
+  Quantity = 0;
+  UnitsofMeasure = '';
+  UnitsofMeasureID = 0;
+  StartDate: Date = new Date();
+  EndDate: Date;
 
   selectedFreecomp = 0;
   recordsPerPage = 15;
-  itemvalues: ItemValue[] = [];
+  itemParents: ItemParent[] = [];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   sidebarCollapsed = true;
@@ -150,7 +184,8 @@ export class ViewItemValuesComponent implements OnInit {
   isAdmin: false;
   itemID = 0;
   itemName = '';
-  freecomp: string[] = ['true', 'false'];
+  UOMList: UnitsOfMeasure[] = [];
+  selectedUOM = 0;
 
   ngOnInit() {
 
@@ -161,19 +196,17 @@ export class ViewItemValuesComponent implements OnInit {
     this.companyService.observeItem().subscribe((obj: SelectedItem) => {
       this.itemID = obj.itemID;
       this.itemName = obj.itemName;
-
-      // if (this.groupID === '') {
-      //   this.groupID = null;
-      // }
     });
 
-    this.loadItemsValues(true);
+    this.loadItemsParents(true);
+
+    this.loadUnitsOfMeasures();
   }
 
-  loadItemsValues(displayGrowl: boolean) {
+  loadItemsParents(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetItemValuesList = {
+    const model: GetItemParentsList = {
       userID: this.currentUser.userID,
       filter: this.filter,
       itemID: this.itemID,
@@ -182,31 +215,35 @@ export class ViewItemValuesComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getItemValueList(model).then(
-      (res: ItemValuesListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+    this.companyService.getItemParentsList(model).then(
+      (res: ItemParentsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
-              res.outcome.outcomeMessage);
+              res.outcome.outcomeMessage
+            );
           }
+        } else {
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
         }
-        this.itemvalues = res.itemValues;
+
+        this.itemParents = res.itemParents;
+        this.itemParents.forEach((item) => {
+          item.startDateText = new Date(item.startDate).toDateString();
+          item.endDateText = new Date(item.endDate).toDateString();
+        });
+        this.showLoader = false;
 
         if (res.rowCount === 0) {
           this.noData = true;
-          this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.itemValues.length;
-          this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.itemvalues.length - 1;
+          this.showingRecords = res.itemParents.length;
+          this.totalShowing = +this.rowStart + +this.itemParents.length - 1;
         }
 
       },
@@ -220,15 +257,41 @@ export class ViewItemValuesComponent implements OnInit {
     );
   }
 
+  loadUnitsOfMeasures() {
+    const model: ListUnitsOfMeasureRequest = {
+      userID: this.currentUser.userID,
+      specificUnitOfMeasureID: -1,
+      filter: this.filter,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.unitService.list(model).then(
+      (res: ListUnitsOfMeasure) => {
+
+        this.UOMList = res.unitOfMeasureList;
+
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server'
+         );
+      }
+    );
+  }
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadItemsValues(false);
+    this.loadItemsParents(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadItemsValues(false);
+    this.loadItemsParents(false);
   }
 
 
@@ -241,11 +304,11 @@ export class ViewItemValuesComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadItemsValues(false);
+    this.loadItemsParents(false);
   }
 
   popClick(event, obj) {
-    this.ItemValue = obj;
+    this.ItemParent = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -276,42 +339,44 @@ export class ViewItemValuesComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadItemsValues(true);
+    this.loadItemsParents(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    console.log(query);
-    this.loadItemsValues(false);
+    this.loadItemsParents(false);
   }
 
   backToItems() {
     this.router.navigate(['companies/items']);
   }
 
-  editItemValue(id: number) {
+  editItemParent(id: number) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.Price = 13.00; // this.ItemValue.itemPrice;
-    this.FreeComponent = this.ItemValue.freeComponent;
-    console.log(this.Price);
+    this.Quantity = this.ItemParent.quantity;
+    this.UnitsofMeasureID = this.ItemParent.unitsOfMeasureID;
+    this.StartDate = this.ItemParent.startDate;
+    this.EndDate = this.ItemParent.endDate;
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateItemValue(id: number) {
+  UpdateItemParent(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      itemValueID: this.ItemValue.itemValueID,
-      price: this.Price,
-      freeComp: this.FreeComponent
+      itemParentID: this.ItemParent.itemParentID,
+      quantity: this.Quantity,
+      unitOfMeasureID: this.UnitsofMeasureID,
+      startDate: this.StartDate,
+      endDate: this.EndDate
     };
-    console.log(requestModel);
 
-    this.companyService.UpdateItemValue(requestModel).then(
-      (res: UpdateItemValue) => {
+    this.companyService.UpdateItemParent(requestModel).then(
+      (res: UpdateItemParent) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItemsValues(false);
+          this.closeeditModal.nativeElement.click();
+          this.loadItemsParents(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
@@ -320,18 +385,18 @@ export class ViewItemValuesComponent implements OnInit {
     );
   }
 
-  removeItemValue(id: number) {
+  removeItemParent(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      itemValueID: this.ItemValue.itemValueID,
+      itemParentID: this.ItemParent.itemParentID,
       isDeleted: 1
     };
 
-    this.companyService.RemoveItemValue(requestModel).then(
-      (res: UpdateItemValue) => {
+    this.companyService.RemoveItemParent(requestModel).then(
+      (res: UpdateItemParent) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItemsValues(false);
+          this.loadItemsParents(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
@@ -340,12 +405,11 @@ export class ViewItemValuesComponent implements OnInit {
     );
   }
 
-  onFreecompChange(state: string) {
-    this.FreeComponent = state;
+  onUOMChange(id: number) {
+    this.UnitsofMeasureID = id;
   }
-
-
 }
+
 
 
 

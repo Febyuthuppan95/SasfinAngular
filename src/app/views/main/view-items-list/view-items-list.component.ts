@@ -19,6 +19,8 @@ import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListRes
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
+import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
+import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 
 @Component({
   selector: 'app-view-items-list',
@@ -59,6 +61,11 @@ export class ContextItemsListComponent implements OnInit {
 
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
+
+  @ViewChild('openRemoveModal', {static: true})
+  openRemoveModal: ElementRef;
+  @ViewChild('closeRemoveModal', {static: true})
+  closeRemoveModal: ElementRef;
 
   Item: {
     itemID: number,
@@ -133,14 +140,6 @@ export class ContextItemsListComponent implements OnInit {
         enable: true,
         tag: 'Vulnerable'
       }
-    },
-    {
-      title: 'Services',
-      propertyName: 'services',
-      order: {
-        enable: true,
-        tag: 'Services'
-      }
     }
   ];
 
@@ -199,8 +198,6 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   loaditemServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetItemServiceList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -215,19 +212,22 @@ export class ContextItemsListComponent implements OnInit {
     .itemservice(model)
     .then(
       (res: ItemServiceListResponse) => {
-        this.itemservicelist = res.itemservice;
-        console.log(this.itemservicelist);
-
-        this.servicelist.forEach((service, index) => {
-          this.itemservicelist.forEach(iservice => {
-            if (service.serviceID === iservice.serviceID) {
-                this.servicelist.splice(index, 1);
-            }
-          });
-        });
-
-        console.log(this.servicelist);
-
+        if (res.outcome.outcome === 'SUCCESS') {
+            this.itemservicelist = res.itemServices;
+            this.servicelist.forEach((service, index) => {
+              this.itemservicelist.forEach(iservice => {
+                if (service.serviceID === iservice.serviceID) {
+                    this.servicelist.splice(index, 1);
+                }
+              });
+            });
+        } else {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Not Found',
+            'Item Service not found'
+          );
+        }
       },
       msg => {
         this.showLoader = false;
@@ -240,8 +240,6 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   loadServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -402,8 +400,15 @@ export class ContextItemsListComponent implements OnInit {
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
   }
+  removeItem(id: number) {
+    console.log(this.Item.itemID);
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.itemID = this.Item.itemID;
+    this.openRemoveModal.nativeElement.click();
+  }
 
-  UpdateItem(id: number) {
+  UpdateItem(deleted: boolean) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
@@ -414,9 +419,10 @@ export class ContextItemsListComponent implements OnInit {
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
-      service: ''
+      service: '',
+      isDeleted: deleted
     };
-
+    console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
@@ -425,6 +431,49 @@ export class ContextItemsListComponent implements OnInit {
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  addNewservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      serviceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceadd(requestModel).then(
+      (res: AddItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+        this.loadItems(false);
+        this.loadServices(false);
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  removeservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemServiceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceupdate(requestModel).then(
+      (res: UpdateItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+        this.loadItems(false);
+        this.loadServices(false);
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
@@ -452,14 +501,6 @@ export class ContextItemsListComponent implements OnInit {
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
-  }
-
-  onPIstateChange(state: string) {
-    this.pI = state;
-  }
-
-  onMIDPstateChange(state: string) {
-    this.mIDP = state;
   }
 
 }

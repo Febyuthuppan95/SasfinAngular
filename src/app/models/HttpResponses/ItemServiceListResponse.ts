@@ -2,7 +2,7 @@ import {Outcome} from './Outcome';
 
 export class ItemServiceListResponse {
   outcome: Outcome;
-  itemservice: ItemService[];
+  itemServices: ItemService[];
   rowCount: number;
 }
 
@@ -12,4 +12,5 @@ export class ItemService {
   serviceName: string;
   itemName: string;
   itemID: number;
+  itemServiceID: number;
 }

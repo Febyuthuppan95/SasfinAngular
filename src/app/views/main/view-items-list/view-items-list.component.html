@@ -33,7 +33,7 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-items (editItem)="editItem($event)"></app-context-menu-items>
+  <app-context-menu-items (editItem)="editItem($event)" (removeItem)="removeItem($event)"></app-context-menu-items>
 </app-menu>
 
 <!--Edit Modal-->
@@ -70,7 +70,7 @@
                 <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
               </select>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">Services:</label>
               <div class="list-box">
               <div class="row">
@@ -88,11 +88,54 @@
                 </div>
               </div>
             </div>
-            </div>
+            </div> -->
+
+                <div class="row ">
+                  <form class="form-group add-scroll col-md-6 text-center">
+                      <h5 class="control-label">Available Services</h5>
+                      <div class="modal-list-service" style="border: inset;">
+                        <ul class="service-list">
+                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of servicelist"><a><span>{{service.serviceName}}</span></a></li>
+                        </ul>
+                      </div>
+                  </form>
+                  <form class="form-group add-scroll col-md-6 text-center">
+                    <h5 class="control-label">Assigned Services</h5>
+                    <div class="modal-add-service" style="border: inset;">
+                      <ul class="service-list">
+                        <li (click)="removeservice(iservice.itemServiceID, iservice.serviceName)" *ngFor="let iservice of itemservicelist"><a><span>{{iservice.serviceName}}</span></a></li>
+                      </ul>
+                    </div>
+                  </form>
+                </div>
+
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
         <button type="button" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!--Delete Modal -->
+<button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
+<div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Remove Item</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <p>Are you sure you want to remove this item?</p>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeRemoveModal>Close</button>
+        <button type="button" (click)="UpdateItem(true)" class="btn btn-primary btn-sm">Remove</button>
       </div>
     </form>
     </div>

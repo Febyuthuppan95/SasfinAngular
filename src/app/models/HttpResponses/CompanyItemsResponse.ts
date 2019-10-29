@@ -12,6 +12,7 @@ export class Item {
   companyID: number;
   groupID: string;
   item: string;
+  parentID: number;
   description: string;
   tariff: number;
   type: string;

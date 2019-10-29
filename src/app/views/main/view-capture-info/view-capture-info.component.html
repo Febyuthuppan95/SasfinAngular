@@ -46,10 +46,12 @@
       <form (submit)="editInfo()">
       <div class="modal-body">
       <div class="form-group">
+          <label class="control-label">Information:</label>
           <input type="text" placeholder="Information" class="form-control"
             [(ngModel)]="this.captureInfo.info" [ngModelOptions]="{standalone: true}" required/>
         </div>
         <div class="form-group">
+            <label class="control-label">Type:</label>
             <select class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
               <option *ngFor="let doctype of this.doctypeResponse.doctypes" [value]="doctype.doctypeID">{{doctype.name}}</option>
             </select>

@@ -20,7 +20,7 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() addtoGroup = new EventEmitter<string>();
-  @Output() iteminformation = new EventEmitter<string>();
+  @Output() addtoParent = new EventEmitter<string>();
 
   ngOnInit() {
 
@@ -40,6 +40,16 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
   ItemValues() {
     this.companyService.setItem({ groupID: this.groupID, itemName: this.item, itemID: this.itemID });
     this.router.navigateByUrl('companies/items/itemvalues');
+  }
+
+  ItemParents() {
+    this.companyService.setItem({ groupID: this.groupID, itemName: this.item, itemID: this.itemID });
+    this.router.navigateByUrl('companies/items/itemparents');
+  }
+  AddtoParent() {
+    this.addtoParent.emit(JSON.stringify({
+      itemID: this.itemID
+    }));
   }
 }
 
