@@ -161,6 +161,7 @@ import { CaptureFormDirective } from './directives/capture-form.directive';
 import { ComponentService } from './services/ComponentLoader.service';
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
+import { TariffService } from './services/Tariff.service';
 
 @NgModule({
   declarations: [
@@ -332,7 +333,8 @@ import { ContextMenuItemsParentsComponent } from './components/menus/context-men
     ChatService,
     CaptureService,
     ValidateService,
-    ComponentService
+    ComponentService,
+    TariffService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

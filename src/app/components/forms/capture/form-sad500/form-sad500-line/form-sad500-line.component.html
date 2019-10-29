@@ -29,29 +29,28 @@
   </div>
 </div>
 <br>
-  <div class="form-group" *ngIf="this.form.tariff != undefined">
+  <div class="form-group" *ngIf="this.form.customsValue != undefined">
   <input type="number"
     [(ngModel)]="this.form.customsValue" [ngModelOptions]="{standalone: true}"
     class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
     placeholder="Customs Value" />
   </div>
-  <div class="form-group" *ngIf="this.form.tariff != undefined" style="position: relative;">
-    <input type="text"
-      [(ngModel)]="this.form.tariff" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
-      placeholder="Tariff" (keyup)="tariffChange()"/>
-      <div class="autocomplete" *ngIf="this.showTariffHint">
-        <ul class="list-unstyled">
-          <li>Degradable</li>
-        </ul>
-      </div>
-  </div>
-  <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
-    <input type="text"
-      [(ngModel)]="this.form.unitOfMeasure" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
-      placeholder="Unit Of Measure" />
-  </div>
+  <div class="form-group" *ngIf="this.form.tariff != undefined">
+        <input [(ngModel)]="this.form.tariff" type="text" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
+        <mat-autocomplete #tariffAuto="matAutocomplete" >
+          <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description" (onSelectionChange)="selectedTariff(tariff.description)">
+            {{tariff.description}}
+          </mat-option>
+        </mat-autocomplete>
+        </div>
+        <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
+      <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+      <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+        <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
+          {{unit.name}}, {{unit.description}}
+        </mat-option>
+      </mat-autocomplete>
+        </div>
   <div class="form-group text-right" style="margin: 0;">
     <button *ngIf="!this.isUpdate" type="submit" class="btn btn-primary btn-sm">Add</button>
     <button *ngIf="this.isUpdate" type="submit" class="btn btn-primary btn-sm">Update</button>

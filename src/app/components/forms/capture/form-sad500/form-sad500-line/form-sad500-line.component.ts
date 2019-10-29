@@ -8,6 +8,10 @@ import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeas
 import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { ValidateService } from 'src/app/services/Validation.Service';
+import { TariffService } from 'src/app/services/Tariff.service';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { FormControl } from '@angular/forms';
+import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -18,17 +22,24 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService) { }
+              private validate: ValidateService, private tariffService: TariffService) { }
 
   currentUser: User;
 
   currentTheme: string;
-  tariffList: object[];
-  unitOfMeasureList: object[];
+  unitOfMeasureList: UnitsOfMeasure[];
+  unitOfMeasureListTemp: UnitsOfMeasure[];
   focusLineForm: boolean;
 
   showTariffHint = false;
   showUnitOfMeasureHint = true;
+  tariffs: { amount: number; description: string; duty: number; unit: string }[];
+  tariffsTemp: { amount: number; description: string; duty: number; unit: string }[];
+  myControl = new FormControl();
+  unitOfMeasure = new FormControl();
+
+  selectedTariffVal: string;
+  selectedUnitVal: string;
 
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
@@ -58,7 +69,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.currentUser = this.userService.getCurrentUser();
 
     this.loadUnits();
-    this.loadTariffs();
+    this.loadTarrifs();
   }
 
   ngAfterViewInit(): void {
@@ -110,15 +121,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       (res: ListUnitsOfMeasure) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.unitOfMeasureList = res.unitOfMeasureList;
+          this.unitOfMeasureListTemp = res.unitOfMeasureList;
         }
       },
       (msg) => {
         console.log(msg);
       }
     );
-  }
-
-  loadTariffs(): void {
   }
 
   submit() {
@@ -154,15 +163,38 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
 
-  tariffChange() {
-    if (!this.validate.isEmpty(this.form.tariff)) {
-      this.showTariffHint = true;
-    } else {
-      this.showTariffHint = false;
-    }
+  loadTarrifs() {
+    this.tariffService.list().then(
+      (res: { tariffList: { amount: number; description: string; duty: number; unit: string }[], outcome: Outcome, rowCount: number }) => {
+        this.tariffs = res.tariffList;
+        this.tariffsTemp = res.tariffList;
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
   }
 
-  loadTarrifs() {
+  selectedTariff(description) {
+    this.form.tariff = description;
+  }
 
+  selectedUnit(name) {
+    this.form.unitOfMeasure = name;
+  }
+
+  filterTariff() {
+    this.tariffs = this.tariffsTemp;
+    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.form.tariff}*`));
+  }
+
+  filterUnit() {
+    this.unitOfMeasureList = this.unitOfMeasureListTemp;
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
+  }
+
+  matchRuleShort(str, rule) {
+    const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 }
