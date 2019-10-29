@@ -402,7 +402,7 @@ export class ContextItemsListComponent implements OnInit {
     this.openRemoveModal.nativeElement.click();
   }
 
-  UpdateItem(deleted: boolean) {
+  UpdateItem(deleted?: boolean) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
@@ -414,7 +414,7 @@ export class ContextItemsListComponent implements OnInit {
       pI: this.pI,
       vulnerable: this.vulnerable,
       service: '',
-      isDeleted: deleted
+      isDeleted: 0
     };
     console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
