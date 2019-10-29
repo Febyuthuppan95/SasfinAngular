@@ -333,6 +333,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
       (res: ServiceListResponse) => {
 
           this.serviceslist = res.serviceses;
+          console.log(this.serviceslist);
 
           this.dataList.forEach(Cservice => {
             this.serviceslist.forEach((service, index) => {
@@ -442,7 +443,8 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
-
+    this.loadServices(false);
+    this.loadUsers();
     this.openaddModal.nativeElement.click();
   }
 
