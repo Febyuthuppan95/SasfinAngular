@@ -1,58 +1,68 @@
 <form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined">
   <div class="form-group">
-    <h4>SAD500 Line</h4>
+    <h4>SAD500 Line <small class="small-text">(Press enter to save)</small></h4>
   </div>
   <div class="form-inline">
   <div class="form-group" *ngIf="this.form.cpc != undefined">
     <input type="text" [focus]="this.focusSADLine"
       [(ngModel)]="this.form.cpc" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
-      placeholder="CPC" />
+      placeholder="CPC" [ngClass]="{'form-control-invalid': this.form.cpcError !== null}"/>
+
+      <p class="invalid-control-label" *ngIf="this.form.cpcError !== null">{{this.form.cpcError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.lineNo != undefined">
     <input type="text"
       [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
-      placeholder="Line No" />
+      placeholder="Line No"
+      [ngClass]="{'form-control-invalid': this.form.lineNoError !== null}"/>
+      <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null">{{this.form.lineNoError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.productCode != undefined">
     <input type="text"
       [(ngModel)]="this.form.productCode" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
       placeholder="Product Code" />
+      <p class="invalid-control-label" *ngIf="this.form.productCodeError !== null">{{this.form.productCodeError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.value != undefined">
     <input type="text"
       [(ngModel)]="this.form.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
       placeholder="Value" />
+      <p class="invalid-control-label" *ngIf="this.form.valueError !== null">{{this.form.valueError}}</p>
   </div>
 </div>
 <br>
-  <div class="form-group" *ngIf="this.form.customsValue != undefined">
+  <div class="form-group">
   <input type="number"
     [(ngModel)]="this.form.customsValue" [ngModelOptions]="{standalone: true}"
     class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
     placeholder="Customs Value" />
+    <!-- <p class="invalid-control-label" *ngIf="this.form.customsValueError !== null">{{this.form.customsValueError}}</p> -->
   </div>
   <div class="form-group" *ngIf="this.form.tariff != undefined">
-        <input [(ngModel)]="this.form.tariff" type="text" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
+        <input [(ngModel)]="this.form.tariff" type="text" [ngClass]="{'form-control-invalid': this.form.tariffError !== null}" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
         <mat-autocomplete #tariffAuto="matAutocomplete" >
           <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description" (onSelectionChange)="selectedTariff(tariff.description)">
             {{tariff.description}}
           </mat-option>
         </mat-autocomplete>
+        <p class="invalid-control-label" *ngIf="this.form.tariffError !== null">{{this.form.tariffError}}</p>
         </div>
         <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
-      <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+      <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null}" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
       <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
         <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
           {{unit.name}}, {{unit.description}}
         </mat-option>
       </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null">{{this.form.unitOfMeasureError}}</p>
         </div>
   <div class="form-group text-right" style="margin: 0;">
     <button *ngIf="!this.isUpdate" type="submit" class="btn btn-primary btn-sm">Add</button>
     <button *ngIf="this.isUpdate" type="submit" class="btn btn-primary btn-sm">Update</button>
   </div>
 </form>
+<br>

@@ -60,6 +60,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     unitOfMeasure: '',
     productCode: '',
     value: '',
+    cpcError: null,
+    tariffError: null,
+    customsValueError: null,
+    lineNoError: null,
+    unitOfMeasureError: null,
+    productCodeError: null,
+    valueError: null,
   };
 
   isUpdate: boolean;
@@ -96,6 +103,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.tariff = this.updateSAD500Line.tariff;
       this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
       this.form.value = this.updateSAD500Line.value;
+      this.form.tariffError = this.updateSAD500Line.tariffError;
+      this.form.customsValueError = this.updateSAD500Line.customsValueError;
+      this.form.cpcError = this.updateSAD500Line.cpcError;
+      this.form.valueError = this.updateSAD500Line.valueError;
+      this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
+      this.form.lineNoError = this.updateSAD500Line.lineNoError;
+      this.form.productCodeError = this.updateSAD500Line.productCodeError;
 
     } else {
       this.isUpdate = false;
@@ -109,6 +123,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasure: '',
         productCode: '',
         value: '',
+        cpcError: null,
+        tariffError: null,
+        customsValueError: null,
+        lineNoError: null,
+        unitOfMeasureError: null,
+        productCodeError: null,
+        valueError: null,
       };
     }
 
