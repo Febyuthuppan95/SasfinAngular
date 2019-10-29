@@ -357,7 +357,7 @@ export class ViewItemParentsComponent implements OnInit {
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateItemParent(id: number) {
+  UpdateItemParent() {
     const requestModel = {
       userID: this.currentUser.userID,
       itemParentID: this.ItemParent.itemParentID,
