@@ -61,30 +61,13 @@ export class ContextTariffsListComponent implements OnInit {
   };
 
   tableHeadings: TableHeading[] = [
-    // {
-    //   title: '',
-    //   propertyName: 'rowNum',
-    //   order: {
-    //     enable: false,
-    //   }
-    // },
-
-    // {
-    //   title: 'Tariff Code',
-    //   propertyName: 'tariffCode',
-    //   order: {
-    //     enable: true,
-    //     tag: 'TariffCode'
-    //   }
-    // },
-    // {
-    //   title: 'Tariff Name',
-    //   propertyName: 'tariffName',
-    //   order: {
-    //     enable: true,
-    //     tag: 'TariffName'
-    //   }
-    // },
+    {
+      title: '#',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      }
+    },
     {
       title: 'Amount',
       propertyName: 'amount',
@@ -117,15 +100,6 @@ export class ContextTariffsListComponent implements OnInit {
         tag: 'Unit'
       }
     }
-    // },
-    // {
-    //   title: 'Quality 538',
-    //   propertyName: 'quality538',
-    //   order: {
-    //     enable: true,
-    //     tag: 'Quality538'
-    //   }
-    // }
   ];
 
   selectedRow = -1;
@@ -179,33 +153,20 @@ export class ContextTariffsListComponent implements OnInit {
   loadTariffs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    // const model: GetTariffList = {
-    //   filter: this.filter,
-    //   userID: this.currentUser.userID,
-    //   specificTariffID: -1,
-    //   rowStart: this.rowStart,
-    //   rowEnd: this.rowEnd,
-    //   orderBy: this.orderBy,
-    //   orderByDirection: this.orderDirection
-    // };
 
     this.companyService
     .getTariffList()// model
     .then(
       (res: TariffListResponse) => {
 
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage);
           }
         }
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -217,8 +178,6 @@ export class ContextTariffsListComponent implements OnInit {
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }
-        // console.log(this.showingRecords);
-
       },
       msg => {
         this.showLoader = false;

@@ -199,18 +199,13 @@ export class ViewAlternateItemsComponent implements OnInit {
     };
     this.companyService.getAlternateItemList(model).then(
       (res: AlternateItemsListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
-          );
-        } else {
-          if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
-          }
+            );
         }
+
         this.alternateitems = res.alternateitems;
 
         if (res.rowCount === 0) {

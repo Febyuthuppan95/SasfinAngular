@@ -136,7 +136,7 @@
         <div class="modal-body">
             <div class="form-group">
                 <label class="control-label">Service:</label>
-                <select class="form-control"  (change)="onServiceChange($event.target.value)">
+                <select [disabled]="this.serviceslist.length == 1" class="form-control"  (change)="onServiceChange($event.target.value)">
                     <option selected value="-1" [disabled]="disableSerSelect">Select a Service</option>
                     <option *ngFor="let service of this.serviceslist" [value]="service.serviceID" [selected]="service.serviceID === this.SerID">{{service.serviceName}}</option>
                 </select>

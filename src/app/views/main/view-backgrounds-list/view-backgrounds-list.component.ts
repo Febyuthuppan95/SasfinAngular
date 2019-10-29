@@ -32,11 +32,16 @@ export class ViewBackgroundsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openUploadModal', { static: true })
+  openUploadModal: ElementRef;
   @ViewChild('closeUploadModal', { static: true })
   closeUploadModal: ElementRef;
 
   @ViewChild('openViewBackgroundModal', { static: true })
   openViewBackgroundModal: ElementRef;
+
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
 
   currentTheme = 'light';
   backgroundPath = environment.ApiBackgroundImages;
@@ -98,7 +103,6 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   removeBackground(backgroundID: number) {
-    console.log(+backgroundID);
     this.backgroundService.removeBackgrounds(+backgroundID, this.currentUser.userID).then(
       (res: BackgroundListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
@@ -180,6 +184,14 @@ export class ViewBackgroundsListComponent implements OnInit {
     }
   }
 
+  AddBackgroud() {
+    this.fileToUpload = null;
+    this.fileName = '';
+    this.preview = null;
+    this.myInputVariable.nativeElement.value = '';
+    this.openUploadModal.nativeElement.click();
+  }
+
   uploadBackground() {
     let errors = 0;
 
@@ -199,15 +211,10 @@ export class ViewBackgroundsListComponent implements OnInit {
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
-                this.fileName = '';
-                this.fileToUpload = null;
                 this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
                 this.backgroundRequestModel.rowStart = 1;
                 this.backgroundRequestModel.rowEnd = 15;
                 this.closeUploadModal.nativeElement.click();
-                this.loadBackgrounds();
-                this.preview = null;
-                this.fileToUpload = null;
                 this.loadBackgrounds();
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -247,6 +254,7 @@ export class ViewBackgroundsListComponent implements OnInit {
     this.snackbarService.setHelpContext(newContext);
   }
   Closemodal() {
+    this.myInputVariable.nativeElement.value = '';
     this.preview = null;
     this.fileToUpload = null;
   }

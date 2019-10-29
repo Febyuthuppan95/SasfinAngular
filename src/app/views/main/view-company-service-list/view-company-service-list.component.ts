@@ -238,18 +238,16 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
     this.companyService.service(model).then(
         (res: CompanyServiceResponse) => {
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
+          if (res.outcome.outcome === 'SUCCESS') {
+            this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          } else {
-              this.notify.successmsg(
-                res.outcome.outcome,
-                res.outcome.outcomeMessage);
           }
+
           this.rowCount = res.rowCount;
           this.dataList = res.services;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -261,9 +259,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
             this.paginateData();
           }
-          console.log(this.totalShowing);
-          this.loadUsers();
-          this.loadServices(false);
+
 
         },
         msg => {
@@ -337,6 +333,14 @@ export class ContextCompanyServiceListComponent implements OnInit {
       (res: ServiceListResponse) => {
 
           this.serviceslist = res.serviceses;
+
+          this.dataList.forEach(Cservice => {
+            this.serviceslist.forEach((service, index) => {
+              if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
+                this.serviceslist.splice(index, 1);
+              }
+            });
+        });
       },
       msg => { }
     );
@@ -407,6 +411,9 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.focusstart = start;
     this.focusend = end;
 
+    this.loadUsers();
+    this.loadServices(false);
+
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -457,7 +464,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company service successfully added');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.loadCompanyServiceList();
             this.closeaddModal.nativeElement.click();
           }
@@ -498,7 +505,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company service successfully Updated');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.closeeditModal.nativeElement.click();
             this.loadCompanyServiceList();
         }

@@ -278,12 +278,7 @@ export class ContextItemsListComponent implements OnInit {
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -299,7 +294,6 @@ export class ContextItemsListComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.itemsLists.length;
-
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.items.length - 1;
         }

@@ -282,13 +282,13 @@ export class ViewTransactionsComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
+          this.dataList = res.transactions;
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.transactions;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.transactions.length;

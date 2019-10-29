@@ -224,10 +224,6 @@ export class ViewItemParentsComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
-        } else {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
         }
 
         this.itemParents = res.itemParents;
