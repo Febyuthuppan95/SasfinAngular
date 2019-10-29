@@ -10,3 +10,22 @@
 .form-inline .form-group input{
   width: 100%;
 }
+
+.autocomplete {
+  background: #f2f2f2;
+  padding: 4px;
+  border: solid lightgrey 1px;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete li {
+  border-bottom: solid lightgray 1px;
+  font-size: 14px;
+  color: #444;
+  padding: 4px;
+}
+.autocomplete li:hover {
+  background: #d4d4d4;
+}

@@ -35,11 +35,16 @@
     class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
     placeholder="Customs Value" />
   </div>
-  <div class="form-group" *ngIf="this.form.tariff != undefined">
+  <div class="form-group" *ngIf="this.form.tariff != undefined" style="position: relative;">
     <input type="text"
       [(ngModel)]="this.form.tariff" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
-      placeholder="Tariff" />
+      placeholder="Tariff" (keyup)="tariffChange()"/>
+      <div class="autocomplete" *ngIf="this.showTariffHint">
+        <ul class="list-unstyled">
+          <li>Degradable</li>
+        </ul>
+      </div>
   </div>
   <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
     <input type="text"

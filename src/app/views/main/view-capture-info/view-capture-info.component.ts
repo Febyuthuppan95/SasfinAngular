@@ -305,7 +305,6 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   removeCapture(id: number) {
-    alert(this.captureInfo.captureInfoID);
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,

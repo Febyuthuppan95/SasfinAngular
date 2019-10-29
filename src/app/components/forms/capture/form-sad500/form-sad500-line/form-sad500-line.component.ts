@@ -7,6 +7,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
+import { ValidateService } from 'src/app/services/Validation.Service';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -16,7 +17,8 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit {
 
 
-  constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService) { }
+  constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
+              private validate: ValidateService) { }
 
   currentUser: User;
 
@@ -24,6 +26,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   tariffList: object[];
   unitOfMeasureList: object[];
   focusLineForm: boolean;
+
+  showTariffHint = false;
+  showUnitOfMeasureHint = true;
 
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
@@ -147,5 +152,17 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         value: this.form.value,
       });
     }
+  }
+
+  tariffChange() {
+    if (!this.validate.isEmpty(this.form.tariff)) {
+      this.showTariffHint = true;
+    } else {
+      this.showTariffHint = false;
+    }
+  }
+
+  loadTarrifs() {
+
   }
 }

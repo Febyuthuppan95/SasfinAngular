@@ -56,7 +56,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   attachmentID: number;
   showHelp: boolean = false;
   focusPDF: boolean = false;
-
+  attachmentType: string;
   ngOnInit() {
     this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
@@ -73,14 +73,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
         id: data.companyID,
         name: data.companyName
       };
-
-      this.loadCaptureInfo();
     });
 
     this.transactionService.observerCurrentAttachment().subscribe (obj => {
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
+      this.attachmentType = obj.docType;
       this.loadAttachments();
+      this.loadCaptureInfo();
     });
   }
 
@@ -132,10 +132,27 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   }
 
   loadCaptureInfo() {
+    let docTypeID = 1;
+
+    switch (this.attachmentType) {
+      case 'SAD500': {
+        docTypeID = 3;
+        break;
+      }
+      case 'Customs Release Notification': {
+        docTypeID = 2;
+        break;
+      }
+      case 'Import Clearing Instruction': {
+        docTypeID = 4;
+        break;
+      }
+    }
+
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
       companyID: this.company.id,
-      doctypeID: 2,
+      doctypeID: docTypeID,
       filter: '',
       orderBy: '',
       orderByDirection: 'ASC',
