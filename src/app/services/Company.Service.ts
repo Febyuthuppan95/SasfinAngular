@@ -17,6 +17,7 @@ import { GetItemList } from '../models/HttpRequests/GetItemList';
 import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemList';
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
+import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
 
 @Injectable({
   providedIn: 'root'
@@ -270,7 +271,58 @@ export class CompanyService {
    */
   public service(requestModel) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/companyservice`;
+      const apiURL = `${environment.ApiEndpoint}/companies/companyService`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public itemservice(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemServices`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public itemserviceadd(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemServicesAdd`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public itemserviceupdate(requestModel) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemServicesUpdate`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -288,7 +340,7 @@ export class CompanyService {
   public AddService(model: AddCompanyService) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyservice`;
+      const apiURL = `${environment.ApiEndpoint}/companies/addCompanyService`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()
@@ -307,7 +359,7 @@ export class CompanyService {
   public UpdateService(model: UpdateCompanyService) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/updatecompanyservice`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateCompanyService`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()
@@ -325,7 +377,7 @@ export class CompanyService {
 
   public items(requestModel) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/companyitems`;
+      const apiURL = `${environment.ApiEndpoint}/companies/companyItems`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -342,7 +394,7 @@ export class CompanyService {
 
   public additem(model: AddCompanyItem) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/addcompanyitem`;
+      const apiURL = `${environment.ApiEndpoint}/companies/addCompanyItem`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
@@ -359,7 +411,7 @@ export class CompanyService {
 
   public itemupdate(model) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/updateitem`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateItem`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
@@ -377,7 +429,7 @@ export class CompanyService {
   public RemoveItemList(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/removeitem`;
+      const apiURL = `${environment.ApiEndpoint}/companies/removeItem`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -411,7 +463,7 @@ export class CompanyService {
   public getAlternateItemList(model: GetIAlternateItemList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/alternateitems`;
+      const apiURL = `${environment.ApiEndpoint}/companies/alternateItems`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -429,7 +481,7 @@ export class CompanyService {
     console.log(model);
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/updatealternateitems`;
+      const apiURL = `${environment.ApiEndpoint}/companies/updateAlternateItems`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -446,7 +498,7 @@ export class CompanyService {
   public addtoGroup(model: AddItemGroup) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/additemgroup`;
+      const apiURL = `${environment.ApiEndpoint}/companies/addItemGroup`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()
@@ -465,7 +517,7 @@ export class CompanyService {
   public getItemValueList(model: GetItemValuesList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/itemvalueslist`;
+      const apiURL = `${environment.ApiEndpoint}/companies/itemValuesList`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -479,10 +531,10 @@ export class CompanyService {
     });
   }
 
-  public UpdateItemValueList(model) {
+  public UpdateItemValue(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesupdate`;
+      const apiURL = `${environment.ApiEndpoint}/companies/itemValuesUpdate`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -497,10 +549,10 @@ export class CompanyService {
   }
 
 
-  public RemoveItemValueList(model) {
+  public RemoveItemValue(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/itemvaluesremove`;
+      const apiURL = `${environment.ApiEndpoint}/companies/itemValuesRemove`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -514,6 +566,74 @@ export class CompanyService {
     });
   }
 
+  public getItemParentsList(model: GetItemParentsList) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemParentsList`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public AddItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemParentAdd`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public UpdateItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemParentUpdate`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+
+  public RemoveItemParent(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemParentRemove`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
   public getTariffList() { // model: GetTariffList
     // const json = JSON.parse(JSON.stringify(model));

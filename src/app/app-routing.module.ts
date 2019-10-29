@@ -43,6 +43,11 @@ import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.com
 // tslint:disable-next-line: max-line-length
 import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
 import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
+import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 const routes: Routes = [
   {
     path: '',
@@ -83,6 +88,7 @@ const routes: Routes = [
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
           { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },
+          { path: 'companies/items/itemparents', component: ViewItemParentsComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
@@ -93,6 +99,9 @@ const routes: Routes = [
           { path: 'currencies', component: ViewCurrenciesListComponent},
           { path: 'sad500/lines', component: Sad500LinesComponent },
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
+          { path: 'transaction/sad500s', component: ViewSAD500Component },
+          { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
+          { path: 'transaction/invoices', component: ViewInvoicesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

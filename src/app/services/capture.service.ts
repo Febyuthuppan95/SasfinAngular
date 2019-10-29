@@ -13,7 +13,9 @@ export class CaptureService {
   // tslint:disable-next-line: max-line-length
   customsReleaseUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/customsrelease`, requestModel);
   customsReleaseGet = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/crn/get`, requestModel);
+  customsReleaseList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/crn/list`, requestModel);
 
+  sad500List = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500/list`, requestModel);
   sad500Update = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500/update`, requestModel);
   sad500Get = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500/get`, requestModel);
 
@@ -27,7 +29,12 @@ export class CaptureService {
   // Import Clearing Instructions
   iciList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/list`, requestModel);
   iciUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/update`, requestModel);
-  iciAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/ici/add`, requestModel);
+  iciAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/ici/create`, requestModel);
+
+  // Invoices
+  invoiceList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/list`, requestModel);
+  invoiceUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/update`, requestModel);
+  invoiceAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/invoice/create`, requestModel);
 
   // tslint:disable-next-line: max-line-length
   shippingDocumentUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/shipping`, requestModel);

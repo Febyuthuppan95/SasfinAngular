@@ -1,0 +1,81 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <app-table
+        *ngIf="this.itemParents"
+        [dataset]="this.itemParents"
+        [headings]="this.tableHeadings"
+        [recordsPerPage]="this.recordsPerPage"
+        [rowStart]="this.rowStart"
+        [rowEnd]="this.rowEnd"
+        [rowCount]="this.rowCount"
+        [orderBy]="this.orderBy"
+        [orderByDirection]="this.orderDirection"
+        [tableHeader]="this.tableHeader"
+        (selectedRecord)="selectedRecord($event)"
+        (orderChange)="orderChange($event)"
+        (pageChange)="pageChange($event)"
+        (showingRecordsEvent)="recordsPerPageChange($event)"
+        (searchEvent)="searchEvent($event)"
+        (backButtonEvent)="backToItems()">
+      </app-table>
+    </div>
+  </div>
+
+  <app-notification></app-notification>
+  <app-modal-component></app-modal-component>
+  <app-menu
+    [contextShow]="this.contextMenu"
+    [x]="this.contextMenuX"
+    [y]="this.contextMenuY"
+    (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+    <app-context-menu-items-parents (removeItemValue)="removeItemParent($event)" (editItemValue)="editItemParent($event)"></app-context-menu-items-parents>
+  </app-menu>
+
+  <!--Edit Modal-->
+  <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
+  <div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalContent">Edit values</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="control-label">Quantity:</label>
+                <input class="form-control" type="number" step=".1" [(ngModel)]="this.Quantity"  [ngModelOptions]="{standalone: true}" required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Unit Of Measure:</label>
+              <select class="form-control" [selectedIndex]="selectedUOM" (change)="onUOMChange($event.target.value)">
+                <option *ngFor="let Unit of this.UOMList" [value]="Unit.unitOfMeasureID" [selected]="Unit.unitOfMeasureID === UnitsofMeasureID">{{Unit.name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Start Date:</label>
+              <input type="date" class="form-control"
+              [ngModel]="this.StartDate | date:'yyyy-MM-dd'" [ngModelOptions]="{standalone: true}" rows="4" cols="50" (change)="this.StartDate = $event.target.value"  required/>
+            </div>
+            <div class="form-group">
+                  <label class="control-label">End Date:</label>
+                  <input type="date" class="form-control"
+                  [ngModel]="this.EndDate | date:'yyyy-MM-dd'" [ngModelOptions]="{standalone: true}" rows="4" cols="50" (change)="this.EndDate = $event.target.value" required/>
+            </div>
+          </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+          <button type="button" (click)="UpdateItemParent()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+

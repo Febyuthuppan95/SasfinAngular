@@ -116,12 +116,7 @@ export class ViewCurrenciesListComponent implements OnInit {
       (res: ListCurrencies) => {
         this.showLoader = false;
         {
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage

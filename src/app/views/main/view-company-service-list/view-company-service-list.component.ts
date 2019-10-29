@@ -238,22 +238,28 @@ export class ContextCompanyServiceListComponent implements OnInit {
 
     this.companyService.service(model).then(
         (res: CompanyServiceResponse) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          }
+
+          this.rowCount = res.rowCount;
+          this.dataList = res.services;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.services;
-            this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.services.length;
             this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
             this.paginateData();
           }
 
-          this.loadUsers();
-          this.loadServices(false);
 
         },
         msg => {
@@ -267,8 +273,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
   }
 
   loadUsers() {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetUserList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -282,58 +286,37 @@ export class ContextCompanyServiceListComponent implements OnInit {
       .getUserList(model)
       .then(
         (res: UserListResponse) => {
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          if (res.rowCount === 0) {
-            this.noData = true;
-            this.showLoader = false;
-          } else {
-            this.noData = false;
-            this.rowCount = res.rowCount;
-            this.showingRecords = res.userList.length;
-            this.userList = res.userList;
-            this.showLoader = false;
-            this.totalShowing = +this.rowStart + +this.userList.length - 1;
-          }
+
+          this.userList = res.userList;
+
           this.ResConsultants.splice(0, this.ResConsultants.length);
           this.ResCapturers.splice(0, this.ResCapturers.length);
 
           for (const user of res.userList) {
 
-            const temp: ResponsibleConsultant = {
-              id: +user.userId,
-              Name: user.firstName
-            };
+          const temp: ResponsibleConsultant = {
+            id: +user.userId,
+            Name: user.firstName
+          };
 
-            const temp2: ResponsibleCapturer = {
-              id: +user.userId,
-              Name: user.firstName
-            };
+          const temp2: ResponsibleCapturer = {
+            id: +user.userId,
+            Name: user.firstName
+          };
 
-            if (user.designation === 'Consultant') {
-              this.ResConsultants.push(temp);
-            } else if (user.designation === 'Capturer') {
-              this.ResCapturers.push(temp2);
-            }
+          if (user.designation === 'Consultant') {
+            this.ResConsultants.push(temp);
+          } else if (user.designation === 'Capturer') {
+            this.ResCapturers.push(temp2);
           }
-        },
-        msg => {
-          this.showLoader = false;
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
         }
+        },
+        msg => {}
       );
   }
 
   loadServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
+
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -348,37 +331,19 @@ export class ContextCompanyServiceListComponent implements OnInit {
     .getServiceList(model)
     .then(
       (res: ServiceListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
-          if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
-          }
-        }
-        if (res.rowCount === 0) {
-          this.noData = true;
-          this.showLoader = false;
-        } else {
-          this.noData = false;
-          this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceses.length;
+
           this.serviceslist = res.serviceses;
-          this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.serviceslist.length - 1;
-        }
+          console.log(this.serviceslist);
+
+          this.dataList.forEach(Cservice => {
+            this.serviceslist.forEach((service, index) => {
+              if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
+                this.serviceslist.splice(index, 1);
+              }
+            });
+        });
       },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
+      msg => { }
     );
   }
 
@@ -447,6 +412,9 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.focusstart = start;
     this.focusend = end;
 
+    this.loadUsers();
+    this.loadServices(false);
+
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -475,7 +443,8 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
-
+    this.loadServices(false);
+    this.loadUsers();
     this.openaddModal.nativeElement.click();
   }
 
@@ -497,7 +466,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company address successfully added');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.loadCompanyServiceList();
             this.closeaddModal.nativeElement.click();
           }
@@ -538,7 +507,7 @@ export class ContextCompanyServiceListComponent implements OnInit {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company service successfully Updated');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.closeeditModal.nativeElement.click();
             this.loadCompanyServiceList();
         }

@@ -141,13 +141,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
     };
     this.AddressTypesList.push(temp);
 
-    // this.activatedRoute.paramMap
-    // .subscribe(params => {
-    //   this.companyID = +params.get('id');
-    //   this.companyName = params.get('name');
-    // });
-
-
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
@@ -256,8 +249,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
             this.paginateData();
           }
-
-          console.log(res);
         },
         msg => {
           this.showLoader = false;
@@ -400,25 +391,45 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.Address2 = '';
     this.POBox = '';
     this.Type = 0;
+    this.cityID = 0;
     this.disableAddressSelect = false;
     this.selectedAddressIndex = 0;
     this.openaddModal.nativeElement.click();
   }
 
   addCompanyAddress() {
+    let errors = 0;
 
-    const requestModel: AddCompanyAddress = {
-      userID: this.currentUser.userID,
-      companyID: this.companyID,
-      address1: this.Address1,
-      address2: this.Address2,
-      POBox: this.POBox,
-      addressTypeID: this.Type,
-      cityID: this.cityID,
-    };
+    if (this.Address1 === '' || this.Address1 === null || this.Address1 === undefined) {
+      errors++;
+    }
+    if (this.Address2 === '' || this.Address2 === null || this.Address2 === undefined) {
+      errors++;
+    }
+    if (this.POBox === '' || this.POBox === null || this.POBox === undefined) {
+      errors++;
+    }
+    if (this.Type === 0 || this.Type === null || this.Type === undefined) {
+      errors++;
+    }
+    if (this.cityID === 0 || this.cityID === null || this.cityID === undefined) {
+      errors++;
+    }
 
-    this.companyService.AddAddress(requestModel).then(
-      (res: {outcome: Outcome}) => {
+
+    if (errors === 0) {
+      const requestModel: AddCompanyAddress = {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        address1: this.Address1,
+        address2: this.Address2,
+        POBox: this.POBox,
+        addressTypeID: this.Type,
+        cityID: this.cityID,
+      };
+
+      this.companyService.AddAddress(requestModel).then(
+        (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
@@ -435,6 +446,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
           this.closeaddModal.nativeElement.click();
         }
       );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+    }
   }
 
   editCompanyAddress($event) {

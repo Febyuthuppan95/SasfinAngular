@@ -13,10 +13,14 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
+import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
+import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
+import { ServicesService } from 'src/app/services/Services.Service';
+import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
+import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 
 @Component({
   selector: 'app-view-items-list',
@@ -57,6 +61,11 @@ export class ContextItemsListComponent implements OnInit {
 
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
+
+  @ViewChild('openRemoveModal', {static: true})
+  openRemoveModal: ElementRef;
+  @ViewChild('closeRemoveModal', {static: true})
+  closeRemoveModal: ElementRef;
 
   Item: {
     itemID: number,
@@ -131,14 +140,6 @@ export class ContextItemsListComponent implements OnInit {
         enable: true,
         tag: 'Vulnerable'
       }
-    },
-    {
-      title: 'Services',
-      propertyName: 'services',
-      order: {
-        enable: true,
-        tag: 'Services'
-      }
     }
   ];
 
@@ -182,8 +183,9 @@ export class ContextItemsListComponent implements OnInit {
   displayFilter = false;
   isAdmin: false;
   YESNO: string[] = ['Yes', 'No'];
-  servicelist: Service[] = null;
-  itemservicelist: Service[] = null;
+  itemservicelist: ItemService[] = [];
+  servicelist: Service[] = [];
+
 
   ngOnInit() {
 
@@ -193,12 +195,51 @@ export class ContextItemsListComponent implements OnInit {
 
     this.loadItems(true);
 
-    this.loadServices(false);
+  }
+
+  loaditemServices(displayGrowl: boolean) {
+    const model: GetItemServiceList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      itemID: this.Item.itemID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.companyService
+    .itemservice(model)
+    .then(
+      (res: ItemServiceListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+            this.itemservicelist = res.itemServices;
+            this.servicelist.forEach((service, index) => {
+              this.itemservicelist.forEach(iservice => {
+                if (service.serviceID === iservice.serviceID) {
+                    this.servicelist.splice(index, 1);
+                }
+              });
+            });
+        } else {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Not Found',
+            'Item Service not found'
+          );
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
   loadServices(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -215,31 +256,8 @@ export class ContextItemsListComponent implements OnInit {
       (res: ServiceListResponse) => {
 
         this.servicelist = res.serviceses;
-        this.itemservicelist = res.serviceses;
-        this.items.forEach(item => {
-          let count = 0;
-          this.servicelist.forEach(service => {
-            console.log(service.itemID);
-            console.log(item.itemID);
-            if (service.itemID === item.itemID) {
-              this.servicelist.splice(count, 1);
-            } else {
-              count ++;
-            }
-          });
-          count = 0;
-          this.itemservicelist.forEach(iservice => {
-            if (iservice.itemID !== item.itemID) {
-              this.itemservicelist.splice(count, 1);
-            } else {
-              count ++;
-            }
-          });
-        });
-        console.log('start');
-        console.log(this.servicelist);
-        console.log(this.itemservicelist);
-        console.log('done');
+        this.loaditemServices(false);
+
       },
       msg => {
         this.showLoader = false;
@@ -265,12 +283,7 @@ export class ContextItemsListComponent implements OnInit {
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -279,8 +292,6 @@ export class ContextItemsListComponent implements OnInit {
         }
         this.items = res.itemsLists;
 
-        console.log(this.items);
-
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -288,7 +299,6 @@ export class ContextItemsListComponent implements OnInit {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.itemsLists.length;
-
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
@@ -334,7 +344,6 @@ export class ContextItemsListComponent implements OnInit {
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
-    console.log(this.Item);
   }
 
   selectedRecord(obj: SelectedRecord) {
@@ -370,6 +379,9 @@ export class ContextItemsListComponent implements OnInit {
   }
 
   editItem(id: number) {
+    this.loadServices(false);
+
+
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.itemID = this.Item.itemID;
@@ -381,11 +393,16 @@ export class ContextItemsListComponent implements OnInit {
     this.pI = this.Item.pI;
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
-    console.log(this.Item.mIDP);
-    console.log(this.pI);
+  }
+  removeItem(id: number) {
+    console.log(this.Item.itemID);
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.itemID = this.Item.itemID;
+    this.openRemoveModal.nativeElement.click();
   }
 
-  UpdateItem() {
+  UpdateItem(deleted: boolean) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
@@ -396,10 +413,10 @@ export class ContextItemsListComponent implements OnInit {
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
-      service: ''
+      service: '',
+      isDeleted: deleted
     };
     console.log(requestModel);
-
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
@@ -408,6 +425,49 @@ export class ContextItemsListComponent implements OnInit {
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  addNewservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      serviceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceadd(requestModel).then(
+      (res: AddItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+        this.loadItems(false);
+        this.loadServices(false);
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+  }
+
+  removeservice(id, name) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemServiceID: id,
+      itemID: this.itemID
+    };
+
+    this.companyService.itemserviceupdate(requestModel).then(
+      (res: UpdateItemServiceResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+        this.loadItems(false);
+        this.loadServices(false);
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
@@ -435,14 +495,6 @@ export class ContextItemsListComponent implements OnInit {
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
-  }
-
-  onPIstateChange(state: string) {
-    this.pI = state;
-  }
-
-  onMIDPstateChange(state: string) {
-    this.mIDP = state;
   }
 
 }

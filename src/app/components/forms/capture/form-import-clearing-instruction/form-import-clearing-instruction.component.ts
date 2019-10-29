@@ -5,6 +5,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { CaptureService } from 'src/app/services/capture.service';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -14,7 +15,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 export class FormImportClearingInstructionComponent implements OnInit {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router) { }
+              private router: Router, private captureService: CaptureService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -74,7 +75,7 @@ export class FormImportClearingInstructionComponent implements OnInit {
     attachmentStatusID: 2,
     };
 
-    this.transactionService.customsReleaseUpdate(requestModel).then(
+    this.captureService.iciUpdate(requestModel).then(
       (res: Outcome) => {
         console.log(res);
         if (res.outcome === 'SUCCESS') {

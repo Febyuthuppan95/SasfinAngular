@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableConfig, TableHeader } from 'src/app/models/Table';
+import { TableConfig, TableHeader, Order } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
-import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
+import { ICIListResponse, ICI } from 'src/app/models/HttpResponses/ICI';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { ValidateService } from 'src/app/services/Validation.Service';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',
@@ -12,6 +17,10 @@ import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
   styleUrls: ['./view-import-clearing-instructions.component.scss']
 })
 export class ViewImportClearingInstructionsComponent implements OnInit {
+  constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
+              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
+              private router: Router) { }
+
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
@@ -21,7 +30,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     header:  {
       title: 'Import Clearing Instruction',
       addButton: {
-       enable: true,
+       enable: false,
       },
       backButton: {
         enable: true
@@ -46,9 +55,6 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     dataset: null
   };
 
-  constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-              private captureService: CaptureService) { }
-
   listRequest = {
     userID: this.currentUser.userID,
     specificICIID: -1,
@@ -60,14 +66,8 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     transactionID: -1,
   };
 
-  addRequest = {
-    file: null,
-    waybillNo: null,
-    supplierRef: null,
-    importersCode: null,
-    userID: this.currentUser.userID,
-    transactionID: -1,
-  };
+  @ViewChild(NotificationComponent, { static: false})
+  private notify: NotificationComponent;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -77,7 +77,6 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
-        this.addRequest.transactionID = data.transactionID;
         this.loadDataset();
       }
     });
@@ -87,16 +86,52 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
     this.captureService.iciList(this.listRequest).then(
       (res: ICIListResponse) => {
         this.tableConfig.dataset = res.clearingInstructions;
-        console.log(res);
+
+        if (res.clearingInstructions.length === 0) {
+          this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
       },
       (msg) => {
-        console.log(msg);
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
   }
 
-  addICI() {
-
+  back() {
+    this.router.navigate(['companies', 'transactions']);
   }
 
+  searchFilter(query: string) {
+    this.listRequest.filter = query;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
+    this.loadDataset();
+  }
+
+  orderChange($event: Order) {
+    this.listRequest.orderBy = $event.orderBy;
+    this.listRequest.orderDirection = $event.orderByDirection;
+    this.listRequest.rowStart = 1;
+    this.listRequest.rowEnd = this.tableConfig.recordsPerPage;
+    this.loadDataset();
+  }
+
+  recordsPerPageChange(recordsPerPage: number) {
+    this.tableConfig.recordsPerPage = recordsPerPage;
+    this.listRequest.rowStart = 1;
+    this.loadDataset();
+  }
+
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.listRequest.rowStart = $event.rowStart;
+    this.listRequest.rowEnd = $event.rowEnd;
+    this.loadDataset();
+  }
+
+  searchEvent(query: string) {
+    this.listRequest.filter = query;
+    this.loadDataset();
+  }
 }

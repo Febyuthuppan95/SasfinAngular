@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -35,6 +36,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
+    this.rowCount = 0;
   }
 
   @ViewChild(ContextMenuComponent, {static: true } )
@@ -68,6 +70,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   disableAttachmentType: boolean;
   attachmentTypeIndex: number;
   preview: string;
+  selectAttachmentType = new FormControl();
 
   rowStart: number;
   rowEnd: number;
@@ -221,21 +224,19 @@ export class ViewTransactionFilesComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
+
+          this.dataList = res.attachments;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
-            this.rowCount = res.attachments.length > 0 ? res.attachments.length : 0;
             this.noData = false;
+            this.rowCount = res.rowCount ;
             this.dataset = res;
-            this.dataList = res.attachments;
-            this.rowStart = res.attachments.length > 0 ? 1 : 0;
-            this.showingRecords = res.attachments.length > 0 ? res.attachments.length : 1;
-
-            // this.rowCount = res.rowCount;
+            this.showingRecords = res.attachments.length;
             this.showLoader = false;
-            // this.showingRecords = res.attachments.length;
-            this.totalShowing = +this.rowStart + +this.dataset.attachments.length - 1;
+            this.totalShowing = +this.rowStart + +this.dataList.length - 1;
             this.paginateData();
           }
         },
@@ -354,6 +355,7 @@ export class ViewTransactionFilesComponent implements OnInit {
             this.attachmentQueueDisplay.splice(index, 1);
             this.preview = null;
             this.attachmentName = null;
+            this.selectAttachmentType.reset(-1);
 
         },
         (msg) => {
@@ -369,6 +371,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentTypeIndex = 0;
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
+    this.selectAttachmentType.reset(-1);
     this.openModal.nativeElement.click();
   }
 
@@ -400,5 +403,6 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentTypeIndex = 0;
     this.preview = null;
     this.attachmentTypeIndex = 0;
+    this.selectAttachmentType.reset(-1);
   }
 }

@@ -1,3 +1,5 @@
+import { ClassMethod } from '@angular/compiler';
+
 export class TableConfig {
   headings: TableHeading[];
   header: TableHeader;
@@ -8,6 +10,13 @@ export class TableConfig {
   rowCount?: number;
   orderBy?: string;
   orderByDirection?: string;
+  events?: {
+    search?: any,
+    order?: any,
+    pageChange?: any,
+    addButton?: any,
+    backButton?: any
+  };
 }
 
 export class TableHeading {
@@ -17,6 +26,7 @@ export class TableHeading {
     enable: boolean,
     tag?: string,
   };
+  styleType?: string;
   style?: {
     posClass?: string,
     negClass?: string,

@@ -108,14 +108,7 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit {
       (res: ListCompanyAddInfoTypes) => {
         this.showLoader = false;
         {
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage

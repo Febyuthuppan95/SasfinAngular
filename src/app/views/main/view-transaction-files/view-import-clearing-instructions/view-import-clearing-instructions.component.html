@@ -15,7 +15,14 @@
     [rowCount]="this.tableConfig.rowCount"
     [orderBy]="this.tableConfig.orderBy"
     [orderByDirection]="this.tableConfig.orderByDirection"
-    [tableHeader]="this.tableConfig.header">
+    [tableHeader]="this.tableConfig.header"
+    (backButtonEvent)="back()"
+    (orderChange)="orderChange($event)"
+    (showingRecordsEvent)="recordsPerPageChange($event)"
+    (pageChange)="pageChange($event)"
+    (searchEvent)="searchFilter($event)">
     </app-table>
   </div>
 </div>
+
+<app-notification></app-notification>

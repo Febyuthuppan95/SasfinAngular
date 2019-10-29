@@ -24,6 +24,22 @@ export class ApiService {
     });
   }
 
+  public postFormData(url: string, formData: FormData) {
+    return new Promise((resolve, reject) => {
+      this.httpClient
+          .post(url, formData)
+          .toPromise()
+          .then(
+            res => {
+              resolve(res);
+            },
+            msg => {
+              reject(msg);
+            }
+          );
+    });
+  }
+
   public get(url: string) {
     return new Promise((resolve, reject) => {
       this.httpClient

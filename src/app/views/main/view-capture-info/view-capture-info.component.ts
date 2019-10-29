@@ -10,8 +10,11 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { TableHeading, SelectedRecord, TableHeader } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, TableHeader, Order } from 'src/app/models/Table';
 import { stringify } from '@angular/compiler/src/util';
+import { Pagination } from 'src/app/models/Pagination';
+import { Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/Menu.service';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -25,7 +28,24 @@ export class ViewCaptureInfoComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private transactionService: TransactionService,
-    private router: Router) {}
+    private IMenuService: MenuService,
+    private router: Router
+    ) {
+      this.rowStart = 1;
+      this.rowCountPerPage = 15;
+      this.activePage = +1;
+      this.prevPageState = true;
+      this.nextPageState = false;
+      this.prevPage = +this.activePage - 1;
+      this.nextPage = +this.activePage + 1;
+      this.filter = '';
+      this.orderBy = 'Name';
+      this.orderDirection = 'ASC';
+      this.totalShowing = 0;
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      this.sidebarCollapsed = result;
+    });
+    }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -49,6 +69,22 @@ export class ViewCaptureInfoComponent implements OnInit {
   currentTheme: string;
   dataset: CaptureInfoResponse;
   recordsPerPage = 15;
+  showingPages: Pagination[];
+  rowCount: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  subscription: Subscription;
+  rowStart: number;
+  rowEnd: number;
+  rowCountPerPage: number;
+  showingRecords: number;
+  filter: string;
+  activePage: number;
+  orderBy: string;
+  orderDirection: string;
+  totalShowing: number;
 
   noData = false;
   showLoader = true;
@@ -107,7 +143,7 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   tableData = null;
   tableHeadings: TableHeading[] = [
-    { title: '', propertyName: 'rowNum', order: { enable: false } },
+    { title: '#', propertyName: 'rowNum', order: { enable: true } },
     { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
     { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
   ];
@@ -151,6 +187,20 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.loadDoctypes();
   }
 
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadDataset();
+  }
+
+  recordsPerPageChange(recordsPerPage: number) {
+    this.rowCountPerPage = recordsPerPage;
+    this.rowStart = 1;
+    this.loadDataset();
+  }
+
   searchEvent(query: string) {
     this.requestModel.filter = query;
     this.loadDataset();
@@ -165,18 +215,23 @@ export class ViewCaptureInfoComponent implements OnInit {
         this.showLoader = false;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          if (!this.showedSuccess) {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.showedSuccess = true;
-            this.tableData = res.captureInfo;
-          }
-          this.tableData = res.captureInfo;
-          this.dataset = res;
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.showedSuccess = false;
-          this.tableData = [];
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.tableData = res.captureInfo;
+        this.dataset = res;
+        this.rowCount = res.rowCount;
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.showingRecords = res.captureInfo.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.tableData.length - 1;
+        }
+
       },
       (msg) => {
         this.showLoader = false;
@@ -238,9 +293,9 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.transactionService.captureInfoUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          this.loadDataset();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeEditModal.nativeElement.click();
-          this.loadDataset();
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
@@ -305,7 +360,6 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   removeCapture(id: number) {
-    alert(this.captureInfo.captureInfoID);
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,

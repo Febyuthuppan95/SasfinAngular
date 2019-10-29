@@ -14,6 +14,7 @@ import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
 import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
+import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -53,23 +54,17 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.itemstotalShowing = 0;
   }
 
-  @ViewChild('openeditModal', {static: true})
-  openeditModal: ElementRef;
+  @ViewChild('openaddGroupModal', {static: true})
+  openaddGroupModal: ElementRef;
 
-  @ViewChild('closeeditModal', {static: true})
-  closeeditModal: ElementRef;
+  @ViewChild('closeaddGroupModal', {static: true})
+  closeaddGroupModal: ElementRef;
 
-  @ViewChild('openaddModal', {static: true})
-  openaddModal: ElementRef;
+  @ViewChild('openaddParentModal', {static: true})
+  openaddParentModal: ElementRef;
 
-  @ViewChild('closeaddModal', {static: true})
-  closeaddModal: ElementRef;
-
-  @ViewChild('openviewModal', {static: true})
-  openviewModal: ElementRef;
-
-  @ViewChild('closeviewModal', {static: true})
-  closeviewModal: ElementRef;
+  @ViewChild('closeaddParentModal', {static: true})
+  closeaddParentModal: ElementRef;
 
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
@@ -82,6 +77,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   itemsdraft: Items[] = [];
   items: Items[] = [];
+  itemparents: Items[] = [];
   pages: Pagination[];
   itemspages: Pagination[];
   showingPages: Pagination[];
@@ -117,6 +113,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
   itemsactivePage: number;
   focusItemGroupID: number;
   focusItemID: number;
+  focusItemParentID: number;
   focusItemName: string;
   selectedRow = -1;
   Item = '';
@@ -287,7 +284,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
   loadCompanyItemsList(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -298,22 +294,16 @@ export class ContextCompanyItemsListComponent implements OnInit {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    console.log(model);
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
 
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
-            if (displayGrowl) {
+          if (res.outcome.outcome === 'SUCCESS') {
               this.notify.successmsg(
                 res.outcome.outcome,
                 res.outcome.outcomeMessage);
-              }
           }
+
+          this.dataList = res.items;
 
           if (res.rowCount === 0) {
             this.noData = true;
@@ -321,7 +311,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.items;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.items.length;
@@ -350,7 +339,6 @@ export class ContextCompanyItemsListComponent implements OnInit {
       rowEnd: this.itemsrowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
@@ -467,7 +455,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, groupid, itemid, itemname) {
+  popClick(event, groupid, itemid, itemname, itemparentid) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -479,6 +467,7 @@ export class ContextCompanyItemsListComponent implements OnInit {
     this.focusItemGroupID = groupid;
     this.focusItemID = itemid;
     this.focusItemName = itemname;
+    this.focusItemParentID = itemparentid;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -491,16 +480,33 @@ export class ContextCompanyItemsListComponent implements OnInit {
 
   Finalitemlist() {
     this.items.splice(0, this.items.length);
-    let count = 0;
+    let countitems = 0;
+
+
     this.itemsdraft.forEach((item, index) => {
       if (item.itemID !== this.focusItemID) {
-        count++;
+        countitems++;
         this.items.push(item);
       }
     });
 
-    this.itemsrowCount = count;
-    this.itemsshowingRecords = count;
+    this.itemsrowCount = countitems;
+    this.itemsshowingRecords = countitems;
+  }
+
+  Finalitemparentslist() {
+    this.itemparents.splice(0, this.itemparents.length);
+    let countitemparent = 0;
+
+    this.items.forEach((item, index) => {
+      if (item.itemID !== this.focusItemParentID) {
+        countitemparent++;
+        this.itemparents.push(item);
+      }
+    });
+
+    this.itemsrowCount = countitemparent;
+    this.itemsshowingRecords = countitemparent;
   }
 
 
@@ -513,11 +519,10 @@ export class ContextCompanyItemsListComponent implements OnInit {
   }
 
   OpenGroup($event) {
-
     this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.openaddModal.nativeElement.click();
+    this.openaddGroupModal.nativeElement.click();
   }
 
   addtoGroup(groupid, itemid) {
@@ -539,7 +544,48 @@ export class ContextCompanyItemsListComponent implements OnInit {
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-          this.closeaddModal.nativeElement.click();
+          this.closeaddGroupModal.nativeElement.click();
+          this.loadCompanyItemsList(false);
+        }
+      },
+      msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  OpenParent($event) {
+
+    this.Finalitemlist();
+    this.Finalitemparentslist();
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.openaddParentModal.nativeElement.click();
+  }
+
+  addtoParent(itemid) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.focusItemID,
+      parentID: itemid
+    };
+    this.companyService
+    .AddItemParent(requestModel).then(
+      (res: ItemParentAddReponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        } else {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+          this.closeaddParentModal.nativeElement.click();
           this.loadCompanyItemsList(false);
         }
       },

@@ -99,6 +99,14 @@ export class ViewUserListComponent implements OnInit {
       }
     },
     {
+      title: '',
+      propertyName: 'profileImage',
+      order: {
+        enable: false,
+      },
+      styleType: 'user-profile'
+    },
+    {
       title: 'Emp No',
       propertyName: 'empNo',
       order: {
@@ -153,6 +161,7 @@ export class ViewUserListComponent implements OnInit {
         enable: true,
         tag: 'Status'
       },
+      styleType: 'badge',
       style: {
         posClass: 'badge badge-success',
         negClass: 'badge badge-danger',
@@ -287,12 +296,7 @@ export class ViewUserListComponent implements OnInit {
             }
           }
 
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
+          if (res.outcome.outcome === 'SUCCESS') {
             if (displayGrowl) {
               this.notify.successmsg(
                 res.outcome.outcome,
@@ -301,14 +305,17 @@ export class ViewUserListComponent implements OnInit {
             }
           }
 
+          this.userList = res.userList;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
+            this.userList = [];
           } else {
             this.noData = false;
             this.rowCount = res.rowCount;
             this.showingRecords = res.userList.length;
-            this.userList = res.userList;
+
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
@@ -632,7 +639,7 @@ export class ViewUserListComponent implements OnInit {
             } else {
               this.closeModal.nativeElement.click();
               this.loadUsers(false);
-              this.notify.successmsg('Success', 'User has been updated');
+              this.notify.successmsg('Success', res.outcome.outcomeMessage);
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);

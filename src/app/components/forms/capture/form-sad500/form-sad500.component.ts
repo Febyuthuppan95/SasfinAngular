@@ -43,6 +43,7 @@ currentTheme: string;
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
+lineErrors: SAD500Line[] = null;
 
 form = {
   serialNo: {
@@ -188,6 +189,7 @@ form = {
     this.captureService.sad500LineUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          this.lines = -1;
           this.loadLines();
           this.lineState = 'Updated successfully';
 
@@ -209,13 +211,12 @@ form = {
       userID: 3
     }).then(
       (res: SAD500Get) => {
-        console.log(res);
         this.form.MRN.value = res.mrn;
         this.form.MRN.error = res.mrnError;
         this.form.serialNo.value = res.serialNo;
         this.form.serialNo.error = res.serialNoError;
-        this.form.totalCustomsValue.value = res.importersCode;
-        this.form.totalCustomsValue.error = res.importersCodeError;
+        this.form.totalCustomsValue.value = res.totalCustomsValue;
+        this.form.totalCustomsValue.error = res.totalCustomsValueError;
         this.form.waybillNo.value = res.waybillNo;
         this.form.waybillNo.error = res.waybillNoError;
         this.form.supplierRef.value = res.supplierRef;
@@ -234,10 +235,16 @@ form = {
   loadLines() {
     this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
+        console.log(res);
         this.sad500CreatedLines = res.lines;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
+
+        this.lineErrors = res.lines.filter(x => x.cpcError !== null
+          || x.valueError !== null || x.lineNoError !== null
+          || x.productCodeError !== null
+          || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
       (msg) => {
         console.log(msg);
@@ -295,6 +302,10 @@ form = {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
     }
+  }
+
+  specificLine(index: number) {
+    this.focusLineData = this.sad500CreatedLines[index];
   }
 
 }

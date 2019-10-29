@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TableHeading, SelectedRecord, Order, TableHeader, TableConfig } from 'src/app/models/Table';
+import { MatDialog } from '@angular/material';
+import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
 
 @Component({
   selector: 'app-table',
@@ -38,7 +40,7 @@ export class TableComponent implements OnInit, OnChanges {
   orderIndicator: string;
   count = 0;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     if (this.config !== null && this.config !== undefined) {
@@ -106,6 +108,7 @@ export class TableComponent implements OnInit, OnChanges {
       this.displayData.push(record);
     });
 
+    console.log(this.rowCount);
     if (this.rowCount !== undefined) {
       this.paginate = true;
     }
@@ -144,4 +147,15 @@ export class TableComponent implements OnInit, OnChanges {
   search = () => this.searchEvent.emit(this.searchQuery);
   recordsPerPageChange = ($event) => this.showingRecordsEvent.emit($event);
   toggleFilters = () => this.toggleFilter = !this.toggleFilter;
+
+  // Extra
+  previewImage(src: string) {
+    this.dialog.open(ImagePreviewDialogComponent, {
+      data: {
+        src
+      },
+      width: '256px',
+      height: '256px'
+    });
+  }
 }

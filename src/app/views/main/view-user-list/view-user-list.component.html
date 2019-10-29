@@ -7,7 +7,7 @@
     </div>
     <app-table
       *ngIf="this.userList"
-      [dataset]="this.userList"
+      [(dataset)]="this.userList"
       [headings]="this.tableHeadings"
       [recordsPerPage]="this.showingRecords"
       [rowStart]="this.rowStart"
@@ -161,7 +161,6 @@
             </label>
             <input hidden id="addUserImage" type="file" class="form-control text-right col-md-10"
              (change)="onFileChange($event.target.files); readFile($event)"/>
-
           </div>
         </div>
       </div>
