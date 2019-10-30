@@ -62,7 +62,7 @@
     </div>
   </form>
   <div class="form-group float-right">
-    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    <button type="submit" class="btn btn-primary btn-sm" (click)="submit()">Submit</button>
   </div>
   <div style="padding: 4px 0 12px 0;" class="line-list">
     <p *ngIf="this.sad500CreatedLines.length === 0">No SA500 Lines Added</p>
