@@ -21,6 +21,8 @@ import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
 import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
+import { GetCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
+import { CompanyBOMsListResponse, CompanyBOM } from 'src/app/models/HttpResponses/CompanyBOMsListResponse';
 
 @Component({
   selector: 'app-view-company-boms',
@@ -153,7 +155,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   pI = '';
   vulnerable = '';
 
-  items: Items[] = [];
+  CompanyBOMs: CompanyBOM[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -207,17 +209,17 @@ export class ViewCompanyBOMsComponent implements OnInit {
   loadCompanyBOMs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetItemList = {
+    const model: GetCompanyBOMs = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      specificItemID: -1,
+      companyID: this.companyID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getItemList(model).then(
-      (res: ItemsListResponse) => {
+    this.companyService.getCompanyBoms(model).then(
+      (res: CompanyBOMsListResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -225,7 +227,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.items = res.itemsLists;
+        this.CompanyBOMs = res.companyBOMs;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -233,9 +235,9 @@ export class ViewCompanyBOMsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.itemsLists.length;
+          this.showingRecords = res.companyBOMs.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.items.length - 1;
+          this.totalShowing = +this.rowStart + +this.CompanyBOMs.length - 1;
         }
 
       },

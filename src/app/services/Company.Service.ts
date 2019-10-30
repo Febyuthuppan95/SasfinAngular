@@ -18,6 +18,7 @@ import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemL
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
+import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 
 @Injectable({
   providedIn: 'root'
@@ -431,6 +432,23 @@ export class CompanyService {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/removeItem`;
       this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyBoms(model: GetCompanyBOMs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
+      this.httpClient
+        .post(apiURL, model)
         .toPromise()
         .then(
           res => {
