@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -24,7 +25,7 @@ export class ViewSAD500Component implements OnInit {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
-
+  transactionObservation: Subscription;
   // Data Table Configuration
   tableConfig: TableConfig = {
     header:  {
@@ -79,7 +80,7 @@ export class ViewSAD500Component implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionObservation = this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -97,9 +98,10 @@ export class ViewSAD500Component implements OnInit {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        this.notify.errorsmsg('Failure', 'Cannot reach server');``
       }
     );
   }
