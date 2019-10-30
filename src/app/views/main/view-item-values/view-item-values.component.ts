@@ -287,7 +287,7 @@ export class ViewItemValuesComponent implements OnInit {
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateItemValue(id: number) {
+  UpdateItemValue() {
     const requestModel = {
       userID: this.currentUser.userID,
       itemValueID: this.ItemValue.itemValueID,

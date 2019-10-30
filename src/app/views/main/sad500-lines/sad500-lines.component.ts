@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TableHeader, TableHeading, SelectedRecord } from 'src/app/models/Table';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -22,6 +22,9 @@ export class Sad500LinesComponent implements OnInit {
               private transactionService: TransactionService, private router: Router, private userService: UserService) { }
 
   currentTheme: string;
+
+  @ViewChild('closeAddModal', { static: false })
+  closeAddModal: ElementRef;
 
   dataset: object[];
   rowStart = 1;
@@ -125,8 +128,9 @@ export class Sad500LinesComponent implements OnInit {
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
             this.loadDataset();
+            this.closeAddModal.nativeElement.click();
           } else {
-
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
         (msg) => {
