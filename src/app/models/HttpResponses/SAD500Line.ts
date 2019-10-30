@@ -19,4 +19,11 @@ export class SAD500Line {
     unitOfMeasure: string;
     productCode: string;
     value: string;
+    cpcError?: string;
+    tariffError?: string;
+    customsValueError?: number;
+    lineNoError?: string;
+    unitOfMeasureError?: string;
+    productCodeError?: string;
+    valueError?: string;
 }

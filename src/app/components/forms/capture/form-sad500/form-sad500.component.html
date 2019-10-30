@@ -68,11 +68,11 @@
     <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
     <p *ngIf="this.sad500CreatedLines.length !== 0">
     <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
-    <!-- <button *ngFor="let item of this.sad500CreatedLines; let i = index;" class="btn btn-sm btn-warning" (click)="revisitSAD500Line(item, i)" matTooltip="Error Saving Line" [matTooltipDisabled]="!item.failed" [ngClass]="{'active-line': lines === i}"></button> -->
     <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
     <span class="badge badge-primary" *ngIf="this.lines === -1">New SAD500 Line</span>
     &nbsp;
     <button (click)="nextLine()" class="btn btn-primary btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+    <button class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
     &nbsp;<span>{{this.lineState}}</span>
   </p>
   </div>
