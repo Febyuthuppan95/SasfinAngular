@@ -10,6 +10,7 @@ import { ValidateService } from 'src/app/services/Validation.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',
@@ -24,6 +25,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
+  transactionObservation: Subscription;
 
   // Data Table Configuration
   tableConfig: TableConfig = {
@@ -74,7 +76,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionObservation = this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -92,6 +94,8 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
