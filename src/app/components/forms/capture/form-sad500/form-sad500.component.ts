@@ -264,8 +264,9 @@ form = {
           this.loadLines();
 
           this.lineState = 'Saved successfully';
-          this.lines = -1;
+          this.focusLineForm = !this.focusLineForm;
           this.focusLineData = null;
+          this.lines = -1;
           setTimeout(() => this.lineState = '', 3000);
         } else {
           this.lineState = 'Failed to save';
