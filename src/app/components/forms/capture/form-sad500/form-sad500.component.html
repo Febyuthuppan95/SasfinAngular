@@ -76,5 +76,5 @@
     &nbsp;<span>{{this.lineState}}</span>
   </p>
   </div>
-  <app-form-sad500-line (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [updateSAD500Line]="focusLineData"></app-form-sad500-line>
+  <app-form-sad500-line (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
   <app-notification></app-notification>
