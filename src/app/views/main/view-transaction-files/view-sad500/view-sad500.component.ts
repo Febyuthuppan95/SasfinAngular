@@ -101,7 +101,7 @@ export class ViewSAD500Component implements OnInit {
         this.transactionObservation.unsubscribe();
       },
       (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        this.notify.errorsmsg('Failure', 'Cannot reach server');``
       }
     );
   }

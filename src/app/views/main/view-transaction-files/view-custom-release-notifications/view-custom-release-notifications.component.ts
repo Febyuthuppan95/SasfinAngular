@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -21,7 +22,7 @@ constructor(private themeService: ThemeService, private transactionService: Tran
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
-
+  transactionObservation: Subscription;
   // Data Table Configuration
   tableConfig: TableConfig = {
     header:  {
@@ -77,7 +78,7 @@ constructor(private themeService: ThemeService, private transactionService: Tran
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionObservation = this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -95,6 +96,7 @@ constructor(private themeService: ThemeService, private transactionService: Tran
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
