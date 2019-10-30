@@ -324,20 +324,27 @@ export class ViewCaptureInfoComponent implements OnInit {
   }
 
   addCapture() {
-    this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-          this.closeAddModal.nativeElement.click();
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+    if (this.requestModelAddInfo.info == null || this.requestModelAddInfo.info === '' || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    // tslint:disable-next-line: max-line-length
+    } else if (this.requestModelAddInfo.doctypeID == null || this.requestModelAddInfo.doctypeID === -1 || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    } else {
+      this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.loadDataset();
+            this.closeAddModal.nativeElement.click();
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot Reach Server');
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot Reach Server');
-      }
-    );
+      );
+    }
   }
 
   onDoctypeChange(id: number) {

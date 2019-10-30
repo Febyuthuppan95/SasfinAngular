@@ -13,7 +13,9 @@ export class CompService {
   companyID: string;
   serviceName: string;
   resConsultantID: string;
+  consultantName: string;
   resCapturerID: string;
+  capturerName: string;
   startDate: string;
   endDate: string;
 }
