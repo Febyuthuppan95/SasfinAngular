@@ -219,6 +219,7 @@ export class ViewCaptureInfoComponent implements OnInit {
         }
 
         this.tableData = res.captureInfo;
+
         this.dataset = res;
         this.rowCount = res.rowCount;
 
