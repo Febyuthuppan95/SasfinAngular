@@ -10,6 +10,7 @@ import { TableConfig, Order } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-invoices',
@@ -25,6 +26,7 @@ export class ViewInvoicesComponent implements OnInit {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
+  transactionObservation: Subscription;
 
   // Data Table Configuration
   tableConfig: TableConfig = {
@@ -78,7 +80,7 @@ export class ViewInvoicesComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionObservation = this.transactionService.observerCurrentAttachment().subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -97,6 +99,7 @@ export class ViewInvoicesComponent implements OnInit {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
@@ -105,7 +108,7 @@ export class ViewInvoicesComponent implements OnInit {
   }
 
   back() {
-    ;
+    this.router.navigate(['transaction/attachments']);
   }
 
   searchFilter(query: string) {
