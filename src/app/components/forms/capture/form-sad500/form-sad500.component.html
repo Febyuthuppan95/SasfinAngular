@@ -65,7 +65,7 @@
     <button type="submit" class="btn btn-primary btn-sm" (click)="submit()">Submit</button>
   </div>
   <div style="padding: 4px 0 12px 0;" class="line-list">
-    <p *ngIf="this.sad500CreatedLines.length === 0">No SA500 Lines Added</p>
+    <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
     <p *ngIf="this.sad500CreatedLines.length !== 0">
     <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
     <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>

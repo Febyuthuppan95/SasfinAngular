@@ -449,7 +449,6 @@ export class ContextCompanyServiceListComponent implements OnInit {
   }
 
   addCompanyService() {
-
     const requestModel: AddCompanyService = {
       userID: this.currentUser.userID,
       spesificCompanyID: this.companyID,
