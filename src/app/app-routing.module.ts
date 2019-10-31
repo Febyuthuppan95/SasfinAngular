@@ -48,6 +48,8 @@ import { ViewSAD500Component } from './views/main/view-transaction-files/view-sa
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
 import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
+import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
+import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
 const routes: Routes = [
   {
     path: '',
@@ -86,6 +88,8 @@ const routes: Routes = [
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
+          { path: 'companies/boms', component: ViewCompanyBOMsComponent },
+          { path: 'companies/boms/bomlines', component: ViewBOMLinesComponent },
           { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
           { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },
           { path: 'companies/items/itemparents', component: ViewItemParentsComponent },

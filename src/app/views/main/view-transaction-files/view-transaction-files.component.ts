@@ -51,6 +51,9 @@ export class ViewTransactionFilesComponent implements OnInit {
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -372,6 +375,8 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
     this.selectAttachmentType.reset(-1);
+    this.myInputVariable.nativeElement.value = null;
+    console.log(this.myInputVariable.nativeElement.v);
     this.openModal.nativeElement.click();
   }
 

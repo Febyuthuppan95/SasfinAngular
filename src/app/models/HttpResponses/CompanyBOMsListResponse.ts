@@ -7,11 +7,8 @@ export class CompanyBOMsListResponse {
 }
 
 export class CompanyBOM {
-  itemsrowNum: number;
-  itemID: number;
-  groupID: number;
-  item: string;
-  description: string;
-  tariff: number;
-  vulnerable: string;
+  rowNum: number;
+  BOMCode: number;
+  status: string;
+  BOMID: number;
 }

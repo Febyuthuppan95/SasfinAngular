@@ -13,6 +13,7 @@ export const environment = {
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
   ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
   Sessions: {
+    BOMData: '3ba86905-764b-44ce-9e8c-6363187bd864',
     itemData: '7f539ac4-3f99-428f-a04c-5ba2d4bd1172',
     companyData: '41d516a5-9339-4b7c-a810-be1ce3150722',
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
