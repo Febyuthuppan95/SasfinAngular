@@ -130,12 +130,12 @@
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
             <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()">Add to queue</button>
-            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files)" required>
+            <input id="addBackgroundImage" hidden #inputFile""" type="file" (change)="onFileChange($event.target.files)" required>
         </div>
         <br>
         <br>
         <hr/>
-        <div class="attachment-queue">
+        <div class="attachment-queue" *ngIf="this.attachmentQueueDisplay !== null">
           <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueueDisplay">
               <span class="float-right">{{attach.status}}</span>
               <p>{{attach.name}}</p>

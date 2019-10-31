@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TableHeader, TableHeading, SelectedRecord } from 'src/app/models/Table';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -68,6 +68,9 @@ export class Sad500LinesComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('closeDeleteModal', { static: false })
+  private closeDeleteModal: ElementRef;
+
   ngOnInit() {
     this.themeService.observeTheme().subscribe(theme => {
       this.currentTheme = theme;
@@ -124,6 +127,38 @@ export class Sad500LinesComponent implements OnInit {
       this.captureService.sad500LineUpdate(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
+            this.loadDataset();
+          } else {
+
+          }
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    }
+
+    delete(obj: SAD500Line) {
+      const requestModel: SAD500LineUpdateModel = {
+        userID: this.currentUser.userID,
+        sad500ID: this.attachmentID,
+        specificSAD500LineID: obj.sad500LineID,
+        unitOfMeasure: obj.unitOfMeasure,
+        unitOfMeasureID: obj.unitOfMeasureID,
+        tariff: obj.tariff,
+        tariffID: obj.tariffID,
+        value: obj.value,
+        customsValue: obj.customsValue,
+        productCode: obj. productCode,
+        cpc: obj.cpc,
+        isDeleted: 1,
+        lineNo: obj.lineNo
+      };
+
+      this.captureService.sad500LineUpdate(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.closeDeleteModal.nativeElement.click();
             this.loadDataset();
           } else {
 

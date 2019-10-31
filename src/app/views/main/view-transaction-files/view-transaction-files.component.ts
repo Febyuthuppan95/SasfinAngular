@@ -47,8 +47,11 @@ export class ViewTransactionFilesComponent implements OnInit {
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
-  @ViewChild('closeModal', { static: true })
+  @ViewChild('closeModal', { static: false })
   closeModal: ElementRef;
+
+  @ViewChild('inputFile', { static: false })
+  inputFile: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -370,9 +373,12 @@ export class ViewTransactionFilesComponent implements OnInit {
   upload() {
     this.attachmentName = null;
     this.attachmentTypeIndex = 0;
+    this.currentAttachment = 0;
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
     this.selectAttachmentType.reset(-1);
+    this.inputFile.nativeElement.value = '';
+    console.log(this.inputFile.nativeElement.files);
     this.openModal.nativeElement.click();
   }
 
@@ -390,20 +396,32 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   addToQueue() {
-    this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
-    this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
-    this.attachmentQueue[this.currentAttachment].uploading = false;
-    this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+    let errors = 0;
 
-    this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
+    if (this.attachmentName === '' || this.attachmentName === null || this.attachmentName === undefined) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Enter attachment name');
+    } else if (this.transactionTypes[this.selectedTransactionType - 1] === undefined) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Please select an attachment type');
+    }
 
-    this.attachmentName = '';
-    this.selectedTransactionType = - 1;
-    this.currentAttachment++;
-    this.disableAttachmentType = false;
-    this.attachmentTypeIndex = 0;
-    this.preview = null;
-    this.attachmentTypeIndex = 0;
-    this.selectAttachmentType.reset(-1);
+    if (errors === 0) {
+      this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
+      this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
+      this.attachmentQueue[this.currentAttachment].uploading = false;
+      this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+
+      this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
+
+      this.attachmentName = '';
+      this.selectedTransactionType = - 1;
+      this.currentAttachment++;
+      this.disableAttachmentType = false;
+      this.attachmentTypeIndex = 0;
+      this.preview = null;
+      this.attachmentTypeIndex = 0;
+      this.selectAttachmentType.reset(-1);
+    }
   }
 }
