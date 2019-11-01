@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -11,13 +11,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyInfoResponse, CompanyInfo } from 'src/app/models/HttpResponses/CompanyInfoResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { AddCompanyInfo, UpdateCompanyInfo } from 'src/app/models/HttpRequests/Company';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-company-info',
   templateUrl: './view-company-info.component.html',
   styleUrls: ['./view-company-info.component.scss']
 })
-export class ViewCompanyInfoComponent implements OnInit {
+export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -107,10 +109,13 @@ export class ViewCompanyInfoComponent implements OnInit {
   companyName: string;
   companyID: number;
   TypesList: any[] = [];
+  private unsubscribe$ = new Subject<void>();
 
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
     const temp = {
@@ -119,7 +124,9 @@ export class ViewCompanyInfoComponent implements OnInit {
     };
     this.TypesList.push(temp);
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
 
@@ -399,6 +406,11 @@ export class ViewCompanyInfoComponent implements OnInit {
 
   viewCaptureInfo($event) {
     this.notify.toastrwarning('Warning', 'Feature is not implemented');
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

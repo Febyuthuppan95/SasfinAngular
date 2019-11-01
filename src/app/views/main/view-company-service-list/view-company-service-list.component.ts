@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -25,13 +25,15 @@ import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-service-list',
   templateUrl: './view-company-service-list.component.html',
   styleUrls: ['./view-company-service-list.component.scss']
 })
-export class ContextCompanyServiceListComponent implements OnInit {
+export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
@@ -146,12 +148,18 @@ export class ContextCompanyServiceListComponent implements OnInit {
   myControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
@@ -523,6 +531,12 @@ export class ContextCompanyServiceListComponent implements OnInit {
     this.disableSerSelect = true;
     this.SerID = id;
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
 }
 

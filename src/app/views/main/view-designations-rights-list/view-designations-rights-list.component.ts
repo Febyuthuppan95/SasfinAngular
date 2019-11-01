@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DesignationService } from 'src/app/services/Designation.service';
@@ -15,17 +15,17 @@ import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { GetRightList } from 'src/app/models/HttpRequests/Rights';
 import { GetDesignationRightsList, UpdateDesignationRight, AddDesignationRight } from 'src/app/models/HttpRequests/Designations';
-
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-designations-rights-list',
   templateUrl: './view-designations-rights-list.component.html',
   styleUrls: ['./view-designations-rights-list.component.scss']
 })
-export class ViewDesignationsRightsListComponent implements OnInit {
+export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
 
   /* Initializing Variables */
   currentUser: User = this.userService.getCurrentUser();
@@ -63,7 +63,7 @@ export class ViewDesignationsRightsListComponent implements OnInit {
   subscription: Subscription;
   contextMenuX = 0;
   contextMenuY = 0;
-
+  private unsubscribe$ = new Subject<void>();
   // Modal
   closeResult: string;
   /*Init*/
@@ -91,7 +91,9 @@ export class ViewDesignationsRightsListComponent implements OnInit {
       this.orderByDirection = 'ASC';
       this.totalShowing = 0;
 
-      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      this.subscription = this.IMenuService.subSidebarEmit$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(result => {
         // console.log(result);
         this.sidebarCollapsed = result;
       });
@@ -108,13 +110,16 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   ngOnInit() {
     const currentDesignation = this.activatedRoute.paramMap
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(params => {
       this.currentDesignation = +params.get('id');
       this.currentDesignationName = params.get('name');
 
     });
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -450,5 +455,10 @@ export class ViewDesignationsRightsListComponent implements OnInit {
 
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

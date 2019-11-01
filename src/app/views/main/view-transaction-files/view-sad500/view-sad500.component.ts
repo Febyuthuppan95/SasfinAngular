@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -10,13 +10,15 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
 import { Router } from '@angular/router';
+import { Subscription, Subject, Observable, interval, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-sad500',
   templateUrl: './view-sad500.component.html',
   styleUrls: ['./view-sad500.component.scss']
 })
-export class ViewSAD500Component implements OnInit {
+export class ViewSAD500Component implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
               private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
               private router: Router) { }
@@ -71,15 +73,22 @@ export class ViewSAD500Component implements OnInit {
     transactionID: -1,
   };
 
+  private unsubscribeTransaction$ = new Subject<void>();
+
+
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribeTransaction$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribeTransaction$))
+    .subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -133,5 +142,10 @@ export class ViewSAD500Component implements OnInit {
     this.listRequest.rowStart = $event.rowStart;
     this.listRequest.rowEnd = $event.rowEnd;
     this.loadDataset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeTransaction$.next();
+    this.unsubscribeTransaction$.complete();
   }
 }

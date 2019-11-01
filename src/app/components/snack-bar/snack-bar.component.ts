@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationComponent } from '../notification/notification.component';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -9,6 +9,8 @@ import { UpdateObjectHelpRequest } from 'src/app/models/HttpRequests/UpdateObjec
 import { UpdateObjectHelpResponse } from 'src/app/models/HttpResponses/UpdateObjectHelpResponse';
 import { GetObjectHelpRequest } from 'src/app/models/HttpRequests/GetObjectHelpRequest';
 import { GetObjectHelpResponse } from 'src/app/models/HttpResponses/GetObjectHelpResponse';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { GetObjectHelpResponse } from 'src/app/models/HttpResponses/GetObjectHel
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss']
 })
-export class SnackBarComponent implements OnInit {
+export class SnackBarComponent implements OnInit, OnDestroy {
   constructor(
     private helpSnackbarService: HelpSnackbar,
     private objectHelpService: ObjectHelpService,
@@ -36,14 +38,16 @@ export class SnackBarComponent implements OnInit {
   closeModal: ElementRef;
 
 
-
+  private unsubscribe$ = new Subject<void>();
   settings: SnackbarModel;
   focus: SnackbarModel;
   enabled: boolean;
   currentUser: User = this.userService.getCurrentUser();
 
   ngOnInit() {
-    this.helpSnackbarService.observeHelpContext().subscribe((context: SnackbarModel) => {
+    this.helpSnackbarService.observeHelpContext()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((context: SnackbarModel) => {
       this.settings.display = context.display;
 
       if (context.slug !== undefined) {
@@ -67,7 +71,9 @@ export class SnackBarComponent implements OnInit {
       }
     });
 
-    this.objectHelpService.observeAllow().subscribe((allow: boolean) => {
+    this.objectHelpService.observeAllow()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((allow: boolean) => {
       if (allow) {
         this.settings.display = false;
       }
@@ -118,4 +124,10 @@ export class SnackBarComponent implements OnInit {
         );
       });
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

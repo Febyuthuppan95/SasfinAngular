@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { NotificationComponent } from '../../../notification/notification.component';
 import { UserService } from 'src/app/services/user.Service';
@@ -8,14 +8,15 @@ import { Router } from '@angular/router';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CRNGet } from 'src/app/models/HttpResponses/CRNGet';
 import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form-custom-release',
   templateUrl: './form-custom-release.component.html',
   styleUrls: ['./form-custom-release.component.scss']
 })
-export class FormCustomReleaseComponent implements OnInit, AfterViewInit {
-
+export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private transactionService: TransactionService,
@@ -24,6 +25,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
@@ -69,9 +72,16 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit {
     },
   };
 
+  attachmentSubscription: Subscription;
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe(value => this.currentTheme = value);
-    this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(value => this.currentTheme = value);
+    // tslint:disable-next-line: max-line-length
+    this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
 
@@ -152,5 +162,10 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit {
         console.log(msg);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

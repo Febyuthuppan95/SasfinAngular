@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -11,13 +11,15 @@ import { TransactionFileListResponse, TransactionFile } from 'src/app/models/Htt
 import { MatDialog } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
   styleUrls: ['./capture-layout.component.scss']
 })
-export class CaptureLayoutComponent implements OnInit, AfterViewInit {
+export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService,
               private userService: UserService,
@@ -34,7 +36,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
-  @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+  @ViewChild(KeyboardShortcutsComponent, { static: true })
+  private keyboard: KeyboardShortcutsComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   currentBackground: string;
   currentTheme: string;
@@ -60,22 +65,30 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
-    this.themeService.observeBackground().subscribe((result: string) => {
+    this.themeService.observeBackground()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((result: string) => {
       if (result !== undefined) {
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
     });
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
-    this.companyService.observeCompany().subscribe((data: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data: SelectedCompany) => {
       this.company = {
         id: data.companyID,
         name: data.companyName
       };
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe (obj => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe (obj => {
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
@@ -224,4 +237,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

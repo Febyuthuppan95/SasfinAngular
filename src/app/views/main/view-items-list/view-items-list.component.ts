@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -21,13 +21,14 @@ import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
 import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-items-list',
   templateUrl: './view-items-list.component.html',
   styleUrls: ['./view-items-list.component.scss']
 })
-export class ContextItemsListComponent implements OnInit {
+export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -48,10 +49,14 @@ export class ContextItemsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
+
+  private unsubscribe$ = new Subject<void>();
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -189,7 +194,9 @@ export class ContextItemsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -468,7 +475,7 @@ export class ContextItemsListComponent implements OnInit {
       (res: UpdateItemServiceResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          
+
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
@@ -503,6 +510,10 @@ export class ContextItemsListComponent implements OnInit {
     this.vulnerable = state;
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
 
 

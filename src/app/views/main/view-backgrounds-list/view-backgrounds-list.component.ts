@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { BackgroundService } from 'src/app/services/Background.service';
 import { environment } from 'src/environments/environment';
@@ -12,13 +12,15 @@ import { BackgroundList, BackgroundListResponse, BackgroundsAdd } from 'src/app/
 import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
 import { User } from 'src/app/models/HttpResponses/User';
 import { UserService } from 'src/app/services/user.Service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-backgrounds-list',
   templateUrl: './view-backgrounds-list.component.html',
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
-export class ViewBackgroundsListComponent implements OnInit {
+export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
   constructor(
     private themeService: ThemeService,
     private backgroundService: BackgroundService,
@@ -59,8 +61,12 @@ export class ViewBackgroundsListComponent implements OnInit {
   preview: any;
   srcImage: any;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -249,5 +255,10 @@ export class ViewBackgroundsListComponent implements OnInit {
   Closemodal() {
     this.preview = null;
     this.fileToUpload = null;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

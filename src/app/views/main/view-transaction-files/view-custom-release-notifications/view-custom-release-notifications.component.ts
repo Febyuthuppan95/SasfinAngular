@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -7,13 +7,15 @@ import { Router } from '@angular/router';
 import { TableConfig, Order } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-custom-release-notifications',
   templateUrl: './view-custom-release-notifications.component.html',
   styleUrls: ['./view-custom-release-notifications.component.scss']
 })
-export class ViewCustomReleaseNotificationsComponent implements OnInit {
+export class ViewCustomReleaseNotificationsComponent implements OnInit, OnDestroy {
 
 constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
             private captureService: CaptureService, private router: Router) { }
@@ -72,12 +74,18 @@ constructor(private themeService: ThemeService, private transactionService: Tran
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -131,5 +139,10 @@ constructor(private themeService: ThemeService, private transactionService: Tran
     this.listRequest.rowStart = $event.rowStart;
     this.listRequest.rowEnd = $event.rowEnd;
     this.loadDataset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

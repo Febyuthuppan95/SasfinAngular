@@ -1,6 +1,6 @@
 import { AddAddressTypesResponse } from './../../../models/HttpResponses/AddAddressTypesResponse';
 import { AddressTypesListResponse } from './../../../models/HttpResponses/AddressTypesListResponse';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -18,13 +18,15 @@ import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { CurrenciesListRequest } from 'src/app/models/HttpRequests/CurrenciesList';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-currencies-list',
   templateUrl: './view-currencies-list.component.html',
   styleUrls: ['./view-currencies-list.component.scss']
 })
-export class ViewCurrenciesListComponent implements OnInit {
+export class ViewCurrenciesListComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private currencyService: CurrenciesService, private userService: UserService) {}
 
@@ -94,9 +96,12 @@ export class ViewCurrenciesListComponent implements OnInit {
   newCurrencyName: string;
   newCurrencyFactor: string;
 
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -334,5 +339,10 @@ export class ViewCurrenciesListComponent implements OnInit {
   //      }
   //    );
   //   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }

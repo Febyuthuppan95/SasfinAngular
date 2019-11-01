@@ -1,5 +1,5 @@
 import { DesignationService } from '../../../services/Designation.service';
-import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef, OnDestroy } from '@angular/core';
 import { DesignationListResponse } from '../../../models/HttpResponses/DesignationListResponse';
 import { DesignationList } from '../../../models/HttpResponses/DesignationList';
 import { Pagination } from '../../../models/Pagination';
@@ -10,17 +10,18 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-designations-list',
   templateUrl: './view-designations-list.component.html',
   styleUrls: ['./view-designations-list.component.scss']
 })
-export class ViewDesignationsListComponent implements OnInit {
+export class ViewDesignationsListComponent implements OnInit, OnDestroy {
   constructor(
     private IUserService: UserService,
     private IThemeService: ThemeService,
@@ -39,7 +40,9 @@ export class ViewDesignationsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
     this.loadDesignations();
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       // console.log(result);
       this.sidebarCollapsed = result;
     });
@@ -95,9 +98,12 @@ export class ViewDesignationsListComponent implements OnInit {
   selectedRow = -1;
 
   subscription: Subscription;
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.IThemeService.observeTheme().subscribe((theme) => {
+    this.IThemeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -281,6 +287,11 @@ export class ViewDesignationsListComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

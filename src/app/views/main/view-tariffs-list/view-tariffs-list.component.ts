@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -12,13 +12,14 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-tariffs-list',
   templateUrl: './view-tariffs-list.component.html',
   styleUrls: ['./view-tariffs-list.component.scss']
 })
-export class ContextTariffsListComponent implements OnInit {
+export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -38,7 +39,9 @@ export class ContextTariffsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -138,6 +141,8 @@ export class ContextTariffsListComponent implements OnInit {
   // Quality538 = '';
   tarifflist: Tariff[] = [];
 
+  private unsubscribe$ = new Subject<void>();
+
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   recordsPerPage = 15;
@@ -169,7 +174,9 @@ export class ContextTariffsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -308,6 +315,11 @@ export class ContextTariffsListComponent implements OnInit {
   searchEvent(query: string) {
     this.filter = query;
     this.loadTariffs(false);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

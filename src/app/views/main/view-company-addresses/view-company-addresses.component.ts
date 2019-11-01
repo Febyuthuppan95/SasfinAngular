@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -16,13 +16,15 @@ import { CitiesService } from 'src/app/services/Cities.Service';
 import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
 import { AddCompanyAddress, UpdateCompanyAddress } from 'src/app/models/HttpRequests/Company';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-addresses',
   templateUrl: './view-company-addresses.component.html',
   styleUrls: ['./view-company-addresses.component.scss']
 })
-export class ViewCompanyAddressesComponent implements OnInit {
+export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -65,6 +67,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
   private notify: NotificationComponent;
   @ViewChild('auto', {static: false})
   private autoComplete: MatAutocomplete;
+
+  private unsubscribe$ = new Subject<void>();
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -131,7 +135,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -501,6 +507,11 @@ export class ViewCompanyAddressesComponent implements OnInit {
   onChange(id: number)   {
     this.disableAddressSelect = true;
     this.Type = id;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

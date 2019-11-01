@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -10,13 +10,15 @@ import { TableConfig, Order } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-invoices',
   templateUrl: './view-invoices.component.html',
   styleUrls: ['./view-invoices.component.scss']
 })
-export class ViewInvoicesComponent implements OnInit {
+export class ViewInvoicesComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
               private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
@@ -73,12 +75,18 @@ export class ViewInvoicesComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -138,6 +146,11 @@ export class ViewInvoicesComponent implements OnInit {
   searchEvent(query: string) {
     this.listRequest.filter = query;
     this.loadDataset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

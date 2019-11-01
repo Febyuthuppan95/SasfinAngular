@@ -1,15 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TableHeading, SelectedRecord, Order, TableHeader, TableConfig } from 'src/app/models/Table';
 import { MatDialog } from '@angular/material';
 import { ImagePreviewDialogComponent } from './image-preview-dialog/image-preview-dialog.component';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, OnChanges {
+export class TableComponent implements OnInit, OnChanges, OnDestroy {
   @Input() config: TableConfig;
   @Input() headings: TableHeading[];
   @Input() dataset: object[];
@@ -40,6 +42,7 @@ export class TableComponent implements OnInit, OnChanges {
   orderIndicator: string;
   count = 0;
 
+  private unsubscribe$ = new Subject<void>();
   constructor(private themeService: ThemeService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -113,7 +116,9 @@ export class TableComponent implements OnInit, OnChanges {
     }
 
     this.updateSort(this.orderBy);
-    this.themeService.observeTheme().subscribe(theme => this.currentTheme = theme);
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(theme => this.currentTheme = theme);
   }
 
   recordChangeEvent($event, obj, index) {
@@ -156,5 +161,10 @@ export class TableComponent implements OnInit, OnChanges {
       width: '256px',
       height: '256px'
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

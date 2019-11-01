@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { TableHeader, TableHeading, SelectedRecord } from 'src/app/models/Table';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -10,13 +10,15 @@ import { SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UserService } from 'src/app/services/user.Service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-sad500-lines',
   templateUrl: './sad500-lines.component.html',
   styleUrls: ['./sad500-lines.component.scss']
 })
-export class Sad500LinesComponent implements OnInit {
+export class Sad500LinesComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private captureService: CaptureService,
               private transactionService: TransactionService, private router: Router, private userService: UserService) { }
@@ -65,6 +67,8 @@ export class Sad500LinesComponent implements OnInit {
     { title: 'Value', propertyName: 'value', order: { enable: true, tag: 'Tariff' } },
   ];
 
+  private unsubscribe$ = new Subject<void>();
+
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
@@ -72,11 +76,15 @@ export class Sad500LinesComponent implements OnInit {
   private closeDeleteModal: ElementRef;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe(theme => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(theme => {
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment().subscribe (obj => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe (obj => {
       this.attachmentID = obj.attachmentID;
 
       this.loadDataset();
@@ -168,5 +176,10 @@ export class Sad500LinesComponent implements OnInit {
           console.log(msg);
         }
       );
+    }
+
+    ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
     }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -15,13 +15,14 @@ import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-alternate-items',
   templateUrl: './view-alternate-items.component.html',
   styleUrls: ['./view-alternate-items.component.scss']
 })
-export class ViewAlternateItemsComponent implements OnInit {
+export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -42,13 +43,17 @@ export class ViewAlternateItemsComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   GroupItem: {
     itemID: number,
@@ -232,11 +237,15 @@ export class ViewAlternateItemsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeItem().subscribe((obj: SelectedItem) => {
+    this.companyService.observeItem()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedItem) => {
       this.groupID = obj.groupID;
       this.itemName = obj.itemName;
 
@@ -384,6 +393,11 @@ export class ViewAlternateItemsComponent implements OnInit {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

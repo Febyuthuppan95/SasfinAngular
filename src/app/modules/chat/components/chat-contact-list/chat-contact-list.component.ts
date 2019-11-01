@@ -1,17 +1,18 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
 import { GetUserList } from 'src/app/models/HttpRequests/Users';
 import { environment } from 'src/environments/environment';
-
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-chat-contact-list',
   templateUrl: './chat-contact-list.component.html',
   styleUrls: ['./chat-contact-list.component.scss']
 })
-export class ChatContactListComponent implements OnInit {
+export class ChatContactListComponent implements OnInit, OnDestroy {
 
   @Output() showConversations = new EventEmitter<void>();
 
@@ -34,10 +35,15 @@ export class ChatContactListComponent implements OnInit {
 
   selectedUser: number = null;
 
+  private unsubscribe$ = new Subject<void>();
+
+
   ngOnInit() {
     this.loadContacts();
 
-    this.chatService.observeConversation().subscribe((conv) => {
+    this.chatService.observeConversation()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((conv) => {
       if (conv !== null) {
         this.selectedUser = conv.userID;
       }
@@ -83,4 +89,8 @@ export class ChatContactListComponent implements OnInit {
     this.showConversations.emit();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

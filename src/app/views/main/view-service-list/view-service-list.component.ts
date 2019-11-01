@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
 import { Pagination } from '../../../models/Pagination';
@@ -15,13 +15,14 @@ import { Service } from 'src/app/models/HttpResponses/Service';
 import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServicesService } from '../../../services/Services.Service';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-service-list',
   templateUrl: './view-service-list.component.html',
   styleUrls: ['./view-service-list.component.scss']
 })
-export class ContextMenuServiceListComponent implements OnInit {
+export class ContextMenuServiceListComponent implements OnInit, OnDestroy {
   constructor(
     private ServiceService: ServicesService,
     private userService: UserService,
@@ -41,7 +42,9 @@ export class ContextMenuServiceListComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.loadServices(true);
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -114,9 +117,13 @@ export class ContextMenuServiceListComponent implements OnInit {
   displayFilter = false;
   isAdmin: false;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -256,6 +263,11 @@ export class ContextMenuServiceListComponent implements OnInit {
   searchEvent(query: string) {
     this.filter = query;
     this.loadServices(false);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

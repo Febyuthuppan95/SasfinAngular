@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { PlaceService } from 'src/app/services/Place.Service';
 import { LocationsList, LocationItems, Regions, Cities } from 'src/app/models/HttpResponses/LocationsList';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -7,13 +7,15 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateRegionRequest, UpdateCountryRequest, UpdateCityRequest } from 'src/app/models/HttpRequests/UpdateLocationRequest';
 import { ListCountriesRequest } from 'src/app/models/HttpRequests/Locations';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-places',
   templateUrl: './view-places.component.html',
   styleUrls: ['./view-places.component.scss']
 })
-export class ViewPlacesComponent implements OnInit {
+export class ViewPlacesComponent implements OnInit, OnDestroy {
 
   constructor(private placeService: PlaceService, private themeService: ThemeService,
               private userService: UserService) {}
@@ -40,6 +42,8 @@ export class ViewPlacesComponent implements OnInit {
   private notify: NotificationComponent;
 
   currentUser = this.userService.getCurrentUser();
+  private unsubscribe$ = new Subject<void>();
+
 
   displayResults: string;
   dataset: LocationsList;
@@ -74,7 +78,9 @@ export class ViewPlacesComponent implements OnInit {
   sidebarCollapsed = true;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -394,6 +400,12 @@ export class ViewPlacesComponent implements OnInit {
       );
      }
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
 }
 

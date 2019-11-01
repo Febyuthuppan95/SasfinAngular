@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
@@ -15,13 +15,15 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { TransactionTypes, TransactionTypesResponse } from 'src/app/models/HttpResponses/TransactionTypesList';
 import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/HttpResponses/TransactionStatusList';
 import { FormGroup, FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-transactions',
   templateUrl: './view-transactions.component.html',
   styleUrls: ['./view-transactions.component.scss']
 })
-export class ViewTransactionsComponent implements OnInit {
+export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private transationService: TransactionService,
@@ -140,13 +142,18 @@ export class ViewTransactionsComponent implements OnInit {
     specificTransactionTypesID: -1
   };
 
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       if (obj !== null || obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
@@ -439,4 +446,8 @@ export class ViewTransactionsComponent implements OnInit {
     this.openModal.nativeElement.click();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
