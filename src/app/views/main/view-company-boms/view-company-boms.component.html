@@ -16,6 +16,7 @@
         [orderBy]="this.orderBy"
         [orderByDirection]="this.orderDirection"
         [tableHeader]="this.tableHeader"
+        (backButtonEvent)="back()"
         (selectedRecord)="selectedRecord($event)"
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
@@ -28,13 +29,14 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
 
-  <!-- <app-menu
+  <app-menu
+  *ngIf="this.contextMenu"
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-items (editItem)="editItem($event)" (removeItem)="removeItem($event)"></app-context-menu-items>
-</app-menu> -->
+  <app-context-menu-boms [BOMID]="this.BOM.bomid" [Status]="this.BOM.status"></app-context-menu-boms>
+</app-menu>
 
 <!--Edit Modal-->
 <!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>

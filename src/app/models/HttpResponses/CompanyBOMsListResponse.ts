@@ -2,13 +2,13 @@ import {Outcome} from './Outcome';
 
 export class CompanyBOMsListResponse {
   outcome: Outcome;
-  companyBOMs: CompanyBOM[];
+  companyBoms: CompanyBOM[];
   rowCount: number;
 }
 
 export class CompanyBOM {
   rowNum: number;
-  BOMCode: number;
+  bomInput: number;
   status: string;
-  BOMID: number;
+  bomid: number;
 }

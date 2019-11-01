@@ -489,6 +489,7 @@ export class CompanyService {
         .then(
           res => {
             resolve(res);
+            console.log(res);
           },
           msg => {
             reject(msg);
@@ -549,7 +550,6 @@ export class CompanyService {
   }
 
   public alternatItemsUpdate(model) {
-    console.log(model);
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/updateAlternateItems`;
@@ -766,6 +766,6 @@ export class SelectedItem {
 }
 
 export class SelectedBOM {
-  BOMID: number;
-  description: string;
+  bomid: number;
+  status: string;
 }

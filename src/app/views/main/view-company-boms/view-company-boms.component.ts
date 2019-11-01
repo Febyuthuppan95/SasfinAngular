@@ -10,19 +10,10 @@ import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
-import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
-import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
-import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
-import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
-import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { GetCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
 import { CompanyBOMsListResponse, CompanyBOM } from 'src/app/models/HttpResponses/CompanyBOMsListResponse';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-company-boms',
@@ -37,6 +28,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
+    private router: Router,
     private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
@@ -69,16 +61,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
   // @ViewChild('closeRemoveModal', {static: true})
   // closeRemoveModal: ElementRef;
 
-  Item: {
-    itemID: number,
-    item: string,
-    description: string,
-    tariff: number,
-    type: string,
-    mIDP: string,
-    pI: string,
-    vulnerable: string,
-
+  BOM: {
+    bomid: number,
+    bomInput: string,
+    status: string,
   };
 
   tableHeader: TableHeader = {
@@ -105,10 +91,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
     },
     {
       title: 'BOMCode',
-      propertyName: 'BOMCode',
+      propertyName: 'bomInput',
       order: {
         enable: true,
-        tag: 'BOMCode'
+        tag: 'BOMInput'
       }
     },
     {
@@ -124,7 +110,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   selectedRow = -1;
   BOMCode = 0;
   status = '';
-  BOMID = 0;
+  BOMID = -1;
 
   CompanyBOMs: CompanyBOM[] = [];
 
@@ -195,7 +181,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.CompanyBOMs = res.companyBOMs;
+        this.CompanyBOMs = res.companyBoms;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -203,7 +189,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.companyBOMs.length;
+          this.showingRecords = res.companyBoms.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyBOMs.length - 1;
         }
@@ -244,11 +230,16 @@ export class ViewCompanyBOMsComponent implements OnInit {
   }
 
   popClick(event, obj) {
-    this.Item = obj;
+    this.BOM = obj;
+    console.log(this.BOM);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
+  }
+
+  back() {
+    this.router.navigate(['companies']);
   }
 
   selectedRecord(obj: SelectedRecord) {

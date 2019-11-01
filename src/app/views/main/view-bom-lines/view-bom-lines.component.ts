@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -14,13 +14,15 @@ import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
 import { BOMsLinesResponse, BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
+import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-bom-lines',
   templateUrl: './view-bom-lines.component.html',
   styleUrls: ['./view-bom-lines.component.scss']
 })
-export class ViewBOMLinesComponent implements OnInit {
+export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -28,6 +30,7 @@ export class ViewBOMLinesComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
+    private router: Router,
     private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
@@ -41,7 +44,7 @@ export class ViewBOMLinesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -146,8 +149,8 @@ export class ViewBOMLinesComponent implements OnInit {
   pI = '';
   vulnerable = '';
 
+  private unsubscribe$ = new Subject<void>();
   BOMLines: BOMLine[] = [];
-
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   recordsPerPage = 15;
@@ -175,22 +178,25 @@ export class ViewBOMLinesComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  bomID = 0;
-  bomdescription = '';
+  bomid = -1;
+  bomstatus = '';
 
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeBOM().subscribe((obj: SelectedBOM) => {
-      this.bomID = obj.BOMID;
-      this.bomdescription = obj.description;
+    this.companyService.observeBOM().pipe(takeUntil(this.unsubscribe$)).subscribe((obj: SelectedBOM) => {
+      if (obj !== undefined) {
+        this.bomid = obj.bomid;
+        this.bomstatus = obj.status;
+
+        this.loadBOMLines(true);
+      }
     });
 
-    this.loadBOMLines(true);
 
   }
 
@@ -200,7 +206,7 @@ export class ViewBOMLinesComponent implements OnInit {
     const model: GetBOMLines = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      BOMID: this.bomID,
+      bomID: this.bomid,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -208,6 +214,7 @@ export class ViewBOMLinesComponent implements OnInit {
     };
     this.companyService.getBOMLines(model).then(
       (res: BOMsLinesResponse) => {
+
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -216,6 +223,7 @@ export class ViewBOMLinesComponent implements OnInit {
           }
         }
         this.BOMLines = res.BOMLines;
+        console.log(this.BOMLines);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -237,6 +245,10 @@ export class ViewBOMLinesComponent implements OnInit {
         );
       }
     );
+  }
+
+  back() {
+    this.router.navigate(['companies', 'boms']);
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
@@ -421,6 +433,11 @@ export class ViewBOMLinesComponent implements OnInit {
   // onVulnerablestateChange(state: string) {
   //   this.vulnerable = state;
   // }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    }
 
 }
 

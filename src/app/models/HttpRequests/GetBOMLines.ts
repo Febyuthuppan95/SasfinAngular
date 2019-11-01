@@ -1,6 +1,6 @@
 export class GetBOMLines {
   userID: number;
-  BOMID: number;
+  bomID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

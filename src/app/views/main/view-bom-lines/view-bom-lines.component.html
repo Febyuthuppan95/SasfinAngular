@@ -16,6 +16,7 @@
         [orderBy]="this.orderBy"
         [orderByDirection]="this.orderDirection"
         [tableHeader]="this.tableHeader"
+        (backButtonEvent)="back()"
         (selectedRecord)="selectedRecord($event)"
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"

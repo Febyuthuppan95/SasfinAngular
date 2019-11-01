@@ -164,6 +164,7 @@ import { ContextMenuItemsParentsComponent } from './components/menus/context-men
 import { TariffService } from './services/Tariff.service';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
 import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/context-menu-boms.component';
 
 @NgModule({
   declarations: [
@@ -279,6 +280,7 @@ import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-line
     ContextMenuItemsParentsComponent,
     ViewCompanyBOMsComponent,
     ViewBOMLinesComponent,
+    ContextMenuBomsComponent,
   ],
   imports: [
     BrowserModule,
