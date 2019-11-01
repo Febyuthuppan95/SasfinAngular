@@ -194,7 +194,6 @@ export class ViewCompanyContactsComponent implements OnInit {
             this.paginateData();
           }
 
-          console.log(JSON.stringify(res));
         },
         msg => {
           this.showLoader = false;

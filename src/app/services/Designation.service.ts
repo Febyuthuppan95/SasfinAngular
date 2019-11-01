@@ -61,7 +61,6 @@ export class DesignationService {
 
   public updateDesignationRight(model: UpdateDesignationRight) {
     const json = JSON.parse(JSON.stringify(model));
-    // console.log(json);
     const promise = new Promise((resolve, reject) => {
       this.httpClient.post(`${environment.ApiEndpoint}/designationRights/update`, json)
       .toPromise()
@@ -78,7 +77,6 @@ export class DesignationService {
   }
   public addDesignationright(model: AddDesignationRight) {
     const json = JSON.parse(JSON.stringify(model));
-    // console.log(json);
     const promise = new Promise((resolve, reject) => {
       this.httpClient.post(`${environment.ApiEndpoint}/designationRights/add`, json)
       .toPromise()

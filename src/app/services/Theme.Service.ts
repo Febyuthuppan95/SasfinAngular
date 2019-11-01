@@ -128,10 +128,8 @@ export class ThemeService {
 
   public toggleContextMenu(setting: boolean): void {
     // if(this.contMenuTable && setting) { // Clicked on table
-    //   console.log('table');
     //   this.contMenu = true;
     // } else {
-    //   console.log('not table');
     //   this.contMenu = false;
     //   this.contMenuTable = false;
     // }
@@ -157,7 +155,6 @@ export class ThemeService {
     // return isMenu;
   }
  public setSidebarCollapse(collapse: boolean) {
-   console.log('set to...', collapse);
    this.sidebarCollapsed = collapse;
  }
  public getSidebarCollapse(): any {

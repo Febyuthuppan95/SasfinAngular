@@ -489,7 +489,6 @@ export class CompanyService {
         .then(
           res => {
             resolve(res);
-            console.log(res);
           },
           msg => {
             reject(msg);

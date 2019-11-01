@@ -376,7 +376,6 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.attachmentQueueDisplay = [];
     this.selectAttachmentType.reset(-1);
     this.myInputVariable.nativeElement.value = null;
-    console.log(this.myInputVariable.nativeElement.v);
     this.openModal.nativeElement.click();
   }
 

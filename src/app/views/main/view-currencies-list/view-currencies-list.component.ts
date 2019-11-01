@@ -263,7 +263,6 @@ export class ViewCurrenciesListComponent implements OnInit {
      this.themeService.toggleContextMenu(false);
      this.contextMenu = false;
      this.openModal.nativeElement.click();
-  //   console.log('open modal');
    }
 
   // updateAddressType() {
@@ -315,7 +314,6 @@ export class ViewCurrenciesListComponent implements OnInit {
 
   //    this.addressTypeService.add(requestModel).then(
   //      (res: AddAddressTypesResponse) => {
-  //        console.log(res);
   //        if (res.outcome.outcome === 'SUCCESS') {
   //          this.newAddressTypeName = '';
   //          this.addModalClose.nativeElement.click();

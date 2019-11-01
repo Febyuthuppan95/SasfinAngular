@@ -133,7 +133,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       };
     }
 
-    console.log(this.isUpdate);
   }
 
   loadUnits(): void {
@@ -146,7 +145,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         }
       },
       (msg) => {
-        console.log(msg);
+
       }
     );
   }
@@ -191,7 +190,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         this.tariffsTemp = res.tariffList;
       },
       (msg) => {
-        console.log(msg);
       }
     );
   }

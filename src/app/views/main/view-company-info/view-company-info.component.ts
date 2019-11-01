@@ -391,7 +391,6 @@ export class ViewCompanyInfoComponent implements OnInit {
   onChange(id: number)   {
     this.disableInfoSelect = true;
     this.Type = id;
-    console.log(this.Type);
   }
 
   viewCaptureInfo($event) {

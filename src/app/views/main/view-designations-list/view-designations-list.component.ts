@@ -40,7 +40,6 @@ export class ViewDesignationsListComponent implements OnInit {
     this.totalShowing = 0;
     this.loadDesignations();
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
-      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }

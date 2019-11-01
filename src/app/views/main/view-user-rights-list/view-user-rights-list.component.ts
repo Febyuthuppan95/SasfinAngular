@@ -52,7 +52,6 @@ export class ViewUserRightsListComponent implements OnInit {
     this.totalShowing = 0;
 
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
-      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }
@@ -379,7 +378,6 @@ export class ViewUserRightsListComponent implements OnInit {
       addedUserID: this.specificUser,
       rightID: id,
     };
-    console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {

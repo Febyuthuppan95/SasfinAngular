@@ -113,7 +113,6 @@ export class TransactionService {
    * Upload
    */
   public Upload(src: File) {
-    console.log(src);
     if (src !== undefined) {
       const formData = new FormData();
       formData.append('file', src);

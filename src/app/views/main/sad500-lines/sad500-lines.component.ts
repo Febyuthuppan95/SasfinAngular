@@ -90,7 +90,6 @@ export class Sad500LinesComponent implements OnInit {
       },
       (msg) => {
         if (!environment.production) {
-          console.log(msg);
         }
       }
     );
@@ -134,7 +133,6 @@ export class Sad500LinesComponent implements OnInit {
           }
         },
         (msg) => {
-          console.log(msg);
         }
       );
     }

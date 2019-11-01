@@ -395,7 +395,6 @@ export class ContextItemsListComponent implements OnInit {
     this.openeditModal.nativeElement.click();
   }
   removeItem(id: number) {
-    console.log(this.Item.itemID);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.itemID = this.Item.itemID;
@@ -416,7 +415,6 @@ export class ContextItemsListComponent implements OnInit {
       service: '',
       isDeleted: 0
     };
-    console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {

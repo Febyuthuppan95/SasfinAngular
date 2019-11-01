@@ -227,7 +227,6 @@ form = {
         this.form.PCC.error = res.pccError;
       },
       (msg) => {
-        console.log(msg);
       }
     );
   }
@@ -235,7 +234,6 @@ form = {
   loadLines() {
     this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
-        console.log(res);
         this.sad500CreatedLines = res.lines;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
@@ -247,7 +245,6 @@ form = {
           || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
       (msg) => {
-        console.log(msg);
       }
     );
   }

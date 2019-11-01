@@ -223,7 +223,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
           }
         }
         this.BOMLines = res.BOMLines;
-        console.log(this.BOMLines);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -332,7 +331,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   //   this.openeditModal.nativeElement.click();
   // }
   // removeItem(id: number) {
-  //   console.log(this.Item.itemID);
   //   this.themeService.toggleContextMenu(false);
   //   this.contextMenu = false;
   //   this.itemID = this.Item.itemID;
@@ -353,7 +351,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   //     service: '',
   //     isDeleted: deleted
   //   };
-  //   console.log(requestModel);
   //   this.companyService.itemupdate(requestModel).then(
   //     (res: UpdateItemResponse) => {
   //       if (res.outcome.outcome === 'SUCCESS') {

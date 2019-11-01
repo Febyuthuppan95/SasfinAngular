@@ -69,7 +69,6 @@ export class ChatContactListComponent implements OnInit {
         this.noContacts = false;
 
         if (!environment.production) {
-          console.log(msg);
         }
       }
     );

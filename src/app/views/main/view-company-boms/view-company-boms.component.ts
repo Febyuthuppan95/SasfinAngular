@@ -231,7 +231,6 @@ export class ViewCompanyBOMsComponent implements OnInit {
 
   popClick(event, obj) {
     this.BOM = obj;
-    console.log(this.BOM);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -291,7 +290,6 @@ export class ViewCompanyBOMsComponent implements OnInit {
   //   this.openeditModal.nativeElement.click();
   // }
   // removeItem(id: number) {
-  //   console.log(this.Item.itemID);
   //   this.themeService.toggleContextMenu(false);
   //   this.contextMenu = false;
   //   this.itemID = this.Item.itemID;
@@ -312,7 +310,6 @@ export class ViewCompanyBOMsComponent implements OnInit {
   //     service: '',
   //     isDeleted: deleted
   //   };
-  //   console.log(requestModel);
   //   this.companyService.itemupdate(requestModel).then(
   //     (res: UpdateItemResponse) => {
   //       if (res.outcome.outcome === 'SUCCESS') {
