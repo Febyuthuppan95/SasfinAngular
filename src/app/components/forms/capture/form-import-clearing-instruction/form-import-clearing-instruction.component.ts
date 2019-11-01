@@ -8,6 +8,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -26,6 +27,7 @@ export class FormImportClearingInstructionComponent implements OnInit {
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
+  transactionID: number;
 
   currentTheme: string;
   form = {
@@ -37,6 +39,7 @@ export class FormImportClearingInstructionComponent implements OnInit {
   },
   importersCode: {
   value: null,
+  error: null,
   },
   PCC: {
   value: null,
@@ -63,6 +66,8 @@ export class FormImportClearingInstructionComponent implements OnInit {
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
+        this.transactionID = curr.transactionID;
+        this.loadICI();
       }
     });
   }
@@ -71,17 +76,17 @@ export class FormImportClearingInstructionComponent implements OnInit {
     $event.preventDefault();
 
     const requestModel = {
-    userID: this.currentUser.userID,
-    specificCustomsReleaseID: this.attachmentID,
-    serialNo: this.form.serialNo.value,
-    lrn: this.form.LRN.value,
-    importersCode: this.form.importersCode.value,
-    pcc: this.form.PCC.value,
-    waybillNo: this.form.waybillNo.value,
-    supplierRef: this.form.supplierRef.value,
-    mrn: this.form.MRN.value,
-    isDeleted: 0,
-    attachmentStatusID: 2,
+      userID: this.currentUser.userID,
+      specificCustomsReleaseID: this.attachmentID,
+      serialNo: this.form.serialNo.value,
+      lrn: this.form.LRN.value,
+      importersCode: this.form.importersCode.value,
+      pcc: this.form.PCC.value,
+      waybillNo: this.form.waybillNo.value,
+      supplierRef: this.form.supplierRef.value,
+      mrn: this.form.MRN.value,
+      isDeleted: 0,
+      attachmentStatus: 2,
     };
 
     this.captureService.iciUpdate(requestModel).then(
@@ -98,6 +103,35 @@ export class FormImportClearingInstructionComponent implements OnInit {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
+  }
+
+  loadICI() {
+    this.captureService.iciList(
+      {
+        userID: this.currentUser.userID,
+        specificICIID: this.attachmentID,
+        transactionID: this.transactionID,
+        rowStart: 1,
+        rowEnd: 15,
+        orderBy: '',
+        orderDirection: 'DESC',
+        filter: ''
+
+      }).then(
+      (res: ICIListResponse) => {
+        this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
+        this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
+        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
+        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
+        this.form.importersCode.value = res.clearingInstructions[0].importersCode;
+        this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
+        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
+        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
   }
 
   ngOnDestroy(): void {
