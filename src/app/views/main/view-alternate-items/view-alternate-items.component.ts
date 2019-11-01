@@ -91,11 +91,11 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Discription',
-      propertyName: 'discription',
+      title: 'Description',
+      propertyName: 'description',
       order: {
         enable: true,
-        tag: 'Discription'
+        tag: 'Description'
       }
     },
     {
@@ -115,75 +115,11 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Usage',
-      propertyName: 'usage',
-      order: {
-        enable: true,
-        tag: 'Usage'
-      }
-    },
-    {
-      title: 'MIDP',
-      propertyName: 'midp',
-      order: {
-        enable: true,
-        tag: 'MIDP'
-      }
-    },
-    {
-      title: 'PI',
-      propertyName: 'pi',
-      order: {
-        enable: true,
-        tag: 'PI'
-      }
-    },
-    {
       title: 'Vulnerable',
       propertyName: 'vulnerable',
       order: {
         enable: true,
         tag: 'Vulnerable'
-      }
-    },
-    {
-      title: '521',
-      propertyName: 'n521',
-      order: {
-        enable: true,
-        tag: 'n521'
-      }
-    },
-    {
-      title: '536',
-      propertyName: 'n536',
-      order: {
-        enable: true,
-        tag: 'n536'
-      }
-    },
-    {
-      title: '317.6.1',
-      propertyName: 'n31761',
-      order: {
-        enable: true,
-        tag: 'n31761'
-      }
-    },
-    {
-      title: '317.6.2',
-      propertyName: 'n31762',
-      order: {
-        enable: true,
-        tag: 'n31762'
-      }
-    },
-    {
-      title: '317.02',
-      propertyName: 'n31702',
-      order: {
-        enable: true,
-        tag: 'n31702'
       }
     }
   ];
@@ -272,18 +208,13 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
     };
     this.companyService.getAlternateItemList(model).then(
       (res: AlternateItemsListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
-          );
-        } else {
-          if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
-          }
+            );
         }
+
         this.alternateitems = res.alternateitems;
 
         if (res.rowCount === 0) {

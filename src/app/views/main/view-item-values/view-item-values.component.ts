@@ -9,12 +9,8 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, Order, TableHeader, SelectedRecord } from 'src/app/models/Table';
-import { GetIAlternateItemList } from 'src/app/models/HttpRequests/GetIAlternateItemList';
-import { AlternateItemsListResponse, AlternateItems } from 'src/app/models/HttpResponses/AlternateItemsListResponse';
 import { CompanyService, SelectedItem } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
 import { GetItemValuesList } from 'src/app/models/HttpRequests/GetItemValuesList';
 import { ItemValuesListResponse, ItemValue } from 'src/app/models/HttpResponses/ItemValuesListResponse';
 import { UpdateItemValue } from 'src/app/models/HttpResponses/UpdateItemValue';
@@ -171,9 +167,6 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
       this.itemID = obj.itemID;
       this.itemName = obj.itemName;
 
-      // if (this.groupID === '') {
-      //   this.groupID = null;
-      // }
     });
 
     this.loadItemsValues(true);
@@ -193,16 +186,12 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
     };
     this.companyService.getItemValueList(model).then(
       (res: ItemValuesListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
+              this.notify.successmsg(
+                res.outcome.outcome,
+                res.outcome.outcomeMessage
+              );
           }
         }
         this.itemvalues = res.itemValues;
@@ -307,7 +296,7 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateItemValue(id: number) {
+  UpdateItemValue() {
     const requestModel = {
       userID: this.currentUser.userID,
       itemValueID: this.ItemValue.itemValueID,

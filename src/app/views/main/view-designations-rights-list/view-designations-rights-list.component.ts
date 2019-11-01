@@ -145,8 +145,6 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
-        console.log(this.designationRightsList);
-        console.log(this.rightsList);
         this.designationRightsList.forEach(dRight => {
           let count = 0;
           this.rightsList.forEach(right => {
@@ -185,19 +183,13 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     .getDesignationRightsList(dRModel).then(
       (res: DesignationRightsListResponse) => {
 
-        if(res.outcome.outcome === "FAILURE"){
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        }
-        else
-        {
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
         }
+        this.designationRightsList = res.designationRightsList;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -211,10 +203,6 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
 
         } else {
         this.noData = false;
-        // Process Success
-
-        this.designationRightsList = res.designationRightsList;
-
         this.rowCount = res.rowCount;
         this.showLoader = false;
         this.showingRecords = res.designationRightsList.length;
@@ -393,14 +381,12 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     const result = this.designationsService
     .updateDesignationRight(requestModel).then(
       (res: DesignationRightReponse) => {
-        if(res.outcome.outcome === "FAILURE"){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
@@ -426,14 +412,12 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     const result = this.designationsService
     .addDesignationright(requestModel).then(
       (res: DesignationRightReponse) => {
-        if(res.outcome.outcome === "FAILURE"){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage

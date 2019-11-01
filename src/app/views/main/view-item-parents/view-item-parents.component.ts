@@ -233,10 +233,6 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage
             );
           }
-        } else {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
         }
 
         this.itemParents = res.itemParents;
@@ -370,7 +366,7 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
     this.openeditModal.nativeElement.click();
   }
 
-  UpdateItemParent(id: number) {
+  UpdateItemParent() {
     const requestModel = {
       userID: this.currentUser.userID,
       itemParentID: this.ItemParent.itemParentID,

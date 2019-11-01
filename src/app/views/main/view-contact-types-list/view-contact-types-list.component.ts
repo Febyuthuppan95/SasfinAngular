@@ -111,14 +111,7 @@ export class ViewContactTypesListComponent implements OnInit, OnDestroy {
       (res: ListContactTypes) => {
         this.showLoader = false;
         {
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -273,7 +266,7 @@ export class ViewContactTypesListComponent implements OnInit, OnDestroy {
     if (this.focusContactTypeName === '' || this.focusContactTypeName === undefined) {
       errors++;
     }
-    if(this.focusContactTypeDescription === '' || this.focusContactTypeDescription === undefined){
+    if (this.focusContactTypeDescription === '' || this.focusContactTypeDescription === undefined) {
       errors++;
     }
     const requestModel: UpdateContactTypeRequest = {

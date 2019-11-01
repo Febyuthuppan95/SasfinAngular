@@ -150,14 +150,7 @@ export class ViewRightsListComponent implements OnInit, OnDestroy {
       .then(
         (res: RightListResponse) => {
 
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -179,10 +172,10 @@ export class ViewRightsListComponent implements OnInit, OnDestroy {
         },
         msg => {
           this.showLoader = false;
-           this.notify.errorsmsg(
-             'Server Error',
-             'Something went wrong while trying to access the server.'
-          );
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+        );
         }
       );
   }

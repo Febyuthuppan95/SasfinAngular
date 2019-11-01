@@ -12,6 +12,7 @@ import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-invoices',
@@ -27,6 +28,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
+  transactionObservation: Subscription;
 
   // Data Table Configuration
   tableConfig: TableConfig = {
@@ -105,6 +107,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');
@@ -113,7 +116,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   }
 
   back() {
-    ;
+    this.router.navigate(['transaction/attachments']);
   }
 
   searchFilter(query: string) {

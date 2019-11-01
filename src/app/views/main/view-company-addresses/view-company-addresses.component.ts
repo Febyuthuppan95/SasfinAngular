@@ -147,13 +147,6 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     };
     this.AddressTypesList.push(temp);
 
-    // this.activatedRoute.paramMap
-    // .subscribe(params => {
-    //   this.companyID = +params.get('id');
-    //   this.companyName = params.get('name');
-    // });
-
-
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
@@ -262,8 +255,6 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
             this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
             this.paginateData();
           }
-
-          console.log(res);
         },
         msg => {
           this.showLoader = false;

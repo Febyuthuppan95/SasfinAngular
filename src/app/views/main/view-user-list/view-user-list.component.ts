@@ -303,12 +303,7 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
             }
           }
 
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
+          if (res.outcome.outcome === 'SUCCESS') {
             if (displayGrowl) {
               this.notify.successmsg(
                 res.outcome.outcome,
@@ -316,6 +311,8 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
               );
             }
           }
+
+          this.userList = res.userList;
 
           if (res.rowCount === 0) {
             this.noData = true;
@@ -325,7 +322,7 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
             this.noData = false;
             this.rowCount = res.rowCount;
             this.showingRecords = res.userList.length;
-            this.userList = res.userList;
+
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }

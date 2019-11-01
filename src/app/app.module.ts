@@ -162,6 +162,7 @@ import { ComponentService } from './services/ComponentLoader.service';
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
 import { TariffService } from './services/Tariff.service';
+import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
 
 @NgModule({
   declarations: [
@@ -275,6 +276,7 @@ import { TariffService } from './services/Tariff.service';
     CaptureFormDirective,
     ViewItemParentsComponent,
     ContextMenuItemsParentsComponent,
+    ViewCompanyBOMsComponent,
   ],
   imports: [
     BrowserModule,

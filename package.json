@@ -36,6 +36,7 @@
     "ngx-currency": "^2.0.0",
     "ngx-extended-pdf-viewer": "^1.0.2",
     "ngx-image-compress": "^8.0.3",
+    "ngx-keyboard-shortcuts": "^1.0.1",
     "ngx-pagination": "^4.0.0",
     "ngx-toastr": "^10.0.4",
     "polyfills": "^2.1.1",

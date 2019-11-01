@@ -180,19 +180,13 @@ export class ViewDesignationsListComponent implements OnInit, OnDestroy {
       .then(
         (res: DesignationListResponse) => {
 
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
           }
+          this.designationList = res.designationList;
 
           if (res.rowCount === 0) {
             this.rowStart = 0;
@@ -203,7 +197,6 @@ export class ViewDesignationsListComponent implements OnInit, OnDestroy {
             this.totalShowing = 0;
           } else {
             this.noData = false;
-            this.designationList = res.designationList;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.designationList.length;

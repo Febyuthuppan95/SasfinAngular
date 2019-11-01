@@ -10,10 +10,13 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { TableHeading, SelectedRecord, TableHeader } from 'src/app/models/Table';
+import { TableHeading, SelectedRecord, TableHeader, Order } from 'src/app/models/Table';
 import { stringify } from '@angular/compiler/src/util';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Pagination } from 'src/app/models/Pagination';
+import { Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/Menu.service';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -27,7 +30,24 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private transactionService: TransactionService,
-    private router: Router) {}
+    private IMenuService: MenuService,
+    private router: Router
+    ) {
+      this.rowStart = 1;
+      this.rowCountPerPage = 15;
+      this.activePage = +1;
+      this.prevPageState = true;
+      this.nextPageState = false;
+      this.prevPage = +this.activePage - 1;
+      this.nextPage = +this.activePage + 1;
+      this.filter = '';
+      this.orderBy = 'Name';
+      this.orderDirection = 'ASC';
+      this.totalShowing = 0;
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      this.sidebarCollapsed = result;
+    });
+    }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -53,6 +73,22 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   currentTheme: string;
   dataset: CaptureInfoResponse;
   recordsPerPage = 15;
+  showingPages: Pagination[];
+  rowCount: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  subscription: Subscription;
+  rowStart: number;
+  rowEnd: number;
+  rowCountPerPage: number;
+  showingRecords: number;
+  filter: string;
+  activePage: number;
+  orderBy: string;
+  orderDirection: string;
+  totalShowing: number;
 
   noData = false;
   showLoader = true;
@@ -159,6 +195,20 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.loadDoctypes();
   }
 
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadDataset();
+  }
+
+  recordsPerPageChange(recordsPerPage: number) {
+    this.rowCountPerPage = recordsPerPage;
+    this.rowStart = 1;
+    this.loadDataset();
+  }
+
   searchEvent(query: string) {
     this.requestModel.filter = query;
     this.loadDataset();
@@ -173,18 +223,24 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
         this.showLoader = false;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          if (!this.showedSuccess) {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.showedSuccess = true;
-            this.tableData = res.captureInfo;
-          }
-          this.tableData = res.captureInfo;
-          this.dataset = res;
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.showedSuccess = false;
-          this.tableData = [];
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.tableData = res.captureInfo;
+
+        this.dataset = res;
+        this.rowCount = res.rowCount;
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.showingRecords = res.captureInfo.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.tableData.length - 1;
+        }
+
       },
       (msg) => {
         this.showLoader = false;
@@ -277,20 +333,27 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   addCapture() {
-    this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-          this.closeAddModal.nativeElement.click();
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+    if (this.requestModelAddInfo.info == null || this.requestModelAddInfo.info === '' || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    // tslint:disable-next-line: max-line-length
+    } else if (this.requestModelAddInfo.doctypeID == null || this.requestModelAddInfo.doctypeID === -1 || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    } else {
+      this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.loadDataset();
+            this.closeAddModal.nativeElement.click();
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot Reach Server');
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot Reach Server');
-      }
-    );
+      );
+    }
   }
 
   onDoctypeChange(id: number) {

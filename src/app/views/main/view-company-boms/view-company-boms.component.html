@@ -1,4 +1,4 @@
-  <div class="shadow tile ls-tile-{{ currentTheme }}">
+<div class="shadow tile ls-tile-{{ currentTheme }}">
     <div class="ls-card-body">
       <div class="float-right">
         <ng-container *ngIf="showLoader">
@@ -37,7 +37,7 @@
 </app-menu>
 
 <!--Edit Modal-->
-<button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
+<!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
 <div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -70,26 +70,6 @@
                 <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
               </select>
             </div>
-            <!-- <div class="form-group">
-              <label class="control-label">Services:</label>
-              <div class="list-box">
-              <div class="row">
-                <div class="col-sm-6">
-                  Services
-                  <ul class="list-unstyled" *ngIf="this.servicelist">
-                    <li *ngFor="let item of this.servicelist" class="list-item">{{item.serviceName}}</li>
-                  </ul>
-                </div>
-                <div class="col-sm-6">
-                  Item Services
-                  <ul class="list-unstyled" *ngIf="this.itemservicelist">
-                    <li *ngFor="let item of this.itemservicelist" class="list-item">{{item.serviceName}}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            </div> -->
-
                 <div class="row ">
                   <form class="form-group add-scroll col-md-6 text-center">
                       <h5 class="control-label">Available Services</h5>
@@ -112,14 +92,14 @@
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-        <button type="button" (click)="UpdateItem(false)" class="btn btn-primary btn-sm">Save</button>
+        <button type="button" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>
     </div>
   </div>
-</div>
+</div> -->
 <!--Delete Modal -->
-<button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
+<!-- <button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
 <div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -140,4 +120,4 @@
     </form>
     </div>
   </div>
-</div>
+</div> -->

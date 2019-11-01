@@ -9,18 +9,26 @@
       *ngIf="this.tableData"
       [dataset]="this.tableData"
       [headings]="this.tableHeadings"
-      [tableHeader]="this.tableHeader"
       [recordsPerPage]="this.recordsPerPage"
       [rowStart]="this.requestModel.rowStart"
       [rowEnd]="this.requestModel.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
       (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
       (pageChangeEvent)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
       (searchEvent)="searchEvent($event)"
       (addButtonEvent)="addCaptureInfoModal()"
       (backButtonEvent)="backToCompanies()">
     </app-table>
   </div>
 </div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
 
 <app-menu
   [contextShow]="this.contextMenu"
@@ -29,8 +37,6 @@
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
   <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()" (removeCaptureInfo)="removeCapture($event)"></app-context-menu-capture-info>
 </app-menu>
-
-<app-notification></app-notification>
 
 <!-- Edit Capture Info -->
 <button class="hide" data-toggle="modal" data-target="#editGlossary" #openEditModal></button>

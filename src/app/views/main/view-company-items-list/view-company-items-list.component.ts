@@ -303,21 +303,14 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
 
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
-            if (displayGrowl) {
+          if (res.outcome.outcome === 'SUCCESS') {
               this.notify.successmsg(
                 res.outcome.outcome,
                 res.outcome.outcomeMessage);
-              }
           }
 
           this.dataList = res.items;
-          console.log(this.dataList);
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;

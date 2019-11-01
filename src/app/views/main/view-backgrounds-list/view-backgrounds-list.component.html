@@ -2,7 +2,7 @@
   <div class="ls-card-body">
     <br />
     <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" data-target="#uploadBackground" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" (click)="AddBackgroud()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
     </div>    <br>
     <form class="form-inline">
       <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
@@ -40,7 +40,7 @@
           <br>
         <div class="background-info">
           <button (click)="viewBackground([image.image])" class="btn btn-primary btn-sm float-right"><span class="mdi mdi-eye"></span> View</button>
-          <h4 class="text-light background-name">{{ image.name }}</h4>
+          <!-- <h4 class="text-light background-name">{{ image.name }}</h4> -->
         </div>
         </div>
       </div>
@@ -68,6 +68,7 @@
   </div>
 </div>
 
+<button class="hide" data-toggle="modal" data-target="#uploadBackground" #openUploadModal></button>
 <div class="modal fade" id="uploadBackground" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -79,17 +80,9 @@
       </div>
       <form (submit)="uploadBackground()" enctype="multipart/form-data">
       <div class="modal-body">
-          <!-- <div class="form-group">
-              <input type="text" placeholder="Background name" class="form-control"
-                [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}" required/>
-            </div> -->
           <div class="form-group">
-              <input type="file" name="file" id="addBackgroundImage" class="upload" (change)="onFileChange($event.target.files); readFile($event)" required/>
-              <label for="addBackgroundImage">Choose a file</label>
-          <!-- <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
-              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-            </label>
-            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files); readFile($event)" required> -->
+              <input #myInput type="file" name="file" id="addBackgroundImage" class="upload" (change)="onFileChange($event.target.files); readFile($event)" required/>
+
           </div>
           <p *ngIf="this.preview !== null && this.preview !== undefined">Preview: </p>
           <img *ngIf="this.preview !== null && this.preview !== undefined" [src]="preview" style="width: 100%;height:250px;"/>

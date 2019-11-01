@@ -38,6 +38,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
+    this.rowCount = 0;
   }
 
   @ViewChild(ContextMenuComponent, {static: true } )
@@ -235,21 +236,19 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage
             );
           }
+
+          this.dataList = res.attachments;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
-            this.rowCount = res.attachments.length > 0 ? res.attachments.length : 0;
             this.noData = false;
+            this.rowCount = res.rowCount ;
             this.dataset = res;
-            this.dataList = res.attachments;
-            this.rowStart = res.attachments.length > 0 ? 1 : 0;
-            this.showingRecords = res.attachments.length > 0 ? res.attachments.length : 1;
-
-            // this.rowCount = res.rowCount;
+            this.showingRecords = res.attachments.length;
             this.showLoader = false;
-            // this.showingRecords = res.attachments.length;
-            this.totalShowing = +this.rowStart + +this.dataset.attachments.length - 1;
+            this.totalShowing = +this.rowStart + +this.dataList.length - 1;
             this.paginateData();
           }
         },

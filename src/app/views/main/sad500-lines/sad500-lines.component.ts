@@ -25,6 +25,9 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
 
   currentTheme: string;
 
+  @ViewChild('closeAddModal', { static: false })
+  closeAddModal: ElementRef;
+
   dataset: object[];
   rowStart = 1;
   rowEnd = 15;
@@ -136,8 +139,9 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
             this.loadDataset();
+            this.closeAddModal.nativeElement.click();
           } else {
-
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
         (msg) => {

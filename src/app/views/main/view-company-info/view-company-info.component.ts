@@ -210,13 +210,10 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
       orderByDirection: this.orderDirection
     };
 
-    console.log(model);
-
     this.companyService
       .info(model)
       .then(
         (res: CompanyInfoResponse) => {
-          console.log(res);
 
           if (res.rowCount === 0) {
             this.noData = true;

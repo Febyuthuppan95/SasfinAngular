@@ -146,17 +146,11 @@ export class ViewItemTypesListComponent implements OnInit, OnDestroy {
     .then(
       (res: ItemTypeListResponse) => {
 
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        } else {
-          if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
-          }
         }
 
         if (res.rowCount === 0) {
@@ -204,35 +198,6 @@ export class ViewItemTypesListComponent implements OnInit, OnDestroy {
     this.rowEnd = this.rowCountPerPage;
     this.loadItemTypes(false);
   }
-
-  // popClick(event, user) {
-  //   if (this.sidebarCollapsed) {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   } else {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   }
-
-  //   // Will only toggle on if off
-  //   if (!this.contextMenu) {
-  //     this.themeService.toggleContextMenu(true); // Set true
-  //     this.contextMenu = true;
-  //     // Show menu
-  //   } else {
-  //     this.themeService.toggleContextMenu(false);
-  //     this.contextMenu = false;
-  //   }
-  // }
-  // popOff() {
-  //   this.contextMenu = false;
-  //   this.selectedRow = -1;
-  // }
-
-  // selectedRecord(obj: SelectedRecord) {
-  //   this.selectedRow = obj.index;
-  //   this.popClick(obj.event, obj.record);
-  // }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {

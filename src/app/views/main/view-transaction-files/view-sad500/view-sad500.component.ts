@@ -26,7 +26,7 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
-
+  transactionObservation: Subscription;
   // Data Table Configuration
   tableConfig: TableConfig = {
     header:  {
@@ -106,9 +106,10 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        this.notify.errorsmsg('Failure', 'Cannot reach server');``
       }
     );
   }

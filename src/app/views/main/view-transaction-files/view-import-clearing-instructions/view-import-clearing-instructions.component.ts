@@ -26,6 +26,7 @@ export class ViewImportClearingInstructionsComponent implements OnInit, OnDestro
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
+  transactionObservation: Subscription;
 
   // Data Table Configuration
   tableConfig: TableConfig = {
@@ -101,6 +102,8 @@ export class ViewImportClearingInstructionsComponent implements OnInit, OnDestro
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');

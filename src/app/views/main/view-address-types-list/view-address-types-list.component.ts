@@ -113,7 +113,7 @@ export class ViewAddressTypesListComponent implements OnInit, OnDestroy {
       (res: ListAddressTypes) => {
         this.showLoader = false;
         {
-          if (res.outcome.outcome === 'FAILURE'){
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage

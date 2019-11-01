@@ -246,18 +246,16 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
     this.companyService.service(model).then(
         (res: CompanyServiceResponse) => {
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
+          if (res.outcome.outcome === 'SUCCESS') {
+            this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          } else {
-              this.notify.successmsg(
-                res.outcome.outcome,
-                res.outcome.outcomeMessage);
           }
+
           this.rowCount = res.rowCount;
           this.dataList = res.services;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
@@ -269,9 +267,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
             this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
             this.paginateData();
           }
-          console.log(this.totalShowing);
-          this.loadUsers();
-          this.loadServices(false);
+
 
         },
         msg => {
@@ -345,6 +341,15 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       (res: ServiceListResponse) => {
 
           this.serviceslist = res.serviceses;
+          console.log(this.serviceslist);
+
+          this.dataList.forEach(Cservice => {
+            this.serviceslist.forEach((service, index) => {
+              if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
+                this.serviceslist.splice(index, 1);
+              }
+            });
+        });
       },
       msg => { }
     );
@@ -415,6 +420,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.focusstart = start;
     this.focusend = end;
 
+    this.loadUsers();
+    this.loadServices(false);
+
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -443,12 +451,12 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
-
+    this.loadServices(false);
+    this.loadUsers();
     this.openaddModal.nativeElement.click();
   }
 
   addCompanyService() {
-
     const requestModel: AddCompanyService = {
       userID: this.currentUser.userID,
       spesificCompanyID: this.companyID,
@@ -465,7 +473,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company service successfully added');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.loadCompanyServiceList();
             this.closeaddModal.nativeElement.click();
           }
@@ -506,7 +514,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
           if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
-            this.notify.successmsg('SUCCESS', 'Company service successfully Updated');
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.closeeditModal.nativeElement.click();
             this.loadCompanyServiceList();
         }

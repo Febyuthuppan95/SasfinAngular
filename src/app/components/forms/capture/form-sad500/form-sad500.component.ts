@@ -195,10 +195,10 @@ form = {
     this.captureService.sad500LineUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
-          this.lines = -1;
           this.loadLines();
           this.lineState = 'Updated successfully';
-
+          this.lines = -1;
+          this.focusLineData = null;
           setTimeout(() => this.lineState = '', 3000);
         }
       },
@@ -270,18 +270,17 @@ form = {
           this.loadLines();
 
           this.lineState = 'Saved successfully';
-          this.lines = -1;
+          this.focusLineForm = !this.focusLineForm;
           this.focusLineData = null;
+          this.lines = -1;
           setTimeout(() => this.lineState = '', 3000);
         } else {
           this.lineState = 'Failed to save';
-
           setTimeout(() => this.lineState = '', 3000);
         }
       },
       (msg) => {
         this.lineState = 'Failed to save';
-
         setTimeout(() => this.lineState = '', 3000);
       }
     );

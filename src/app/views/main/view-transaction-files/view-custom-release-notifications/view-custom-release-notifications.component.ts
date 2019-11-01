@@ -23,7 +23,6 @@ constructor(private themeService: ThemeService, private transactionService: Tran
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
-
   // Data Table Configuration
   tableConfig: TableConfig = {
     header:  {

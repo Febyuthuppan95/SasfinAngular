@@ -290,12 +290,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     };
     this.companyService.getItemList(model).then(
       (res: ItemsListResponse) => {
-        if (res.outcome.outcome === 'FAILURE') {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        } else {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -311,7 +306,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
           this.noData = false;
           this.rowCount = res.rowCount;
           this.showingRecords = res.itemsLists.length;
-
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.items.length - 1;
         }
@@ -415,7 +409,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.openRemoveModal.nativeElement.click();
   }
 
-  UpdateItem(deleted: boolean) {
+  UpdateItem(deleted?: boolean) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
@@ -427,7 +421,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       pI: this.pI,
       vulnerable: this.vulnerable,
       service: '',
-      isDeleted: deleted
+      isDeleted: 0
     };
     console.log(requestModel);
     this.companyService.itemupdate(requestModel).then(
