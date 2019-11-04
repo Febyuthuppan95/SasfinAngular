@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -14,13 +14,14 @@ import { Router } from '@angular/router';
 import { GetItemValuesList } from 'src/app/models/HttpRequests/GetItemValuesList';
 import { ItemValuesListResponse, ItemValue } from 'src/app/models/HttpResponses/ItemValuesListResponse';
 import { UpdateItemValue } from 'src/app/models/HttpResponses/UpdateItemValue';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-item-values',
   templateUrl: './view-item-values.component.html',
   styleUrls: ['./view-item-values.component.scss']
 })
-export class ViewItemValuesComponent implements OnInit {
+export class ViewItemValuesComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -41,7 +42,9 @@ export class ViewItemValuesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
     this.sidebarCollapsed = result;
     });
   }
@@ -148,13 +151,19 @@ export class ViewItemValuesComponent implements OnInit {
   itemName = '';
   freecomp: string[] = ['true', 'false'];
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeItem().subscribe((obj: SelectedItem) => {
+    this.companyService.observeItem()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedItem) => {
       this.itemID = obj.itemID;
       this.itemName = obj.itemName;
 
@@ -330,7 +339,10 @@ export class ViewItemValuesComponent implements OnInit {
     this.FreeComponent = state;
   }
 
-
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
 
 

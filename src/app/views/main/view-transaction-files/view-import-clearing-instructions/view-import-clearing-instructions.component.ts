@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TableConfig, TableHeader, Order } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -10,14 +10,15 @@ import { ValidateService } from 'src/app/services/Validation.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',
   templateUrl: './view-import-clearing-instructions.component.html',
   styleUrls: ['./view-import-clearing-instructions.component.scss']
 })
-export class ViewImportClearingInstructionsComponent implements OnInit {
+export class ViewImportClearingInstructionsComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
               private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
               private router: Router) { }
@@ -71,12 +72,19 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
+  transactionSub: Subscription;
+  private unsubscribeTransaction$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribeTransaction$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.transactionObservation = this.transactionService.observerCurrentAttachment().subscribe(data => {
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribeTransaction$))
+    .subscribe(data => {
       if (data.transactionID !== undefined) {
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
@@ -137,5 +145,10 @@ export class ViewImportClearingInstructionsComponent implements OnInit {
   searchEvent(query: string) {
     this.listRequest.filter = query;
     this.loadDataset();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeTransaction$.next();
+    this.unsubscribeTransaction$.complete();
   }
 }

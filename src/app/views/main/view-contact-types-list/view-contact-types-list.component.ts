@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ContactTypesService } from 'src/app/services/ContactTypes.Service';
@@ -10,13 +10,15 @@ import { ListContactTypes } from 'src/app/models/HttpResponses/ListContactTypes'
 import { AddContactTypesResponse } from 'src/app/models/HttpResponses/AddContactTypesResponse';
 import { UpdateContactTypeRequest } from 'src/app/models/HttpRequests/UpdateContactTypes';
 import { UpdateContactTypesResponse } from 'src/app/models/HttpResponses/UpdateContactTypesResponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-contact-types-list',
   templateUrl: './view-contact-types-list.component.html',
   styleUrls: ['./view-contact-types-list.component.scss']
 })
-export class ViewContactTypesListComponent implements OnInit {
+export class ViewContactTypesListComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private contactTypeService: ContactTypesService, private userService: UserService) { }
 
@@ -84,8 +86,12 @@ export class ViewContactTypesListComponent implements OnInit {
   newContactTypeName: string;
   newContactTypeDescription: string;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
   });
 
@@ -322,4 +328,10 @@ export class ViewContactTypesListComponent implements OnInit {
        }
      );
     }
+
+    ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
+
 }

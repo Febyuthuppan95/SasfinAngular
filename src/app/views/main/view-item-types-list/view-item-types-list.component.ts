@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -13,13 +13,14 @@ import { ItemType } from 'src/app/models/HttpResponses/ItemType';
 import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
 import { GetItemTypeList } from 'src/app/models/HttpRequests/GetItemTypeList';
 import { ItemTypesService } from 'src/app/services/ItemTypes.Service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-item-types-list',
   templateUrl: './view-item-types-list.component.html',
   styleUrls: ['./view-item-types-list.component.scss']
 })
-export class ViewItemTypesListComponent implements OnInit {
+export class ViewItemTypesListComponent implements OnInit, OnDestroy {
   constructor(
     private itemTypesService: ItemTypesService,
     private userService: UserService,
@@ -39,7 +40,9 @@ export class ViewItemTypesListComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.loadItemTypes(true);
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -111,9 +114,13 @@ export class ViewItemTypesListComponent implements OnInit {
   displayFilter = false;
   isAdmin: false;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -217,6 +224,11 @@ export class ViewItemTypesListComponent implements OnInit {
   searchEvent(query: string) {
     this.filter = query;
     this.loadItemTypes(false);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

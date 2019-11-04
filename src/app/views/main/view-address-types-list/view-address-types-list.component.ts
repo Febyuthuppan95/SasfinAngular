@@ -1,6 +1,6 @@
 import { AddAddressTypesResponse } from './../../../models/HttpResponses/AddAddressTypesResponse';
 import { AddressTypesListResponse } from './../../../models/HttpResponses/AddressTypesListResponse';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -14,13 +14,15 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateAddressTypeRequest } from 'src/app/models/HttpRequests/UpdateAddressTypes';
 import { AddressTypesService } from 'src/app/services/AddressTypes.Service';
 import { UserService } from 'src/app/services/user.Service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-address-types-list',
   templateUrl: './view-address-types-list.component.html',
   styleUrls: ['./view-address-types-list.component.scss']
 })
-export class ViewAddressTypesListComponent implements OnInit {
+export class ViewAddressTypesListComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private addressTypeService: AddressTypesService, private userService: UserService) {}
 
@@ -86,9 +88,12 @@ export class ViewAddressTypesListComponent implements OnInit {
   focusAddressTypeName: string;
 
   newAddressTypeName: string;
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -320,6 +325,11 @@ export class ViewAddressTypesListComponent implements OnInit {
          alert('Error');
        }
      );
+    }
+
+    ngOnDestroy(): void {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
     }
    }
 

@@ -4,7 +4,7 @@
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
       <input [focus]="this.focusMainForm" type="text"
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }} form-control-invalid"
+        class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
         [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
         placeholder="Serial No" />
         <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
@@ -12,7 +12,7 @@
     <div class="form-group" *ngIf="this.form.LRN != undefined">
       <input type="text"
         [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
         placeholder="LRN" />
         <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
@@ -20,7 +20,7 @@
     <div class="form-group" *ngIf="this.form.PCC != undefined">
       <input type="text"
         [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
 
         placeholder="PCC" />
         <p class="invalid-control-label" *ngIf="this.form.PCC.error !== null">{{this.form.PCC.error}}</p>
@@ -28,7 +28,7 @@
     <div class="form-group" *ngIf="this.form.totalCustomsValue != undefined">
       <input type="text"
         [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
         placeholder="Total Customs Value" />
         <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
@@ -36,7 +36,7 @@
     <div class="form-group" *ngIf="this.form.waybillNo != undefined">
       <input type="text"
         [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
 
         placeholder="Waybill No" />
@@ -45,7 +45,7 @@
     <div class="form-group" *ngIf="this.form.supplierRef != undefined">
       <input type="text"
         [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
 
         placeholder="Supplier Ref" />
@@ -55,7 +55,7 @@
     <div class="form-group" *ngIf="this.form.MRN != undefined">
       <input type="text"
         [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
+        class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
         placeholder="MRN" />
         <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>

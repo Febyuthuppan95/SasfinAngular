@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Location } from '@angular/common';
 import {ThemeService} from '../../../services/Theme.Service';
 import {UserService} from '../../../services/User.Service';
@@ -17,17 +17,18 @@ import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ContextMenuUserrightsComponent } from '../../../components/menus/context-menu-userrights/context-menu-userrights.component';
 import { GetRightList } from 'src/app/models/HttpRequests/Rights';
 import { GetUserRightsList, UpdateUserRight, AddUserRight } from 'src/app/models/HttpRequests/UserRights';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-user-rights-list',
   templateUrl: './view-user-rights-list.component.html',
   styleUrls: ['./view-user-rights-list.component.scss']
 })
-export class ViewUserRightsListComponent implements OnInit {
+export class ViewUserRightsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
@@ -51,7 +52,10 @@ export class ViewUserRightsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
 
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
+      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }
@@ -66,6 +70,8 @@ export class ViewUserRightsListComponent implements OnInit {
   private imageModal: ImageModalComponent;
   @ViewChild(ContextMenuUserrightsComponent, {static: true})
   private contextMenuUser: ContextMenuUserrightsComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
@@ -111,6 +117,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(params => {
        this.specificUser = +params.get('id');
        this.currentUserName = params.get('name');
@@ -118,7 +125,9 @@ export class ViewUserRightsListComponent implements OnInit {
 
     this.loadUserRights();
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -428,6 +437,11 @@ export class ViewUserRightsListComponent implements OnInit {
 
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

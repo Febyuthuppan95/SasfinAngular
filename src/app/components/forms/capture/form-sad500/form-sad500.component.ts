@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -12,13 +12,14 @@ import { MatDialog } from '@angular/material';
 import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
-
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
   styleUrls: ['./form-sad500.component.scss']
 })
-export class FormSAD500Component implements OnInit, AfterViewInit {
+export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
@@ -37,6 +38,7 @@ lines = -1;
 focusMainForm: boolean;
 focusLineForm: boolean;
 focusLineData: SAD500Line = null;
+private unsubscribe$ = new Subject<void>();
 
 currentTheme: string;
 
@@ -77,8 +79,12 @@ form = {
 };
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe(value => this.currentTheme = value);
-    this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(value => this.currentTheme = value);
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.loadCapture();
@@ -302,6 +308,11 @@ form = {
 
   specificLine(index: number) {
     this.focusLineData = this.sad500CreatedLines[index];
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

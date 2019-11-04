@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CompanyService } from 'src/app/services/Company.Service';
@@ -10,13 +10,15 @@ import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/Com
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CompanyList, AddCompany, UpdateCompany } from 'src/app/models/HttpRequests/Company';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-list',
   templateUrl: './view-company-list.component.html',
   styleUrls: ['./view-company-list.component.scss']
 })
-export class ViewCompanyListComponent implements OnInit {
+export class ViewCompanyListComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -101,9 +103,13 @@ export class ViewCompanyListComponent implements OnInit {
   sidebarCollapsed = true;
   selectedRow = -1;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
 
-  this.themeService.observeTheme().subscribe((theme) => {
+  this.themeService.observeTheme()
+  .pipe(takeUntil(this.unsubscribe$))
+  .subscribe((theme) => {
     this.currentTheme = theme;
   });
 }
@@ -393,5 +399,10 @@ export class ViewCompanyListComponent implements OnInit {
     }
 
     return errors;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

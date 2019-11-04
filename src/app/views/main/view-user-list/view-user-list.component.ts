@@ -1,9 +1,9 @@
 import { DesignationService } from './../../../services/Designation.service';
 import { Status } from './../../../models/Enums/Statuses';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
-import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef, OnDestroy } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
@@ -23,13 +23,14 @@ import { GetUserList, AddUserRequest, UpdateUserRequest } from 'src/app/models/H
 import { User } from 'src/app/models/HttpResponses/User';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { ValidateService } from 'src/app/services/Validation.Service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-user-list',
   templateUrl: './view-user-list.component.html',
   styleUrls: ['./view-user-list.component.scss']
 })
-export class ViewUserListComponent implements OnInit {
+export class ViewUserListComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
@@ -50,7 +51,9 @@ export class ViewUserListComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.loadUsers(true);
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -75,6 +78,8 @@ export class ViewUserListComponent implements OnInit {
 
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
+
+  private unsubscribe$ = new Subject<void>();
 
   tableHeader: TableHeader = {
     title: 'Users',
@@ -228,7 +233,9 @@ export class ViewUserListComponent implements OnInit {
   isAdmin: false;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
     this.statusList = new Array<Status>();
@@ -683,5 +690,11 @@ export class ViewUserListComponent implements OnInit {
     this.filter = query;
     this.loadUsers(false);
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
 }

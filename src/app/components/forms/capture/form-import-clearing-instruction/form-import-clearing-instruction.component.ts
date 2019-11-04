@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -19,6 +21,8 @@ export class FormImportClearingInstructionComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -50,8 +54,13 @@ export class FormImportClearingInstructionComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe(value => this.currentTheme = value);
-    this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(value => this.currentTheme = value);
+
+    this.transactionService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
       }
@@ -89,4 +98,10 @@ export class FormImportClearingInstructionComponent implements OnInit {
         }
       );
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

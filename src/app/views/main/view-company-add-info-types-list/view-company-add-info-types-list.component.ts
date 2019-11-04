@@ -1,6 +1,6 @@
 import { AddAddressTypesResponse } from './../../../models/HttpResponses/AddAddressTypesResponse';
 import { AddressTypesListResponse } from './../../../models/HttpResponses/AddressTypesListResponse';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -13,20 +13,22 @@ import { ListCompanyAddInfoTypes } from 'src/app/models/HttpResponses/ListCompan
 import { AddCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/AddCompanyAddInfoTypesResponse';
 import { UpdateCompanyAddInfoTypeRequest } from 'src/app/models/HttpRequests/UpdateCompanyAddInfoTypes';
 import { UpdateCompanyAddInfoTypesResponse } from 'src/app/models/HttpResponses/UpdateCompanyAddInfoTypesResponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-add-info-types-list',
   templateUrl: './view-company-add-info-types-list.component.html',
   styleUrls: ['./view-company-add-info-types-list.component.scss']
 })
-export class ViewCompanyAddInfoTypesListComponent implements OnInit {
+export class ViewCompanyAddInfoTypesListComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line: max-line-length
   constructor(private themeService: ThemeService, private companyAddInfoTypeService: CompanyAddInfoTypesService, private userService: UserService) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-
+  private unsubscribe$ = new Subject<void>();
   currentTheme = 'light';
 
   companyAddInfoTypes: CompanyAddInfoTypesListRequest = {
@@ -88,7 +90,9 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit {
   newCompanyAddInfoTypeName: string;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -316,5 +320,10 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit {
          alert('Error');
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

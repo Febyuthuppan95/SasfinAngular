@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { TableHeading, SelectedRecord, TableHeader, Order } from 'src/app/models/Table';
 import { stringify } from '@angular/compiler/src/util';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { Pagination } from 'src/app/models/Pagination';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.service';
@@ -21,7 +23,7 @@ import { MenuService } from 'src/app/services/Menu.service';
   templateUrl: './view-capture-info.component.html',
   styleUrls: ['./view-capture-info.component.scss']
 })
-export class ViewCaptureInfoComponent implements OnInit {
+export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -64,6 +66,8 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
+
+  private unsubscribe$ = new Subject<void>();
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -164,11 +168,15 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   ngOnInit() {
     this.showedSuccess = false;
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((data: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data: SelectedCompany) => {
       this.company = {
         id: data.companyID,
         name: data.companyName
@@ -387,4 +395,10 @@ export class ViewCaptureInfoComponent implements OnInit {
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

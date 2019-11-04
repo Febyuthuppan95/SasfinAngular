@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
@@ -13,13 +13,15 @@ import { ListHelpGlossaryResponse, ListHelpGlossaryItem } from 'src/app/models/H
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { UpdateHelpGlossary } from 'src/app/models/HttpRequests/UpdateHelpGlossary';
 import { UpdateHelpGlossaryResponse } from 'src/app/models/HttpResponses/UpdateHelpGlossaryResponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-help-glossary',
   templateUrl: './view-help-glossary.component.html',
   styleUrls: ['./view-help-glossary.component.scss']
 })
-export class ViewHelpGlossaryComponent implements OnInit {
+export class ViewHelpGlossaryComponent implements OnInit, OnDestroy {
 
   constructor(
     private helpGlossaryService: HelpGlossaryService,
@@ -94,8 +96,12 @@ export class ViewHelpGlossaryComponent implements OnInit {
   sidebarCollapsed = true;
   selectedRow = -1;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -321,5 +327,10 @@ export class ViewHelpGlossaryComponent implements OnInit {
     } else {
       this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

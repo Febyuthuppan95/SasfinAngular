@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { BackgroundService } from 'src/app/services/Background.service';
 import { environment } from 'src/environments/environment';
@@ -6,13 +6,15 @@ import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { CookieService } from 'ngx-cookie-service';
 import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
 import { BackgroundList, BackgroundListResponse } from 'src/app/models/HttpResponses/Backgrounds';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-dashboard-style',
   templateUrl: './edit-dashboard-style.component.html',
   styleUrls: ['./edit-dashboard-style.component.scss']
 })
-export class EditDashboardStyleComponent implements OnInit {
+export class EditDashboardStyleComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService, private backgroundService: BackgroundService,
               private objectHelpService: ObjectHelpService, private cookieService: CookieService) {}
 
@@ -28,6 +30,8 @@ export class EditDashboardStyleComponent implements OnInit {
   backgroundRequestModel: BackgroundListRequest;
   backgrounds: BackgroundList[];
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
     this.backgroundRequestModel = {
       userID: 3, // Default User ID for testing
@@ -41,11 +45,15 @@ export class EditDashboardStyleComponent implements OnInit {
 
     this.loadBackgrounds();
 
-    this.objectHelpService.observeAllow().subscribe((allow: boolean) => {
+    this.objectHelpService.observeAllow()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((allow: boolean) => {
       this.toggleHelpValue = allow;
     });
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -78,5 +86,10 @@ export class EditDashboardStyleComponent implements OnInit {
       (msg) => {
         // Catch
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

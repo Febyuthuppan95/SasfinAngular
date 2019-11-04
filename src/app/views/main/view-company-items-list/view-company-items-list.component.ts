@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -15,13 +15,15 @@ import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
 import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-items-list',
   templateUrl: './view-company-items-list.component.html',
   styleUrls: ['./view-company-items-list.component.scss']
 })
-export class ContextCompanyItemsListComponent implements OnInit {
+export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   specificUser: any;
 
@@ -146,17 +148,21 @@ export class ContextCompanyItemsListComponent implements OnInit {
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
-
+  private unsubscribe$ = new Subject<void>();
 
   companyName: string;
   companyID: number;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
@@ -597,4 +603,10 @@ export class ContextCompanyItemsListComponent implements OnInit {
       }
     );
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

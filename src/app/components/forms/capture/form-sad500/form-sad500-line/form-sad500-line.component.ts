@@ -12,13 +12,15 @@ import { TariffService } from 'src/app/services/Tariff.service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { FormControl } from '@angular/forms';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-form-sad500-line',
   templateUrl: './form-sad500-line.component.html',
   styleUrls: ['./form-sad500-line.component.scss']
 })
-export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit {
+export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnChanges {
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
@@ -40,6 +42,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   selectedTariffVal: string;
   selectedUnitVal: string;
+  private unsubscribe$ = new Subject<void>();
 
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
@@ -72,7 +75,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   isUpdate: boolean;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe(theme => this.currentTheme = theme);
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(theme => this.currentTheme = theme);
     this.currentUser = this.userService.getCurrentUser();
 
     this.loadUnits();
@@ -215,5 +220,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   matchRuleShort(str, rule) {
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
