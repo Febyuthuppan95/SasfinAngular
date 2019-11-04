@@ -81,7 +81,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -98,43 +98,43 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Item',
-      propertyName: 'item',
+      title: 'Item Code',
+      propertyName: 'itemNameInput',
       order: {
         enable: true,
-        tag: 'Item'
+        tag: 'ItemNameInput'
       }
     },
     {
-      title: 'Description',
-      propertyName: 'description',
+      title: 'Tariff Code',
+      propertyName: 'tariffInput',
       order: {
         enable: true,
-        tag: 'Description'
+        tag: 'TariffInput'
       }
     },
     {
-      title: 'Tariff',
-      propertyName: 'tariff',
+      title: 'Unit Of Measure',
+      propertyName: 'unitOfMeasureInput',
       order: {
         enable: true,
-        tag: 'Tariff'
+        tag: 'UnitOfMeasureInput'
       }
     },
     {
-      title: 'Type',
-      propertyName: 'type',
+      title: 'Quarter',
+      propertyName: 'quarterInput',
       order: {
         enable: true,
-        tag: 'Type'
+        tag: 'QuarterInput'
       }
     },
     {
-      title: 'Vulnerable',
-      propertyName: 'vulnerable',
+      title: 'Usage Type',
+      propertyName: 'usageTypeInput',
       order: {
         enable: true,
-        tag: 'Vulnerable'
+        tag: 'UsageTypeInput'
       }
     }
   ];
@@ -214,7 +214,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     };
     this.companyService.getBOMLines(model).then(
       (res: BOMsLinesResponse) => {
-
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -222,7 +222,8 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.BOMLines = res.BOMLines;
+        this.BOMLines = res.bomLines;
+        console.log(res.bomLines);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -230,7 +231,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.BOMLines.length;
+          this.showingRecords = res.bomLines.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
         }

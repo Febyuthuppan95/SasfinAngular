@@ -2,16 +2,16 @@ import {Outcome} from './Outcome';
 
 export class BOMsLinesResponse {
   outcome: Outcome;
-  BOMLines: BOMLine[];
+  bomLines: BOMLine[];
   rowCount: number;
 }
 
 export class BOMLine {
-  itemsrowNum: number;
-  itemID: number;
-  groupID: number;
-  item: string;
-  description: string;
-  tariff: number;
-  vulnerable: string;
+  rowNum: number;
+  bomLineID: number;
+  tariffInput: string;
+  itemNameInput: string;
+  quarterInput: string;
+  unitOfMeasureInput: string;
+  usageTypeInput: string;
 }
