@@ -67,7 +67,6 @@ export class UserService {
 
   public addUserright(model: AddUserRight) {
     const json = JSON.parse(JSON.stringify(model));
-    // console.log(json);
     const promise = new Promise((resolve, reject) => {
       this.httpClient.post(`${environment.ApiEndpoint}/userRights/add`, json)
       .toPromise()
@@ -85,7 +84,6 @@ export class UserService {
 
   public updateUserRight(model: UpdateUserRight) {
     const json = JSON.parse(JSON.stringify(model));
-    // console.log(json);
     const promise = new Promise((resolve, reject) => {
       this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
       .toPromise()
@@ -249,7 +247,6 @@ export class UserService {
    * UserUpdateProfileImage
    */
   public UserUpdateProfileImage(src: File) {
-    console.log(src);
     if (src !== undefined) {
       const formData = new FormData();
       formData.append('file', src);

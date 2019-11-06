@@ -121,7 +121,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
     this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {
-        console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.router.navigate(['transaction', 'attachments']);
@@ -159,7 +158,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.PCC.error = res.pccError;
       },
       (msg) => {
-        console.log(msg);
+
       }
     );
   }

@@ -12,7 +12,6 @@ export class RightService {
 
   public getRightList(model: GetRightList) {
     const requestModel = JSON.parse(JSON.stringify(model));
-    console.log('here');
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/rights/list`;
       this.httpClient

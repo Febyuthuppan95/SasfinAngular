@@ -101,7 +101,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
       },
       (msg) => {
         if (!environment.production) {
-          console.log(msg);
         }
       }
     );
@@ -145,7 +144,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
           }
         },
         (msg) => {
-          console.log(msg);
         }
       );
     }

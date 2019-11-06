@@ -19,6 +19,7 @@ import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
 import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
+import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 
 @Injectable({
   providedIn: 'root'
@@ -28,46 +29,81 @@ export class CompanyService {
    *
    */
   constructor(private httpClient: HttpClient) {
+    // company
     let sessionData: SelectedCompany = null;
+    // item
     let sessionData2: SelectedItem = null;
+    // BOM
+    let sessionData3: SelectedBOM = null;
 
+    // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
     }
-
+    // item
     if (sessionStorage.getItem(`${environment.Sessions.itemData}`) !== undefined || null) {
       sessionData2 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.itemData}`));
     }
+    // BOM
+    if (sessionStorage.getItem(`${environment.Sessions.BOMData}`) !== undefined || null) {
+      sessionData3 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.BOMData}`));
+    }
 
+    // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
+    // item
     this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
+    // BOM
+    this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
+
   }
-
+  // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
+  // item
   selectedItem: BehaviorSubject<SelectedItem>;
+   // BOM
+   SelectedBOM: BehaviorSubject<SelectedBOM>;
 
+  // company
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
     sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
   }
+  // item
   setItem(item: SelectedItem) {
     this.selectedItem.next(item);
     sessionStorage.setItem(`${environment.Sessions.itemData}`, JSON.stringify(item));
   }
+  // BOM
+  setBOM(BOM: SelectedBOM) {
+    this.SelectedBOM.next(BOM);
+    sessionStorage.setItem(`${environment.Sessions.BOMData}`, JSON.stringify(BOM));
+  }
 
-
+  // company
   observeCompany() {
     return this.selectedCompany.asObservable();
   }
+  // item
   observeItem() {
     return this.selectedItem.asObservable();
   }
+  // BOM
+  observeBOM() {
+    return this.SelectedBOM.asObservable();
+  }
 
+  // company
   flushCompanySession() {
     sessionStorage.removeItem(`${environment.Sessions.companyData}`);
   }
+  // item
   flushItemSession() {
     sessionStorage.removeItem(`${environment.Sessions.itemData}`);
+  }
+  // BOM
+  flushBOMSession() {
+    sessionStorage.removeItem(`${environment.Sessions.BOMData}`);
   }
 
 
@@ -461,6 +497,23 @@ export class CompanyService {
     });
   }
 
+  public getBOMLines(model: GetBOMLines) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/BomLines`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getItemList(model: GetItemList) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/items`;
@@ -496,7 +549,6 @@ export class CompanyService {
   }
 
   public alternatItemsUpdate(model) {
-    console.log(model);
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/updateAlternateItems`;
@@ -710,4 +762,9 @@ export class SelectedItem {
   groupID: string;
   itemID: number;
   itemName: string;
+}
+
+export class SelectedBOM {
+  bomid: number;
+  status: string;
 }

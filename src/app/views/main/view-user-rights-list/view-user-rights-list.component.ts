@@ -387,7 +387,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       addedUserID: this.specificUser,
       rightID: id,
     };
-    console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {

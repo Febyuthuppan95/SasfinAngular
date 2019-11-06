@@ -279,7 +279,6 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
 
   searchEvent(query: string) {
     this.filter = query;
-    console.log(query);
     this.loadItemsValues(false);
   }
 
@@ -292,7 +291,6 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
     this.contextMenu = false;
     this.Price = 13.00; // this.ItemValue.itemPrice;
     this.FreeComponent = this.ItemValue.freeComponent;
-    console.log(this.Price);
     this.openeditModal.nativeElement.click();
   }
 
@@ -303,7 +301,6 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
       price: this.Price,
       freeComp: this.FreeComponent
     };
-    console.log(requestModel);
 
     this.companyService.UpdateItemValue(requestModel).then(
       (res: UpdateItemValue) => {

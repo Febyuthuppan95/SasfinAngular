@@ -341,7 +341,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       (res: ServiceListResponse) => {
 
           this.serviceslist = res.serviceses;
-          console.log(this.serviceslist);
 
           this.dataList.forEach(Cservice => {
             this.serviceslist.forEach((service, index) => {

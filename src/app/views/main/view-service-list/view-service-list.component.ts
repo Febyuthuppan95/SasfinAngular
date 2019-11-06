@@ -148,7 +148,6 @@ export class ContextMenuServiceListComponent implements OnInit, OnDestroy {
     .getServiceList(model)
     .then(
       (res: ServiceListResponse) => {
-        console.log(res.serviceses);
 
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {

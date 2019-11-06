@@ -66,7 +66,6 @@ export class UserRightService {
 
   // public updateUserRight(model: UpdateUserRight) {
   //   const json = JSON.parse(JSON.stringify(model));
-  //   console.log(json);
   //   return new Promise((resolve, reject) => {
   //     this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
   //       .toPromise()

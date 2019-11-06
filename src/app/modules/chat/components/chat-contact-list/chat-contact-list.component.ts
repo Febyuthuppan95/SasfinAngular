@@ -75,7 +75,6 @@ export class ChatContactListComponent implements OnInit, OnDestroy {
         this.noContacts = false;
 
         if (!environment.production) {
-          console.log(msg);
         }
       }
     );

@@ -6,8 +6,8 @@
         </ng-container>
       </div>
       <app-table
-        *ngIf="this.CompanyBOMs"
-        [dataset]="this.CompanyBOMs"
+        *ngIf="this.BOMLines"
+        [dataset]="this.BOMLines"
         [headings]="this.tableHeadings"
         [recordsPerPage]="this.recordsPerPage"
         [rowStart]="this.rowStart"
@@ -29,14 +29,13 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
 
-  <app-menu
-  *ngIf="this.contextMenu"
+  <!-- <app-menu
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-boms [BOMID]="this.BOM.bomid" [Status]="this.BOM.status"></app-context-menu-boms>
-</app-menu>
+  <app-context-menu-items (editItem)="editItem($event)" (removeItem)="removeItem($event)"></app-context-menu-items>
+</app-menu> -->
 
 <!--Edit Modal-->
 <!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>

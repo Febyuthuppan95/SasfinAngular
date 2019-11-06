@@ -261,12 +261,10 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     this.loadDesignationRights();
   }
   paginateData() {
-    // console.log(this.rowCount);
     if (this.rowCount > 0) {
       let rowStart = this.rowStart;
       let rowEnd = +this.rowCountPerPage;
       const pageCount = +this.rowCount / +this.rowCountPerPage;
-      // console.log(this.rowCountPerPage);
       this.pages = Array<Pagination>();
 
       for (let i = 0; i < pageCount; i++) {
@@ -287,7 +285,6 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
       item.rowEnd = 0;
       this.pages[0] = item;
     }
-    // console.log(this.pages);
     this.updatePagination();
   }
 
@@ -311,7 +308,6 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     this.showingPages = Array<Pagination>();
     this.showingPages[0] = this.pages[this.activePage - 1];
     const pagenumber = +this.rowCount / +this.rowCountPerPage;
-    // console.log(this.showingPages);
 
     if (this.activePage < pagenumber) {
       this.showingPages[1] = this.pages[+this.activePage];

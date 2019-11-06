@@ -262,7 +262,6 @@ export class ViewAddressTypesListComponent implements OnInit, OnDestroy {
     this.themeService.toggleContextMenu(false);
     /*this.contextMenu = false;*/
     this.openModal.nativeElement.click();
-    console.log('open modal');
   }
 
   updateAddressType() {
@@ -314,7 +313,6 @@ export class ViewAddressTypesListComponent implements OnInit, OnDestroy {
 
      this.addressTypeService.add(requestModel).then(
        (res: AddAddressTypesResponse) => {
-         console.log(res);
          if (res.outcome.outcome === 'SUCCESS') {
            this.newAddressTypeName = '';
            this.addModalClose.nativeElement.click();

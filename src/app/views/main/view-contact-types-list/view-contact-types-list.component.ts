@@ -257,7 +257,6 @@ export class ViewContactTypesListComponent implements OnInit, OnDestroy {
     this.themeService.toggleContextMenu(false);
     /*this.contextMenu = false;*/
     this.openModal.nativeElement.click();
-    console.log('open modal');
   }
 
   updateContactType() {
@@ -315,7 +314,6 @@ export class ViewContactTypesListComponent implements OnInit, OnDestroy {
 
      this.contactTypeService.add(requestModel).then(
        (res: AddContactTypesResponse) => {
-         console.log(res);
          if (res.outcome.outcome === 'SUCCESS') {
            this.newContactTypeName = '';
            this.newContactTypeDescription = '';

@@ -257,7 +257,6 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit, OnDestroy {
     this.themeService.toggleContextMenu(false);
     /*this.contextMenu = false;*/
     this.openModal.nativeElement.click();
-    console.log('open modal');
   }
 
   updateCompanyAddInfoType() {
@@ -309,7 +308,6 @@ export class ViewCompanyAddInfoTypesListComponent implements OnInit, OnDestroy {
 
      this.companyAddInfoTypeService.add(requestModel).then(
        (res: AddCompanyAddInfoTypesResponse) => {
-         console.log(res);
          if (res.outcome.outcome === 'SUCCESS') {
            this.newCompanyAddInfoTypeName = '';
            this.addModalClose.nativeElement.click();

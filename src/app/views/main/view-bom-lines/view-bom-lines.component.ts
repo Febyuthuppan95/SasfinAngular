@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -9,18 +9,20 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedBOM } from 'src/app/services/Company.Service';
+import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
-import { GetCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
-import { CompanyBOMsListResponse, CompanyBOM } from 'src/app/models/HttpResponses/CompanyBOMsListResponse';
+import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
+import { BOMsLinesResponse, BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-view-company-boms',
-  templateUrl: './view-company-boms.component.html',
-  styleUrls: ['./view-company-boms.component.scss']
+  selector: 'app-view-bom-lines',
+  templateUrl: './view-bom-lines.component.html',
+  styleUrls: ['./view-bom-lines.component.scss']
 })
-export class ViewCompanyBOMsComponent implements OnInit {
+export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -42,7 +44,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -61,16 +63,22 @@ export class ViewCompanyBOMsComponent implements OnInit {
   // @ViewChild('closeRemoveModal', {static: true})
   // closeRemoveModal: ElementRef;
 
-  BOM: {
-    bomid: number,
-    bomInput: string,
-    status: string,
+  Item: {
+    itemID: number,
+    item: string,
+    description: string,
+    tariff: number,
+    type: string,
+    mIDP: string,
+    pI: string,
+    vulnerable: string,
+
   };
 
   tableHeader: TableHeader = {
-    title: 'BOMs',
+    title: 'BOM Lines',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: true
@@ -90,30 +98,59 @@ export class ViewCompanyBOMsComponent implements OnInit {
       }
     },
     {
-      title: 'BOMCode',
-      propertyName: 'bomInput',
+      title: 'Item Code',
+      propertyName: 'itemNameInput',
       order: {
         enable: true,
-        tag: 'BOMInput'
+        tag: 'ItemNameInput'
       }
     },
     {
-      title: 'Status',
-      propertyName: 'status',
+      title: 'Tariff Code',
+      propertyName: 'tariffInput',
       order: {
         enable: true,
-        tag: 'Status'
+        tag: 'TariffInput'
+      }
+    },
+    {
+      title: 'Unit Of Measure',
+      propertyName: 'unitOfMeasureInput',
+      order: {
+        enable: true,
+        tag: 'UnitOfMeasureInput'
+      }
+    },
+    {
+      title: 'Quarter',
+      propertyName: 'quarterInput',
+      order: {
+        enable: true,
+        tag: 'QuarterInput'
+      }
+    },
+    {
+      title: 'Usage Type',
+      propertyName: 'usageTypeInput',
+      order: {
+        enable: true,
+        tag: 'UsageTypeInput'
       }
     }
   ];
 
   selectedRow = -1;
-  BOMCode = 0;
-  status = '';
-  BOMID = -1;
+  itemID = 0;
+  item = '';
+  description = '';
+  tariff = 0;
+  type = '';
+  mIDP = '';
+  pI = '';
+  vulnerable = '';
 
-  CompanyBOMs: CompanyBOM[] = [];
-
+  private unsubscribe$ = new Subject<void>();
+  BOMLines: BOMLine[] = [];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   recordsPerPage = 15;
@@ -141,39 +178,43 @@ export class ViewCompanyBOMsComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  companyID = 0;
-  companyName = '';
+  bomid = -1;
+  bomstatus = '';
 
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
-      this.companyID = obj.companyID;
-      this.companyName = obj.companyName;
+    this.companyService.observeBOM().pipe(takeUntil(this.unsubscribe$)).subscribe((obj: SelectedBOM) => {
+      if (obj !== undefined) {
+        this.bomid = obj.bomid;
+        this.bomstatus = obj.status;
+
+        this.loadBOMLines(true);
+      }
     });
 
-    this.loadCompanyBOMs(true);
 
   }
 
-  loadCompanyBOMs(displayGrowl: boolean) {
+  loadBOMLines(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetCompanyBOMs = {
+    const model: GetBOMLines = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      companyID: this.companyID,
+      bomID: this.bomid,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getCompanyBoms(model).then(
-      (res: CompanyBOMsListResponse) => {
+    this.companyService.getBOMLines(model).then(
+      (res: BOMsLinesResponse) => {
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -181,7 +222,8 @@ export class ViewCompanyBOMsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.CompanyBOMs = res.companyBoms;
+        this.BOMLines = res.bomLines;
+        console.log(res.bomLines);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -189,9 +231,9 @@ export class ViewCompanyBOMsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.companyBoms.length;
+          this.showingRecords = res.bomLines.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.CompanyBOMs.length - 1;
+          this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
         }
 
       },
@@ -205,15 +247,19 @@ export class ViewCompanyBOMsComponent implements OnInit {
     );
   }
 
+  back() {
+    this.router.navigate(['companies', 'boms']);
+  }
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadCompanyBOMs(false);
+    this.loadBOMLines(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyBOMs(false);
+    this.loadBOMLines(false);
   }
 
 
@@ -226,19 +272,15 @@ export class ViewCompanyBOMsComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadCompanyBOMs(false);
+    this.loadBOMLines(false);
   }
 
   popClick(event, obj) {
-    this.BOM = obj;
+    this.Item = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
-  }
-
-  back() {
-    this.router.navigate(['companies']);
   }
 
   selectedRecord(obj: SelectedRecord) {
@@ -265,12 +307,12 @@ export class ViewCompanyBOMsComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadCompanyBOMs(true);
+    this.loadBOMLines(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadCompanyBOMs(false);
+    this.loadBOMLines(false);
   }
 
   // editItem(id: number) {
@@ -390,7 +432,13 @@ export class ViewCompanyBOMsComponent implements OnInit {
   //   this.vulnerable = state;
   // }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    }
+
 }
+
 
 
 

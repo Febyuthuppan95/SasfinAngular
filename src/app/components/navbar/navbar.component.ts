@@ -40,7 +40,6 @@ export class NavbarComponent implements OnInit {
 
   public offcanvasSidebar() {
     this.offcanvas.emit('offcanvas');
-    // console.log('event emmited from navbar');
   }
 
   closeHelpContext() {

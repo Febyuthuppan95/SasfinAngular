@@ -202,7 +202,6 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
             this.paginateData();
           }
 
-          console.log(JSON.stringify(res));
         },
         msg => {
           this.showLoader = false;

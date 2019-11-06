@@ -273,7 +273,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
 
       this.unitService.update(requestModel).then(
         (res: UpdateUnitsOfMeasureResponse) => {
-          console.log(res);
           this.closeModal.nativeElement.click();
 
           this.unitsOfMeasure = {

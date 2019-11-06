@@ -398,7 +398,6 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   onChange(id: number)   {
     this.disableInfoSelect = true;
     this.Type = id;
-    console.log(this.Type);
   }
 
   viewCaptureInfo($event) {
