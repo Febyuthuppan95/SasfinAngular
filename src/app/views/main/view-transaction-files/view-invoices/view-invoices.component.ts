@@ -28,7 +28,6 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
   showLoader: boolean;
-  transactionObservation: Subscription;
 
   // Data Table Configuration
   tableConfig: TableConfig = {
@@ -107,7 +106,6 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
         } else {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
-        this.transactionObservation.unsubscribe();
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot reach server');

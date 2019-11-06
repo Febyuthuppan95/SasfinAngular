@@ -23,6 +23,10 @@ export class CaptureService {
   sad500LineList = (requestModel: SAD500LineListRequest) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/list`, requestModel);
   sad500LineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/update`, requestModel);
   sad500LineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/create`, requestModel);
+  // tslint:disable-next-line: max-line-length
+  sad500LineDutyAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/duty/add`, requestModel);
+  // tslint:disable-next-line: max-line-length
+  sad500LineDutyRemove = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/duty/remove`, requestModel);
 
   importClearingUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/ici`, requestModel);
 
