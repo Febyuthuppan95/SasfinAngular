@@ -21,6 +21,7 @@ import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
 import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
+import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,8 @@ export class CompanyService {
     let sessionData2: SelectedItem = null;
     // BOM
     let sessionData3: SelectedBOM = null;
+    // Permit
+    let sessionData4: SelectedPermit = null;
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -49,6 +52,10 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.BOMData}`) !== undefined || null) {
       sessionData3 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.BOMData}`));
     }
+    // Permit
+    if (sessionStorage.getItem(`${environment.Sessions.PermitData}`) !== undefined || null) {
+      sessionData4 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.PermitData}`));
+    }
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
@@ -56,14 +63,18 @@ export class CompanyService {
     this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
     // BOM
     this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
+    // Permit
+    this.SelectedPermit = new BehaviorSubject<SelectedPermit>(sessionData4);
 
   }
   // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
   // item
   selectedItem: BehaviorSubject<SelectedItem>;
-   // BOM
-   SelectedBOM: BehaviorSubject<SelectedBOM>;
+  // BOM
+  SelectedBOM: BehaviorSubject<SelectedBOM>;
+  // Permit
+  SelectedPermit: BehaviorSubject<SelectedPermit>;
 
   // company
   setCompany(company: SelectedCompany) {
@@ -80,6 +91,11 @@ export class CompanyService {
     this.SelectedBOM.next(BOM);
     sessionStorage.setItem(`${environment.Sessions.BOMData}`, JSON.stringify(BOM));
   }
+  // Permit
+  setPermit(Permit: SelectedPermit) {
+    this.SelectedPermit.next(Permit);
+    sessionStorage.setItem(`${environment.Sessions.PermitData}`, JSON.stringify(Permit));
+  }
 
   // company
   observeCompany() {
@@ -93,6 +109,10 @@ export class CompanyService {
   observeBOM() {
     return this.SelectedBOM.asObservable();
   }
+  // Permit
+  observePermit() {
+    return this.SelectedPermit.asObservable();
+  }
 
   // company
   flushCompanySession() {
@@ -105,6 +125,10 @@ export class CompanyService {
   // BOM
   flushBOMSession() {
     sessionStorage.removeItem(`${environment.Sessions.BOMData}`);
+  }
+  // Permit
+  flushPermitSession() {
+    sessionStorage.removeItem(`${environment.Sessions.PermitData}`);
   }
 
 
@@ -515,6 +539,23 @@ export class CompanyService {
     });
   }
 
+   public getPermitImportTariffs(model: GetPermitImportTariffs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PermitImportTariffs`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getBOMLines(model: GetBOMLines) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/BomLines`;
@@ -785,4 +826,9 @@ export class SelectedItem {
 export class SelectedBOM {
   bomid: number;
   status: string;
+}
+
+export class SelectedPermit {
+  permitID: number;
+  permitCode: string;
 }

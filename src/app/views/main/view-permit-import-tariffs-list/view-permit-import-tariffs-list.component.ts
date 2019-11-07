@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -9,18 +9,22 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedBOM, SelectedPermit } from 'src/app/services/Company.Service';
+import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
+import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
+import { BOMsLinesResponse, BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
-import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
-import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
+import { takeUntil } from 'rxjs/operators';
+import { GetPermitImportTariffs } from 'src/app/models/HttpRequests/GetPermitImportTariffs';
+import { PermitImportTariffResponse, PermitImportTariff } from 'src/app/models/HttpResponses/PermitImportTariffResponse';
 
 @Component({
-  selector: 'app-view-permits-list',
-  templateUrl: './view-permits-list.component.html',
-  styleUrls: ['./view-permits-list.component.scss']
+  selector: 'app-view-permit-import-tariffs-list',
+  templateUrl: './view-permit-import-tariffs-list.component.html',
+  styleUrls: ['./view-permit-import-tariffs-list.component.scss']
 })
-export class ViewPermitsListComponent implements OnInit {
+export class ViewPermitIMportTariffsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -42,7 +46,7 @@ export class ViewPermitsListComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -61,20 +65,19 @@ export class ViewPermitsListComponent implements OnInit {
   // @ViewChild('closeRemoveModal', {static: true})
   // closeRemoveModal: ElementRef;
 
-  Permit: {
-    permitID: number;
-    permitCode: string;
-    permitReference: string;
-    dateStart: string;
-    dateEnd: string;
-    importdateStart: string;
-    importdateEnd: string;
-    exportdateStart: string;
-    exportdateEnd: string;
-  };
+  // Item: {
+  //   itemID: number,
+  //   item: string,
+  //   description: string,
+  //   tariff: number,
+  //   type: string,
+  //   mIDP: string,
+  //   pI: string,
+  //   vulnerable: string,
+  // };
 
   tableHeader: TableHeader = {
-    title: 'Permits',
+    title: 'Permit Import Tariffs',
     addButton: {
      enable: false,
     },
@@ -96,75 +99,51 @@ export class ViewPermitsListComponent implements OnInit {
       }
     },
     {
-      title: 'Permit Code',
-      propertyName: 'permitCode',
+      title: 'Tariff Code',
+      propertyName: 'tariffCode',
       order: {
         enable: true,
-        tag: 'PermitCode'
+        tag: 'TariffCode'
       }
     },
     {
-      title: 'Permit Reference',
-      propertyName: 'permitReference',
+      title: 'Quantity',
+      propertyName: 'quantity',
       order: {
         enable: true,
-        tag: 'PermitReference'
+        tag: 'Quantity'
       }
     },
     {
-      title: 'Start Date',
-      propertyName: 'dateStart',
+      title: 'Unit Of Measure',
+      propertyName: 'uom',
       order: {
         enable: true,
-        tag: 'DateStart'
+        tag: 'UOM'
       }
     },
     {
-      title: 'End Date',
-      propertyName: 'dateEnd',
+      title: 'Price',
+      propertyName: 'price',
       order: {
         enable: true,
-        tag: 'DateEnd'
-      }
-    },
-    {
-      title: 'Import Start Date',
-      propertyName: 'importdateStart',
-      order: {
-        enable: true,
-        tag: 'ImportdateStart'
-      }
-    },
-    {
-      title: 'Import End Date',
-      propertyName: 'importdateEnd',
-      order: {
-        enable: true,
-        tag: 'ImportdateEnd'
-      }
-    },
-    {
-      title: 'Export Start Date',
-      propertyName: 'exportdateStart',
-      order: {
-        enable: true,
-        tag: 'ExportdateStart'
-      }
-    },
-    {
-      title: 'Export End Date',
-      propertyName: 'exportdateEnd',
-      order: {
-        enable: true,
-        tag: 'ExportdateEnd'
+        tag: 'Price'
       }
     }
   ];
 
   selectedRow = -1;
+  itemID = 0;
+  item = '';
+  description = '';
+  tariff = 0;
+  type = '';
+  mIDP = '';
+  pI = '';
+  vulnerable = '';
 
-  CompanyPermits: Permit[] = [];
-
+  private unsubscribe$ = new Subject<void>();
+  PermitImportTariffs: PermitImportTariff[] = [];
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   recordsPerPage = 15;
@@ -192,39 +171,38 @@ export class ViewPermitsListComponent implements OnInit {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  companyID = 0;
-  companyName = '';
+  permitid = -1;
 
 
   ngOnInit() {
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
-      this.companyID = obj.companyID;
-      this.companyName = obj.companyName;
-    });
+    this.companyService.observePermit().pipe(takeUntil(this.unsubscribe$)).subscribe((obj: SelectedPermit) => {
+      if (obj !== undefined) {
+        this.permitid = obj.permitID;
 
-    this.loadCompanyPermits(true);
+        this.loadPermitImportTariffs(true);
+      }
+    });
   }
 
-  loadCompanyPermits(displayGrowl: boolean) {
+  loadPermitImportTariffs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetCompanyPermits = {
+    const model: GetPermitImportTariffs = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      permitID: -1,
-      companyID: this.companyID,
+      permitID: this.permitid,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getCompanyPermits(model).then(
-      (res: CompanyPermitsListResponse) => {
+    this.companyService.getPermitImportTariffs(model).then(
+      (res: PermitImportTariffResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -232,16 +210,17 @@ export class ViewPermitsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.CompanyPermits = res.permits;
+        this.PermitImportTariffs = res.permitImportTariffs;
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.permits.length;
+          this.showingRecords = res.permitImportTariffs.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.CompanyPermits.length - 1;
+          this.totalShowing = +this.rowStart + +this.PermitImportTariffs.length - 1;
         }
 
       },
@@ -255,15 +234,19 @@ export class ViewPermitsListComponent implements OnInit {
     );
   }
 
+  back() {
+    this.router.navigate(['companies', 'permits']);
+  }
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadCompanyPermits(false);
+    this.loadPermitImportTariffs(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyPermits(false);
+    this.loadPermitImportTariffs(false);
   }
 
 
@@ -276,25 +259,21 @@ export class ViewPermitsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadCompanyPermits(false);
+    this.loadPermitImportTariffs(false);
   }
 
-  popClick(event, obj) {
-    this.Permit = obj;
-    this.contextMenuX = event.clientX + 3;
-    this.contextMenuY = event.clientY + 5;
-    this.themeService.toggleContextMenu(!this.contextMenu);
-    this.contextMenu = true;
-  }
+  // popClick(event, obj) {
+  //   this.Item = obj;
+  //   this.contextMenuX = event.clientX + 3;
+  //   this.contextMenuY = event.clientY + 5;
+  //   this.themeService.toggleContextMenu(!this.contextMenu);
+  //   this.contextMenu = true;
+  // }
 
-  back() {
-    this.router.navigate(['companies']);
-  }
-
-  selectedRecord(obj: SelectedRecord) {
-    this.selectedRow = obj.index;
-    this.popClick(obj.event, obj.record);
-  }
+  // selectedRecord(obj: SelectedRecord) {
+  //   this.selectedRow = obj.index;
+  //   this.popClick(obj.event, obj.record);
+  // }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {
@@ -315,12 +294,12 @@ export class ViewPermitsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadCompanyPermits(true);
+    this.loadPermitImportTariffs(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadCompanyPermits(false);
+    this.loadPermitImportTariffs(false);
   }
 
   // editItem(id: number) {
@@ -440,7 +419,13 @@ export class ViewPermitsListComponent implements OnInit {
   //   this.vulnerable = state;
   // }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    }
+
 }
+
 
 
 
