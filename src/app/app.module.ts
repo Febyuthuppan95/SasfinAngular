@@ -165,6 +165,7 @@ import { TariffService } from './services/Tariff.service';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
 import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
 import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/context-menu-boms.component';
+import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 
 @NgModule({
   declarations: [
@@ -281,6 +282,7 @@ import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/c
     ViewCompanyBOMsComponent,
     ViewBOMLinesComponent,
     ContextMenuBomsComponent,
+    ViewPermitsListComponent,
   ],
   imports: [
     BrowserModule,

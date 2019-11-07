@@ -20,6 +20,7 @@ import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
 import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
+import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 
 @Injectable({
   providedIn: 'root'
@@ -483,6 +484,23 @@ export class CompanyService {
   public getCompanyBoms(model: GetCompanyBOMs) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyPermits(model: GetCompanyPermits) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/Permits`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()

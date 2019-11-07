@@ -156,7 +156,7 @@
 
   <app-notification></app-notification>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-contact-types (editContactType)="editContactTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [contactTypeID]="focusContactTypeID" [contactTypeName]="focusContactTypeName" [contactTypeDescription]="focusContactTypeDescription"
+  <app-context-menu-contact-types (editContactType)="editContactTypes($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [contactTypeID]="focusContactTypeId" [contactTypeName]="focusContactTypeName" [contactTypeDescription]="focusContactTypeDescription"
                                   (addContactType)="addContactTypesModal($event)">
   </app-context-menu-contact-types>
 </div>
