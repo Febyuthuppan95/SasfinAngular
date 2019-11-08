@@ -16,7 +16,7 @@
       [orderBy]="this.tableConfig.orderBy"
       [orderByDirection]="this.tableConfig.orderByDirection"
       [tableHeader]="this.tableConfig.header"
-      (backButtonEvent)="this.tableConfig.events.backButton"
+      (backButtonEvent)="backToTransactions()"
       (orderChange)="orderChange($event)"
       (showingRecordsEvent)="recordsPerPageChange($event)"
       (pageChange)="pageChange($event)"

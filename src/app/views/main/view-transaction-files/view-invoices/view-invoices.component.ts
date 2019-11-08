@@ -58,9 +58,10 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     orderBy: '',
     orderByDirection: '',
     dataset: null,
-    events: {
-      backButton: () => this.router.navigate(['companies', 'transactions'])
-    }
+   // events: {
+      //backButton: () => this.router.navigate(['companies', 'transactions'])
+     // backButton: () => this.router.navigate(['companies/transactions'])
+   // }
   };
 
   listRequest = {
@@ -85,6 +86,8 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
+
+  
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -119,6 +122,11 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     this.router.navigate(['transaction/attachments']);
   }
 
+  backToTransactions()
+  {
+    this.router.navigate(['companies/transactions']);
+  }
+  
   searchFilter(query: string) {
     this.listRequest.filter = query;
     this.listRequest.rowStart = 1;
