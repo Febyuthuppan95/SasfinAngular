@@ -237,6 +237,7 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+    this.fileName = files.item(0).name;
   }
 
   readFile(event): void {
