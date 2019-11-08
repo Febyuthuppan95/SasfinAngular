@@ -14,6 +14,7 @@ import { FormControl } from '@angular/forms';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CaptureService } from 'src/app/services/capture.service';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -24,7 +25,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService) { }
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService) { }
 
   currentUser: User;
 
@@ -78,6 +79,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(theme => this.currentTheme = theme);
+
     this.currentUser = this.userService.getCurrentUser();
 
     this.loadUnits();
@@ -116,6 +118,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.lineNoError = this.updateSAD500Line.lineNoError;
       this.form.productCodeError = this.updateSAD500Line.productCodeError;
 
+      this.loadLinkedDutyTypes();
+      this.loadAllDuties();
     } else {
       this.isUpdate = false;
       this.form = {
@@ -195,6 +199,46 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         this.tariffsTemp = res.tariffList;
       },
       (msg) => {
+      }
+    );
+  }
+
+  loadLinkedDutyTypes() {
+    this.captureService.sad500LineDutyList({
+      userID: this.userService.getCurrentUser().userID,
+      sad500LineID: this.updateSAD500Line.sad500LineID,
+      dutyID: -1,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 100,
+      orderBy: '',
+      orderDirection: ''
+    }).then(
+      (res) => {
+        console.log(res);
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
+  }
+
+  loadAllDuties() {
+    this.captureService.dutyList({
+      userID: this.userService.getCurrentUser().userID,
+      sad500LineID: this.updateSAD500Line.sad500LineID,
+      dutyID: -1,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 100,
+      orderBy: '',
+      orderDirection: ''
+    }).then(
+      (res) => {
+        console.log(res);
+      },
+      (msg) => {
+        console.log(msg);
       }
     );
   }
