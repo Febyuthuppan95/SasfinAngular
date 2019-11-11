@@ -427,7 +427,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadItems(false);
-          this.closeRemoveModal.nativeElement.click();
+          this.closeeditModal.nativeElement.click();
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
