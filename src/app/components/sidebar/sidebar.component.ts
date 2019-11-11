@@ -92,19 +92,20 @@ export class SidebarComponent implements OnInit {
 
   loadUserRights() {
     const uRModel: GetUserRightsList = {
-      userID: this.currentUser.userID,
+      userID: 3,
       specificRightID: -1, // default
       specificUserID: this.currentUser.userID,
       filter: '',
       orderBy: 'Name',
       orderByDirection: 'DESC',
       rowStart: 1,
-      rowEnd: 1000
+      rowEnd: 100000
     };
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
+        console.log(res);
         res.userRightsList.forEach(uRight => {
 
           if (uRight.name === 'Users') {
@@ -192,6 +193,7 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'CompanyAddInfoTypes') {
             this.showcompanyAddInfoTypes = true;
           }
+          console.log(this.showcompanies);
         });
       },
       msg => {

@@ -228,12 +228,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
                 }
               });
             });
-        } else {
-          this.showLoader = false;
-          this.notify.errorsmsg(
-            'Not Found',
-            'Item Service not found'
-          );
         }
       },
       msg => {
