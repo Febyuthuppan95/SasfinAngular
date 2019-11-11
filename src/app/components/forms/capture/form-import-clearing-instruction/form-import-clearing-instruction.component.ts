@@ -72,7 +72,7 @@ export class FormImportClearingInstructionComponent implements OnInit {
 
     const requestModel = {
     userID: this.currentUser.userID,
-    specificCustomsReleaseID: this.attachmentID,
+    specificICIID: this.attachmentID,
     serialNo: this.form.serialNo.value,
     lrn: this.form.LRN.value,
     importersCode: this.form.importersCode.value,
@@ -81,7 +81,7 @@ export class FormImportClearingInstructionComponent implements OnInit {
     supplierRef: this.form.supplierRef.value,
     mrn: this.form.MRN.value,
     isDeleted: 0,
-    attachmentStatusID: 2,
+    attachmentStatus: 2,
     };
 
     this.captureService.iciUpdate(requestModel).then(
