@@ -296,8 +296,13 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,
-      info: this.captureInfo.info
+      info: this.captureInfo.info, 
+      doctypeID:  this.requestModelAddInfo.doctypeID,
+      isDeleted: 0
     };
+
+    if(requestModel.doctypeID == -1) //if it hasn't been selected yet then take value from first item.
+    requestModel.doctypeID = this.doctypeResponse.doctypes[0].doctypeID
 
     this.transactionService.captureInfoUpdate(requestModel).then(
       (res: Outcome) => {

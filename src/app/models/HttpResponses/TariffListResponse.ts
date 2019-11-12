@@ -7,13 +7,13 @@ export class TariffListResponse {
 }
 
 export class Tariff {
-  // rowNum: number;
+   rowNum: number;
   // tariffID: number;
   // tariffCode: string;
   // tariffName: string;
   Amount: number;
   Description: string;
   Duty: number;
-  Unit: string;
+  hsUnit: string;
   // quality538: string;
 }
