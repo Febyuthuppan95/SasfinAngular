@@ -219,15 +219,17 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     .itemservice(model)
     .then(
       (res: ItemServiceListResponse) => {
+
+        this.itemservicelist = res.itemServices;
+
         if (res.outcome.outcome === 'SUCCESS') {
-            this.itemservicelist = res.itemServices;
-            this.servicelist.forEach((service, index) => {
-              this.itemservicelist.forEach(iservice => {
-                if (service.serviceID === iservice.serviceID) {
-                    this.servicelist.splice(index, 1);
+          this.servicelist.forEach((service, index) => {
+            this.itemservicelist.forEach(iservice => {
+              if (service.serviceID === iservice.serviceID) {
+                  this.servicelist.splice(index, 1);
                 }
-              });
             });
+          });
         }
       },
       msg => {
@@ -443,8 +445,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
-        this.loadItems(false);
+
         this.loadServices(false);
+
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
@@ -465,32 +468,33 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
-        this.loadItems(false);
+        // this.loadItems(false);
         this.loadServices(false);
+
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
   }
 
-  removeItemValue(id: number) {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      itemID: this.Item.itemID,
-      isDeleted: 1
-    };
+  // removeItemValue(id: number) {
+  //   const requestModel = {
+  //     userID: this.currentUser.userID,
+  //     itemID: this.Item.itemID,
+  //     isDeleted: 1
+  //   };
 
-    this.companyService.RemoveItemList(requestModel).then(
-      (res: UpdateItemResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItems(false);
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
-      },
-      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-    );
-  }
+  //   this.companyService.RemoveItemList(requestModel).then(
+  //     (res: UpdateItemResponse) => {
+  //       if (res.outcome.outcome === 'SUCCESS') {
+  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+  //         this.loadItems(false);
+  //       } else {
+  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+  //       }
+  //     },
+  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+  //   );
+  // }
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
