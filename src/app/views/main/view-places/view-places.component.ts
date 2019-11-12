@@ -211,7 +211,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
               this.addModalClose.nativeElement.click();
               this.loadData();
             } else {
-              alert('Error Adding');
+              this.notify.toastrwarning(res.outcome, res.outcomeMessage);
             }
           },
           (msg) => {
