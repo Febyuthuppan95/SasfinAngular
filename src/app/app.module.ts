@@ -168,6 +168,7 @@ import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/c
 import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
+import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 
 @NgModule({
   declarations: [
@@ -287,6 +288,7 @@ import { ContextMenuPermitsComponent } from './components/menus/context-menu-per
     ViewPermitsListComponent,
     ViewPermitIMportTariffsListComponent,
     ContextMenuPermitsComponent,
+    ViewReportsListComponent,
   ],
   imports: [
     BrowserModule,

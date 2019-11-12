@@ -95,7 +95,7 @@
                       <h5 class="control-label">Available Services</h5>
                       <div class="modal-list-service" style="border: inset;">
                         <ul class="service-list">
-                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of servicelist"><a><span>{{service.serviceName}}</span></a></li>
+                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of returnedservices"><a><span>{{service.serviceName}}</span></a></li>
                         </ul>
                       </div>
                   </form>

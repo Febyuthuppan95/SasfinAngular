@@ -22,16 +22,19 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
 import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { takeUntil } from 'rxjs/operators';
+import { GetReportsList } from 'src/app/models/HttpRequests/GetReportsList';
+import { ReportsService } from 'src/app/services/Reports.Service';
+import { ReportsListResponse, Report } from 'src/app/models/HttpResponses/ReportsListResponse';
 
 @Component({
-  selector: 'app-view-items-list',
-  templateUrl: './view-items-list.component.html',
-  styleUrls: ['./view-items-list.component.scss']
+  selector: 'app-view-reports-list',
+  templateUrl: './view-reports-list.component.html',
+  styleUrls: ['./view-reports-list.component.scss']
 })
-export class ContextItemsListComponent implements OnInit, OnDestroy {
+export class ViewReportsListComponent implements OnInit, OnDestroy {
 
   constructor(
-    private companyService: CompanyService,
+    private reprtsservice: ReportsService,
     private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
@@ -85,9 +88,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   };
 
   tableHeader: TableHeader = {
-    title: 'Items',
+    title: 'Reports',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
@@ -107,7 +110,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Item',
+      title: 'Report',
       propertyName: 'item',
       order: {
         enable: true,
@@ -115,35 +118,35 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Description',
-      propertyName: 'description',
+      title: 'Company',
+      propertyName: 'company',
       order: {
         enable: true,
-        tag: 'Description'
-      }
-    },
-    {
-      title: 'Tariff',
-      propertyName: 'tariff',
-      order: {
-        enable: true,
-        tag: 'Tariff'
+        tag: 'Company'
       }
     },
     {
       title: 'Type',
-      propertyName: 'type',
+      propertyName: 'reportType',
       order: {
         enable: true,
-        tag: 'Type'
+        tag: 'ReportType'
       }
     },
     {
-      title: 'Vulnerable',
-      propertyName: 'vulnerable',
+      title: 'Company Service Claim Number',
+      propertyName: 'companyServiceClaimNumber',
       order: {
         enable: true,
-        tag: 'Vulnerable'
+        tag: 'CompanyServiceClaimNumber'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'reportStatus',
+      order: {
+        enable: true,
+        tag: 'ReportStatus'
       }
     }
   ];
@@ -158,7 +161,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   pI = '';
   vulnerable = '';
 
-  items: Items[] = [];
+  reportslist: Report[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -187,12 +190,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  YESNO: string[] = ['Yes', 'No'];
-  itemservicelist: ItemService[] = [];
-  servicelist: Service[] = [];
-  displayservices: Service[] = [];
-  returnedservices: Array<Service>;
-
 
   ngOnInit() {
 
@@ -206,92 +203,20 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   }
 
-  loaditemServices(displayGrowl: boolean) {
-    const model: GetItemServiceList = {
-      filter: this.filter,
-      userID: this.currentUser.userID,
-      itemID: this.Item.itemID,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-
-    };
-    this.companyService
-    .itemservice(model)
-    .then(
-      (res: ItemServiceListResponse) => {
-
-        this.itemservicelist = res.itemServices;
-
-
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.servicelist.forEach((service, index1) => {
-            this.itemservicelist.forEach(iservice => {
-              if (service.serviceID === iservice.serviceID) {
-                this.returnedservices.splice(index1, 1);
-                }
-            });
-          });
-          this.returnedservices =  this.returnedservices;
-          this.itemservicelist = this.itemservicelist;
-        }
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-  }
-
-  loadServices(displayGrowl: boolean) {
-    const model: GetServiceLList = {
-      filter: this.filter,
-      userID: this.currentUser.userID,
-      specificServiceID: -1,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-
-    };
-    this.ServiceService
-    .getServiceList(model)
-    .then(
-      (res: ServiceListResponse) => {
-
-        this.servicelist = res.serviceses;
-        this.returnedservices = Object.assign(this.displayservices, this.servicelist);
-        this.loaditemServices(false);
-
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-  }
-
   loadItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetItemList = {
+    const model: GetReportsList = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      specificItemID: -1,
+      reportID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getItemList(model).then(
-      (res: ItemsListResponse) => {
+    this.reprtsservice.getReportsList(model).then(
+      (res: ReportsListResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -299,7 +224,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.items = res.itemsLists;
+        this.reportslist = res.reportsLists;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -307,9 +232,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.itemsLists.length;
+          this.showingRecords = res.reportsLists.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.items.length - 1;
+          this.totalShowing = +this.rowStart + +this.reportslist.length - 1;
         }
 
       },
@@ -387,121 +312,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.loadItems(false);
   }
 
-  editItem(id: number) {
-    this.loadServices(false);
-
-
-    this.themeService.toggleContextMenu(false);
-    this.contextMenu = false;
-    this.itemID = this.Item.itemID;
-    this.item = this.Item.item;
-    this.description = this.Item.description;
-    this.tariff = this.Item.tariff;
-    this.type = this.Item.type;
-    this.mIDP = this.Item.mIDP;
-    this.pI = this.Item.pI;
-    this.vulnerable = this.Item.vulnerable;
-    this.openeditModal.nativeElement.click();
-  }
-  removeItem(id: number) {
-    this.themeService.toggleContextMenu(false);
-    this.contextMenu = false;
-    this.itemID = this.Item.itemID;
-    this.openRemoveModal.nativeElement.click();
-  }
-
-  UpdateItem(deleted?: boolean) {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      itemID: this.itemID,
-      item: this.item,
-      description: this.description,
-      tariff: this.tariff,
-      type: this.type,
-      mIDP: this.mIDP,
-      pI: this.pI,
-      vulnerable: this.vulnerable,
-      service: '',
-      isDeleted: deleted
-    };
-    this.companyService.itemupdate(requestModel).then(
-      (res: UpdateItemResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadItems(false);
-          this.closeeditModal.nativeElement.click();
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
-      },
-      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-    );
-  }
-
-  addNewservice(id, name) {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      serviceID: id,
-      itemID: this.itemID
-    };
-
-    this.companyService.itemserviceadd(requestModel).then(
-      (res: AddItemServiceResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
-
-        this.loadServices(false);
-
-      },
-      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-    );
-  }
-
-  removeservice(id, name) {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      itemServiceID: id,
-      itemID: this.itemID
-    };
-
-    this.companyService.itemserviceupdate(requestModel).then(
-      (res: UpdateItemServiceResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
-        // this.loadItems(false);
-        this.loadServices(false);
-
-      },
-      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-    );
-  }
-
-  // removeItemValue(id: number) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.Item.itemID,
-  //     isDeleted: 1
-  //   };
-
-  //   this.companyService.RemoveItemList(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
