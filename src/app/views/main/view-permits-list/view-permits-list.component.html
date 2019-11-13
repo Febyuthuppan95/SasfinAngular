@@ -1,4 +1,4 @@
-  <div class="shadow tile ls-tile-{{ currentTheme }}">
+<div class="shadow tile ls-tile-{{ currentTheme }}">
     <div class="ls-card-body">
       <div class="float-right">
         <ng-container *ngIf="showLoader">
@@ -6,8 +6,8 @@
         </ng-container>
       </div>
       <app-table
-        *ngIf="this.items"
-        [dataset]="this.items"
+        *ngIf="this.CompanyPermits"
+        [dataset]="this.CompanyPermits"
         [headings]="this.tableHeadings"
         [recordsPerPage]="this.recordsPerPage"
         [rowStart]="this.rowStart"
@@ -16,6 +16,7 @@
         [orderBy]="this.orderBy"
         [orderByDirection]="this.orderDirection"
         [tableHeader]="this.tableHeader"
+        (backButtonEvent)="back()"
         (selectedRecord)="selectedRecord($event)"
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
@@ -29,20 +30,21 @@
   <app-modal-component></app-modal-component>
 
   <app-menu
+  *ngIf="this.contextMenu"
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-items (editItem)="editItem($event)" (removeItem)="removeItem($event)"></app-context-menu-items>
+  <app-context-menu-permits [permitID]="this.Permit.permitID" [permitCode]="this.Permit.permitCode"></app-context-menu-permits>
 </app-menu>
 
 <!--Edit Modal-->
-<button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
+<!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
 <div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Edit Item</h5>
+        <h5 class="modal-title" id="modalContent">Edit values</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -69,7 +71,7 @@
               <select class="form-control" (change)="onVulnerablestateChange($event.target.value)">
                 <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
               </select>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
               <label class="control-label">Services:</label>
               <div class="list-box">
@@ -90,12 +92,12 @@
             </div>
             </div> -->
 
-                <div class="row ">
+                <!-- <div class="row ">
                   <form class="form-group add-scroll col-md-6 text-center">
                       <h5 class="control-label">Available Services</h5>
                       <div class="modal-list-service" style="border: inset;">
                         <ul class="service-list">
-                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of returnedservices"><a><span>{{service.serviceName}}</span></a></li>
+                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of servicelist"><a><span>{{service.serviceName}}</span></a></li>
                         </ul>
                       </div>
                   </form>
@@ -117,9 +119,9 @@
     </form>
     </div>
   </div>
-</div>
+</div> -->
 <!--Delete Modal -->
-<button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
+<!-- <button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
 <div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -140,4 +142,4 @@
     </form>
     </div>
   </div>
-</div>
+</div> -->

@@ -50,6 +50,10 @@ import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
 import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
+import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -83,12 +87,15 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
+          { path: 'reports', component: ViewReportsListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/boms', component: ViewCompanyBOMsComponent },
+          { path: 'companies/permits', component: ViewPermitsListComponent },
+          { path: 'companies/permits/permitimporttariffs', component: ViewPermitIMportTariffsListComponent },
           { path: 'companies/boms/bomlines', component: ViewBOMLinesComponent },
           { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
           { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },

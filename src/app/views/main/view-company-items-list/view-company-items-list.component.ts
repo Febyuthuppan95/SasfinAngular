@@ -13,7 +13,6 @@ import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsList
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
 import { AddItemGroup } from 'src/app/models/HttpRequests/AddItemGroup';
 import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse';
-import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';

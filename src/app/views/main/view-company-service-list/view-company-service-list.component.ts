@@ -544,6 +544,15 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  checkdate() {
+
+    if (this.StartDate > this.EndDate) {
+      this.notify.toastrwarning('Information', 'End date cannot be lower than start date.');
+      this.EndDate = null;
+    }
+
+  }
+
 
 }
 

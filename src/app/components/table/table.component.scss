@@ -72,6 +72,9 @@ td {
   width: 100% !important;
   overflow-x: auto !important;
 }
+.table > thead > tr :first-child {
+  max-width: 2px !important;
+}
 
 .btn-add {
   width: 35px;

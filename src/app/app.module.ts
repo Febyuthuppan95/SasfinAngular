@@ -145,7 +145,9 @@ import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.c
 import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
+// tslint:disable-next-line: max-line-length
 import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
 import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
 import { ValidateService } from './services/Validation.Service';
@@ -165,6 +167,12 @@ import { TariffService } from './services/Tariff.service';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
 import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
 import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/context-menu-boms.component';
+import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
+import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
+import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ReportsService } from './services/Reports.Service';
 
 @NgModule({
   declarations: [
@@ -281,6 +289,10 @@ import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/c
     ViewCompanyBOMsComponent,
     ViewBOMLinesComponent,
     ContextMenuBomsComponent,
+    ViewPermitsListComponent,
+    ViewPermitIMportTariffsListComponent,
+    ContextMenuPermitsComponent,
+    ViewReportsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -340,7 +352,8 @@ import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/c
     CaptureService,
     ValidateService,
     ComponentService,
-    TariffService
+    TariffService,
+    ReportsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

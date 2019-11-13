@@ -15,6 +15,7 @@ import { GetItemValuesList } from 'src/app/models/HttpRequests/GetItemValuesList
 import { ItemValuesListResponse, ItemValue } from 'src/app/models/HttpResponses/ItemValuesListResponse';
 import { UpdateItemValue } from 'src/app/models/HttpResponses/UpdateItemValue';
 import { takeUntil } from 'rxjs/operators';
+import { getLocaleNumberFormat } from '@angular/common';
 
 @Component({
   selector: 'app-view-item-values',
@@ -60,16 +61,15 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
 
   ItemValue: {
     itemValueID: number,
-    itemPrice: number,
+    itemPrice: string,
+    reference: string,
     freeComponent: string
   };
-
-
 
   tableHeader: TableHeader = {
     title: `Item Values`,
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: true
@@ -89,7 +89,7 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Item Price',
+      title: 'Item Price (ZAR)',
       propertyName: 'itemPrice',
       order: {
         enable: true,
@@ -97,11 +97,11 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Date Added',
-      propertyName: 'dateAdded',
+      title: 'Reference',
+      propertyName: 'reference',
       order: {
         enable: true,
-        tag: 'DateAdded'
+        tag: 'Reference'
       }
     },
     {
@@ -115,8 +115,9 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
   ];
 
   selectedRow = -1;
-  Price = 0;
+  Price = '';
   FreeComponent = '';
+  Reference = '';
 
   selectedFreecomp = 0;
   recordsPerPage = 15;
@@ -149,7 +150,12 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
   isAdmin: false;
   itemID = 0;
   itemName = '';
-  freecomp: string[] = ['true', 'false'];
+
+  freecomp: Array<{id: number, state: string}> = [
+    {id: 1, state: 'True'},
+    {id: 0, state: 'False'},
+  ];
+
 
   private unsubscribe$ = new Subject<void>();
 
@@ -289,8 +295,9 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
   editItemValue(id: number) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
-    this.Price = 13.00; // this.ItemValue.itemPrice;
+    this.Price =  this.ItemValue.itemPrice.replace(',', '.');
     this.FreeComponent = this.ItemValue.freeComponent;
+    this.Reference = this.ItemValue.reference;
     this.openeditModal.nativeElement.click();
   }
 
@@ -299,7 +306,8 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
       userID: this.currentUser.userID,
       itemValueID: this.ItemValue.itemValueID,
       price: this.Price,
-      freeComp: this.FreeComponent
+      reference: this.Reference,
+      freeComponent: this.FreeComponent
     };
 
     this.companyService.UpdateItemValue(requestModel).then(
@@ -307,6 +315,7 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadItemsValues(false);
+          this.closeeditModal.nativeElement.click();
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }

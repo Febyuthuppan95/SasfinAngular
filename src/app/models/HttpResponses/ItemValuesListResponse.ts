@@ -10,6 +10,6 @@ export class ItemValue {
   rowNum: number;
   itemValueID: number;
   itemPrice: string;
-  dateAdded: string;
+  reference: string;
   freeComponent: number;
 }
