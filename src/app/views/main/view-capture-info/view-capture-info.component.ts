@@ -301,7 +301,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       isDeleted: 0
     };
 
-    if(requestModel.doctypeID == -1) //if it hasn't been selected yet then take value from first item.
+    if(requestModel.doctypeID == -1) //if it hasn't been selected yet then take value from first item -.
     requestModel.doctypeID = this.doctypeResponse.doctypes[0].doctypeID
 
     this.transactionService.captureInfoUpdate(requestModel).then(
