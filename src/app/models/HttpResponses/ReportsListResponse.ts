@@ -7,7 +7,14 @@ export class ReportsListResponse {
 }
 
 export class Report {
-  itemsrowNum: number;
+  rowNum: number;
   reportID: number;
+  reportName: string;
+  companyID: number;
+  companyName: string;
+  serviceID: number;
+  serviceName: string;
+  compnayServiceClaimNumber: number;
+  status: string;
 
 }

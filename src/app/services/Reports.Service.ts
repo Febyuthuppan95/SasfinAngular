@@ -25,7 +25,7 @@ export class ReportsService {
   public getReportsList(model: GetReportsList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/itemtypes/list`;
+      const apiURL = `${environment.ApiEndpoint}/reports/list`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(

@@ -223,12 +223,13 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: ItemServiceListResponse) => {
 
         this.itemservicelist = res.itemServices;
-
+        let count = 0;
 
         if (res.outcome.outcome === 'SUCCESS') {
           this.servicelist.forEach((service, index1) => {
             this.itemservicelist.forEach(iservice => {
               if (service.serviceID === iservice.serviceID) {
+                count++;
                 this.returnedservices.splice(index1, 1);
                 }
             });
@@ -449,11 +450,12 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: AddItemServiceResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadServices(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
 
-        this.loadServices(false);
+
 
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
@@ -471,13 +473,11 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: UpdateItemServiceResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-
+          this.loadServices(false);
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
         // this.loadItems(false);
-        this.loadServices(false);
-
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );

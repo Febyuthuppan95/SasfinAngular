@@ -199,11 +199,11 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
     });
 
-    this.loadItems(true);
+    this.loadReports(true);
 
   }
 
-  loadItems(displayGrowl: boolean) {
+  loadReports(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
     const model: GetReportsList = {
@@ -251,12 +251,12 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadItems(false);
+    this.loadReports(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadItems(false);
+    this.loadReports(false);
   }
 
 
@@ -269,7 +269,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadItems(false);
+    this.loadReports(false);
   }
 
   popClick(event, obj) {
@@ -304,12 +304,12 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadItems(true);
+    this.loadReports(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadItems(false);
+    this.loadReports(false);
   }
 
 
