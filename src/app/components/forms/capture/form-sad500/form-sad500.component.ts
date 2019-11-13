@@ -235,6 +235,8 @@ form = {
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;
         this.form.PCC.error = res.pccError;
+        this.form.CPC.value = res.cpc;
+        this.form.CPC.error = res.cpcError;
       },
       (msg) => {
       }

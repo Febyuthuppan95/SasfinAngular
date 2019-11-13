@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { SAD500LineCreateRequest, DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
@@ -21,7 +21,7 @@ import { CaptureService } from 'src/app/services/capture.service';
   templateUrl: './form-sad500-line.component.html',
   styleUrls: ['./form-sad500-line.component.scss']
 })
-export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnChanges {
+export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
@@ -40,11 +40,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   tariffsTemp: { amount: number; description: string; duty: number; unit: string }[];
   myControl = new FormControl();
   unitOfMeasure = new FormControl();
-  dutyList: DutyListResponse;
-  assignedDuties: Duty[];
   selectedTariffVal: string;
   selectedUnitVal: string;
   private unsubscribe$ = new Subject<void>();
+
+  dutyList: DutyListResponse;
+  assignedDuties: Duty[] = [];
+  dutiesToBeSaved: Duty[] = [];
 
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
@@ -85,7 +87,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.loadUnits();
     this.loadTarrifs();
     this.loadDuties();
-    this.loadAssignedDuties();
+
   }
 
   ngAfterViewInit(): void {
@@ -97,8 +99,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
             command: e => this.focusLineForm = !this.focusLineForm
         },
     );
-
-    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
@@ -118,6 +118,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.lineNoError = this.updateSAD500Line.lineNoError;
       this.form.productCodeError = this.updateSAD500Line.productCodeError;
 
+      this.loadDuties();
     } else {
       this.isUpdate = false;
       this.form = {
@@ -171,6 +172,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         productCode: this.form.productCode,
         value: this.form.value,
       });
+
+
     } else {
       this.submitSADLine.emit({
         userID: -1,
@@ -202,6 +205,64 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.form.tariff = description;
   }
 
+  assignDuty(duty: Duty) {
+    this.assignedDuties.push(duty);
+    this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+
+    if (this.isUpdate) {
+      this.captureService.sad500LineDutyAdd({
+        userID: 3,
+        dutyID: duty.dutyTaxTypeID,
+        sad500LineID: this.updateSAD500Line.sad500LineID
+      }).then(
+        (res: Outcome) => {
+          if (res.outcome) {
+            alert('Assigned');
+          } else {
+            // Did not assign
+            // Revert changes
+            this.dutyList.duties.push(duty);
+            this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+          }
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    } else {
+      this.dutiesToBeSaved.push(duty);
+    }
+  }
+
+  revokeDuty(duty: Duty) {
+    this.dutyList.duties.push(duty);
+    this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+
+    if (this.isUpdate) {
+      this.captureService.sad500LineDutyRemove({
+        userID: 3,
+        dutyID: duty.dutyTaxTypeID,
+        sad500LineID: this.updateSAD500Line.sad500LineID
+      }).then(
+        (res: Outcome) => {
+          if (res.outcome) {
+            alert('Revoked');
+          } else {
+            // Did not assign
+            // Revert changes
+            this.assignedDuties.push(duty);
+            this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+          }
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    } else {
+      this.dutiesToBeSaved.push(duty);
+    }
+  }
+
   selectedUnit(name) {
     this.form.unitOfMeasure = name;
   }
@@ -231,7 +292,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       orderDirection: 'Name'
     }).then(
       (res: DutyListResponse) => {
-        console.log(res);
+        this.dutyList = res;
+
+        this.loadAssignedDuties();
       },
       (msg) => {
         console.log(msg);
@@ -240,23 +303,26 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   loadAssignedDuties() {
-    this.captureService.sad500LineDutyList({
-      userID: 3,
-      dutyTaxTypeID: -1,
-      sad500LineID: this.updateSAD500Line.sad500LineID,
-      filter: '',
-      rowStart: 1,
-      rowEnd: 100,
-      orderBy: 'ASC',
-      orderDirection: 'Name',
-    }).then(
-      (res: DutyListResponse) => {
-        console.log(res);
-      },
-      (msg) => {
-        console.log(msg);
-      }
-    );
+    if (this.updateSAD500Line !== null) {
+      this.captureService.sad500LineDutyList({
+        userID: 3,
+        dutyTaxTypeID: -1,
+        sad500LineID: this.updateSAD500Line.sad500LineID,
+        filter: '',
+        rowStart: 1,
+        rowEnd: 100,
+        orderBy: 'ASC',
+        orderDirection: 'Name',
+      }).then(
+        (res: DutyListResponse) => {
+          this.assignedDuties = res.duties;
+          console.log(res);
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    }
   }
 
   ngOnDestroy(): void {
