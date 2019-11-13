@@ -223,19 +223,10 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: ItemServiceListResponse) => {
 
         this.itemservicelist = res.itemServices;
-        let count = 0;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          this.servicelist.forEach((service, index1) => {
-            this.itemservicelist.forEach(iservice => {
-              if (service.serviceID === iservice.serviceID) {
-                count++;
-                this.returnedservices.splice(index1, 1);
-                }
-            });
-          });
-          this.returnedservices =  this.returnedservices;
-          this.itemservicelist = this.itemservicelist;
+          const returnValue = this.separateMe(this.servicelist, this.itemservicelist);
+          this.returnedservices = returnValue;
         }
       },
       msg => {
@@ -505,6 +496,14 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
+  }
+
+  separateMe(services: Service[], itemServices: ItemService[]): Service[] {
+    itemServices.forEach((item, index) => {
+      services = services.filter(x => x.serviceID !== item.serviceID);
+    });
+
+    return services;
   }
 
   ngOnDestroy(): void {
