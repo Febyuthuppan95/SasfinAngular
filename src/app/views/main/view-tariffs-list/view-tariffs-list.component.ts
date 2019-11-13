@@ -65,7 +65,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '#',
+      title: '',
       propertyName: 'rowNum',
       order: {
         enable: false,
@@ -97,7 +97,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Unit',
-      propertyName: 'unit',
+      propertyName: 'hsUnit',
       order: {
         enable: true,
         tag: 'Unit'

@@ -76,17 +76,17 @@ export class FormImportClearingInstructionComponent implements OnInit {
     $event.preventDefault();
 
     const requestModel = {
-      userID: this.currentUser.userID,
-      specificCustomsReleaseID: this.attachmentID,
-      serialNo: this.form.serialNo.value,
-      lrn: this.form.LRN.value,
-      importersCode: this.form.importersCode.value,
-      pcc: this.form.PCC.value,
-      waybillNo: this.form.waybillNo.value,
-      supplierRef: this.form.supplierRef.value,
-      mrn: this.form.MRN.value,
-      isDeleted: 0,
-      attachmentStatus: 2,
+    userID: this.currentUser.userID,
+    specificICIID: this.attachmentID,
+    serialNo: this.form.serialNo.value,
+    lrn: this.form.LRN.value,
+    importersCode: this.form.importersCode.value,
+    pcc: this.form.PCC.value,
+    waybillNo: this.form.waybillNo.value,
+    supplierRef: this.form.supplierRef.value,
+    mrn: this.form.MRN.value,
+    isDeleted: 0,
+    attachmentStatus: 2,
     };
 
     this.captureService.iciUpdate(requestModel).then(

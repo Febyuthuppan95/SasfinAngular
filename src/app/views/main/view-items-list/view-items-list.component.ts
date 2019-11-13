@@ -420,13 +420,14 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       pI: this.pI,
       vulnerable: this.vulnerable,
       service: '',
-      isDeleted: 0
+      isDeleted: deleted
     };
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadItems(false);
+          this.closeeditModal.nativeElement.click();
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
