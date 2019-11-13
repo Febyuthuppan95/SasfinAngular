@@ -134,7 +134,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
         this.orderByDirection = 'ASC';
       }
     } else {
-      this.orderByDirection = 'ASC';
+      this.orderByDirection = 'DESC';
     }
     this.orderBy = orderBy;
     this.orderIndicator = `${this.orderBy}_${this.orderByDirection}`;

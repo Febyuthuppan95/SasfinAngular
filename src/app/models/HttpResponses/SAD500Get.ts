@@ -5,6 +5,8 @@ export class SAD500Get {
   serialNo: string;
   lrn: string;
   pcc: string;
+  cpc: string;
+  cpcError: string;
   totalCustomsValue: string;
   waybillNo: string;
   supplierRef: string;

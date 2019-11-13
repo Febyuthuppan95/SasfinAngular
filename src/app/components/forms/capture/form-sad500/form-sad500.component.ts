@@ -76,6 +76,10 @@ form = {
     value: null,
     error: null,
   },
+  CPC: {
+    value: null,
+    error: null,
+  },
 };
 
   ngOnInit() {
@@ -151,6 +155,7 @@ form = {
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       pcc: this.form.PCC.value,
+      cpc: this.form.CPC.value,
       waybillNo: this.form.waybillNo.value,
       supplierRef: this.form.supplierRef.value,
       totalCustomsValue: this.form.totalCustomsValue.value,
@@ -187,7 +192,6 @@ form = {
       value: obj.value,
       customsValue: obj.customsValue,
       productCode: obj. productCode,
-      cpc: obj.cpc,
       isDeleted: 0,
       lineNo: obj.lineNo
     };
@@ -245,8 +249,8 @@ form = {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
 
-        this.lineErrors = res.lines.filter(x => x.cpcError !== null
-          || x.valueError !== null || x.lineNoError !== null
+        this.lineErrors = res.lines.filter(x => x.valueError !== null
+          || x.lineNoError !== null
           || x.productCodeError !== null
           || x.unitOfMeasureError !== null || x.tariffError !== null);
       },

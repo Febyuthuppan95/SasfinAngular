@@ -14,7 +14,7 @@
       [rowEnd]="this.requestModel.rowEnd"
       [rowCount]="this.rowCount"
       [orderBy]="this.orderBy"
-      [orderByDirection]="this.orderDirection"
+      [(orderByDirection)]="this.requestModel.orderByDirection"
       [tableHeader]="this.tableHeader"
       (selectedRecord)="selectedRecord($event)"
       (orderChange)="orderChange($event)"

@@ -3,16 +3,8 @@
     <h4 class="text-dark">SAD500 Line <small class="small-text">(Press enter to save)</small></h4>
   </div>
   <div class="form-inline">
-  <div class="form-group" *ngIf="this.form.cpc != undefined">
-    <input type="text" [focus]="this.focusSADLine"
-      [(ngModel)]="this.form.cpc" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="CPC" [ngClass]="{'form-control-invalid': this.form.cpcError !== null}"/>
-
-      <p class="invalid-control-label" *ngIf="this.form.cpcError !== null">{{this.form.cpcError}}</p>
-  </div>
   <div class="form-group" *ngIf="this.form.lineNo != undefined">
-    <input type="text"
+    <input type="text" [focus]="this.focusSADLine"
       [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Line No"

@@ -30,6 +30,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   shortcuts: ShortcutInput[] = [];
 
+  inspectingPreview = false;
+
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
@@ -230,11 +232,18 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   previewCapture(src: string, id: number) {
     if (id !== this.attachmentID) {
-      this.dialog.open(CapturePreviewComponent, {
+      this.inspectingPreview = true;
+
+      const previewDialog = this.dialog.open(CapturePreviewComponent, {
         data: { src },
         width: '380px',
         height: '512px;'
       });
+
+      previewDialog.afterClosed().subscribe(() => {
+        this.inspectingPreview = false;
+      });
+
     }
   }
 
