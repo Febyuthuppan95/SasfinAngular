@@ -8,9 +8,9 @@ export class TariffListResponse {
 
 export class Tariff {
    rowNum: number;
-  // tariffID: number;
+  id: number;
   // tariffCode: string;
-  // tariffName: string;
+  tariff: string;
   Amount: number;
   Description: string;
   Duty: number;

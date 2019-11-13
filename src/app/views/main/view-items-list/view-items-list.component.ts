@@ -22,6 +22,7 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
 import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { takeUntil } from 'rxjs/operators';
+import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 
 @Component({
   selector: 'app-view-items-list',
@@ -76,7 +77,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     itemID: number,
     item: string,
     description: string,
-    tariff: number,
+    tariffID: number,
+    tariff: string,
     type: string,
     mIDP: string,
     pI: string,
@@ -152,7 +154,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   itemID = 0;
   item = '';
   description = '';
-  tariff = 0;
+  tariff = '';
+  tariffID = 0;
   type = '';
   mIDP = '';
   pI = '';
@@ -192,6 +195,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   servicelist: Service[] = [];
   displayservices: Service[] = [];
   returnedservices: Array<Service>;
+  tarifflist: Tariff[] = [];
 
 
   ngOnInit() {
@@ -315,6 +319,26 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     );
   }
 
+  loadTariffs(displayGrowl: boolean) {
+
+    this.companyService
+    .getTariffList()// model
+    .then(
+      (res: TariffListResponse) => {
+
+          this.tarifflist = res.tariffList;
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
@@ -381,7 +405,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   editItem(id: number) {
     this.loadServices(false);
-
+    this.loadTariffs(false);
 
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -389,6 +413,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.item = this.Item.item;
     this.description = this.Item.description;
     this.tariff = this.Item.tariff;
+    this.tariffID = this.Item.tariffID;
     this.type = this.Item.type;
     this.mIDP = this.Item.mIDP;
     this.pI = this.Item.pI;
@@ -408,7 +433,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       itemID: this.itemID,
       item: this.item,
       description: this.description,
-      tariff: this.tariff,
+      tariffID: this.tariffID,
       type: this.type,
       mIDP: this.mIDP,
       pI: this.pI,
@@ -496,6 +521,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
+  }
+  onTariffChange(selectedtariffid: number) {
+    this.tariffID = selectedtariffid;
   }
 
   separateMe(services: Service[], itemServices: ItemService[]): Service[] {

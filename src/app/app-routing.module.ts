@@ -53,7 +53,7 @@ import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-line
 import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
-import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 const routes: Routes = [
   {
     path: '',
@@ -87,7 +87,7 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
-          { path: 'reports', component: ViewReportsListComponent },
+          { path: 'reports', component: ViewReportQueuesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },

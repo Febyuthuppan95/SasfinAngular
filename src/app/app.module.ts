@@ -171,7 +171,7 @@ import { ViewPermitsListComponent } from './views/main/view-permits-list/view-pe
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
-import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ReportsService } from './services/Reports.Service';
 
 @NgModule({
@@ -292,7 +292,7 @@ import { ReportsService } from './services/Reports.Service';
     ViewPermitsListComponent,
     ViewPermitIMportTariffsListComponent,
     ContextMenuPermitsComponent,
-    ViewReportsListComponent,
+    ViewReportQueuesListComponent,
   ],
   imports: [
     BrowserModule,

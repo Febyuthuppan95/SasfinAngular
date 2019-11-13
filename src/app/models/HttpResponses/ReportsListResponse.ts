@@ -2,19 +2,20 @@ import {Outcome} from './Outcome';
 
 export class ReportsListResponse {
   outcome: Outcome;
-  reportsLists: Report[];
+  reportQueuesLists: ReportQueue[];
   rowCount: number;
 }
 
-export class Report {
+export class ReportQueue {
   rowNum: number;
-  reportID: number;
-  reportName: string;
+  reportQueueID: number;
+  reportQueueName: string;
   companyID: number;
   companyName: string;
   serviceID: number;
   serviceName: string;
   compnayServiceClaimNumber: number;
-  status: string;
+  reportQueueStatusID: number;
+  reportQueueStatus: string;
 
 }

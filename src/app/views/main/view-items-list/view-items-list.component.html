@@ -60,6 +60,12 @@
                [(ngModel)]="this.description" [ngModelOptions]="{standalone: true}"  required></textarea>
             </div>
             <div class="form-group">
+              <label class="control-label">Tariff:</label>
+              <select class="form-control" (change)="onTariffChange($event.target.value)">
+                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.tariff}}</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label class="control-label">Type:</label>
               <input type="text" placeholder="Type" class="form-control"
                [(ngModel)]="this.type" [ngModelOptions]="{standalone: true}"  required/>
@@ -70,45 +76,24 @@
                 <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
               </select>
             </div>
-            <!-- <div class="form-group">
-              <label class="control-label">Services:</label>
-              <div class="list-box">
-              <div class="row">
-                <div class="col-sm-6">
-                  Services
-                  <ul class="list-unstyled" *ngIf="this.servicelist">
-                    <li *ngFor="let item of this.servicelist" class="list-item">{{item.serviceName}}</li>
+            <div class="row ">
+              <form class="form-group add-scroll col-md-6 text-center">
+                  <h5 class="control-label">Available Services</h5>
+                  <div class="modal-list-service" style="border: inset;">
+                    <ul class="service-list">
+                      <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of returnedservices"><a><span>{{service.serviceName}}</span></a></li>
+                    </ul>
+                  </div>
+              </form>
+              <form class="form-group add-scroll col-md-6 text-center">
+                <h5 class="control-label">Assigned Services</h5>
+                <div class="modal-add-service" style="border: inset;">
+                  <ul class="service-list">
+                    <li (click)="removeservice(iservice.itemServiceID, iservice.serviceName)" *ngFor="let iservice of itemservicelist"><a><span>{{iservice.serviceName}}</span></a></li>
                   </ul>
                 </div>
-                <div class="col-sm-6">
-                  Item Services
-                  <ul class="list-unstyled" *ngIf="this.itemservicelist">
-                    <li *ngFor="let item of this.itemservicelist" class="list-item">{{item.serviceName}}</li>
-                  </ul>
-                </div>
-              </div>
+              </form>
             </div>
-            </div> -->
-
-                <div class="row ">
-                  <form class="form-group add-scroll col-md-6 text-center">
-                      <h5 class="control-label">Available Services</h5>
-                      <div class="modal-list-service" style="border: inset;">
-                        <ul class="service-list">
-                          <li (click)="addNewservice(service.serviceID, service.serviceName)" *ngFor="let service of returnedservices"><a><span>{{service.serviceName}}</span></a></li>
-                        </ul>
-                      </div>
-                  </form>
-                  <form class="form-group add-scroll col-md-6 text-center">
-                    <h5 class="control-label">Assigned Services</h5>
-                    <div class="modal-add-service" style="border: inset;">
-                      <ul class="service-list">
-                        <li (click)="removeservice(iservice.itemServiceID, iservice.serviceName)" *ngFor="let iservice of itemservicelist"><a><span>{{iservice.serviceName}}</span></a></li>
-                      </ul>
-                    </div>
-                  </form>
-                </div>
-
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>

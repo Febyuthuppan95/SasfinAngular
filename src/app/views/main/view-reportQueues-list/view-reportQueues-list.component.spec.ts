@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewReportsListComponent } from './view-reports-list.component';
+import { ViewReportQueuesListComponent } from './view-reportQueues-list.component';
 
 describe('ViewReportsListComponent', () => {
-  let component: ViewReportsListComponent;
-  let fixture: ComponentFixture<ViewReportsListComponent>;
+  let component: ViewReportQueuesListComponent;
+  let fixture: ComponentFixture<ViewReportQueuesListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewReportsListComponent ]
+      declarations: [ ViewReportQueuesListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewReportsListComponent);
+    fixture = TestBed.createComponent(ViewReportQueuesListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

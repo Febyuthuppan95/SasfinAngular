@@ -24,14 +24,14 @@ import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateIt
 import { takeUntil } from 'rxjs/operators';
 import { GetReportsList } from 'src/app/models/HttpRequests/GetReportsList';
 import { ReportsService } from 'src/app/services/Reports.Service';
-import { ReportsListResponse, Report } from 'src/app/models/HttpResponses/ReportsListResponse';
+import { ReportsListResponse, ReportQueue } from 'src/app/models/HttpResponses/ReportsListResponse';
 
 @Component({
-  selector: 'app-view-reports-list',
-  templateUrl: './view-reports-list.component.html',
-  styleUrls: ['./view-reports-list.component.scss']
+  selector: 'app-view-reportqueues-list',
+  templateUrl: './view-reportQueues-list.component.html',
+  styleUrls: ['./view-reportQueues-list.component.scss']
 })
-export class ViewReportsListComponent implements OnInit, OnDestroy {
+export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private reprtsservice: ReportsService,
@@ -161,7 +161,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
   pI = '';
   vulnerable = '';
 
-  reportslist: Report[] = [];
+  reportslist: ReportQueue[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -224,7 +224,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.reportslist = res.reportsLists;
+        this.reportslist = res.reportQueuesLists;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -232,7 +232,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.reportsLists.length;
+          this.showingRecords = res.reportQueuesLists.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.reportslist.length - 1;
         }
