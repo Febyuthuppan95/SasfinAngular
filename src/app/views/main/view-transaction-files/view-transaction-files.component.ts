@@ -112,7 +112,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     { name: 'SAD500', value: 2 },
     { name: 'PACKING', value: 3 },
     { name: 'CUSRELEASE', value: 4 },
-    { name: 'VOC', value: 4 },
+    { name: 'VOC', value: 5 },
   ];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
