@@ -59,6 +59,9 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -324,6 +327,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
     this.Info = '';
     this.Type = 0;
     this.disableInfoSelect = false;
+    this.myInputVariable.nativeElement.value = -1;
     this.selectedInfoIndex = 0;
     this.openaddModal.nativeElement.click();
   }

@@ -179,7 +179,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.userIdle.resetTimer();
   }
 
-  TriggerSessionTimeout(count){
+  TriggerSessionTimeout(count) {
    this.count = 11;
    this.count =  this.count - count;
 

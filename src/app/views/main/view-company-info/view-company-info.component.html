@@ -142,7 +142,7 @@
               <textarea type="text" placeholder="Company Information" class="form-control"
               [(ngModel)]="this.Info" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required></textarea>
             </div>
-           <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
+           <select #myInput class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
               <option selected value="-1" [disabled]="disableInfoSelect">Select a Type</option>
               <option *ngFor="let type of this.TypesList" [value]="type.TypeID">{{type.TypeName}}</option>
           </select>

@@ -13,6 +13,9 @@ import { CapturePreviewComponent } from './capture-preview/capture-preview.compo
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { UserIdleService } from 'angular-user-idle';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   selector: 'app-capture-layout',
@@ -24,9 +27,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private router: Router,
+              private userIdle: UserIdleService,
               private transactionService: TransactionService,
               private companyService: CompanyService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private snackbarService: HelpSnackbar) {}
 
   shortcuts: ShortcutInput[] = [];
 
@@ -36,11 +41,18 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
+  @ViewChild('closetimeoutModal', {static: true })
+  closetimeoutModal: ElementRef;
+
+  @ViewChild('opentimeoutModal', {static: true })
+  opentimeoutModal: ElementRef;
+
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
   private unsubscribe$ = new Subject<void>();
 
+  count = 0;
   currentBackground: string;
   currentTheme: string;
   currentUser: User;
@@ -59,8 +71,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentList: TransactionFile[];
   transactionID: number;
   attachmentID: number;
-  showHelp: boolean = false;
-  focusPDF: boolean = false;
+  showHelp = false;
+  focusPDF = false;
   attachmentType: string;
   ngOnInit() {
     this.companyShowToggle = true;
@@ -95,6 +107,41 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.loadAttachments();
       this.loadCaptureInfo();
     });
+
+    // Start watching for user inactivity.
+    this.userIdle.startWatching();
+
+    // Start watching when user idle is starting.
+    this.userIdle.onTimerStart()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(count => {
+      this.TriggerSessionTimeout(count);
+    });
+
+    // Start watch when time is up.
+    this.userIdle.onTimeout()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
+      this.closetimeoutModal.nativeElement.click();
+      this.userIdle.resetTimer();
+      this.userIdle.stopTimer();
+      this.userIdle.stopWatching();
+      this.closeHelpContext();
+      this.userService.logout();
+    });
+
+    this.userIdle.ping$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {});
+
+  }
+
+  closeHelpContext() {
+    const newContext: SnackbarModel = {
+      display: false,
+      slug: '',
+    };
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngAfterViewInit(): void {
@@ -181,6 +228,21 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       (msg) => {
       }
     );
+  }
+
+  ResetSessionTimer() {
+    this.userIdle.stopTimer();
+    this.userIdle.resetTimer();
+  }
+
+  TriggerSessionTimeout(count) {
+   this.count = 11;
+   this.count =  this.count - count;
+
+   if (this.count === 10) {
+    this.opentimeoutModal.nativeElement.click();
+
+   }
   }
 
   loadAttachments() {
