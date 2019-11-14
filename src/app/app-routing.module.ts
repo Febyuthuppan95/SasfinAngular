@@ -87,7 +87,7 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
-          { path: 'reports', component: ViewReportQueuesListComponent },
+          { path: 'reportsqueues', component: ViewReportQueuesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },

@@ -161,7 +161,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
   pI = '';
   vulnerable = '';
 
-  reportslist: ReportQueue[] = [];
+  reportQueueslist: ReportQueue[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -224,7 +224,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.reportslist = res.reportQueuesLists;
+        this.reportQueueslist = res.reportQueuesLists;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -234,7 +234,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
           this.rowCount = res.rowCount;
           this.showingRecords = res.reportQueuesLists.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.reportslist.length - 1;
+          this.totalShowing = +this.rowStart + +this.reportQueueslist.length - 1;
         }
 
       },
