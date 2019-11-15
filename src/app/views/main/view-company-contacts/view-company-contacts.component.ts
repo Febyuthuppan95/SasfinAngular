@@ -11,6 +11,8 @@ import { Pagination } from 'src/app/models/Pagination';
 import { CompanyContactsResponse, Contacts } from 'src/app/models/HttpResponses/CompanyContactsResponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AddContact } from 'src/app/models/HttpRequests/AddContact';
+import { ContactTypesService } from 'src/app/services/ContactTypes.Service';
 
 @Component({
   selector: 'app-view-company-contacts',
@@ -25,6 +27,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private contactTypeService: ContactTypesService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -92,6 +95,11 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
 
   companyName: string;
   companyID: number;
+  test: string = 'Test';
+
+
+  //Add/ Edit or Delete
+  CaptureModel: AddContact;
 
   ngOnInit() {
     this.companyService.observeCompany()
@@ -106,10 +114,29 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
+
+    this.resetCaptureModal();
   }
 
   backToCompanies() {
     this.router.navigate(['companies']);
+    
+  }
+
+
+  resetCaptureModal()
+  {
+    this.CaptureModel = {
+    "CUserID": 0,
+    "ContactTypeID": 0,
+    "CompanyID": 0,
+    "Name": '',
+    "Email": '',
+    "CellNo": '',
+    "LandNo": '',
+    "isDeleted": ''
+
+    }
   }
 
   paginateData() {
@@ -296,4 +323,10 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  loadContactTypes(){
+  
+
+  }
+
 }
