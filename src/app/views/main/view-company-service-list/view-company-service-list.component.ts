@@ -268,6 +268,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
             this.paginateData();
           }
 
+          this.loadServices(false);
+          this.loadUsers();
+
 
         },
         msg => {
@@ -349,6 +352,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
               }
             });
         });
+          console.log(this.serviceslist);
       },
       msg => { }
     );
@@ -442,6 +446,11 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
 
   Add() {
+
+
+    console.log(this.serviceslist.length);
+
+
     this.StartDate = null;
     this.EndDate = null;
     this.ConID = -1;
@@ -450,41 +459,68 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
-    this.loadServices(false);
-    this.loadUsers();
-    this.openaddModal.nativeElement.click();
+
+    if (this.serviceslist.length > 0) {
+      this.openaddModal.nativeElement.click();
+    } else {
+      this.notify.toastrwarning(
+        'Information',
+        'All Services already added to the company'
+      );
+    }
   }
 
   addCompanyService() {
-    const requestModel: AddCompanyService = {
-      userID: this.currentUser.userID,
-      spesificCompanyID: this.companyID,
-      spesificServiceID: this.SerID,
-      resConsultantID: this.ConID,
-      resCapturerID: this.CapID,
-      startDate: this.StartDate,
-      endDate: this.EndDate,
-    };
+    let error = 0;
+    if (this.CapID === -1) {
+      error++;
+    }
+    if (this.ConID === -1) {
+      error++;
+    }
+    if (this.SerID === -1) {
+      error++;
+    }
+    if (this.StartDate === null) {
+      error++;
+    }
+    if (this.EndDate === null) {
+      error++;
+    }
 
+    if (error === 0) {
+      const requestModel: AddCompanyService = {
+        userID: this.currentUser.userID,
+        spesificCompanyID: this.companyID,
+        spesificServiceID: this.SerID,
+        resConsultantID: this.ConID,
+        resCapturerID: this.CapID,
+        startDate: this.StartDate,
+        endDate: this.EndDate,
+      };
 
-    this.companyService.AddService(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.loadCompanyServiceList();
+      this.companyService.AddService(requestModel).then(
+        (res: {outcome: Outcome}) => {
+            console.log(res);
+            if (res.outcome.outcome !== 'SUCCESS') {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            } else {
+              this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+              this.loadCompanyServiceList();
+              this.closeaddModal.nativeElement.click();
+            }
+          },
+          msg => {
+            this.notify.errorsmsg(
+              'Server Error',
+              'Something went wrong while trying to access the server.'
+            );
             this.closeaddModal.nativeElement.click();
           }
-        },
-        msg => {
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-          this.closeaddModal.nativeElement.click();
-        }
-      );
+        );
+    } else {
+      this.notify.toastrwarning('Information', 'PLease fill in all fields');
+    }
   }
 
   editCompanyService($event) {
