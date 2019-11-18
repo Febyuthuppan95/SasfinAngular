@@ -22,6 +22,7 @@ import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
+import { AddContact } from '../models/HttpRequests/AddContact';
 
 @Injectable({
   providedIn: 'root'
@@ -269,6 +270,49 @@ export class CompanyService {
         );
     });
   }
+
+   /*Add*/
+   public addContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactAdd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  
+   /*Add*/
+   public UpdateContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactUpdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+
 
   /**
    * contacts

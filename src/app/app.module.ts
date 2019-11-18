@@ -173,6 +173,7 @@ import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-i
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
 import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 import { ReportsService } from './services/Reports.Service';
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 
 @NgModule({
   declarations: [
@@ -293,6 +294,7 @@ import { ReportsService } from './services/Reports.Service';
     ViewPermitIMportTariffsListComponent,
     ContextMenuPermitsComponent,
     ViewReportsListComponent,
+    ContextMenuCompanyContactsComponent,
   ],
   imports: [
     BrowserModule,

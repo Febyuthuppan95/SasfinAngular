@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -13,6 +13,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AddContact } from 'src/app/models/HttpRequests/AddContact';
 import { ContactTypesService } from 'src/app/services/ContactTypes.Service';
+import { ContactTypesListRequest } from 'src/app/models/HttpRequests/ContactTypesList';
+import { ListContactTypes } from 'src/app/models/HttpResponses/ListContactTypes';
+import { ContactType } from 'src/app/models/HttpResponses/ContactType';
+import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-company-contacts',
@@ -48,6 +53,18 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+
+  @ViewChild('openRemoveModal', {static: true})
+  openRemoveModal: ElementRef;
+  @ViewChild('closeRemoveModal', {static: true})
+  closeRemoveModal: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -101,6 +118,25 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   //Add/ Edit or Delete
   CaptureModel: AddContact;
 
+  //Used for loading the contact types into the Add / Edit Modal 
+  contactTypes: ContactTypesListRequest = {
+    userID: this.currentUser.userID,
+    specificContactTypeID: -1,
+    filter: '',
+    orderBy: 'Name',
+    orderByDirection: 'ASC',
+    rowStart: 1,
+    rowEnd: 15
+  };
+
+  
+
+  //Variable to store the contact types
+  contactTypeDropDown: ContactType[];
+  //Display text on Modal. 
+  modalDisplay: string;
+
+
   ngOnInit() {
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
@@ -116,6 +152,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     });
 
     this.resetCaptureModal();
+    this.loadContactTypes(); // load contact types into edit / add dropdown
   }
 
   backToCompanies() {
@@ -127,14 +164,16 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   resetCaptureModal()
   {
     this.CaptureModel = {
-    "CUserID": 0,
-    "ContactTypeID": 0,
+    "CUserID": this.currentUser.userID,
+    "ContactTypeID": this.companyService.selectedCompany.value.companyID,
     "CompanyID": 0,
     "Name": '',
     "Email": '',
     "CellNo": '',
     "LandNo": '',
-    "isDeleted": ''
+    "isDeleted": 0,
+    "ContactID" : 0,
+    "ContactName" : ''
 
     }
   }
@@ -202,7 +241,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: this.companyID,
+      specificCompanyID: this.companyService.selectedCompany.value.companyID,
       specificContactID: -1,
       specificContacTypeID: -1,
       rowStart: this.rowStart,
@@ -324,9 +363,127 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+
+  
   loadContactTypes(){
   
+    this.contactTypeService.list(this.contactTypes).then(
+      (res: ListContactTypes) => {
+        if(res.outcome.outcome == "FAILURE"){
+          this.notify.errorsmsg(
+            res.outcome.outcome, res.outcome.outcomeMessage
+          )
+        }else{
+          this.contactTypeDropDown = res.contactTypesList;
+          //Capture modal will contain the first id of the dropdown on FIRST LOAD.
+          this.CaptureModel.ContactTypeID = res.contactTypesList[0].contactTypeID;
+        }
+      }
 
+    )
+
+  }
+
+  //on change of the dropdown on the contacts modal. store value
+  onContactTypeChange(type: string){
+    this.CaptureModel.ContactTypeID = +type;
+  }
+
+  //Open the Edit modal and load data in the modal of the selected modal
+  EditCompanyContact(){
+    this.modalDisplay = 'Edit Contact';
+    this.CaptureModel.isDeleted = 0;
+    this.openeditModal.nativeElement.click();
+  }
+
+  OpenModalForAdd(){
+    this.modalDisplay = 'Add Contact';
+    this.resetCaptureModal();
+    this.openeditModal.nativeElement.click();
+  }
+
+  setIndex(contact: Contacts)
+ {
+   this.resetCaptureModal();
+   this.CaptureModel.CellNo = contact.cellNo;
+   this.CaptureModel.CompanyID = contact.contactID;
+   this.CaptureModel.ContactTypeID  = contact.contactTypeID;
+   this.CaptureModel.Email = contact.email;
+   this.CaptureModel.LandNo = contact.landNo;
+   this.CaptureModel.Name = contact.contact;
+   this.CaptureModel.isDeleted = 0; // No Delete
+   this.CaptureModel.ContactID = contact.contactID;
+  // this.CaptureModel.Name = contact.contactType;
+  this.CaptureModel.ContactName = contact.contactType;
+
+ }
+
+ submit()
+ {
+   if(this.CaptureModel.ContactID == 0)
+   this.AddNewContact();
+   else
+   this.UpdateContact();
+ }
+
+ DeleteContact()
+ {
+   this.CaptureModel.isDeleted = 1;
+   this.openRemoveModal.nativeElement.click();
+ }
+
+  AddNewContact(){
+    this.CaptureModel.isDeleted = 0;
+    this.CaptureModel.CompanyID = this.companyService.selectedCompany.value.companyID;
+    
+    this.companyService.addContact(this.CaptureModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.updatePagination();
+          this.loadCompanyInfoList();
+          this.closeeditModal.nativeElement.click();
+          this.resetCaptureModal();
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+        // this.loadItems(false);
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+    
+    
+   
+  }
+
+  UpdateContact(){
+   
+    this.CaptureModel.CompanyID = this.companyService.selectedCompany.value.companyID;
+    
+    this.companyService.UpdateContact(this.CaptureModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+
+          if (this.CaptureModel.isDeleted = 0)
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          else{
+            this.notify.successmsg('Success', 'Contact Removed')
+            this.closeRemoveModal.nativeElement.click();
+          }
+          this.updatePagination();
+          this.loadCompanyInfoList();
+          this.closeeditModal.nativeElement.click();
+          this.resetCaptureModal();
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+        // this.loadItems(false);
+      },
+      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    );
+    
+    
+   
   }
 
 }

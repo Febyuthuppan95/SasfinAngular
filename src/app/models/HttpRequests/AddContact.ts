@@ -6,5 +6,7 @@ export class AddContact{
     Email: string;
     CellNo: string;
     LandNo: string;
-    isDeleted: string;
+    isDeleted: number;
+    ContactID: number;
+    ContactName: string;
 }
