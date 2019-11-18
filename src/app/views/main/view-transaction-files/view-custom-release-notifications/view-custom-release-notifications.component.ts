@@ -45,7 +45,6 @@ constructor(private themeService: ThemeService, private transactionService: Tran
       { title: 'Serial No', propertyName: 'serialNo', order: { enable: false } },
       { title: 'Importers Code', propertyName: 'importersCode', order: { enable: false } },
       { title: 'FOB', propertyName: 'fob', order: { enable: false } },
-      { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
       { title: 'PCC', propertyName: 'pcc', order: { enable: false } },
       { title: 'LRN', propertyName: 'mrn', order: { enable: false } },
       { title: 'MRN', propertyName: 'lrn', order: { enable: false } },
