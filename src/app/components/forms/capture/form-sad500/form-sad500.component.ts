@@ -46,6 +46,7 @@ sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
 lineErrors: SAD500Line[] = null;
+toggleLines = false;
 
 form = {
   serialNo: {
@@ -141,7 +142,17 @@ form = {
           key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.submit()
+          command: e => {
+            if (!this.toggleLines) {
+              this.submit();
+            }
+          }
+        },
+        {
+          key: 'alt + l',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.toggleLines = !this.toggleLines
         },
     );
 

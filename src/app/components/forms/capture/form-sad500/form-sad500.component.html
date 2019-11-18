@@ -1,6 +1,7 @@
-<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts" *ngIf="this.shortcuts"></ng-keyboard-shortcuts>
 
-<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" class="shadow" style="padding: 24px;border-radius: 10px; background: #f2f2f2;overflow-y: auto">
+<span [ngClass]="{'hide': this.toggleLines}">
+<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
       <input [focus]="this.focusMainForm" type="text"
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
@@ -69,18 +70,21 @@
         <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
     </div>
   </form>
-  <br>
-  <div style="padding: 4px 0 12px 0;" class="line-list">
-    <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
-    <p *ngIf="this.sad500CreatedLines.length !== 0">
-    <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
-    <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
-    <span class="badge badge-primary" *ngIf="this.lines === -1">New SAD500 Line</span>
-    &nbsp;
-    <button (click)="nextLine()" class="btn btn-primary btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
-    <button class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
-    &nbsp;<span>{{this.lineState}}</span>
-  </p>
-  </div>
-  <app-form-sad500-line (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
+<br>
+</span>
+  <span style="display: none" [ngClass]="{'show': this.toggleLines}">
+      <div style="padding: 4px 0 12px 0;" class="line-list">
+          <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
+          <p *ngIf="this.sad500CreatedLines.length !== 0">
+          <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+          <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
+          <span class="badge badge-primary" *ngIf="this.lines === -1">New SAD500 Line</span>
+          &nbsp;
+          <button (click)="nextLine()" class="btn btn-primary btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+          <button class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
+          &nbsp;<span>{{this.lineState}}</span>
+        </p>
+      </div>
+      <app-form-sad500-line [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
+  </span>
   <app-notification></app-notification>

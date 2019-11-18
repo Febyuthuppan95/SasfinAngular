@@ -61,6 +61,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
   @Input() focusSADLine: boolean;
+  @Input() showLines: boolean;
   @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
   @Output() updateSADLine = new EventEmitter<SAD500Line>();
 
@@ -103,22 +104,14 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-            key: 'alt + n',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.focusLineForm = !this.focusLineForm
-        },
-        {
-          key: 'alt + k',
+          key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusDutiesQuery = !this.focusDutiesQuery
-        },
-        {
-          key: 'alt + l',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.dutiesAssignedEl.nativeElement.focus()
+          command: e => {
+            if (this.showLines) {
+              this.submit();
+            }
+          }
         },
     );
   }
@@ -194,8 +187,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         productCode: this.form.productCode,
         value: this.form.value,
       });
-
-
     } else {
       this.submitSADLine.emit({
         userID: -1,
@@ -228,10 +219,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   assignDuty(duty: Duty) {
-    this.assignedDuties.push(duty);
     this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-
     if (this.isUpdate) {
+      this.assignedDuties.push(duty);
+
       this.captureService.sad500LineDutyAdd({
         userID: 3,
         dutyID: duty.dutyTaxTypeID,
@@ -261,9 +252,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   revokeDuty(duty: Duty) {
     this.dutyList.duties.push(duty);
-    this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
 
     if (this.isUpdate) {
+      this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+
       this.captureService.sad500LineDutyRemove({
         userID: 3,
         dutyID: duty.dutyTaxTypeID,
@@ -287,7 +279,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         }
       );
     } else {
-      this.dutiesToBeSaved.push(duty);
+      this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     }
   }
 
@@ -313,6 +305,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   filterAssignedDuties() {
     this.assignedDuties = this.assignedDutiesTemp;
     this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
+
+    this.dutiesToBeSaved = this.dutyListTemp;
+    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
   }
 
   matchRuleShort(str, rule) {
@@ -332,7 +327,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       (res: DutyListResponse) => {
         this.dutyList = res;
         this.dutyListTemp = res.duties;
-        this.loadAssignedDuties();
+        if (this.isUpdate) {
+          this.loadAssignedDuties();
+        }
       },
       (msg) => {}
     );
