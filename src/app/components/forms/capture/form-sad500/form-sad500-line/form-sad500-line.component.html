@@ -64,7 +64,7 @@
                     <input type="search" [(ngModel)]="this.dutiesQuery" [ngModelOptions]="{standalone: true}" (keyup)="filterDuties()" class="form-control form-control-sm" placeholder="Search">
                   </div>
                 </li>
-                <li class="duty-item" *ngFor="let item of dutyList.duties" (click)="assignDuty(item)">
+                <li class="duty-item" *ngFor="let item of dutyList.duties" (click)="assignDuty(item)" (keypress)="assignDuty(item)" tabindex="0">
                   <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
                   <small>{{item.name}}</small>
                 </li>
@@ -81,7 +81,7 @@
                       <input #dutiesAssignedEl type="search" [(ngModel)]="this.dutieAssignedQuery" [ngModelOptions]="{standalone: true}" (keyup)="filterAssignedDuties()" class="form-control form-control-sm" placeholder="Search">
                     </div>
                   </li>
-                  <li *ngFor="let item of assignedDuties" class="duty-item" (click)="revokeDuty(item)">
+                  <li *ngFor="let item of assignedDuties" class="duty-item" (click)="revokeDuty(item)" tabindex="0">
                       <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
                       <small>{{item.name}}</small>
                   </li>
@@ -98,7 +98,7 @@
                         <input #dutiesAssignedEl type="search" [(ngModel)]="this.dutieAssignedQuery" [ngModelOptions]="{standalone: true}" (keyup)="filterAssignedDuties()" class="form-control form-control-sm" placeholder="Search">
                       </div>
                     </li>
-                    <li *ngFor="let item of dutiesToBeSaved" class="duty-item" (click)="revokeDuty(item)">
+                    <li *ngFor="let item of dutiesToBeSaved" class="duty-item" (click)="revokeDuty(item)" tabindex="0">
                         <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
                         <small>{{item.name}}</small>
                     </li>
