@@ -90,7 +90,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
   tableHeader: TableHeader = {
     title: 'Reports',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -111,42 +111,58 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Report',
-      propertyName: 'item',
+      propertyName: 'reportName',
       order: {
         enable: true,
-        tag: 'Item'
+        tag: 'ReportName'
       }
     },
     {
       title: 'Company',
-      propertyName: 'company',
+      propertyName: 'companyName',
       order: {
         enable: true,
-        tag: 'Company'
+        tag: 'CompanyName'
       }
     },
     {
-      title: 'Type',
-      propertyName: 'reportType',
+      title: 'Service',
+      propertyName: 'serviceName',
       order: {
         enable: true,
-        tag: 'ReportType'
+        tag: 'ServiceName'
       }
     },
     {
       title: 'Company Service Claim Number',
-      propertyName: 'companyServiceClaimNumber',
+      propertyName: 'compnayServiceClaimNumber',
       order: {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
       }
     },
     {
-      title: 'Status',
-      propertyName: 'reportStatus',
+      title: 'Start Date',
+      propertyName: 'startDate',
       order: {
         enable: true,
-        tag: 'ReportStatus'
+        tag: 'StartDate'
+      }
+    },
+    {
+      title: 'End Date',
+      propertyName: 'endDate',
+      order: {
+        enable: true,
+        tag: 'EndDate'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'reportQueueStatus',
+      order: {
+        enable: true,
+        tag: 'ReportQueueStatus'
       }
     }
   ];
@@ -209,7 +225,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
     const model: GetReportsList = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      reportID: -1,
+      reportQueueID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

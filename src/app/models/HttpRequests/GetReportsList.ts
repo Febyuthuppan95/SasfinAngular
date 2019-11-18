@@ -1,6 +1,6 @@
 export class GetReportsList {
   userID: number;
-  reportID: number;
+  reportQueueID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

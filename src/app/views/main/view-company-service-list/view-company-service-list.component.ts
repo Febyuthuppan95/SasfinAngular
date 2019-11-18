@@ -25,7 +25,7 @@ import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, isEmpty } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -481,10 +481,10 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.SerID === -1) {
       error++;
     }
-    if (this.StartDate === null) {
+    if (this.StartDate === null || this.StartDate.toString() === '') {
       error++;
     }
-    if (this.EndDate === null) {
+    if (this.EndDate === null || this.EndDate.toString() === '') {
       error++;
     }
 
@@ -519,7 +519,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      this.notify.toastrwarning('Information', 'PLease fill in all fields');
+      this.notify.toastrwarning('Information', 'Please fill in all fields');
     }
   }
 
@@ -535,6 +535,26 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   }
 
   UpdateCompanyServices() {
+
+    let error = 0;
+    if (this.CapID === -1) {
+      error++;
+    }
+    if (this.ConID === -1) {
+      error++;
+    }
+    if (this.SerID === -1) {
+      error++;
+    }
+    if (this.StartDate === null || this.StartDate.toString() === '') {
+      error++;
+    }
+    if (this.EndDate === null || this.EndDate.toString() === '') {
+      error++;
+    }
+
+
+    if (error === 0) {
     const requestModel: UpdateCompanyService = {
       userID: this.currentUser.userID,
       spesificCompanyServiceID: this.focuscompserviceID,
@@ -558,6 +578,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
           this.notify.errorsmsg(
           'Server Error', 'Something went wrong while trying to access the server.');
       });
+    } else {
+      this.notify.toastrwarning('Information', 'Please fill in all fields');
+    }
   }
 
   onConsultantChange(id: number)   {

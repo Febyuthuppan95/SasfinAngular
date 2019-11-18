@@ -9,7 +9,8 @@ export class ReportsListResponse {
 export class ReportQueue {
   rowNum: number;
   reportQueueID: number;
-  reportQueueName: string;
+  reportID: number;
+  reportName: string;
   companyID: number;
   companyName: string;
   serviceID: number;
@@ -17,5 +18,7 @@ export class ReportQueue {
   compnayServiceClaimNumber: number;
   reportQueueStatusID: number;
   reportQueueStatus: string;
+  startDate: string;
+  endDate: string;
 
 }
