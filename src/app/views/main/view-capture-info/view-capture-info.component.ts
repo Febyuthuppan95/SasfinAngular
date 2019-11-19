@@ -330,11 +330,18 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.router.navigate(['companies']);
   }
 
+
+  
   addCaptureInfoModal() {
+
     this.doctypeSelectedIndex = 0;
     this.requestModelAddInfo.info = null;
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
+    var sel = document.getElementById('mydropdown');
+   (<HTMLInputElement>document.getElementById('mydropdown')).value = '-1';
+   
+
   }
 
   addCapture() {
