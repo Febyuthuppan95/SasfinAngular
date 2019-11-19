@@ -413,17 +413,35 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
    this.CaptureModel.Name = contact.contact;
    this.CaptureModel.isDeleted = 0; // No Delete
    this.CaptureModel.ContactID = contact.contactID;
-  // this.CaptureModel.Name = contact.contactType;
-  this.CaptureModel.ContactName = contact.contactType;
+   this.CaptureModel.ContactName = contact.contactType;
+
+ }
+
+
+ //Validation to ensure all fields are filled in 
+ Validate(){
+
+  if(this.CaptureModel.Name == '' ||
+     this.CaptureModel.Email == '' ||
+     this.CaptureModel.CellNo == '' ||
+     this.CaptureModel.LandNo == '')
+     {
+      this.notify.toastrwarning("Required Fields Error", "Please enter all required fields")
+      return false;
+     }
+  else 
+   return true
+
 
  }
 
  submit()
  {
+  if(this.Validate())
    if(this.CaptureModel.ContactID == 0)
-   this.AddNewContact();
+      this.AddNewContact();
    else
-   this.UpdateContact();
+      this.UpdateContact();
  }
 
  DeleteContact()

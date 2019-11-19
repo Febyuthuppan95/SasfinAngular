@@ -147,7 +147,7 @@
 
   
 
-  <!--MODAL ADD / EDIT-->
+  <!--MODAL ADD and EDIT-->
 <div class="modal fade" id="editCompanyContact" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -160,7 +160,7 @@
       <form>
           <div class="modal-body">
             <div class="form-group">
-              <label class="control-label">Description:</label>
+              <label class="control-label">Name:</label>
               <input type="text" placeholder="Item" class="form-control" [value]="this.CaptureModel.Name" (input)="this.CaptureModel.Name = $event.target.value" required/>
             </div>
             <div class="form-group">
