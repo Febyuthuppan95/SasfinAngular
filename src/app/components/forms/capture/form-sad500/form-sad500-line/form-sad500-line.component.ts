@@ -104,7 +104,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-          key: 'alt + s',
+          key: 'alt + d',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
@@ -142,6 +142,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.loadDuties();
     } else {
       this.isUpdate = false;
+      this.dutiesToBeSaved = [];
       this.form = {
         tariffID: -1,
         tariff: '',

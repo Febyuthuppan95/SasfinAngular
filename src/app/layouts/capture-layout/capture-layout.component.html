@@ -2,11 +2,11 @@
 
 <div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks}">
   <div class="">
-  <span *ngFor="let attach of this.attachmentList">
+  <span *ngFor="let attach of this.attachmentListShowing">
     <button mat-mini-fab
-      style="padding-top: 2px;cursor: pointer;margin-bottom: 24px"
-      [ngClass]="{statusYellow: attach.attachmentID === this.attachmentID, statusNone: attach.statusID === 1, statusOrange: attach.statusID === 2,
-      statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4}"
+      style="cursor: pointer;margin-bottom: 24px"
+      [ngClass]="{statusNone: attach.statusID === 1, 'bg-warning': attach.statusID === 2,
+      statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4, statusYellow: attach.attachmentID === this.attachmentID}"
       [matTooltip]="attach.name + ' - ' + attach.tooltip"
       matTooltipPosition="after"
     (click)="previewCapture(attach.file, attach.attachmentID)">
@@ -14,6 +14,11 @@
     <!-- &nbsp; {{attach.name}} -->
     <br>
   </span>
+  <button mat-mini-fab
+  style="cursor: pointer;margin-bottom: 24px"
+  class="bg-primary text-light"
+  matTooltip="More"
+  matTooltipPosition="after"><span class="mdi mdi-apps"></span></button>
 </div>
 </div>
 <div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks}">
@@ -79,7 +84,7 @@
   <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
   <app-document-viewer [focus]="this.focusPDF" *ngIf="!this.inspectingPreview"></app-document-viewer>
 </div>
-<div class="col-6 capture-right tile ls-tile-{{currentTheme}} justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">
+<div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">
   <router-outlet></router-outlet>
   <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
     <div class="company-info shadow text-left" *ngIf="this.companyInfoList !== undefined">

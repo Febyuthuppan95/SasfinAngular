@@ -155,8 +155,6 @@ form = {
           command: e => this.toggleLines = !this.toggleLines
         },
     );
-
-    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
   submit() {

@@ -106,7 +106,6 @@ export class SidebarComponent implements OnInit {
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
-        console.log(res);
         res.userRightsList.forEach(uRight => {
 
           if (uRight.name === 'Users') {
@@ -197,7 +196,6 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'CompanyAddInfoTypes') {
             this.showcompanyAddInfoTypes = true;
           }
-          console.log(this.showcompanies);
         });
       },
       msg => {

@@ -60,6 +60,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     name: string;
   };
   attachmentList: TransactionFile[];
+  attachmentListShowing: TransactionFile[] = [];
   transactionID: number;
   attachmentID: number;
   showHelp: boolean = false;
@@ -202,8 +203,19 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
+          this.attachmentList = res.attachments;
+          const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
+          this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
-          res.attachments.forEach((attach) => {
+          this.attachmentListShowing.push(current);
+
+          this.attachmentList.forEach((item, i) => {
+            if (i < 4) {
+              this.attachmentListShowing.push(item);
+            }
+          });
+
+          this.attachmentListShowing.forEach((attach) => {
             attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
             attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
             attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
@@ -211,8 +223,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
             this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
           });
-
-          this.attachmentList = res.attachments;
         },
         (msg) => {}
       );

@@ -89,11 +89,11 @@
       <div style="padding: 4px 0 12px 0;" class="line-list">
           <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
           <p *ngIf="this.sad500CreatedLines.length !== 0">
-          <button (click)="prevLine()" class="btn btn-warning btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
-          <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
-          <span class="badge badge-dark" *ngIf="this.lines === -1">New</span>
+            <button (click)="prevLine()" class="btn btn-warning btn-sm" style="width: 24px; height:24px;padding:4px" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+            <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
+            <span class="badge badge-dark" *ngIf="this.lines === -1">New</span>
           &nbsp;
-          <button (click)="nextLine()" class="btn btn-warning btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+          <button (click)="nextLine()" class="btn btn-warning btn-sm" style="width: 24px; height:24px;padding:4px" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
           <button class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
           &nbsp;<span>{{this.lineState}}</span>
         </p>

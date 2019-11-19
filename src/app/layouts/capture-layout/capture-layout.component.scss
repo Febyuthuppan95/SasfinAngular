@@ -70,7 +70,9 @@
 
 .capture-right {
   border-radius: 0 !important;
-  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background: url('./../../../assets/pattern.png');
+  background-repeat: repeat;
 }
 
 .shortcut-highlighter-container {
