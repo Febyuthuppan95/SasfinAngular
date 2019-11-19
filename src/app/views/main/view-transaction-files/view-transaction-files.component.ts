@@ -368,6 +368,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
             this.preview = null;
             this.attachmentName = null;
             this.selectAttachmentType.reset(-1);
+            this.closeModal.nativeElement.click();
 
         },
         (msg) => {
