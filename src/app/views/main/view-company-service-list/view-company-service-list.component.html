@@ -156,13 +156,13 @@
             <div class="form-group">
               <label class="control-label">Start Date:</label>
               <input type="date" class="form-control"
-              [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+              [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
             </div>
 
             <div class="form-group">
                   <label class="control-label">End Date:</label>
                   <input type="date" class="form-control"
-                  [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+                  [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
             </div>
         </div>
         <div class="modal-footer bg-dark">
