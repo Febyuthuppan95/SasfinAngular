@@ -279,14 +279,31 @@ form = {
     obj.sad500ID = this.attachmentID;
 
     this.captureService.sad500LineAdd(obj).then(
-      (res: { outcome: string; outcomeMessage: string; }) => {
+      (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
         if (res.outcome === 'SUCCESS') {
-          this.loadLines();
+          if (obj.duties.length > 0) {
+            obj.duties.forEach(item => {
+              this.captureService.sad500LineDutyAdd({
+                userID: 3,
+                dutyID: item.dutyTaxTypeID,
+                sad500LineID: res.createdID
+              }).then(
+                (res: Outcome) => {
+                  console.log('Assigned');
+                },
+                (msg) => {
+                  console.log('Not Assigned');
+                }
+              );
+            });
 
-          this.lineState = 'Saved successfully';
-          this.focusLineForm = !this.focusLineForm;
-          this.focusLineData = null;
-          this.lines = -1;
+            this.loadLines();
+            this.lineState = 'Saved successfully';
+            this.focusLineForm = !this.focusLineForm;
+            this.focusLineData = null;
+            this.lines = -1;
+          }
+
           setTimeout(() => this.lineState = '', 3000);
         } else {
           this.lineState = 'Failed to save';

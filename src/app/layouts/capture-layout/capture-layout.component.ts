@@ -31,6 +31,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   shortcuts: ShortcutInput[] = [];
 
   inspectingPreview = false;
+  showDocks = true;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -65,7 +66,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   focusPDF: boolean = false;
   attachmentType: string;
   ngOnInit() {
-    this.companyShowToggle = true;
+    this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
@@ -108,22 +109,22 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             command: e => this.companyInfo()
         },
         {
-          key: 'alt + o',
+          key: 'alt + q',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.exitCaptureScreen()
+        },
+        {
+          key: 'alt + o',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.showDocks = !this.showDocks
         },
         {
           key: 'alt + h',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.showHelp = !this.showHelp
-        },
-        {
-          key: 'alt + p',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusPDF = !this.focusPDF
         },
         {
           key: 'alt + down',

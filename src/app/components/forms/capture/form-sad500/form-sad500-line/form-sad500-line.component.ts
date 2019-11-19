@@ -113,6 +113,12 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
             }
           }
         },
+        {
+          key: 'alt + k',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusAssignedQuery = !this.focusAssignedQuery
+        },
     );
   }
 
@@ -153,6 +159,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         productCodeError: null,
         valueError: null,
       };
+      this.loadDuties();
     }
 
   }
@@ -199,7 +206,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasure: this.form.unitOfMeasure,
         productCode: this.form.productCode,
         value: this.form.value,
+        duties: this.dutiesToBeSaved
       });
+
+      this.dutiesToBeSaved = [];
+      this.loadDuties();
     }
   }
 
@@ -327,6 +338,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       (res: DutyListResponse) => {
         this.dutyList = res;
         this.dutyListTemp = res.duties;
+
         if (this.isUpdate) {
           this.loadAssignedDuties();
         }
@@ -348,6 +360,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         orderDirection: 'Name',
       }).then(
         (res: DutyListResponse) => {
+          console.log(res);
+
           this.assignedDuties = res.duties;
           this.assignedDutiesTemp = res.duties;
           this.assignedDuties.forEach(item => {

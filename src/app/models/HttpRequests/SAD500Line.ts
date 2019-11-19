@@ -25,6 +25,7 @@ export class SAD500LineCreateRequest {
   saved?: boolean;
   failed?: boolean;
   updateSubmit?: boolean;
+  duties?: Duty[];
 }
 
 export class SAD500LineUpdateModel {
