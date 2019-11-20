@@ -6,7 +6,7 @@
   right: 0;
 }
 
-::ng-deep .mat-dialog-container {
+.mat-dialog-container-override .mat-dialog-container {
   padding: 0 !important;
   overflow: hidden !important;
 }

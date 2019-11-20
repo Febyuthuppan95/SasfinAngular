@@ -369,7 +369,8 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
     ImagePreviewDialogComponent,
     FormSAD500Component,
     FormImportClearingInstructionComponent,
-    FormCustomReleaseComponent
+    FormCustomReleaseComponent,
+    AttachmentDialogComponent
   ]
 })
 export class AppModule { }

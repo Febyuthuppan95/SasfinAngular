@@ -7,18 +7,22 @@
       style="cursor: pointer;margin-bottom: 24px"
       [ngClass]="{statusNone: attach.statusID === 1, 'bg-warning': attach.statusID === 2,
       statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4, statusYellow: attach.attachmentID === this.attachmentID}"
-      [matTooltip]="attach.name + ' - ' + attach.tooltip"
+      [matTooltip]="attach.name + '(' + attach.fileType + ')' + ' - ' + attach.tooltip"
       matTooltipPosition="after"
-    (click)="previewCapture(attach.file, attach.attachmentID)">
+    (click)="previewCapture(attach.file, attach.attachmentID)">{{ attach.fileType[0] }}
     </button>
     <!-- &nbsp; {{attach.name}} -->
     <br>
   </span>
+  <span *ngIf="this.attachmentList">
   <button mat-mini-fab
+  *ngIf="this.attachmentList.length > 4"
+  (click)="moreAttachments()"
   style="cursor: pointer;margin-bottom: 24px"
   class="bg-primary text-light"
   matTooltip="More"
   matTooltipPosition="after"><span class="mdi mdi-apps"></span></button>
+</span>
 </div>
 </div>
 <div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks}">

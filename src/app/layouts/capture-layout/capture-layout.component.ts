@@ -8,11 +8,12 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -66,6 +67,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   showHelp: boolean = false;
   focusPDF: boolean = false;
   attachmentType: string;
+
+  dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
+  openMore = true;
+
   ngOnInit() {
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
@@ -132,6 +137,19 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
+          key: 'alt + a',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            if (this.openMore) {
+              this.moreAttachments();
+            } else {
+              this.dialogAttachments.close();
+              this.dialogAttachments = null;
+            }
+          }
         },
         {
           preventDefault: true,
@@ -256,6 +274,21 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       });
 
     }
+  }
+
+  moreAttachments() {
+      if (this.openMore) {
+        this.openMore = false;
+
+        this.dialogAttachments = this.dialog.open(AttachmentDialogComponent, {
+          data: this.attachmentList,
+        });
+
+        this.dialogAttachments.afterClosed().subscribe(() => {
+          this.openMore = true;
+          this.dialogAttachments = null;
+        });
+      }
   }
 
   ngOnDestroy(): void {
