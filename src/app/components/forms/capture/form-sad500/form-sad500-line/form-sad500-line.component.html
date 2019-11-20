@@ -8,13 +8,13 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Line No"
       [ngClass]="{'form-control-invalid': this.form.lineNoError !== null}"/>
-      <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null">{{this.form.lineNoError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null" style="width: 100%;">{{this.form.lineNoError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.productCode != undefined">
     <input type="text"
       [(ngModel)]="this.form.productCode" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="Product Code" />
+      placeholder="Product Code" style="margin-top:0"/>
       <p class="invalid-control-label" *ngIf="this.form.productCodeError !== null">{{this.form.productCodeError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.value != undefined">

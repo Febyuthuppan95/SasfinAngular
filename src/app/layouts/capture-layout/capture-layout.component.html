@@ -7,7 +7,7 @@
       style="cursor: pointer;margin-bottom: 24px"
       [ngClass]="{statusNone: attach.statusID === 1, 'bg-warning': attach.statusID === 2,
       statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4, statusYellow: attach.attachmentID === this.attachmentID}"
-      [matTooltip]="attach.name + '(' + attach.fileType + ')' + ' - ' + attach.tooltip"
+      [matTooltip]="attach.name + ' (' + attach.fileType + ')' + ' - ' + attach.tooltip"
       matTooltipPosition="after"
     (click)="previewCapture(attach.file, attach.attachmentID)">{{ attach.fileType[0] }}
     </button>
@@ -95,7 +95,7 @@
       <div *ngFor="let info of this.companyInfoList.captureInfo" class="info-item">
         <p>{{info.info}}</p>
       </div>
-      <div class="info-item">
+      <div class="info-item bg-transparent text-muted">
         <p>No Capture Info</p>
       </div>
     </div>
@@ -104,7 +104,7 @@
 </div>
 
 <div class="shortcutView" *ngIf="this.showHelp">
-  <div class="overlay">
+  <div class="overlay" (click)="this.showHelp = false;">
     <img src="./../../../assets/svg/keyboard-shortcuts/SAD500.svg" *ngIf="this.attachmentType === 'SAD500'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/CRN.svg" *ngIf="this.attachmentType === 'Customs Release Notification'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/ICI.svg" *ngIf="this.attachmentType === 'Import Clearing Instruction'"/>

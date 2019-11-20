@@ -10,21 +10,21 @@
 .company-container {
   position: absolute;
   bottom: 0;
-  right: 0;
+  right: -33%;
   top: 0;
   text-align: center;
   z-index: 9999;
   transition: ease-in-out 0.3s;
   overflow-x: hidden;
   overflow-y: auto;
-  width: 0;
+  width: 33%;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .show-company-container {
   display: block;
-  transition: width ease-in-out 0.3s;
-  width: 33%;
+  transition: ease-in-out 0.3s;
+  right: 0;
 }
 
 .company-info {
@@ -105,7 +105,7 @@
 }
 
 .statusOrange {
-  background: #ffa600  !important;
+  background: #ff9100  !important;
 }
 
 .statusGreen {
@@ -117,7 +117,7 @@
 }
 
 .statusNone {
-  background: #ffffff  !important;
+  background: #ffffff;
 }
 
 .shortcutView {
@@ -211,6 +211,7 @@ $dockSize: 64px;
   border-radius: 10px;
   background: #f2f2f2;
   color: #000;
+  font-size: 12px !important;
 }
 
 .hide-dock {

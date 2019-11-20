@@ -72,6 +72,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
   openMore = true;
+  openPreview = true;
 
   ngOnInit() {
     this.companyShowToggle = false;
@@ -262,8 +263,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   previewCapture(src: string, id: number) {
-    if (id !== this.attachmentID) {
+    if (id !== this.attachmentID && this.openPreview) {
       this.inspectingPreview = true;
+      this.openPreview = false;
 
       const previewDialog = this.dialog.open(CapturePreviewComponent, {
         data: { src },
@@ -273,13 +275,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
       previewDialog.afterClosed().subscribe(() => {
         this.inspectingPreview = false;
+        this.openPreview = true;
       });
 
     }
   }
 
   moreAttachments() {
-      if (this.openMore) {
+      if (this.openMore && this.openPreview) {
         this.openMore = false;
 
         this.dialogAttachments = this.dialog.open(AttachmentDialogComponent, {

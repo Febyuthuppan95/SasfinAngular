@@ -46,7 +46,7 @@ currentTheme: string;
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
-lineErrors: SAD500Line[] = null;
+lineErrors: SAD500Line[] = [];
 toggleLines = false;
 
 form = {
@@ -300,13 +300,13 @@ form = {
                 }
               );
             });
-
-            this.loadLines();
-            this.lineState = 'Saved successfully';
-            this.focusLineForm = !this.focusLineForm;
-            this.focusLineData = null;
-            this.lines = -1;
           }
+
+          this.loadLines();
+          this.lineState = 'Saved successfully';
+          this.focusLineForm = !this.focusLineForm;
+          this.focusLineData = null;
+          this.lines = -1;
 
           setTimeout(() => this.lineState = '', 3000);
         } else {
@@ -346,6 +346,12 @@ form = {
 
   specificLine(index: number) {
     this.focusLineData = this.sad500CreatedLines[index];
+  }
+
+  newLine() {
+    this.focusLineForm = !this.focusLineForm;
+    this.focusLineData = null;
+    this.lines = -1;
   }
 
   ngOnDestroy(): void {
