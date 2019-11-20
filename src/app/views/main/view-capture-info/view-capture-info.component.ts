@@ -296,7 +296,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,
-      info: this.captureInfo.info, 
+      info: this.captureInfo.info,
       doctypeID:  this.requestModelAddInfo.doctypeID,
       isDeleted: 0
     };
@@ -384,6 +384,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,
+      docTypeID: 1,
       isDeleted: 1,
       info: this.captureInfo.info,
     };

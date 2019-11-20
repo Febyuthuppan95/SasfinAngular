@@ -9,18 +9,6 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
-import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
-import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
-import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { Service } from 'src/app/models/HttpResponses/Service';
-import { ServicesService } from 'src/app/services/Services.Service';
-import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
-import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { takeUntil } from 'rxjs/operators';
 import { GetReportsList } from 'src/app/models/HttpRequests/GetReportsList';
 import { ReportsService } from 'src/app/services/Reports.Service';
@@ -35,7 +23,6 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private reprtsservice: ReportsService,
-    private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,

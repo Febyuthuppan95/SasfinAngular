@@ -1,0 +1,91 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.CompanyServiceClaims"
+      [dataset]="this.CompanyServiceClaims"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.recordsPerPage"
+      [rowStart]="this.rowStart"
+      [rowEnd]="this.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (backButtonEvent)="back()"
+      (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchEvent($event)">
+    </app-table>
+  </div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
+
+<app-menu
+*ngIf="this.contextMenu"
+[contextShow]="this.contextMenu"
+[x]="this.contextMenuX"
+[y]="this.contextMenuY"
+(resetContext)="this.selectedRow = -1; this.contextMenu = false">
+<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)"></app-context-menu-service-claims>
+</app-menu>
+
+<!--populate Modal-->
+<button class="hide" data-toggle="modal" data-target="#populate" #openPopulateModal></button>
+<div class="modal fade" id="populate" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalContent">Edit values</h5>
+      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">End Date:</label>
+            <input type="date" class="form-control"
+            [ngModel]="" [ngModelOptions]="{standalone: true}" rows="4" cols="50" (change)="dateselected($event.target.value)" required/>
+          </div>
+      </div>
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePopulateModal>Close</button>
+      <button type="button" (click)="populate()" class="btn btn-primary btn-sm">Save</button>
+    </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<!--reports Modal -->
+<button class="hide" data-toggle="modal" data-target="#reports" #openReportsModal></button>
+<div class="modal fade" id="reports" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalContent">Remove Item</h5>
+      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form>
+      <div class="modal-body">
+
+      </div>
+    <div class="modal-footer bg-dark">
+      <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeReportsModal>Close</button>
+      <button type="button" (click)="reports()" class="btn btn-primary btn-sm">Remove</button>
+    </div>
+  </form>
+  </div>
+</div>
+</div>
