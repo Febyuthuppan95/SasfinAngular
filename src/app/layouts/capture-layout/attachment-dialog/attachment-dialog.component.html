@@ -1,6 +1,6 @@
 <div mat-dialog-content style="height: 60%; overflow-y: auto; width:512px">
   <div *ngFor="let item of this.data" style="padding: 12px; background: #f2f2f2; margin-bottom: 12px;" class="shadow-sm">
-    <button mat-mini-fab class="float-right" (click)="preview(item)"><span class="mdi mdi-eye"></span></button>
+    <button mat-icon-button class="float-right" (click)="preview(item)"><span class="mdi mdi-open-in-app"></span></button>
     <h4 style="font-size: 22px !important;">{{item.name}}</h4>
     <small><strong>{{item.status}}</strong></small> <br>
     <p>{{item.fileType}}</p>
