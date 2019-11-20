@@ -104,7 +104,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-          key: 'alt + d',
+          key: 'alt + a',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
@@ -117,7 +117,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           key: 'alt + k',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusAssignedQuery = !this.focusAssignedQuery
+          command: e => this.focusDutiesQuery = !this.focusDutiesQuery
         },
     );
   }

@@ -14,6 +14,7 @@ import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog.component';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-capture-layout',
@@ -27,7 +28,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private router: Router,
               private transactionService: TransactionService,
               private companyService: CompanyService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private eventService: EventService) {}
 
   shortcuts: ShortcutInput[] = [];
 
@@ -139,7 +141,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
         },
         {
-          key: 'alt + a',
+          key: 'alt + p',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
@@ -284,9 +286,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           data: this.attachmentList,
         });
 
-        this.dialogAttachments.afterClosed().subscribe(() => {
+        this.dialogAttachments.afterClosed().subscribe((obj: TransactionFile) => {
+          console.log(obj);
           this.openMore = true;
           this.dialogAttachments = null;
+
+          if (obj !== undefined) {
+            this.previewCapture(obj.file, obj.attachmentID);
+          }
         });
       }
   }
@@ -294,6 +301,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  submitCapture() {
+    this.eventService.triggerCaptureEvent();
   }
 
 }

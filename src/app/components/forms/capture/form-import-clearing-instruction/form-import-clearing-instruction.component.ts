@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -9,21 +9,24 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
+import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
   templateUrl: './form-import-clearing-instruction.component.html',
   styleUrls: ['./form-import-clearing-instruction.component.scss']
 })
-export class FormImportClearingInstructionComponent implements OnInit {
+export class FormImportClearingInstructionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService) { }
+              private router: Router, private captureService: CaptureService, private eventService: EventService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
+  shortcuts: ShortcutInput[] = [];
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -61,6 +64,10 @@ export class FormImportClearingInstructionComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
 
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => this.submit());
+
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {
@@ -72,21 +79,30 @@ export class FormImportClearingInstructionComponent implements OnInit {
     });
   }
 
-  submit($event) {
-    $event.preventDefault();
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + s',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.submit()
+        },
+    );
+  }
 
+  submit() {
     const requestModel = {
-    userID: this.currentUser.userID,
-    specificICIID: this.attachmentID,
-    serialNo: this.form.serialNo.value,
-    lrn: this.form.LRN.value,
-    importersCode: this.form.importersCode.value,
-    pcc: this.form.PCC.value,
-    waybillNo: this.form.waybillNo.value,
-    supplierRef: this.form.supplierRef.value,
-    mrn: this.form.MRN.value,
-    isDeleted: 0,
-    attachmentStatus: 2,
+      userID: this.currentUser.userID,
+      specificICIID: this.attachmentID,
+      serialNo: this.form.serialNo.value,
+      lrn: this.form.LRN.value,
+      importersCode: this.form.importersCode.value,
+      pcc: this.form.PCC.value,
+      waybillNo: this.form.waybillNo.value,
+      supplierRef: this.form.supplierRef.value,
+      mrn: this.form.MRN.value,
+      isDeleted: 0,
+      attachmentStatus: 2,
     };
 
     this.captureService.iciUpdate(requestModel).then(

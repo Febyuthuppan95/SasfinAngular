@@ -9,11 +9,11 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog } from '@angular/material';
-import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { EventService } from 'src/app/services/event.service';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -22,7 +22,8 @@ import { Subject } from 'rxjs';
 export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
+              private router: Router, private captureService: CaptureService, private dialog: MatDialog,
+              private eventService: EventService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -87,6 +88,11 @@ form = {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => this.submit());
+
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {

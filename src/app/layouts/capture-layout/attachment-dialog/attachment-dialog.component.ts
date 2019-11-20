@@ -13,4 +13,8 @@ export class AttachmentDialogComponent implements OnInit {
 
   ngOnInit() {}
 
+  preview(obj: TransactionFile) {
+    this.dialogRef.close(obj);
+  }
+
 }

@@ -142,7 +142,6 @@ import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-pre
 import { FocusDirective } from './directives/focus.directive';
 import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
 import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
-import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 // tslint:disable-next-line: max-line-length
@@ -176,6 +175,7 @@ import { ReportsService } from './services/Reports.Service';
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
+import { EventService } from './services/event.service';
 
 @NgModule({
   declarations: [
@@ -273,7 +273,6 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
     FocusDirective,
     FormInvoiceComponent,
     FormVOCComponent,
-    FormVocLinesComponent,
     ContextMenuSADLinesComponent,
     ContextMenuItemsGroupComponent,
     ViewImportClearingInstructionsComponent,
@@ -359,7 +358,8 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
     ValidateService,
     ComponentService,
     TariffService,
-    ReportsService
+    ReportsService,
+    EventService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

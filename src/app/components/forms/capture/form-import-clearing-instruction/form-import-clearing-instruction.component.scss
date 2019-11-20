@@ -1,0 +1,52 @@
+.line-list button{
+  margin-right: 8px;
+}
+
+.btn {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.active-line {
+  padding: 12px;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.capture-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 22px;
+  background: rgba($color: #fff, $alpha: 0.8);
+}
+
+.capture-form-title {
+  font-size: 24px;
+}
+
+.capture-form-subtitle {
+  font-size: 12px !important;
+}
+
+.indicator-btn {
+  height: 12px;
+  width: 12px;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.1s;
+  background: #4d83ff;
+  border: none;
+  border-radius: 100%;
+  z-index: 999;
+}
+
+.indicator-active {
+  height: 24px;
+  width: 24px;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.1s;
+}
+
+.indicator-wrapper {
+  width: 26px;
+  height: 26px;
+  text-align: center;
+}
