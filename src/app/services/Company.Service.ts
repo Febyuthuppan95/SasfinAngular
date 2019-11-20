@@ -22,6 +22,7 @@ import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
+import { GetCompanyServiceClaims } from '../models/HttpRequests/GetCompanyServiceClaims';
 
 @Injectable({
   providedIn: 'root'
@@ -508,6 +509,23 @@ export class CompanyService {
   public getCompanyBoms(model: GetCompanyBOMs) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyServiceClaims(model: GetCompanyServiceClaims) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
