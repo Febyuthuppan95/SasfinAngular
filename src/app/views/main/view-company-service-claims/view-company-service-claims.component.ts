@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {FormControl} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
@@ -14,6 +15,10 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
 import { GetCompanyServiceClaims } from 'src/app/models/HttpRequests/GetCompanyServiceClaims';
 import { CompanyServiceClaimsListResponse, CompanyServiceClaim } from 'src/app/models/HttpResponses/CompanyServiceClaimsListResponse';
+import { GetPermitsByDate } from 'src/app/models/HttpRequests/GetPermitsByDate';
+import { PermitsByDateListResponse, PermitByDate } from 'src/app/models/HttpResponses/PermitsByDateListResponse';
+import { GetSAD500LinesByPermits } from 'src/app/models/HttpRequests/GetSAD500LinesByPermits';
+import { SAD500LinesByPermit, SAD500LinesByPermitResponse } from 'src/app/models/HttpResponses/SAD500LinesByPermitResponse';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -107,8 +112,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   selectedRow = -1;
 
-
+  permitsByDate = new FormControl();
   CompanyServiceClaims: CompanyServiceClaim[] = [];
+  Permits: PermitByDate[] = [];
+  SAD500Lines: SAD500LinesByPermit[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -139,6 +146,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   isAdmin: false;
   companyID = 0;
   companyName = '';
+  permitslist = [];
+
 
 
   ngOnInit() {
@@ -282,7 +291,76 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   dateselected(date) {
-    console.log(date);
+    const model: GetPermitsByDate = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      permitID: -1,
+      permitDate: date,
+      companyID: this.companyID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getPermitsByDate(model).then(
+      (res: PermitsByDateListResponse) => {
+
+        this.Permits = res.permits;
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  permitselected(permit) {
+    this.permitslist.push(permit);
+
+    this.fetcSAD500Bypermits(this.permitslist);
+  }
+  fetcSAD500Bypermits(permitIDs) {
+    const model: GetSAD500LinesByPermits = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      SAD500LineID: -1,
+      permitID: permitIDs,
+      companyID: this.companyID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getSAD500LinesByPermits(model).then(
+      (res: SAD500LinesByPermitResponse) => {
+
+        this.SAD500Lines = res.permits;
+        console.log(this.SAD500Lines);
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+
+  }
+
+  permitdeselected(permitDeSel) {
+    this.permitslist.forEach((permit, index) => {
+      if (permit === permitDeSel) {
+        this.permitslist.splice(index, 1);
+      }
+    });
+
+    this.fetcSAD500Bypermits(this.permitslist);
   }
 
    populate() {

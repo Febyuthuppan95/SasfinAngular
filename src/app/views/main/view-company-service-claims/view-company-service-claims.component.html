@@ -53,9 +53,18 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">End Date:</label>
-            <input type="date" class="form-control"
-            [ngModel]="" [ngModelOptions]="{standalone: true}" rows="4" cols="50" (change)="dateselected($event.target.value)" required/>
+            <input type="date" class="form-control" rows="4" cols="50" (change)="dateselected($event.target.value)" required/>
           </div>
+          <mat-form-field>
+            <mat-label>Permits</mat-label>
+            <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.target.value)">
+              <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <mat-label>Toppings</mat-label>
+          <mat-select [formControl]="toppings" multiple>
+            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+          </mat-select> -->
       </div>
     <div class="modal-footer bg-dark">
       <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePopulateModal>Close</button>
