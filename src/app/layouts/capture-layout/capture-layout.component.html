@@ -1,6 +1,6 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
-<div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks}">
+<div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
   <div class="">
   <span *ngFor="let attach of this.attachmentListShowing">
     <button mat-mini-fab
@@ -25,10 +25,10 @@
 </span>
 </div>
 </div>
-<div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks}">
+<div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
 
 </div>
-<div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks}">
+<div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="float-left">
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="goBack()" class="bg-danger text-light" matTooltip="Close without saving" matTooltipPosition="below">
         <span class="mdi mdi-close"></span>
@@ -39,7 +39,7 @@
         </button>
     </div>
 </div>
-<div class="dock dock-top" [ngClass]="{'hide-dock': !this.showDocks}">
+<div class="dock dock-top" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="text-center">
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="companyInfo()" class="bg-primary text-light" matTooltip="Company Information" matTooltipPosition="below"><span class="mdi mdi-information-variant"></span></button>&nbsp;&nbsp;
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>
@@ -84,8 +84,8 @@
     </div>
   </nav> -->
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
-<div class="col-6 bg-light">
-  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
+<div class="col-6 bg-light" style="overflow-y: auto;">
+  <!-- <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div> -->
   <app-document-viewer [focus]="this.focusPDF" *ngIf="!this.inspectingPreview"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">

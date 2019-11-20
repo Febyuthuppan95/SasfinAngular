@@ -218,3 +218,8 @@ $dockSize: 64px;
   opacity: 0;
   transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.2s;
 }
+
+.hover-dock:hover {
+  opacity: 1;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.2s;
+}

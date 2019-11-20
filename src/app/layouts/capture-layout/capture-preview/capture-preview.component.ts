@@ -17,7 +17,7 @@ export class CapturePreviewComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  pdfSRC: Blob;
+  pdfSRC: string;
   displayPDF = false;
   failedToLoad = false;
 
@@ -32,7 +32,8 @@ export class CapturePreviewComponent implements OnInit {
           this.failedToLoad = false;
         }
 
-        this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
+        // this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
+        this.pdfSRC = res;
         this.displayPDF = true;
       },
       (msg) => {

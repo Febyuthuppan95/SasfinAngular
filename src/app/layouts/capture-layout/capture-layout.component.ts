@@ -264,13 +264,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   previewCapture(src: string, id: number) {
     if (id !== this.attachmentID && this.openPreview) {
-      this.inspectingPreview = true;
+      this.inspectingPreview = false;
       this.openPreview = false;
 
       const previewDialog = this.dialog.open(CapturePreviewComponent, {
         data: { src },
-        width: '380px',
-        height: '512px;'
+        width: '50%',
+        height: '80%'
       });
 
       previewDialog.afterClosed().subscribe(() => {

@@ -176,6 +176,7 @@ import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/cont
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
 import { EventService } from './services/event.service';
+import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 
 @NgModule({
   declarations: [
@@ -298,6 +299,7 @@ import { EventService } from './services/event.service';
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
+    PDFViewerComponent,
   ],
   imports: [
     BrowserModule,
