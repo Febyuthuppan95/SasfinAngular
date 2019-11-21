@@ -9,6 +9,11 @@ import { HttpClient } from '@angular/common/http';
 export class DocumentService {
   constructor(private httpClient: HttpClient) {
     this.activeDocument = new BehaviorSubject<string>(null);
+    const tempStorage = sessionStorage.getItem('captureFormDoc');
+
+    if (tempStorage !== undefined) {
+      this.activeDocument.next(tempStorage);
+    }
   }
 
   activeDocument: BehaviorSubject<string>;
@@ -17,6 +22,7 @@ export class DocumentService {
    * loadDocumentToViewer
    */
   public loadDocumentToViewer(documentURL: string): void {
+    sessionStorage.setItem('captureFormDoc', documentURL);
     this.activeDocument.next(documentURL);
   }
 

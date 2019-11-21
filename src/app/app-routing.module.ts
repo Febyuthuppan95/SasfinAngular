@@ -55,6 +55,8 @@ import { ViewPermitsListComponent } from './views/main/view-permits-list/view-pe
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
+import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
   {
     path: '',
@@ -115,6 +117,7 @@ const routes: Routes = [
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
+          { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

@@ -32,7 +32,7 @@ export class CapturePreviewComponent implements OnInit {
   @ViewChild('closetimeoutModal', {static: true })
   closetimeoutModal: ElementRef;
 
-  pdfSRC: Blob;
+  pdfSRC: string;
   displayPDF = false;
   failedToLoad = false;
   count = 0;
@@ -49,7 +49,8 @@ export class CapturePreviewComponent implements OnInit {
           this.failedToLoad = false;
         }
 
-        this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
+        // this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
+        this.pdfSRC = res;
         this.displayPDF = true;
       },
       (msg) => {

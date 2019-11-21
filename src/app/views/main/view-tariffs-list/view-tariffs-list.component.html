@@ -19,10 +19,17 @@
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
-        (searchEvent)="searchEvent($event)">
+        (searchEvent)="searchEvent($event)"
+        (selectedRecord)="selectedRecord($event)">
       </app-table>
     </div>
   </div>
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
+  <app-menu
+  [contextShow]="this.contextMenu"
+  [(x)]="this.contextMenuX"
+  [(y)]="this.contextMenuY">
+  <app-context-menu-tariffs (dutyTypes)="viewDutyTaxTypes()"></app-context-menu-tariffs>
+  </app-menu>

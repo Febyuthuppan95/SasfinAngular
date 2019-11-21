@@ -10,7 +10,6 @@ export class SAD500Line {
     rowNum: number;
     sad500LineID: number;
     sad500ID: number;
-    cpc: string;
     tariffID: number;
     tariff: string;
     customsValue: number;
@@ -19,7 +18,6 @@ export class SAD500Line {
     unitOfMeasure: string;
     productCode: string;
     value: string;
-    cpcError?: string;
     tariffError?: string;
     customsValueError?: number;
     lineNoError?: string;

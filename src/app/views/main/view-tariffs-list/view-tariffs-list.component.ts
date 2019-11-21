@@ -13,6 +13,7 @@ import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-tariffs-list',
@@ -26,7 +27,8 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private router: Router
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -145,6 +147,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
+  selectedTariff: Tariff;
 
   ngOnInit() {
 
@@ -220,34 +223,29 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     this.loadTariffs(false);
   }
 
-  // popClick(event, user) {
-  //   if (this.sidebarCollapsed) {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   } else {
-  //     this.contextMenuX = event.clientX + 3;
-  //     this.contextMenuY = event.clientY + 5;
-  //   }
+  popClick(event, user) {
+      this.contextMenuX = event.clientX + 3;
+      this.contextMenuY = event.clientY + 5;
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+  }
 
-  //   // Will only toggle on if off
-  //   if (!this.contextMenu) {
-  //     this.themeService.toggleContextMenu(true); // Set true
-  //     this.contextMenu = true;
-  //     // Show menu
-  //   } else {
-  //     this.themeService.toggleContextMenu(false);
-  //     this.contextMenu = false;
-  //   }
-  // }
-  // popOff() {
-  //   this.contextMenu = false;
-  //   this.selectedRow = -1;
-  // }
+  popOff() {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
 
-  // selectedRecord(obj: SelectedRecord) {
-  //   this.selectedRow = obj.index;
-  //   this.popClick(obj.event, obj.record);
-  // }
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.selectedTariff = obj.record;
+    this.popClick(obj.event, obj.record);
+  }
+
+  viewDutyTaxTypes(tariff: Tariff) {
+    sessionStorage.setItem('tariffID', this.selectedTariff.id.toString());
+    this.router.navigate(['tariff', 'duties']);
+  }
 
   updateHelpContext(slug: string, $event?) {
     if (this.isAdmin) {

@@ -1,5 +1,5 @@
 .row, .col-6 {
-  height: 95vh;
+  height: 100vh;
   margin: 0;
   padding: 0;
   background-size: cover;
@@ -8,35 +8,37 @@
 }
 
 .company-container {
-  position: fixed;
-  bottom: auto;
-  right: 0;
-  top: 5vh;
-  width: 256px;
+  position: absolute;
+  bottom: 0;
+  right: -33%;
+  top: 0;
   text-align: center;
   z-index: 9999;
-  opacity: 0;
   transition: ease-in-out 0.3s;
-  display: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 33%;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .show-company-container {
-  opacity: 0.8;
   display: block;
   transition: ease-in-out 0.3s;
-}
-
-.company-info:hover {
-  background: rgba($color: #f2f2f2, $alpha: 0.9);
-  transition: ease-in-out 0.3s;
+  right: 0;
 }
 
 .company-info {
-  padding: 24px;
+  padding: 12px;
   border-radius: 0px;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  background: rgba($color: #f2f2f2, $alpha: 0.5);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  background: rgba($color: #fff, $alpha: 0.9);
   transition: ease-in-out 0.3s;
 }
 
@@ -68,7 +70,9 @@
 
 .capture-right {
   border-radius: 0 !important;
-  background: #ffffff !important;
+  background-color: #ffffff !important;
+  // background: url('./../../../assets/pattern.png');
+  // background-repeat: repeat;
 }
 
 .shortcut-highlighter-container {
@@ -97,23 +101,23 @@
 }
 
 .statusYellow {
-  color: #ffee00 !important;
+  background: #ffee00 !important;
 }
 
 .statusOrange {
-  color: #ffa600;
+  background: #ff9100  !important;
 }
 
 .statusGreen {
-  color: #00ff4c;
+  background: #00ff4c  !important;
 }
 
 .statusRed {
-  color: #ff0000;
+  background: #ff0000  !important;
 }
 
 .statusNone {
-  color: #ffffff;
+  background: #ffffff;
 }
 
 .shortcutView {
@@ -185,3 +189,79 @@ padding-left: 100px;
 }
 
 
+$dockSize: 64px;
+
+.dock {
+  opacity: 1;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.2s;
+}
+
+.dock-left {
+  top: $dockSize;
+  bottom: $dockSize;
+  left: 0;
+  width: $dockSize;
+  position: fixed;
+  padding: 12px;
+  padding-top: 128px;
+  z-index: 99999;
+}
+
+.dock-right {
+  top: $dockSize;
+  bottom: $dockSize;
+  right: 0;
+  width: $dockSize;
+  position: fixed;
+  padding: 12px;
+  z-index: 99999;
+}
+
+.dock-bottom {
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: $dockSize;
+  position: fixed;
+  padding: 12px;
+  z-index: 99999;
+}
+
+.dock-top {
+  right: 256px;
+  left: 256px;
+  top: 0;
+  height: $dockSize;
+  position: fixed;
+  padding: 12px;
+  z-index: 99999;
+}
+
+.dock-top-left {
+  left: 0;
+  top: 0;
+  width: 256px;
+  height: $dockSize;
+  position: fixed;
+  padding: 12px;
+  z-index: 99999;
+}
+
+.info-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: #f2f2f2;
+  color: #000;
+  font-size: 12px !important;
+}
+
+.hide-dock {
+  opacity: 0;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.2s;
+}
+
+.hover-dock:hover {
+  opacity: 1;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.2s;
+}

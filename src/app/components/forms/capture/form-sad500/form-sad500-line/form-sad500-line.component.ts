@@ -1,5 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild } from '@angular/core';
-import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
+import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { SAD500LineCreateRequest, DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -14,17 +14,18 @@ import { FormControl } from '@angular/forms';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CaptureService } from 'src/app/services/capture.service';
 
 @Component({
   selector: 'app-form-sad500-line',
   templateUrl: './form-sad500-line.component.html',
   styleUrls: ['./form-sad500-line.component.scss']
 })
-export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnChanges {
+export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService) { }
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService) { }
 
   currentUser: User;
 
@@ -39,14 +40,28 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   tariffsTemp: { amount: number; description: string; duty: number; unit: string }[];
   myControl = new FormControl();
   unitOfMeasure = new FormControl();
-
   selectedTariffVal: string;
   selectedUnitVal: string;
   private unsubscribe$ = new Subject<void>();
 
+  dutyList: DutyListResponse;
+  assignedDuties: Duty[] = [];
+  dutiesToBeSaved: Duty[] = [];
+  dutyListTemp: Duty[] = [];
+  assignedDutiesTemp: Duty[] = [];
+  dutiesToBeSavedTemp: Duty[] = [];
+  dutiesQuery: string = '';
+  dutieAssignedQuery: string = '';
+  focusDutiesQuery = false;
+  focusAssignedQuery = false;
+
+  @ViewChild('dutiesAssignedEl', { static: false })
+  dutiesAssignedEl: ElementRef;
+
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
   @Input() focusSADLine: boolean;
+  @Input() showLines: boolean;
   @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
   @Output() updateSADLine = new EventEmitter<SAD500Line>();
 
@@ -54,7 +69,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   form = {
-    cpc: '',
     tariffID: -1,
     tariff: '',
     customsValue: 0,
@@ -78,30 +92,40 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(theme => this.currentTheme = theme);
+
     this.currentUser = this.userService.getCurrentUser();
 
     this.loadUnits();
     this.loadTarrifs();
+    this.loadDuties();
+
   }
 
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-            key: 'alt + n',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.focusLineForm = !this.focusLineForm
+          key: 'alt + a',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            if (this.showLines) {
+              this.submit();
+            }
+          }
+        },
+        {
+          key: 'alt + k',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.focusDutiesQuery = !this.focusDutiesQuery
         },
     );
-
-    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
       this.isUpdate = true;
 
-      this.form.cpc = this.updateSAD500Line.cpc;
       this.form.customsValue = this.updateSAD500Line.customsValue;
       this.form.lineNo = this.updateSAD500Line.lineNo;
       this.form.productCode = this.updateSAD500Line.productCode;
@@ -110,16 +134,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.value = this.updateSAD500Line.value;
       this.form.tariffError = this.updateSAD500Line.tariffError;
       this.form.customsValueError = this.updateSAD500Line.customsValueError;
-      this.form.cpcError = this.updateSAD500Line.cpcError;
       this.form.valueError = this.updateSAD500Line.valueError;
       this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
       this.form.lineNoError = this.updateSAD500Line.lineNoError;
       this.form.productCodeError = this.updateSAD500Line.productCodeError;
 
+      this.loadDuties();
     } else {
       this.isUpdate = false;
+      this.dutiesToBeSaved = [];
       this.form = {
-        cpc: '',
         tariffID: -1,
         tariff: '',
         customsValue: 0,
@@ -136,6 +160,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         productCodeError: null,
         valueError: null,
       };
+      this.loadDuties();
     }
 
   }
@@ -161,7 +186,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         rowNum: -1,
         sad500LineID: this.updateSAD500Line.sad500LineID,
         sad500ID: -1,
-        cpc: this.form.cpc,
         tariffID: 1,
         tariff: this.form.tariff,
         customsValue: this.form.customsValue,
@@ -175,7 +199,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.submitSADLine.emit({
         userID: -1,
         sad500ID: -1,
-        cpc: this.form.cpc,
         tariffID: 1,
         tariff: this.form.tariff,
         customsValue: this.form.customsValue,
@@ -184,7 +207,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasure: this.form.unitOfMeasure,
         productCode: this.form.productCode,
         value: this.form.value,
+        duties: this.dutiesToBeSaved
       });
+
+      this.dutiesToBeSaved = [];
+      this.loadDuties();
     }
   }
 
@@ -203,6 +230,71 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.form.tariff = description;
   }
 
+  assignDuty(duty: Duty) {
+    this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+    if (this.isUpdate) {
+      this.assignedDuties.push(duty);
+
+      this.captureService.sad500LineDutyAdd({
+        userID: 3,
+        dutyID: duty.dutyTaxTypeID,
+        sad500LineID: this.updateSAD500Line.sad500LineID
+      }).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+
+          } else {
+            // Did not assign
+            // Revert changes
+            this.dutyList.duties.push(duty);
+            this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+          }
+        },
+        (msg) => {
+          // Did not assign
+          // Revert changes
+          this.dutyList.duties.push(duty);
+          this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+        }
+      );
+    } else {
+      this.dutiesToBeSaved.push(duty);
+    }
+  }
+
+  revokeDuty(duty: Duty) {
+    this.dutyList.duties.push(duty);
+
+    if (this.isUpdate) {
+      this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+
+      this.captureService.sad500LineDutyRemove({
+        userID: 3,
+        dutyID: duty.dutyTaxTypeID,
+        sad500LineID: this.updateSAD500Line.sad500LineID
+      }).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+
+          } else {
+            // Did not assign
+            // Revert changes
+            this.assignedDuties.push(duty);
+            this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+          }
+        },
+        (msg) => {
+          // Did not assign
+          // Revert changes
+          this.assignedDuties.push(duty);
+          this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+        }
+      );
+    } else {
+      this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+    }
+  }
+
   selectedUnit(name) {
     this.form.unitOfMeasure = name;
   }
@@ -217,9 +309,69 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
   }
 
+  filterDuties() {
+    this.dutyList.duties = this.dutyListTemp;
+    this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.name, `*${this.dutiesQuery}*`));
+  }
+
+  filterAssignedDuties() {
+    this.assignedDuties = this.assignedDutiesTemp;
+    this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
+
+    this.dutiesToBeSaved = this.dutyListTemp;
+    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
+  }
+
   matchRuleShort(str, rule) {
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
+
+  loadDuties() {
+    this.captureService.dutyList({
+      dutyTaxTypeID: -1,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 100,
+      orderBy: 'ASC',
+      orderDirection: 'Name'
+    }).then(
+      (res: DutyListResponse) => {
+        this.dutyList = res;
+        this.dutyListTemp = res.duties;
+
+        if (this.isUpdate) {
+          this.loadAssignedDuties();
+        }
+      },
+      (msg) => {}
+    );
+  }
+
+  loadAssignedDuties() {
+    if (this.updateSAD500Line !== null) {
+      this.captureService.sad500LineDutyList({
+        userID: 3,
+        dutyID: -1,
+        sad500LineID: this.updateSAD500Line.sad500LineID,
+        filter: '',
+        rowStart: 1,
+        rowEnd: 100,
+        orderBy: 'ASC',
+        orderDirection: 'Name',
+      }).then(
+        (res: DutyListResponse) => {
+          console.log(res);
+
+          this.assignedDuties = res.duties;
+          this.assignedDutiesTemp = res.duties;
+          this.assignedDuties.forEach(item => {
+            this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== item.dutyTaxTypeID);
+          });
+        },
+        (msg) => {}
+      );
+    }
   }
 
   ngOnDestroy(): void {
