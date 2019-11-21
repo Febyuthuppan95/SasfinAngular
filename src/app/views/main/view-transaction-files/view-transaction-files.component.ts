@@ -108,11 +108,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   transactionID: number;
 
   transactionTypes = [
-    { name: 'ICI', value: 1 },
-    { name: 'SAD500', value: 2 },
-    { name: 'PACKING', value: 3 },
-    { name: 'CUSRELEASE', value: 4 },
-    { name: 'VOC', value: 5 },
+    { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
+    { name: 'SAD500', value: 2, description: 'SAD500' },
+    { name: 'PACKING', value: 3, description: 'Packing' },
+    { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
+    { name: 'VOC', value: 5, description: 'VOC' },
+    { name: 'INVOICE', value: 6, description: 'Invoice' },
   ];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
