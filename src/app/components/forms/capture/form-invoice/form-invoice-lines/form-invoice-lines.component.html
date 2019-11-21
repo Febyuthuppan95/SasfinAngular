@@ -9,15 +9,15 @@
       [ngClass]="{'form-control-invalid': this.form.prodCodeError !== null}"/>
       <p class="invalid-control-label" *ngIf="this.form.prodCodeError !== null" style="width: 100%;">{{this.form.prodCodeError}}</p>
   </div>
-  <div class="form-group" *ngIf="this.form.quantity != undefined">
-    <input type="text"
+  <div class="form-group">
+    <input type="number"
       [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Quantity" style="margin-top:0"/>
       <p class="invalid-control-label" *ngIf="this.form.quantityError !== null">{{this.form.quantityError}}</p>
   </div>
-  <div class="form-group" *ngIf="this.form.itemValue != undefined">
-    <input type="text"
+  <div class="form-group">
+    <input type="number"
       [(ngModel)]="this.form.itemValue" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Item Value" />

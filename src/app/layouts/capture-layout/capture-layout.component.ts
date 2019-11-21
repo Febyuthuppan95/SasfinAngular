@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog.component';
 import { EventService } from 'src/app/services/event.service';
+import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -252,7 +253,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
-    this.router.navigate(['transaction', 'attachments']);
+    this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
+      if (status) {
+        this.router.navigate(['transaction', 'attachments']);
+      }
+    });
   }
   companyInfo() {
     this.companyShowToggle = !this.companyShowToggle;

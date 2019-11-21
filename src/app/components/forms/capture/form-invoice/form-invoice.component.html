@@ -25,22 +25,33 @@
       placeholder="Invoice No" />
       <p class="invalid-control-label" *ngIf="this.form.invoiceNo.error !== null">{{this.form.invoiceNo.error}}</p>
   </div>
-    <div class="form-group" *ngIf="this.form.fromCompany != undefined">
-      <input  type="number"
-        [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
-        [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}"
-        placeholder="From Company" />
-        <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.fromCompany.error}}</p>
+  <div class="form-group" *ngIf="this.form.fromCompany != undefined">
+    <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="fromCompanyIDAuto">
+    <mat-autocomplete #fromCompanyIDAuto="matAutocomplete">
+      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedCurrency(unit.companyID)">
+        {{unit.name}}
+      </mat-option>
+    </mat-autocomplete>
+    <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.toCompany.error}}</p>
     </div>
     <div class="form-group" *ngIf="this.form.toCompany != undefined">
-      <input type="number"
-        [(ngModel)]="this.form.toCompany.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-light"
-        [ngClass]="{'form-control-invalid': this.form.toCompany.error !== null}"
-        placeholder="To Company" />
-        <p class="invalid-control-label" *ngIf="this.form.toCompany.error !== null">{{this.form.toCompany.error}}</p>
-    </div>
+      <input (keyup)="filterToCompany()" [(ngModel)]="this.form.toCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.toCompany.error !== null}" type="text" placeholder="To Company" aria-label="To Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="toCompanyIDAuto">
+      <mat-autocomplete #toCompanyIDAuto="matAutocomplete">
+        <mat-option *ngFor="let unit of this.toCompanyList" [value]="unit.name" (onSelectionChange)="selectedCurrency(unit.companyID)">
+          {{unit.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.toCompany.error !== null">{{this.form.toCompany.error}}</p>
+      </div>
+    <div class="form-group" *ngIf="this.form.currencyID != undefined">
+      <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="unitOfMeasureAuto">
+      <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+        <mat-option *ngFor="let unit of this.currencies" [value]="unit.code" (onSelectionChange)="selectedCurrency(unit.currencyID)">
+          {{unit.name}}, {{unit.code}}
+        </mat-option>
+      </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
+      </div>
   </form>
 </span>
   <span style="display: none" [ngClass]="{'show': this.toggleLines}">

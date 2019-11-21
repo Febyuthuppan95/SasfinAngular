@@ -178,6 +178,8 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
 import { EventService } from './services/event.service';
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
+import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -302,6 +304,8 @@ import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoi
     AttachmentDialogComponent,
     PDFViewerComponent,
     FormInvoiceLinesComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -375,7 +379,9 @@ import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoi
     FormImportClearingInstructionComponent,
     FormCustomReleaseComponent,
     AttachmentDialogComponent,
-    FormInvoiceComponent
+    FormInvoiceComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent
   ]
 })
 export class AppModule { }

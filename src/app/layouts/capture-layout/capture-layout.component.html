@@ -30,7 +30,7 @@
 </div>
 <div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="float-left">
-      <button style="z-index: 99999999999999;" mat-mini-fab (click)="goBack()" class="bg-danger text-light" matTooltip="Close without saving" matTooltipPosition="below">
+      <button style="z-index: 99999999999999;" mat-mini-fab (click)="exitCaptureScreen()" class="bg-danger text-light" matTooltip="Close without saving" matTooltipPosition="below">
         <span class="mdi mdi-close"></span>
       </button>
       &nbsp;&nbsp;

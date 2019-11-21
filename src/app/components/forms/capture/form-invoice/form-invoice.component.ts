@@ -17,6 +17,8 @@ import { InvoiceGetResponse, InvoiceLinesResponse, InvoiceLine } from 'src/app/m
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
+import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-form-invoice',
@@ -27,7 +29,7 @@ export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-            private eventService: EventService, private currencyService: CurrenciesService) { }
+            private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -47,17 +49,24 @@ private unsubscribe$ = new Subject<void>();
 
 currentTheme: string;
 currencies: Currency[] = [];
-
+currenciesTemp: Currency[] = [];
 sad500LineQueue: InvoiceLine[] = [];
 sad500CreatedLines: InvoiceLine[] = [];
 lineState: string;
 lineErrors: InvoiceLine[] = [];
 toggleLines = false;
 transactionID: number;
+currencyQuery: string = '';
+toCompanyQuery = '';
+fromCompanyQuery = '';
+toCompanyList: Company[] = [];
+toCompanyListTemp: Company[] = [];
+fromCompanyList: Company[] = [];
+fromCompanyListTemp: Company[] = [];
 
 form = {
   fromCompany: {
-    value: null,
+    value: '',
     error: null,
   },
   fromCompanyID: {
@@ -69,7 +78,7 @@ form = {
     error: null,
   },
   toCompany: {
-    value: null,
+    value: '',
     error: null,
   },
   invoiceNo: {
@@ -78,12 +87,14 @@ form = {
   },
   currencyID: {
     value: null,
-    error: null,
+    error: undefined,
   },
 };
 
   ngOnInit() {
     this.loadCurrency();
+    this.loadCompanies();
+
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
@@ -167,9 +178,9 @@ form = {
     const requestModel = {
       userID: this.currentUser.userID,
       invoiceID: this.attachmentID,
-      fromCompanyID: this.form.fromCompanyID.value,
+      fromCompanyID: 3,
       fromCompany: this.form.fromCompany.value,
-      toCompanyID: this.form.toCompanyID.value,
+      toCompanyID: 4,
       toCompany: this.form.toCompany.value,
       invoiceNo: this.form.invoiceNo.value,
       currencyID: this.form.currencyID.value,
@@ -187,6 +198,7 @@ form = {
         }
       },
       (msg) => {
+        console.log(msg);
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
@@ -196,7 +208,7 @@ form = {
     this.lineState = 'Saving';
     const requestModel = {
       userID: this.currentUser.userID,
-      invoiceLineID: this.attachmentID,
+      invoiceLineID: obj.invoiceLineID,
       prodCode: obj.prodCode,
       quantity: obj.quantity,
       itemValue: obj. itemValue,
@@ -225,7 +237,7 @@ form = {
     this.currencyService.list({userID: this.currentUser.userID, specificCurrencyID: -1, filter: '', rowStart: 1, rowEnd: 1000}).then(
       (res: ListCurrencies) =>{
         this.currencies = res.currenciesList;
-        console.log(this.currencies);
+        this.currenciesTemp = this.currencies;
       },
       (msg) => {
         console.log(msg);
@@ -317,6 +329,61 @@ form = {
       }
     );
   }
+
+  loadCompanies() {
+    this.companyService.list({
+      userID: this.currentUser.userID,
+      specificCompanyID: -1,
+      filter: '',
+      rowEnd: 1000,
+      rowStart: 1,
+      orderBy: '',
+      orderByDirection: '',
+    }).then(
+      (res: CompaniesListResponse) => {
+        this.toCompanyList = res.companies;
+        this.fromCompanyList = res.companies;
+        this.toCompanyListTemp = res.companies;
+        this.fromCompanyListTemp = res.companies;
+      },
+      (msg) => {
+        console.log(msg);
+      }
+    );
+  }
+
+  filterCurrency() {
+    this.currencies = this.currenciesTemp;
+    this.currencies = this.currencies.filter(x => this.matchRuleShort(x.name, `*${this.currencyQuery}*`));
+  }
+
+  filterToCompany() {
+    this.toCompanyList = this.toCompanyListTemp;
+    this.toCompanyList = this.toCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.toCompany.value}*`));
+  }
+
+  filterFromCompany() {
+    this.fromCompanyList = this.fromCompanyListTemp;
+    this.fromCompanyList = this.fromCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.fromCompany.value}*`));
+  }
+
+  selectedCurrency(currencyID: number) {
+    this.form.currencyID.value = currencyID;
+  }
+
+  selectedToCompany(toCompanyID: number) {
+    this.form.toCompanyID.value = toCompanyID;
+  }
+
+  selectedFromCompany(fromCompanyID: number) {
+    this.form.fromCompanyID.value = fromCompanyID;
+  }
+
+  matchRuleShort(str, rule) {
+    const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
+
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
     this.lines = i;
