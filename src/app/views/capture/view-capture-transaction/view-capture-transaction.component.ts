@@ -8,6 +8,7 @@ import { FormCustomReleaseComponent } from 'src/app/components/forms/capture/for
 import { FormImportClearingInstructionComponent } from 'src/app/components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invoice/form-invoice.component';
 
 @Component({
   selector: 'app-view-capture-transaction',
@@ -59,6 +60,10 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
       }
       case 'Import Clearing Instruction': {
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        break;
+      }
+      case 'Invoice': {
+        this.componentService.renderComponent(FormInvoiceComponent);
         break;
       }
     }
