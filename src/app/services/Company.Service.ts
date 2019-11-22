@@ -25,6 +25,8 @@ import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTa
 import { GetCompanyServiceClaims } from '../models/HttpRequests/GetCompanyServiceClaims';
 import { GetPermitsByDate } from '../models/HttpRequests/GetPermitsByDate';
 import { GetSAD500LinesByPermits } from '../models/HttpRequests/GetSAD500LinesByPermits';
+import { NumberValueAccessor } from '@angular/forms';
+import { GetServiceClaimReports } from '../models/HttpRequests/GetServiceClaimReports';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +44,8 @@ export class CompanyService {
     let sessionData3: SelectedBOM = null;
     // Permit
     let sessionData4: SelectedPermit = null;
+    // CompanyServiceClaimReport
+    let sessionData5: SelectedClaimReport = null;
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -59,6 +63,10 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.PermitData}`) !== undefined || null) {
       sessionData4 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.PermitData}`));
     }
+    // CompanyServiceClaimReport
+    if (sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`) !== undefined || null) {
+      sessionData5 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`));
+    }
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
@@ -68,6 +76,8 @@ export class CompanyService {
     this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
     // Permit
     this.SelectedPermit = new BehaviorSubject<SelectedPermit>(sessionData4);
+    // CompanyServiceClaimReport
+    this.SelectedClaimReport = new BehaviorSubject<SelectedClaimReport>(sessionData5);
 
   }
   // company
@@ -78,6 +88,8 @@ export class CompanyService {
   SelectedBOM: BehaviorSubject<SelectedBOM>;
   // Permit
   SelectedPermit: BehaviorSubject<SelectedPermit>;
+  // CompanyServiceClaimReport
+  SelectedClaimReport: BehaviorSubject<SelectedClaimReport>;
 
   // company
   setCompany(company: SelectedCompany) {
@@ -99,6 +111,11 @@ export class CompanyService {
     this.SelectedPermit.next(Permit);
     sessionStorage.setItem(`${environment.Sessions.PermitData}`, JSON.stringify(Permit));
   }
+  // CompanyServiceClaimReport
+  setClaimReport(ClaimReport: SelectedClaimReport) {
+    this.SelectedClaimReport.next(ClaimReport);
+    sessionStorage.setItem(`${environment.Sessions.ClaimReportData}`, JSON.stringify(ClaimReport));
+  }
 
   // company
   observeCompany() {
@@ -116,6 +133,10 @@ export class CompanyService {
   observePermit() {
     return this.SelectedPermit.asObservable();
   }
+   // CompanyServiceClaimReport
+   observeClaimReport() {
+    return this.SelectedClaimReport.asObservable();
+  }
 
   // company
   flushCompanySession() {
@@ -132,6 +153,10 @@ export class CompanyService {
   // Permit
   flushPermitSession() {
     sessionStorage.removeItem(`${environment.Sessions.PermitData}`);
+  }
+  // Permit
+  flushClaimReportSession() {
+    sessionStorage.removeItem(`${environment.Sessions.ClaimReportData}`);
   }
 
 
@@ -542,6 +567,23 @@ export class CompanyService {
     });
   }
 
+  public getServiceClaimReports(model: GetServiceClaimReports) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/ServiceClaimReports`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getPermitsByDate(model: GetPermitsByDate) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/PermitsByDate`;
@@ -901,4 +943,13 @@ export class SelectedBOM {
 export class SelectedPermit {
   permitID: number;
   permitCode: string;
+}
+
+export class SelectedClaimReport {
+  companyServiceID: number;
+  companyID: number;
+  companyName: string;
+  claimNumber: number;
+  serviceId: number;
+  serviceName: string;
 }

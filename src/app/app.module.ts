@@ -175,6 +175,7 @@ import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-li
 import { ReportsService } from './services/Reports.Service';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 
 @NgModule({
   declarations: [
@@ -297,6 +298,7 @@ import { ContextMenuServiceClaimsComponent } from './components/menus/context-me
     ViewReportQueuesListComponent,
     ViewCompanyServiceClaimsComponent,
     ContextMenuServiceClaimsComponent,
+    ViewCompanyServiceclaimReportComponent,
   ],
   imports: [
     BrowserModule,

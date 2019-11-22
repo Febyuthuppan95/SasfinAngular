@@ -10,7 +10,7 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedCompany, SelectedClaimReport } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
 import { GetCompanyServiceClaims } from 'src/app/models/HttpRequests/GetCompanyServiceClaims';
@@ -19,16 +19,17 @@ import { GetPermitsByDate } from 'src/app/models/HttpRequests/GetPermitsByDate';
 import { PermitsByDateListResponse, PermitByDate } from 'src/app/models/HttpResponses/PermitsByDateListResponse';
 import { GetSAD500LinesByPermits } from 'src/app/models/HttpRequests/GetSAD500LinesByPermits';
 import { SAD500LinesByPermit, SAD500LinesByPermitResponse } from 'src/app/models/HttpResponses/SAD500LinesByPermitResponse';
-import { isEmpty } from 'rxjs/operators';
 import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
+import { ServiceClaimReportsListResponse, ServiceClaimReport } from 'src/app/models/HttpResponses/ServiceClaimReportsListResponse';
 
 @Component({
-  selector: 'app-view-company-service-claims',
-  templateUrl: './view-company-service-claims.component.html',
-  styleUrls: ['./view-company-service-claims.component.scss']
+  selector: 'app-view-company-serviceclaim-report',
+  templateUrl: './view-company-serviceclaim-report.component.html',
+  styleUrls: ['./view-company-serviceclaim-report.component.scss']
 })
-export class ViewCompanyServiceClaimsComponent implements OnInit {
+export class ViewCompanyServiceclaimReportComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
@@ -72,14 +73,12 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   myInputVariable: ElementRef;
 
   ServiceClaim: {
-    companyServiceID: number,
     companyServiceClaimNumber: number,
-    serviceID: number,
     serviceName: string,
   };
 
   tableHeader: TableHeader = {
-    title: `Service Claims`,
+    title: `Reports`,
     addButton: {
      enable: false,
     },
@@ -101,6 +100,14 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     },
     {
+      title: 'Report',
+      propertyName: 'reportName',
+      order: {
+        enable: true,
+        tag: 'ReportName'
+      }
+    },
+    {
       title: 'Service',
       propertyName: 'serviceName',
       order: {
@@ -115,13 +122,37 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
       }
+    },
+    {
+      title: 'Start Date',
+      propertyName: 'startDate',
+      order: {
+        enable: true,
+        tag: 'StartDate'
+      }
+    },
+    {
+      title: 'End Date',
+      propertyName: 'endDate',
+      order: {
+        enable: true,
+        tag: 'EndDate'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'reportQueueStatus',
+      order: {
+        enable: true,
+        tag: 'ReportQueueStatus'
+      }
     }
   ];
 
   selectedRow = -1;
 
   permitsByDate = new FormControl();
-  CompanyServiceClaims: CompanyServiceClaim[] = [];
+  ServiceClaimReports: ServiceClaimReport[] = [];
   Permits: PermitByDate[] = [];
   SAD500Lines: SAD500LinesByPermit[] = [];
   SAD500SelectedLines = [];
@@ -156,6 +187,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   isAdmin: false;
   companyID = 0;
   companyName = '';
+  companyServiceID = 0;
+  ServiceID = 0;
+  serviceName = '';
+  companyServiceClaimID = 0;
   permitslist = [];
   startdate: Date;
   enddate: Date;
@@ -167,32 +202,34 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeClaimReport().subscribe((obj: SelectedClaimReport) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
+      this.companyServiceID = obj.companyServiceID;
+      this.companyServiceClaimID = obj.claimNumber;
+      this.ServiceID = obj.serviceId;
+      this.serviceName = obj.serviceName;
 
-      this.tableHeader.title = `${ this.companyName } - Service Claims`;
+      this.tableHeader.title = `${ this.companyName } - Reports`;
     });
 
-    this.loadServiceClaims(true);
-
+    this.loadServiceClaimReports(true);
   }
 
-  loadServiceClaims(displayGrowl: boolean) {
+  loadServiceClaimReports(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetCompanyServiceClaims = {
+    const model: GetServiceClaimReports = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      serviceID: -1,
-      companyID: this.companyID,
+      companyServiceClaimID: this.companyServiceClaimID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getCompanyServiceClaims(model).then(
-      (res: CompanyServiceClaimsListResponse) => {
+    this.companyService.getServiceClaimReports(model).then(
+      (res: ServiceClaimReportsListResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -200,7 +237,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.CompanyServiceClaims = res.serviceClaims;
+        this.ServiceClaimReports = res.serviceClaimReports;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -208,9 +245,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceClaims.length;
+          this.showingRecords = res.serviceClaimReports.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.CompanyServiceClaims.length - 1;
+          this.totalShowing = +this.rowStart + +this.ServiceClaimReports.length - 1;
         }
 
       },
@@ -227,12 +264,12 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadServiceClaims(false);
+    this.loadServiceClaimReports(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadServiceClaims(false);
+    this.loadServiceClaimReports(false);
   }
 
 
@@ -245,7 +282,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadServiceClaims(false);
+    this.loadServiceClaimReports(false);
   }
 
   popClick(event, obj) {
@@ -257,7 +294,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['companies']);
+    this.router.navigate(['companies', 'serviceclaims']);
   }
 
   selectedRecord(obj: SelectedRecord) {
@@ -284,153 +321,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadServiceClaims(true);
+    this.loadServiceClaimReports(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadServiceClaims(false);
-  }
-
-  populatecompanyService($event) {
-     this.openPopulateModal.nativeElement.click();
-  }
-
-  reportscompanyService(id: number) {
-
-     this.openReportsModal.nativeElement.click();
-  }
-
-  enddateselected(date) {
-
-    if (this.startdate === null || this.startdate === undefined) {
-      this.notify.toastrwarning(
-        'information',
-        'please choose start date.'
-      );
-
-      this.myInputVariable.nativeElement.value = null;
-    } else {
-      const model: GetPermitsByDate = {
-        userID: this.currentUser.userID,
-        filter: this.filter,
-        permitstartDate: this.startdate,
-        permitsendDate: date,
-        companyID: this.companyID,
-        rowStart: this.rowStart,
-        rowEnd: this.rowEnd,
-        orderBy: this.orderBy,
-        orderByDirection: this.orderDirection
-      };
-      this.companyService.getPermitsByDate(model).then(
-        (res: PermitsByDateListResponse) => {
-
-          this.Permits = res.permitByDatelist;
-
-        },
-        msg => {
-          this.showLoader = false;
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-        }
-      );
-    }
-  }
-
-  permitselected(permitIDs) {
-    this.permitslist = permitIDs;
-
-    const model: GetSAD500LinesByPermits = {
-      userID: this.currentUser.userID,
-      filter: this.filter,
-      SAD500LineID: -1,
-      permitID: permitIDs,
-      companyID: this.companyID,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-    };
-    this.companyService.getSAD500LinesByPermits(model).then(
-      (res: SAD500LinesByPermitResponse) => {
-
-        this.SAD500Lines = res.permits;
-
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-
-  }
-
-  sad500selected(checked) {
-    this.SAD500SelectedLines = [];
-
-    checked.forEach(c => {
-      this.SAD500SelectedLines.push(c.value);
-    });
-
-  }
-
-   polulateLines() {
-
-    if (!this.complete) {
-      const requestModel = {
-        userID: this.currentUser.userID,
-        sad500linesIDs: this.SAD500SelectedLines
-      };
-
-      this.companyService.addSAD500Linesclaim(requestModel).then(
-        (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome === 'SUCCESS') {
-              this.notify.successmsg('Success', 'SAD500 lines has been Added');
-              this.closePopulateModal.nativeElement.click();
-              this.loadServiceClaims(false);
-            } else {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
-        }
-      );
-    } else {
-      // const requestModel = {
-      //   userID: this.currentUser.userID,
-      //   sad500lines: this.SAD500SelectedLines
-      // };
-      // this.companyService.addSAD500Linesclaim(requestModel).then(
-      //   (res: {outcome: Outcome}) => {
-      //     if (res.outcome.outcome === 'SUCCESS') {
-      //         this.notify.successmsg('Success', 'SAD500 lines has been Added and claim has been added');
-      //         this.closePopulateModal.nativeElement.click();
-      //         this.loadServiceClaims(false);
-      //       } else {
-      //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-      //     }
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
-      //   }
-      // );
-    }
-   }
-
-   reports() {
-    const requestModel = {
-
-    };
-
+    this.loadServiceClaimReports(false);
   }
 }
-
-
-
-

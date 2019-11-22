@@ -95,7 +95,6 @@
 
             // callback method
             (status, data) => {
-                console.log(data);
                 console.log(JSON.stringify(data));
                 // status (boolean) returned from controller action
                 if (!status) {

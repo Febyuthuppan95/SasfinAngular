@@ -35,7 +35,7 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)"></app-context-menu-service-claims>
+<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)" [companyID]="this.companyID" [companyName]="this.companyName" [companyServiceID]="this.ServiceClaim.companyServiceID" [companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" [serviceID]=" this.ServiceClaim.serviceID" [serviceName]="this.ServiceClaim.serviceName"></app-context-menu-service-claims>
 </app-menu>
 
 <!--populate Modal-->
@@ -68,7 +68,7 @@
           <mat-form-field class="width">
             <mat-label>Permits</mat-label>
             <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.value)">
-              <mat-option *ngFor="let permit of this.Permits" [value]="permit">{{permit}}</mat-option>
+              <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit.permitCode}}</mat-option>
             </mat-select>
           </mat-form-field>
           <br>

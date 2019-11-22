@@ -175,7 +175,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
           }
         },
         (msg) => {
-          console.log(msg);
         }
       );
     }
