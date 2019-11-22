@@ -178,15 +178,23 @@ form = {
     const requestModel = {
       userID: this.currentUser.userID,
       invoiceID: this.attachmentID,
-      fromCompanyID: 3,
+      fromCompanyID: this.form.fromCompanyID.value,
       fromCompany: this.form.fromCompany.value,
-      toCompanyID: 4,
+      toCompanyID: this.form.toCompanyID.value,
       toCompany: this.form.toCompany.value,
       invoiceNo: this.form.invoiceNo.value,
       currencyID: this.form.currencyID.value,
       isDeleted: 0,
       attachmentStatusID: 2,
     };
+
+    if (this.form.fromCompanyID.value === null) {
+      this.form.fromCompanyID.value = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery).companyID;
+    }
+
+    if (this.form.toCompanyID.value === null) {
+      this.form.toCompanyID.value = this.toCompanyList.find(x => x.name === this.toCompanyQuery).companyID;
+    }
 
     this.captureService.invoiceUpdate(requestModel).then(
       (res: Outcome) => {
