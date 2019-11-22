@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
@@ -19,6 +19,9 @@ import { GetPermitsByDate } from 'src/app/models/HttpRequests/GetPermitsByDate';
 import { PermitsByDateListResponse, PermitByDate } from 'src/app/models/HttpResponses/PermitsByDateListResponse';
 import { GetSAD500LinesByPermits } from 'src/app/models/HttpRequests/GetSAD500LinesByPermits';
 import { SAD500LinesByPermit, SAD500LinesByPermitResponse } from 'src/app/models/HttpResponses/SAD500LinesByPermitResponse';
+import { isEmpty } from 'rxjs/operators';
+import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -64,6 +67,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   openReportsModal: ElementRef;
   @ViewChild('closeReportsModal', {static: true})
   closeReportsModal: ElementRef;
+
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
 
   ServiceClaim: {
     companyServiceClaimNumber: number,
@@ -116,6 +122,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   CompanyServiceClaims: CompanyServiceClaim[] = [];
   Permits: PermitByDate[] = [];
   SAD500Lines: SAD500LinesByPermit[] = [];
+  SAD500SelectedLines = [];
+  isChecked: boolean;
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -147,8 +155,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   companyID = 0;
   companyName = '';
   permitslist = [];
-
-
+  startdate: Date;
+  enddate: Date;
+  complete = false;
 
   ngOnInit() {
 
@@ -290,40 +299,47 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
      this.openReportsModal.nativeElement.click();
   }
 
-  dateselected(date) {
-    const model: GetPermitsByDate = {
-      userID: this.currentUser.userID,
-      filter: this.filter,
-      permitID: -1,
-      permitDate: date,
-      companyID: this.companyID,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-    };
-    this.companyService.getPermitsByDate(model).then(
-      (res: PermitsByDateListResponse) => {
+  enddateselected(date) {
 
-        this.Permits = res.permits;
+    if (this.startdate === null || this.startdate === undefined) {
+      this.notify.toastrwarning(
+        'information',
+        'please choose start date.'
+      );
 
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
+      this.myInputVariable.nativeElement.value = null;
+    } else {
+      const model: GetPermitsByDate = {
+        userID: this.currentUser.userID,
+        filter: this.filter,
+        permitstartDate: this.startdate,
+        permitsendDate: date,
+        companyID: this.companyID,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection
+      };
+      this.companyService.getPermitsByDate(model).then(
+        (res: PermitsByDateListResponse) => {
+
+          this.Permits = res.permits;
+
+        },
+        msg => {
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+        }
+      );
+    }
   }
 
-  permitselected(permit) {
-    this.permitslist.push(permit);
+  permitselected(permitIDs) {
+    this.permitslist = permitIDs;
 
-    this.fetcSAD500Bypermits(this.permitslist);
-  }
-  fetcSAD500Bypermits(permitIDs) {
     const model: GetSAD500LinesByPermits = {
       userID: this.currentUser.userID,
       filter: this.filter,
@@ -339,7 +355,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       (res: SAD500LinesByPermitResponse) => {
 
         this.SAD500Lines = res.permits;
-        console.log(this.SAD500Lines);
 
       },
       msg => {
@@ -353,98 +368,67 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
-  permitdeselected(permitDeSel) {
-    this.permitslist.forEach((permit, index) => {
-      if (permit === permitDeSel) {
-        this.permitslist.splice(index, 1);
-      }
+  sad500selected(checked) {
+    this.SAD500SelectedLines = [];
+
+    checked.forEach(c => {
+      this.SAD500SelectedLines.push(c.value);
     });
 
-    this.fetcSAD500Bypermits(this.permitslist);
+    console.log(this.SAD500SelectedLines);
+
   }
 
-   populate() {
-     const requestModel = {
+   polulateLines() {
 
-     };
-  //   this.companyService.itemupdate(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
+    if (!this.complete) {
+      const requestModel = {
+        userID: this.currentUser.userID,
+        sad500linesIDs: this.SAD500SelectedLines
+      };
+
+      this.companyService.addSAD500Linesclaim(requestModel).then(
+        (res: {outcome: Outcome}) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+              this.notify.successmsg('Success', 'SAD500 lines has been Added');
+              this.closePopulateModal.nativeElement.click();
+              this.loadServiceClaims(false);
+            } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
+        }
+      );
+    } else {
+      // const requestModel = {
+      //   userID: this.currentUser.userID,
+      //   sad500lines: this.SAD500SelectedLines
+      // };
+      // this.companyService.addSAD500Linesclaim(requestModel).then(
+      //   (res: {outcome: Outcome}) => {
+      //     if (res.outcome.outcome === 'SUCCESS') {
+      //         this.notify.successmsg('Success', 'SAD500 lines has been Added and claim has been added');
+      //         this.closePopulateModal.nativeElement.click();
+      //         this.loadServiceClaims(false);
+      //       } else {
+      //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+      //     }
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
+      //   }
+      // );
+    }
    }
 
    reports() {
-     const requestModel = {
+    const requestModel = {
 
-     };
+    };
 
-  //   this.companyService.itemserviceadd(requestModel).then(
-  //     (res: AddItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-   }
-
-  // removeservice(id, name) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemServiceID: id,
-  //     itemID: this.itemID
-  //   };
-
-  //   this.companyService.itemserviceupdate(requestModel).then(
-  //     (res: UpdateItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // removeItemValue(id: number) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.Item.itemID,
-  //     isDeleted: 1
-  //   };
-
-  //   this.companyService.RemoveItemList(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // onVulnerablestateChange(state: string) {
-  //   this.vulnerable = state;
-  // }
-
+  }
 }
 
 

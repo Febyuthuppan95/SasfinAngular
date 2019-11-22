@@ -544,7 +544,7 @@ export class CompanyService {
 
   public getPermitsByDate(model: GetPermitsByDate) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
+      const apiURL = `${environment.ApiEndpoint}/companies/PermitsByDate`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
@@ -561,7 +561,23 @@ export class CompanyService {
 
   public getSAD500LinesByPermits(model: GetSAD500LinesByPermits) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
+      const apiURL = `${environment.ApiEndpoint}/companies/SAD500LinesByPermits`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public addSAD500Linesclaim(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/AddSAD500Linesclaim`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()

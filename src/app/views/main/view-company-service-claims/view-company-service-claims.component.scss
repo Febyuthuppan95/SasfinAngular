@@ -138,13 +138,12 @@ tr.active {
 
 .right-list {
   background-color: #f0f1f5;
-  border: 2px solid #dadada;
-  border-right: none;
-  border-bottom: none;
+  border: 2px solid #b9b8b8;
+  border-right: 2px solid #b9b8b8;
+  border-bottom: 2px solid #b9b8b8;
   margin-right: 2px;
   padding-right: 20px;
   padding-left:5px;
-  width: 458px !important;
 }
 .right-list:hover {
   cursor: pointer;
@@ -175,6 +174,27 @@ tr.active {
 .modal-list-rights .right-list {
   padding-right: 0px;
 }
+.modal-size {
+  max-width:  1000px !important;
+}
+.modal-dialog {
+  height:600px !important;
+}
+.modal-content {
+  height: 100%;
+}
+
+.modal-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-body {
+  margin-bottom: 64px;
+}
+
 .right-list li a {
   border: none;
   background-color: transparent;
@@ -186,6 +206,10 @@ tr.active {
     color: #fff;
   }
 
+}
+
+.width{
+  width: 480px !important;
 }
 .right-list li:hover {
   color: #5085fa
@@ -215,3 +239,32 @@ tr.active {
   color: #5085fa;
   padding-bottom: 3px;
 }
+
+.add-scroll {
+  border: none !important;
+    /* width */
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+}
+
+.add-scroll .modal-list-rights {
+  direction: rtl;
+  text-align: left;
+  height: 200px;
+  // border: 2px solid #dadada;
+  outline: none;
+}
+.checkpos{
+  left: 900px;
+  position: relative;
+}
+
+.border{
+  border: solid #e7e7e7 !important;
+  border-radius: 5px;
+}
+.margin20 {
+  margin-left: 20px;
+}
+
