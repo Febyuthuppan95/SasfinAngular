@@ -1,6 +1,7 @@
-export class GetReportsList {
+export class GetCompanyServiceClaims {
   userID: number;
-  reportQueueID: number;
+  serviceID: number;
+  companyID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

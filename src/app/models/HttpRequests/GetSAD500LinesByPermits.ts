@@ -1,6 +1,8 @@
-export class GetReportsList {
+export class GetSAD500LinesByPermits {
   userID: number;
-  reportQueueID: number;
+  permitID: number[];
+  SAD500LineID: number;
+  companyID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

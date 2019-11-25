@@ -11,7 +11,7 @@ export class Tariff {
   id: number;
   // tariffID: number;
   // tariffCode: string;
-  // tariffName: string;
+  tariff: string;
   Amount: number;
   Description: string;
   Duty: number;

@@ -12,15 +12,8 @@ export class Items {
   groupID: number;
   item: string;
   description: string;
+  tariffID: number;
   tariff: number;
   type: string;
-  usage: string;
-  mIDP: string;
-  pI: string;
   vulnerable: string;
-  n521: string;
-  n536: string;
-  n31761: string;
-  n31762: string;
-  n31702: string;
 }

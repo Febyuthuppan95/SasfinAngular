@@ -147,7 +147,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
-            <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
+            <select #myInput class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
               <option selected value="-1" [disabled]="disableDesSelect">Select a designation</option>
               <option *ngFor="let des of this.designations" [value]="des.designationID">{{des.name}}</option>
             </select>

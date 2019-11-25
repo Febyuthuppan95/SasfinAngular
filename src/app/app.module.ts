@@ -170,7 +170,7 @@ import { ViewPermitsListComponent } from './views/main/view-permits-list/view-pe
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
-import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ReportsService } from './services/Reports.Service';
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
@@ -181,6 +181,8 @@ import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoi
 import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
 
+import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
+import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -298,7 +300,9 @@ import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/su
     ViewPermitsListComponent,
     ViewPermitIMportTariffsListComponent,
     ContextMenuPermitsComponent,
-    ViewReportsListComponent,
+    ViewReportQueuesListComponent,
+    ViewCompanyServiceClaimsComponent,
+    ContextMenuServiceClaimsComponent,
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,

@@ -22,6 +22,9 @@ import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
+import { GetCompanyServiceClaims } from '../models/HttpRequests/GetCompanyServiceClaims';
+import { GetPermitsByDate } from '../models/HttpRequests/GetPermitsByDate';
+import { GetSAD500LinesByPermits } from '../models/HttpRequests/GetSAD500LinesByPermits';
 
 @Injectable({
   providedIn: 'root'
@@ -233,7 +236,7 @@ export class CompanyService {
   public UpdateInfo(model: UpdateCompanyInfo) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/infoupdate`;
+      const apiURL = `${environment.ApiEndpoint}/companies/infoUpdate`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()
@@ -508,6 +511,57 @@ export class CompanyService {
   public getCompanyBoms(model: GetCompanyBOMs) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyServiceClaims(model: GetCompanyServiceClaims) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getPermitsByDate(model: GetPermitsByDate) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getSAD500LinesByPermits(model: GetSAD500LinesByPermits) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()

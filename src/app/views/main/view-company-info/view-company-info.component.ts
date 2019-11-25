@@ -59,6 +59,9 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -69,7 +72,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   showingPages: Pagination[];
   dataset: CompanyInfoResponse;
   dataList: CompanyInfo[] = [];
-  rowCount: number;
+  rowCount: number = 0;
   nextPage: number;
   nextPageState: boolean;
   prevPage: number;
@@ -80,7 +83,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   disableInfoSelect = false;
   focusCompTypeID = 0;
 
-  rowStart: number;
+  rowStart: number = 0;
   rowEnd: number;
   filter: string;
   orderBy: string;
@@ -89,7 +92,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
-  showingRecords: number;
+  showingRecords: number = 0;
   activePage: number;
 
   focusCompID: number;
@@ -217,7 +220,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
 
           if (res.rowCount === 0) {
             this.noData = true;
-            this.showLoader = false;
+          this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
@@ -324,6 +327,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
     this.Info = '';
     this.Type = 0;
     this.disableInfoSelect = false;
+    this.myInputVariable.nativeElement.value = -1;
     this.selectedInfoIndex = 0;
     this.openaddModal.nativeElement.click();
   }

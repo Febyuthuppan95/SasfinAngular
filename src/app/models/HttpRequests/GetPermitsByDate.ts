@@ -1,6 +1,8 @@
-export class GetReportsList {
+export class GetPermitsByDate {
   userID: number;
-  reportQueueID: number;
+  permitID: number;
+  permitDate: Date;
+  companyID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;
