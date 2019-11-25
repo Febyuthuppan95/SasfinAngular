@@ -46,8 +46,8 @@ constructor(private themeService: ThemeService, private transactionService: Tran
       { title: 'Importers Code', propertyName: 'importersCode', order: { enable: false } },
       { title: 'FOB', propertyName: 'fob', order: { enable: false } },
       { title: 'PCC', propertyName: 'pcc', order: { enable: false } },
-      { title: 'LRN', propertyName: 'mrn', order: { enable: false } },
-      { title: 'MRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'LRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'MRN', propertyName: 'mrn', order: { enable: false } },
       { title: 'Status', propertyName: 'status', order: { enable: false } }
     ],
     rowStart: 1,

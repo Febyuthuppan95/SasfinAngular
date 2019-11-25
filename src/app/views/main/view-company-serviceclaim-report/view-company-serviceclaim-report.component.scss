@@ -1,20 +1,3 @@
-.profile-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  border: 1px #f2f2f2 solid;
-  transition: ease-in-out 0.3s;
-}
-
-.example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
-.example-full-width {
-  width: 100%;
-}
 .userRecord:hover>td>img {
   border: 1px #4d83ff solid;
   transition: ease-in-out 0.3s;
@@ -136,31 +119,115 @@ tr.active {
   }
 }
 
-.right-list {
+.list-box {
+  background: #f2f2f2;
+  border-radius: 10px;
+}
+
+// Add Modal List Scroll Bar
+.add-scroll {
+  border: none !important;
+    /* width */
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #88ADFE;
+    border-radius: 10px;
+    border: 1px solid #6a97f7;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #88ADFE;
+  }
+
+  }
+  .add-scroll .modal-list-service {
+    direction: rtl;
+    text-align: left;
+    height: 200px;
+    // border: 2px solid #dadada;
+    outline: none;
+  }
+  .inner-div {
+    border: 2px solid #dadada;
+  }
+  .modal-list-service {
+    height: 200px;
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #007BFF;
+      border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #007BFF;
+    }
+  }
+  .modal-add-service {
+    height: 200px;
+     overflow-y: auto;
+    ::-webkit-scrollbar {
+      width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #007BFF;
+      border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #007BFF;
+    }
+  }
+
+.service-list {
   background-color: #f0f1f5;
-  border: 2px solid #b9b8b8;
-  border-right: 2px solid #b9b8b8;
-  border-bottom: 2px solid #b9b8b8;
+  border: 2px solid #dadada;
+  border-right: none;
+  border-bottom: none;
   margin-right: 2px;
   padding-right: 20px;
   padding-left:5px;
 }
-.right-list:hover {
+.service-list:hover {
   cursor: pointer;
 }
-.right-list li {
+.service-list li {
   text-align: left;
   list-style-type: none;
   border-bottom: 1px solid #888888;
 }
-
-.right-list-row:hover  {
-  background-color: #5085fa !important;
-  color: white !important;
-
-}
-
-.right-list li a svg {
+.service-list li a svg {
   color: white;
 }
 // .right-list li:hover {
@@ -171,54 +238,29 @@ tr.active {
 //   color: #fff;
 //   transition: 0.1s;
 // }
-.modal-list-rights .right-list {
+.modal-list-service .service-list {
   padding-right: 0px;
 }
-.modal-size {
-  max-width:  1000px !important;
-}
-.modal-dialog {
-  height:600px !important;
-}
-.modal-content {
-  height: 100%;
-}
-
-.modal-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.modal-body {
-  margin-bottom: 64px;
-}
-
-.right-list li a {
+.service-list li a {
   border: none;
   background-color: transparent;
   color: #5085fa;
 }
-.right-list li:hover {
+.service-list li:hover {
   background-color: #5085fa;
   :first-child {
     color: #fff;
   }
 
 }
-
-.width{
-  width: 480px !important;
-}
-.right-list li:hover {
+.service-list li:hover {
   color: #5085fa
 }
-.right-list li:active {
+.service-list li:active {
   background-color: #5085fa;
   color: #fff;
 }
-.right-list button {
+.service-list button {
   height: 25px;
   width: 25px;
   color:#5085fa;
@@ -228,43 +270,14 @@ tr.active {
   padding: 0px;
   margin:2px;
 }
-.right-list button:hover {
+.service-list button:hover {
   background-color: #A1FFFF;
   border: 1px solid transparent;
   // :first-child{
   //   color:rgb(14, 179, 14);
   // }
 }
-.right-list button i {
+.service-list button i {
   color: #5085fa;
   padding-bottom: 3px;
 }
-
-.add-scroll {
-  border: none !important;
-    /* width */
-  ::-webkit-scrollbar {
-    width: 20px;
-  }
-}
-
-.add-scroll .modal-list-rights {
-  direction: rtl;
-  text-align: left;
-  height: 200px;
-  // border: 2px solid #dadada;
-  outline: none;
-}
-.checkpos{
-  left: 900px;
-  position: relative;
-}
-
-.border{
-  border: solid #e7e7e7 !important;
-  border-radius: 5px;
-}
-.margin20 {
-  margin-left: 20px;
-}
-

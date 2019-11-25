@@ -35,13 +35,13 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)"></app-context-menu-service-claims>
+<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)" [companyID]="this.companyID" [companyName]="this.companyName" [companyServiceID]="this.ServiceClaim.companyServiceID" [companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" [serviceID]=" this.ServiceClaim.serviceID" [serviceName]="this.ServiceClaim.serviceName"></app-context-menu-service-claims>
 </app-menu>
 
 <!--populate Modal-->
 <button class="hide" data-toggle="modal" data-target="#populate" #openPopulateModal></button>
-<div class="modal fade" id="populate" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade modal-maxsize" id="populate" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal-dialog modal-size modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title" id="modalContent">Edit values</h5>
@@ -52,23 +52,35 @@
     <form>
         <div class="modal-body">
           <div class="form-group">
-            <label class="control-label">End Date:</label>
-            <input type="date" class="form-control" rows="4" cols="50" (change)="dateselected($event.target.value)" required/>
+            <div class="row">
+              <div class="col-6">
+                <label class="control-label">Start Date:</label>
+                <input [(ngModel)]="this.startdate" [ngModelOptions]="{standalone: true}"
+                type="date" class="form-control" required/>
+              </div>
+              <div class="col-6">
+                <label class="control-label">End Date:</label>
+                <input #myInput [(ngModel)]="this.enddate" [ngModelOptions]="{standalone: true}"
+                type="date" class="form-control" (change)="enddateselected($event.target.value)" required/>
+             </div>
           </div>
-          <mat-form-field>
+          </div>
+          <mat-form-field class="width">
             <mat-label>Permits</mat-label>
-            <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.target.value)">
-              <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit}}</mat-option>
+            <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.value)">
+              <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit.permitCode}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- <mat-label>Toppings</mat-label>
-          <mat-select [formControl]="toppings" multiple>
-            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
-          </mat-select> -->
+          <br>
+          <br>
+          <mat-label>SAD500 List:</mat-label><mat-slide-toggle  [(ngModel)]="this.complete" [ngModelOptions]="{standalone: true}" class="margin20">Completed</mat-slide-toggle>
+          <mat-selection-list class="border" #SAD500s (selectionChange)="sad500selected(SAD500s.selectedOptions.selected)">
+              <mat-list-option *ngFor="let sad of SAD500Lines" [value]="sad.SAD500LineID">{{sad.SAD500Line}}</mat-list-option>
+          </mat-selection-list>
       </div>
     <div class="modal-footer bg-dark">
       <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePopulateModal>Close</button>
-      <button type="button" (click)="populate()" class="btn btn-primary btn-sm">Save</button>
+      <button type="button" (click)="polulateLines()" class="btn btn-primary btn-sm">Save</button>
     </div>
   </form>
   </div>

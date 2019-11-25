@@ -174,6 +174,14 @@ import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-li
 import { ReportsService } from './services/Reports.Service';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
+import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
+import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
+import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
+import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
+import { EventService } from './services/event.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -298,6 +306,8 @@ import { ContextMenuServiceClaimsComponent } from './components/menus/context-me
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
     PDFViewerComponent,
+    ViewCompanyServiceclaimReportComponent,
+    ContextMenuCompanyServiceclaimReportComponent,
   ],
   imports: [
     BrowserModule,
