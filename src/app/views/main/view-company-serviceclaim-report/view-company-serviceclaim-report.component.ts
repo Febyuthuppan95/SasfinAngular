@@ -328,4 +328,94 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     this.filter = query;
     this.loadServiceClaimReports(false);
   }
+
+  previewreport(reportid) {
+    console.log(reportid);
+
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      reportID: reportid,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.prieviewReport(model).then(
+      (res: ServiceClaimReportsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  regenerate(reportid) {
+    console.log(reportid);
+
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      reportID: reportid,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.regenerateReport(model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  exceldownload(reportid) {
+    console.log(reportid);
+
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      reportID: reportid,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.downloadReport(model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
 }

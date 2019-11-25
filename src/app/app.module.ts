@@ -176,6 +176,7 @@ import { ReportsService } from './services/Reports.Service';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
 
 @NgModule({
   declarations: [
@@ -299,6 +300,7 @@ import { ViewCompanyServiceclaimReportComponent } from './views/main/view-compan
     ViewCompanyServiceClaimsComponent,
     ContextMenuServiceClaimsComponent,
     ViewCompanyServiceclaimReportComponent,
+    ContextMenuCompanyServiceclaimReportComponent,
   ],
   imports: [
     BrowserModule,
