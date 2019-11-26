@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,13 +9,15 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyContactsResponse, Contacts } from 'src/app/models/HttpResponses/CompanyContactsResponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-contacts',
   templateUrl: './view-company-contacts.component.html',
   styleUrls: ['./view-company-contacts.component.scss']
 })
-export class ViewCompanyContactsComponent implements OnInit {
+export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -46,6 +48,8 @@ export class ViewCompanyContactsComponent implements OnInit {
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
+
+  private unsubscribe$ = new Subject<void>();
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -90,12 +94,16 @@ export class ViewCompanyContactsComponent implements OnInit {
   companyID: number;
 
   ngOnInit() {
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -194,7 +202,6 @@ export class ViewCompanyContactsComponent implements OnInit {
             this.paginateData();
           }
 
-          console.log(JSON.stringify(res));
         },
         msg => {
           this.showLoader = false;
@@ -283,5 +290,10 @@ export class ViewCompanyContactsComponent implements OnInit {
   }
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

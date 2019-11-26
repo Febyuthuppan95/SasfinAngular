@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Location } from '@angular/common';
 import {ThemeService} from '../../../services/Theme.Service';
 import {UserService} from '../../../services/User.Service';
@@ -9,27 +9,26 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {User} from '../../../models/HttpResponses/User';
 import {Pagination} from '../../../models/Pagination';
 import {UserRightService} from '../../../services/UserRight.service';
-import {GetUserRightsList} from '../../../models/HttpRequests/GetUserRightsList';
 import {UserRightsListResponse} from '../../../models/HttpResponses/UserRightsListResponse';
 import {UserRightsList} from '../../../models/HttpResponses/UserRightsList';
 import { ActivatedRoute } from '@angular/router';
-import { UpdateUserRight } from 'src/app/models/HttpRequests/UpdateUserRight';
 import { UserRightReponse } from 'src/app/models/HttpResponses/UserRightResponse';
-import { AddUserRight } from 'src/app/models/HttpRequests/AddUserRight';
-import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
 import { RightService } from 'src/app/services/Right.Service';
 import { RightListResponse } from 'src/app/models/HttpResponses/RightListResponse';
 import { RightList } from 'src/app/models/HttpResponses/RightList';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ContextMenuUserrightsComponent } from '../../../components/menus/context-menu-userrights/context-menu-userrights.component';
+import { GetRightList } from 'src/app/models/HttpRequests/Rights';
+import { GetUserRightsList, UpdateUserRight, AddUserRight } from 'src/app/models/HttpRequests/UserRights';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-user-rights-list',
   templateUrl: './view-user-rights-list.component.html',
   styleUrls: ['./view-user-rights-list.component.scss']
 })
-export class ViewUserRightsListComponent implements OnInit {
+export class ViewUserRightsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
@@ -53,7 +52,9 @@ export class ViewUserRightsListComponent implements OnInit {
     this.orderByDirection = 'ASC';
     this.totalShowing = 0;
 
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       // console.log(result);
       this.sidebarCollapsed = result;
     });
@@ -69,6 +70,8 @@ export class ViewUserRightsListComponent implements OnInit {
   private imageModal: ImageModalComponent;
   @ViewChild(ContextMenuUserrightsComponent, {static: true})
   private contextMenuUser: ContextMenuUserrightsComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
@@ -114,6 +117,7 @@ export class ViewUserRightsListComponent implements OnInit {
 
   ngOnInit() {
     const currentUser = this.activatedRoute.paramMap
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(params => {
        this.specificUser = +params.get('id');
        this.currentUserName = params.get('name');
@@ -121,13 +125,15 @@ export class ViewUserRightsListComponent implements OnInit {
 
     this.loadUserRights();
 
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
 
   paginateData() {
-    if(this.rowCount > 0){
+    if (this.rowCount > 0) {
     let rowStart = this.rowStart;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -142,8 +148,7 @@ export class ViewUserRightsListComponent implements OnInit {
       rowStart = +rowEnd + 1;
       rowEnd += +this.rowCountPerPage;
     }
-  }
-  else {
+  } else {
     this.rowStart = 0;
     this.showingRecords = 1;
     const item = new Pagination();
@@ -197,7 +202,7 @@ export class ViewUserRightsListComponent implements OnInit {
       filter: this.filter,
       userID: this.currentUser.userID,
       rowStart: 1,
-      rowEnd: 100000000000000000000000000000000000,
+      rowEnd: 1000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
@@ -206,7 +211,6 @@ export class ViewUserRightsListComponent implements OnInit {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-        console.log(res.rightList)
         this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
@@ -246,16 +250,8 @@ export class ViewUserRightsListComponent implements OnInit {
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
         // Process Success
-        if(!this.openAddModal)
-        {
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+        if (!this.openAddModal) {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -352,7 +348,7 @@ export class ViewUserRightsListComponent implements OnInit {
   confirmAdd() {
     this.openAddModal.nativeElement.click();
   }
-  removeRight(id: number,) {
+  removeRight(id: number) {
 
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
@@ -362,14 +358,12 @@ export class ViewUserRightsListComponent implements OnInit {
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
 
-        if(res.outcome.outcome === 'FAILURE'){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
@@ -390,21 +384,18 @@ export class ViewUserRightsListComponent implements OnInit {
   addNewRight(id, name) {
     const requestModel: AddUserRight = {
       userID: this.currentUser.userID,
-      addedUserID:this.specificUser,
+      addedUserID: this.specificUser,
       rightID: id,
     };
-    console.log(requestModel);
     const result = this.userService
     .addUserright(requestModel).then(
       (res: UserRightReponse) => {
-        if(res.outcome.outcome === 'FAILURE'){
+        if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
-        else
-        {
+        } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
@@ -446,6 +437,11 @@ export class ViewUserRightsListComponent implements OnInit {
 
   setClickedRow(index) {
     this.selectedRow = index;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

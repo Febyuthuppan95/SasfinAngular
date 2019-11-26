@@ -33,7 +33,7 @@
             <th></th>
             <th scope="col">
                 <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
-                  <p class="headerText">Name</p>
+                  <p class="headerText">Unit Name</p>
                   <span class="headerSpan">
                     <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
                     <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
@@ -42,7 +42,7 @@
               </th>
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('EmpNo')">
-                <p class="headerText">Description</p>
+                <p class="headerText">Unit Description</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_ASC')?'order-active':'order-not-active'"></i>
                   <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'EmpNo_DESC')?'order-active':'order-not-active'"></i>
@@ -98,7 +98,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Update Unit Of Measure</h5>
+        <h5 class="modal-title" id="uploadBackgroundLabel">Edit Unit Of Measure</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

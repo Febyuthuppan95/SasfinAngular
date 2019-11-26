@@ -15,13 +15,13 @@ export class TransactionService {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.transactionData}`));
     }
 
-    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number }>(sessionData);
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string }>(sessionData);
   }
 
-  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number }>;
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string }>;
   public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
 
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number }) {
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string }) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
   }
@@ -113,7 +113,6 @@ export class TransactionService {
    * Upload
    */
   public Upload(src: File) {
-    console.log(src);
     if (src !== undefined) {
       const formData = new FormData();
       formData.append('file', src);

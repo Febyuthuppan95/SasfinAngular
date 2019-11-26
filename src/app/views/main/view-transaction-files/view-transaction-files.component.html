@@ -8,7 +8,7 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Transaction Attachments</h4><span style="margin-left:10px;"><button (click)="upload()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
+        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Transaction Attachments</h4><span style="margin-left:10px;"><button (click)="upload()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
         <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -21,7 +21,7 @@
         </select>
         <input type="text"
           class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [value]="this.filter" [ngModelOptions]="{standalone: true}" />
       </form>
     </div>
     <br />
@@ -49,13 +49,23 @@
                 </span>
               </button>
             </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
+                <p class="headerText">Status</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID, file.file); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID, file.file, file.statusID, file.fileType); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{file.rowNum}}</td>
             <td>{{file.name}}</td>
             <td>{{file.fileType}}</td>
+            <td>{{file.status}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
@@ -69,14 +79,14 @@
     </div>
     <br />
     <br />
-    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;" *ngIf="this.showingPages">
       <ul class="pagination pagination-sm">
         <li class="page-item">
           <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
             (click)="pageChange(prevPage)">Prev</button>
         </li>
         <li *ngFor="let page of showingPages" class="page-item">
-          <button [class.active-page]="activePage == page.page"
+          <button *ngIf="this.page !== undefined" [class.active-page]="activePage == page.page"
             class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
             type="button" (click)="pageChange(page.page)">{{page.page}}</button>
         </li>
@@ -87,7 +97,7 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ totalShowing }} of
       {{ rowCount }}</p>
   </div>
 </div>
@@ -105,26 +115,27 @@
       <form (submit)="uploadAttachments()" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="form-group">
-              <input type="text" placeholder="Attachment Name" class="form-control"
+              <input type="text" placeholder="Name" class="form-control"
                 [(ngModel)]="this.attachmentName" [ngModelOptions]="{standalone: true}" required/>
             </div>
         <div class="form-group">
-          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [selectedIndex]="attachmentTypeIndex">
+          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [(selectedIndex)]="attachmentTypeIndex" [formControl]="selectAttachmentType">
             <option value="-1" [disabled]="this.disableAttachmentType" selected>Please select an attachment type</option>
             <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.name}}</option>
           </select>
         </div>
-          <div class="form-group">
-              <span *ngIf="preview !== undefined || preview !== null" class="float-right">{{preview}}</span>
-              <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
-                <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-              </label>
-              <br>
-              <button type="button" mat-button (click)="addToQueue()">Add to queue</button>
-              <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files)" required>
-          </div>
+        <div class="form-group d-inline">
+            <span *ngIf="this.preview" style="margin-top: 6px" class="float-right">&nbsp;{{preview}}</span>
+            <label for="addBackgroundImage" style="height:18px;">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()">Add to queue</button>
+            <input id="addBackgroundImage" hidden #inputFile type="file" (change)="onFileChange($event.target.files)" required>
+        </div>
+        <br>
+        <br>
         <hr/>
-        <div class="attachment-queue">
+        <div class="attachment-queue" *ngIf="this.attachmentQueueDisplay !== null">
           <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueueDisplay">
               <span class="float-right">{{attach.status}}</span>
               <p>{{attach.name}}</p>
@@ -138,7 +149,7 @@
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Start Uploading</button>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="this.attachmentQueueDisplay.length === 0">Start Uploading</button>
       </div>
     </form>
     </div>
@@ -148,5 +159,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID"></app-context-menu-transaction-attachment>
+<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID" [statusID]="this.focusStatusID" [fileType]="this.focusType"></app-context-menu-transaction-attachment>
 </div>

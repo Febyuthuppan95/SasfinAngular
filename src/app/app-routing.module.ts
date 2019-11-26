@@ -26,8 +26,35 @@ import { ViewCaptureTransactionComponent } from './views/capture/view-capture-tr
 import { ViewCompanyInfoComponent } from './views/main/view-company-info/view-company-info.component';
 import { ViewCompanyAddressesComponent } from './views/main/view-company-addresses/view-company-addresses.component';
 import { ViewCompanyContactsComponent } from './views/main/view-company-contacts/view-company-contacts.component';
+import { ViewAddressTypesListComponent } from './views/main/view-address-types-list/view-address-types-list.component';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
-
+import { ContextMenuServiceListComponent } from './views/main/view-service-list/view-service-list.component';
+import { ContextCompanyServiceListComponent } from './views/main/view-company-service-list/view-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
+import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
+// tslint:disable-next-line: max-line-length
+import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
+import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
+import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
+import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
+import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 const routes: Routes = [
   {
     path: '',
@@ -51,20 +78,43 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
+          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
           { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent },
           { path: 'locations', component: ViewPlacesComponent },
           { path: 'companies', component: ViewCompanyListComponent },
+          { path: 'services', component: ContextMenuServiceListComponent },
+          { path: 'tariffs', component: ContextTariffsListComponent },
+          { path: 'items', component: ContextItemsListComponent },
+          { path: 'reportsqueues', component: ViewReportQueuesListComponent },
+          { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
+          { path: 'companies/services', component: ContextCompanyServiceListComponent },
+          { path: 'companies/items', component: ContextCompanyItemsListComponent },
+          { path: 'companies/boms', component: ViewCompanyBOMsComponent },
+          { path: 'companies/serviceclaims', component: ViewCompanyServiceClaimsComponent },
+          { path: 'companies/permits', component: ViewPermitsListComponent },
+          { path: 'companies/permits/permitimporttariffs', component: ViewPermitIMportTariffsListComponent },
+          { path: 'companies/boms/bomlines', component: ViewBOMLinesComponent },
+          { path: 'companies/items/alternates', component: ViewAlternateItemsComponent },
+          { path: 'companies/items/itemvalues', component: ViewItemValuesComponent },
+          { path: 'companies/items/itemparents', component: ViewItemParentsComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
           { path: 'transactions/', component: ViewTransactionsComponent },
           { path: 'companies/capture/info', component: ViewCaptureInfoComponent },
+          { path: 'contacttypes', component: ViewContactTypesListComponent },
+          { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent },
+          { path: 'currencies', component: ViewCurrenciesListComponent},
+          { path: 'sad500/lines', component: Sad500LinesComponent },
+          { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
+          { path: 'transaction/sad500s', component: ViewSAD500Component },
+          { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
+          { path: 'transaction/invoices', component: ViewInvoicesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [

@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {GetUserRightsList} from '../models/HttpRequests/GetUserRightsList';
+import { GetUserRightsList } from '../models/HttpRequests/UserRights';
 
 @Injectable()
 export class UserRightService {
@@ -66,7 +66,6 @@ export class UserRightService {
 
   // public updateUserRight(model: UpdateUserRight) {
   //   const json = JSON.parse(JSON.stringify(model));
-  //   console.log(json);
   //   return new Promise((resolve, reject) => {
   //     this.httpClient.post(`${environment.ApiEndpoint}/userRights/update`, json)
   //       .toPromise()

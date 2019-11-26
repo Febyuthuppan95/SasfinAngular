@@ -10,5 +10,6 @@ export class Transaction {
   rowNum: number;
   transactionID: number;
   name: string;
+  type: string;
   status: string;
 }

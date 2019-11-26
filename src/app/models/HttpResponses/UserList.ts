@@ -8,5 +8,6 @@ export class UserList {
   extension?: string;
   designation: string;
   status: string;
+  statusID: string;
   profileImage?: string;
 }

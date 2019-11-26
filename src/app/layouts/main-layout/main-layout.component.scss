@@ -1,7 +1,7 @@
 
 .row {
   display: flex;
-  
+
 }
 /*Side Nav*/
 .side-div {
@@ -44,13 +44,6 @@ padding-left: 100px;
   outline: 0;
 }
 
-
-// .side-div .collapse-sidebar {
-//   position: absolute;
-//   width:65px;
-//   left: 10px !important;
-
-// }
 /*Main List Div*/
 .list-div {
   padding-left: 0px;
@@ -118,4 +111,10 @@ padding-left: 100px;
     min-width: 80px;
     margin-right:0px;
     }
+}
+
+.toggle-chat {
+  position: fixed;
+  bottom: 58px;
+  right: 8px;
 }

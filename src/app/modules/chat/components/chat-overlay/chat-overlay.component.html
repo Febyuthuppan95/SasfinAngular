@@ -1,0 +1,29 @@
+<div class="chat-overlay" *ngIf="this.enableChat" [ngClass]="{showOverlayBackdrop: this.showChat}" (click)="dismissEvent()"></div>
+
+<div class="chat-container" *ngIf="this.enableChat" [ngClass]="{showOverlay: this.showChat}">
+  <div class="row vh-100">
+    <div class="col-sm-3">
+      <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list>
+      <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list>
+    </div>
+    <div class="col-sm-9">
+      <div class="chat-tile">
+        <div class="chat-tile-header" (click)="dismissEvent()">
+          <h5>Select a conversation</h5>
+        </div>
+        <div class="chat-body">
+
+        </div>
+        <div class="chat-tile-footer">
+          <form>
+            <div class="form-group">
+              <button mat-mini-fab class="send-button bg-primary text-light"><span class="mdi mdi-send"></span>
+              </button>
+              <input type="text" class="form-control shadow-sm rounded" placeholder="type a message..."/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

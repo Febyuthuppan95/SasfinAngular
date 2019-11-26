@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,13 +9,15 @@ import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUnitsOfMeasure';
 import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-units-of-measure',
   templateUrl: './view-units-of-measure.component.html',
   styleUrls: ['./view-units-of-measure.component.scss']
 })
-export class ViewUnitsOfMeasureComponent implements OnInit {
+export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService) {}
 
@@ -42,6 +44,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
+
+  private unsubscribe$ = new Subject<void>();
 
   selectRowDisplay: number;
   rowCount: number;
@@ -76,7 +80,9 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
   focusUnitDescription: string;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -95,16 +101,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     this.unitService.list(this.unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
         this.showLoader = false;
-        //if()
         {
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -116,6 +114,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
         if (res.outcome.outcome === 'SUCCESS') {
           this.dataset = res.unitOfMeasureList;
           this.rowCount = res.rowCount;
+          this.noData = false;
+
           if (res.rowCount > this.selectRowDisplay) {
             this.totalDisplayCount = res.unitOfMeasureList.length;
           } else {
@@ -273,7 +273,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
 
       this.unitService.update(requestModel).then(
         (res: UpdateUnitsOfMeasureResponse) => {
-          console.log(res);
           this.closeModal.nativeElement.click();
 
           this.unitsOfMeasure = {
@@ -296,5 +295,10 @@ export class ViewUnitsOfMeasureComponent implements OnInit {
     } else {
       this.notify.toastrwarning('Warning', 'Please enter all fields when updating a unit of measure item.');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

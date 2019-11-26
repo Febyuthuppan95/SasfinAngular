@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -10,20 +10,44 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { TableHeading, SelectedRecord, TableHeader, Order } from 'src/app/models/Table';
+import { stringify } from '@angular/compiler/src/util';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Pagination } from 'src/app/models/Pagination';
+import { Subscription } from 'rxjs';
+import { MenuService } from 'src/app/services/Menu.service';
 
 @Component({
   selector: 'app-view-capture-info',
   templateUrl: './view-capture-info.component.html',
   styleUrls: ['./view-capture-info.component.scss']
 })
-export class ViewCaptureInfoComponent implements OnInit {
+export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
     private transactionService: TransactionService,
-    private router: Router) {}
+    private IMenuService: MenuService,
+    private router: Router
+    ) {
+      this.rowStart = 1;
+      this.rowCountPerPage = 15;
+      this.activePage = +1;
+      this.prevPageState = true;
+      this.nextPageState = false;
+      this.prevPage = +this.activePage - 1;
+      this.nextPage = +this.activePage + 1;
+      this.filter = '';
+      this.orderBy = 'Name';
+      this.orderDirection = 'ASC';
+      this.totalShowing = 0;
+      this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
+      this.sidebarCollapsed = result;
+    });
+    }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -43,10 +67,28 @@ export class ViewCaptureInfoComponent implements OnInit {
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
+  private unsubscribe$ = new Subject<void>();
+
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   dataset: CaptureInfoResponse;
   recordsPerPage = 15;
+  showingPages: Pagination[];
+  rowCount: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  subscription: Subscription;
+  rowStart: number;
+  rowEnd: number;
+  rowCountPerPage: number;
+  showingRecords: number;
+  filter: string;
+  activePage: number;
+  orderBy: string;
+  orderDirection: string;
+  totalShowing: number;
 
   noData = false;
   showLoader = true;
@@ -63,7 +105,7 @@ export class ViewCaptureInfoComponent implements OnInit {
   doctypeSelectedIndex: number;
 
   captureInfo: {
-    id: number,
+    captureInfoID: number,
     info: string,
   };
 
@@ -103,13 +145,38 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   doctypeResponse: DoctypeListResponse;
 
+  tableData = null;
+  tableHeadings: TableHeading[] = [
+    { title: '#', propertyName: 'rowNum', order: { enable: true } },
+    { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
+    { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
+  ];
+
+  tableHeader: TableHeader = {
+    title: 'Capture Info',
+    addButton: {
+     enable: true,
+    },
+    backButton: {
+      enable: true
+    },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
+
   ngOnInit() {
     this.showedSuccess = false;
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((data: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data: SelectedCompany) => {
       this.company = {
         id: data.companyID,
         name: data.companyName
@@ -121,17 +188,32 @@ export class ViewCaptureInfoComponent implements OnInit {
     });
 
     this.captureInfo = {
-      id: -1,
+      captureInfoID: -1,
       info: ''
     };
 
     this.loadDoctypes();
   }
 
-  searchBar() {
-    this.requestModel.rowStart = 1;
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
     this.loadDataset();
   }
+
+  recordsPerPageChange(recordsPerPage: number) {
+    this.rowCountPerPage = recordsPerPage;
+    this.rowStart = 1;
+    this.loadDataset();
+  }
+
+  searchEvent(query: string) {
+    this.requestModel.filter = query;
+    this.loadDataset();
+  }
+
 
   loadDataset() {
     this.showLoader = true;
@@ -141,20 +223,28 @@ export class ViewCaptureInfoComponent implements OnInit {
         this.showLoader = false;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          if (!this.showedSuccess) {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.showedSuccess = true;
-          }
-          this.dataset = res;
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.showedSuccess = false;
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.tableData = res.captureInfo;
+
+        this.dataset = res;
+        this.rowCount = res.rowCount;
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.showingRecords = res.captureInfo.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.tableData.length - 1;
+        }
+
       },
       (msg) => {
         this.showLoader = false;
         this.notify.errorsmsg('Failure', 'Bad request');
-        console.log(JSON.stringify(msg));
       }
     );
   }
@@ -178,11 +268,19 @@ export class ViewCaptureInfoComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event) {
+  popClick(event, obj) {
+    (<HTMLInputElement>document.getElementById('editselect')).value = obj.doctypeID;
+    this.captureInfo = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
+  }
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.captureInfo = obj.record;
+    this.popClick(obj.event, obj.record);
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
@@ -193,21 +291,29 @@ export class ViewCaptureInfoComponent implements OnInit {
 
   editCaptureInfo() {
     this.openEditModal.nativeElement.click();
+
   }
 
   editInfo() {
     const requestModel = {
       userID: this.currentUser.userID,
-      captureID: this.captureInfo.id,
-      info: this.captureInfo.info
+      captureID: this.captureInfo.captureInfoID,
+      info: this.captureInfo.info,
+      doctypeID:  this.requestModelAddInfo.doctypeID,
+      isDeleted: 0
+
     };
+
+
+    if(requestModel.doctypeID == -1) //if it hasn't been selected yet then take value from first item -.
+    requestModel.doctypeID = this.doctypeResponse.doctypes[0].doctypeID
 
     this.transactionService.captureInfoUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          this.loadDataset();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeEditModal.nativeElement.click();
-          this.loadDataset();
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
@@ -218,37 +324,51 @@ export class ViewCaptureInfoComponent implements OnInit {
     );
   }
 
-  selectedRowChange(index: number, capture: { id: number, info: string }) {
-    this.selectedRow = index;
-    this.captureInfo = capture;
-  }
+  // selectedRowChange(selectedRecord: SelectedRecord) {
+  //   alert(selectedRecord.record.id);
+  //   this.selectedRow = selectedRecord.index;
+  //   this.captureInfo = selectedRecord.record;
+  // }
 
   backToAttachments() {
     this.router.navigate(['companies']);
   }
 
+
+  
   addCaptureInfoModal() {
+
     this.doctypeSelectedIndex = 0;
     this.requestModelAddInfo.info = null;
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
+   (<HTMLInputElement>document.getElementById('mydropdown')).value = '-1';
+   
+
   }
 
   addCapture() {
-    this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadDataset();
-          this.closeAddModal.nativeElement.click();
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+    if (this.requestModelAddInfo.info == null || this.requestModelAddInfo.info === '' || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    // tslint:disable-next-line: max-line-length
+    } else if (this.requestModelAddInfo.doctypeID == null || this.requestModelAddInfo.doctypeID === -1 || this.requestModelAddInfo.info === undefined) {
+      this.notify.toastrwarning('Warning', 'Please fill in all fields');
+    } else {
+      this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.loadDataset();
+            this.closeAddModal.nativeElement.click();
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot Reach Server');
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot Reach Server');
-      }
-    );
+      );
+    }
   }
 
   onDoctypeChange(id: number) {
@@ -266,10 +386,15 @@ export class ViewCaptureInfoComponent implements OnInit {
     );
   }
 
+  backToCompanies() {
+    this.router.navigate(['companies']);
+  }
+
   removeCapture(id: number) {
     const requestModel = {
       userID: this.currentUser.userID,
-      captureID: this.captureInfo.id,
+      captureID: this.captureInfo.captureInfoID,
+      docTypeID: 1,
       isDeleted: 1,
       info: this.captureInfo.info,
     };
@@ -286,4 +411,10 @@ export class ViewCaptureInfoComponent implements OnInit {
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
   }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

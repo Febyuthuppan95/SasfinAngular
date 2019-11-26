@@ -31,6 +31,15 @@
             <tr>
               <th></th>
               <th scope="col">
+                <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('City')">
+                  <p class="headerText">City</p>
+                  <span class="headerSpan">
+                    <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'City_ASC')?'order-active':'order-not-active'"></i>
+                    <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'City_DESC')?'order-active':'order-not-active'"></i>
+                  </span>
+                </button>
+              </th>
+              <th scope="col">
                 <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfo')">
                   <p class="headerText">Address 1</p>
                   <span class="headerSpan">
@@ -69,8 +78,9 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.company, address.address1, address.address2, address.poBox, address.addressType, address.addressTypeID, address.cityID, address.city); setClickedRow(i)" [class.active]="i == selectedRow">
+            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.address1, address.address2, address.poBox, address.addressType, address.addressTypeID, address.cityID, address.city); setClickedRow(i)" [class.active]="i == selectedRow">
               <td>{{address.rowNum}}</td>
+              <td>{{address.city}}</td>
               <td>{{address.address1}}</td>
               <td>{{address.address2}}</td>
               <td>{{address.poBox}}</td>
@@ -223,5 +233,5 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-address-types (editAddressType)="editCompanyAddress($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressID]="focusAddressID"></app-context-menu-address-types>
+  <app-context-menu-company-address (editAddress)="editCompanyAddress($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [addressID]="focusAddressID"></app-context-menu-company-address>
   </div>

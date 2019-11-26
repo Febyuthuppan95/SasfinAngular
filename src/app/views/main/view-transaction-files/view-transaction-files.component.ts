@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -8,17 +8,17 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
-import { TransactionListResponse, Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UUID } from 'angular2-uuid';
+import { FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-transaction-files',
   templateUrl: './view-transaction-files.component.html',
   styleUrls: ['./view-transaction-files.component.scss']
 })
-export class ViewTransactionFilesComponent implements OnInit {
+export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   constructor(
     private transationService: TransactionService,
@@ -38,6 +38,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
+    this.rowCount = 0;
   }
 
   @ViewChild(ContextMenuComponent, {static: true } )
@@ -49,8 +50,11 @@ export class ViewTransactionFilesComponent implements OnInit {
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
-  @ViewChild('closeModal', { static: true })
+  @ViewChild('closeModal', { static: false })
   closeModal: ElementRef;
+
+  @ViewChild('inputFile', { static: false })
+  inputFile: ElementRef;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -71,6 +75,7 @@ export class ViewTransactionFilesComponent implements OnInit {
   disableAttachmentType: boolean;
   attachmentTypeIndex: number;
   preview: string;
+  selectAttachmentType = new FormControl();
 
   rowStart: number;
   rowEnd: number;
@@ -87,6 +92,8 @@ export class ViewTransactionFilesComponent implements OnInit {
   focusHelp: number;
   focusHelpName: string;
   focusDescription: string;
+  focusStatusID: number;
+  focusType: string;
 
   noData = false;
   showLoader = true;
@@ -105,27 +112,34 @@ export class ViewTransactionFilesComponent implements OnInit {
     { name: 'SAD500', value: 2 },
     { name: 'PACKING', value: 3 },
     { name: 'CUSRELEASE', value: 4 },
-    { name: 'VOC', value: 4 },
+    { name: 'VOC', value: 5 },
   ];
   attachmentName: string;
-  attachmentQueue: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
-  attachmentQueueDisplay: { name: string, type: string, file: File, uploading: boolean, status: string }[] = [];
+  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
+  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
   selectedTransactionType: number;
   fileToUpload: File;
   currentAttachment = 0;
   uploading = false;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
     this.activatedRoute.paramMap
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(params => {
       this.transactionID = +params.get('id');
     });
 
-    this.transationService.observerCurrentAttachment().subscribe((data) => {
+    this.transationService.observerCurrentAttachment()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
       if (data !== null || data !== undefined) {
         this.transactionID = data.transactionID;
       }
@@ -136,6 +150,7 @@ export class ViewTransactionFilesComponent implements OnInit {
 
 
   paginateData() {
+
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -210,30 +225,30 @@ export class ViewTransactionFilesComponent implements OnInit {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          if(res.outcome.outcome === "FAILURE"){
+          if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
-          }
-          else
-          {
+          } else {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
           }
+
+          this.dataList = res.attachments;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
+            this.rowCount = res.rowCount ;
             this.dataset = res;
-            this.dataList = res.attachments;
-            this.rowCount = res.rowCount;
-            this.showLoader = false;
             this.showingRecords = res.attachments.length;
-            this.totalShowing = +this.rowStart + +this.dataset.attachments.length - 1;
+            this.showLoader = false;
+            this.totalShowing = +this.rowStart + +this.dataList.length - 1;
             this.paginateData();
           }
         },
@@ -295,7 +310,7 @@ export class ViewTransactionFilesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, fileName) {
+  popClick(event, id, fileName, statusID, doctype?) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -306,6 +321,8 @@ export class ViewTransactionFilesComponent implements OnInit {
 
     this.focusHelp = id;
     this.focusPath = fileName;
+    this.focusStatusID = statusID;
+    this.focusType = doctype;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -330,7 +347,7 @@ export class ViewTransactionFilesComponent implements OnInit {
 
   uploadAttachments() {
     this.uploading = true;
-    this.attachmentQueue.forEach((attach) => {
+    this.attachmentQueue.forEach((attach, index) => {
       attach.status = 'Uploading';
       attach.uploading = false;
 
@@ -340,12 +357,19 @@ export class ViewTransactionFilesComponent implements OnInit {
         attach.type,
         this.transactionID,
         this.currentUser.userID,
-        'The Boring Company'
+        'The Boring Company' // Change to company name
       ).then(
         (res) => {
             attach.uploading = false;
             attach.status = 'Complete';
             this.loadAttachments();
+            this.attachmentQueue.splice(index, 1);
+            this.attachmentQueueDisplay.splice(index, 1);
+            this.preview = null;
+            this.attachmentName = null;
+            this.selectAttachmentType.reset(-1);
+            this.closeModal.nativeElement.click();
+
         },
         (msg) => {
           attach.uploading = false;
@@ -356,17 +380,22 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   upload() {
+    this.attachmentName = null;
+    this.attachmentTypeIndex = 0;
+    this.currentAttachment = 0;
+    this.attachmentQueue = [];
+    this.attachmentQueueDisplay = [];
+    this.selectAttachmentType.reset(-1);
+    this.inputFile.nativeElement.value = '';
+    console.log(this.inputFile.nativeElement.files);
     this.openModal.nativeElement.click();
   }
 
   onFileChange(files: FileList) {
     this.preview = files.item(0).name;
+
     this.attachmentQueue[this.currentAttachment] = {
-      name: this.attachmentName,
-      type: this.transactionTypes[this.selectedTransactionType - 1].name,
       file: files.item(0),
-      uploading: false,
-      status: 'Pending Upload'
     };
   }
 
@@ -376,17 +405,37 @@ export class ViewTransactionFilesComponent implements OnInit {
   }
 
   addToQueue() {
-    this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
-    this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
-    this.attachmentQueue[this.currentAttachment].uploading = false;
-    this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+    let errors = 0;
 
-    this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
+    if (this.attachmentName === '' || this.attachmentName === null || this.attachmentName === undefined) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Enter attachment name');
+    } else if (this.transactionTypes[this.selectedTransactionType - 1] === undefined) {
+      errors++;
+      this.notify.toastrwarning('Warning', 'Please select an attachment type');
+    }
 
-    this.attachmentName = '';
-    this.selectedTransactionType = - 1;
-    this.currentAttachment++;
-    this.disableAttachmentType = false;
-    this.attachmentTypeIndex = 0;
+    if (errors === 0) {
+      this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
+      this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
+      this.attachmentQueue[this.currentAttachment].uploading = false;
+      this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+
+      this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
+
+      this.attachmentName = '';
+      this.selectedTransactionType = - 1;
+      this.currentAttachment++;
+      this.disableAttachmentType = false;
+      this.attachmentTypeIndex = 0;
+      this.preview = null;
+      this.attachmentTypeIndex = 0;
+      this.selectAttachmentType.reset(-1);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

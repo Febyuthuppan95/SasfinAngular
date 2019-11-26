@@ -51,4 +51,26 @@ export class CompaniesContextMenuComponent implements OnInit {
       companyID: this.companyID
     }));
   }
+  companyServices() {
+      this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+      this.router.navigate(['companies', 'services']);
+  }
+
+  companyItems() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+    this.router.navigate(['companies', 'items']);
+  }
+  companyBOMs() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+    this.router.navigate(['companies', 'boms']);
+  }
+  companyPermits() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+    this.router.navigate(['companies', 'permits']);
+  }
+
+  ServiceClaims() {
+    this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+    this.router.navigate(['companies', 'serviceclaims']);
+  }
 }

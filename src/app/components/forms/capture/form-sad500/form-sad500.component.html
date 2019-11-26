@@ -1,0 +1,80 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+<form (submit)="submit(); $event.preventDefault()" style="overflow-y: auto" *ngIf="this.form !== undefined">
+    <div class="form-group" *ngIf="this.form.serialNo != undefined">
+      <input [focus]="this.focusMainForm" type="text"
+        [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
+        [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
+        placeholder="Serial No" />
+        <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.LRN != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
+        placeholder="LRN" />
+        <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.PCC != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+
+        placeholder="PCC" />
+        <p class="invalid-control-label" *ngIf="this.form.PCC.error !== null">{{this.form.PCC.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.totalCustomsValue != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
+        placeholder="Total Customs Value" />
+        <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.waybillNo != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
+
+        placeholder="Waybill No" />
+        <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.supplierRef != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
+
+        placeholder="Supplier Ref" />
+        <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
+
+    </div>
+    <div class="form-group" *ngIf="this.form.MRN != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
+        placeholder="MRN" />
+        <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
+    </div>
+  </form>
+  <div class="form-group float-right">
+    <button type="submit" class="btn btn-primary btn-sm" (click)="submit()">Submit</button>
+  </div>
+  <div style="padding: 4px 0 12px 0;" class="line-list">
+    <p *ngIf="this.sad500CreatedLines.length === 0">No SAD500 Lines Added</p>
+    <p *ngIf="this.sad500CreatedLines.length !== 0">
+    <button (click)="prevLine()" class="btn btn-primary btn-sm" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+    <span class="badge badge-warning" *ngIf="this.lines > -1">{{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
+    <span class="badge badge-primary" *ngIf="this.lines === -1">New SAD500 Line</span>
+    &nbsp;
+    <button (click)="nextLine()" class="btn btn-primary btn-sm" *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+    <button class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
+    &nbsp;<span>{{this.lineState}}</span>
+  </p>
+  </div>
+  <app-form-sad500-line (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
+  <app-notification></app-notification>

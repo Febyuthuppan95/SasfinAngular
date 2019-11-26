@@ -15,9 +15,9 @@ import { BackgroundService } from './services/Background.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './modules/material.module';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -85,16 +85,96 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
-import { FormCustomReleaseComponent } from './components/forms/form-custom-release/form-custom-release.component';
-import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { FormCustomReleaseComponent } from './components/forms/capture/form-custom-release/form-custom-release.component';
 import { AddressTypesService } from './services/AddressTypes.Service';
-import { ImageDirective } from './directives/image.directive';
 import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
+import { KeyHandlerDirective } from './directives/key-handler.directive';
+import { ImageDirective } from './directives/image.directive';
 import { ViewCaptureInfoComponent } from './views/main/view-capture-info/view-capture-info.component';
 import { ContextMenuCaptureInfoComponent } from './components/menus/context-menu-capture-info/context-menu-capture-info.component';
 import { MenuComponent } from './components/menus/menu/menu.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { CitiesService } from './services/Cities.Service';
+import { TableComponent } from './components/table/table.component';
+// tslint:disable-next-line: max-line-length
+import { AttachmentCaptureStatusBlockComponent } from './components/attachment-capture-status-block/attachment-capture-status-block.component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { TableHeaderComponent } from './components/table-header/table-header.component';
+import { ContextMenuServiceListComponent } from './views/main/view-service-list/view-service-list.component';
+import { ChatOverlayComponent } from './modules/chat/components/chat-overlay/chat-overlay.component';
+import { ChatUserTileComponent } from './modules/chat/components/chat-user-tile/chat-user-tile.component';
+import { ChatBubbleComponent } from './modules/chat/components/chat-bubble/chat-bubble.component';
+import { ContextCompanyServiceListComponent } from './views/main/view-company-service-list/view-company-service-list.component';
+import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view-tariffs-list.component';
+import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
+import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
+import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
+import { FormSAD500Component } from './components/forms/capture/form-sad500/form-sad500.component';
+import { ChatService } from './modules/chat/services/chat.service';
+import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
+import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
+import { ChatConversationTileComponent } from './modules/chat/components/chat-conversation-tile/chat-conversation-tile.component';
+import { ContextMenuCompanyAddressComponent } from './components/menus/context-menu-company-address/context-menu-company-address.component';
+import { ContextMenuCompanyServiceComponent } from './components/menus/context-menu-company-service/context-menu-company-service.component';
+import { ViewContactTypesListComponent } from './views/main/view-contact-types-list/view-contact-types-list.component';
+import { ContactTypesService } from './services/ContactTypes.Service';
+import { ContextMenuContactTypesComponent } from './components/menus/context-menu-contact-types/context-menu-contact-types.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyAddInfoTypesListComponent } from './views/main/view-company-add-info-types-list/view-company-add-info-types-list.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyAddInfoTypesComponent } from './components/menus/context-menu-company-add-info-types/context-menu-company-add-info-types.component';
+import { CompanyAddInfoTypesService } from './services/CompanyAddInfoTypes.Service';
+import { ContextMenuCurrenciesComponent } from './components/menus/context-menu-currencies/context-menu-currencies.component';
+import { ViewCurrenciesListComponent } from './views/main/view-currencies-list/view-currencies-list.component';
+import { CurrenciesService } from './services/Currencies.Service';
+import { ContextMenuCompanyItemsComponent } from './components/menus/context-menu-company-items/context-menu-company-items.component';
+import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
+
+import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
+import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
+import { ApiService } from './services/api.service';
+import { CaptureService } from './services/capture.service';
+import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
+import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
+import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-preview/sad500-line-preview.component';
+import { FocusDirective } from './directives/focus.directive';
+import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
+import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
+import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
+import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
+import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
+// tslint:disable-next-line: max-line-length
+import { ViewImportClearingInstructionsComponent } from './views/main/view-transaction-files/view-import-clearing-instructions/view-import-clearing-instructions.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCustomReleaseNotificationsComponent } from './views/main/view-transaction-files/view-custom-release-notifications/view-custom-release-notifications.component';
+import { ViewSAD500Component } from './views/main/view-transaction-files/view-sad500/view-sad500.component';
+import { ValidateService } from './services/Validation.Service';
+import { ViewItemValuesComponent } from './views/main/view-item-values/view-item-values.component';
+import { ContextMenuItemsValuesComponent } from './components/menus/context-menu-items-values/context-menu-items-values.component';
+import { NgxCurrencyModule } from 'ngx-currency';
+import { ContextMenuItemsComponent } from './components/menus/context-menu-items/context-menu-items.component';
+import { ContextICIComponent } from './components/menus/context-ici/context-ici.component';
+import { ContextSAD500Component } from './components/menus/context-sad500/context-sad500.component';
+import { ImagePreviewDialogComponent } from './components/table/image-preview-dialog/image-preview-dialog.component';
+import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
+import { CaptureFormDirective } from './directives/capture-form.directive';
+import { ComponentService } from './services/ComponentLoader.service';
+import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
+import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
+import { TariffService } from './services/Tariff.service';
+import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
+import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/context-menu-boms.component';
+import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
+// tslint:disable-next-line: max-line-length
+import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
+import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
+import { ReportsService } from './services/Reports.Service';
+import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
+import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
 
 @NgModule({
   declarations: [
@@ -156,7 +236,67 @@ import { CitiesService } from './services/Cities.Service';
     ViewCaptureInfoComponent,
     ContextMenuCaptureInfoComponent,
     MenuComponent,
-    PaginationComponent
+    TableComponent,
+    AttachmentCaptureStatusBlockComponent,
+    PaginationComponent,
+    TableHeaderComponent,
+    ContextMenuServiceListComponent,
+    ChatOverlayComponent,
+    ChatUserTileComponent,
+    ChatBubbleComponent,
+    ContextCompanyServiceListComponent,
+    ContextTariffsListComponent,
+    ContextItemsListComponent,
+    ContextCompanyItemsListComponent,
+    ViewItemTypesListComponent,
+    FormImportClearingInstructionComponent,
+    FormSAD500Component,
+    ChatConversationListComponent,
+    ChatContactListComponent,
+    ChatConversationTileComponent,
+    ContextMenuCompanyAddressComponent,
+    ContextMenuCompanyServiceComponent,
+    ViewContactTypesListComponent,
+    ContextMenuContactTypesComponent,
+    ViewCompanyAddInfoTypesListComponent,
+    ContextMenuCompanyAddInfoTypesComponent,
+    ContextMenuCurrenciesComponent,
+    ViewCurrenciesListComponent,
+    ContextMenuCompanyItemsComponent,
+    ViewAlternateItemsComponent,
+    CapturePreviewComponent,
+    FormShippingDocumentComponent,
+    Sad500LinesComponent,
+    FormSAD500LineComponent,
+    Sad500LinePreviewComponent,
+    FocusDirective,
+    FormInvoiceComponent,
+    FormVOCComponent,
+    FormVocLinesComponent,
+    ContextMenuSADLinesComponent,
+    ContextMenuItemsGroupComponent,
+    ViewImportClearingInstructionsComponent,
+    ViewCustomReleaseNotificationsComponent,
+    ViewSAD500Component,
+    ViewItemValuesComponent,
+    ContextMenuItemsValuesComponent,
+    ContextMenuItemsComponent,
+    ContextICIComponent,
+    ContextSAD500Component,
+    ImagePreviewDialogComponent,
+    ViewInvoicesComponent,
+    CaptureFormDirective,
+    ViewItemParentsComponent,
+    ContextMenuItemsParentsComponent,
+    ViewCompanyBOMsComponent,
+    ViewBOMLinesComponent,
+    ContextMenuBomsComponent,
+    ViewPermitsListComponent,
+    ViewPermitIMportTariffsListComponent,
+    ContextMenuPermitsComponent,
+    ViewReportQueuesListComponent,
+    ViewCompanyServiceClaimsComponent,
+    ContextMenuServiceClaimsComponent,
   ],
   imports: [
     BrowserModule,
@@ -165,7 +305,8 @@ import { CitiesService } from './services/Cities.Service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    UserIdleModule.forRoot({idle: 15, timeout: 12, ping: 5}),
+    NgxCurrencyModule,
+    UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
     ToastrModule.forRoot(
       {
         closeButton: false,
@@ -177,7 +318,9 @@ import { CitiesService } from './services/Cities.Service';
     NgbModule,
     NgxPaginationModule,
     NgxExtendedPdfViewerModule,
-    MaterialModule
+    MaterialModule,
+    AngularDraggableModule,
+    KeyboardShortcutsModule,
   ],
   providers: [
     CookieService,
@@ -199,15 +342,32 @@ import { CitiesService } from './services/Cities.Service';
     AuthenticationService,
     CitiesService,
     CompanyService,
+    AddressTypesService,
+    ContactTypesService,
+    CompanyAddInfoTypesService,
+    ApiService,
+    CurrenciesService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     },
+    ChatService,
+    CaptureService,
+    ValidateService,
+    ComponentService,
+    TariffService,
+    ReportsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     NgbdModalContent,
+    CapturePreviewComponent,
+    Sad500LinePreviewComponent,
+    ImagePreviewDialogComponent,
+    FormSAD500Component,
+    FormImportClearingInstructionComponent,
+    FormCustomReleaseComponent
   ]
 })
 export class AppModule { }

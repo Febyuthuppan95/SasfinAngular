@@ -1,44 +1,43 @@
-//import { DesignationListResponse } from './../../../models/HttpResponses/DesignationListResponse';
 import { DesignationService } from './../../../services/Designation.service';
-import { UpdateUserRequest } from './../../../models/HttpRequests/UpdateUserRequest';
 import { Status } from './../../../models/Enums/Statuses';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ContextMenuUserComponent } from '../../../components/menus/context-menu-user/context-menu-user.component';
-import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef, OnDestroy } from '@angular/core';
 import { UserListResponse } from '../../../models/HttpResponses/UserListResponse';
 import { UserList } from '../../../models/HttpResponses/UserList';
 import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
-import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
-import { GetUserList } from 'src/app/models/HttpRequests/GetUserList';
-import { Location } from '@angular/common';
 import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';
-import { GetDesignationList } from 'src/app/models/HttpRequests/GetDesignationList';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { DesignationListResponse } from 'src/app/models/HttpResponses/DesignationListResponse';
-import { AddUserRequest } from 'src/app/models/HttpRequests/AddUserRequest';
-import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
+import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
+import { GetDesignationList } from 'src/app/models/HttpRequests/Designations';
+import { GetUserList, AddUserRequest, UpdateUserRequest } from 'src/app/models/HttpRequests/Users';
+import { User } from 'src/app/models/HttpResponses/User';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { ValidateService } from 'src/app/services/Validation.Service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-user-list',
   templateUrl: './view-user-list.component.html',
   styleUrls: ['./view-user-list.component.scss']
 })
-export class ViewUserListComponent implements OnInit {
+export class ViewUserListComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private location: Location,
     private DIDesignationService: DesignationService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private validateService: ValidateService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -52,8 +51,9 @@ export class ViewUserListComponent implements OnInit {
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
     this.loadUsers(true);
-    this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
-      // console.log(result);
+    this.subscription = this.IMenuService.subSidebarEmit$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(result => {
       this.sidebarCollapsed = result;
     });
   }
@@ -79,8 +79,105 @@ export class ViewUserListComponent implements OnInit {
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
 
+  private unsubscribe$ = new Subject<void>();
 
+  tableHeader: TableHeader = {
+    title: 'Users',
+    addButton: {
+     enable: true,
+    },
+    backButton: {
+      enable: false
+    },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
+
+  tableHeadings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      }
+    },
+    {
+      title: '',
+      propertyName: 'profileImage',
+      order: {
+        enable: false,
+      },
+      styleType: 'user-profile'
+    },
+    {
+      title: 'Emp No',
+      propertyName: 'empNo',
+      order: {
+        enable: true,
+        tag: 'EmpNo'
+      }
+    },
+    {
+      title: 'First Name',
+      propertyName: 'firstName',
+      order: {
+        enable: true,
+        tag: 'FirstName'
+      }
+    },
+    {
+      title: 'Surname',
+      propertyName: 'surname',
+      order: {
+        enable: true,
+        tag: 'Surname'
+      }
+    },
+    {
+      title: 'Email',
+      propertyName: 'email',
+      order: {
+        enable: true,
+        tag: 'Email'
+      }
+    },
+    {
+      title: 'Ext',
+      propertyName: 'extension',
+      order: {
+        enable: true,
+        tag: 'Extension'
+      }
+    },
+    {
+      title: 'Designation',
+      propertyName: 'designation',
+      order: {
+        enable: true,
+        tag: 'Designation'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'status',
+      order: {
+        enable: true,
+        tag: 'Status'
+      },
+      styleType: 'badge',
+      style: {
+        posClass: 'badge badge-success',
+        negClass: 'badge badge-danger',
+        pos: 'Active',
+        neg: 'Inactive'
+      }
+    },
+  ];
 
   defaultProfile =
     `${environment.ImageRoute}/default.jpg`;
@@ -110,7 +207,7 @@ export class ViewUserListComponent implements OnInit {
   currentUserName: string;
   pages: Pagination[];
   showingPages: Pagination[];
-  userList: UserList[];
+  userList: UserList[] = null;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -134,11 +231,14 @@ export class ViewUserListComponent implements OnInit {
   selectedDesignationIndex = 0;
   fileToUpload: File = null;
   preview: any;
-  disableDesSelect: boolean = false;
+  disableDesSelect = false;
 
+  isAdmin: false;
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
     this.statusList = new Array<Status>();
@@ -170,53 +270,10 @@ export class ViewUserListComponent implements OnInit {
       }
     );
   }
-  paginateData() {
-    let rowStart = 1;
-    let rowEnd = +this.rowCountPerPage;
-    const pageCount = +this.rowCount / +this.rowCountPerPage;
-    this.pages = new Array<Pagination>();
 
-    for (let i = 0; i < pageCount; i++) {
-      const item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
-      rowStart = +rowEnd + 1;
-      rowEnd += +this.rowCountPerPage;
-    }
-
-    this.updatePagination();
-  }
-
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
-
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
-
-    let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    const mod = +this.rowCount % +this.rowCountPerPage;
-
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
+  pageChange($event: {rowStart: number, rowEnd: number}) {
+    this.rowStart = $event.rowStart;
+    this.rowEnd = $event.rowEnd;
     this.loadUsers(false);
   }
 
@@ -249,12 +306,7 @@ export class ViewUserListComponent implements OnInit {
             }
           }
 
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          } else {
+          if (res.outcome.outcome === 'SUCCESS') {
             if (displayGrowl) {
               this.notify.successmsg(
                 res.outcome.outcome,
@@ -263,18 +315,19 @@ export class ViewUserListComponent implements OnInit {
             }
           }
 
+          this.userList = res.userList;
+
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
+            this.userList = [];
           } else {
             this.noData = false;
-            this.userList = res.userList;
             this.rowCount = res.rowCount;
-            this.showLoader = false;
             this.showingRecords = res.userList.length;
-            this.totalShowing = +this.rowStart + +this.userList.length - 1;
 
-            this.paginateData();
+            this.showLoader = false;
+            this.totalShowing = +this.rowStart + +this.userList.length - 1;
           }
         },
         msg => {
@@ -287,22 +340,6 @@ export class ViewUserListComponent implements OnInit {
       );
   }
 
-  updateSort(orderBy: string) {
-    if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
-      } else {
-        this.orderDirection = 'ASC';
-      }
-    } else {
-      this.orderDirection = 'ASC';
-    }
-
-    this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
-    this.loadUsers(false);
-  }
-
   inspectUserImage(src: string) {
     const options = new ImageModalOptions();
     options.width = '';
@@ -311,7 +348,6 @@ export class ViewUserListComponent implements OnInit {
   }
 
   onDesignationChange(id: number) {
-    console.log(id);
     this.selectedDesignation = id;
     this.disableDesSelect = true;
   }
@@ -320,33 +356,19 @@ export class ViewUserListComponent implements OnInit {
     this.selectedStatus = id;
   }
 
-  updatePagination() {
-    this.showingPages = Array<Pagination>();
-    this.showingPages[0] = this.pages[this.activePage - 1];
-    const pagenumber = +this.rowCount / +this.rowCountPerPage;
-
-    if (this.activePage < pagenumber) {
-      this.showingPages[1] = this.pages[+this.activePage];
-
-      if (this.showingPages[1] === undefined) {
-        const page = new Pagination();
-        page.page = 1;
-        page.rowStart = 1;
-        page.rowEnd = this.rowEnd;
-        this.showingPages[1] = page;
-      }
-    }
-
-    if (+this.activePage + 1 <= pagenumber) {
-      this.showingPages[2] = this.pages[+this.activePage + 1];
-    }
-  }
-
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, user: UserList) {
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadUsers(false);
+  }
+
+  popClick(event, user) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -355,6 +377,7 @@ export class ViewUserListComponent implements OnInit {
       this.contextMenuY = event.clientY + 5;
     }
 
+    this.selectedStatus = user.statusID;
     this.currentUserID = +user.userId;
     this.currentUserName = user.firstName;
     this.EmpNo = user.empNo;
@@ -366,6 +389,7 @@ export class ViewUserListComponent implements OnInit {
     this.preview = user.profileImage;
     this.selectedUserID = +user.userId;
 
+
     for (let index = 0; index < this.designations.length; index++) {
       if (this.designations[index].name === user.designation) {
         let des = this.designations[index];
@@ -373,8 +397,8 @@ export class ViewUserListComponent implements OnInit {
       }
     }
 
-    for(let index = 0; index < this.statusList.length; index++) {
-      if(this.statusList[index].name === user.status) {
+    for (let index = 0; index < this.statusList.length; index++) {
+      if (this.statusList[index].name === user.status) {
         this.selectedStatus = +this.statusList[index].id;
       }
     }
@@ -394,8 +418,10 @@ export class ViewUserListComponent implements OnInit {
     this.contextMenu = false;
     this.selectedRow = -1;
   }
-  setClickedRow(index) {
-    this.selectedRow = index;
+
+  selectedRecord(obj: SelectedRecord) {
+    this.selectedRow = obj.index;
+    this.popClick(obj.event, obj.record);
   }
 
   editUser($event) {
@@ -415,6 +441,7 @@ export class ViewUserListComponent implements OnInit {
     this.ProfileImage = null;
     this.EmployeeNumb = null;
     this.selectedDesignationIndex = 0;
+    this.myInputVariable.nativeElement.value = -1;
     this.selectedStatusIndex = 0;
     this.disableDesSelect = false;
     this.preview = null;
@@ -447,30 +474,51 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined) {
+    if (this.EmployeeNumb === null || this.EmployeeNumb === undefined  || this.EmployeeNumb === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined  || this.selectedEmail === '') {
       errors++;
     }
-    if (this.password === null || this.password === undefined) {
+    if (this.password === null || this.password === undefined || this.password === '') {
       errors++;
     }
-    if (this.confirmpassword === null || this.confirmpassword === undefined) {
+    if (this.confirmpassword === null || this.confirmpassword === undefined  || this.confirmpassword === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined || this.Extension === '') {
       errors++;
     }
+
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
+      errors++;
+    }
+
+
+    const requestModelTest: AddUserRequest = {
+      userID: this.currentUser.userID,
+      empNo: this.EmployeeNumb,
+      firstName: this.selectedFirstName,
+      surname: this.selectedSurName,
+      email: this.selectedEmail,
+      password: this.password,
+      specificDesignationID: +this.selectedDesignation,
+      profileImage: ImageName,
+      extension: this.Extension
+    };
+
+    const validateResponse = this.validateService.model(requestModelTest);
 
     if (errors === 0) {
       if (this.password === this.confirmpassword) {
@@ -517,12 +565,20 @@ export class ViewUserListComponent implements OnInit {
         this.notify.errorsmsg('Failure', 'Passwords do not match!');
       }
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }
+
     }
   }
 
   updateUser($event) {
     $event.preventDefault();
+
+
+
     let ImageName = null;
 
     if (this.fileToUpload !== null  && this.fileToUpload !== undefined) {
@@ -535,25 +591,31 @@ export class ViewUserListComponent implements OnInit {
       ImageName = this.fileToUpload.name;
     }
 
-    if (this.EmpNo === null || this.EmpNo === undefined) {
+    if (this.EmpNo === null || this.EmpNo === undefined || this.EmpNo === '') {
       errors++;
     }
-    if (this.selectedFirstName === null || this.selectedFirstName === undefined) {
+    if (this.selectedFirstName === null || this.selectedFirstName === undefined || this.selectedFirstName === '') {
       errors++;
     }
-    if (this.selectedSurName === null || this.selectedSurName === undefined) {
+    if (this.selectedSurName === null || this.selectedSurName === undefined || this.selectedSurName === '') {
       errors++;
     }
-    if (this.selectedEmail === null || this.selectedEmail === undefined) {
+    if (this.selectedEmail === null || this.selectedEmail === undefined || this.selectedEmail === '') {
       errors++;
     }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
-    if (this.Extension === null || this.Extension === undefined) {
+    if (this.Extension === null || this.Extension === undefined  || this.Extension === '') {
       errors++;
     }
     if (this.selectedStatus === null || this.selectedStatus === undefined) {
+      errors++;
+    }
+
+    const emailCheck = this.validateService.regexTest(this.validateService.emailRegex, this.selectedEmail);
+
+    if (!emailCheck) {
       errors++;
     }
 
@@ -588,7 +650,7 @@ export class ViewUserListComponent implements OnInit {
             } else {
               this.closeModal.nativeElement.click();
               this.loadUsers(false);
-              this.notify.successmsg('Success', 'User has been updated');
+              this.notify.successmsg('Success', res.outcome.outcomeMessage);
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -599,17 +661,44 @@ export class ViewUserListComponent implements OnInit {
         }
       );
     } else {
-      this.notify.toastrwarning('Warning', 'Please complete form before submitting');
+      if (errors === 1 && !emailCheck) {
+        this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+      }    }
+  }
+
+  updateHelpContext(slug: string, $event?) {
+    if (this.isAdmin) {
+      const newContext: SnackbarModel = {
+        display: true,
+        slug,
+      };
+
+      this.snackbarService.setHelpContext(newContext);
+    } else {
+      if ($event.target.attributes.matTooltip !== undefined && $event.target !== undefined) {
+        $event.target.setAttribute('mattooltip', 'New Tooltip');
+        $event.srcElement.setAttribute('matTooltip', 'New Tooltip');
+      }
     }
   }
 
-  updateHelpContext(slug: string) {
-    const newContext: SnackbarModel = {
-      display: true,
-      slug,
-    };
-
-    this.snackbarService.setHelpContext(newContext);
+  recordsPerPageChange(recordsPerPage: number) {
+    this.rowCountPerPage = recordsPerPage;
+    this.rowStart = 1;
+    this.loadUsers(true);
   }
+
+  searchEvent(query: string) {
+    this.filter = query;
+    this.loadUsers(false);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 
 }

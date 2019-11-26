@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { CompanyService } from 'src/app/services/Company.Service';
@@ -8,18 +8,17 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { AddCompany } from 'src/app/models/HttpRequests/AddCompany';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { TouchSequence } from 'selenium-webdriver';
-import { UpdateCompany } from 'src/app/models/HttpRequests/UpdateCompany';
-import { CompanyList } from 'src/app/models/HttpRequests/CompanyList';
+import { CompanyList, AddCompany, UpdateCompany } from 'src/app/models/HttpRequests/Company';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-list',
   templateUrl: './view-company-list.component.html',
   styleUrls: ['./view-company-list.component.scss']
 })
-export class ViewCompanyListComponent implements OnInit {
+export class ViewCompanyListComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -63,7 +62,7 @@ export class ViewCompanyListComponent implements OnInit {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-  dataList: Company[]
+  dataList: Company[];
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompaniesListResponse;
@@ -104,9 +103,13 @@ export class ViewCompanyListComponent implements OnInit {
   sidebarCollapsed = true;
   selectedRow = -1;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
 
-  this.themeService.observeTheme().subscribe((theme) => {
+  this.themeService.observeTheme()
+  .pipe(takeUntil(this.unsubscribe$))
+  .subscribe((theme) => {
     this.currentTheme = theme;
   });
 }
@@ -342,7 +345,7 @@ export class ViewCompanyListComponent implements OnInit {
   }
 
 
-  UpdateCompany(){
+  UpdateCompany() {
     const errors = this.validateCompany();
     if (errors === 0) {
       const requestModel: UpdateCompany = {
@@ -379,22 +382,27 @@ export class ViewCompanyListComponent implements OnInit {
   validateCompany(): number {
     let errors = 0;
 
-    if (this.CompanyName === null || this.CompanyName === undefined) {
+    if (this.CompanyName === null || this.CompanyName === undefined || this.CompanyName === '') {
       errors++;
     }
 
-    if (this.RegNo === null || this.CompanyName === undefined) {
+    if (this.RegNo === null || this.RegNo === undefined || this.RegNo === '') {
       errors++;
     }
 
-    if (this.ExportRegNo === null || this.CompanyName === undefined) {
+    if (this.ExportRegNo === null || this.ExportRegNo === undefined || this.ExportRegNo === '') {
       errors++;
     }
 
-    if (this.VATNo === null || this.CompanyName === undefined) {
+    if (this.VATNo === null || this.VATNo === undefined || this.VATNo === '') {
       errors++;
     }
 
     return errors;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -10,15 +10,16 @@ import { Pagination } from 'src/app/models/Pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyInfoResponse, CompanyInfo } from 'src/app/models/HttpResponses/CompanyInfoResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { AddCompanyInfo } from 'src/app/models/HttpRequests/AddCompanyInfo';
-import { UpdateCompanyInfo } from 'src/app/models/HttpRequests/UpdateCompanyInfo';
+import { AddCompanyInfo, UpdateCompanyInfo } from 'src/app/models/HttpRequests/Company';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-company-info',
   templateUrl: './view-company-info.component.html',
   styleUrls: ['./view-company-info.component.scss']
 })
-export class ViewCompanyInfoComponent implements OnInit {
+export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -38,7 +39,6 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyInfoList();
   }
 
   @ViewChild(ContextMenuComponent, {static: true } )
@@ -59,6 +59,9 @@ export class ViewCompanyInfoComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -69,7 +72,7 @@ export class ViewCompanyInfoComponent implements OnInit {
   showingPages: Pagination[];
   dataset: CompanyInfoResponse;
   dataList: CompanyInfo[] = [];
-  rowCount: number;
+  rowCount: number = 0;
   nextPage: number;
   nextPageState: boolean;
   prevPage: number;
@@ -80,7 +83,7 @@ export class ViewCompanyInfoComponent implements OnInit {
   disableInfoSelect = false;
   focusCompTypeID = 0;
 
-  rowStart: number;
+  rowStart: number = 0;
   rowEnd: number;
   filter: string;
   orderBy: string;
@@ -89,7 +92,7 @@ export class ViewCompanyInfoComponent implements OnInit {
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
-  showingRecords: number;
+  showingRecords: number = 0;
   activePage: number;
 
   focusCompID: number;
@@ -109,10 +112,13 @@ export class ViewCompanyInfoComponent implements OnInit {
   companyName: string;
   companyID: number;
   TypesList: any[] = [];
+  private unsubscribe$ = new Subject<void>();
 
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
     const temp = {
@@ -121,9 +127,13 @@ export class ViewCompanyInfoComponent implements OnInit {
     };
     this.TypesList.push(temp);
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
+
+      this.loadCompanyInfoList();
     });
   }
 
@@ -194,7 +204,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificCompanyAddInfoID: -1,
       specificCompanyAddInfoTypeID: -1,
       rowStart: this.rowStart,
@@ -207,9 +217,10 @@ export class ViewCompanyInfoComponent implements OnInit {
       .info(model)
       .then(
         (res: CompanyInfoResponse) => {
+
           if (res.rowCount === 0) {
             this.noData = true;
-            this.showLoader = false;
+          this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
@@ -316,6 +327,7 @@ export class ViewCompanyInfoComponent implements OnInit {
     this.Info = '';
     this.Type = 0;
     this.disableInfoSelect = false;
+    this.myInputVariable.nativeElement.value = -1;
     this.selectedInfoIndex = 0;
     this.openaddModal.nativeElement.click();
   }
@@ -390,7 +402,15 @@ export class ViewCompanyInfoComponent implements OnInit {
   onChange(id: number)   {
     this.disableInfoSelect = true;
     this.Type = id;
-    console.log(this.Type);
+  }
+
+  viewCaptureInfo($event) {
+    this.notify.toastrwarning('Warning', 'Feature is not implemented');
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

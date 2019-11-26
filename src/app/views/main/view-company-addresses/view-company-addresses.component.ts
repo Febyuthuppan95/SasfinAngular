@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -10,20 +10,21 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyAddressResponse, Address } from 'src/app/models/HttpResponses/CompanyAddressResponse';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { UpdateCompanyAddress } from 'src/app/models/HttpRequests/UpdateCompanyAddress';
-import { AddCompanyAddress} from 'src/app/models/HttpRequests/AddCompanyAddress';
 import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesService } from 'src/app/services/Cities.Service';
 import {FormControl} from '@angular/forms';
 import { MatAutocomplete } from '@angular/material';
+import { AddCompanyAddress, UpdateCompanyAddress } from 'src/app/models/HttpRequests/Company';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-company-addresses',
   templateUrl: './view-company-addresses.component.html',
   styleUrls: ['./view-company-addresses.component.scss']
 })
-export class ViewCompanyAddressesComponent implements OnInit {
+export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
 
   constructor(
     private companyService: CompanyService,
@@ -44,7 +45,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.loadCompanyInfoList();
+
   }
 
   @ViewChild('openeditModal', {static: true})
@@ -66,6 +67,8 @@ export class ViewCompanyAddressesComponent implements OnInit {
   private notify: NotificationComponent;
   @ViewChild('auto', {static: false})
   private autoComplete: MatAutocomplete;
+
+  private unsubscribe$ = new Subject<void>();
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -132,7 +135,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
@@ -142,17 +147,12 @@ export class ViewCompanyAddressesComponent implements OnInit {
     };
     this.AddressTypesList.push(temp);
 
-    // this.activatedRoute.paramMap
-    // .subscribe(params => {
-    //   this.companyID = +params.get('id');
-    //   this.companyName = params.get('name');
-    // });
-
-
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+
+    this.loadCompanyInfoList();
   }
 
   backToCompanies() {
@@ -231,7 +231,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     const model = {
       filter: this.filter,
       userID: this.currentUser.userID,
-      specificCompanyID: -1,
+      specificCompanyID: this.companyID,
       specificAddressID: -1,
       specificAddressTypeID: -1,
       rowStart: this.rowStart,
@@ -255,8 +255,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
             this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
             this.paginateData();
           }
-
-          console.log(res);
         },
         msg => {
           this.showLoader = false;
@@ -359,7 +357,7 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, focusCompName, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
+  popClick(event, id, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -399,25 +397,45 @@ export class ViewCompanyAddressesComponent implements OnInit {
     this.Address2 = '';
     this.POBox = '';
     this.Type = 0;
+    this.cityID = 0;
     this.disableAddressSelect = false;
     this.selectedAddressIndex = 0;
     this.openaddModal.nativeElement.click();
   }
 
   addCompanyAddress() {
+    let errors = 0;
 
-    const requestModel: AddCompanyAddress = {
-      userID: this.currentUser.userID,
-      companyID: this.companyID,
-      address1: this.Address1,
-      address2: this.Address2,
-      POBox: this.POBox,
-      addressTypeID: this.Type,
-      cityID: this.cityID,
-    };
+    if (this.Address1 === '' || this.Address1 === null || this.Address1 === undefined) {
+      errors++;
+    }
+    if (this.Address2 === '' || this.Address2 === null || this.Address2 === undefined) {
+      errors++;
+    }
+    if (this.POBox === '' || this.POBox === null || this.POBox === undefined) {
+      errors++;
+    }
+    if (this.Type === 0 || this.Type === null || this.Type === undefined) {
+      errors++;
+    }
+    if (this.cityID === 0 || this.cityID === null || this.cityID === undefined) {
+      errors++;
+    }
 
-    this.companyService.AddAddress(requestModel).then(
-      (res: {outcome: Outcome}) => {
+
+    if (errors === 0) {
+      const requestModel: AddCompanyAddress = {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        address1: this.Address1,
+        address2: this.Address2,
+        POBox: this.POBox,
+        addressTypeID: this.Type,
+        cityID: this.cityID,
+      };
+
+      this.companyService.AddAddress(requestModel).then(
+        (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           } else {
@@ -434,6 +452,9 @@ export class ViewCompanyAddressesComponent implements OnInit {
           this.closeaddModal.nativeElement.click();
         }
       );
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+    }
   }
 
   editCompanyAddress($event) {
@@ -458,7 +479,6 @@ export class ViewCompanyAddressesComponent implements OnInit {
       addressTypeID: this.Type,
       cityID: this.cityID,
     };
-    console.log(requestModel);
     this.companyService.UpdateAddress(requestModel).then(
       (res: {outcome: Outcome}) => {
           if (res.outcome.outcome !== 'SUCCESS') {
@@ -478,6 +498,11 @@ export class ViewCompanyAddressesComponent implements OnInit {
   onChange(id: number)   {
     this.disableAddressSelect = true;
     this.Type = id;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

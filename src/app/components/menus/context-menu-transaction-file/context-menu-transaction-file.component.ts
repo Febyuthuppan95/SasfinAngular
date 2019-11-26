@@ -21,7 +21,7 @@ export class ContextMenuTransactionFileComponent implements OnInit {
   }
 
   viewTransactionAttachments() {
-    this.router.navigate(['transactions', 'files',this.transactionID]);
+    this.router.navigate(['transaction', 'attachments']);
   }
 
 }

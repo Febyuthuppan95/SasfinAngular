@@ -85,7 +85,7 @@
       <form (submit)="addLocation()">
       <div class="modal-body">
       <div class="form-group">
-          <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
+          <input type="text" pattern="[A-Za-z]" title="Letters only" placeholder="Name" class="form-control" [(ngModel)]="this.newLocationName" [ngModelOptions]="{standalone: true}" required/>
         </div>
       </div>
       <div class="modal-footer bg-dark">
@@ -126,3 +126,4 @@
                                 (addCountryEmit)="addCountryModal($event)" (addCityEmit)="addCityModal(locationParentID)" (addRegionEmit)="addRegionModal(locationParentID)" [parentID]="locationParentID"
                                   (deleteCityEmit)="deleteCityModal($event)" (deleteRegionEmit)="deleteRegionModal($event)" (deleteCountryEmit)="deleteCountryModal($event)"></app-context-menu-location>
 </div>
+<app-notification></app-notification>

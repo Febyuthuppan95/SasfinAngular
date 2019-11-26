@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewChildren, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
@@ -14,13 +14,16 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { TransactionTypes, TransactionTypesResponse } from 'src/app/models/HttpResponses/TransactionTypesList';
 import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/HttpResponses/TransactionStatusList';
+import { FormGroup, FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-transactions',
   templateUrl: './view-transactions.component.html',
   styleUrls: ['./view-transactions.component.scss']
 })
-export class ViewTransactionsComponent implements OnInit {
+export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private transationService: TransactionService,
@@ -52,7 +55,7 @@ export class ViewTransactionsComponent implements OnInit {
   @ViewChild('openModal', { static: true })
   private openModal: ElementRef;
 
-  @ViewChild('closeModal', { static: true })
+  @ViewChild('closeModal', {static: false})
   private closeModal: ElementRef;
 
   defaultProfile =
@@ -105,10 +108,13 @@ export class ViewTransactionsComponent implements OnInit {
   transactionTypes: TransactionTypes[];
   transactionStatus: TransactionStatus[];
 
-  selectedTypeIndex: number;
-  selectedStatusIndex: number;
+  selectedTypeIndex = 0;
+  selectedStatusIndex = 0;
   statusDisable: boolean;
   typesDisable: boolean;
+
+  selectTypeControl = new FormControl(0);
+  selectStatusControl = new FormControl(0);
 
   newTransaction = {
     name: '',
@@ -136,13 +142,18 @@ export class ViewTransactionsComponent implements OnInit {
     specificTransactionTypesID: -1
   };
 
+  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
       if (obj !== null || obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
@@ -263,15 +274,13 @@ export class ViewTransactionsComponent implements OnInit {
       orderByDirection: this.orderDirection
     };
 
-    console.log(JSON.stringify(model));
-
     this.transationService
       .list(model)
       .then(
         (res: TransactionListResponse) => {
-          if(res.outcome.outcome === 'FAILURE'){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
+          if (res.transactions.length === 0) {
+            this.notify.toastrwarning(
+              'Warning',
               res.outcome.outcomeMessage
             );
           } else {
@@ -280,13 +289,13 @@ export class ViewTransactionsComponent implements OnInit {
               res.outcome.outcomeMessage
             );
           }
+          this.dataList = res.transactions;
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.dataList = res.transactions;
             this.rowCount = res.rowCount;
             this.showLoader = false;
             this.showingRecords = res.transactions.length;
@@ -385,7 +394,6 @@ export class ViewTransactionsComponent implements OnInit {
   }
 
   addTransaction() {
-    console.log(this.selectedStatus);
     let errors = 0;
 
     if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
@@ -412,6 +420,8 @@ export class ViewTransactionsComponent implements OnInit {
               this.loadTransactions();
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.closeModal.nativeElement.click();
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
           },
           (msg) => {
@@ -428,9 +438,16 @@ export class ViewTransactionsComponent implements OnInit {
     this.newTransaction.name = null;
     this.newTransaction.transactionStatusID = -1;
     this.newTransaction.transactionTypeID = -1;
-    this.selectedStatusIndex = 0;
-    this.selectedTypeIndex = 0;
+    this.typesDisable = false;
+    this.statusDisable = false;
+    this.selectStatusControl.reset(0);
+    this.selectTypeControl.reset(0);
+
     this.openModal.nativeElement.click();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

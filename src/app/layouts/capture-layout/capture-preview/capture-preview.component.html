@@ -1,0 +1,63 @@
+<div mat-dialog-content style="padding:0;overflow: hidden !important;position: relative">
+  <ngx-extended-pdf-viewer
+  style="overflow:hidden"
+  *ngIf="displayPDF"
+  [height]="'512px'"
+  [src]="pdfSRC"
+  [useBrowserLocale]="true"
+  [showZoomButtons]="false"
+  [showSpreadButton]="false"
+  [showSidebarOnLoad]="false"
+  [showSidebarButton]="false"
+  [showSecondaryToolbarButton]="false"
+  [showScrollingButton]="false"
+  [showRotateButton]="false"
+  [showPropertiesButton]="false"
+  [showPrintButton]="false"
+  [showPresentationModeButton]="false"
+  [showPagingButtons]="false"
+  [showOpenFileButton]="false"
+  [showHandToolButton]="false"
+  [showFindButton]="false"
+  [showDownloadButton]="false"
+  [showBookmarkButton]="false">
+</ngx-extended-pdf-viewer>
+  <div style="padding: 24px;" *ngIf="!this.displayPDF && !this.failedToLoad" class="text-center">
+    <app-loader class="margin-auto"></app-loader>
+  </div>
+  <div style="padding: 24px;text-align: center;" *ngIf="this.failedToLoad">
+      <p class="text-center badge badge-danger m-auto">Failed to load document</p>
+  </div>
+  <div class="preview-overlay text-center">
+    <button mat-icon-button (click)="close()" class="close-buton"><span class="mdi mdi-close text-light"></span></button>
+    <h1 class="text-light" style="margin-top:224px;">Preview</h1>
+  </div>
+</div>
+
+<!-- TimeOut modal -->
+<button class="hide" data-toggle="modal" data-target="#timeout" #opentimeoutModal></button>
+<div class="modalcustom fade no-click-backdrop" id="timeout" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div  class="modal-header modal-white">
+          <h5 class="modal-title modal-white" id="modalContent">Warning!</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form >
+        <div class="modal-body">
+          <div class="row" style="height: auto;">
+              <img class="imageposition" src="../../../assets/dist/images/warning.png" alt="warning"/>
+           <p class="modal-message padleft100">Due to inactivity you will be logged out in {{count}} seconds</p>
+           <p class="modal-message padleft100">Click "Extend Session" button to continue working</p>
+          </div>
+        </div>
+        <div class="modal-footer modal-white">
+
+          <button style="color: white; background-color: rgb(103, 150, 252)" (click)="ResetSessionTimer()" type="button" class="btn btn-sm" data-dismiss="modal" #closetimeoutModal>Extend Session</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>

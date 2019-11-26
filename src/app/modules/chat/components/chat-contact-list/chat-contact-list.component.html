@@ -1,0 +1,46 @@
+<div class="chat-tile">
+    <div class="chat-tile-header">
+        <button mat-mini-fab matTooltip="Back to Conversations" matTooltipPosition="below" class="header-button" (click)="showConversationsEvent()"><span class="mdi mdi-arrow-left"></span></button>
+      <h5>Contacts</h5>
+    </div>
+    <div class="chat-body">
+      <div class="chat-user-group">
+        <input type="search" class="form-control rounded" placeholder="Search contacts..."
+        [(ngModel)]="this.userRequest.filter" [ngModelOptions]="{standalone: true}" (keydown)="contactSearch()">
+        <br>
+        <div class="contact-list">
+        <mat-accordion [multi]="true" *ngIf="this.contactList">
+          <mat-expansion-panel
+            *ngFor="let contact of this.contactList"
+            class="mat-elevation-z0"
+            style="background: #f2f2f2"
+            [expanded]="true">
+
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{contact.designation}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-chat-user-tile *ngFor="let user of contact.users" [user]="user"></app-chat-user-tile>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      </div>
+    </div>
+    <div class="chat-tile-footer">
+      <div class="row" style="height: auto !important;">
+        <div class="col-sm-2">
+            <div class="image-container">
+                <img class="chat-profile-image" src="./../../../../assets/dist/images/default.svg"/>
+                <span class="online-status online shadow-sm"></span>
+                &nbsp;
+              </div>
+        </div>
+        <div class="col-sm-10">
+            <p>{{currentUser.firstName}}&nbsp;{{currentUser.surname}}</p>
+            <p class="chat-user-email">{{currentUser.email}}</p>
+            <p class="chat-user-des">{{currentUser.designation}}</p>
+        </div>
+      </div>
+    </div>
+  </div>

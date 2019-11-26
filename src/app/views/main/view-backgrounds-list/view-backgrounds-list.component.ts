@@ -1,26 +1,32 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { BackgroundService } from 'src/app/services/Background.service';
-import { BackgroundList } from 'src/app/models/HttpResponses/BackgroundList';
-import { BackgroundListRequest } from 'src/app/models/HttpRequests/BackgroundList';
-import { BackgroundListResponse } from 'src/app/models/HttpResponses/BackgroundListResponse';
 import { environment } from 'src/environments/environment';
 import { ImageModalComponent } from 'src/app/components/image-modal/image-modal.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { FormGroup } from '@angular/forms';
-import { BackgroundsAdd } from 'src/app/models/HttpResponses/BackgroundsAdd';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { BackgroundList, BackgroundListResponse, BackgroundsAdd } from 'src/app/models/HttpResponses/Backgrounds';
+import { BackgroundListRequest } from 'src/app/models/HttpRequests/Backgrounds';
+import { User } from 'src/app/models/HttpResponses/User';
+import { UserService } from 'src/app/services/user.Service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-backgrounds-list',
   templateUrl: './view-backgrounds-list.component.html',
   styleUrls: ['./view-backgrounds-list.component.scss']
 })
-export class ViewBackgroundsListComponent implements OnInit {
-  constructor(private themeService: ThemeService, private backgroundService: BackgroundService, private snackbarService: HelpSnackbar) {}
+export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
+  constructor(
+    private themeService: ThemeService,
+    private backgroundService: BackgroundService,
+    private snackbarService: HelpSnackbar,
+    private userService: UserService,
+    ) {}
 
   @ViewChild(ImageModalComponent, { static: true })
   private imageModal: ImageModalComponent;
@@ -28,16 +34,22 @@ export class ViewBackgroundsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openUploadModal', { static: true })
+  openUploadModal: ElementRef;
   @ViewChild('closeUploadModal', { static: true })
   closeUploadModal: ElementRef;
 
   @ViewChild('openViewBackgroundModal', { static: true })
   openViewBackgroundModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   currentTheme = 'light';
   backgroundPath = environment.ApiBackgroundImages;
   backgroundList: BackgroundList[];
   backgroundRequestModel: BackgroundListRequest;
+  currentUser: User = this.userService.getCurrentUser();
   selectRowDisplay: number;
   totalRowCount: number;
   totalDisplayCount: number;
@@ -54,14 +66,18 @@ export class ViewBackgroundsListComponent implements OnInit {
   preview: any;
   srcImage: any;
 
+  private unsubscribe$ = new Subject<void>();
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
 
     this.selectRowDisplay = 15;
     this.backgroundRequestModel = {
-      userID: 3, // Default User ID for testing
+      userID: this.currentUser.userID, // Default User ID for testing
       specificBackgroundID: -1,
       filter: '',
       orderBy: 'Name',
@@ -93,12 +109,22 @@ export class ViewBackgroundsListComponent implements OnInit {
   }
 
   removeBackground(backgroundID: number) {
-
+    this.backgroundService.removeBackgrounds(+backgroundID, this.currentUser.userID).then(
+      (res: BackgroundListResponse) => {
+        if (res.outcome.outcome === 'FAILURE') {
+          this.notify.errorsmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+            this.notify.successmsg( res.outcome.outcome, res.outcome.outcomeMessage);
+            this.loadBackgrounds();
+        }
+      },
+      (msg) => {
+        console.log(JSON.stringify(msg));
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      });
   }
 
-  editBackground(backgroundID: number) {
 
-  }
 
   viewBackground(src: string) {
     this.srcImage = `${environment.ApiBackgroundImages}/${src}`;
@@ -164,6 +190,14 @@ export class ViewBackgroundsListComponent implements OnInit {
     }
   }
 
+  AddBackgroud() {
+    this.fileToUpload = null;
+    this.fileName = '';
+    this.preview = null;
+    this.myInputVariable.nativeElement.value = '';
+    this.openUploadModal.nativeElement.click();
+  }
+
   uploadBackground() {
     let errors = 0;
 
@@ -179,18 +213,15 @@ export class ViewBackgroundsListComponent implements OnInit {
       this.backgroundService.addBackgrounds(
         this.fileName,
         this.fileToUpload,
-        3
+        this.currentUser.userID
         ).then(
           (res: BackgroundsAdd) => {
             if (res.outcome.outcome === 'SUCCESS') {
-                this.fileName = '';
-                this.fileToUpload = null;
                 this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
                 this.backgroundRequestModel.rowStart = 1;
                 this.backgroundRequestModel.rowEnd = 15;
                 this.closeUploadModal.nativeElement.click();
                 this.loadBackgrounds();
-                this.preview = null;
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -200,12 +231,13 @@ export class ViewBackgroundsListComponent implements OnInit {
           }
         );
     } else {
-      this.notify.toastrwarning('Warning', 'Please enter all fields and try again.');
+      this.notify.toastrwarning('Warning', 'Please choose an image before saving.');
     }
   }
 
   onFileChange(files: FileList) {
     this.fileToUpload = files.item(0);
+    this.fileName = files.item(0).name;
   }
 
   readFile(event): void {
@@ -227,5 +259,15 @@ export class ViewBackgroundsListComponent implements OnInit {
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+  Closemodal() {
+    this.myInputVariable.nativeElement.value = '';
+    this.preview = null;
+    this.fileToUpload = null;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

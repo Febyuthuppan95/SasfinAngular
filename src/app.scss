@@ -602,3 +602,30 @@ p {
   max-height: 70vh !important;
   overflow-y: auto !important;
 }
+
+.tile {
+  overflow-x: auto;
+  width: 100%;
+  transition: ease-in-out 0.5s;
+}
+
+.form-control-invalid {
+  border: 3px solid #ff695e !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.invalid-control-label {
+  padding: 16px;
+  background: #ff695e;
+  color: white;
+  border-radius: 5px;
+  font-size: 12px !important;
+  font-weight: 700;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.small-text {
+  font-size: 12px !important;
+}

@@ -2,7 +2,7 @@
   <div class="ls-card-body">
     <br />
     <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" data-target="#uploadBackground" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Backgrounds</h4><span style="margin-left:10px;"><button  data-toggle="modal" (mouseover)="updateHelpContext('view-background-upload-button')" (click)="AddBackgroud()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span>
     </div>    <br>
     <form class="form-inline">
       <select [value]='15' [(ngModel)]="selectRowDisplay" [ngModelOptions]="{standalone: true}"
@@ -12,12 +12,12 @@
         <option value='25'>Showing 25</option>
         <option value='50'>Showing 50</option>
       </select>
-      <select [value]='15' [(ngModel)]="backgroundRequestModel.orderByDirection" [ngModelOptions]="{standalone: true}"
+      <!-- <select [value]='15' [(ngModel)]="backgroundRequestModel.orderByDirection" [ngModelOptions]="{standalone: true}"
         class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
           (change)="loadBackgrounds()">
         <option value='ASC' selected>ASC</option>
         <option value='DESC'>DESC</option>
-      </select>
+      </select> -->
       <div class="mb-2 mr-sm-2 ml-auto">
       <input type="text"
         class="form-control form-control-sm shadow-sm form-control-{{ currentTheme }}"
@@ -30,22 +30,17 @@
         <div class="background-item shadow-sm ls-tile-{{ currentTheme }}">
           <img src="{{ backgroundPath }}/{{ image.image }}">
           <div class="controls-top-right form-inline">
-            <!-- <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
+            <form (submit)="removeBackground([image.backgroundID])" class="form-inline">
               <div class="form-group">
                 <button class="btn btn-danger btn-sm" type="submit"><span class="mdi mdi-trash-can"></span> REMOVE</button>
               </div>
             </form>
             &nbsp;
-            <form (submit)="editBackground([image.backgroundID])" class="form-inline">
-              <div class="form-group">
-                <button class="btn btn-info btn-sm" type="submit"><span class="mdi mdi-circle-edit-outline"></span> Edit</button>
-              </div>
-            </form> -->
           </div>
           <br>
         <div class="background-info">
           <button (click)="viewBackground([image.image])" class="btn btn-primary btn-sm float-right"><span class="mdi mdi-eye"></span> View</button>
-          <h4 class="text-light background-name">{{ image.name }}</h4>
+          <!-- <h4 class="text-light background-name">{{ image.name }}</h4> -->
         </div>
         </div>
       </div>
@@ -73,33 +68,28 @@
   </div>
 </div>
 
+<button class="hide" data-toggle="modal" data-target="#uploadBackground" #openUploadModal></button>
 <div class="modal fade" id="uploadBackground" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="uploadBackgroundLabel">Upload Background</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)='Closemodal()' class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form (submit)="uploadBackground()" enctype="multipart/form-data">
       <div class="modal-body">
           <div class="form-group">
-              <input type="text" placeholder="Background name" class="form-control"
-                [(ngModel)]="fileName" [ngModelOptions]="{standalone: true}" required/>
-            </div>
-          <div class="form-group">
-          <label for="addBackgroundImage" class="col-md-10" style="height:18px;padding: 14px;">
-              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-            </label>
-            <input id="addBackgroundImage" hidden type="file" (change)="onFileChange($event.target.files); readFile($event)" required>
+              <input #myInput type="file" name="file" id="addBackgroundImage" class="upload" (change)="onFileChange($event.target.files); readFile($event)" required/>
+
           </div>
           <p *ngIf="this.preview !== null && this.preview !== undefined">Preview: </p>
           <img *ngIf="this.preview !== null && this.preview !== undefined" [src]="preview" style="width: 100%;height:250px;"/>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+        <button type="button" (click)='Closemodal()' class="btn btn-dark btn-sm" data-dismiss="modal" #closeUploadModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm">Save Image</button>
       </div>
     </form>
     </div>
@@ -112,9 +102,9 @@
     <div class="modal-content">
       <div class="modal-body" style="padding:0;">
         <div class="modal-body text-center tile-frost" style="width: 100%; height:auto">
-            <button type="button" class="close-button top-right" data-dismiss="modal" aria-label="Close" data-dismiss="modal">
+          <button type="button" class="close text-light top-right" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-            </button>
+          </button>
             <img [src]="srcImage" class="modal-image"/>
           </div>
       </div>

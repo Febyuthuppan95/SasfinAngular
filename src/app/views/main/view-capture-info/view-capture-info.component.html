@@ -5,67 +5,30 @@
         <app-loader></app-loader>
       </ng-container>
     </div>
-    <br />
-    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
-        class="mdi mdi-filter"></i> &nbsp;Filters</button>
-        <div class="col-md-6" style="padding-left:0px;"><span style="float:left; margin-right:5px;"><button (click)="backToAttachments()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span><h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{this.company.name}} - Capture Info</h4><span style="margin-left:10px;"><button (click)="addCaptureInfoModal()" class="btn-add btn"><i class="mdi mdi-plus"></i></button></span></div>
-
-           <br />
-    <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
-      <form class="form-inline">
-        <select [value]='15' [(ngModel)]="recordsPerPage" [ngModelOptions]="{standalone: true}"
-          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
-          (change)="loadDataset()">
-          <option value='15' selected>Showing 15</option>
-          <option value='25'>Showing 25</option>
-          <option value='50'>Showing 50</option>
-        </select>
-        <input type="text"
-          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-          placeholder="Search" (keyup)="searchBar()" [(ngModel)]="this.requestModel.filter" [ngModelOptions]="{standalone: true}" />
-      </form>
-    </div>
-    <br />
-    <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
-      <thead>
-        <tr>
-          <th></th>
-          <th scope="col">
-            <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Name')">
-              <p class="headerText">Information</p>
-              <span class="headerSpan">
-                <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
-                <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
-              </span>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody *ngIf="(!noData) && this.dataset !== undefined">
-        <tr *ngFor="let info of this.dataset.captureInfo; let i=index" class="userRecord" (click)="popClick($event); selectedRowChange(i, { id: info.captureInfoID, info: info.info });" [class.active]="i == selectedRow">
-          <td>{{info.rowNum}}</td>
-          <td>{{info.info}}</td>
-        </tr>
-      </tbody>
-      <tbody class="tbodyPop" *ngIf="(noData)" >
-        <tr>
-          <td scope="col"></td>
-          <td scope="col">No data to display..</td>
-          <td scope="col"></td>
-        </tr>
-      </tbody>
-    </table>
-    <app-pagination
-      *ngIf="dataset !== undefined"
-      [currentTheme]="this.currentTheme"
-      [recordCount]="this.dataset.captureInfo.length"
+    <app-table
+      *ngIf="this.tableData"
+      [dataset]="this.tableData"
+      [headings]="this.tableHeadings"
       [recordsPerPage]="this.recordsPerPage"
       [rowStart]="this.requestModel.rowStart"
       [rowEnd]="this.requestModel.rowEnd"
-      (pageChangeEvent)="pageChange($event)">
-    </app-pagination>
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
+      (pageChangeEvent)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchEvent($event)"
+      (addButtonEvent)="addCaptureInfoModal()"
+      (backButtonEvent)="backToCompanies()">
+    </app-table>
   </div>
 </div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
 
 <app-menu
   [contextShow]="this.contextMenu"
@@ -74,8 +37,6 @@
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
   <app-context-menu-capture-info (editCaptureInfo)="editCaptureInfo()" (removeCaptureInfo)="removeCapture($event)"></app-context-menu-capture-info>
 </app-menu>
-
-<app-notification></app-notification>
 
 <!-- Edit Capture Info -->
 <button class="hide" data-toggle="modal" data-target="#editGlossary" #openEditModal></button>
@@ -91,9 +52,16 @@
       <form (submit)="editInfo()">
       <div class="modal-body">
       <div class="form-group">
+          <label class="control-label">Information:</label>
           <input type="text" placeholder="Information" class="form-control"
             [(ngModel)]="this.captureInfo.info" [ngModelOptions]="{standalone: true}" required/>
         </div>
+        <div class="form-group">
+            <label class="control-label">Type:</label>
+            <select id="editselect" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
+              <option *ngFor="let doctype of this.doctypeResponse.doctypes" [value]="doctype.doctypeID">{{doctype.name}}</option>
+            </select>
+          </div>
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeEditModal>Close</button>
@@ -122,8 +90,8 @@
             [(ngModel)]="this.requestModelAddInfo.info" [ngModelOptions]="{standalone: true}" required/>
         </div>
         <div class="form-group">
-          <select class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
-            <option value="-1" selected>Please select a document type</option>
+          <select id = "mydropdown" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
+            <option value="-1" >Please select a document type</option>
             <option *ngFor="let doctype of this.doctypeResponse.doctypes" [value]="doctype.doctypeID">{{doctype.name}}</option>
           </select>
         </div>

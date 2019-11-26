@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
-import { BackgroundListRequest } from '../models/HttpRequests/BackgroundList.js';
+import { BackgroundListRequest } from '../models/HttpRequests/Backgrounds';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class BackgroundService {
     const requestModel = {
       name: fileName,
       image: src.name,
-      userId: userID,     
+      userId: userID,
     };
 
     const formData = new FormData();
@@ -56,7 +56,7 @@ export class BackgroundService {
 
   public removeBackgrounds(backgroundID, userID) {
     const requestModel = {
-      userID,    
+      userID,
       backgroundID
     };
 

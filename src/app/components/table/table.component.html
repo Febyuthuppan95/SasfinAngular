@@ -1,0 +1,89 @@
+<div *ngIf="this.tableHeader">
+    <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()">
+      <i class="mdi mdi-filter"></i> &nbsp;Filters
+    </button>
+  <br>
+    <div class="col-md-3" style="padding-left:0px;">
+        <span *ngIf="this.tableHeader.backButton.enable" style="float:left; margin-right:5px;"><button style="padding-right: 0px; padding-top: 7px" (click)="backButton()" class="btn-back btn"><i class="mdi mdi-arrow-left ls-text-{{ currentTheme }}"></i></button></span>
+      <span style="float:left; margin-right:5px;"></span>
+      <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{ tableHeader.title }}</h4>
+      <span *ngIf="this.tableHeader.addButton.enable" style="margin-left:10px;">
+        <button (click)="addButton()" class="btn-add btn" ><i class="mdi mdi-plus"></i></button>
+      </span>
+    </div>
+  <br>
+  <br>
+    <div class="filters" [ngClass]="(toggleFilter)? 'filters-show': ''">
+      <form class="form-inline">
+        <select
+          *ngIf="this.tableHeader.filters.selectRowCount"
+          [value]='15'
+          [(ngModel)]="recordsPerPage"
+          [ngModelOptions]="{standalone: true}"
+          class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+          (change)="recordsPerPageChange($event.target.value)">
+            <option value='15'  selected>Showing 15</option>
+            <option value='25'>Showing 25</option>
+            <option value='50'>Showing 50</option>
+        </select>
+        <input
+          *ngIf="this.tableHeader.filters.search"
+          type="text"
+          class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+          placeholder="Search"
+          [(ngModel)]="this.searchQuery"
+          [ngModelOptions]="{standalone: true}"
+          (keyup)="search()"/>
+      </form>
+    </div>
+    <br>
+  </div>
+
+<table class="table table-hover table-striped table-{{ currentTheme }}">
+  <thead>
+    <tr>
+      <th *ngFor="let heading of headings" scope="col" [ngClass]="{'col-row-num': heading.propertyName === 'rowNum'}">
+        <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="orderChangeEvent(heading.order.tag)">
+          <p class="headerText">{{heading.title}}</p>
+          <span class="headerSpan" *ngIf="heading.order.enable">
+            <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === heading.order.tag + '_ASC')?'order-active':'order-not-active'"></i>
+            <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === heading.order.tag + '_DESC')?'order-active':'order-not-active'"></i>
+          </span>
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody *ngIf="(this.dataset !== undefined || this.dataset !== null || this.dataset.length !== 0)">
+    <tr *ngFor="let record of this.displayData; let i=index" class="userRecord" [class.active]="i == this.selectedRow" (click)="recordChangeEvent($event, this.dataset[i], i)">
+      <td *ngFor="let item of this.record; let x = index">
+        <span *ngIf="this.headings[x].styleType !== undefined && this.headings[x].styleType === 'badge'" class="badge" [ngClass]="{'badge-success': item.value === this.headings[x].style.pos, 'badge-danger': item.value === this.headings[x].style.neg}">
+            <span>{{item.value}}</span>
+        </span>
+        <span *ngIf="this.headings[x].styleType !== undefined && this.headings[x].styleType === 'user-profile'" class="user-profile" (click)="previewImage(item.value)">
+            <img [src]="item.value" class="img-table"/>
+        </span>
+        <span *ngIf="this.headings[x].styleType === undefined">
+            <span *ngIf="item.value !== null && item.value !== undefined && item.value !== ''">{{item.value}}</span>
+            <span *ngIf="item.value === null || item.value === undefined || item.value === ''">-</span>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+  <tbody class="tbodyPop" *ngIf="(this.dataset === undefined || this.dataset === null || this.dataset.length === 0)">
+    <tr>
+      <td scope="col"></td>
+      <td scope="col">No data to display..</td>
+      <td scope="col"></td>
+    </tr>
+  </tbody>
+</table>
+<app-pagination
+  *ngIf="this.paginate"
+  [currentTheme]="this.currentTheme"
+  [recordCount]="this.displayData.length"
+  [recordsPerPage]="this.recordsPerPage"
+  [rowStart]="this.rowStart"
+  [rowEnd]="this.rowEnd"
+  [rowCount]="this.rowCount"
+  (pageChangeEvent)="pageChangeEvent($event)">
+</app-pagination>

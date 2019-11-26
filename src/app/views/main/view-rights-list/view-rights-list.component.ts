@@ -1,5 +1,5 @@
 import { RightService } from '../../../services/Right.Service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { RightListResponse } from '../../../models/HttpResponses/RightListResponse';
 import { RightList } from '../../../models/HttpResponses/RightList';
 import { Pagination } from '../../../models/Pagination';
@@ -7,14 +7,16 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { GetRightList } from 'src/app/models/HttpRequests/GetRightList';
+import { GetRightList } from 'src/app/models/HttpRequests/Rights';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-rights-list',
   templateUrl: './view-rights-list.component.html',
   styleUrls: ['./view-rights-list.component.scss']
 })
-export class ViewRightsListComponent implements OnInit {
+export class ViewRightsListComponent implements OnInit, OnDestroy {
   constructor(
     private themeService: ThemeService,
     private userService: UserService,
@@ -37,6 +39,8 @@ export class ViewRightsListComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  private unsubscribe$ = new Subject<void>();
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -64,8 +68,11 @@ export class ViewRightsListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
+
   ngOnInit() {
-    this.themeService.observeTheme().subscribe((theme) => {
+    this.themeService.observeTheme()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((theme) => {
       this.currentTheme = theme;
     });
   }
@@ -143,14 +150,7 @@ export class ViewRightsListComponent implements OnInit {
       .then(
         (res: RightListResponse) => {
 
-          if(res.outcome.outcome === "FAILURE"){
-            this.notify.errorsmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-          else
-          {
+          if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
@@ -172,10 +172,10 @@ export class ViewRightsListComponent implements OnInit {
         },
         msg => {
           this.showLoader = false;
-           this.notify.errorsmsg(
-             'Server Error',
-             'Something went wrong while trying to access the server.'
-          );
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+        );
         }
       );
   }
@@ -220,5 +220,10 @@ export class ViewRightsListComponent implements OnInit {
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

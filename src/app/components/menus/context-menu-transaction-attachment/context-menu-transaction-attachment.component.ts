@@ -17,17 +17,27 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() transactionID: number;
   @Input() attachmentID: number;
   @Input() currentTheme: string;
+  @Input() statusID: number;
   @Input() docPath: string;
+  @Input() fileType: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   capture() {
-    this.docService.loadDocumentToViewer(this.docPath);
-    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID });
-    this.router.navigate(['capture', 'transaction', 'attachment']);
+    if (this.statusID === 1) {
+      this.docService.loadDocumentToViewer(this.docPath);
+      // tslint:disable-next-line: max-line-length
+      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+      this.router.navigate(['capture', 'transaction', 'attachment']);
+    }
+  }
+
+  lines() {
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+    this.router.navigate(['sad500/lines']);
   }
 
 }
