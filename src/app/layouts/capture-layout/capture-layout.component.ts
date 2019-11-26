@@ -8,7 +8,7 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import { Subject } from 'rxjs';
 import { UserIdleService } from 'angular-user-idle';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog.component';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-capture-layout',
@@ -31,9 +33,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private transactionService: TransactionService,
               private companyService: CompanyService,
               private dialog: MatDialog,
-              private snackbarService: HelpSnackbar) {}
+              private snackbarService: HelpSnackbar,
+              private eventService: EventService) {}
 
   shortcuts: ShortcutInput[] = [];
+
+  inspectingPreview = false;
+  showDocks = true;
 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
@@ -69,13 +75,19 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     name: string;
   };
   attachmentList: TransactionFile[];
+  attachmentListShowing: TransactionFile[] = [];
   transactionID: number;
   attachmentID: number;
   showHelp = false;
   focusPDF = false;
   attachmentType: string;
+
+  dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
+  openMore = true;
+  openPreview = true;
+
   ngOnInit() {
-    this.companyShowToggle = true;
+    this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
@@ -153,10 +165,16 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             command: e => this.companyInfo()
         },
         {
-          key: 'alt + o',
+          key: 'alt + q',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.exitCaptureScreen()
+        },
+        {
+          key: 'alt + o',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.showDocks = !this.showDocks
         },
         {
           key: 'alt + h',
@@ -165,16 +183,23 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.showHelp = !this.showHelp
         },
         {
-          key: 'alt + p',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusPDF = !this.focusPDF
-        },
-        {
           key: 'alt + down',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
+          key: 'alt + p',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            if (this.openMore) {
+              this.moreAttachments();
+            } else {
+              this.dialogAttachments.close();
+              this.dialogAttachments = null;
+            }
+          }
         },
         {
           preventDefault: true,
@@ -261,8 +286,19 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
+          this.attachmentList = res.attachments;
+          const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
+          this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
-          res.attachments.forEach((attach) => {
+          this.attachmentListShowing.push(current);
+
+          this.attachmentList.forEach((item, i) => {
+            if (i < 4) {
+              this.attachmentListShowing.push(item);
+            }
+          });
+
+          this.attachmentListShowing.forEach((attach) => {
             attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
             attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
             attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
@@ -270,8 +306,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
             this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
           });
-
-          this.attachmentList = res.attachments;
         },
         (msg) => {}
       );
@@ -291,18 +325,51 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   previewCapture(src: string, id: number) {
-    if (id !== this.attachmentID) {
-      this.dialog.open(CapturePreviewComponent, {
+    if (id !== this.attachmentID && this.openPreview) {
+      this.inspectingPreview = false;
+      this.openPreview = false;
+
+      const previewDialog = this.dialog.open(CapturePreviewComponent, {
         data: { src },
-        width: '380px',
-        height: '512px;'
+        width: '50%',
+        height: '80%'
       });
+
+      previewDialog.afterClosed().subscribe(() => {
+        this.inspectingPreview = false;
+        this.openPreview = true;
+      });
+
     }
+  }
+
+  moreAttachments() {
+      if (this.openMore && this.openPreview) {
+        this.openMore = false;
+
+        this.dialogAttachments = this.dialog.open(AttachmentDialogComponent, {
+          data: this.attachmentList,
+        });
+
+        this.dialogAttachments.afterClosed().subscribe((obj: TransactionFile) => {
+          console.log(obj);
+          this.openMore = true;
+          this.dialogAttachments = null;
+
+          if (obj !== undefined) {
+            this.previewCapture(obj.file, obj.attachmentID);
+          }
+        });
+      }
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  submitCapture() {
+    this.eventService.triggerCaptureEvent();
   }
 
 }

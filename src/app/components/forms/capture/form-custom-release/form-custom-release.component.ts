@@ -10,6 +10,7 @@ import { CRNGet } from 'src/app/models/HttpResponses/CRNGet';
 import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-form-custom-release',
@@ -21,7 +22,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private userService: UserService,
               private transactionService: TransactionService,
               private router: Router,
-              private captureService: CaptureService) { }
+              private captureService: CaptureService,
+              private eventService: EventService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -78,7 +80,11 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
-    // tslint:disable-next-line: max-line-length
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => this.submit());
+
     this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {

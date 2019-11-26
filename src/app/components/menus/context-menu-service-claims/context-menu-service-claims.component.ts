@@ -12,8 +12,11 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   constructor(private router: Router, private companyService: CompanyService) { }
 
   @Input() companyServiceClaimID: number;
+  @Input() companyServiceID: number;
+  @Input() companyID: number;
+  @Input() companyName: string;
+  @Input() serviceID: number;
   @Input() serviceName: string;
-  @Input() companyServiceClaimNumber: number;
   @Input() currentTheme: string;
 
   @Output() populatecompanyService = new EventEmitter<number>();
@@ -24,8 +27,11 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   Populate() {
     this.populatecompanyService.emit(+this.companyServiceClaimID);
   }
+
   Reports() {
-    this.reportscompanyService.emit(+this.companyServiceClaimID);
+    // tslint:disable-next-line: max-line-length
+    this.companyService.setClaimReport({companyID: this.companyID, companyName: this.companyName, companyServiceID: this.companyServiceID, claimNumber: this.companyServiceClaimID, serviceId: this.serviceID, serviceName: this.serviceName});
+    this.router.navigate(['companies', 'serviceclaims', 'reports']);
   }
 }
 

@@ -7,8 +7,9 @@ export class TariffListResponse {
 }
 
 export class Tariff {
-   rowNum: number;
+  rowNum: number;
   id: number;
+  // tariffID: number;
   // tariffCode: string;
   tariff: string;
   Amount: number;

@@ -121,7 +121,7 @@
         <div class="form-group">
           <select (change)="onTypeSelect($event.target.value)" class="form-control" required [(selectedIndex)]="attachmentTypeIndex" [formControl]="selectAttachmentType">
             <option value="-1" [disabled]="this.disableAttachmentType" selected>Please select an attachment type</option>
-            <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.name}}</option>
+            <option *ngFor="let type of this.transactionTypes" value="{{type.value}}">{{type.description}}</option>
           </select>
         </div>
         <div class="form-group d-inline">

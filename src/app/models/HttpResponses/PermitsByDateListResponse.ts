@@ -2,7 +2,7 @@ import {Outcome} from './Outcome';
 
 export class PermitsByDateListResponse {
   outcome: Outcome;
-  permits: PermitByDate[];
+  permitByDatelist: PermitByDate[];
   rowCount: number;
 }
 

@@ -55,7 +55,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.subscription = this.IMenuService.subSidebarEmit$
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(result => {
-      // console.log(result);
       this.sidebarCollapsed = result;
     });
   }

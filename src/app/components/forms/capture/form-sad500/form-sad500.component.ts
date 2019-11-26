@@ -9,11 +9,11 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog } from '@angular/material';
-import { Sad500LinePreviewComponent } from 'src/app/components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { EventService } from 'src/app/services/event.service';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -22,7 +22,8 @@ import { Subject } from 'rxjs';
 export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService, private dialog: MatDialog) { }
+              private router: Router, private captureService: CaptureService, private dialog: MatDialog,
+              private eventService: EventService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -45,7 +46,8 @@ currentTheme: string;
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
-lineErrors: SAD500Line[] = null;
+lineErrors: SAD500Line[] = [];
+toggleLines = false;
 
 form = {
   serialNo: {
@@ -76,12 +78,21 @@ form = {
     value: null,
     error: null,
   },
+  CPC: {
+    value: null,
+    error: null,
+  },
 };
 
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => this.submit());
+
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {
@@ -137,11 +148,19 @@ form = {
           key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.submit()
+          command: e => {
+            if (!this.toggleLines) {
+              this.submit();
+            }
+          }
+        },
+        {
+          key: 'alt + l',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.toggleLines = !this.toggleLines
         },
     );
-
-    this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
 
   submit() {
@@ -151,6 +170,7 @@ form = {
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       pcc: this.form.PCC.value,
+      cpc: this.form.CPC.value,
       waybillNo: this.form.waybillNo.value,
       supplierRef: this.form.supplierRef.value,
       totalCustomsValue: this.form.totalCustomsValue.value,
@@ -187,7 +207,6 @@ form = {
       value: obj.value,
       customsValue: obj.customsValue,
       productCode: obj. productCode,
-      cpc: obj.cpc,
       isDeleted: 0,
       lineNo: obj.lineNo
     };
@@ -231,6 +250,8 @@ form = {
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;
         this.form.PCC.error = res.pccError;
+        this.form.CPC.value = res.cpc;
+        this.form.CPC.error = res.cpcError;
       },
       (msg) => {
       }
@@ -245,8 +266,8 @@ form = {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
 
-        this.lineErrors = res.lines.filter(x => x.cpcError !== null
-          || x.valueError !== null || x.lineNoError !== null
+        this.lineErrors = res.lines.filter(x => x.valueError !== null
+          || x.lineNoError !== null
           || x.productCodeError !== null
           || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
@@ -262,14 +283,31 @@ form = {
     obj.sad500ID = this.attachmentID;
 
     this.captureService.sad500LineAdd(obj).then(
-      (res: { outcome: string; outcomeMessage: string; }) => {
+      (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
         if (res.outcome === 'SUCCESS') {
-          this.loadLines();
+          if (obj.duties.length > 0) {
+            obj.duties.forEach(item => {
+              this.captureService.sad500LineDutyAdd({
+                userID: 3,
+                dutyID: item.dutyTaxTypeID,
+                sad500LineID: res.createdID
+              }).then(
+                (res: Outcome) => {
+                  console.log('Assigned');
+                },
+                (msg) => {
+                  console.log('Not Assigned');
+                }
+              );
+            });
+          }
 
+          this.loadLines();
           this.lineState = 'Saved successfully';
           this.focusLineForm = !this.focusLineForm;
           this.focusLineData = null;
           this.lines = -1;
+
           setTimeout(() => this.lineState = '', 3000);
         } else {
           this.lineState = 'Failed to save';
@@ -308,6 +346,12 @@ form = {
 
   specificLine(index: number) {
     this.focusLineData = this.sad500CreatedLines[index];
+  }
+
+  newLine() {
+    this.focusLineForm = !this.focusLineForm;
+    this.focusLineData = null;
+    this.lines = -1;
   }
 
   ngOnDestroy(): void {

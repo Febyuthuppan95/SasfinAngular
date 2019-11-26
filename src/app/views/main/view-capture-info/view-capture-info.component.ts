@@ -42,7 +42,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       this.nextPage = +this.activePage + 1;
       this.filter = '';
       this.orderBy = 'Name';
-      this.orderDirection = 'ASC';
+      this.orderByDirection = 'ASC';
       this.totalShowing = 0;
       this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
@@ -87,7 +87,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   filter: string;
   activePage: number;
   orderBy: string;
-  orderDirection: string;
+  orderByDirection: string;
   totalShowing: number;
 
   noData = false;
@@ -120,7 +120,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     doctypeID: -1,
     specificCaptureInfoID: -1,
     filter: '',
-    orderBy: 'Info',
+    orderBy: this.orderBy,
     orderByDirection: 'ASC',
     rowStart: 1,
     rowEnd: 15,
@@ -147,7 +147,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
 
   tableData = null;
   tableHeadings: TableHeading[] = [
-    { title: '#', propertyName: 'rowNum', order: { enable: true } },
+    { title: '', propertyName: 'rowNum', order: { enable: false } },
     { title: 'Information', propertyName: 'info', order: { enable: true, tag: 'Info' } },
     { title: 'Type', propertyName: 'doctype', order: { enable: true, tag: 'Type' } },
   ];
@@ -196,8 +196,8 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   orderChange($event: Order) {
-    this.orderBy = $event.orderBy;
-    this.orderDirection = $event.orderByDirection;
+    this.requestModel.orderBy = $event.orderBy;
+    this.requestModel.orderByDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.loadDataset();
@@ -304,9 +304,9 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
 
     };
 
-
-    if(requestModel.doctypeID == -1) //if it hasn't been selected yet then take value from first item -.
-    requestModel.doctypeID = this.doctypeResponse.doctypes[0].doctypeID
+    if (requestModel.doctypeID === -1) { // if it hasn't been selected yet then take value from first item -.
+      requestModel.doctypeID = this.doctypeResponse.doctypes[0].doctypeID;
+    }
 
     this.transactionService.captureInfoUpdate(requestModel).then(
       (res: Outcome) => {
@@ -335,7 +335,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
   addCaptureInfoModal() {
 
     this.doctypeSelectedIndex = 0;
@@ -343,7 +343,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
    (<HTMLInputElement>document.getElementById('mydropdown')).value = '-1';
-   
+
 
   }
 
@@ -397,6 +397,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       docTypeID: 1,
       isDeleted: 1,
       info: this.captureInfo.info,
+      docTypeID: 1,
     };
 
     this.transactionService.captureInfoUpdate(requestModel).then(
