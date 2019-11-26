@@ -396,8 +396,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       captureID: this.captureInfo.captureInfoID,
       docTypeID: 1,
       isDeleted: 1,
-      info: this.captureInfo.info,
-      docTypeID: 1,
+      info: this.captureInfo.info
     };
 
     this.transactionService.captureInfoUpdate(requestModel).then(
