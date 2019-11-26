@@ -27,6 +27,7 @@ import { GetPermitsByDate } from '../models/HttpRequests/GetPermitsByDate';
 import { GetSAD500LinesByPermits } from '../models/HttpRequests/GetSAD500LinesByPermits';
 import { NumberValueAccessor } from '@angular/forms';
 import { GetServiceClaimReports } from '../models/HttpRequests/GetServiceClaimReports';
+import { AddContact } from '../models/HttpRequests/AddContact';
 
 @Injectable({
   providedIn: 'root'
@@ -297,6 +298,49 @@ export class CompanyService {
         );
     });
   }
+
+   /*Add*/
+   public addContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactAdd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  
+   /*Add*/
+   public UpdateContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactUpdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+
 
   /**
    * contacts
