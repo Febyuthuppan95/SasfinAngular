@@ -80,7 +80,7 @@
 <app-pagination
   *ngIf="this.paginate"
   [currentTheme]="this.currentTheme"
-  [recordCount]="this.displayData.length"
+  [recordCount]="+this.rowStart + +this.displayData.length - +1"
   [recordsPerPage]="this.recordsPerPage"
   [rowStart]="this.rowStart"
   [rowEnd]="this.rowEnd"

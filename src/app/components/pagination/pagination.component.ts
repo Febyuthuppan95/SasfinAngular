@@ -93,14 +93,14 @@ export class PaginationComponent implements OnInit, OnChanges {
       this.prevPageState = false;
     }
 
-    let pagenumber = +this.rowCount / +this.recordsPerPage;
-    const mod = +this.rowCount % +this.recordsPerPage;
+    // let pagenumber = +this.rowCount / +this.recordsPerPage;
+    // const mod = +this.rowCount % +this.recordsPerPage;
+    //
+    // if (mod > 0) {
+    //   pagenumber++;
+    // }
 
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
+    if (this.nextPage > this.pages.length) {
       this.nextPageState = true;
     } else {
       this.nextPageState = false;
