@@ -37,18 +37,9 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
   currentTheme: string;
   form = {
-  serialNo: {
-  value: null,
-  },
-  LRN: {
-  value: null,
-  },
   importersCode: {
   value: null,
   error: null,
-  },
-  PCC: {
-  value: null,
   },
   waybillNo: {
   value: null,
@@ -56,9 +47,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   },
   supplierRef: {
   value: null,
-  },
-  MRN: {
-  value: null,
+  error: null,
   },
   };
 
@@ -106,13 +95,9 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
           const requestModel = {
             userID: this.currentUser.userID,
             specificICIID: this.attachmentID,
-            serialNo: this.form.serialNo.value,
-            lrn: this.form.LRN.value,
-            importersCode: this.form.importersCode.value,
-            pcc: this.form.PCC.value,
             waybillNo: this.form.waybillNo.value,
+            importersCode: this.form.importersCode.value,
             supplierRef: this.form.supplierRef.value,
-            mrn: this.form.MRN.value,
             isDeleted: 0,
             attachmentStatus: 2,
           };
@@ -149,14 +134,13 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
       }).then(
       (res: ICIListResponse) => {
+        console.log(res);
         this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
         this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
         this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
+        this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
         this.form.importersCode.value = res.clearingInstructions[0].importersCode;
         this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
       },
       (msg) => {
         console.log(msg);

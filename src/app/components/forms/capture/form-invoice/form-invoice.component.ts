@@ -19,6 +19,7 @@ import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
 import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 
 @Component({
   selector: 'app-form-invoice',
@@ -90,6 +91,8 @@ form = {
     error: undefined,
   },
 };
+
+dialogOpen = false;
 
   ngOnInit() {
     this.loadCurrency();
@@ -175,41 +178,51 @@ form = {
   }
 
   submit() {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      invoiceID: this.attachmentID,
-      fromCompanyID: this.form.fromCompanyID.value,
-      fromCompany: this.form.fromCompany.value,
-      toCompanyID: this.form.toCompanyID.value,
-      toCompany: this.form.toCompany.value,
-      invoiceNo: this.form.invoiceNo.value,
-      currencyID: this.form.currencyID.value,
-      isDeleted: 0,
-      attachmentStatusID: 2,
-    };
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
 
-    if (this.form.fromCompanyID.value === null) {
-      this.form.fromCompanyID.value = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery).companyID;
-    }
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
 
-    if (this.form.toCompanyID.value === null) {
-      this.form.toCompanyID.value = this.toCompanyList.find(x => x.name === this.toCompanyQuery).companyID;
-    }
+        if (status) {
+          const requestModel = {
+            userID: this.currentUser.userID,
+            invoiceID: this.attachmentID,
+            fromCompanyID: this.form.fromCompanyID.value,
+            fromCompany: this.form.fromCompany.value,
+            toCompanyID: this.form.toCompanyID.value,
+            toCompany: this.form.toCompany.value,
+            invoiceNo: this.form.invoiceNo.value,
+            currencyID: this.form.currencyID.value,
+            isDeleted: 0,
+            attachmentStatusID: 2,
+          };
 
-    this.captureService.invoiceUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction', 'attachments']);
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          // if (this.form.fromCompanyID.value === null) {
+          //   this.form.fromCompanyID.value = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery).companyID;
+          // }
+
+          // if (this.form.toCompanyID.value === null) {
+          //   this.form.toCompanyID.value = this.toCompanyList.find(x => x.name === this.toCompanyQuery).companyID;
+          // }
+
+          this.captureService.invoiceUpdate(requestModel).then(
+            (res: Outcome) => {
+              if (res.outcome === 'SUCCESS') {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+                this.router.navigate(['transaction', 'attachments']);
+              } else {
+                this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              }
+            },
+            (msg) => {
+              console.log(msg);
+              this.notify.errorsmsg('Failure', 'Cannot reach server');
+            }
+          );
         }
-      },
-      (msg) => {
-        console.log(msg);
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
+      });
+    }
   }
 
   updateLine(obj: InvoiceLine) {
