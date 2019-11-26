@@ -7,8 +7,8 @@ export class SPSAD500LineList {
 }
 
 export class SAD500Line {
-    rowNum: number;
-    sad500LineID: number;
+    rowNum?: number;
+    sad500LineID?: number;
     sad500ID: number;
     tariffID: number;
     tariff: string;

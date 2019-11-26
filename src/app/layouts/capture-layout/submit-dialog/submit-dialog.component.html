@@ -1,6 +1,8 @@
 <div mat-dialog-content>
-  <div style="padding: 24px;text-align: center;">
-    <p>Are you sure you want to submit?</p>
-    <button mat-raised-button>Submit</button>&nbsp;<button mat-button>Cancel</button>
+  <div style="text-align: center;">
+    <p>Submit Capture</p>
+    <br>
+    <button mat-raised-button (click)="this.confirm()" class="bg-success text-light">Submit</button>&nbsp;<button mat-button (click)="this.cancel()">Cancel</button>
   </div>
 </div>
+

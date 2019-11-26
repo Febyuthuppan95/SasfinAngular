@@ -26,6 +26,8 @@ export class SAD500LineCreateRequest {
   failed?: boolean;
   updateSubmit?: boolean;
   duties?: Duty[];
+  sad500LineID?: number;
+  rowNum?: number;
 }
 
 export class SAD500LineUpdateModel {
@@ -53,4 +55,5 @@ export class Duty {
   duty: number;
   name: string;
   dutyTaxTypeID: number;
+  sad500Line?: number;
 }

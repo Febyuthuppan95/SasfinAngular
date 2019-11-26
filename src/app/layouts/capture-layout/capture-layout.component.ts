@@ -19,6 +19,7 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog.component';
 import { EventService } from 'src/app/services/event.service';
 import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
+import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -86,6 +87,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
   openMore = true;
   openPreview = true;
+  dialogOpen = false;
 
   ngOnInit() {
     this.companyShowToggle = false;
@@ -374,7 +376,17 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   submitCapture() {
-    this.eventService.triggerCaptureEvent();
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
+
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          this.eventService.triggerCaptureEvent();
+        }
+      });
+    }
   }
 
 }

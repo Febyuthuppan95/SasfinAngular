@@ -133,7 +133,6 @@ import { ContextMenuCompanyItemsComponent } from './components/menus/context-men
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 
 import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
-import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
@@ -183,6 +182,7 @@ import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/su
 
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -272,7 +272,6 @@ import { ContextMenuServiceClaimsComponent } from './components/menus/context-me
     ContextMenuCompanyItemsComponent,
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
-    FormShippingDocumentComponent,
     Sad500LinesComponent,
     FormSAD500LineComponent,
     Sad500LinePreviewComponent,
@@ -310,6 +309,7 @@ import { ContextMenuServiceClaimsComponent } from './components/menus/context-me
     FormInvoiceLinesComponent,
     QuitDialogComponent,
     SubmitDialogComponent,
+    FormWaybillComponent,
   ],
   imports: [
     BrowserModule,
@@ -385,7 +385,9 @@ import { ContextMenuServiceClaimsComponent } from './components/menus/context-me
     AttachmentDialogComponent,
     FormInvoiceComponent,
     QuitDialogComponent,
-    SubmitDialogComponent
+    SubmitDialogComponent,
+    FormVOCComponent,
+    FormWaybillComponent
   ]
 })
 export class AppModule { }

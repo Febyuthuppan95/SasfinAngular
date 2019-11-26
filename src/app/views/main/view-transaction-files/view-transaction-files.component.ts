@@ -128,6 +128,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
     { name: 'VOC', value: 5, description: 'VOC' },
     { name: 'INVOICE', value: 6, description: 'Invoice' },
+    { name: 'WAYBILL', value: 7, description: 'Waybill' },
   ];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
@@ -168,7 +169,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
 
   paginateData() {
-
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -298,7 +298,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   updatePagination() {
-    if (this.dataset.attachments.length <= this.totalShowing) {
+    if (this.rowCount <= this.rowCountPerPage) {
       this.prevPageState = false;
       this.nextPageState = false;
     } else {
@@ -322,7 +322,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.showingPages[2] = this.pages[+this.activePage + 1];
       }
     }
-
   }
 
   toggleFilters() {
