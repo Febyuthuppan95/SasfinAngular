@@ -17,20 +17,21 @@
   </div>
   <div class="form-group">
     <input type="text"
-      [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
-      [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
-      placeholder="Serial No" />
-      <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
-  </div>
-  <div class="form-group">
-    <input type="text"
       [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
       placeholder="LRN" />
       <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
   </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
+      [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
+      placeholder="Serial No" />
+      <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
+  </div>
+
   <div class="form-group">
     <input type="text"
       [(ngModel)]="this.form.importersCode.value" [ngModelOptions]="{standalone: true}"
@@ -40,6 +41,15 @@
       placeholder="Importers Code" />
       <p class="invalid-control-label" *ngIf="this.form.importersCode.error !== null">{{this.form.importersCode.error}}</p>
 
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
+
+      placeholder="Waybill No" />
+      <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
   </div>
   <div class="form-group">
     <input type="text"
@@ -59,15 +69,6 @@
 
       placeholder="FOB" />
       <p class="invalid-control-label" *ngIf="this.form.FOB.error !== null">{{this.form.FOB.error}}</p>
-  </div>
-  <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
-
-      placeholder="Waybill No" />
-      <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
   </div>
   <div class="form-group">
     <input type="text"
