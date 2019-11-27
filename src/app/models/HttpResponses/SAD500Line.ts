@@ -24,4 +24,5 @@ export class SAD500Line {
     unitOfMeasureError?: string;
     productCodeError?: string;
     valueError?: string;
+    isPersist?: boolean;
 }

@@ -88,6 +88,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   openMore = true;
   openPreview = true;
   dialogOpen = false;
+  noCaptureInformation = true;
 
   ngOnInit() {
     this.companyShowToggle = false;
@@ -252,6 +253,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
+
+        if (this.companyInfoList.captureInfo.length > 0) {
+          this.noCaptureInformation = false;
+        }
      },
       (msg) => {
       }

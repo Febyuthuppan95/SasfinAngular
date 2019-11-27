@@ -39,4 +39,5 @@ export class InvoiceLine {
   quantityError?: string;
   itemValueError?: string;
   userID?: number;
+  isPersist?: boolean;
 }

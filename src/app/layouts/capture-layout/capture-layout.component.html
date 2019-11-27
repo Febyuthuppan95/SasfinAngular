@@ -95,7 +95,7 @@
       <div *ngFor="let info of this.companyInfoList.captureInfo" class="info-item">
         <p>{{info.info}}</p>
       </div>
-      <div class="info-item bg-transparent text-muted">
+      <div class="info-item bg-transparent text-muted" *ngIf="this.noCaptureInformation">
         <p>No Capture Info</p>
       </div>
     </div>

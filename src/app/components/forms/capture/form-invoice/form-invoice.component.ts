@@ -1,16 +1,15 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 import { CaptureService } from 'src/app/services/capture.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
 import { EventService } from 'src/app/services/event.service';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { SAD500Line, SPSAD500LineList } from 'src/app/models/HttpResponses/SAD500Line';
 import { Subject } from 'rxjs';
-import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
+import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 import { takeUntil } from 'rxjs/operators';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { InvoiceGetResponse, InvoiceLinesResponse, InvoiceLine } from 'src/app/models/HttpResponses/Invoices';
@@ -30,7 +29,8 @@ export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-            private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService) { }
+            private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
+            private snackbar: MatSnackBar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -38,6 +38,12 @@ shortcuts: ShortcutInput[] = [];
 private notify: NotificationComponent;
 
 @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
+@ViewChild('invoiceLinesTooltip', {static : false})
+invoiceLinesTooltip: MatTooltip;
+
+@ViewChild('invoiceTooltip', {static : false})
+invoiceTooltip: MatTooltip;
 
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
@@ -93,6 +99,9 @@ form = {
 };
 
 dialogOpen = false;
+lineQueue: InvoiceLine[] = [];
+lineIndex = 0;
+loader = false;
 
   ngOnInit() {
     this.loadCurrency();
@@ -164,7 +173,7 @@ dialogOpen = false;
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (!this.toggleLines) {
-              this.submit();
+              this.saveLines();
             }
           }
         },
@@ -172,7 +181,19 @@ dialogOpen = false;
           key: 'alt + l',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.toggleLines = !this.toggleLines
+          command: e => {
+            this.toggleLines = !this.toggleLines;
+
+            if (this.toggleLines) {
+              this.invoiceTooltip.hide();
+              this.invoiceLinesTooltip.show();
+              setTimeout(() => { this.invoiceLinesTooltip.hide(); } , 1000);
+            } else {
+              this.invoiceLinesTooltip.hide();
+              this.invoiceTooltip.show();
+              setTimeout(() => { this.invoiceTooltip.hide(); } , 1000);
+            }
+          }
         },
     );
   }
@@ -198,13 +219,19 @@ dialogOpen = false;
             attachmentStatusID: 2,
           };
 
-          // if (this.form.fromCompanyID.value === null) {
-          //   this.form.fromCompanyID.value = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery).companyID;
-          // }
+          if (this.form.fromCompanyID.value === null) {
+            const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
+            if (fromCompany !== undefined) {
+              this.form.fromCompanyID.value = fromCompany.companyID;
+            }
+          }
 
-          // if (this.form.toCompanyID.value === null) {
-          //   this.form.toCompanyID.value = this.toCompanyList.find(x => x.name === this.toCompanyQuery).companyID;
-          // }
+          if (this.form.toCompanyID.value === null) {
+            const toCompany = this.toCompanyList.find(x => x.name === this.toCompanyQuery);
+            if (toCompany !== undefined) {
+              this.form.toCompanyID.value = toCompany.companyID;
+            }
+          }
 
           this.captureService.invoiceUpdate(requestModel).then(
             (res: Outcome) => {
@@ -322,33 +349,92 @@ dialogOpen = false;
     );
   }
 
+  // addToQueue(obj: InvoiceLine) {
+  //   this.lineState = 'Saving new line';
+
+  //   obj.userID = 3;
+  //   obj.invoiceID = this.attachmentID;
+
+  //   this.captureService.invoiceLineAdd(obj).then(
+  //     (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+  //       if (res.outcome === 'SUCCESS') {
+  //         this.loadLines();
+  //         this.lineState = 'Saved successfully';
+  //         this.focusLineForm = !this.focusLineForm;
+  //         this.focusLineData = null;
+  //         this.lines = -1;
+
+  //         setTimeout(() => this.lineState = '', 3000);
+  //       } else {
+  //         this.lineState = 'Failed to save';
+  //         setTimeout(() => this.lineState = '', 3000);
+  //       }
+
+  //     },
+  //     (msg) => {
+  //       this.lineState = 'Failed to save';
+  //       setTimeout(() => this.lineState = '', 3000);
+  //     }
+  //   );
+  // }
+
   addToQueue(obj: InvoiceLine) {
-    this.lineState = 'Saving new line';
-
-    obj.userID = 3;
+    obj.userID = this.currentUser.userID;
     obj.invoiceID = this.attachmentID;
+    obj.isPersist = false;
 
-    this.captureService.invoiceLineAdd(obj).then(
-      (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadLines();
-          this.lineState = 'Saved successfully';
-          this.focusLineForm = !this.focusLineForm;
-          this.focusLineData = null;
-          this.lines = -1;
+    this.lineQueue.push(obj);
+    this.sad500CreatedLines.push(obj);
+    // this.lineState = 'Line added to queue';
+    this.focusLineForm = !this.focusLineForm;
+    this.focusLineData = null;
+    this.lines = -1;
+    // setTimeout(() => this.lineState = '', 3000);
+    this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+      duration: 3000,
+      panelClass: ['capture-snackbar'],
+      horizontalPosition: 'center',
+    });
+  }
 
-          setTimeout(() => this.lineState = '', 3000);
-        } else {
-          this.lineState = 'Failed to save';
-          setTimeout(() => this.lineState = '', 3000);
+  saveLines() {
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
+
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          if (this.lineIndex < this.lineQueue.length) {
+            this.captureService.invoiceLineAdd(this.lineQueue[this.lineIndex]).then(
+              (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+                if (res.outcome === 'SUCCESS') {
+                    this.nextLineAsync();
+                } else {
+                  console.log('Line not saved');
+                }
+              },
+              (msg) => {
+                console.log('Client Error');
+              }
+            );
+          } else {
+            this.submit();
+          }
         }
+      });
+    }
+  }
 
-      },
-      (msg) => {
-        this.lineState = 'Failed to save';
-        setTimeout(() => this.lineState = '', 3000);
-      }
-    );
+  nextLineAsync() {
+    this.lineIndex++;
+
+    if (this.lineIndex < this.lineQueue.length) {
+      this.saveLines();
+    } else {
+      this.loader = false;
+      this.submit();
+    }
   }
 
   loadCompanies() {

@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500ListResponse, SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -30,6 +31,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private captureService: CaptureService,
+    private companyService: CompanyService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -140,6 +142,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   currentAttachment = 0;
   uploading = false;
   isVOC = false;
+  companyName: string;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -161,6 +164,14 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     .subscribe((data) => {
       if (data !== null || data !== undefined) {
         this.transactionID = data.transactionID;
+      }
+    });
+
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
+      if (obj !== null || obj !== undefined) {
+        this.companyName = obj.companyName;
       }
     });
 
@@ -375,7 +386,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         attach.type,
         this.transactionID,
         this.currentUser.userID,
-        'The Boring Company', // Change to company name
+        this.companyName,
         attach.sad500LineID
       ).then(
         (res) => {

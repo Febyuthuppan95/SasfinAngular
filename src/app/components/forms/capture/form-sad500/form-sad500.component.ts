@@ -8,7 +8,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService) { }
+              private eventService: EventService, private snackbar: MatSnackBar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -32,6 +32,12 @@ shortcuts: ShortcutInput[] = [];
 private notify: NotificationComponent;
 
 @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
+@ViewChild('sadLinesTooltip', {static : false})
+sadLinesTooltip: MatTooltip;
+
+@ViewChild('sad500Tooltip', {static : false})
+sad500Tooltip: MatTooltip;
 
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
@@ -166,7 +172,19 @@ dialogOpen = false;
           key: 'alt + l',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.toggleLines = !this.toggleLines
+          command: e => {
+            this.toggleLines = !this.toggleLines;
+
+            if (this.toggleLines) {
+              this.sad500Tooltip.hide();
+              this.sadLinesTooltip.show();
+              setTimeout(() => { this.sadLinesTooltip.hide(); } , 1000);
+            } else {
+              this.sadLinesTooltip.hide();
+              this.sad500Tooltip.show();
+              setTimeout(() => { this.sad500Tooltip.hide(); } , 1000);
+            }
+          }
         },
     );
   }
@@ -287,14 +305,20 @@ dialogOpen = false;
   addToQueue(obj: SAD500LineCreateRequest) {
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentID;
+    obj.isPersist = false;
 
     this.lineQueue.push(obj);
     this.sad500CreatedLines.push(obj);
-    this.lineState = 'Line added to queue';
+    // this.lineState = 'Line added to queue';
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
     this.lines = -1;
-    setTimeout(() => this.lineState = '', 3000);
+    // setTimeout(() => this.lineState = '', 3000);
+    this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+      duration: 3000,
+      panelClass: ['capture-snackbar'],
+      horizontalPosition: 'center',
+    });
   }
 
   saveLines() {

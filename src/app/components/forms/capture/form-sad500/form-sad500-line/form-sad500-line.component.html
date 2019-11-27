@@ -63,7 +63,7 @@
                 </li>
                 <li class="duty-item" *ngFor="let item of dutyList.duties; let i = index" (click)="assignDuty(item)" (keypress)="assignDuty(item)" [tabindex]="i">
                   <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                  <small>{{item.name}}</small>
+                  <small>{{item.code}}</small>
                 </li>
               </ul>
             </div>
@@ -80,7 +80,7 @@
                   </li>
                   <li *ngFor="let item of assignedDuties; let i = index" class="duty-item" (click)="revokeDuty(item)" [tabindex]="i">
                       <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                      <small>{{item.name}}</small>
+                      <small>{{item.code}}</small>
                   </li>
               </ul>
             </div>
@@ -97,7 +97,7 @@
                     </li>
                     <li *ngFor="let item of dutiesToBeSaved; let i = index" class="duty-item" (click)="revokeDuty(item)" (keypress)="revokeDuty(item)" [tabindex]="i">
                         <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                        <small>{{item.name}}</small>
+                        <small>{{item.code}}</small>
                     </li>
                 </ul>
               </div>
