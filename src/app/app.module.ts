@@ -181,6 +181,7 @@ import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-d
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
+import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 
 @NgModule({
   declarations: [
@@ -308,6 +309,7 @@ import { EventService } from './services/event.service';
     PDFViewerComponent,
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
+    PreviewReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -380,7 +382,8 @@ import { EventService } from './services/event.service';
     FormSAD500Component,
     FormImportClearingInstructionComponent,
     FormCustomReleaseComponent,
-    AttachmentDialogComponent
+    AttachmentDialogComponent,
+    PreviewReportComponent
   ]
 })
 export class AppModule { }

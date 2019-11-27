@@ -52,18 +52,11 @@
     <form>
         <div class="modal-body">
           <div class="form-group">
-            <div class="row">
-              <div class="col-6">
-                <label class="control-label">Start Date:</label>
-                <input [(ngModel)]="this.startdate" [ngModelOptions]="{standalone: true}"
-                type="date" class="form-control" required/>
-              </div>
-              <div class="col-6">
-                <label class="control-label">End Date:</label>
-                <input #myInput [(ngModel)]="this.enddate" [ngModelOptions]="{standalone: true}"
-                type="date" class="form-control" (change)="enddateselected($event.target.value)" required/>
-             </div>
-          </div>
+            <div class="col-6">
+              <label class="control-label">Submission Date:</label>
+              <input #myInput [(ngModel)]="this.submissiondate" [ngModelOptions]="{standalone: true}"
+              type="date" class="form-control" (change)="enddateselected($event.target.value)" required/>
+            </div>
           </div>
           <mat-form-field class="width">
             <mat-label>Permits</mat-label>

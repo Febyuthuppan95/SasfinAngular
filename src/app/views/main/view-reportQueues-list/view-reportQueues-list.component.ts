@@ -213,6 +213,7 @@ export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
       userID: this.currentUser.userID,
       filter: this.filter,
       reportQueueID: -1,
+      companyID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

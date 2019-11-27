@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+  <app-pdf-viewer
+  *ngIf="this.isReady"
+  class="viewer"
+  [(pdf)]="src"
+  [minZoom]="0.5">
+  </app-pdf-viewer>
+</div>
