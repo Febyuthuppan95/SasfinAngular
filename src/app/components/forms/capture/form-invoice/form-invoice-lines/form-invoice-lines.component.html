@@ -6,23 +6,25 @@
       [(ngModel)]="this.form.prodCode" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Product Code"
-      [ngClass]="{'form-control-invalid': this.form.prodCodeError !== null}"/>
-      <p class="invalid-control-label" *ngIf="this.form.prodCodeError !== null" style="width: 100%;">{{this.form.prodCodeError}}</p>
+      [ngClass]="{'form-control-invalid': this.form.prodCodeError !== null && this.form.prodCodeError !== undefined}"/>
+      <p class="invalid-control-label" *ngIf="this.form.prodCodeError !== null && this.form.prodCodeError !== undefined" style="width: 100%;">{{this.form.prodCodeError}}</p>
   </div>
   <div class="form-group">
     <label class="text-muted">Quantity</label>
     <input type="number"
       [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      [ngClass]="{'form-control-invalid': this.form.quantityError !== null && this.form.quantityError !== undefined}"
       placeholder="Quantity" style="margin-top:0"/>
-      <p class="invalid-control-label" *ngIf="this.form.quantityError !== null">{{this.form.quantityError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.quantityError !== null && this.form.quantityError !== undefined">{{this.form.quantityError}}</p>
   </div>
   <div class="form-group">
     <label class="text-muted">Item Value</label>
     <input type="number"
       [(ngModel)]="this.form.itemValue" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      [ngClass]="{'form-control-invalid': this.form.itemValueError !== null && this.form.itemValueError !== undefined}"
       placeholder="Item Value" />
-      <p class="invalid-control-label" *ngIf="this.form.itemValueError !== null">{{this.form.itemValueError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.itemValueError !== null && this.form.itemValueError !== undefined">{{this.form.itemValueError}}</p>
   </div>
 </form>

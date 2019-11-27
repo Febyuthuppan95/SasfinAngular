@@ -172,9 +172,7 @@ loader = false;
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-            if (!this.toggleLines) {
               this.saveLines();
-            }
           }
         },
         {
@@ -199,13 +197,6 @@ loader = false;
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
@@ -247,9 +238,6 @@ loader = false;
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
-        }
-      });
-    }
   }
 
   updateLine(obj: InvoiceLine) {
@@ -296,9 +284,9 @@ loader = false;
   loadCapture() {
     this.captureService.invoiceList({
       invoiceID: this.attachmentID,
-      userID: 3,
+      userID: this.currentUser.userID,
       rowStart: 1,
-      rowEnd: 10,
+      rowEnd: 15,
       filter: '',
       orderBy: '',
       orderByDirection: '',
@@ -406,7 +394,17 @@ loader = false;
 
         if (status) {
           if (this.lineIndex < this.lineQueue.length) {
-            this.captureService.invoiceLineAdd(this.lineQueue[this.lineIndex]).then(
+            const currentLine = this.lineQueue[this.lineIndex];
+
+            const requestObject = {
+              userID: this.currentUser.userID,
+              invoiceID: this.attachmentID,
+              prodCode: currentLine.prodCode,
+              quantity: currentLine.quantity,
+              itemValue: currentLine.itemValue
+            };
+
+            this.captureService.invoiceLineAdd(requestObject).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
                     this.nextLineAsync();
