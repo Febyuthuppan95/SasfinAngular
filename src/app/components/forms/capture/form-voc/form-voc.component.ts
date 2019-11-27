@@ -23,10 +23,9 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
   templateUrl: './form-voc.component.html',
   styleUrls: ['./form-voc.component.scss']
 })
-export class FormVOCComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-                private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-                private dialog: MatDialog) { }
+                private tariffService: TariffService, private captureService: CaptureService, private dialog: MatDialog) { }
 
     currentUser: User;
 
@@ -100,7 +99,6 @@ export class FormVOCComponent implements OnInit, OnChanges, AfterViewInit, OnDes
       this.loadUnits();
       this.loadTarrifs();
       this.loadDuties();
-
     }
 
     ngAfterViewInit(): void {
@@ -122,49 +120,6 @@ export class FormVOCComponent implements OnInit, OnChanges, AfterViewInit, OnDes
             command: e => this.focusDutiesQuery = !this.focusDutiesQuery
           },
       );
-    }
-
-    ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-      if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
-        this.isUpdate = true;
-
-        this.form.customsValue = this.updateSAD500Line.customsValue;
-        this.form.lineNo = this.updateSAD500Line.lineNo;
-        this.form.productCode = this.updateSAD500Line.productCode;
-        this.form.tariff = this.updateSAD500Line.tariff;
-        this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
-        this.form.value = this.updateSAD500Line.value;
-        this.form.tariffError = this.updateSAD500Line.tariffError;
-        this.form.customsValueError = this.updateSAD500Line.customsValueError;
-        this.form.valueError = this.updateSAD500Line.valueError;
-        this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
-        this.form.lineNoError = this.updateSAD500Line.lineNoError;
-        this.form.productCodeError = this.updateSAD500Line.productCodeError;
-
-        this.loadDuties();
-      } else {
-        this.isUpdate = false;
-        this.dutiesToBeSaved = [];
-        this.form = {
-          tariffID: -1,
-          tariff: '',
-          customsValue: 0,
-          lineNo: '',
-          unitOfMeasureID: -1,
-          unitOfMeasure: '',
-          productCode: '',
-          value: '',
-          cpcError: null,
-          tariffError: null,
-          customsValueError: null,
-          lineNoError: null,
-          unitOfMeasureError: null,
-          productCodeError: null,
-          valueError: null,
-        };
-        this.loadDuties();
-      }
-
     }
 
     loadUnits(): void {
@@ -190,38 +145,7 @@ export class FormVOCComponent implements OnInit, OnChanges, AfterViewInit, OnDes
           this.dialogOpen = false;
 
           if (status) {
-            if (this.isUpdate) {
-              this.updateSADLine.emit({
-                rowNum: -1,
-                sad500LineID: this.updateSAD500Line.sad500LineID,
-                sad500ID: -1,
-                tariffID: 1,
-                tariff: this.form.tariff,
-                customsValue: this.form.customsValue,
-                lineNo: this.form.lineNo,
-                unitOfMeasureID: 1,
-                unitOfMeasure: this.form.unitOfMeasure,
-                productCode: this.form.productCode,
-                value: this.form.value,
-              });
-            } else {
-              this.submitSADLine.emit({
-                userID: -1,
-                sad500ID: -1,
-                tariffID: 1,
-                tariff: this.form.tariff,
-                customsValue: this.form.customsValue,
-                lineNo: this.form.lineNo,
-                unitOfMeasureID: 1,
-                unitOfMeasure: this.form.unitOfMeasure,
-                productCode: this.form.productCode,
-                value: this.form.value,
-                duties: this.dutiesToBeSaved
-              });
-
-              this.dutiesToBeSaved = [];
-              this.loadDuties();
-            }
+              // update VOC
           }
         });
       }
@@ -229,6 +153,7 @@ export class FormVOCComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
     loadTarrifs() {
       this.tariffService.list().then(
+        // tslint:disable-next-line: max-line-length
         (res: { tariffList: { amount: number; description: string; duty: number; unit: string }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
           this.tariffsTemp = res.tariffList;
