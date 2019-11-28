@@ -36,7 +36,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
 
   lines() {
     // tslint:disable-next-line: max-line-length
-    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType});
     this.router.navigate(['sad500/lines']);
   }
 

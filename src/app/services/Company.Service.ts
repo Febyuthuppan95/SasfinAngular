@@ -753,6 +753,23 @@ export class CompanyService {
     });
   }
 
+  public getItemTypesList(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/items`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getAlternateItemList(model: GetIAlternateItemList) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {

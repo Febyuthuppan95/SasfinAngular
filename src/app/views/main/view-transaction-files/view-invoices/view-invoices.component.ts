@@ -32,7 +32,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   // Data Table Configuration
   tableConfig: TableConfig = {
     header:  {
-      title: 'Import Clearing Instruction',
+      title: 'Invoices',
       addButton: {
        enable: false,
       },
@@ -74,6 +74,8 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     transactionID: -1,
   };
 
+  Transaction: string;
+
   @ViewChild(NotificationComponent, { static: false})
   private notify: NotificationComponent;
 
@@ -86,15 +88,17 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
     });
 
-  
+
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       if (data.transactionID !== undefined) {
+        this.Transaction = data.transactionName;
         this.listRequest.transactionID = data.transactionID;
         this.loadDataset();
       }
+      this.tableConfig.header.title = `${ this.Transaction } - Invoices`;
     });
   }
 
@@ -124,7 +128,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   {
     this.router.navigate(['companies/transactions']);
   }
-  
+
   searchFilter(query: string) {
     this.listRequest.filter = query;
     this.listRequest.rowStart = 1;

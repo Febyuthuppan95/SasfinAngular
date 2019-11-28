@@ -305,7 +305,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   enddateselected(date: Date) {
     const today = new Date();
     const date2 = new Date(date);
-
     const result = this.compareDate(date2, today);
 
     if (result === 1) {
@@ -384,11 +383,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
    polulateLines() {
-
-    if (!this.complete) {
       const requestModel = {
         userID: this.currentUser.userID,
-        sad500linesIDs: this.SAD500SelectedLines
+        sad500linesIDs: this.SAD500SelectedLines,
+        status: this.complete
       };
 
       this.companyService.addSAD500Linesclaim(requestModel).then(
@@ -405,38 +403,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
           this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
         }
       );
-    } else {
-      // const requestModel = {
-      //   userID: this.currentUser.userID,
-      //   sad500lines: this.SAD500SelectedLines
-      // };
-      // this.companyService.addSAD500Linesclaim(requestModel).then(
-      //   (res: {outcome: Outcome}) => {
-      //     if (res.outcome.outcome === 'SUCCESS') {
-      //         this.notify.successmsg('Success', 'SAD500 lines has been Added and claim has been added');
-      //         this.closePopulateModal.nativeElement.click();
-      //         this.loadServiceClaims(false);
-      //       } else {
-      //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-      //     }
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
-      //   }
-      // );
-    }
    }
 
-   reports() {
-    const requestModel = {
-
-    };
-
-  }
-
   compareDate(date1: Date, date2: Date): number {
-
-
     const d1Year = date1.getFullYear();
     const d1Month = date1.getMonth();
     const d1Day = date1.getDate();
@@ -444,8 +413,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     const d2Year = date2.getFullYear();
     const d2Month = date2.getMonth();
     const d2Day = date2.getDate();
-
-    console.log(d1Day + ', ' + d2Day);
 
     if (d1Year < d2Year) {
       return 1;
@@ -458,10 +425,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         return -1;
       } else if (d1Month === d2Month) {
         if (d1Day < d2Day) {
-          console.log('here');
           return 1;
         } else if (d1Day > d2Day) {
-          console.log('shouldnt be here');
           return -1;
         } else if (d1Day === d2Day) {
           return 0;
