@@ -1,8 +1,6 @@
-export class GetPermitsByDate {
+export class GetServiceClaimReports {
   userID: number;
-  companyID: number;
-  permitstartDate: Date;
-  permitsendDate: Date;
+  companyServiceClaimID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

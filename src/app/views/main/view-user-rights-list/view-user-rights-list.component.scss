@@ -29,21 +29,21 @@
   }
   .btn-add:active {
     border: 2px solid #79d90b;
-  
+
   }
   .btn-add i:hover {
     color:#fff;
   }
   .form-control:focus {
     border: 1px #4d83ff solid;
-  
+
   }
-  
+
   .active-page {
     background: #4d83ff;
     color: #f2f2f2;
   }
-  
+
   .page-link {
     border: none;
     border-radius: 0;
@@ -65,11 +65,11 @@
     border: none;
     border-radius: 0;
   }
-  
+
   td {
     overflow-x: auto;
   }
-  
+
   .btn-sort {
     padding: 0;
     margin: 0;
@@ -78,36 +78,36 @@
     font-weight: 500;
     text-align: left;
   }
-  
+
   .btn-sort>p {
     display: inline
   }
-  
+
   .btn-sort:hover {
     color: #4d83ff;
   }
-  
+
   .hover-pointer {
     cursor: pointer;
   }
-  
+
   .order-active {
     color: #4d83ff !important;
   }
-  
+
   .order-not-active {
     color: #333333;
   }
-  
+
   .table {
     overflow-x: auto;
   }
-  
+
   .ls-card-body {
     width: 100%;
     padding: 25px;
   }
-  
+
   .mdi-close:hover {
     color: #3877ff;
   }
@@ -120,13 +120,8 @@
   .btn-success:hover, .btn-danger:hover {
     color: #3877ff;
   }
-  
-  
-  
-  
-  
-  
-  
+
+
   //brandon's css
   .popup {
     position: relative;
@@ -137,7 +132,7 @@
     -ms-user-select: none;
     user-select: none;
   }
-  
+
   .popup .popuptext {
     visibility: hidden;
     width: 160px;
@@ -152,7 +147,7 @@
     left: 50%;
     margin-left: -80px;
   }
-  
+
   .popup .popuptext::after {
     content: "";
     position: absolute;
@@ -163,24 +158,24 @@
     border-style: solid;
     border-color: #555 transparent transparent transparent;
   }
-  
+
   .popup .show {
     visibility: visible;
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
   }
-  
+
   /* Add animation (fade in the popup) */
   @-webkit-keyframes fadeIn {
     from {opacity: 0;}
     to {opacity: 1;}
   }
-  
+
   @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
   }
-  
+
   tr {
     cursor: pointer;
   }
@@ -191,25 +186,25 @@
   ::-webkit-scrollbar {
     width: 20px;
   }
-  
+
   /* Track */
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
   }
-  
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #88ADFE;
     border-radius: 10px;
     border: 1px solid #6a97f7;
   }
-  
+
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #88ADFE;
   }
-  
+
   }
   .add-scroll .modal-list-rights {
     direction: rtl;
@@ -227,19 +222,19 @@
     ::-webkit-scrollbar {
       width: 20px;
     }
-  
+
     /* Track */
     ::-webkit-scrollbar-track {
       box-shadow: inset 0 0 5px grey;
       border-radius: 10px;
     }
-  
+
     /* Handle */
     ::-webkit-scrollbar-thumb {
       background: #007BFF;
       border-radius: 10px;
     }
-  
+
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
       background: #007BFF;
@@ -251,19 +246,19 @@
     ::-webkit-scrollbar {
       width: 20px;
     }
-  
+
     /* Track */
     ::-webkit-scrollbar-track {
       box-shadow: inset 0 0 5px grey;
       border-radius: 10px;
     }
-  
+
     /* Handle */
     ::-webkit-scrollbar-thumb {
       background: #007BFF;
       border-radius: 10px;
     }
-  
+
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
       background: #007BFF;
@@ -310,7 +305,7 @@
     :first-child {
       color: #fff;
     }
-  
+
   }
   .right-list li:hover {
     color: #5085fa
@@ -340,7 +335,7 @@
     color: #5085fa;
     padding-bottom: 3px;
   }
-  
+
   td {
     border: 1px solid transparent !important;
   }
@@ -352,5 +347,4 @@
       border: 1px solid transparent !important;
     }
   }
-  
-  
+

@@ -183,6 +183,15 @@ import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/su
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
 import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
+import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
+import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
+import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
+import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
+import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
+import { EventService } from './services/event.service';
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -310,6 +319,9 @@ import { FormWaybillComponent } from './components/forms/capture/form-waybill/fo
     QuitDialogComponent,
     SubmitDialogComponent,
     FormWaybillComponent,
+    ViewCompanyServiceclaimReportComponent,
+    ContextMenuCompanyServiceclaimReportComponent,
+    ContextMenuCompanyContactsComponent,
   ],
   imports: [
     BrowserModule,

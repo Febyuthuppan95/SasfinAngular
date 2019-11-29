@@ -352,7 +352,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
               }
             });
         });
-          console.log(this.serviceslist);
       },
       msg => { }
     );
@@ -446,11 +445,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
 
   Add() {
-
-
-    console.log(this.serviceslist.length);
-
-
     this.StartDate = null;
     this.EndDate = null;
     this.ConID = -1;
@@ -505,7 +499,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
       this.companyService.AddService(requestModel).then(
         (res: {outcome: Outcome}) => {
-            console.log(res);
             if (res.outcome.outcome !== 'SUCCESS') {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             } else {
