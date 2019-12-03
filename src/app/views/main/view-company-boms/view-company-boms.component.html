@@ -17,6 +17,7 @@
         [orderByDirection]="this.orderDirection"
         [tableHeader]="this.tableHeader"
         (backButtonEvent)="back()"
+        (addButtonEvent)="add()"
         (selectedRecord)="selectedRecord($event)"
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
@@ -38,6 +39,40 @@
   <app-context-menu-boms [BOMID]="this.BOM.bomid" [Status]="this.BOM.status"></app-context-menu-boms>
 </app-menu>
 
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#addBOM" #openAddModal></button>
+<div class="modal fade" id="addBOM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Upload BOM</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="saveBOMUpload()">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label">File Name:</label>
+              <input type="text" placeholder="Item" class="form-control"
+               [(ngModel)]="this.item" [ngModelOptions]="{standalone: true}"  required/>
+            </div>
+            <div class="form-group">
+              <label for="addBOMFile">
+                <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+              </label>
+              <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+              <input id="addBOMFile" hidden #bomFile type="file" (change)="onFileChange($event.target.files)" required>
+            </div>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        <button type="submit" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 <!--Edit Modal-->
 <!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
 <div class="modal fade" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">

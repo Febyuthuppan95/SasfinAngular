@@ -47,6 +47,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.rowCount = 0;
   }
 
+  
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
 
