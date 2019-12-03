@@ -55,6 +55,8 @@ import { ViewPermitsListComponent } from './views/main/view-permits-list/view-pe
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
+// import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+// import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
   {
     path: '',
@@ -78,7 +80,7 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
+          {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
@@ -114,7 +116,8 @@ const routes: Routes = [
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
-          { path: 'transaction/invoices', component: ViewInvoicesComponent },
+          { path: 'transaction/invoices', component: ViewInvoicesComponent }
+          // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
