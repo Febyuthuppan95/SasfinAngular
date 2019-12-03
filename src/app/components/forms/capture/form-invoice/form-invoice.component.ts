@@ -71,6 +71,8 @@ toCompanyListTemp: Company[] = [];
 fromCompanyList: Company[] = [];
 fromCompanyListTemp: Company[] = [];
 
+// Todo add guid for invoice items
+
 form = {
   fromCompany: {
     value: '',
@@ -241,32 +243,37 @@ loader = false;
   }
 
   updateLine(obj: InvoiceLine) {
-    this.lineState = 'Saving';
-    const requestModel = {
-      userID: this.currentUser.userID,
-      invoiceLineID: obj.invoiceLineID,
-      prodCode: obj.prodCode,
-      quantity: obj.quantity,
-      itemValue: obj. itemValue,
-      isDeleted: 0,
-    };
+    if (obj.isPersist) {
+      this.lineState = 'Saving';
+      const requestModel = {
+        userID: this.currentUser.userID,
+        invoiceLineID: obj.invoiceLineID,
+        prodCode: obj.prodCode,
+        quantity: obj.quantity,
+        itemValue: obj. itemValue,
+        isDeleted: 0,
+      };
 
-    this.captureService.invoiceLineUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadLines();
-          this.lineState = 'Updated successfully';
-          this.lines = -1;
-          this.focusLineData = null;
+      this.captureService.invoiceLineUpdate(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.loadLines();
+            this.lineState = 'Updated successfully';
+            this.lines = -1;
+            this.focusLineData = null;
+            setTimeout(() => this.lineState = '', 3000);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+          this.lineState = 'Update failed';
           setTimeout(() => this.lineState = '', 3000);
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-        this.lineState = 'Update failed';
-        setTimeout(() => this.lineState = '', 3000);
-      }
-    );
+      );
+    } else {
+      this.lineQueue.push(obj);
+      this.lineQueue = this.lineQueue.filter(x => x !== obj);
+    }
   }
 
   loadCurrency(): void {
@@ -401,7 +408,11 @@ loader = false;
               invoiceID: this.attachmentID,
               prodCode: currentLine.prodCode,
               quantity: currentLine.quantity,
-              itemValue: currentLine.itemValue
+              itemValue: currentLine.itemValue,
+              unitPrice: currentLine.unitPrice,
+              totalLineValue: currentLine.totalLineValue,
+              unitOfMeasure: currentLine.unitOfMeasure,
+              unitOfMeasureID: currentLine.unitOfMeasureID
             };
 
             this.captureService.invoiceLineAdd(requestObject).then(

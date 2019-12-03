@@ -230,9 +230,8 @@ dialogOpen = false;
       unitOfMeasureID: obj.unitOfMeasureID,
       tariff: obj.tariff,
       tariffID: obj.tariffID,
-      value: obj.value,
+      quantity: obj.quantity,
       customsValue: obj.customsValue,
-      productCode: obj. productCode,
       isDeleted: 0,
       lineNo: obj.lineNo
     };
@@ -292,9 +291,8 @@ dialogOpen = false;
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
 
-        this.lineErrors = res.lines.filter(x => x.valueError !== null
-          || x.lineNoError !== null
-          || x.productCodeError !== null
+        this.lineErrors = res.lines.filter(x => x.lineNoError !== null
+          || x.quantityError !== null
           || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
       (msg) => {

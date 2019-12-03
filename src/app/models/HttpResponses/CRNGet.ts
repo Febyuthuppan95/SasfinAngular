@@ -8,7 +8,6 @@ export class CRNGet {
    pcc: string;
    fob: string;
    waybillNo: string;
-   supplierRef: string;
    mrn: string;
    serialNoError: string;
    lrnError: string;
@@ -16,7 +15,6 @@ export class CRNGet {
    pccError: string;
    fobError: string;
    waybillNoError: string;
-   supplierRefError: string;
    mrnError: string;
    statusID: number;
    status?: string;
