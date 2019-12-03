@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-
 export class Pagination {
   page: number;
   rowStart: number;
   rowEnd: number;
 }
-
 
 @Component({
   selector: 'app-pagination',
@@ -22,7 +20,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   @Input() rowEnd: number;
   @Input() currentTheme: string;
 
-  @Output() pageChangeEvent = new EventEmitter<{ rowStart: number, rowEnd: number }>();
+  @Output() pageChangeEvent = new EventEmitter<PaginationChange>();
 
   activePage = +1;
   prevPageState = true;
@@ -47,11 +45,11 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.recordsPerPage !== this.recordsPerPageTemp) {
-      this.recordsPerPageTemp = this.recordsPerPage;
-      this.activePage = 1;
-      this.paginateData();
-    }
+    // if (this.recordsPerPage !== this.recordsPerPageTemp) {
+    //   this.recordsPerPage = this.recordsPerPage;
+    //   this.activePage = 1;
+    //   this.paginateData();
+    // }
 
     if (this.rowCountTemp !== this.rowCount) {
       this.rowCountTemp = this.rowCount;
@@ -62,25 +60,36 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   paginateData() {
     let rowStart = 1;
-    let rowEnd = +this.recordsPerPage;
-    let item: Pagination;
+    let rowEnd = rowStart + +this.recordsPerPage - 1;
+
+    // console.log(rowStart);
+    // console.log(rowEnd);
+    // console.log(this.recordsPerPage);
+
+    // Number of Pages
     const pageCount = +this.rowCount / +this.recordsPerPage;
-    this.pages = Array<Pagination>();
+    console.log(this.recordsPerPage);
+
+    this.pages = [];
 
     for (let i = 0; i < pageCount; i++) {
-      item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
+      this.pages.push({
+        page: i + 1,
+        rowStart: +rowStart,
+        rowEnd: +rowEnd
+      });
+
       rowStart = +rowEnd + 1;
       rowEnd += +this.recordsPerPage;
     }
+
+    console.log(this.pages);
     this.updatePagination();
   }
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
+    console.log(page);
     this.rowStart = page.rowStart;
     this.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;
@@ -138,4 +147,9 @@ export class PaginationComponent implements OnInit, OnChanges {
     this.showPagination = true;
   }
 
+}
+
+export class PaginationChange {
+  rowStart: number;
+  rowEnd: number;
 }

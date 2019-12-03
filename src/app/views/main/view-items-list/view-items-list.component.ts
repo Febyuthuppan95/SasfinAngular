@@ -445,7 +445,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.description = this.Item.description;
     this.tariff = this.Item.tariff;
     this.tariffID = this.Item.tariffID;
-    this.type = this.Item.type;
+    // this.type = this.Item.type;
     this.mIDP = this.Item.mIDP;
     this.pI = this.Item.pI;
     this.vulnerable = this.Item.vulnerable;
@@ -465,7 +465,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       item: this.item,
       description: this.description,
       tariffID: this.tariffID,
-      type: this.type,
+      // type: this.type,
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
