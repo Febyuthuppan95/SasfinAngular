@@ -68,7 +68,7 @@ export class ContextMenuServiceListComponent implements OnInit, OnDestroy {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '#',
+      title: '',
       propertyName: 'rowNum',
       order: {
         enable: false,

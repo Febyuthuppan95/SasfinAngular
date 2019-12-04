@@ -89,7 +89,7 @@ export class ViewPermitsListComponent implements OnInit {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '#',
+      title: '',
       propertyName: 'rowNum',
       order: {
         enable: false,
