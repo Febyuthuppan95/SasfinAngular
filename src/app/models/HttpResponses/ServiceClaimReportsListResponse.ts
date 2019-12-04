@@ -2,7 +2,7 @@ import {Outcome} from './Outcome';
 
 export class ServiceClaimReportsListResponse {
   outcome: Outcome;
-  serviceClaimReports: ServiceClaimReport[];
+  companyServiceClaimReports: ServiceClaimReport[];
   rowCount: number;
 }
 

@@ -105,6 +105,8 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   selectedStatus: number;
   selectedType: number;
 
+  transName: string;
+
   transactionTypes: TransactionTypes[];
   transactionStatus: TransactionStatus[];
 
@@ -361,7 +363,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id) {
+  popClick(event, id, name) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -371,6 +373,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     }
 
     this.focusHelp = id;
+    this.transName = name;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

@@ -23,6 +23,8 @@ import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
 import { ServiceClaimReportsListResponse, ServiceClaimReport } from 'src/app/models/HttpResponses/ServiceClaimReportsListResponse';
+import { MatDialog } from '@angular/material';
+import { PreviewReportComponent } from 'src/app/components/preview-report/preview-report.component';
 
 @Component({
   selector: 'app-view-company-serviceclaim-report',
@@ -38,7 +40,8 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private dialog: MatDialog
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -117,7 +120,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     },
     {
       title: 'Company Service Claim Number',
-      propertyName: 'companyServiceClaimNumber',
+      propertyName: 'compnayServiceClaimNumber',
       order: {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
@@ -213,16 +216,19 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
       this.tableHeader.title = `${ this.companyName } - Reports`;
     });
 
+
+
     this.loadServiceClaimReports(true);
   }
 
   loadServiceClaimReports(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
+
     const model: GetServiceClaimReports = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      companyServiceClaimID: this.companyServiceClaimID,
+      companyID: this.companyID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -237,15 +243,15 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.ServiceClaimReports = res.serviceClaimReports;
-
+        this.ServiceClaimReports = res.companyServiceClaimReports;
+        console.log(this.ServiceClaimReports);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.serviceClaimReports.length;
+          this.showingRecords = res.companyServiceClaimReports.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.ServiceClaimReports.length - 1;
         }
@@ -330,7 +336,17 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
   }
 
   previewreport(reportid) {
+
     console.log(reportid);
+
+    this.dialog.open(PreviewReportComponent, {
+      width: '70%',
+      height: '80%',
+      data: {
+        type: 'pdf',
+        src: 'your-path-here'
+      }
+    });
 
     const model = {
       userID: this.currentUser.userID,
@@ -344,7 +360,14 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     this.companyService.prieviewReport(model).then(
       (res: ServiceClaimReportsListResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
-
+          this.dialog.open(PreviewReportComponent, {
+            width: '80%',
+            height: '90%',
+            data: {
+              type: 'pdf',
+              src: 'your-path-here'
+            }
+          });
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }

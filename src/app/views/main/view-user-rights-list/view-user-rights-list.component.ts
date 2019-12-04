@@ -131,65 +131,75 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  paginateData() {
-    if (this.rowCount > 0) {
-    let rowStart = this.rowStart;
-    let rowEnd = +this.rowCountPerPage;
-    const pageCount = +this.rowCount / +this.rowCountPerPage;
-    this.pages = Array<Pagination>();
-
-    for (let i = 0; i < pageCount; i++) {
-      const item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
-      rowStart = +rowEnd + 1;
-      rowEnd += +this.rowCountPerPage;
-    }
-  } else {
-    this.rowStart = 0;
-    this.showingRecords = 1;
-    const item = new Pagination();
-    item.page = 1;
-    item.rowStart = 0;
-    item.rowEnd = 0;
-    this.pages[0] = item;
-  }
-    this.updatePagination();
+  howManyChange() {
+    alert(this.rowCountPerPage);
   }
 
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
+  // paginateData() {
+  //   if (this.rowCount > 0) {
+  //   let rowStart = this.rowStart;
+  //   let rowEnd = +this.rowCountPerPage;
+  //   const pageCount = +this.rowCount / +this.rowCountPerPage;
+  //   this.pages = Array<Pagination>();
 
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
+  //   for (let i = 0; i < pageCount; i++) {
+  //     const item = new Pagination();
+  //     item.page = i + 1;
+  //     item.rowStart = +rowStart;
+  //     item.rowEnd = +rowEnd;
+  //     this.pages[i] = item;
+  //     rowStart = +rowEnd + 1;
+  //     rowEnd += +this.rowCountPerPage;
+  //   }
+  // } else {
+  //   this.rowStart = 0;
+  //   this.showingRecords = 1;
+  //   const item = new Pagination();
+  //   item.page = 1;
+  //   item.rowStart = 0;
+  //   item.rowEnd = 0;
+  //   this.pages[0] = item;
+  // }
+  //   this.updatePagination();
+  // }
 
-    let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    const mod = +this.rowCount % +this.rowCountPerPage;
-
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
-
+  pageChange($event: { rowStart: number, rowEnd: number }) {
+    this.rowStart = $event.rowStart;
+    this.rowEnd = $event.rowEnd;
     this.loadUserRights();
   }
+
+  // pageChange(pageNumber: number) {
+  //   const page = this.pages[+pageNumber - 1];
+  //   this.rowStart = page.rowStart;
+  //   this.rowEnd = page.rowEnd;
+  //   this.activePage = +pageNumber;
+  //   this.prevPage = +this.activePage - 1;
+  //   this.nextPage = +this.activePage + 1;
+
+  //   if (this.prevPage < 1) {
+  //     this.prevPageState = true;
+  //   } else {
+  //     this.prevPageState = false;
+  //   }
+
+  //   let pagenumber = +this.rowCount / +this.rowCountPerPage;
+  //   const mod = +this.rowCount % +this.rowCountPerPage;
+
+  //   if (mod > 0) {
+  //     pagenumber++;
+  //   }
+
+  //   if (this.nextPage > pagenumber) {
+  //     this.nextPageState = true;
+  //   } else {
+  //     this.nextPageState = false;
+  //   }
+
+  //   this.updatePagination();
+
+  //   this.loadUserRights();
+  // }
 
   searchBar() {
     this.rowStart = 1;
@@ -201,7 +211,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       filter: this.filter,
       userID: this.currentUser.userID,
       rowStart: 1,
-      rowEnd: 1000,
+      rowEnd: 100000000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
@@ -210,6 +220,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
+
         this.rightsList = res.rightList;
         this.userRightsList.forEach(uRight => {
           let count = 0;
@@ -219,6 +230,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
             } else {
               count ++;
             }
+            // console.log(count);
           });
         });
       },
@@ -233,7 +245,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
   }
 
   loadUserRights() {
-    this.rowEnd = +this.rowStart + this.rowCountPerPage - 1;
     this.showLoader = true;
     const uRModel: GetUserRightsList = {
       userID: this.currentUser.userID,
@@ -248,6 +259,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
+        console.log(res.userRightsList);
         // Process Success
         if (!this.openAddModal) {
           if (res.outcome.outcome === 'SUCCESS') {
@@ -271,7 +283,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         }
 
         this.loadAvailableRights();
-        this.paginateData();
+        // this.paginateData();
       },
       msg => {
         // Process Failure
@@ -302,27 +314,27 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.loadUserRights();
   }
 
-  updatePagination() {
-    this.showingPages = Array<Pagination>();
-    this.showingPages[0] = this.pages[this.activePage - 1];
-    const pagenumber = +this.rowCount / +this.rowCountPerPage;
+  // updatePagination() {
+  //   this.showingPages = Array<Pagination>();
+  //   this.showingPages[0] = this.pages[this.activePage - 1];
+  //   const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-    if (this.activePage < pagenumber) {
-      this.showingPages[1] = this.pages[+this.activePage];
+  //   if (this.activePage < pagenumber) {
+  //     this.showingPages[1] = this.pages[+this.activePage];
 
-      if (this.showingPages[1] === undefined) {
-        const page = new Pagination();
-        page.page = 1;
-        page.rowStart = 1;
-        page.rowEnd = this.rowEnd;
-        this.showingPages[1] = page;
-      }
-    }
+  //     if (this.showingPages[1] === undefined) {
+  //       const page = new Pagination();
+  //       page.page = 1;
+  //       page.rowStart = 1;
+  //       page.rowEnd = this.rowEnd;
+  //       this.showingPages[1] = page;
+  //     }
+  //   }
 
-    if (+this.activePage + 1 <= pagenumber) {
-      this.showingPages[2] = this.pages[+this.activePage + 1];
-    }
-  }
+  //   if (+this.activePage + 1 <= pagenumber) {
+  //     this.showingPages[2] = this.pages[+this.activePage + 1];
+  //   }
+  // }
 
   backToDesignations() {
     this.location.back();
@@ -370,7 +382,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         }
 
         this.loadUserRights();
-
       },
       msg => {
         this.notify.errorsmsg(
