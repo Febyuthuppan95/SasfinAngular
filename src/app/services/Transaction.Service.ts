@@ -135,14 +135,15 @@ export class TransactionService {
     }
   }
 
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500LineID?: number) {
     const requestModel = {
       name,
       fileName: file.name,
       type,
       transactionID,
       userID,
-      company
+      company,
+      sad500LineID
     };
 
     const formData = new FormData();

@@ -15,3 +15,7 @@ export class BOMLine {
   unitOfMeasureInput: string;
   usageTypeInput: string;
 }
+export interface BOMUpload {
+  outcome: Outcome;
+  complete: boolean;
+}

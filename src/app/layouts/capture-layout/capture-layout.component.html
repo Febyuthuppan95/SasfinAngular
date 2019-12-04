@@ -30,7 +30,7 @@
 </div>
 <div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="float-left">
-      <button style="z-index: 99999999999999;" mat-mini-fab (click)="goBack()" class="bg-danger text-light" matTooltip="Close without saving" matTooltipPosition="below">
+      <button style="z-index: 99999999999999;" mat-mini-fab (click)="exitCaptureScreen()" class="bg-danger text-light" matTooltip="Close without saving" matTooltipPosition="below">
         <span class="mdi mdi-close"></span>
       </button>
       &nbsp;&nbsp;
@@ -95,7 +95,7 @@
       <div *ngFor="let info of this.companyInfoList.captureInfo" class="info-item">
         <p>{{info.info}}</p>
       </div>
-      <div class="info-item bg-transparent text-muted">
+      <div class="info-item bg-transparent text-muted" *ngIf="this.noCaptureInformation">
         <p>No Capture Info</p>
       </div>
     </div>
@@ -107,7 +107,9 @@
   <div class="overlay" (click)="this.showHelp = false;">
     <img src="./../../../assets/svg/keyboard-shortcuts/SAD500.svg" *ngIf="this.attachmentType === 'SAD500'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/CRN.svg" *ngIf="this.attachmentType === 'Customs Release Notification'"/>
+    <img src="./../../../assets/svg/keyboard-shortcuts/Invoices.svg" *ngIf="this.attachmentType === 'Invoice'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/ICI.svg" *ngIf="this.attachmentType === 'Import Clearing Instruction'"/>
+    <img src="./../../../assets/svg/keyboard-shortcuts/VOC.svg" *ngIf="this.attachmentType === 'VOC'"/>
   </div>
 </div>
 

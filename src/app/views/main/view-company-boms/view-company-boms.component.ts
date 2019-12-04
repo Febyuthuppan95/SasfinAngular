@@ -1,3 +1,5 @@
+import { BOMUpload } from './../../../models/HttpResponses/BOMsLinesResponse';
+import { DocumentService } from 'src/app/services/Document.Service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
@@ -28,6 +30,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
+    private IDocumentService: DocumentService,
     private router: Router,
     private snackbarService: HelpSnackbar
   ) {
@@ -50,11 +53,11 @@ export class ViewCompanyBOMsComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  // @ViewChild('openeditModal', {static: true})
-  // openeditModal: ElementRef;
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
 
-  // @ViewChild('closeeditModal', {static: true})
-  // closeeditModal: ElementRef;
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
 
   // @ViewChild('openRemoveModal', {static: true})
   // openRemoveModal: ElementRef;
@@ -70,7 +73,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   tableHeader: TableHeader = {
     title: 'BOMs',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: true
@@ -143,10 +146,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
   isAdmin: false;
   companyID = 0;
   companyName = '';
+  BomFile: File;
 
 
   ngOnInit() {
-
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -272,124 +275,29 @@ export class ViewCompanyBOMsComponent implements OnInit {
     this.filter = query;
     this.loadCompanyBOMs(false);
   }
+  add() {
+    // Render modal
+    this.openAddModal.nativeElement.click();
+  }
+  queueBOM() {
+    // Add to import queue
 
-  // editItem(id: number) {
-  //   this.loadServices(false);
-
-
-  //   this.themeService.toggleContextMenu(false);
-  //   this.contextMenu = false;
-  //   this.itemID = this.Item.itemID;
-  //   this.item = this.Item.item;
-  //   this.description = this.Item.description;
-  //   this.tariff = this.Item.tariff;
-  //   this.type = this.Item.type;
-  //   this.mIDP = this.Item.mIDP;
-  //   this.pI = this.Item.pI;
-  //   this.vulnerable = this.Item.vulnerable;
-  //   this.openeditModal.nativeElement.click();
-  // }
-  // removeItem(id: number) {
-  //   this.themeService.toggleContextMenu(false);
-  //   this.contextMenu = false;
-  //   this.itemID = this.Item.itemID;
-  //   this.openRemoveModal.nativeElement.click();
-  // }
-
-  // UpdateItem(deleted: boolean) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.itemID,
-  //     item: this.item,
-  //     description: this.description,
-  //     tariff: this.tariff,
-  //     type: this.type,
-  //     mIDP: this.mIDP,
-  //     pI: this.pI,
-  //     vulnerable: this.vulnerable,
-  //     service: '',
-  //     isDeleted: deleted
-  //   };
-  //   this.companyService.itemupdate(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // addNewservice(id, name) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     serviceID: id,
-  //     itemID: this.itemID
-  //   };
-
-  //   this.companyService.itemserviceadd(requestModel).then(
-  //     (res: AddItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // removeservice(id, name) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemServiceID: id,
-  //     itemID: this.itemID
-  //   };
-
-  //   this.companyService.itemserviceupdate(requestModel).then(
-  //     (res: UpdateItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // removeItemValue(id: number) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.Item.itemID,
-  //     isDeleted: 1
-  //   };
-
-  //   this.companyService.RemoveItemList(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // onVulnerablestateChange(state: string) {
-  //   this.vulnerable = state;
-  // }
-
+  }
+  onFileChange(files: FileList) {
+    this.BomFile = files.item(0);
+    console.log(this.BomFile);
+  }
+  saveBOMUpload() {
+    // Save
+    this.IDocumentService.upload(this.BomFile).then(
+      (res: BOMUpload) => {
+        console.log(res);
+      },
+      (msg) => {
+        // nothing yet
+      }
+    );
+  }
 }
 
 

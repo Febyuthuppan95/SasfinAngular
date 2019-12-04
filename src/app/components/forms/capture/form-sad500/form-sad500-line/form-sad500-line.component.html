@@ -7,22 +7,22 @@
       [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Line No"
-      [ngClass]="{'form-control-invalid': this.form.lineNoError !== null}"/>
-      <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null" style="width: 100%;">{{this.form.lineNoError}}</p>
+      [ngClass]="{'form-control-invalid': this.form.lineNoError !== null && this.form.lineNoError !== undefined}"/>
+      <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null && this.form.lineNoError !== undefined" style="width: 100%;">{{this.form.lineNoError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.productCode != undefined">
     <input type="text"
       [(ngModel)]="this.form.productCode" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Product Code" style="margin-top:0"/>
-      <p class="invalid-control-label" *ngIf="this.form.productCodeError !== null">{{this.form.productCodeError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.productCodeError !== null && this.form.lineNoError !== undefined">{{this.form.productCodeError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.value != undefined">
     <input type="text"
       [(ngModel)]="this.form.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Value" />
-      <p class="invalid-control-label" *ngIf="this.form.valueError !== null">{{this.form.valueError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.valueError !== null && this.form.lineNoError !== undefined">{{this.form.valueError}}</p>
   </div>
 </div>
 <br>
@@ -34,22 +34,22 @@
     <!-- <p class="invalid-control-label" *ngIf="this.form.customsValueError !== null">{{this.form.customsValueError}}</p> -->
   </div>
   <div class="form-group" *ngIf="this.form.tariff != undefined">
-        <input [(ngModel)]="this.form.tariff" type="text" [ngClass]="{'form-control-invalid': this.form.tariffError !== null}" class="form-control form-control-sm shadow-sm form-control-light" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
+        <input [(ngModel)]="this.form.tariff" type="text" [ngClass]="{'form-control-invalid': this.form.tariffError !== null && this.form.tariffError !== undefined}" class="form-control form-control-sm shadow-sm form-control-light" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
         <mat-autocomplete #tariffAuto="matAutocomplete" >
           <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description" (onSelectionChange)="selectedTariff(tariff.description)">
             {{tariff.description}}
           </mat-option>
         </mat-autocomplete>
-        <p class="invalid-control-label" *ngIf="this.form.tariffError !== null">{{this.form.tariffError}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.tariffError !== null && this.form.tariffError !== undefined">{{this.form.tariffError}}</p>
     </div>
     <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
-      <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null}" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+      <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
       <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
         <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
           {{unit.name}}, {{unit.description}}
         </mat-option>
       </mat-autocomplete>
-      <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null">{{this.form.unitOfMeasureError}}</p>
+      <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined">{{this.form.unitOfMeasureError}}</p>
         </div>
         <div class="form-group" style="margin-bottom: 0">
           <div class="row" style="margin-bottom: 0">
@@ -63,7 +63,7 @@
                 </li>
                 <li class="duty-item" *ngFor="let item of dutyList.duties; let i = index" (click)="assignDuty(item)" (keypress)="assignDuty(item)" [tabindex]="i">
                   <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                  <small>{{item.name}}</small>
+                  <small>{{item.code}}</small>
                 </li>
               </ul>
             </div>
@@ -80,7 +80,7 @@
                   </li>
                   <li *ngFor="let item of assignedDuties; let i = index" class="duty-item" (click)="revokeDuty(item)" [tabindex]="i">
                       <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                      <small>{{item.name}}</small>
+                      <small>{{item.code}}</small>
                   </li>
               </ul>
             </div>
@@ -97,7 +97,7 @@
                     </li>
                     <li *ngFor="let item of dutiesToBeSaved; let i = index" class="duty-item" (click)="revokeDuty(item)" (keypress)="revokeDuty(item)" [tabindex]="i">
                         <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                        <small>{{item.name}}</small>
+                        <small>{{item.code}}</small>
                     </li>
                 </ul>
               </div>

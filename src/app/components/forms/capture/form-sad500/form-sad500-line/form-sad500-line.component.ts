@@ -50,8 +50,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   dutyListTemp: Duty[] = [];
   assignedDutiesTemp: Duty[] = [];
   dutiesToBeSavedTemp: Duty[] = [];
-  dutiesQuery: string = '';
-  dutieAssignedQuery: string = '';
+  dutiesQuery = '';
+  dutieAssignedQuery = '';
   focusDutiesQuery = false;
   focusAssignedQuery = false;
 

@@ -1,0 +1,147 @@
+.capture-tile {
+  overflow-y: auto;
+}
+
+.form-inline .form-group {
+  margin: 0;
+  width: 33%;
+  padding: 2px;
+}
+.form-inline .form-group input{
+  width: 100%;
+}
+
+.autocomplete {
+  background: #f2f2f2;
+  padding: 4px;
+  border: solid lightgrey 1px;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete li {
+  border-bottom: solid lightgray 1px;
+  font-size: 14px;
+  color: #444;
+  padding: 4px;
+}
+.autocomplete li:hover {
+  background: #d4d4d4;
+}
+
+
+.mat-input-element {
+  font-size: 14px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.3em 0 0.3em 0 !important;
+}
+
+.mat-form-field-infix {
+  border-top: 0.7em solid transparent !important;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0em !important;
+}
+
+.tile-list {
+  padding: 16px 20px;
+  border: 1px rgb(192, 192, 192) solid;
+  border-radius: 5px;
+  height: 256px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+.duty-item:hover {
+  background: #4d83ff;
+  color: #f2f2f2;
+  box-shadow: 0 3px 6px rgba($color: #4d83ff, $alpha: 0.16), 0 3px 6px rgba($color: #4d83ff, $alpha: 0.23);
+  transition: cubic-bezier(0.215, 0.610, 0.355, 1) 0.5s;
+}
+
+
+.duty-item:focus {
+  background: #4d83ff;
+  color: #f2f2f2;
+  box-shadow: 0 3px 6px rgba($color: #4d83ff, $alpha: 0.16), 0 3px 6px rgba($color: #4d83ff, $alpha: 0.23);
+  transition: cubic-bezier(0.215, 0.610, 0.355, 1) 0.5s;
+}
+
+.duty-item {
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: cubic-bezier(0.215, 0.610, 0.355, 1) 0.5s;
+}
+
+
+.text-mini-heading {
+  font-size: 14px;
+  color: #999;
+}
+
+.col-4 {
+  text-align: center;
+}
+
+.line-list button{
+  margin-right: 8px;
+}
+
+.btn {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.active-line {
+  padding: 12px;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.capture-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 22px;
+  background: rgba($color: #fff, $alpha: 0.8);
+}
+
+.capture-form-title {
+  font-size: 24px;
+}
+
+.capture-form-subtitle {
+  font-size: 12px !important;
+}
+
+.indicator-btn {
+  height: 12px;
+  width: 12px;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.1s;
+  background: #4d83ff;
+  border: none;
+  border-radius: 100%;
+  z-index: 999;
+}
+
+.indicator-active {
+  height: 24px;
+  width: 24px;
+  transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 0.1s;
+}
+
+.indicator-wrapper {
+  width: 26px;
+  height: 26px;
+  text-align: center;
+}
+
+.line-errors {
+  margin-bottom: 12px;
+}

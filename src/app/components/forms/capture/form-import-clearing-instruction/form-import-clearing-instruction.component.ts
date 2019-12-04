@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { EventService } from 'src/app/services/event.service';
+import { MatDialog } from '@angular/material';
+import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -20,7 +22,8 @@ import { EventService } from 'src/app/services/event.service';
 export class FormImportClearingInstructionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService, private eventService: EventService) { }
+              private router: Router, private captureService: CaptureService,
+              private eventService: EventService, private dialog: MatDialog) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -34,18 +37,9 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
   currentTheme: string;
   form = {
-  serialNo: {
-  value: null,
-  },
-  LRN: {
-  value: null,
-  },
   importersCode: {
   value: null,
   error: null,
-  },
-  PCC: {
-  value: null,
   },
   waybillNo: {
   value: null,
@@ -53,11 +47,11 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   },
   supplierRef: {
   value: null,
-  },
-  MRN: {
-  value: null,
+  error: null,
   },
   };
+
+  dialogOpen = false;
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -91,33 +85,39 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   }
 
   submit() {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      specificICIID: this.attachmentID,
-      serialNo: this.form.serialNo.value,
-      lrn: this.form.LRN.value,
-      importersCode: this.form.importersCode.value,
-      pcc: this.form.PCC.value,
-      waybillNo: this.form.waybillNo.value,
-      supplierRef: this.form.supplierRef.value,
-      mrn: this.form.MRN.value,
-      isDeleted: 0,
-      attachmentStatus: 2,
-    };
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
 
-    this.captureService.iciUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-        this.notify.successmsg(res.outcome, res.outcomeMessage);
-        this.router.navigate(['transaction', 'attachments']);
-        } else {
-        this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          const requestModel = {
+            userID: this.currentUser.userID,
+            specificICIID: this.attachmentID,
+            waybillNo: this.form.waybillNo.value,
+            importersCode: this.form.importersCode.value,
+            supplierRef: this.form.supplierRef.value,
+            isDeleted: 0,
+            attachmentStatus: 2,
+          };
+
+          this.captureService.iciUpdate(requestModel).then(
+            (res: Outcome) => {
+              if (res.outcome === 'SUCCESS') {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.router.navigate(['transaction', 'attachments']);
+              } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              }
+            },
+              (msg) => {
+              this.notify.errorsmsg('Failure', 'Cannot reach server');
+              }
+            );
         }
-      },
-        (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
+      });
+    }
   }
 
   loadICI() {
@@ -134,14 +134,13 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
       }).then(
       (res: ICIListResponse) => {
+        console.log(res);
         this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
         this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
         this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
+        this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
         this.form.importersCode.value = res.clearingInstructions[0].importersCode;
         this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
       },
       (msg) => {
         console.log(msg);

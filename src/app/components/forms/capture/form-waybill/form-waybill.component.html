@@ -1,0 +1,20 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts" *ngIf="this.shortcuts"></ng-keyboard-shortcuts>
+<br><br>
+<div class="capture-header">
+  <h1 class="capture-form-title text-dark">
+    <span>Waybill</span>
+  </h1>
+</div>
+<br>
+<form (submit)="submit(); $event.preventDefault()" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
+      [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null && this.form.waybillNo.error !== undefined}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      placeholder="Waybill No" />
+      <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null && this.form.waybillNo.error !== undefined">{{this.form.waybillNo.error}}</p>
+  </div>
+</form>
+
+<app-notification></app-notification>
