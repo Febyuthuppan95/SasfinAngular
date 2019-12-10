@@ -7,13 +7,14 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
-import { SAD500LineCreateRequest, SAD500LineUpdateModel } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog } from '@angular/material';
+import { SAD500LineCreateRequest, SAD500LineUpdateModel, Duty } from 'src/app/models/HttpRequests/SAD500Line';
+import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
+import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -23,7 +24,7 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService) { }
+              private eventService: EventService, private snackbar: MatSnackBar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -31,6 +32,12 @@ shortcuts: ShortcutInput[] = [];
 private notify: NotificationComponent;
 
 @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
+@ViewChild('sadLinesTooltip', {static : false})
+sadLinesTooltip: MatTooltip;
+
+@ViewChild('sad500Tooltip', {static : false})
+sad500Tooltip: MatTooltip;
 
 currentUser = this.userService.getCurrentUser();
 attachmentID: number;
@@ -42,6 +49,7 @@ focusLineData: SAD500Line = null;
 private unsubscribe$ = new Subject<void>();
 
 currentTheme: string;
+loader: boolean;
 
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
@@ -84,6 +92,12 @@ form = {
   },
 };
 
+lineQueue: SAD500LineCreateRequest[] = [];
+lineIndex = 0;
+dutyIndex = 0;
+
+dialogOpen = false;
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -91,7 +105,7 @@ form = {
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.submit());
+    .subscribe(() => this.saveLines());
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -150,7 +164,7 @@ form = {
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (!this.toggleLines) {
-              this.submit();
+              this.saveLines();
             }
           }
         },
@@ -158,7 +172,19 @@ form = {
           key: 'alt + l',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.toggleLines = !this.toggleLines
+          command: e => {
+            this.toggleLines = !this.toggleLines;
+
+            if (this.toggleLines) {
+              this.sad500Tooltip.hide();
+              this.sadLinesTooltip.show();
+              setTimeout(() => { this.sadLinesTooltip.hide(); } , 1000);
+            } else {
+              this.sadLinesTooltip.hide();
+              this.sad500Tooltip.show();
+              setTimeout(() => { this.sad500Tooltip.hide(); } , 1000);
+            }
+          }
         },
     );
   }
@@ -277,48 +303,102 @@ form = {
   }
 
   addToQueue(obj: SAD500LineCreateRequest) {
-    this.lineState = 'Saving new line';
-
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentID;
+    obj.isPersist = false;
 
-    this.captureService.sad500LineAdd(obj).then(
-      (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-        if (res.outcome === 'SUCCESS') {
-          if (obj.duties.length > 0) {
-            obj.duties.forEach(item => {
-              this.captureService.sad500LineDutyAdd({
-                userID: 3,
-                dutyID: item.dutyTaxTypeID,
-                sad500LineID: res.createdID
-              }).then(
-                (res: Outcome) => {
-                  console.log('Assigned');
-                },
-                (msg) => {
-                  console.log('Not Assigned');
+    this.lineQueue.push(obj);
+    this.sad500CreatedLines.push(obj);
+    // this.lineState = 'Line added to queue';
+    this.focusLineForm = !this.focusLineForm;
+    this.focusLineData = null;
+    this.lines = -1;
+    // setTimeout(() => this.lineState = '', 3000);
+    this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+      duration: 3000,
+      panelClass: ['capture-snackbar'],
+      horizontalPosition: 'center',
+    });
+  }
+
+  saveLines() {
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
+
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          if (this.lineIndex < this.lineQueue.length) {
+            this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
+              (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+                if (res.outcome === 'SUCCESS') {
+                  console.log('Line saved');
+                  const currentLine = this.lineQueue[this.lineIndex];
+                  currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+                  this.dutyIndex = 0;
+                  if (currentLine.duties.length > 0) {
+                    this.saveLineDuty(currentLine.duties[0]);
+                  } else {
+                    this.nextLineAsync();
+                  }
+                } else {
+                  console.log('Line not saved');
                 }
-              );
-            });
-          }
+              },
+              (msg) => {
+                console.log('Client Error');
+              }
+            );
+          } else {
+            this.submit();
+          }        }
+      });
+    }
+  }
 
-          this.loadLines();
-          this.lineState = 'Saved successfully';
-          this.focusLineForm = !this.focusLineForm;
-          this.focusLineData = null;
-          this.lines = -1;
-
-          setTimeout(() => this.lineState = '', 3000);
+  saveLineDuty(line: Duty) {
+    this.captureService.sad500LineDutyAdd({
+      userID: this.currentUser.userID,
+      dutyID: line.dutyTaxTypeID,
+      sad500LineID: line.sad500Line
+    }).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.nextDutyAsync(this.lineQueue[this.lineIndex]);
+          console.log('Line Duty Saved');
         } else {
-          this.lineState = 'Failed to save';
-          setTimeout(() => this.lineState = '', 3000);
+          console.log('Line Duty Not Saved');
         }
       },
       (msg) => {
-        this.lineState = 'Failed to save';
-        setTimeout(() => this.lineState = '', 3000);
+        console.log('Line Duty Client Error');
       }
     );
+  }
+
+  nextLineAsync() {
+    this.lineIndex++;
+
+    if (this.lineIndex < this.lineQueue.length) {
+      this.saveLines();
+    } else {
+      this.loader = false;
+      this.submit();
+    }
+  }
+
+  nextDutyAsync(currentSAD: SAD500LineCreateRequest) {
+    this.dutyIndex++;
+
+    if (this.dutyIndex < currentSAD.duties.length) {
+      const pendingDuty = currentSAD.duties[this.dutyIndex];
+      pendingDuty.sad500Line = currentSAD.sad500LineID;
+
+      this.saveLineDuty(pendingDuty);
+    } else {
+      this.nextLineAsync();
+    }
   }
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {

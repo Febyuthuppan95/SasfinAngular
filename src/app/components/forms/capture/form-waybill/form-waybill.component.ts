@@ -13,17 +13,17 @@ import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { EventService } from 'src/app/services/event.service';
 import { MatDialog } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
 
 @Component({
-  selector: 'app-form-import-clearing-instruction',
-  templateUrl: './form-import-clearing-instruction.component.html',
-  styleUrls: ['./form-import-clearing-instruction.component.scss']
+  selector: 'app-form-waybill',
+  templateUrl: './form-waybill.component.html',
+  styleUrls: ['./form-waybill.component.scss']
 })
-export class FormImportClearingInstructionComponent implements OnInit, AfterViewInit, OnDestroy {
+export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService,
-              private eventService: EventService, private dialog: MatDialog) { }
+              private router: Router, private captureService: CaptureService, private eventService: EventService, private dialog: MatDialog) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -36,21 +36,12 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   transactionID: number;
 
   currentTheme: string;
-  form = {
-  importersCode: {
-  value: null,
-  error: null,
-  },
-  waybillNo: {
-  value: null,
-  error: null
-  },
-  supplierRef: {
-  value: null,
-  error: null,
-  },
+    form = {
+      waybillNo: {
+        value: null,
+        error: null
+      },
   };
-
   dialogOpen = false;
 
   ngOnInit() {
@@ -68,7 +59,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.transactionID = curr.transactionID;
-        this.loadICI();
+        this.loadData();
       }
     });
   }
@@ -94,15 +85,13 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
-            specificICIID: this.attachmentID,
+            waybillID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
-            importersCode: this.form.importersCode.value,
-            supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
             attachmentStatus: 2,
           };
 
-          this.captureService.iciUpdate(requestModel).then(
+          this.captureService.waybillUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -120,11 +109,11 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
     }
   }
 
-  loadICI() {
-    this.captureService.iciList(
+  loadData() {
+    this.captureService.waybillList(
       {
         userID: this.currentUser.userID,
-        specificICIID: this.attachmentID,
+        waybillID: this.attachmentID,
         transactionID: this.transactionID,
         rowStart: 1,
         rowEnd: 15,
@@ -133,14 +122,9 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         filter: ''
 
       }).then(
-      (res: ICIListResponse) => {
-        console.log(res);
-        this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
-        this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
-        this.form.importersCode.value = res.clearingInstructions[0].importersCode;
-        this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
+      (res: WaybillListResponse) => {
+        this.form.waybillNo.value = res.waybills[0].waybillNo;
+        this.form.waybillNo.error = res.waybills[0].waybillError;
       },
       (msg) => {
         console.log(msg);

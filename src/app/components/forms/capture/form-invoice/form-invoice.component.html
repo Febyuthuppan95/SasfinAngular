@@ -1,1 +1,79 @@
-<p>form-invoice works!</p>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts" *ngIf="this.shortcuts"></ng-keyboard-shortcuts>
+<br><br>
+<div class="capture-header">
+  <div class="float-right" style="margin-top: -24px !important">
+    <div class="indicator-wrapper" (click)="this.toggleLines = false;">
+    <button #invoiceTooltip="matTooltip" matTooltip="Invoice"
+    matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !this.toggleLines}"></button>
+    </div>
+    <div class="indicator-wrapper" (click)="this.toggleLines = true;">
+    <button #invoiceLinesTooltip="matTooltip" matTooltip="Invoice Lines"
+    matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': this.toggleLines}"></button>
+  </div>
+  </div>
+  <h1 class="capture-form-title text-dark">
+    <span *ngIf="this.toggleLines">Invoice Lines</span>
+    <span *ngIf="!this.toggleLines">Invoice</span>
+  </h1>
+</div>
+<span [ngClass]="{'hide': this.toggleLines}">
+  <br>
+<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+  <div class="form-group" *ngIf="this.form.invoiceNo != undefined">
+    <input type="text"[focus]="this.focusMainForm"
+      [(ngModel)]="this.form.invoiceNo.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      [ngClass]="{'form-control-invalid': this.form.invoiceNo.error !== null}"
+      placeholder="Invoice No" />
+      <p class="invalid-control-label" *ngIf="this.form.invoiceNo.error !== null">{{this.form.invoiceNo.error}}</p>
+  </div>
+  <div class="form-group" *ngIf="this.form.fromCompany != undefined">
+    <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="fromCompanyIDAuto">
+    <mat-autocomplete #fromCompanyIDAuto="matAutocomplete">
+      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit.companyID)">
+        {{unit.name}}
+      </mat-option>
+    </mat-autocomplete>
+    <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.toCompany.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.toCompany != undefined">
+      <input (keyup)="filterToCompany()" [(ngModel)]="this.form.toCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.toCompany.error !== null}" type="text" placeholder="To Company" aria-label="To Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="toCompanyIDAuto">
+      <mat-autocomplete #toCompanyIDAuto="matAutocomplete">
+        <mat-option *ngFor="let unit of this.toCompanyList" [value]="unit.name" (onSelectionChange)="selectedToCompany(unit.companyID)">
+          {{unit.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.toCompany.error !== null">{{this.form.toCompany.error}}</p>
+      </div>
+    <div class="form-group" *ngIf="this.form.currencyID != undefined">
+      <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="unitOfMeasureAuto">
+      <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+        <mat-option *ngFor="let unit of this.currencies" [value]="unit.code" (onSelectionChange)="selectedCurrency(unit.currencyID)">
+          {{unit.name}}, {{unit.code}}
+        </mat-option>
+      </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
+      </div>
+  </form>
+</span>
+  <span style="display: none" [ngClass]="{'show': this.toggleLines}">
+    <br>
+      <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px;" class="line-list">
+          <button mat-raised-button class="float-right bg-primary text-light" *ngIf="this.lines !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+          <p *ngIf="!this.sad500CreatedLines" style="font-size: 16px;">No Invoice Lines Added</p>
+          <p *ngIf="this.sad500CreatedLines">
+            <button (click)="prevLine()"  style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+            <span class="badge badge-transparent" *ngIf="this.lines > -1">Line {{ this.lines + 1 }} of {{ this.sad500CreatedLines.length }}</span>
+            <span class="badge badge-transparent" *ngIf="this.lines === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
+          &nbsp;
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+          &nbsp;<span>{{this.lineState}}</span>
+        </p>
+        <div class="line-errors" *ngIf="this.lineErrors.length > 0">
+            <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.sad500CreatedLines.indexOf(item))">{{this.sad500CreatedLines.indexOf(item) + 1}}</button>
+        </div>
+      </div>
+      <br>
+      <app-form-invoice-lines [(showLines)]="this.toggleLines" (submitLine)="addToQueue($event)" (updateLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-invoice-lines>
+  </span>
+  <app-notification></app-notification>

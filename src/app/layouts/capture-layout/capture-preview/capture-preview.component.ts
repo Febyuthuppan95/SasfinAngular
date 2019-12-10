@@ -17,26 +17,13 @@ import { Subject } from 'rxjs';
 export class CapturePreviewComponent implements OnInit {
 
   constructor(private docService: DocumentService,
-              private userIdle: UserIdleService,
-              private snackbarService: HelpSnackbar,
-              private userService: UserService,
               public dialogRef: MatDialogRef<CapturePreviewComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { src: string }) { }
-
-  @ViewChild(NotificationComponent, { static: true })
-  private notify: NotificationComponent;
-
-  @ViewChild('opentimeoutModal', {static: true })
-  opentimeoutModal: ElementRef;
-
-  @ViewChild('closetimeoutModal', {static: true })
-  closetimeoutModal: ElementRef;
 
   pdfSRC: string;
   displayPDF = false;
   failedToLoad = false;
   count = 0;
-  private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
     this.failedToLoad = false;
@@ -49,7 +36,6 @@ export class CapturePreviewComponent implements OnInit {
           this.failedToLoad = false;
         }
 
-        // this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
         this.pdfSRC = res;
         this.displayPDF = true;
       },
@@ -57,56 +43,6 @@ export class CapturePreviewComponent implements OnInit {
         this.failedToLoad = true;
       }
     );
-
-    // Start watching for user inactivity.
-    this.userIdle.startWatching();
-
-    // Start watching when user idle is starting.
-    this.userIdle.onTimerStart()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(count => {
-      this.TriggerSessionTimeout(count);
-    });
-
-    // Start watch when time is up.
-    this.userIdle.onTimeout()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {
-      this.closetimeoutModal.nativeElement.click();
-      this.userIdle.resetTimer();
-      this.userIdle.stopTimer();
-      this.userIdle.stopWatching();
-      this.closeHelpContext();
-      this.userService.logout();
-    });
-
-    this.userIdle.ping$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {});
-
-  }
-
-  closeHelpContext() {
-    const newContext: SnackbarModel = {
-      display: false,
-      slug: '',
-    };
-    this.snackbarService.setHelpContext(newContext);
-  }
-
-  ResetSessionTimer() {
-    this.userIdle.stopTimer();
-    this.userIdle.resetTimer();
-  }
-
-  TriggerSessionTimeout(count) {
-   this.count = 11;
-   this.count =  this.count - count;
-
-   if (this.count === 10) {
-    this.opentimeoutModal.nativeElement.click();
-
-   }
   }
 
   close() {
