@@ -34,17 +34,8 @@
         {{unit.name}}
       </mat-option>
     </mat-autocomplete>
-    <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.toCompany.error}}</p>
+    <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.fromCompany.error}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.toCompany != undefined">
-      <input (keyup)="filterToCompany()" [(ngModel)]="this.form.toCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.toCompany.error !== null}" type="text" placeholder="To Company" aria-label="To Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="toCompanyIDAuto">
-      <mat-autocomplete #toCompanyIDAuto="matAutocomplete">
-        <mat-option *ngFor="let unit of this.toCompanyList" [value]="unit.name" (onSelectionChange)="selectedToCompany(unit.companyID)">
-          {{unit.name}}
-        </mat-option>
-      </mat-autocomplete>
-      <p class="invalid-control-label" *ngIf="this.form.toCompany.error !== null">{{this.form.toCompany.error}}</p>
-      </div>
     <div class="form-group" *ngIf="this.form.currencyID != undefined">
       <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="unitOfMeasureAuto">
       <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">

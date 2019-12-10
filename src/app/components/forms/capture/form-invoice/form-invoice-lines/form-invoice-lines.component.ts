@@ -10,6 +10,11 @@ import { InvoiceLine } from 'src/app/models/HttpResponses/Invoices';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
+import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
+import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
+import { UnitMeasureService } from 'src/app/services/Units.Service';
+import { FormControl } from '@angular/forms';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-form-invoice-lines',
@@ -22,11 +27,15 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     constructor(
       private themeService: ThemeService,
       private userService: UserService,
-      private captureService: CaptureService) { }
+      private captureService: CaptureService,
+      private unitService: UnitMeasureService) { }
 
     currentUser: User;
     currentTheme: string;
     focusLineForm: boolean;
+    unitOfMeasureList: UnitsOfMeasure[];
+    unitOfMeasureListTemp: UnitsOfMeasure[];
+    unitOfMeasure = new FormControl();
     private unsubscribe$ = new Subject<void>();
 
     @Input() lineData: InvoiceLine;
@@ -46,6 +55,13 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       quantityError: null,
       itemValue: 0.0,
       itemValueError: null,
+      unitPrice: 0.0,
+      totalLineValue: 0.0,
+      unitOfMeasureID: -1,
+      unitOfMeasure: null,
+      unitPriceError: null,
+      unitOfMeasureError: null,
+      totalLineValueError: null,
     };
 
     isUpdate: boolean;
@@ -56,6 +72,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       .subscribe(theme => this.currentTheme = theme);
 
       this.currentUser = this.userService.getCurrentUser();
+      this.loadUnits();
     }
 
     ngAfterViewInit(): void {
@@ -82,6 +99,12 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         this.form.itemValueError = this.updateSAD500Line.itemValueError;
         this.form.prodCode = this.updateSAD500Line.prodCode;
         this.form.prodCodeError = this.updateSAD500Line.prodCodeError;
+        this.form.unitPrice = this.updateSAD500Line.unitPrice;
+        this.form.totalLineValue = this.updateSAD500Line.totalLineValue;
+        this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
+        this.form.unitOfMeasureID = this.updateSAD500Line.unitOfMeasureID;
+        this.form.unitPriceError = this.updateSAD500Line.unitPriceError;
+        this.form.totalLineValueError = this.updateSAD500Line.totalLineValueError;
       } else {
         this.isUpdate = false;
 
@@ -92,12 +115,17 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           quantityError: null,
           itemValue: 0.0,
           itemValueError: null,
+          unitPrice: 0.0,
+          totalLineValue: 0.0,
+          unitOfMeasureID: -1,
+          unitOfMeasure: null,
+          unitPriceError: null,
+          unitOfMeasureError: null,
+          totalLineValueError: null,
         };
       }
 
     }
-
-
 
     submit() {
       if (this.isUpdate) {
@@ -107,6 +135,11 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           quantity: this.form.quantity,
           itemValue: this.form.itemValue,
           invoiceLineID: this.updateSAD500Line.invoiceLineID,
+          unitPrice: this.form.unitPrice,
+          totalLineValue: this.form.totalLineValue,
+          unitOfMeasure: this.form.unitOfMeasure,
+          unitOfMeasureID: this.form.unitOfMeasureID,
+          guid: UUID.UUID(),
         };
 
         this.updateLine.emit(request);
@@ -116,9 +149,44 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           prodCode: this.form.prodCode,
           quantity: this.form.quantity,
           itemValue: this.form.itemValue,
+          unitPrice: this.form.unitPrice,
+          totalLineValue: this.form.totalLineValue,
+          unitOfMeasure: this.form.unitOfMeasure,
+          unitOfMeasureID: this.form.unitOfMeasureID,
+          guid: UUID.UUID(),
         };
         this.submitLine.emit(request);
       }
+    }
+
+    loadUnits(): void {
+      // tslint:disable-next-line: max-line-length
+      this.unitService.list({ userID: this.currentUser.userID, specificUnitOfMeasureID: -1, rowStart: 1, rowEnd: 1000, filter: '', orderBy: '', orderByDirection: '' }).then(
+        (res: ListUnitsOfMeasure) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+            this.unitOfMeasureList = res.unitOfMeasureList;
+            this.unitOfMeasureListTemp = res.unitOfMeasureList;
+          }
+        },
+        (msg) => {
+
+        }
+      );
+    }
+
+    filterUnit() {
+      this.unitOfMeasureList = this.unitOfMeasureListTemp;
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
+    }
+
+    matchRuleShort(str, rule) {
+      const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+      return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+    }
+
+    selectedUnit(unit) {
+      this.form.unitOfMeasure = unit.name;
+      this.form.unitOfMeasureID = unit.unitOfMeasureID;
     }
 
     ngOnDestroy(): void {

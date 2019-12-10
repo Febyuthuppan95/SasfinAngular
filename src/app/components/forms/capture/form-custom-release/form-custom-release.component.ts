@@ -67,10 +67,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       value: null,
       error: null,
     },
-    supplierRef: {
-      value: null,
-      error: null,
-    },
     MRN: {
       value: null,
       error: null,
@@ -130,7 +126,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             pcc: this.form.PCC.value,
             fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
-            supplierRef: this.form.supplierRef.value,
             mrn: this.form.MRN.value,
             isDeleted: 0,
             attachmentStatusID: 2,
@@ -169,8 +164,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.importersCode.error = res.importersCodeError;
         this.form.waybillNo.value = res.waybillNo;
         this.form.waybillNo.error = res.waybillNoError;
-        this.form.supplierRef.value = res.supplierRef;
-        this.form.supplierRef.error = res.supplierRefError;
         this.form.LRN.value = res.lrn;
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;

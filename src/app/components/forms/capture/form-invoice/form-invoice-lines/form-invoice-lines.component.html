@@ -10,6 +10,17 @@
       <p class="invalid-control-label" *ngIf="this.form.prodCodeError !== null && this.form.prodCodeError !== undefined" style="width: 100%;">{{this.form.prodCodeError}}</p>
   </div>
   <div class="form-group">
+    <div class="form-group">
+        <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+        <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
+            {{unit.name}}, {{unit.description}}
+          </mat-option>
+        </mat-autocomplete>
+        <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined">{{this.form.unitOfMeasureError}}</p>
+          </div>
+  </div>
+  <div class="form-group">
     <label class="text-muted">Quantity</label>
     <input type="number"
       [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
@@ -27,4 +38,22 @@
       placeholder="Item Value" />
       <p class="invalid-control-label" *ngIf="this.form.itemValueError !== null && this.form.itemValueError !== undefined">{{this.form.itemValueError}}</p>
   </div>
+  <div class="form-group">
+      <label class="text-muted">Unit Price</label>
+      <input type="number"
+        [(ngModel)]="this.form.unitPrice" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.unitPriceError !== null && this.form.unitPriceError !== undefined}"
+        placeholder="Quantity" style="margin-top:0"/>
+        <p class="invalid-control-label" *ngIf="this.form.unitPriceError !== null && this.form.quantityError !== undefined">{{this.form.unitPriceError}}</p>
+    </div>
+    <div class="form-group">
+        <label class="text-muted">Total Line Value</label>
+        <input type="number"
+          [(ngModel)]="this.form.totalLineValue" [ngModelOptions]="{standalone: true}"
+          class="form-control form-control-sm shadow-sm form-control-light"
+          [ngClass]="{'form-control-invalid': this.form.totalLineValueError !== null && this.form.totalLineValueError !== undefined}"
+          placeholder="Quantity" style="margin-top:0"/>
+          <p class="invalid-control-label" *ngIf="this.form.totalLineValueError !== null && this.form.totalLineValueError !== undefined">{{this.form.totalLineValueError}}</p>
+      </div>
 </form>

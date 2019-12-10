@@ -45,6 +45,7 @@ export class CaptureService {
   invoiceLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/update`, requestModel);
 
   dutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/duties`, requestModel);
+  splitPDF = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/public/generate/split-document`, requestModel);
 
   waybillUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/waybill/update`, requestModel);
   waybillList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/waybill/list`, requestModel);
