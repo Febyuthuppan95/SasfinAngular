@@ -113,6 +113,11 @@
         </button>
       </div>
       <form (submit)="uploadAttachments()" enctype="multipart/form-data">
+        <div class="text-left" style="padding: 24px">
+        <button class="btn btn-info" (click)="splitPDF()">
+          Split PDF
+        </button>
+      </div>
       <div class="modal-body">
           <div class="form-group">
               <input type="text" placeholder="Name" class="form-control"
@@ -133,7 +138,7 @@
         <div class="form-group" *ngIf="this.sad500Line.length !== 0">
           <select (change)="onSAD500LineSelect($event.target.value)" class="form-control" required [(selectedIndex)]="sad500LineIndex" [formControl]="selectSAD500LinesControl">
             <option value="-1" [disabled]="this.disableSAD500Lines" selected>Please select an SAD500 Line</option>
-            <option *ngFor="let type of this.sad500Line" value="{{type.sad500LineID}}">{{type.customsValue}}, {{type.lineNo}}, {{type.productCode}}</option>
+            <option *ngFor="let type of this.sad500Line" value="{{type.sad500LineID}}">{{type.customsValue}}, {{type.lineNo}}, {{type.quantity}}</option>
           </select>
         </div>
         <div class="form-group d-inline">
@@ -158,7 +163,6 @@
               <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>
           </div>
         </div>
-        <app-split-document></app-split-document>
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>

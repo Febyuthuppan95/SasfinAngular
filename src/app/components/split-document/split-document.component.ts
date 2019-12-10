@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-split-document',
@@ -8,17 +9,17 @@ import { CaptureService } from 'src/app/services/capture.service';
 })
 export class SplitDocumentComponent implements OnInit {
 
-  constructor(private captureService: CaptureService) { }
+  constructor(private captureService: CaptureService, private dialogRef: MatDialogRef<SplitDocumentComponent>,
+              @Inject(MAT_DIALOG_DATA) private data: { userID: number, transactionID: number}) { }
 
-  sections: SplitPDFRequest[];
+  sections: SplitPDFRequest[] = [];
   requestData = {
     sections: this.sections
   };
 
   file: File;
-
-  @Input() userID: number;
-  @Input() transactionID: number;
+  filePreview: ArrayBuffer | string;
+  private fileReader = new FileReader();
 
   transactionTypes = [
     { name: 'ICI', value: 1 },
@@ -28,19 +29,34 @@ export class SplitDocumentComponent implements OnInit {
     { name: 'VOC', value: 5 },
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this);
+  }
 
   addSection() {
     this.requestData.sections.push({
       pages: {
         start: 1,
         end: 2,
-      }
+      },
+      name: '',
+      userID: this.data.userID,
+      transactionID: this.data.transactionID
     });
   }
 
   inputFileChange(files: File[]) {
     this.file = files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.filePreview = reader.result;
+    };
+
+    reader.readAsDataURL(this.file);
+  }
+
+  typeChange(index: number, value: number) {
+    this.requestData.sections[index].attachmentType = this.transactionTypes[value - 1].name;
   }
 
   formSubmit() {
@@ -53,15 +69,15 @@ export class SplitDocumentComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append('requestModel', JSON.stringify(this.sections));
+    formData.append('requestModel', JSON.stringify(this.requestData));
     formData.append('file', this.file);
 
     this.captureService.splitPDF(formData).then(
       (res) => {
-        console.log(res);
+        this.dialogRef.close({state: true});
       },
       (msg) => {
-        console.log(msg);
+        this.dialogRef.close({state: false});
       }
     );
   }
@@ -78,5 +94,5 @@ export class SplitPDFRequest {
     userID?: number;
     transactionID?: number;
     name?: string;
-    type?: string;
+    attachmentType?: string;
 }

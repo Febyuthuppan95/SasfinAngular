@@ -398,7 +398,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent
+    FormWaybillComponent,
+    SplitDocumentComponent
   ]
 })
 export class AppModule { }
