@@ -81,7 +81,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     description: string,
     tariffID: number,
     tariff: string,
-    type: string,
+    type: number,
     mIDP: string,
     pI: string,
     vulnerable: string,
@@ -158,7 +158,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   description = '';
   tariff = '';
   tariffID = 0;
-  type2 = '';
+  itemtypeID = 0;
   mIDP = '';
   pI = '';
   vulnerable = '';
@@ -323,8 +323,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   }
 
   loadItemTypes(displayGrowl: boolean) {
-    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-    this.showLoader = true;
     const model = {
       userID: this.currentUser.userID,
       filter: this.filter,
@@ -437,6 +435,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   editItem(id: number) {
     this.loadServices(false);
     this.loadTariffs(false);
+    this.loadItemTypes(false);
 
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -445,7 +444,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.description = this.Item.description;
     this.tariff = this.Item.tariff;
     this.tariffID = this.Item.tariffID;
-    // this.type = this.Item.type;
+    this.itemtypeID = this.Item.type;
     this.mIDP = this.Item.mIDP;
     this.pI = this.Item.pI;
     this.vulnerable = this.Item.vulnerable;
@@ -465,7 +464,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       item: this.item,
       description: this.description,
       tariffID: this.tariffID,
-      // type: this.type,
+      type: this.itemtypeID,
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
@@ -536,7 +535,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.vulnerable = state;
   }
   onTypeChange(id: number) {
-
+    this.itemtypeID = id;
   }
   onTariffChange(selectedtariffid: number) {
     this.tariffID = selectedtariffid;

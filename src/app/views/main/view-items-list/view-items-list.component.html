@@ -66,14 +66,9 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="control-label">Type:</label>
-              <input type="text" placeholder="Type" class="form-control"
-               [(ngModel)]="this.type2" [ngModelOptions]="{standalone: true}"  required/>
-            </div>
-            <div class="form-group">
                 <label class="control-label">Type:</label>
                 <select class="form-control" (change)="onTypeChange($event.target.value)">
-                  <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemType === this.type2">{{type.itemType}}</option>
+                  <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemTypeID === this.itemtypeID">{{type.itemType}}</option>
                 </select>
               </div>
             <div class="form-group">

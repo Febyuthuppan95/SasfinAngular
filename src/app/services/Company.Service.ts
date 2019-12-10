@@ -319,7 +319,7 @@ export class CompanyService {
     return promise;
   }
 
-  
+
    /*Add*/
    public UpdateContact(model: AddContact) {
     const requestModel = JSON.parse(JSON.stringify(model));
@@ -799,7 +799,7 @@ export class CompanyService {
 
   public getItemTypesList(model) {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/items`;
+      const apiURL = `${environment.ApiEndpoint}/itemtypes/list`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
