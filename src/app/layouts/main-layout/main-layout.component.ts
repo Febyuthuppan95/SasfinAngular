@@ -87,6 +87,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       if (result !== undefined) {
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
+
+      console.log(this.currentBackground);
     });
 
     toggleHelpObserver
@@ -179,7 +181,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.userIdle.resetTimer();
   }
 
-  TriggerSessionTimeout(count){
+  TriggerSessionTimeout(count) {
    this.count = 11;
    this.count =  this.count - count;
 

@@ -269,6 +269,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, obj) {
+    (<HTMLInputElement>document.getElementById('editselect')).value = obj.doctypeID;
     this.captureInfo = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
@@ -290,6 +291,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
 
   editCaptureInfo() {
     this.openEditModal.nativeElement.click();
+
   }
 
   editInfo() {
@@ -299,6 +301,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       info: this.captureInfo.info,
       doctypeID:  this.requestModelAddInfo.doctypeID,
       isDeleted: 0
+
     };
 
     if (requestModel.doctypeID === -1) { // if it hasn't been selected yet then take value from first item -.
@@ -331,11 +334,17 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.router.navigate(['companies']);
   }
 
+
+
   addCaptureInfoModal() {
+
     this.doctypeSelectedIndex = 0;
     this.requestModelAddInfo.info = null;
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
+   (<HTMLInputElement>document.getElementById('mydropdown')).value = '-1';
+
+
   }
 
   addCapture() {
@@ -385,9 +394,9 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       captureID: this.captureInfo.captureInfoID,
+      docTypeID: 1,
       isDeleted: 1,
       info: this.captureInfo.info,
-      docTypeID: 1,
     };
 
     this.transactionService.captureInfoUpdate(requestModel).then(

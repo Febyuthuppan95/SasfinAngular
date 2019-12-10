@@ -1,35 +1,9 @@
-<div mat-dialog-content style="padding:0;overflow: hidden !important;position: relative">
-  <ngx-extended-pdf-viewer
-  style="overflow:hidden"
-  *ngIf="displayPDF"
-  [height]="'512px'"
-  [src]="pdfSRC"
-  [useBrowserLocale]="true"
-  [showZoomButtons]="false"
-  [showSpreadButton]="false"
-  [showSidebarOnLoad]="false"
-  [showSidebarButton]="false"
-  [showSecondaryToolbarButton]="false"
-  [showScrollingButton]="false"
-  [showRotateButton]="false"
-  [showPropertiesButton]="false"
-  [showPrintButton]="false"
-  [showPresentationModeButton]="false"
-  [showPagingButtons]="false"
-  [showOpenFileButton]="false"
-  [showHandToolButton]="false"
-  [showFindButton]="false"
-  [showDownloadButton]="false"
-  [showBookmarkButton]="false">
-</ngx-extended-pdf-viewer>
-  <div style="padding: 24px;" *ngIf="!this.displayPDF && !this.failedToLoad" class="text-center">
-    <app-loader class="margin-auto"></app-loader>
-  </div>
+<div mat-dialog-content style="padding:0;overflow-y: auto !important; position: relative" class="mat-dialog-container-override">
+  <app-pdf-viewer
+    [(pdf)]="this.pdfSRC"
+    [minZoom]="0.5">
+  </app-pdf-viewer>
   <div style="padding: 24px;text-align: center;" *ngIf="this.failedToLoad">
       <p class="text-center badge badge-danger m-auto">Failed to load document</p>
-  </div>
-  <div class="preview-overlay text-center">
-    <button mat-icon-button (click)="close()" class="close-buton"><span class="mdi mdi-close text-light"></span></button>
-    <h1 class="text-light" style="margin-top:224px;">Preview</h1>
   </div>
 </div>

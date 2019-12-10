@@ -40,14 +40,13 @@ constructor(private themeService: ThemeService, private transactionService: Tran
     },
     headings: [
       { title: '', propertyName: 'rowNum', order: { enable: false } },
-      { title: 'Supplier Ref', propertyName: 'supplierRef', order: { enable: false } },
       { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
       { title: 'Serial No', propertyName: 'serialNo', order: { enable: false } },
       { title: 'Importers Code', propertyName: 'importersCode', order: { enable: false } },
       { title: 'FOB', propertyName: 'fob', order: { enable: false } },
       { title: 'PCC', propertyName: 'pcc', order: { enable: false } },
-      { title: 'LRN', propertyName: 'mrn', order: { enable: false } },
-      { title: 'MRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'LRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'MRN', propertyName: 'mrn', order: { enable: false } },
       { title: 'Status', propertyName: 'status', order: { enable: false } }
     ],
     rowStart: 1,

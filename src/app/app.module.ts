@@ -133,7 +133,6 @@ import { ContextMenuCompanyItemsComponent } from './components/menus/context-men
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 
 import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
-import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
@@ -142,7 +141,6 @@ import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-pre
 import { FocusDirective } from './directives/focus.directive';
 import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
 import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
-import { FormVocLinesComponent } from './components/forms/capture/form-voc/form-voc-lines/form-voc-lines.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 // tslint:disable-next-line: max-line-length
@@ -171,12 +169,26 @@ import { ViewPermitsListComponent } from './views/main/view-permits-list/view-pe
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
-import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ReportsService } from './services/Reports.Service';
+import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
+import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
+import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
 import { SplitDocumentComponent } from './components/split-document/split-document.component';
+import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
+import { EventService } from './services/event.service';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 
 @NgModule({
   declarations: [
@@ -267,14 +279,12 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     ContextMenuCompanyItemsComponent,
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
-    FormShippingDocumentComponent,
     Sad500LinesComponent,
     FormSAD500LineComponent,
     Sad500LinePreviewComponent,
     FocusDirective,
     FormInvoiceComponent,
     FormVOCComponent,
-    FormVocLinesComponent,
     ContextMenuSADLinesComponent,
     ContextMenuItemsGroupComponent,
     ViewImportClearingInstructionsComponent,
@@ -296,11 +306,21 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     ViewPermitsListComponent,
     ViewPermitIMportTariffsListComponent,
     ContextMenuPermitsComponent,
-    ViewReportsListComponent,
+    ViewReportQueuesListComponent,
+    ViewCompanyServiceClaimsComponent,
+    ContextMenuServiceClaimsComponent,
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
     SplitDocumentComponent,
+    PDFViewerComponent,
+    FormInvoiceLinesComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent,
+    FormWaybillComponent,
+    ViewCompanyServiceclaimReportComponent,
+    ContextMenuCompanyServiceclaimReportComponent,
+    ContextMenuCompanyContactsComponent,
   ],
   imports: [
     BrowserModule,
@@ -361,7 +381,8 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     ValidateService,
     ComponentService,
     TariffService,
-    ReportsService
+    ReportsService,
+    EventService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -371,7 +392,13 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     ImagePreviewDialogComponent,
     FormSAD500Component,
     FormImportClearingInstructionComponent,
-    FormCustomReleaseComponent
+    FormCustomReleaseComponent,
+    AttachmentDialogComponent,
+    FormInvoiceComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent,
+    FormVOCComponent,
+    FormWaybillComponent
   ]
 })
 export class AppModule { }

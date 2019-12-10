@@ -22,6 +22,12 @@ import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
+import { GetCompanyServiceClaims } from '../models/HttpRequests/GetCompanyServiceClaims';
+import { GetPermitsByDate } from '../models/HttpRequests/GetPermitsByDate';
+import { GetSAD500LinesByPermits } from '../models/HttpRequests/GetSAD500LinesByPermits';
+import { NumberValueAccessor } from '@angular/forms';
+import { GetServiceClaimReports } from '../models/HttpRequests/GetServiceClaimReports';
+import { AddContact } from '../models/HttpRequests/AddContact';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +45,8 @@ export class CompanyService {
     let sessionData3: SelectedBOM = null;
     // Permit
     let sessionData4: SelectedPermit = null;
+    // CompanyServiceClaimReport
+    let sessionData5: SelectedClaimReport = null;
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -56,6 +64,10 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.PermitData}`) !== undefined || null) {
       sessionData4 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.PermitData}`));
     }
+    // CompanyServiceClaimReport
+    if (sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`) !== undefined || null) {
+      sessionData5 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`));
+    }
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
@@ -65,6 +77,8 @@ export class CompanyService {
     this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
     // Permit
     this.SelectedPermit = new BehaviorSubject<SelectedPermit>(sessionData4);
+    // CompanyServiceClaimReport
+    this.SelectedClaimReport = new BehaviorSubject<SelectedClaimReport>(sessionData5);
 
   }
   // company
@@ -75,6 +89,8 @@ export class CompanyService {
   SelectedBOM: BehaviorSubject<SelectedBOM>;
   // Permit
   SelectedPermit: BehaviorSubject<SelectedPermit>;
+  // CompanyServiceClaimReport
+  SelectedClaimReport: BehaviorSubject<SelectedClaimReport>;
 
   // company
   setCompany(company: SelectedCompany) {
@@ -96,6 +112,11 @@ export class CompanyService {
     this.SelectedPermit.next(Permit);
     sessionStorage.setItem(`${environment.Sessions.PermitData}`, JSON.stringify(Permit));
   }
+  // CompanyServiceClaimReport
+  setClaimReport(ClaimReport: SelectedClaimReport) {
+    this.SelectedClaimReport.next(ClaimReport);
+    sessionStorage.setItem(`${environment.Sessions.ClaimReportData}`, JSON.stringify(ClaimReport));
+  }
 
   // company
   observeCompany() {
@@ -113,6 +134,10 @@ export class CompanyService {
   observePermit() {
     return this.SelectedPermit.asObservable();
   }
+   // CompanyServiceClaimReport
+   observeClaimReport() {
+    return this.SelectedClaimReport.asObservable();
+  }
 
   // company
   flushCompanySession() {
@@ -129,6 +154,10 @@ export class CompanyService {
   // Permit
   flushPermitSession() {
     sessionStorage.removeItem(`${environment.Sessions.PermitData}`);
+  }
+  // Permit
+  flushClaimReportSession() {
+    sessionStorage.removeItem(`${environment.Sessions.ClaimReportData}`);
   }
 
 
@@ -233,7 +262,7 @@ export class CompanyService {
   public UpdateInfo(model: UpdateCompanyInfo) {
     const requestModel = JSON.parse(JSON.stringify(model));
     const promise = new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/companies/infoupdate`;
+      const apiURL = `${environment.ApiEndpoint}/companies/infoUpdate`;
       this.httpClient
       .post(apiURL, requestModel)
       .toPromise()
@@ -269,6 +298,49 @@ export class CompanyService {
         );
     });
   }
+
+   /*Add*/
+   public addContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactAdd`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+  
+   /*Add*/
+   public UpdateContact(model: AddContact) {
+    const requestModel = JSON.parse(JSON.stringify(model));
+    const promise = new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/contactUpdate`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+    return promise;
+  }
+
+
 
   /**
    * contacts
@@ -508,6 +580,141 @@ export class CompanyService {
   public getCompanyBoms(model: GetCompanyBOMs) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyServiceClaims(model: GetCompanyServiceClaims) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/serviceClaims`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getServiceClaimReports(model: GetServiceClaimReports) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/ServiceClaimReports`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public prieviewReport(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PreviewCompanyReport`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public regenerateReport(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/RegenerateCompanyReport`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public downloadReport(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/DownloadReport`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getPermitsByDate(model: GetPermitsByDate) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PermitsByDate`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getSAD500LinesByPermits(model: GetSAD500LinesByPermits) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/SAD500LinesByPermits`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public addSAD500Linesclaim(model) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/AddSAD500Linesclaim`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
@@ -831,4 +1038,13 @@ export class SelectedBOM {
 export class SelectedPermit {
   permitID: number;
   permitCode: string;
+}
+
+export class SelectedClaimReport {
+  companyServiceID: number;
+  companyID: number;
+  companyName: string;
+  claimNumber: number;
+  serviceId: number;
+  serviceName: string;
 }

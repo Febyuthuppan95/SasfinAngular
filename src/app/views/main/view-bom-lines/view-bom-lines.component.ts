@@ -214,7 +214,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     };
     this.companyService.getBOMLines(model).then(
       (res: BOMsLinesResponse) => {
-        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -223,7 +222,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
           }
         }
         this.BOMLines = res.bomLines;
-        console.log(res.bomLines);
 
         if (res.rowCount === 0) {
           this.noData = true;

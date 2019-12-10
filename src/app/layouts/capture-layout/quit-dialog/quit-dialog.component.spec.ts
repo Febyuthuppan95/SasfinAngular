@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewReportsListComponent } from './view-reports-list.component';
+import { QuitDialogComponent } from './quit-dialog.component';
 
-describe('ViewReportsListComponent', () => {
-  let component: ViewReportsListComponent;
-  let fixture: ComponentFixture<ViewReportsListComponent>;
+describe('QuitDialogComponent', () => {
+  let component: QuitDialogComponent;
+  let fixture: ComponentFixture<QuitDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewReportsListComponent ]
+      declarations: [ QuitDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewReportsListComponent);
+    fixture = TestBed.createComponent(QuitDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

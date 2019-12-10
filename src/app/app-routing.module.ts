@@ -53,8 +53,11 @@ import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-line
 import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';
-import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
+import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
+import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 const routes: Routes = [
   {
     path: '',
@@ -88,13 +91,15 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
-          { path: 'reports', component: ViewReportsListComponent },
+          { path: 'reportsqueues', component: ViewReportQueuesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
           { path: 'companies/addresses', component: ViewCompanyAddressesComponent },
           { path: 'companies/services', component: ContextCompanyServiceListComponent },
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/boms', component: ViewCompanyBOMsComponent },
+          { path: 'companies/serviceclaims', component: ViewCompanyServiceClaimsComponent },
+          { path: 'companies/serviceclaims/reports', component: ViewCompanyServiceclaimReportComponent },
           { path: 'companies/permits', component: ViewPermitsListComponent },
           { path: 'companies/permits/permitimporttariffs', component: ViewPermitIMportTariffsListComponent },
           { path: 'companies/boms/bomlines', component: ViewBOMLinesComponent },

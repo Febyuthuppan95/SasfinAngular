@@ -62,11 +62,10 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
   tableHeadings: TableHeading[] = [
     { title: '', propertyName: 'rowNum', order: { enable: false, } },
     { title: 'Tariff', propertyName: 'tariff', order: { enable: true, tag: 'Tariff' } },
-    { title: 'Customs Value', propertyName: 'customsValue', order: { enable: true, tag: 'Tariff' } },
-    { title: 'Line No', propertyName: 'lineNo', order: { enable: true, tag: 'Tariff' } },
-    { title: 'Unit Of Measure', propertyName: 'unitOfMeasure', order: { enable: true, tag: 'Tariff' } },
-    { title: 'ProductCode', propertyName: 'productCode', order: { enable: true, tag: 'Tariff' } },
-    { title: 'Value', propertyName: 'value', order: { enable: true, tag: 'Tariff' } },
+    { title: 'Customs Value', propertyName: 'customsValue', order: { enable: true, tag: 'CustomsValue' } },
+    { title: 'Line No', propertyName: 'lineNo', order: { enable: true, tag: 'LineNo' } },
+    { title: 'Unit Of Measure', propertyName: 'unitOfMeasure', order: { enable: true, tag: 'UnitOfMeasure' } },
+    { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
   ];
 
   private unsubscribe$ = new Subject<void>();
@@ -125,9 +124,8 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         unitOfMeasureID: obj.unitOfMeasureID,
         tariff: obj.tariff,
         tariffID: obj.tariffID,
-        value: obj.value,
+        quantity: obj.quantity,
         customsValue: obj.customsValue,
-        productCode: obj. productCode,
         isDeleted: 0,
         lineNo: obj.lineNo
       };
@@ -155,9 +153,8 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         unitOfMeasureID: obj.unitOfMeasureID,
         tariff: obj.tariff,
         tariffID: obj.tariffID,
-        value: obj.value,
+        quantity: obj.quantity,
         customsValue: obj.customsValue,
-        productCode: obj. productCode,
         isDeleted: 1,
         lineNo: obj.lineNo
       };
@@ -172,7 +169,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
           }
         },
         (msg) => {
-          console.log(msg);
         }
       );
     }

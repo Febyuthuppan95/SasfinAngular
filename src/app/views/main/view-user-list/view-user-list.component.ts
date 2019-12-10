@@ -79,6 +79,9 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
 
+  @ViewChild('myInput', { static: true })
+  myInputVariable: ElementRef;
+
   private unsubscribe$ = new Subject<void>();
 
   tableHeader: TableHeader = {
@@ -438,6 +441,7 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     this.ProfileImage = null;
     this.EmployeeNumb = null;
     this.selectedDesignationIndex = 0;
+    this.myInputVariable.nativeElement.value = -1;
     this.selectedStatusIndex = 0;
     this.disableDesSelect = false;
     this.preview = null;

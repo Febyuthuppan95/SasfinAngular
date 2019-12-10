@@ -12,6 +12,10 @@ import { TransactionFileListResponse, TransactionFile } from 'src/app/models/Htt
 import { FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { CaptureService } from 'src/app/services/capture.service';
+import { SAD500ListResponse, SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
+import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -26,6 +30,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private captureService: CaptureService,
+    private companyService: CompanyService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -66,6 +72,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   showingPages: Pagination[];
   dataset: TransactionFileListResponse;
   dataList: TransactionFile[] = [];
+  sad500DataList: TransactionFile[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -73,9 +80,18 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   prevPageState: boolean;
   focusPath: string;
   disableAttachmentType: boolean;
+  disableSAD500: boolean;
+  disableSAD500Lines: boolean;
   attachmentTypeIndex: number;
+  sad500Index: number;
+  sad500LineIndex: number;
+
   preview: string;
   selectAttachmentType = new FormControl();
+  selectSAD500Control = new FormControl();
+  selectSAD500LinesControl = new FormControl();
+  sad500s: SAD500Get[] = [];
+  sad500Line: SAD500Line[] = [];
 
   rowStart: number;
   rowEnd: number;
@@ -108,19 +124,25 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   transactionID: number;
 
   transactionTypes = [
-    { name: 'ICI', value: 1 },
-    { name: 'SAD500', value: 2 },
-    { name: 'PACKING', value: 3 },
-    { name: 'CUSRELEASE', value: 4 },
-    { name: 'VOC', value: 5 },
+    { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
+    { name: 'SAD500', value: 2, description: 'SAD500' },
+    { name: 'PACKING', value: 3, description: 'Packing' },
+    { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
+    { name: 'VOC', value: 5, description: 'VOC' },
+    { name: 'INVOICE', value: 6, description: 'Invoice' },
+    { name: 'WAYBILL', value: 7, description: 'Waybill' },
   ];
   attachmentName: string;
-  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
-  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string }[] = [];
+  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
+  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
   selectedTransactionType: number;
+  selectedSAD500: number;
+  selectedSAD500Line: number;
   fileToUpload: File;
   currentAttachment = 0;
   uploading = false;
+  isVOC = false;
+  companyName: string;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -145,12 +167,19 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.companyService.observeCompany()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompany) => {
+      if (obj !== null || obj !== undefined) {
+        this.companyName = obj.companyName;
+      }
+    });
+
     this.loadAttachments();
   }
 
 
   paginateData() {
-
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
     const pageCount = +this.rowCount / +this.rowCountPerPage;
@@ -238,6 +267,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           }
 
           this.dataList = res.attachments;
+          this.sad500DataList = this.dataList.filter(x => x.fileType === 'SAD500');
 
           if (res.rowCount === 0) {
             this.noData = true;
@@ -279,7 +309,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   updatePagination() {
-    if (this.dataset.attachments.length <= this.totalShowing) {
+    if (this.rowCount <= this.rowCountPerPage) {
       this.prevPageState = false;
       this.nextPageState = false;
     } else {
@@ -303,7 +333,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.showingPages[2] = this.pages[+this.activePage + 1];
       }
     }
-
   }
 
   toggleFilters() {
@@ -357,7 +386,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         attach.type,
         this.transactionID,
         this.currentUser.userID,
-        'The Boring Company' // Change to company name
+        this.companyName,
+        attach.sad500LineID
       ).then(
         (res) => {
             attach.uploading = false;
@@ -368,6 +398,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
             this.preview = null;
             this.attachmentName = null;
             this.selectAttachmentType.reset(-1);
+            this.closeModal.nativeElement.click();
 
         },
         (msg) => {
@@ -386,7 +417,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.attachmentQueueDisplay = [];
     this.selectAttachmentType.reset(-1);
     this.inputFile.nativeElement.value = '';
-    console.log(this.inputFile.nativeElement.files);
     this.openModal.nativeElement.click();
   }
 
@@ -401,6 +431,26 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   onTypeSelect(id: number) {
     this.selectedTransactionType = id;
     this.disableAttachmentType = true;
+
+    // tslint:disable-next-line: triple-equals
+    if (this.selectedTransactionType == 5) {
+      this.isVOC = true;
+    } else {
+      this.isVOC = false;
+    }
+  }
+
+  onSAD500Select(id: number) {
+    this.selectedSAD500 = id;
+    this.disableSAD500 = true;
+
+    this.loadSAD500Lines();
+  }
+
+  onSAD500LineSelect(id: number) {
+    this.selectedSAD500Line = id;
+    alert(id);
+    this.disableSAD500Lines = true;
   }
 
   addToQueue() {
@@ -419,6 +469,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
+      this.attachmentQueue[this.currentAttachment].sad500LineID = this.selectedSAD500Line;
 
       this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
 
@@ -429,8 +480,49 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentTypeIndex = 0;
       this.preview = null;
       this.attachmentTypeIndex = 0;
+      this.selectedSAD500Line = -1;
       this.selectAttachmentType.reset(-1);
     }
+  }
+
+  loadSAD500s() {
+    this.captureService.sad500List({
+      userID: this.currentUser.userID,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 100,
+      orderBy: '',
+      orderDirection: '',
+      transactionID: this.transactionID,
+    }).then(
+      (res: SAD500ListResponse) => {
+        this.sad500s = res.sad500s;
+      },
+      (msg) => {
+
+      }
+    );
+  }
+
+  loadSAD500Lines() {
+    this.captureService.sad500LineList({
+      userID: this.currentUser.userID,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 100,
+      orderBy: '',
+      orderByDirection: '',
+      specificSAD500LineID: -1,
+      sad500ID: this.selectedSAD500,
+    }).then(
+      (res: SPSAD500LineList) => {
+        this.selectedSAD500Line = -1;
+        this.sad500Line = res.lines;
+      },
+      (msg) => {
+
+      }
+    );
   }
 
   ngOnDestroy(): void {

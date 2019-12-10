@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -9,21 +9,27 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
+import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { EventService } from 'src/app/services/event.service';
+import { MatDialog } from '@angular/material';
+import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
   templateUrl: './form-import-clearing-instruction.component.html',
   styleUrls: ['./form-import-clearing-instruction.component.scss']
 })
-export class FormImportClearingInstructionComponent implements OnInit {
+export class FormImportClearingInstructionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService) { }
+              private router: Router, private captureService: CaptureService,
+              private eventService: EventService, private dialog: MatDialog) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
+  shortcuts: ShortcutInput[] = [];
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -31,18 +37,9 @@ export class FormImportClearingInstructionComponent implements OnInit {
 
   currentTheme: string;
   form = {
-  serialNo: {
-  value: null,
-  },
-  LRN: {
-  value: null,
-  },
   importersCode: {
   value: null,
   error: null,
-  },
-  PCC: {
-  value: null,
   },
   waybillNo: {
   value: null,
@@ -50,16 +47,20 @@ export class FormImportClearingInstructionComponent implements OnInit {
   },
   supplierRef: {
   value: null,
-  },
-  MRN: {
-  value: null,
+  error: null,
   },
   };
+
+  dialogOpen = false;
 
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => this.submit());
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -72,36 +73,51 @@ export class FormImportClearingInstructionComponent implements OnInit {
     });
   }
 
-  submit($event) {
-    $event.preventDefault();
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+        {
+            key: 'alt + s',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.submit()
+        },
+    );
+  }
 
-    const requestModel = {
-    userID: this.currentUser.userID,
-    specificICIID: this.attachmentID,
-    serialNo: this.form.serialNo.value,
-    lrn: this.form.LRN.value,
-    importersCode: this.form.importersCode.value,
-    pcc: this.form.PCC.value,
-    waybillNo: this.form.waybillNo.value,
-    supplierRef: this.form.supplierRef.value,
-    mrn: this.form.MRN.value,
-    isDeleted: 0,
-    attachmentStatus: 2,
-    };
+  submit() {
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
 
-    this.captureService.iciUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-        this.notify.successmsg(res.outcome, res.outcomeMessage);
-        this.router.navigate(['transaction', 'attachments']);
-        } else {
-        this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          const requestModel = {
+            userID: this.currentUser.userID,
+            specificICIID: this.attachmentID,
+            waybillNo: this.form.waybillNo.value,
+            importersCode: this.form.importersCode.value,
+            supplierRef: this.form.supplierRef.value,
+            isDeleted: 0,
+            attachmentStatus: 2,
+          };
+
+          this.captureService.iciUpdate(requestModel).then(
+            (res: Outcome) => {
+              if (res.outcome === 'SUCCESS') {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.router.navigate(['transaction', 'attachments']);
+              } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              }
+            },
+              (msg) => {
+              this.notify.errorsmsg('Failure', 'Cannot reach server');
+              }
+            );
         }
-      },
-        (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
+      });
+    }
   }
 
   loadICI() {
@@ -118,14 +134,13 @@ export class FormImportClearingInstructionComponent implements OnInit {
 
       }).then(
       (res: ICIListResponse) => {
+        console.log(res);
         this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
         this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
         this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
+        this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
         this.form.importersCode.value = res.clearingInstructions[0].importersCode;
         this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRefError;
       },
       (msg) => {
         console.log(msg);

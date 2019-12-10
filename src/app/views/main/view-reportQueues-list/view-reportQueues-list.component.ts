@@ -9,33 +9,20 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
-import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
-import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
-import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { Service } from 'src/app/models/HttpResponses/Service';
-import { ServicesService } from 'src/app/services/Services.Service';
-import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
-import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { takeUntil } from 'rxjs/operators';
 import { GetReportsList } from 'src/app/models/HttpRequests/GetReportsList';
 import { ReportsService } from 'src/app/services/Reports.Service';
-import { ReportsListResponse, Report } from 'src/app/models/HttpResponses/ReportsListResponse';
+import { ReportsListResponse, ReportQueue } from 'src/app/models/HttpResponses/ReportsListResponse';
 
 @Component({
-  selector: 'app-view-reports-list',
-  templateUrl: './view-reports-list.component.html',
-  styleUrls: ['./view-reports-list.component.scss']
+  selector: 'app-view-reportqueues-list',
+  templateUrl: './view-reportQueues-list.component.html',
+  styleUrls: ['./view-reportQueues-list.component.scss']
 })
-export class ViewReportsListComponent implements OnInit, OnDestroy {
+export class ViewReportQueuesListComponent implements OnInit, OnDestroy {
 
   constructor(
     private reprtsservice: ReportsService,
-    private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -90,7 +77,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
   tableHeader: TableHeader = {
     title: 'Reports',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -111,42 +98,58 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Report',
-      propertyName: 'item',
+      propertyName: 'reportName',
       order: {
         enable: true,
-        tag: 'Item'
+        tag: 'ReportName'
       }
     },
     {
       title: 'Company',
-      propertyName: 'company',
+      propertyName: 'companyName',
       order: {
         enable: true,
-        tag: 'Company'
+        tag: 'CompanyName'
       }
     },
     {
-      title: 'Type',
-      propertyName: 'reportType',
+      title: 'Service',
+      propertyName: 'serviceName',
       order: {
         enable: true,
-        tag: 'ReportType'
+        tag: 'ServiceName'
       }
     },
     {
       title: 'Company Service Claim Number',
-      propertyName: 'companyServiceClaimNumber',
+      propertyName: 'compnayServiceClaimNumber',
       order: {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
       }
     },
     {
-      title: 'Status',
-      propertyName: 'reportStatus',
+      title: 'Start Date',
+      propertyName: 'startDate',
       order: {
         enable: true,
-        tag: 'ReportStatus'
+        tag: 'StartDate'
+      }
+    },
+    {
+      title: 'End Date',
+      propertyName: 'endDate',
+      order: {
+        enable: true,
+        tag: 'EndDate'
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'reportQueueStatus',
+      order: {
+        enable: true,
+        tag: 'ReportQueueStatus'
       }
     }
   ];
@@ -161,7 +164,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
   pI = '';
   vulnerable = '';
 
-  reportslist: Report[] = [];
+  reportQueueslist: ReportQueue[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -209,7 +212,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
     const model: GetReportsList = {
       userID: this.currentUser.userID,
       filter: this.filter,
-      reportID: -1,
+      reportQueueID: -1,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
@@ -224,7 +227,7 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.reportslist = res.reportsLists;
+        this.reportQueueslist = res.reportQueuesLists;
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -232,9 +235,9 @@ export class ViewReportsListComponent implements OnInit, OnDestroy {
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.reportsLists.length;
+          this.showingRecords = res.reportQueuesLists.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.reportslist.length - 1;
+          this.totalShowing = +this.rowStart + +this.reportQueueslist.length - 1;
         }
 
       },

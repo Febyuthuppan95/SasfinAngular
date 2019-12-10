@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormVocLinesComponent } from './form-voc-lines.component';
+import { FormInvoiceLinesComponent } from './form-invoice-lines.component';
 
-describe('FormVocLinesComponent', () => {
-  let component: FormVocLinesComponent;
-  let fixture: ComponentFixture<FormVocLinesComponent>;
+describe('FormInvoiceLinesComponent', () => {
+  let component: FormInvoiceLinesComponent;
+  let fixture: ComponentFixture<FormInvoiceLinesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormVocLinesComponent ]
+      declarations: [ FormInvoiceLinesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormVocLinesComponent);
+    fixture = TestBed.createComponent(FormInvoiceLinesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

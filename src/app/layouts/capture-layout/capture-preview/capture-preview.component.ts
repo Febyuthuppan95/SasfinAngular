@@ -1,7 +1,13 @@
-import { Component, OnInit, ViewChild, Input, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Inject, ElementRef } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { UserIdleService } from 'angular-user-idle';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { takeUntil } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.Service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-capture-preview',
@@ -14,12 +20,10 @@ export class CapturePreviewComponent implements OnInit {
               public dialogRef: MatDialogRef<CapturePreviewComponent>,
               @Inject(MAT_DIALOG_DATA) public data: { src: string }) { }
 
-  @ViewChild(NotificationComponent, { static: true })
-  private notify: NotificationComponent;
-
-  pdfSRC: Blob;
+  pdfSRC: string;
   displayPDF = false;
   failedToLoad = false;
+  count = 0;
 
   ngOnInit() {
     this.failedToLoad = false;
@@ -32,7 +36,7 @@ export class CapturePreviewComponent implements OnInit {
           this.failedToLoad = false;
         }
 
-        this.pdfSRC = new File([res], 'file.pdf', {type: 'application/pdf'});
+        this.pdfSRC = res;
         this.displayPDF = true;
       },
       (msg) => {

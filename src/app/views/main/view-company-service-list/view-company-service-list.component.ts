@@ -25,7 +25,7 @@ import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
 import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, isEmpty } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -268,6 +268,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
             this.paginateData();
           }
 
+          this.loadServices(false);
+          this.loadUsers();
+
 
         },
         msg => {
@@ -450,41 +453,71 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
-    this.loadServices(false);
-    this.loadUsers();
-    this.openaddModal.nativeElement.click();
+
+    if (this.serviceslist.length > 0) {
+      this.openaddModal.nativeElement.click();
+    } else {
+      this.notify.toastrwarning(
+        'Information',
+        'All Services already added to the company'
+      );
+    }
   }
 
   addCompanyService() {
-    const requestModel: AddCompanyService = {
-      userID: this.currentUser.userID,
-      spesificCompanyID: this.companyID,
-      spesificServiceID: this.SerID,
-      resConsultantID: this.ConID,
-      resCapturerID: this.CapID,
-      startDate: this.StartDate,
-      endDate: this.EndDate,
-    };
+    let error = 0;
+    if (this.CapID === -1) {
+      error++;
+    }
+    if (this.ConID === -1) {
+      error++;
+    }
+    if (this.SerID === -1) {
+      error++;
+    }
+    if (this.StartDate === null || this.StartDate.toString() === '') {
+      error++;
+    }
+    if (this.EndDate === null || this.EndDate.toString() === '') {
+      error++;
+    }
+    if(new Date(this.StartDate) > new Date(this.EndDate)){
+      error++;
+      this.notify.toastrwarning('Error', 'End date cannot be before start date')
+    }
 
+    if (error === 0) {
+      const requestModel: AddCompanyService = {
+        userID: this.currentUser.userID,
+        spesificCompanyID: this.companyID,
+        spesificServiceID: this.SerID,
+        resConsultantID: this.ConID,
+        resCapturerID: this.CapID,
+        startDate: this.StartDate,
+        endDate: this.EndDate,
+      };
 
-    this.companyService.AddService(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-            this.loadCompanyServiceList();
+      this.companyService.AddService(requestModel).then(
+        (res: {outcome: Outcome}) => {
+            if (res.outcome.outcome !== 'SUCCESS') {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            } else {
+              this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+              this.loadCompanyServiceList();
+              this.closeaddModal.nativeElement.click();
+            }
+          },
+          msg => {
+            this.notify.errorsmsg(
+              'Server Error',
+              'Something went wrong while trying to access the server.'
+            );
             this.closeaddModal.nativeElement.click();
           }
-        },
-        msg => {
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-          this.closeaddModal.nativeElement.click();
-        }
-      );
+        );
+    } else {
+      this.notify.toastrwarning('Information', 'Please fill in all fields');
+    }
   }
 
   editCompanyService($event) {
@@ -499,6 +532,30 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   }
 
   UpdateCompanyServices() {
+
+    let error = 0;
+    if (this.CapID === -1) {
+      error++;
+    }
+    if (this.ConID === -1) {
+      error++;
+    }
+    if (this.SerID === -1) {
+      error++;
+    }
+    if (this.StartDate === null || this.StartDate.toString() === '') {
+      error++;
+    }
+    if (this.EndDate === null || this.EndDate.toString() === '') {
+      error++;
+    }
+    if(new Date(this.StartDate) > new Date(this.EndDate)){
+      error++;
+      this.notify.toastrwarning('Error', 'End date cannot be before start date')
+    }
+
+
+    if (error === 0) {
     const requestModel: UpdateCompanyService = {
       userID: this.currentUser.userID,
       spesificCompanyServiceID: this.focuscompserviceID,
@@ -522,6 +579,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
           this.notify.errorsmsg(
           'Server Error', 'Something went wrong while trying to access the server.');
       });
+    } else {
+      this.notify.toastrwarning('Information', 'Please fill in all fields');
+    }
   }
 
   onConsultantChange(id: number)   {
