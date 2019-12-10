@@ -45,4 +45,5 @@ export class CaptureService {
   shippingDocumentUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/shipping`, requestModel);
 
   dutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/duties`, requestModel);
+  splitPDF = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/public/generate/split-document`, requestModel);
 }

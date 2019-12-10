@@ -1,0 +1,22 @@
+<form (ngSubmit)="formSubmit()">
+    <div class="form-group">
+      <input (change)="inputFileChange($event.target.files)" type="file" />
+    </div>
+    <div *ngIf="this.file !== undefined" class="split-pdf">
+      <div class="form-group text-right">
+        <button (click)="addSection()" class="btn btn-primary">Add Section</button>
+      </div>
+      <div *ngFor="let section of this.sections" class="form-group form-inline">
+        <input type="number" placeholder="Start" class="form-control" [value]="section.pages.start">
+        <input type="number" placeholder="End"  class="form-control" [value]="section.pages.end">
+        <input type="text" placeholder="Name"  class="form-control" [value]="section.name">
+        <select class="form-control">
+          <option disabled selected>Please select a type</option>
+          <option *ngFor="let type of this.transactionTypes" [value]="type.value">{{type.name}}</option>
+        </select>
+      </div>
+    </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Split PDF</button>
+  </div>
+</form>

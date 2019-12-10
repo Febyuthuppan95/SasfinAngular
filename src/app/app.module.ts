@@ -176,6 +176,7 @@ import { ReportsService } from './services/Reports.Service';
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 
 @NgModule({
   declarations: [
@@ -299,6 +300,7 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
+    SplitDocumentComponent,
   ],
   imports: [
     BrowserModule,
