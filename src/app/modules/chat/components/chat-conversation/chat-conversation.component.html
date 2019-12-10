@@ -1,0 +1,21 @@
+<div class="chat-tile">
+    <div class="chat-tile-header">
+        <button mat-mini-fab matTooltip="Contacts" matTooltipPosition="below" class="header-button" ><span class="mdi mdi-account-multiple"></span></button>
+      <h5></h5>
+    </div>
+    <div class="chat-body">
+      <input type="search" class="form-control rounded" placeholder="Search conversations...">
+      <br>
+      <div class="contact-list">
+          <!-- <app-chat-conversation-tile *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile> -->
+      </div>
+    <div class="chat-tile-footer">
+        <form>
+            <div class="form-group">
+                <button mat-mini-fab class="send-button bg-primary text-light"><span class="mdi mdi-send"></span>
+                </button>
+                <input type="text" class="form-control shadow-sm rounded" placeholder="type a message..."/>
+            </div>
+        </form>
+    </div>
+  </div>

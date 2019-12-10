@@ -2,17 +2,18 @@
 
 <div class="chat-container" *ngIf="this.enableChat" [ngClass]="{showOverlay: this.showChat}">
   <div class="row vh-100">
-    <div class="col-sm-3">
-      <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list>
-      <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list>
+    <div class="offset-sm-9 col-sm-3">
+      <!-- <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list> -->
+      <!-- <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list> -->
+      <app-chat-conversation *ngIf="this.displayConversations"></app-chat-conversation>
     </div>
-    <div class="col-sm-9">
+    <!-- <div class="col-sm-9">
       <div class="chat-tile">
         <div class="chat-tile-header" (click)="dismissEvent()">
           <h5>Select a conversation</h5>
         </div>
         <div class="chat-body">
-
+          <app-chat-bubble></app-chat-bubble>
         </div>
         <div class="chat-tile-footer">
           <form>
@@ -24,6 +25,6 @@
           </form>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
