@@ -17,6 +17,9 @@ export class SAD500LineCreateRequest {
   tariffID: number;
   tariff: string;
   customsValue: number;
+  // cpc: string;
+  // productCode: string;
+  // value: number;
   lineNo: string;
   unitOfMeasureID: number;
   unitOfMeasure: string;

@@ -365,7 +365,7 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  confirmAdd(add) {
+  confirmAdd() {
     this.openAddModal.nativeElement.click();
   }
   removeRight(id: number) {
