@@ -1,0 +1,49 @@
+<div mat-dialog-content class="overflow: hidden">
+  <div class="text-center">
+    <label *ngIf="this.file === undefined" for="attachDocument" style="margin-top: 20%;">
+      <span class="upload-attachment">
+          <span class="mdi mdi-file-upload"></span>
+      </span>
+      <br><br><br>
+      Upload Document
+    </label>
+  </div>
+    <input id="attachDocument" (change)="inputFileChange($event.target.files)" type="file" hidden/>
+  <div class="row" style="overflow: hidden">
+    <div style="overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
+        <app-pdf-viewer
+        *ngIf="this.file"
+        [pdf]="this.filePreview">
+        </app-pdf-viewer>
+    </div>
+    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.filePreview">
+        <form class="bg-light" style="padding: 24px; width: 100%;">
+            <div *ngIf="this.file !== undefined" class="split-pdf">
+              <div class="form-group text-right">
+                <button (click)="addSection()" class="btn btn-primary btn-sm">Add Section</button>
+              </div>
+              <div *ngFor="let section of this.requestData.sections; let i = index">
+                <div  class="form-group form-inline">
+                  <input type="number" placeholder="Start" class="form-control form-control-sm" [value]="section.pages.start" [(ngModel)]="section.pages.start" [ngModelOptions]="{standalone: true}">
+                  <input type="number" placeholder="End"  class="form-control form-control-sm" [value]="section.pages.end" [(ngModel)]="section.pages.end" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Name"  class="form-control form-control-sm" [value]="section.name" [(ngModel)]="section.name" [ngModelOptions]="{standalone: true}">
+                </div>
+              <div class="form-group">
+                <select class="form-control form-control-sm" (change)="typeChange(i, $event.target.value)">
+                  <option disabled selected>Please select a type</option>
+                  <option *ngFor="let type of this.transactionTypes" [value]="type.value">{{type.name}}</option>
+                </select>
+              </div>
+              </div>
+              <hr>
+            </div>
+        </form>
+        <div class="form-group text-right" style="padding: 24px">
+            <button class="btn btn-light btn-sm">Cancel</button>
+            <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm">Submit</button>
+          </div>
+      </div>
+  </div>
+</div>

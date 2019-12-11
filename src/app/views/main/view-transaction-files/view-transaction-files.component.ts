@@ -16,6 +16,8 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500ListResponse, SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
+import { MatDialog } from '@angular/material';
+import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -31,7 +33,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private captureService: CaptureService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private dialog: MatDialog
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -524,6 +527,24 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
       }
     );
+  }
+
+  splitPDF() {
+    this.closeModal.nativeElement.click();
+
+    this.dialog.open(SplitDocumentComponent, {
+      data: {
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID
+      },
+      panelClass: 'splitter',
+      height: '80vh',
+      width: '80%'
+    }).afterClosed().subscribe((response: { state: boolean }) => {
+      if (response.state) {
+        this.loadAttachments();
+      }
+    });
   }
 
   ngOnDestroy(): void {

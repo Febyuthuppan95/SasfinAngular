@@ -40,4 +40,12 @@ export class InvoiceLine {
   itemValueError?: string;
   userID?: number;
   isPersist?: boolean;
+  unitOfMeasureID: number;
+  unitOfMeasure: string;
+  unitOfMeasureError?: string;
+  totalLineValue: number;
+  totalLineValueError?: string;
+  unitPrice: number;
+  unitPriceError?: number;
+  guid?: string;
 }

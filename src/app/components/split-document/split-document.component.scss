@@ -1,0 +1,14 @@
+.upload-attachment {
+  padding: 24px;
+  color: #212121;
+  font-size: 32px;
+  border-radius: 10px;
+  background: #f2f2f2;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+}
+
+.upload-attachment:hover {
+  color: #f2f2f2;
+  background: #057aff;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+}
