@@ -112,7 +112,7 @@ export class TransactionService {
 
   public async GetAttatchments(requestModel) {
     return await new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/transactions/CaptureAttachment`;
+      const apiURL = `${environment.ApiEndpoint}/capture/CaptureAttachment`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
