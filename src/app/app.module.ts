@@ -189,7 +189,9 @@ import { ViewCompanyServiceclaimReportComponent } from './views/main/view-compan
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 
 @NgModule({
   declarations: [
@@ -322,6 +324,7 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
+    ViewCaptureLandingComponent,
   ],
   imports: [
     BrowserModule,

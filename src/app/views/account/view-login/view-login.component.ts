@@ -57,7 +57,12 @@ export class ViewLoginComponent implements OnInit {
           if (res.authenticated) {
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
+            if (res.designation === 'Capturer') {
+              this.router.navigate(['capturer']);
+            } else {
+
             this.router.navigate(['users']);
+            }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }

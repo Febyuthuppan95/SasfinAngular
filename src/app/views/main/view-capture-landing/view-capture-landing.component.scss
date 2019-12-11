@@ -1,0 +1,66 @@
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 1px #f2f2f2 solid;
+  transition: ease-in-out 0.3s;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.userRecord:hover>td>img {
+  border: 1px #4d83ff solid;
+  transition: ease-in-out 0.3s;
+}
+
+.form-control {
+  border: 1px rgba(30, 30, 30, 0.2) solid;
+}
+
+.form-control:focus {
+  border: 1px #4d83ff solid;
+
+}
+
+.active-page {
+  background: #4d83ff;
+  color: #f2f2f2;
+}
+
+.page-link {
+  border: none;
+  border-radius: 0;
+}
+
+.page-item {
+  border: none;
+  border-radius: 0;
+}
+
+.ls-card-body {
+  width: 100%;
+  min-height: 300px;
+  padding: 25px;
+}
+
+.center {
+  text-align:center;
+  height: 300px;
+}
+
+.btnPos {
+  top: 45%;
+  height: 80px;
+  border: none;
+  border-radius: 12px;
+  font-size: large;
+  font-family: sans-serif;
+}
+

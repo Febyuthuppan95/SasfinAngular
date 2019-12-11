@@ -58,6 +58,7 @@ import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-ser
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -81,6 +82,7 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: 'users', pathMatch: 'full' },
           { path: 'users', component: ViewUserListComponent },
+          { path: 'capturer', component: ViewCaptureLandingComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
           {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
