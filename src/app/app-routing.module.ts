@@ -58,6 +58,7 @@ import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-ser
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -120,7 +121,8 @@ const routes: Routes = [
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
-          { path: 'transaction/invoices', component: ViewInvoicesComponent }
+          { path: 'transaction/invoices', component: ViewInvoicesComponent },
+          { path: 'transaction/checklist', component: ViewCheckingScreenComponent},
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

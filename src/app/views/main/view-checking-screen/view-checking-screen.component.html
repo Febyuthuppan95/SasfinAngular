@@ -1,0 +1,117 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+    
+        
+      </div>
+
+    <div class="row">
+        <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+            <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List  <i class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
+        </div>
+
+        <div class="col md 9"></div>  
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-md12"><h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction : Test Transacton Name</h5> </div>
+    </div>
+    
+            <br/> <br/>
+
+
+           
+            <mat-accordion >
+
+                <mat-expansion-panel  id="expansion-panel-0" [expanded]="true" style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
+                  <mat-expansion-panel-header>
+                <h5> <i class="mdi mdi-file-document"></i>  SAD500: 123 </h5>
+                  </mat-expansion-panel-header>
+              
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">WayBill</th>
+                        <th scope="col">Serial Number</th>
+                        <th scope="col">PCC</th>
+                        <th scope="col">Supplier Ref</th>
+                        <th scope="col">Total Customs Value</th>
+                        <th scope="col">MRN</th>
+                        <th scope="col">LRN</th>
+                        <th scope="col">CPC</th>
+                        <th scope="col">Code</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                        <td>@mdo</td>
+                      </tr>
+
+                      <tr colspan="10">
+                            <td colspan="10">
+                      <mat-accordion >
+
+                            <mat-expansion-panel  [expanded]="true" style="margin-bottom: 20px !important;">
+                              <mat-expansion-panel-header>
+                            <h5> <i class="mdi mdi-format-list-bulleted"></i>  SAD500 Lines </h5>
+                              </mat-expansion-panel-header>
+
+                            
+                    <!--Row for SAD 500 Lines-->
+                     
+                          
+                            
+                         
+
+                        </mat-expansion-panel>
+
+                    </mat-accordion>
+                </td>
+                      </tr>
+
+                  
+                  <!--END FOR SAD 500 Lines-->
+
+
+                    </tbody>
+                  </table>
+
+
+                 
+                </mat-expansion-panel>
+
+            </mat-accordion>
+
+            <mat-accordion>
+              
+                <mat-expansion-panel  [expanded]="true">
+                  <mat-expansion-panel-header>
+                    <h5> <i class="mdi mdi-file-document"></i>  SAD500: 1234 </h5>
+                  </mat-expansion-panel-header>
+              
+                  This the expansion 2 content
+
+                  
+              
+                </mat-expansion-panel>
+              
+              </mat-accordion>
+
+             
+          
+          
+
+</div>

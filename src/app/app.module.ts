@@ -190,6 +190,7 @@ import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 
 @NgModule({
   declarations: [
@@ -322,7 +323,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
-    ContextMenuCompanyContactsComponent
+    ContextMenuCompanyContactsComponent,
+    ViewCheckingScreenComponent, 
   ],
   imports: [
     BrowserModule,
