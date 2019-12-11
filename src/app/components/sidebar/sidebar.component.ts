@@ -73,6 +73,7 @@ export class SidebarComponent implements OnInit {
   @Input() showtariffs = false;
   @Input() showitems = false;
   @Input() showreportqueues = false;
+  @Input() showlocations = false;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -195,6 +196,9 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'CompanyAddInfoTypes') {
             this.showcompanyAddInfoTypes = true;
+          }
+          if (uRight.name === 'Locations') {
+            this.showlocations = true;
           }
         });
       },

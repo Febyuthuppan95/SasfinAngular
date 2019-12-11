@@ -50,6 +50,10 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
     });
   }
 
+  CaptureStart() {
+
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
