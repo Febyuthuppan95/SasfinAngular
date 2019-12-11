@@ -11,6 +11,8 @@ import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EventService } from 'src/app/services/event.service';
+import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-form-custom-release',
@@ -23,7 +25,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private transactionService: TransactionService,
               private router: Router,
               private captureService: CaptureService,
-              private eventService: EventService) { }
+              private eventService: EventService,
+              private dialog: MatDialog) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -64,10 +67,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       value: null,
       error: null,
     },
-    supplierRef: {
-      value: null,
-      error: null,
-    },
     MRN: {
       value: null,
       error: null,
@@ -75,6 +74,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   };
 
   attachmentSubscription: Subscription;
+  dialogOpen = false;
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -110,34 +110,42 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   }
 
   submit() {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      specificCustomsReleaseID: this.attachmentID,
-      serialNo: this.form.serialNo.value,
-      lrn: this.form.LRN.value,
-      importersCode: this.form.importersCode.value,
-      pcc: this.form.PCC.value,
-      fob: this.form.FOB.value,
-      waybillNo: this.form.waybillNo.value,
-      supplierRef: this.form.supplierRef.value,
-      mrn: this.form.MRN.value,
-      isDeleted: 0,
-      attachmentStatusID: 2,
-    };
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
 
-    this.transactionService.customsReleaseUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction', 'attachments']);
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-        }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
+      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+        this.dialogOpen = false;
+
+        if (status) {
+          const requestModel = {
+            userID: this.currentUser.userID,
+            specificCustomsReleaseID: this.attachmentID,
+            serialNo: this.form.serialNo.value,
+            lrn: this.form.LRN.value,
+            importersCode: this.form.importersCode.value,
+            pcc: this.form.PCC.value,
+            fob: this.form.FOB.value,
+            waybillNo: this.form.waybillNo.value,
+            mrn: this.form.MRN.value,
+            isDeleted: 0,
+            attachmentStatusID: 2,
+          };
+
+          this.transactionService.customsReleaseUpdate(requestModel).then(
+            (res: Outcome) => {
+              if (res.outcome === 'SUCCESS') {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+                this.router.navigate(['transaction', 'attachments']);
+              } else {
+                this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              }
+            },
+            (msg) => {
+              this.notify.errorsmsg('Failure', 'Cannot reach server');
+            }
+          );        }
+      });
+    }
   }
 
   loadCapture() {
@@ -156,8 +164,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.importersCode.error = res.importersCodeError;
         this.form.waybillNo.value = res.waybillNo;
         this.form.waybillNo.error = res.waybillNoError;
-        this.form.supplierRef.value = res.supplierRef;
-        this.form.supplierRef.error = res.supplierRefError;
         this.form.LRN.value = res.lrn;
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;

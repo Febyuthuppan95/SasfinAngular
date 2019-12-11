@@ -13,7 +13,9 @@
             <button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span>
             <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - Contacts</h4>
             <span style="margin-left:10px;">
-              <button  class="btn-add btn"><i class="mdi mdi-plus"></i></button>
+              
+              <button  class="btn-add btn hide" data-toggle="modal" data-target="#editCompanyContact" #openeditModal><i class="mdi mdi-plus"></i></button>
+                <button  class="btn-add btn" (click)="OpenModalForAdd()"><i class="mdi mdi-plus"></i></button>
             </span>
           </div>
           <br />
@@ -39,7 +41,7 @@
               <th></th>
               <th scope="col">
                 <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfo')">
-                  <p class="headerText">Description</p>
+                  <p class="headerText">Contact Name</p>
                   <span class="headerSpan">
                     <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
                     <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
@@ -85,7 +87,7 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let contact of dataList; let i=index" class="userRecord" (click)="popClick($event, contact.contactID, contact.contact); setClickedRow(i)" [class.active]="i == selectedRow">
+            <tr *ngFor="let contact of dataList; let i=index" class="userRecord" (click)="popClick($event, contact.contactID, contact.contact); setClickedRow(i); setIndex(contact)" [class.active]="i == selectedRow">
               <td>{{contact.rowNum}}</td>
               <td>{{contact.contact}}</td>
               <td>{{contact.cellNo}}</td>
@@ -131,6 +133,87 @@
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
-  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+
+  <!--
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
   <app-context-menu-company-info [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyID]="focusHelp" [companyName]="focusHelpName"></app-context-menu-company-info>
   </div>
+  -->
+  
+  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+    <app-context-menu-company-contacts  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" (EditCompanyContact)="EditCompanyContact() " (DeleteContact)="DeleteContact()" ></app-context-menu-company-contacts>
+    </div>
+
+
+  
+
+  <!--MODAL ADD and EDIT-->
+<div class="modal fade" id="editCompanyContact" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">{{modalDisplay}}</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label">Name:</label>
+              <input type="text" placeholder="Item" class="form-control" [value]="this.CaptureModel.Name" (input)="this.CaptureModel.Name = $event.target.value" required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Email:</label>
+              <input type="text" placeholder="Item" class="form-control" [value]="this.CaptureModel.Email" (input)="this.CaptureModel.Email = $event.target.value"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Cell No:</label>
+              <input type="text" placeholder="Type" class="form-control" [value]="this.CaptureModel.CellNo" (input)="this.CaptureModel.CellNo = $event.target.value"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Land No:</label>
+              <input type="text" placeholder="Type" class="form-control" [value]="this.CaptureModel.LandNo" (input)="this.CaptureModel.LandNo = $event.target.value"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Type:</label>
+              <select class="form-control" (change)="onContactTypeChange($event.target.value)">
+                <option *ngFor="let type of this.contactTypeDropDown" [value]="type.contactTypeID" [selected]="this.CaptureModel.ContactName === type.name" >{{type.name}}</option>
+
+              </select>
+            </div>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        <button type="button" (click)="submit()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Delete Modal -->
+<button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
+<div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Remove Item</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <p>Are you sure you want to remove this contact?</p>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeRemoveModal>Close</button>
+        <button type="button" (click)="UpdateContact()" class="btn btn-primary btn-sm">Remove</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

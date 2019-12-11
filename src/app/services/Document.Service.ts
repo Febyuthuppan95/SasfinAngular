@@ -52,4 +52,28 @@ export class DocumentService {
         );
     });
   }
+  /**
+   *
+   * tslint:disable-next-line: no-redundant-jsdoc
+   * @param file
+   */
+  public upload(fileUpload: File) {
+    console.log(fileUpload);
+    const formData = new FormData();
+    formData.append('file', fileUpload);
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/boms/upload`;
+      this.httpClient
+        .post(apiURL, formData)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 }

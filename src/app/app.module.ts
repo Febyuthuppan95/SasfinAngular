@@ -133,7 +133,6 @@ import { ContextMenuCompanyItemsComponent } from './components/menus/context-men
 import { ViewAlternateItemsComponent } from './views/main/view-alternate-items/view-alternate-items.component';
 
 import { CapturePreviewComponent } from './layouts/capture-layout/capture-preview/capture-preview.component';
-import { FormShippingDocumentComponent } from './components/forms/capture/form-shipping-document/form-shipping-document.component';
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
@@ -172,16 +171,25 @@ import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-i
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
 import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ReportsService } from './services/Reports.Service';
+import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
+import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 
 @NgModule({
   declarations: [
@@ -272,7 +280,6 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ContextMenuCompanyItemsComponent,
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
-    FormShippingDocumentComponent,
     Sad500LinesComponent,
     FormSAD500LineComponent,
     Sad500LinePreviewComponent,
@@ -306,10 +313,16 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
+    SplitDocumentComponent,
     PDFViewerComponent,
+    FormInvoiceLinesComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent,
+    FormWaybillComponent,
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
+    ContextMenuCompanyContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -383,7 +396,13 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     FormImportClearingInstructionComponent,
     FormCustomReleaseComponent,
     AttachmentDialogComponent,
-    PreviewReportComponent
+    PreviewReportComponent,
+    FormInvoiceComponent,
+    QuitDialogComponent,
+    SubmitDialogComponent,
+    FormVOCComponent,
+    FormWaybillComponent,
+    SplitDocumentComponent
   ]
 })
 export class AppModule { }

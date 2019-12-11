@@ -7,8 +7,8 @@ export class SPSAD500LineList {
 }
 
 export class SAD500Line {
-    rowNum: number;
-    sad500LineID: number;
+    rowNum?: number;
+    sad500LineID?: number;
     sad500ID: number;
     tariffID: number;
     tariff: string;
@@ -16,12 +16,11 @@ export class SAD500Line {
     lineNo: string;
     unitOfMeasureID: number;
     unitOfMeasure: string;
-    productCode: string;
-    value: string;
     tariffError?: string;
     customsValueError?: number;
     lineNoError?: string;
     unitOfMeasureError?: string;
-    productCodeError?: string;
-    valueError?: string;
+    isPersist?: boolean;
+    quantity: number;
+    quantityError?: string;
 }

@@ -40,7 +40,6 @@ constructor(private themeService: ThemeService, private transactionService: Tran
     },
     headings: [
       { title: '', propertyName: 'rowNum', order: { enable: false } },
-      { title: 'Supplier Ref', propertyName: 'supplierRef', order: { enable: false } },
       { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
       { title: 'Serial No', propertyName: 'serialNo', order: { enable: false } },
       { title: 'Importers Code', propertyName: 'importersCode', order: { enable: false } },
