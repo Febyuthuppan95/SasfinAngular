@@ -55,12 +55,32 @@
   height: 300px;
 }
 
-.btnPos {
+
+.btn-add {
+  width: 100px;
+  height: 100px;
   top: 45%;
-  height: 80px;
-  border: none;
-  border-radius: 12px;
-  font-size: large;
-  font-family: sans-serif;
+  padding: 3px 0px;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+  box-shadow: 0 4px 8px 0 rgba(30, 144, 2, 0.68);
+  background-color: #71c016;
+  color:#fff;
+}
+
+.btn-add:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  background-color: #62ab0e;
+  transition: 0.3s;
+  color:#fff;
+}
+.btn-add:active {
+  border: 2px solid #79d90b;
+
+}
+.btn-add i:hover {
+  color:#fff;
 }
 
