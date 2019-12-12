@@ -98,6 +98,14 @@
     <span class="menu-title">Reports Queues</span>
   </a>
   </li>
+  <li *ngIf="showCapturer" class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-showCapturer-link')"
+  matTooltip="Start Caputering" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" (click)="loadCaptureScreen()" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-checkbox-multiple-marked-circle-outline menu-icon"></i>
+    <span class="menu-title">Start Caputering</span>
+  </a>
+  </li>
   <!-- <li class="nav-item ls-btn-hover-{{ currentTheme }}"
   <li class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-places-link')"

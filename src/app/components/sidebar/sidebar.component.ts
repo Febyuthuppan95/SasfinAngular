@@ -7,6 +7,10 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { UserRightsListResponse } from 'src/app/models/HttpResponses/UserRightsListResponse';
 import { NotificationComponent } from '../notification/notification.component';
 import { GetUserRightsList } from 'src/app/models/HttpRequests/UserRights';
+import { Router } from '@angular/router';
+import { DocumentService } from 'src/app/services/Document.Service';
+import { TransactionService } from 'src/app/services/Transaction.Service';
+import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,7 +20,10 @@ import { GetUserRightsList } from 'src/app/models/HttpRequests/UserRights';
 export class SidebarComponent implements OnInit {
   constructor(private snackbarService: HelpSnackbar,
               private userRightService: UserRightService,
-              private userService: UserService) {}
+              private userService: UserService,
+              private router: Router,
+              private docService: DocumentService,
+              private transactionService: TransactionService) {}
 
   currentUser: User = this.userService.getCurrentUser();
 
@@ -37,6 +44,7 @@ export class SidebarComponent implements OnInit {
   contextMenuX = 0;
   contextMenuY = 0;
   currentRightID: number;
+  CaptureInfo: CaptureAttachment;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -74,6 +82,7 @@ export class SidebarComponent implements OnInit {
   @Input() showitems = false;
   @Input() showreportqueues = false;
   @Input() showlocations = false;
+  @Input() showCapturer = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -200,6 +209,9 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'Locations') {
             this.showlocations = true;
           }
+          if (uRight.name === 'AttchmentCapture') {
+            this.showCapturer = true;
+          }
         });
       },
       msg => {
@@ -211,6 +223,34 @@ export class SidebarComponent implements OnInit {
         );
       }
     );
+
+  }
+
+  loadCaptureScreen() {
+    const model = {
+      captureID: this.currentUser.userID,
+    };
+    this.transactionService
+    .GetAttatchments(model)
+    .then(
+      (res: CaptureAttachmentResponse) => {
+
+        this.CaptureInfo = res.captureattachment;
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+
+    this.docService.loadDocumentToViewer(this.CaptureInfo.filepath);
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.CaptureInfo.transactionID, attachmentID: this.CaptureInfo.attachmentID, docType: this.CaptureInfo.filetype });
+    this.router.navigate(['capture', 'transaction', 'attachment']);
 
   }
 }
