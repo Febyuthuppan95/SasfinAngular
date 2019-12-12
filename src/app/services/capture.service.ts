@@ -52,4 +52,7 @@ export class CaptureService {
 
   vocUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/update`, requestModel);
   vocList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/list`, requestModel);
+
+  customWorksheetList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/list`, requestModel);
+  customWorksheetUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/update`, requestModel);
 }
