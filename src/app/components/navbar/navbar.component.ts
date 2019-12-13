@@ -53,13 +53,8 @@ export class NavbarComponent implements OnInit {
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,
-      slug,
+      slug
     };
-
-    // something along these lines
-    // function isAdmin() {
-    //   return `<div data-val-id="${question.questionNumber}"> ${question.questionText} </div>`;
-    // }
 
     this.snackbarService.setHelpContext(newContext);
   }
