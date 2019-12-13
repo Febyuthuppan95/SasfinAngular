@@ -85,7 +85,7 @@ export class SidebarComponent implements OnInit {
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,
-      slug,
+      slug
     };
 
     this.snackbarService.setHelpContext(newContext);
