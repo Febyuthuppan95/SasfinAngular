@@ -15,6 +15,8 @@ import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -25,7 +27,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService) { }
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser: User;
 
@@ -99,6 +102,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.loadTarrifs();
     this.loadDuties();
 
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngAfterViewInit(): void {

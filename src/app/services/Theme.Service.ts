@@ -78,6 +78,10 @@ export class ThemeService {
     this.toggleHelpValue = toggle;
   }
 
+  // observe the value so that it can be used in other places
+  observeHelpValue() {
+    return this.toggleHelpValue;
+  }
 
   /**
    * getBackground
