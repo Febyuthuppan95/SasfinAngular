@@ -17,4 +17,21 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.themeService.observeTheme()
   }
 
+  DeleteInvoiceLine()
+  {
+    var line = <HTMLInputElement>document.getElementById('inl1');
+    var parentOfButton = line.parentElement;
+   
+    var otherbutton = <HTMLInputElement>document.getElementById('IL_Unassign-Button-Delete');
+    var parent2 = otherbutton.parentElement; 
+    line.remove();
+    parentOfButton.insertAdjacentHTML('beforeend', parent2.innerHTML);
+   
+  }
+
+  CancelDeleteInvoiceLine()
+  {
+    //var CancelledButton = 
+  }
+
 }

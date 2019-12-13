@@ -1,117 +1,212 @@
 <div class="shadow tile ls-tile-{{ currentTheme }}">
-    <div class="ls-card-body">
-      <div class="float-right">
-        <ng-container *ngIf="showLoader">
-          <app-loader></app-loader>
-        </ng-container>
-    
-        
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+        <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List <i
+            class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
       </div>
 
+      <div class="col md 9"></div>
+    </div>
+    <br />
     <div class="row">
-        <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
-            <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List  <i class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
+      <div class="col-md12">
+        <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction : Test Transacton Name
+        </h5>
+      </div>
+    </div>
+
+    <br /> <br />
+
+
+
+    <mat-accordion>
+
+      <mat-expansion-panel id="expansion-panel-0" [expanded]="true"
+        style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
+        <mat-expansion-panel-header>
+          <h4> <i class="mdi mdi-file-document"></i> SAD500: 123 </h4>
+        </mat-expansion-panel-header>
+        <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
+          <div class="col-md-12" >
+            <hr style="border-top: 2px solid #0099ff;" />
+          </div>
         </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Type</th>
+              <th scope="col">WayBill</th>
+              <th scope="col">Serial Number</th>
+              <th scope="col">PCC</th>
+              <th scope="col">Supplier Ref</th>
+              <th scope="col">Total Customs Value</th>
+              <th scope="col">MRN</th>
+              <th scope="col">LRN</th>
+              <th scope="col">CPC</th>
+              <th scope="col">Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+            </tr>
 
-        <div class="col md 9"></div>  
-    </div>
-    <br/>
-    <div class="row">
-        <div class="col-md12"><h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction : Test Transacton Name</h5> </div>
-    </div>
-    
-            <br/> <br/>
+            <!--Row for SAD 500 Lines-->
+            <tr colspan="10">
+              <td colspan="10">
+                <mat-accordion>
 
+                  <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important; background-color:#f2f2f2;">
+                    <mat-expansion-panel-header>
+                      <h5> <i class="mdi mdi-format-list-bulleted"></i> SAD500 Lines </h5>
+                    </mat-expansion-panel-header>
 
-           
-            <mat-accordion >
-
-                <mat-expansion-panel  id="expansion-panel-0" [expanded]="true" style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
-                  <mat-expansion-panel-header>
-                <h5> <i class="mdi mdi-file-document"></i>  SAD500: 123 </h5>
-                  </mat-expansion-panel-header>
-              
-                  <table class="table">
-                    <thead>
+                    <table class="table">
+                      <thead>
+                        <th>Tariff Code</th>
+                        <th>UOM</th>
+                        <th>Customs Value</th>
+                        <th>Line No</th>
+                        <th>Qauntity</th>
+                      </thead>
                       <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">WayBill</th>
-                        <th scope="col">Serial Number</th>
-                        <th scope="col">PCC</th>
-                        <th scope="col">Supplier Ref</th>
-                        <th scope="col">Total Customs Value</th>
-                        <th scope="col">MRN</th>
-                        <th scope="col">LRN</th>
-                        <th scope="col">CPC</th>
-                        <th scope="col">Code</th>
+                        <td>1234</td>
+                        <td>kg</td>
+                        <td>1000</td>
+                        <td>0001</td>
+                        <td>10</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                      </tr>
-
-                      <tr colspan="10">
-                            <td colspan="10">
-                      <mat-accordion >
-
-                            <mat-expansion-panel  [expanded]="true" style="margin-bottom: 20px !important;">
+                      <!--Start Of Invoice Lines-->
+                      <tr colspan="5" style="padding:0px !important;">
+                        <td colspan="5" style="padding-top:0px !important;" >
+                      
+                          <mat-accordion>
+                      
+                            <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important;">
                               <mat-expansion-panel-header>
-                            <h5> <i class="mdi mdi-format-list-bulleted"></i>  SAD500 Lines </h5>
+                                <h5> <i class="mdi mdi-file-document-box"></i> Invoice Lines</h5>
                               </mat-expansion-panel-header>
-
+                              <table class="table">
+                                  <thead>
+                                      <th>Invoice Number</th>
+                                      <th>From Company</th>
+                                      <th>To Company</th>
+                                      <th>Currency (Code)</th>
+                                      <th>Item Value</th>
+                                      <th>Prod Code</th>
+                                      <th>Unit Price</th>
+                                      <th>Total Line Value</th>
+                                      <th>Item Name</th>
+                                      <th>Quantity</th>
+                                      <th>UOM</th>
+                                      <th>Action</th>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>12345</td>
+                                      <td>NGJ</td>
+                                      <td>BOSCH</td>
+                                      <td>Rands (ZAR)</td>
+                                    
+                                      <td>200</td>
+                                      <td>Prod</td>
+                                      <td>2000</td>
+                                      <td>3000</td>
+                                      <td>Spark Plug</td>
+                                      <td>100</td>
+                                      <td>EA</td> 
+                                      <td><button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345</td>
+                                        <td>NGJ</td>
+                                        <td>BOSCH</td>
+                                        <td>Rands (ZAR)</td>
+                                      
+                                        <td>200</td>
+                                        <td>Prod</td>
+                                        <td>2000</td>
+                                        <td>3000</td>
+                                        <td>Spark Plug</td>
+                                        <td>100</td>
+                                        <td>EA</td> 
+                                        <td><button mat-raised-button color="primary"><i class="mdi mdi-window-close"></i> Unassign</button></td>
+                                    </tr>
+                                    </tbody>
+  
+                                </table>
                             
-                    <!--Row for SAD 500 Lines-->
-                     
-                          
-                            
-                         
-
-                        </mat-expansion-panel>
-
-                    </mat-accordion>
-                </td>
+      
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </td>
                       </tr>
+                      <!--End of the Invoice Lines-->
+                    </table>
+                  </mat-expansion-panel>
 
-                  
-                  <!--END FOR SAD 500 Lines-->
+                </mat-accordion>
+              </td>
+            </tr>
+            <!--END FOR SAD 500 Lines-->
+          </tbody>
+        </table>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+    <mat-accordion>
+
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <h5> <i class="mdi mdi-file-document"></i> SAD500: 1234 </h5>
+        </mat-expansion-panel-header>
+
+        This the expansion 2 content
 
 
-                    </tbody>
-                  </table>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
 
 
-                 
-                </mat-expansion-panel>
 
-            </mat-accordion>
+  </div>
 
-            <mat-accordion>
-              
-                <mat-expansion-panel  [expanded]="true">
-                  <mat-expansion-panel-header>
-                    <h5> <i class="mdi mdi-file-document"></i>  SAD500: 1234 </h5>
-                  </mat-expansion-panel-header>
-              
-                  This the expansion 2 content
 
-                  
-              
-                </mat-expansion-panel>
-              
-              </mat-accordion>
 
-             
-          
-          
+  <div style="display: none;">
+  <button mat-raised-button id="IL_Unassign-Button-Delete" color="primary">Confirm Unassignement?</button>
+  <button mat-raised-button id="IL_Unassign-Button-Cancel" (click)="CancelDeleteInvoiceLine()" color="warn"  style="margin-left: 2px;"><i class="mdi mdi-window-close"></i></button>
+  </div>
 
-</div>
+
+
+  <div style="display: none;">
+      <button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button>
+  </div>
+
+
+
+
+
+ 
