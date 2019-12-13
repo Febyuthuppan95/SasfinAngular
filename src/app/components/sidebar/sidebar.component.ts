@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,11 +19,13 @@ import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/Htt
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+
   constructor(private snackbarService: HelpSnackbar,
               private userRightService: UserRightService,
               private userService: UserService,
               private router: Router,
               private docService: DocumentService,
+              private companyService: CompanyService,
               private transactionService: TransactionService) {}
 
   currentUser: User = this.userService.getCurrentUser();
@@ -45,6 +48,12 @@ export class SidebarComponent implements OnInit {
   contextMenuY = 0;
   currentRightID: number;
   CaptureInfo: CaptureAttachment;
+  docPath: string;
+  transactionID: number;
+  attachmentID: number;
+  fileType: string;
+  companyID: number;
+  companyName: string;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -234,8 +243,21 @@ export class SidebarComponent implements OnInit {
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-
+        console.log(res);
         this.CaptureInfo = res.captureattachment;
+
+        this.docPath = res.captureattachment.filepath;
+        this.transactionID = res.captureattachment.transactionID;
+        this.attachmentID = res.captureattachment.attachmentID;
+        this.fileType = res.captureattachment.filetype;
+        this.companyID = res.captureattachment.companyID;
+        this.companyName = res.captureattachment.companyName;
+
+        this.docService.loadDocumentToViewer(this.docPath);
+        // tslint:disable-next-line: max-line-length
+        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+        this.router.navigate(['capture', 'transaction', 'attachment']);
 
       },
       msg => {
@@ -246,11 +268,5 @@ export class SidebarComponent implements OnInit {
         );
       }
     );
-
-    this.docService.loadDocumentToViewer(this.CaptureInfo.filepath);
-    // tslint:disable-next-line: max-line-length
-    this.transactionService.setCurrentAttachment({ transactionID: this.CaptureInfo.transactionID, attachmentID: this.CaptureInfo.attachmentID, docType: this.CaptureInfo.filetype });
-    this.router.navigate(['capture', 'transaction', 'attachment']);
-
   }
 }

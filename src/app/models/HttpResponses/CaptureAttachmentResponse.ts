@@ -6,9 +6,12 @@ export class CaptureAttachmentResponse {
 }
 
 export class CaptureAttachment {
-  captureID: number;
   transactionID: number;
+  transactiondate: string;
   attachmentID: number;
+  attachmentdate: string;
+  companyID: number;
+  companyName: string;
   filetypeID: number;
   filetype: string;
   filename: string;

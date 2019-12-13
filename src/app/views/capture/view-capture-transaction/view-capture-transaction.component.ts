@@ -42,6 +42,7 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
+      console.log(data);
     });
   }
 
