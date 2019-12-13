@@ -133,7 +133,7 @@
                                       <td>Spark Plug</td>
                                       <td>100</td>
                                       <td>EA</td> 
-                                      <td><button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button></td>
+                                      <td><button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine($event)"><i class="mdi mdi-window-close"></i> Unassign</button></td>
                                     </tr>
                                     <tr>
                                         <td>12345</td>
@@ -194,15 +194,15 @@
 
 
 
-  <div style="display: none;">
+  <div >
   <button mat-raised-button id="IL_Unassign-Button-Delete" color="primary">Confirm Unassignement?</button>
-  <button mat-raised-button id="IL_Unassign-Button-Cancel" (click)="CancelDeleteInvoiceLine()" color="warn"  style="margin-left: 2px;"><i class="mdi mdi-window-close"></i></button>
+  <button mat-raised-button id="IL_Unassign-Button-Cancel" (click)="CancelDeleteInvoiceLine($event)" color="warn"  style="margin-left: 2px;"><i class="mdi mdi-window-close"></i>this</button>
   </div>
 
 
 
-  <div style="display: none;">
-      <button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button>
+  <div >
+      <button mat-raised-button color="primary" id="IL_Unassign-Button" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button>
   </div>
 
 
