@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chat-conversation',
@@ -8,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class ChatConversationComponent implements OnInit {
 
   constructor() { }
+  @Output() dismiss = new EventEmitter<void>();
 
   ngOnInit() {
   }
+  dismissEvent() {
+    this.dismiss.emit();
+  }
+
 
 }

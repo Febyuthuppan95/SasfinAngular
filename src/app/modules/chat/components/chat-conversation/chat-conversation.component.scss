@@ -22,7 +22,7 @@
   }
   
   .chat-tile-header {
-    padding: 24px;
+    padding: 10px;
     background: #3f7afa;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -132,7 +132,9 @@
     z-index: 99999;
     transition: opacity ease-in-out 0.3s;
   }
-  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
   .showOverlay {
     opacity: 1;
     z-index: 999999;
@@ -155,5 +157,8 @@
      position: absolute;
      top: 10px;
      right: 8px;
+   }
+   mat-icon {
+     font-size: 35px;
    }
   
