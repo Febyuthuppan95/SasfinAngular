@@ -133,7 +133,11 @@
                                       <td>Spark Plug</td>
                                       <td>100</td>
                                       <td>EA</td> 
-                                      <td><button mat-raised-button color="primary" id="inl1" (click)="DeleteInvoiceLine($event)"><i class="mdi mdi-window-close"></i> Unassign</button></td>
+                                      <td style="min-width: 50px;">
+                                      <button matTooltip="Unassign" mat-raised-button  (click)="DeleteInvoiceLine()" class="buttonSpacing" ><i class="mdi mdi-close-box-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Confirm Unassignement?" mat-raised-button class="buttonSpacing"><i class="mdi mdi-close-box" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Cancel Unassignement" mat-raised-button  (click)="CancelDeleteInvoiceLine()" color="primary" class="buttonSpacing"><i class="mdi mdi-undo-variant" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      </td>
                                     </tr>
                                     <tr>
                                         <td>12345</td>
