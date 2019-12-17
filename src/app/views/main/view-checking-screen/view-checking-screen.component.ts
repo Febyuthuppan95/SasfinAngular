@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { CheckListService } from 'src/app/services/CheckList.Service';
 
 
 @Component({
@@ -10,8 +11,15 @@ import { Variable } from '@angular/compiler/src/render3/r3_ast';
 })
 export class ViewCheckingScreenComponent implements OnInit {
 
-  constructor(private themeService: ThemeService) { }
+  constructor(
+    private themeService: ThemeService,
+    private csService: CheckListService
+    
+    
+    ) { }
+
   @Input() currentTheme: string = 'light';
+  
   
   ngOnInit() {
 
