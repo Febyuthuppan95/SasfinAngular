@@ -16,7 +16,7 @@ export class SC_Transaction{
   "typeName": string;
   "companyID": number;
   "companyName": string;
-  "sad500s": CS_SAD500[];
+  "saD500s": CS_SAD500[];
 }
 
 export class CS_SAD500{
@@ -35,7 +35,7 @@ export class CS_SAD500{
         "cpc": string;
         "purposeID": number;
         "purposeCode": string;
-        "sad500Lines": CS_SAD500Line[];
+        "saD500Lines": CS_SAD500Line[];
       }
       
 
@@ -84,6 +84,7 @@ export class CS_InvoiceLine{
     "itemName": string;
     "uomid": number;
     "uomName": string;
+    "showAs": boolean = false; //used for the display
   }
 
 

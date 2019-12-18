@@ -19,7 +19,7 @@
     <br />
     <div class="row">
       <div class="col-md12">
-        <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction : Test Transacton Name
+        <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID : {{this.CheckList.transaction.id}}
         </h5>
       </div>
     </div>
@@ -28,12 +28,12 @@
 
 
 
-    <mat-accordion>
+    <mat-accordion *ngFor="let SAD of this.CheckList.transaction.saD500s">
 
       <mat-expansion-panel id="expansion-panel-0" [expanded]="true"
         style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
         <mat-expansion-panel-header>
-          <h4> <i class="mdi mdi-file-document"></i> SAD500: 123 </h4>
+          <h4> <i class="mdi mdi-file-document"></i> SAD500: {{SAD.id}} </h4>
         </mat-expansion-panel-header>
         <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
           <div class="col-md-12" >
@@ -42,7 +42,7 @@
         </div>
         <table class="table">
           <thead>
-            <tr>
+            <tr >
               <th scope="col">Type</th>
               <th scope="col">WayBill</th>
               <th scope="col">Serial Number</th>
@@ -57,26 +57,26 @@
           </thead>
           <tbody>
             <tr>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
+              <td>{{SAD.typeName}}</td>
+              <td>{{SAD.wayBill}}</td>
+              <td>{{SAD.serialNumber}}</td>
+              <td>{{SAD.pcc}}</td>
+              <td>{{SAD.supplierRef}}</td>
+              <td>{{SAD.totalCustomValue}}</td>
+              <td>{{SAD.mrn}}</td>
+              <td>{{SAD.lrn}}</td>
+              <td>{{SAD.cpc}}</td>
+              <td>{{SAD.purposeCode}}</td>
             </tr>
 
             <!--Row for SAD 500 Lines-->
             <tr colspan="10">
               <td colspan="10">
-                <mat-accordion>
+                <mat-accordion *ngFor="let SADL of SAD.saD500Lines">
 
                   <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important; background-color:#f2f2f2;">
                     <mat-expansion-panel-header>
-                      <h5> <i class="mdi mdi-format-list-bulleted"></i> SAD500 Lines </h5>
+                      <h5> <i class="mdi mdi-format-list-bulleted"></i> SAD500 Lines</h5>
                     </mat-expansion-panel-header>
 
                     <table class="table">
@@ -87,18 +87,18 @@
                         <th>Line No</th>
                         <th>Qauntity</th>
                       </thead>
-                      <tr>
-                        <td>1234</td>
-                        <td>kg</td>
-                        <td>1000</td>
-                        <td>0001</td>
-                        <td>10</td>
+                      <tr> 
+                        <td>{{SADL.tarrifCode}}</td>
+                        <td>{{SADL.uomName}}</td>
+                        <td>{{SADL.customsValue}}</td>
+                        <td>{{SADL.lineNo}}</td>
+                        <td>{{SADL.quantity}}</td>
                       </tr>
                       <!--Start Of Invoice Lines-->
                       <tr colspan="5" style="padding:0px !important;">
                         <td colspan="5" style="padding-top:0px !important;" >
                       
-                          <mat-accordion>
+                          <mat-accordion *ngFor="let INVL of SADL.invoiceLines">
                       
                             <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important;">
                               <mat-expansion-panel-header>
@@ -106,10 +106,10 @@
                               </mat-expansion-panel-header>
                               <table class="table">
                                   <thead>
-                                      <th>Invoice Number</th>
+                                      <th>Invoice No</th>
                                       <th>From Company</th>
                                       <th>To Company</th>
-                                      <th>Currency (Code)</th>
+                                      <th>Currency Code</th>
                                       <th>Item Value</th>
                                       <th>Prod Code</th>
                                       <th>Unit Price</th>
@@ -121,38 +121,22 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>12345</td>
-                                      <td>NGJ</td>
-                                      <td>BOSCH</td>
-                                      <td>Rands (ZAR)</td>
-                                    
-                                      <td>200</td>
-                                      <td>Prod</td>
-                                      <td>2000</td>
-                                      <td>3000</td>
-                                      <td>Spark Plug</td>
-                                      <td>100</td>
-                                      <td>EA</td> 
-                                      <td style="min-width: 50px;">
-                                      <button matTooltip="Unassign" mat-raised-button  (click)="DeleteInvoiceLine()" class="buttonSpacing" ><i class="mdi mdi-close-box-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                                      <button matTooltip="Confirm Unassignement?" mat-raised-button class="buttonSpacing"><i class="mdi mdi-close-box" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                                      <button matTooltip="Cancel Unassignement" mat-raised-button  (click)="CancelDeleteInvoiceLine()" color="primary" class="buttonSpacing"><i class="mdi mdi-undo-variant" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <td>{{INVL.invoice.invoiceNo}}</td>
+                                      <td>{{INVL.invoice.fromCompany}}</td>
+                                      <td>{{INVL.invoice.toCompany}}</td>
+                                      <td>{{INVL.invoice.currencyCode}}</td>
+                                      <td>{{INVL.itemValue}}</td>
+                                      <td>{{INVL.prodCode}}</td>
+                                      <td>{{INVL.unitPrice}}</td>
+                                      <td>{{INVL.totalLineValue}}</td>
+                                      <td>{{INVL.itemName}}</td>
+                                      <td>{{INVL.quantity}}</td> 
+                                      <td>{{INVL.uomName}} {{INVL.id}}</td>
+                                      <td style="width: 170px!important;">
+                                      <button matTooltip="Unassign" (click)="DeleteInvoiceLine(INVL.id)" *ngIf="INVL.showAs == true" mat-raised-button  class="buttonSpacing" ><i class="mdi mdi-close-box-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Confirm Unassignement?" *ngIf="INVL.showAs == false" (click)="DeleteInvoiceLineConfrim(INVL.id)"  mat-raised-button class="buttonSpacing"><i class="mdi mdi-close-box" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Cancel Unassignement" *ngIf="INVL.showAs == false" (click)="CancelDeleteInvoiceLine(INVL.id)" mat-raised-button   color="primary" class="buttonSpacing"><i class="mdi mdi-undo-variant" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
                                       </td>
-                                    </tr>
-                                    <tr>
-                                        <td>12345</td>
-                                        <td>NGJ</td>
-                                        <td>BOSCH</td>
-                                        <td>Rands (ZAR)</td>
-                                      
-                                        <td>200</td>
-                                        <td>Prod</td>
-                                        <td>2000</td>
-                                        <td>3000</td>
-                                        <td>Spark Plug</td>
-                                        <td>100</td>
-                                        <td>EA</td> 
-                                        <td><button mat-raised-button color="primary"><i class="mdi mdi-window-close"></i> Unassign</button></td>
                                     </tr>
                                     </tbody>
   
@@ -177,36 +161,9 @@
 
     </mat-accordion>
 
-    <mat-accordion>
-
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <h5> <i class="mdi mdi-file-document"></i> SAD500: 1234 </h5>
-        </mat-expansion-panel-header>
-
-        This the expansion 2 content
 
 
 
-      </mat-expansion-panel>
-
-    </mat-accordion>
-
-
-
-  </div>
-
-
-
-  <div >
-  <button mat-raised-button id="IL_Unassign-Button-Delete" color="primary">Confirm Unassignement?</button>
-  <button mat-raised-button id="IL_Unassign-Button-Cancel" (click)="CancelDeleteInvoiceLine($event)" color="warn"  style="margin-left: 2px;"><i class="mdi mdi-window-close"></i>this</button>
-  </div>
-
-
-
-  <div >
-      <button mat-raised-button color="primary" id="IL_Unassign-Button" (click)="DeleteInvoiceLine()"><i class="mdi mdi-window-close"></i> Unassign</button>
   </div>
 
 
