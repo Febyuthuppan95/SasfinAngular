@@ -242,7 +242,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     this.popClick(obj.event, obj.record);
   }
 
-  viewDutyTaxTypes(tariff: Tariff) {
+  viewDutyTaxTypes() {
     sessionStorage.setItem('tariffID', this.selectedTariff.id.toString());
     this.router.navigate(['tariff', 'duties']);
   }

@@ -12,6 +12,7 @@ export class ContextMenuCompanyContactsComponent implements OnInit {
   
   @Input() x: number;
   @Input() y: number;
+  @Input() currentTheme: string;
   
 
   @Output() EditCompanyContact = new EventEmitter<string>();

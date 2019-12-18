@@ -83,6 +83,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   showHelp = false;
   focusPDF = false;
   attachmentType: string;
+  helpValue = false;
 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
   openMore = true;
@@ -123,6 +124,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.loadAttachments();
       this.loadCaptureInfo();
     });
+
+    // get the help value
+    this.helpValue  = this.themeService.observeHelpValue();
 
     // Start watching for user inactivity.
     this.userIdle.startWatching();
