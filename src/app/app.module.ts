@@ -191,6 +191,8 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
+import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
+import { CheckListService } from './services/CheckList.Service';
 
 @NgModule({
   declarations: [
@@ -386,7 +388,8 @@ import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/v
     ComponentService,
     TariffService,
     ReportsService,
-    EventService
+    EventService,
+    CheckListService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

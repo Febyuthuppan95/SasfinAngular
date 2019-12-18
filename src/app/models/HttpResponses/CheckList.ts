@@ -1,3 +1,12 @@
+import { Outcome } from './Outcome';
+
+export class SP_CheckingScreenList{
+
+  "rowCount" : number;
+   "outcome": Outcome;
+   "transaction": SC_Transaction;
+}
+
 
 export class SC_Transaction{
     
