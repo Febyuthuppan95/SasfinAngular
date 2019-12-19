@@ -1,5 +1,5 @@
 export class CustomWorksheetLineReq {
-  customWorkhsheetID?: number;
+  customWorksheetID?: number;
   customWorksheetLineID?: number;
   invoiceID?: number;
   coo: string;
@@ -17,4 +17,5 @@ export class CustomWorksheetLineReq {
   dutyError?: string;
   commonFactorError?: string;
   isPersistant?: boolean;
+  userID?: number;
 }

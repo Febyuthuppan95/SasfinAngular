@@ -78,12 +78,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             }
           }
         },
-        {
-          key: 'alt + k',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusDutiesQuery = !this.focusDutiesQuery
-        },
     );
   }
 
@@ -102,9 +96,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       this.form.hsQuantityError = this.updateLine.hsQuantityError;
       this.form.foreignInvError = this.updateLine.foreignInvError;
       this.form.dutyError = this.updateLine.dutyError;
+      this.form.commonFactor = this.updateLine.commonFactor;
+      this.form.commonFactorError = this.updateLine.commonFactorError;
     } else {
       this.isUpdate = false;
-      this.dutiesToBeSaved = [];
       this.form = {
         coo: '',
         tariffHeading: '',

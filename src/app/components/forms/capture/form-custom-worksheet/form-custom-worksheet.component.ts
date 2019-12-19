@@ -14,6 +14,7 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
+import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 @Component({
   selector: 'app-form-custom-worksheet',
   templateUrl: './form-custom-worksheet.component.html',
@@ -87,7 +88,7 @@ dialogOpen = false;
         this.attachmentID = curr.attachmentID;
         this.transactionID = curr.transactionID;
         this.loadCapture();
-        // this.loadLines();
+        this.loadLines();
       }
     });
   }
@@ -191,40 +192,20 @@ dialogOpen = false;
     );
   }
 
-  // updateLine(obj: SAD500Line) {
-  //   this.lineState = 'Saving';
-  //   const requestModel: SAD500LineUpdateModel = {
-  //     userID: this.currentUser.userID,
-  //     sad500ID: this.attachmentID,
-  //     specificSAD500LineID: obj.sad500LineID,
-  //     unitOfMeasure: obj.unitOfMeasure,
-  //     unitOfMeasureID: obj.unitOfMeasureID,
-  //     tariff: obj.tariff,
-  //     tariffID: obj.tariffID,
-  //     quantity: obj.quantity,
-  //     customsValue: obj.customsValue,
-  //     isDeleted: 0,
-  //     lineNo: obj.lineNo
-  //   };
-
-  //   this.captureService.sad500LineUpdate(requestModel).then(
-  //     (res: Outcome) => {
-  //       if (res.outcome === 'SUCCESS') {
-  //         this.loadLines();
-  //         this.lineState = 'Updated successfully';
-  //         this.lines = -1;
-  //         this.focusLineData = null;
-  //         setTimeout(() => this.lineState = '', 3000);
-  //       }
-  //     },
-  //     (msg) => {
-  //       this.notify.errorsmsg('Failure', 'Cannot reach server');
-  //       this.lineState = 'Update failed';
-
-  //       setTimeout(() => this.lineState = '', 3000);
-  //     }
-  //   );
-  // }
+  updateLine(obj: CustomWorksheetLineReq) {
+    this.captureService.customWorksheetLineAdd(obj).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadLines();
+          this.lines = -1;
+          this.focusLineData = null;
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    );
+  }
 
   loadCapture() {
     this.captureService.customWorksheetList({
@@ -249,26 +230,39 @@ dialogOpen = false;
     );
   }
 
-  // loadLines() {
-  //   this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
-  //     (res) => {
-  //       this.linesCreated = res.lines;
-  //       if (this.lines > -1) {
-  //         this.focusLineData = this.linesCreated[this.lines];
-  //       }
+  loadLines() {
+    this.captureService.customWorksheetLineList({
+      userID: this.currentUser.userID,
+      customsWorksheetID: this.attachmentID,
+      rowStart: 1,
+      rowEnd: 1000,
+      orderBy: '',
+      orderByDirection: '',
+      filter: ''
+      }).then(
+      (res: CustomWorksheetLinesResponse) => {
+        this.linesCreated = res.lines;
+        console.log(res);
 
-  //       this.lineErrors = res.lines.filter(x => x.lineNoError !== null
-  //         || x.quantityError !== null
-  //         || x.unitOfMeasureError !== null || x.tariffError !== null);
-  //     },
-  //     (msg) => {
-  //     }
-  //   );
-  // }
+        if (this.lines > -1) {
+          this.focusLineData = this.linesCreated[this.lines];
+        }
+
+        // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
+        //   || x.quantityError !== null
+        //   || x.unitOfMeasureError !== null || x.tariffError !== null);
+      },
+      (msg) => {
+      }
+    );
+  }
 
   addToQueue(obj: CustomWorksheetLineReq) {
-    obj.customWorkhsheetID = this.attachmentID;
+    obj.customWorksheetID = this.attachmentID;
     obj.isPersistant = false;
+    obj.userID = this.currentUser.userID;
+
+    console.log(obj);
 
     this.lineQueue.push(obj);
     this.linesCreated.push(obj);
@@ -293,7 +287,7 @@ dialogOpen = false;
 
         if (status) {
           if (this.lineIndex < this.lineQueue.length) {
-            this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
+            this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
                   this.nextLineAsync();
@@ -303,12 +297,13 @@ dialogOpen = false;
                 }
               },
               (msg) => {
-                console.log('Client Error');
+                console.log(`Client Error: ${JSON.stringify(msg)}`);
               }
             );
           } else {
             this.submit();
-          }        }
+          }
+        }
       });
     }
   }
