@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { CheckListService } from 'src/app/services/CheckList.Service';
 import { SC_Transaction, SP_CheckingScreenList, CS_SAD500 } from 'src/app/models/HttpResponses/CheckList';
 import { CheckListRequest } from 'src/app/models/HttpRequests/CheckListRequest';
 import { element } from 'protractor';
+import { UserService } from 'src/app/services/user.Service';
 
 
 @Component({
@@ -16,11 +17,8 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   constructor(
     private themeService: ThemeService,
-    public csService: CheckListService
-
-
-    
-    
+    public csService: CheckListService,
+    private userService: UserService,    
     ) { }
 
   @Input() currentTheme: string = 'light';
@@ -28,11 +26,27 @@ export class ViewCheckingScreenComponent implements OnInit {
   CheckListRequest: CheckListRequest;
 
 
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  OpenModal()
+  {
+    this.openeditModal.nativeElement.click();
+  }
+
+  CloseModal()
+  {
+    this.closeeditModal.nativeElement.click();
+  }
+
   Reset()
   {
     this.CheckListRequest = {
 
-      userID: 1, 
+      userID: this.userService.getCurrentUser().userID, 
       transactionID:1,
       filter: 'test',
       orderBy: 'Test',
@@ -81,10 +95,9 @@ this.Reset();
   
   ngOnInit() {
 
-   this.LoadList();
-    this.themeService.observeTheme();
-    
-   
+  this.LoadList();
+  this.themeService.observeTheme();
+  
   }
 
   ngAfterViewInit(){

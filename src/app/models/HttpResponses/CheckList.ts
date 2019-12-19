@@ -87,5 +87,38 @@ export class CS_InvoiceLine{
     "showAs": boolean = false; //used for the display
   }
 
+  export class CS_InvoiceLine_Selection
+  {
+        "i_id": number;
+        "i_invoiceNo": string;
+        "i_fromCompanyID": number;
+        "i_fromCompany": string;
+        "i_toCompanyID": number;
+        "i_toCompany": string;
+        "i_currencyID": number;
+        "i_currencyName": string;
+        "i_currencyCode": string;
+
+        "il_id": number;
+        "il_quantity": number;
+        "il_itemValue": number;
+        "il_saD500LineID": number;
+        "il_prodCode": string;
+        "il_unitPrice": number;
+        "il_totalLineValue": number;
+        "il_itemID": number;
+        "il_itemName": string;
+        "il_uomid": number;
+        "il_uomName": string;
+        "il_showAs": boolean = false;
+  }
+
+  export class SP_CheckScreenInvoiceSelection
+  {
+    "rowCount" : number;
+    "outcome": Outcome;
+    "InvoiceLines": CS_InvoiceLine_Selection[];
+  }
+
 
   
