@@ -1,0 +1,60 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts" *ngIf="this.shortcuts"></ng-keyboard-shortcuts>
+<br><br>
+<div class="capture-header">
+  <div class="float-right" style="margin-top: -24px !important">
+    <div class="indicator-wrapper" (click)="this.toggleLines = false;">
+    <button #sad500Tooltip="matTooltip" matTooltip="Custom Worksheet"
+    matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !this.toggleLines}"></button>
+    </div>
+    <div class="indicator-wrapper" (click)="this.toggleLines = true;">
+    <button #sadLinesTooltip="matTooltip" matTooltip="Custom Worksheet Lines"
+    matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': this.toggleLines}"></button>
+  </div>
+  </div>
+  <h1 class="capture-form-title text-dark">
+    <span *ngIf="this.toggleLines">Custom Worksheet Lines</span>
+    <span *ngIf="!this.toggleLines">Custom Worksheet</span>
+  </h1>
+</div>
+<span [ngClass]="{'hide': this.toggleLines}">
+  <br>
+<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+    <div class="form-group" *ngIf="this.form.LRN != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
+        placeholder="LRN" />
+        <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.fileRef != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
+        placeholder="File Ref" />
+        <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>
+    </div>
+  </form>
+</span>
+  <span style="display: none" [ngClass]="{'show': this.toggleLines}">
+    <br>
+      <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px;" class="line-list">
+          <button mat-raised-button class="float-right bg-primary text-light" *ngIf="this.lines !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+          <p *ngIf="!this.linesCreated" style="font-size: 16px;">No SAD500 Lines Added</p>
+          <p *ngIf="this.linesCreated">
+            <button (click)="prevLine()" *ngIf="this.lineQueue.length !== 0 || this.linesCreated.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="this.lineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
+            <span class="badge badge-transparent" *ngIf="this.lines > -1">Line {{ this.lines + 1 }} of {{ this.linesCreated.length }}</span>
+            <span class="badge badge-transparent" *ngIf="this.lines === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
+          &nbsp;
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="this.lineQueue.length !== 0 || this.linesCreated.length !== 0" [disabled]="this.lineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>
+          &nbsp;<span>{{this.lineState}}</span>
+        </p>
+        <div class="line-errors" *ngIf="this.lineErrors.length > 0">
+            <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of this.lineErrors" (click)="specificLine(this.linesCreated.indexOf(item))">{{this.linesCreated.indexOf(item) + 1}}</button>
+        </div>
+      </div>
+      <br>
+      <app-form-custom-worksheet-lines [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" [focusSADLine]="focusLineForm" [(updateLine)]="focusLineData"></app-form-custom-worksheet-lines>
+  </span>
+  <app-notification></app-notification>

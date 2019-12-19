@@ -189,6 +189,8 @@ import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 
 @NgModule({
   declarations: [
@@ -321,6 +323,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     ContextMenuCompanyContactsComponent,
+    FormCustomWorksheetComponent,
+    FormCustomWorksheetLinesComponent,
   ],
   imports: [
     BrowserModule,
@@ -399,7 +403,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     SubmitDialogComponent,
     FormVOCComponent,
     FormWaybillComponent,
-    SplitDocumentComponent
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent
   ]
 })
 export class AppModule { }
