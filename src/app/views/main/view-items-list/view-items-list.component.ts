@@ -127,11 +127,11 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Tariff',
-      propertyName: 'tariff',
+      title: 'Tariff Name',
+      propertyName: 'tariffName',
       order: {
         enable: true,
-        tag: 'Tariff'
+        tag: 'tariffName'
       }
     },
     {
@@ -356,6 +356,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: TariffListResponse) => {
 
           this.tarifflist = res.tariffList;
+          console.log(this.tarifflist);
 
       },
       msg => {
@@ -471,6 +472,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       service: '',
       isDeleted: deleted
     };
+    console.log(this.tariffID);
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
@@ -536,6 +538,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   }
   onTypeChange(id: number) {
     this.itemtypeID = id;
+    console.log(this.itemtypeID);
   }
   onTariffChange(selectedtariffid: number) {
     this.tariffID = selectedtariffid;

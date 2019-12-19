@@ -62,7 +62,7 @@
             <div class="form-group">
               <label class="control-label">Tariff:</label>
               <select class="form-control" (change)="onTariffChange($event.target.value)">
-                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.tariff}}</option>
+                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.tariffName}}</option>
               </select>
             </div>
             <div class="form-group">
