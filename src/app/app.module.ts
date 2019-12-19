@@ -1,3 +1,6 @@
+// import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -74,7 +77,6 @@ import { ContextMenuTransactionFileComponent } from './components/menus/context-
 // tslint:disable-next-line: max-line-length
 import { ContextMenuTransactionAttachmentComponent } from './components/menus/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/menus/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/menus/context-menu-designationrights/context-menu-designationrights.component';
@@ -174,6 +176,7 @@ import { ReportsService } from './services/Reports.Service';
 import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
+
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
 import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
@@ -184,12 +187,9 @@ import { ContextMenuCompanyServiceclaimReportComponent } from './components/menu
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
-import { SplitDocumentComponent } from './components/split-document/split-document.component';
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
-// tslint:disable-next-line: max-line-length
-import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 
 @NgModule({
   declarations: [
@@ -313,7 +313,6 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
-    SplitDocumentComponent,
     PDFViewerComponent,
     FormInvoiceLinesComponent,
     QuitDialogComponent,
@@ -343,7 +342,6 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     ),
     NgbModule,
     NgxPaginationModule,
-    NgxExtendedPdfViewerModule,
     MaterialModule,
     AngularDraggableModule,
     KeyboardShortcutsModule,
@@ -401,8 +399,7 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent,
-    SplitDocumentComponent
+    FormWaybillComponent
   ]
 })
 export class AppModule { }

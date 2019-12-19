@@ -12,6 +12,7 @@ export const environment = {
   ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
   ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
+  WebSocketConnection: 'https://localhost:44397/api/v1.0/chat',
   Sessions: {
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
     PermitData: '780f766e-8d4b-43f8-a067-059a82b7da13',
