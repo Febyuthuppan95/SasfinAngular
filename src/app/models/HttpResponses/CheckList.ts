@@ -120,5 +120,13 @@ export class CS_InvoiceLine{
     "invoiceLines": CS_InvoiceLine_Selection[];
   }
 
+export class CS_Paging
+{
+  id: string;
+  itemsPerPage: number;
+  currentPage: number;
+  totalItems: number;
+}
+
 
   

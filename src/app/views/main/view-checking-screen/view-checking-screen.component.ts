@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { CheckListService } from 'src/app/services/CheckList.Service';
-import { SC_Transaction, SP_CheckingScreenList, CS_SAD500, SP_CheckScreenInvoiceSelection } from 'src/app/models/HttpResponses/CheckList';
+import { SC_Transaction, SP_CheckingScreenList, CS_SAD500, SP_CheckScreenInvoiceSelection, CS_Paging } from 'src/app/models/HttpResponses/CheckList';
 import { CheckListRequest } from 'src/app/models/HttpRequests/CheckListRequest';
 import { element } from 'protractor';
 import { UserService } from 'src/app/services/user.Service';
@@ -29,6 +29,7 @@ export class ViewCheckingScreenComponent implements OnInit {
   CheckListRequestInvoice: CheckListRequest;
   FirstLoad: boolean = true;
   noResult:boolean;
+  InvoicePaging: CS_Paging = null;
 
 
   @ViewChild('openeditModal', {static: true})
@@ -49,6 +50,8 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.closeeditModal.nativeElement.click();
   }
 
+ 
+
   Reset()
   {
     this.CheckListRequest = {
@@ -65,6 +68,9 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   }
 
+  pageChanged($event){
+  }
+
 
   ResetInvoice()
   {
@@ -79,10 +85,17 @@ export class ViewCheckingScreenComponent implements OnInit {
       orderBy: '',
       orderByDirection: '',
       rowStart: 1,
-      rowEnd: 10
+      rowEnd: 50
     };
  
-
+   this.InvoicePaging = {
+     id: "INVL",
+     itemsPerPage: 50,
+     currentPage: 1, 
+     totalItems: 50
+   }; 
+   
+    
   }
 
 

@@ -211,7 +211,7 @@
                 <th>Action</th>
               </thead>
               <tbody *ngIf="this.noResult == false">
-                <tr  *ngFor="let line of this.CheckListInvoice.invoiceLines"   >
+                <tr  *ngFor="let line of this.CheckListInvoice.invoiceLines | paginate: this.InvoicePaging" >
                   <td>{{line.i_invoiceNo}}</td>
                   <td>{{line.i_fromCompany}}</td>
                   <td>{{line.i_toCompany}}</td>
@@ -233,7 +233,37 @@
                
               </tbody>
             </table>
+
+            
+
+
           </div>
+
+
+
+         
+          
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6" style="text-align: right !important;">
+          <pagination-controls 
+          id="INVL"
+          (pageChange)="pageChanged($event)"
+          maxSize="500"
+          directionLinks="true"
+          autoHide="false"
+          responsive="true"
+          previousLabel="Previous"
+          nextLabel="Next"
+          screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">>
+        </pagination-controls>
+      </div>
+
+         </div> <!--End of row-->
+
+
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
