@@ -2,10 +2,11 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { CheckListService } from 'src/app/services/CheckList.Service';
-import { SC_Transaction, SP_CheckingScreenList, CS_SAD500 } from 'src/app/models/HttpResponses/CheckList';
+import { SC_Transaction, SP_CheckingScreenList, CS_SAD500, SP_CheckScreenInvoiceSelection } from 'src/app/models/HttpResponses/CheckList';
 import { CheckListRequest } from 'src/app/models/HttpRequests/CheckListRequest';
 import { element } from 'protractor';
 import { UserService } from 'src/app/services/user.Service';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -23,7 +24,11 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   @Input() currentTheme: string = 'light';
   CheckList: SP_CheckingScreenList ;
+  CheckListInvoice: SP_CheckScreenInvoiceSelection;
   CheckListRequest: CheckListRequest;
+  CheckListRequestInvoice: CheckListRequest;
+  FirstLoad: boolean = true;
+  noResult:boolean;
 
 
   @ViewChild('openeditModal', {static: true})
@@ -32,9 +37,11 @@ export class ViewCheckingScreenComponent implements OnInit {
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
 
+
   OpenModal()
   {
-    this.openeditModal.nativeElement.click();
+  
+    this.LoadInvoiceLines(false);
   }
 
   CloseModal()
@@ -58,6 +65,27 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   }
 
+
+  ResetInvoice()
+  {
+
+    
+
+    this.CheckListRequestInvoice = {
+
+      userID: this.userService.getCurrentUser().userID, 
+      transactionID:2,
+      filter: '',
+      orderBy: '',
+      orderByDirection: '',
+      rowStart: 1,
+      rowEnd: 10
+    };
+ 
+
+  }
+
+
   ResetButtons() {
 
     this.CheckList.transaction.saD500s.forEach((element) => {
@@ -69,6 +97,20 @@ export class ViewCheckingScreenComponent implements OnInit {
     });
   }
 
+  ResetButtonsInvoice(){
+    this.CheckListInvoice.invoiceLines.forEach((element) => {element.il_showAs = true;});
+  }
+
+  InvoiceAssgin(ID:number)
+  {
+    this.CheckListInvoice.invoiceLines.find(x => x.il_id == ID).il_showAs = false;
+  }
+
+  InvoiceUnassign(ID:Number)
+  {
+    this.CheckListInvoice.invoiceLines.find(x => x.il_id == ID).il_showAs = true;
+  }
+
 LoadList(){
 
 this.Reset();
@@ -77,14 +119,13 @@ this.Reset();
   this.csService.list(this.CheckListRequest).then(
    (res: SP_CheckingScreenList) => {
      if(res.outcome.outcome == "SUCCESS"){
-         this.CheckList = null;
+       this.CheckList = null;
        this.CheckList = res;
-       var a = 1;
        this.ResetButtons();
      }
      else
      {
-       var c = 'Error';
+       //Add error message here
      }
         
    }
@@ -95,8 +136,15 @@ this.Reset();
   
   ngOnInit() {
 
+
+  this.FirstLoad = true;
+  this.ResetInvoice();
   this.LoadList();
+  this.LoadInvoiceLines(false);
   this.themeService.observeTheme();
+
+  this.CheckListInvoice.rowCount
+ 
   
   }
 
@@ -124,6 +172,35 @@ DeleteInvoiceLineConfrim(ID: number)
 {
   this.CheckList.transaction.saD500s.find(S => S.saD500Lines !=null).saD500Lines.find(SL => SL.invoiceLines !=null).invoiceLines.find(IL => IL.id == ID).showAs = false;
 
+}
+
+
+LoadInvoiceLines(keyup:boolean)
+{
+
+  
+
+  this.csService.listInvoiceLines(this.CheckListRequestInvoice).then(
+    (res:SP_CheckScreenInvoiceSelection) => {
+      if(res.outcome.outcome == "SUCCESS"){
+       this.CheckListInvoice = null;
+        this.CheckListInvoice = res;
+        this.noResult = false;
+        this.ResetButtonsInvoice();
+        if(this.FirstLoad == true)
+         this.FirstLoad = false;
+         else
+         if(keyup == false)
+         this.openeditModal.nativeElement.click();
+      }
+      else if(res.outcome.outcomeMessage == "0 Links found")
+      {
+        this.CheckListInvoice = null;
+        this.noResult = true;
+      }
+         
+    }
+   );
 }
 
 

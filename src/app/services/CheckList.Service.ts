@@ -25,4 +25,23 @@ public list(params: CheckListRequest ) {
     });
   }
 
+
+  public listInvoiceLines(params: CheckListRequest ) {
+    const requestModel = JSON.parse(JSON.stringify(params));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/checkscreenlistinvoicelines`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
 }

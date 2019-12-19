@@ -176,15 +176,25 @@
 <div class="modal fade" style="width:80% !important ; left:10%; margin-top: 10% !important;" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog" style="width:100% !important" role="document">
     <div class="modal-content"  style="width:100% !important">
-      <div class="modal-header"  style="width:100% !important">
-        <h5 class="modal-title" id="modalContent">Available Invoice Lines</h5>
+      <div class="modal-header"  style="width:100% !important; background-color: rgb(228, 233, 241) !important;">
+        <h5 class="modal-title" id="modalContent" style="color:black">Available Invoice Lines ({{this.CheckListInvoice.rowCount}}) {{this.CheckListRequestInvoice.filter}} </h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+       
+
       </div>
       <form>
-
           <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6"></div>
+              <div class="col-md-6">
+              <input type="text"
+              class="form-control form-control-sm pull-right  form-control-{{ currentTheme }}"
+              placeholder="Search" (keyup)="LoadInvoiceLines(true)"  [value]="this.CheckListRequestInvoice.filter" (input)="this.CheckListRequestInvoice.filter = $event.target.value" style="max-width: 250px !important;float: right !important;" />
+            </div>
+            </div>
+            <div class="row">
             <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
               <thead>
                 <th>Invoice No</th>
@@ -200,29 +210,30 @@
                 <th>UOM</th>
                 <th>Action</th>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Invoice No</td>
-                  <td>From Company</td>
-                  <td>To Company</td>
-                  <td>Currency Code</td>
-                  <td>Item Value</td>
-                  <td>Prod Code</td>
-                  <td>Unit Price</td>
-                  <td>Total Line Value</td>
-                  <td>Item Name</td>
-                  <td>Qauntity</td>
-                  <td>UOM</td>
+              <tbody *ngIf="this.noResult == false">
+                <tr  *ngFor="let line of this.CheckListInvoice.invoiceLines"   >
+                  <td>{{line.i_invoiceNo}}</td>
+                  <td>{{line.i_fromCompany}}</td>
+                  <td>{{line.i_toCompany}}</td>
+                  <td>{{line.i_currencyCode}}</td>
+                  <td>{{line.il_itemValue}}</td>
+                  <td>{{line.il_prodCode}}</td>
+                  <td>{{line.il_unitPrice}}</td>
+                  <td>{{line.il_totalLineValue}}</td>
+                  <td>{{line.il_itemName}}</td>
+                  <td>{{line.il_quantity}}</td>
+                  <td>{{line.il_uomName}}</td>
                   <td style="min-width: 40px;">
                     
-                     <button matTooltip="Assign"  mat-raised-button    class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-blank-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                     <button matTooltip="Unassign" mat-raised-button  class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-marked-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                     <button (click)="InvoiceAssgin(line.il_id)" matTooltip="Assign" *ngIf="line.il_showAs == true"  mat-raised-button    class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-blank" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                     <button (click)="InvoiceUnassign(line.il_id)" matTooltip="Unassign" *ngIf="line.il_showAs == false" mat-raised-button  class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-marked" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
                      
                   </td>
                 </tr>
                
               </tbody>
             </table>
+          </div>
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>

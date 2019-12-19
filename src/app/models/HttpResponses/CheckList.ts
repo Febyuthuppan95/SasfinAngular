@@ -110,14 +110,14 @@ export class CS_InvoiceLine{
         "il_itemName": string;
         "il_uomid": number;
         "il_uomName": string;
-        "il_showAs": boolean = false;
+        "il_showAs": boolean;
   }
 
   export class SP_CheckScreenInvoiceSelection
   {
     "rowCount" : number;
     "outcome": Outcome;
-    "InvoiceLines": CS_InvoiceLine_Selection[];
+    "invoiceLines": CS_InvoiceLine_Selection[];
   }
 
 
