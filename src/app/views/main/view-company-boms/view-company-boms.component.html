@@ -54,8 +54,8 @@
           <div class="modal-body">
             <div class="form-group">
               <label class="control-label">File Name:</label>
-              <input type="text" placeholder="Item" class="form-control"
-               [(ngModel)]="this.item" [ngModelOptions]="{standalone: true}"  required/>
+              <!-- <input type="text" placeholder="Item" class="form-control"
+               [(ngModel)]="this.item" [ngModelOptions]="{standalone: true}"  required/> -->
             </div>
             <div class="form-group">
               <label for="addBOMFile">
@@ -67,7 +67,7 @@
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-        <button type="submit" (click)="UpdateItem()" class="btn btn-primary btn-sm">Save</button>
+        <button type="submit" (click)="saveBOMUpload()" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>
     </div>

@@ -15,6 +15,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -24,7 +26,7 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar) { }
+              private eventService: EventService, private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -116,6 +118,15 @@ dialogOpen = false;
         this.loadLines();
       }
     });
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngAfterViewInit(): void {
@@ -230,9 +241,8 @@ dialogOpen = false;
       unitOfMeasureID: obj.unitOfMeasureID,
       tariff: obj.tariff,
       tariffID: obj.tariffID,
-      value: obj.value,
+      quantity: obj.quantity,
       customsValue: obj.customsValue,
-      productCode: obj. productCode,
       isDeleted: 0,
       lineNo: obj.lineNo
     };
@@ -292,9 +302,8 @@ dialogOpen = false;
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
 
-        this.lineErrors = res.lines.filter(x => x.valueError !== null
-          || x.lineNoError !== null
-          || x.productCodeError !== null
+        this.lineErrors = res.lines.filter(x => x.lineNoError !== null
+          || x.quantityError !== null
           || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
       (msg) => {

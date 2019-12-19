@@ -1,4 +1,4 @@
-import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+// import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
@@ -77,7 +77,6 @@ import { ContextMenuTransactionFileComponent } from './components/menus/context-
 // tslint:disable-next-line: max-line-length
 import { ContextMenuTransactionAttachmentComponent } from './components/menus/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/menus/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/menus/context-menu-designationrights/context-menu-designationrights.component';
@@ -322,8 +321,7 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
-    ContextMenuCompanyContactsComponent,
-    ChatConversationComponent
+    ContextMenuCompanyContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -344,7 +342,6 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ),
     NgbModule,
     NgxPaginationModule,
-    NgxExtendedPdfViewerModule,
     MaterialModule,
     AngularDraggableModule,
     KeyboardShortcutsModule,

@@ -15,6 +15,8 @@ import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -25,7 +27,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService) { }
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser: User;
 
@@ -75,15 +78,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     lineNo: '',
     unitOfMeasureID: -1,
     unitOfMeasure: '',
-    productCode: '',
-    value: '',
     cpcError: null,
     tariffError: null,
     customsValueError: null,
     lineNoError: null,
     unitOfMeasureError: null,
-    productCodeError: null,
-    valueError: null,
+    quantity: 0,
+    quantityError: null
   };
 
   isUpdate: boolean;
@@ -99,6 +100,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.loadTarrifs();
     this.loadDuties();
 
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngAfterViewInit(): void {
@@ -128,17 +138,14 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
       this.form.customsValue = this.updateSAD500Line.customsValue;
       this.form.lineNo = this.updateSAD500Line.lineNo;
-      this.form.productCode = this.updateSAD500Line.productCode;
       this.form.tariff = this.updateSAD500Line.tariff;
       this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
-      this.form.value = this.updateSAD500Line.value;
       this.form.tariffError = this.updateSAD500Line.tariffError;
       this.form.customsValueError = this.updateSAD500Line.customsValueError;
-      this.form.valueError = this.updateSAD500Line.valueError;
       this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
       this.form.lineNoError = this.updateSAD500Line.lineNoError;
-      this.form.productCodeError = this.updateSAD500Line.productCodeError;
-
+      this.form.quantity = this.updateSAD500Line.quantity;
+      this.form.quantityError = this.updateSAD500Line.quantityError;
       this.loadDuties();
     } else {
       this.isUpdate = false;
@@ -150,15 +157,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         lineNo: '',
         unitOfMeasureID: -1,
         unitOfMeasure: '',
-        productCode: '',
-        value: '',
         cpcError: null,
         tariffError: null,
         customsValueError: null,
         lineNoError: null,
         unitOfMeasureError: null,
-        productCodeError: null,
-        valueError: null,
+        quantity: 0,
+        quantityError: null
       };
       this.loadDuties();
     }
@@ -192,8 +197,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
         unitOfMeasure: this.form.unitOfMeasure,
-        productCode: this.form.productCode,
-        value: this.form.value,
+        quantity: this.form.quantityError,
       });
     } else {
       this.submitSADLine.emit({
@@ -205,8 +209,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
         unitOfMeasure: this.form.unitOfMeasure,
-        productCode: this.form.productCode,
-        value: this.form.value,
+        quantity: this.form.quantity,
         duties: this.dutiesToBeSaved
       });
 

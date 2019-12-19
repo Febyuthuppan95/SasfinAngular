@@ -5,6 +5,7 @@ import { GetObjectHelpRequest } from '../models/HttpRequests/GetObjectHelpReques
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject } from 'rxjs';
 import { UpdateObjectHelpRequest } from '../models/HttpRequests/UpdateObjectHelpRequest';
+import {GetObjectHelpResponse} from '../models/HttpResponses/GetObjectHelpResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -102,4 +103,5 @@ export class ObjectHelpService {
   private setAllow(newContext: boolean) {
     this.allow.next(newContext);
   }
+
 }

@@ -13,6 +13,8 @@ import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { EventService } from 'src/app/services/event.service';
 import { MatDialog } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -23,7 +25,8 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService,
-              private eventService: EventService, private dialog: MatDialog) { }
+              private eventService: EventService, private dialog: MatDialog,
+              private snackbarService: HelpSnackbar) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -71,6 +74,15 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         this.loadICI();
       }
     });
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngAfterViewInit(): void {

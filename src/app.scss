@@ -643,3 +643,17 @@ p {
   color: #fff;
   text-align: center;
 }
+
+.splitter .mat-dialog-container {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  max-height: 100vh !important;
+}
+
+.splitter .mat-dialog-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}

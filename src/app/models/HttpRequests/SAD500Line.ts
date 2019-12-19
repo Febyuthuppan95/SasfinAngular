@@ -17,11 +17,12 @@ export class SAD500LineCreateRequest {
   tariffID: number;
   tariff: string;
   customsValue: number;
+  // cpc: string;
+  // productCode: string;
+  // value: number;
   lineNo: string;
   unitOfMeasureID: number;
   unitOfMeasure: string;
-  productCode: string;
-  value: string;
   saved?: boolean;
   failed?: boolean;
   updateSubmit?: boolean;
@@ -29,6 +30,7 @@ export class SAD500LineCreateRequest {
   sad500LineID?: number;
   rowNum?: number;
   isPersist?: boolean;
+  quantity: number;
 }
 
 export class SAD500LineUpdateModel {
@@ -39,11 +41,10 @@ export class SAD500LineUpdateModel {
     tariffID: number;
     unitOfMeasure: string;
     unitOfMeasureID: number;
-    productCode: string;
-    value: string;
     customsValue: number;
     lineNo: string;
     isDeleted: number;
+    quantity: number;
 }
 
 export class DutyListResponse {

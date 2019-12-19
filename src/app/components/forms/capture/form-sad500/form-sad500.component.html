@@ -24,6 +24,7 @@
       [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
+      (mouseover)="updateHelpContext('form-sad500-MRN')"
       placeholder="MRN" />
       <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
   </div>
@@ -32,6 +33,7 @@
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
         [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-serial-number')"
         placeholder="Serial No" />
         <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
     </div>
@@ -40,6 +42,7 @@
         [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-lrn')"
         placeholder="LRN" />
         <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
     </div>
@@ -48,6 +51,7 @@
         [(ngModel)]="this.form.CPC.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-cpc')"
         placeholder="CPC" />
         <p class="invalid-control-label" *ngIf="this.form.CPC.error !== null">{{this.form.CPC.error}}</p>
     </div>
@@ -55,7 +59,7 @@
       <input type="text"
         [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
-
+        (mouseover)="updateHelpContext('form-sad500-pcc')"
         placeholder="PCC" />
         <p class="invalid-control-label" *ngIf="this.form.PCC.error !== null">{{this.form.PCC.error}}</p>
     </div>
@@ -64,6 +68,7 @@
         [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-total-customs-value')"
         placeholder="Total Customs Value" />
         <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
     </div>
@@ -72,7 +77,7 @@
         [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
-
+        (mouseover)="updateHelpContext('form-sad500-waybill-no')"
         placeholder="Waybill No" />
         <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
     </div>
@@ -81,7 +86,7 @@
         [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
-
+        (mouseover)="updateHelpContext('form-sad500-file-or-supplier-ref')"
         placeholder="Supplier Ref/File Number" />
         <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
 
