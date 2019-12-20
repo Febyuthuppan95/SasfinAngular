@@ -330,7 +330,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
       if (status) {
-        this.router.navigate(['transaction', 'attachments']);
+        this.router.navigate(['transaction/attachment']);
       }
     });
   }

@@ -146,6 +146,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
 
           if (status) {
               // update VOC
+              // this.router.navigate(['transaction/attachment']);
           }
         });
       }
