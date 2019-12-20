@@ -20,100 +20,98 @@ export class ViewCheckingScreenComponent implements OnInit {
   constructor(
     private themeService: ThemeService,
     public csService: CheckListService,
-    private userService: UserService,    
-    ) { }
+    private userService: UserService,
+  ) { }
 
   @Input() currentTheme: string = 'light';
-  CheckList: SP_CheckingScreenList ;
-  CheckListInvoice: SP_CheckScreenInvoiceSelection;
-  CheckListRequest: CheckListRequest;
-  CheckListRequestInvoice: CheckListRequest;
+  CheckList: SP_CheckingScreenList = null;
+  CheckListInvoice: SP_CheckScreenInvoiceSelection = null;
+  CheckListRequest: CheckListRequest = null;
+  CheckListRequestInvoice: CheckListRequest = null;
   FirstLoad: boolean = true;
-  noResult:boolean;
+  noResult: boolean;
+  SADnoResult: boolean = false;
   InvoicePaging: CS_Paging = null;
   SelectedSADLine = null;
   InvoiceLineAdd: CS_InvoiceLineAdd = {
-    userid :0,
+    userid: 0,
     sad500id: 0,
-    invoicelines: null 
+    invoicelines: null
   };
-  
+
   selected = '1';
+  pageLoadComplete = false;
 
 
-  @ViewChild('openeditModal', {static: true})
+  @ViewChild('openeditModal', { static: true })
   openeditModal: ElementRef;
 
-  @ViewChild('closeeditModal', {static: true})
+  @ViewChild('closeeditModal', { static: true })
   closeeditModal: ElementRef;
 
 
-  OpenModal(ID: Number)
-  {
+  OpenModal(ID: Number) {
     this.LoadInvoiceLines(false);
     this.SelectedSADLine = ID;
   }
 
-  CloseModal()
-  {
+  CloseModal() {
     this.closeeditModal.nativeElement.click();
   }
 
- 
 
-  Reset()
-  {
+
+  Reset() {
     this.CheckListRequest = {
 
-      userID: this.userService.getCurrentUser().userID, 
-      transactionID:1,
+      userID: this.userService.getCurrentUser().userID,
+      transactionID: 2,
       filter: 'test',
       orderBy: 'Test',
       orderByDirection: 'test',
       rowStart: 0,
       rowEnd: 0
     };
- 
+
 
   }
 
-  ResetInvoice()
-  {
+  ResetInvoice() {
 
-    
+
 
     this.CheckListRequestInvoice = {
 
-      userID: this.userService.getCurrentUser().userID, 
-      transactionID:2,
+      userID: this.userService.getCurrentUser().userID,
+      transactionID: 2,
       filter: '',
       orderBy: '',
       orderByDirection: '',
       rowStart: 1,
-      rowEnd: 1
+      rowEnd: 10
     };
- 
-   this.InvoicePaging = {
-     id: "INVL",
-     itemsPerPage: 1,
-     currentPage: 1, 
-     totalItems: 3
-   }; 
-   
+
+    this.InvoicePaging = {
+      id: "INVL",
+      itemsPerPage: 10,
+      currentPage: 1,
+      totalItems: 0
+    };
+
   }
 
-  pageChanged($event){
-   
-    if($event != 0)
-    this.InvoicePaging.currentPage = $event;
-    else
-    this.InvoicePaging.currentPage = 1;
+  pageChanged($event) {
 
-    this.CheckListRequestInvoice.rowStart = Number(this.selected) * (this.InvoicePaging.currentPage -1) + 1;
+    if ($event != 0)
+      this.InvoicePaging.currentPage = $event;
+    else
+      this.InvoicePaging.currentPage = 1;
+
+    this.CheckListRequestInvoice.rowStart = Number(this.selected) * (this.InvoicePaging.currentPage - 1) + 1;
     this.CheckListRequestInvoice.rowEnd = Number(this.selected) * (this.InvoicePaging.currentPage);
     this.InvoicePaging.itemsPerPage = Number(this.selected);
-    
- 
+
+
 
 
     this.LoadInvoiceLines(true);
@@ -132,168 +130,187 @@ export class ViewCheckingScreenComponent implements OnInit {
     });
   }
 
-  ResetButtonsInvoice(){
-    this.CheckListInvoice.invoiceLines.forEach((element) => {element.il_showAs = true;});
+  ResetButtonsInvoice() {
+    this.CheckListInvoice.invoiceLines.forEach((element) => { element.il_showAs = true; });
   }
 
-  InvoiceAssgin(ID:number)
-  {
+  InvoiceAssgin(ID: number) {
     this.CheckListInvoice.invoiceLines.find(x => x.il_id == ID).il_showAs = false;
   }
 
-  InvoiceUnassign(ID:Number)
-  {
+  InvoiceUnassign(ID: Number) {
     this.CheckListInvoice.invoiceLines.find(x => x.il_id == ID).il_showAs = true;
   }
 
-LoadList(){
+  LoadList() {
 
-this.Reset();
-  
+    this.Reset();
 
-  this.csService.list(this.CheckListRequest).then(
-   (res: SP_CheckingScreenList) => {
-     if(res.outcome.outcome == "SUCCESS"){
-       this.CheckList = null;
-       this.CheckList = res;
-       this.ResetButtons();
-     }
-     else
-     {
-       //Add error message here
-     }
-        
-   }
-  );
-  
 
-}
-  
+    this.csService.list(this.CheckListRequest).then(
+      (res: SP_CheckingScreenList) => {
+        if (res.outcome.outcome == "SUCCESS") {
+          this.CheckList = null;
+          this.CheckList = res;
+          this.ResetButtons();
+          this.SADnoResult = false;
+        }
+        else if(res.outcome.outcomeMessage == "0 Links found") {
+          //Add error message here
+          this.CheckList = null;
+          this.CheckList = res;
+          this.SADnoResult = true;
+        }
+
+      }
+    );
+
+
+  }
+
   ngOnInit() {
 
 
-  this.FirstLoad = true;
-  this.ResetInvoice();
-  this.LoadList();
-  this.LoadInvoiceLines(false);
-  this.themeService.observeTheme();
 
-  this.CheckListInvoice.rowCount
- 
-  
+    this.FirstLoad = true;
+    this.ResetInvoice();
+    this.LoadList();
+    this.LoadInvoiceLines(false);
+    this.themeService.observeTheme();
+    this.CheckListInvoice.rowCount
+
   }
 
-  ngAfterViewInit(){
-
-  //this.LoadList();
-    
-  }
-
-  DeleteInvoiceLine(ID: number)
+  ngDoCheck()
   {
+    this.pageLoadComplete = true;
+  }
+
+  DeleteInvoiceLine(ID: number) {
 
     this.CheckList.transaction.saD500s.forEach((element) => {
       element.saD500Lines.forEach(line => {
         line.invoiceLines.forEach(iline => {
-          if(iline.id == ID)
-          iline.showAs = false;
+          if (iline.id == ID)
+            iline.showAs = false;
         });
       });
     });
 
   }
 
-DeleteInvoiceLineConfrim(ID: number)
-{
-  this.CheckList.transaction.saD500s.find(S => S.saD500Lines !=null).saD500Lines.find(SL => SL.invoiceLines !=null).invoiceLines.find(IL => IL.id == ID).showAs = false;
+  DeleteInvoiceLineConfrim(invoiceID: number, sadlineID: number) {
 
-}
+    this.InvoiceLineAdd.sad500id = null; //set to null because we want to assign the value
+    this.InvoiceLineAdd.userid = this.userService.getCurrentUser().userID;
+    this.InvoiceLineAdd.invoicelines = null; //clear out old data
+    this.InvoiceLineAdd.invoicelines = new Array();
+    this.InvoiceLineAdd.invoicelines.push(invoiceID);
 
+    //Send the data to the api
+    this.csService.listInvoiceLinesAssign(this.InvoiceLineAdd).then(
+      (res: Outcome) => {
+        if (res.outcome == "SUCCESS") {
 
-LoadInvoiceLines(keyup:boolean)
-{
+          this.LoadList();
+        }
+        else {
 
-  
+        }
 
-  this.csService.listInvoiceLines(this.CheckListRequestInvoice).then(
-    (res:SP_CheckScreenInvoiceSelection) => {
-      if(res.outcome.outcome == "SUCCESS"){
-        this.CheckListInvoice = null;
-        this.CheckListInvoice = res;
-        this.noResult = false;
-        this.InvoicePaging.totalItems = res.rowCount;
-        this.ResetButtonsInvoice();
-
-        if(this.FirstLoad == true)
-         this.FirstLoad = false;
-         else
-         if(keyup == false)
-         this.openeditModal.nativeElement.click();
       }
-      else if(res.outcome.outcomeMessage == "0 Links found")
-      {
-        this.CheckListInvoice = null;
-        this.noResult = true;
+    );
+
+
+  }
+
+
+  LoadInvoiceLines(keyup: boolean) {
+
+
+
+    this.csService.listInvoiceLines(this.CheckListRequestInvoice).then(
+      (res: SP_CheckScreenInvoiceSelection) => {
+        if (res.outcome.outcome == "SUCCESS") {
+          this.CheckListInvoice = null;
+          this.CheckListInvoice = res;
+          this.noResult = false;
+          this.InvoicePaging.totalItems = res.rowCount;
+          this.ResetButtonsInvoice();
+
+          if (this.FirstLoad == true)
+            this.FirstLoad = false;
+          else
+            if (keyup == false)
+              this.openeditModal.nativeElement.click();
+        }
+        else if (res.outcome.outcomeMessage == "0 Links found") {
+          this.CheckListInvoice = null;
+          this.noResult = true;
+
+          if (keyup == false)
+          this.openeditModal.nativeElement.click();
+
+        }
+
       }
-         
-    }
-   );
-}
+    );
+  }
 
 
 
-  CancelDeleteInvoiceLine(ID:Number)
-  {
+  CancelDeleteInvoiceLine(ID: Number) {
     this.CheckList.transaction.saD500s.forEach((element) => {
       element.saD500Lines.forEach(line => {
         line.invoiceLines.forEach(iline => {
-          if(iline.id == ID)
-          iline.showAs = true;
+          if (iline.id == ID)
+            iline.showAs = true;
         });
       });
     });
 
   }
 
- InvoiceLineAssign()
- {
+  InvoiceLineAssign() {
 
-  var selected = this.CheckListInvoice.invoiceLines.find(x => x.il_showAs == false);
-  
-
-  if(selected != undefined) // Only run the code if something is actually selected.
-  {
-  this.InvoiceLineAdd.sad500id = this.SelectedSADLine;
-  this.InvoiceLineAdd.userid = this.userService.getCurrentUser().userID;
-  this.InvoiceLineAdd.invoicelines = new Array();
-  this.CheckListInvoice.invoiceLines.forEach((element) => {
-      if(element.il_showAs == false) //meaning that the invoiceline is selected
-      {
-        var a = element.il_id;
-        this.InvoiceLineAdd.invoicelines.push(element.il_id); //add to the array to be added
-      }
-
-  });
+    var selected = this.CheckListInvoice.invoiceLines.find(x => x.il_showAs == false);
 
 
+    if (selected != undefined) // Only run the code if something is actually selected.
+    {
+      this.InvoiceLineAdd.sad500id = this.SelectedSADLine;
+      this.InvoiceLineAdd.userid = this.userService.getCurrentUser().userID;
+      this.InvoiceLineAdd.invoicelines = null; //clear out old data
+      this.InvoiceLineAdd.invoicelines = new Array();
+      this.CheckListInvoice.invoiceLines.forEach((element) => {
+        if (element.il_showAs == false) //meaning that the invoiceline is selected
+        {
+          var a = element.il_id;
+          this.InvoiceLineAdd.invoicelines.push(element.il_id); //add to the array to be added
+        }
 
-  //Send the data to the api
-  this.csService.listInvoiceLinesAssign(this.InvoiceLineAdd).then(
-    (res:Outcome) => {
-      if(res.outcome == "SUCCESS"){
-      }
-      else
-      {
-        
-      }
-         
+      });
+
+
+
+      //Send the data to the api
+      this.csService.listInvoiceLinesAssign(this.InvoiceLineAdd).then(
+        (res: Outcome) => {
+          if (res.outcome == "SUCCESS") {
+            this.LoadList();
+
+          }
+          else {
+
+          }
+
+        }
+      );
+
+
     }
-   );
 
-
-}
-
- }
+  }
 
 
 }

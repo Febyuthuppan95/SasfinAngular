@@ -1,7 +1,7 @@
 <div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <div class="float-right">
-      <ng-container *ngIf="showLoader">
+      <ng-container *ngIf="this.pageLoadComplete == false">
         <app-loader></app-loader>
       </ng-container>
 
@@ -19,31 +19,30 @@
     <br />
     <div class="row">
       <div class="col-md12">
-        <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID : {{this.CheckList.transaction.id}}
+        <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID :
+          {{this.CheckList.transaction.id}}
         </h5>
       </div>
     </div>
 
     <br /> <br />
-    
 
-
+    <h4 *ngIf="this.SADnoResult == true">No SAD500's found for this transaction</h4>
 
     <mat-accordion *ngFor="let SAD of this.CheckList.transaction.saD500s">
-
       <mat-expansion-panel id="expansion-panel-0" [expanded]="true"
         style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
         <mat-expansion-panel-header>
           <h4> <i class="mdi mdi-file-document"></i> SAD500: {{SAD.id}} </h4>
         </mat-expansion-panel-header>
         <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
-          <div class="col-md-12" >
+          <div class="col-md-12">
             <hr style="border-top: 2px solid #0099ff;" />
           </div>
         </div>
         <table class="table">
           <thead>
-            <tr >
+            <tr>
               <th scope="col">Type</th>
               <th scope="col">WayBill</th>
               <th scope="col">Serial Number</th>
@@ -75,7 +74,8 @@
               <td colspan="10">
                 <mat-accordion *ngFor="let SADL of SAD.saD500Lines">
 
-                  <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important; background-color:#f2f2f2;">
+                  <mat-expansion-panel [expanded]="true"
+                    style="margin-bottom: 20px !important; background-color:#f2f2f2;">
                     <mat-expansion-panel-header>
                       <h5> <i class="mdi mdi-format-list-bulleted"></i> SAD500 Lines</h5>
                     </mat-expansion-panel-header>
@@ -89,65 +89,78 @@
                         <th>Qauntity</th>
                         <th>Action</th>
                       </thead>
-                      <tr> 
-                        <td>{{SADL.tarrifCode}}</td>
+                      <tr>
+                        <td>{{SADL.tarrifCode}} {{SADL.id}}</td>
                         <td>{{SADL.uomName}}</td>
                         <td>{{SADL.customsValue}}</td>
                         <td>{{SADL.lineNo}}</td>
                         <td>{{SADL.quantity}}</td>
                         <td>
-                          <button style="background-color:rgb(25, 101, 216);" matTooltip="Assign Invoice Line" color="primary"  mat-raised-button (click)="OpenModal(SADL.id)" class="buttonSpacing pull-right  float-right"><i class="mdi mdi-checkbox-multiple-marked-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                          <button style="background-color:rgb(25, 101, 216);" matTooltip="Assign Invoice Line"
+                            color="primary" mat-raised-button (click)="OpenModal(SADL.id)"
+                            class="buttonSpacing pull-right  float-right"><i
+                              class="mdi mdi-checkbox-multiple-marked-outline"
+                              style="font-size: 20px !important; font-weight: bold !important;"></i></button>
                         </td>
                       </tr>
                       <!--Start Of Invoice Lines-->
                       <tr colspan="6" style="padding:0px !important;">
-                        <td colspan="6" style="padding-top:0px !important;" >
-                      
-                          <mat-accordion *ngFor="let INVL of SADL.invoiceLines">
-                      
+                        <td colspan="6" style="padding-top:0px !important;">
+
+                          <mat-accordion *ngIf="SADL.invoiceLines.length > 0">
+
                             <mat-expansion-panel [expanded]="true" style="margin-bottom: 20px !important;">
                               <mat-expansion-panel-header>
                                 <h5> <i class="mdi mdi-file-document-box"></i> Invoice Lines</h5>
                               </mat-expansion-panel-header>
                               <table class="table">
-                                  <thead>
-                                      <th>Invoice No</th>
-                                      <th>From Company</th>
-                                      <th>To Company</th>
-                                      <th>Currency Code</th>
-                                      <th>Item Value</th>
-                                      <th>Prod Code</th>
-                                      <th>Unit Price</th>
-                                      <th>Total Line Value</th>
-                                      <th>Item Name</th>
-                                      <th>Quantity</th>
-                                      <th>UOM</th>
-                                      <th>Action</th>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>{{INVL.invoice.invoiceNo}}</td>
-                                      <td>{{INVL.invoice.fromCompany}}</td>
-                                      <td>{{INVL.invoice.toCompany}}</td>
-                                      <td>{{INVL.invoice.currencyCode}}</td>
-                                      <td>{{INVL.itemValue}}</td>
-                                      <td>{{INVL.prodCode}}</td>
-                                      <td>{{INVL.unitPrice}}</td>
-                                      <td>{{INVL.totalLineValue}}</td>
-                                      <td>{{INVL.itemName}}</td>
-                                      <td>{{INVL.quantity}}</td> 
-                                      <td>{{INVL.uomName}} {{INVL.id}}</td>
-                                      <td style="width: 170px!important;">
-                                      <button matTooltip="Unassign" (click)="DeleteInvoiceLine(INVL.id)" *ngIf="INVL.showAs == true" mat-raised-button  class="buttonSpacing" ><i class="mdi mdi-close-box-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                                      <button matTooltip="Confirm Unassignement?" *ngIf="INVL.showAs == false" (click)="DeleteInvoiceLineConfrim(INVL.id)"  mat-raised-button class="buttonSpacing"><i class="mdi mdi-close-box" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                                      <button matTooltip="Cancel Unassignement" *ngIf="INVL.showAs == false" (click)="CancelDeleteInvoiceLine(INVL.id)" mat-raised-button   color="primary" class="buttonSpacing"><i class="mdi mdi-undo-variant" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                                      </td>
-                                    </tr>
-                                    </tbody>
-  
-                                </table>
-                            
-      
+                                <thead>
+                                  <th>Invoice No</th>
+                                  <th>From Company</th>
+                                  <th>To Company</th>
+                                  <th>Currency Code</th>
+                                  <th>Item Value</th>
+                                  <th>Prod Code</th>
+                                  <th>Unit Price</th>
+                                  <th>Total Line Value</th>
+                                  <th>Item Name</th>
+                                  <th>Quantity</th>
+                                  <th>UOM</th>
+                                  <th>Action</th>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let INVL of SADL.invoiceLines">
+                                    <td>{{INVL.invoice.invoiceNo}}</td>
+                                    <td>{{INVL.invoice.fromCompany}}</td>
+                                    <td>{{INVL.invoice.toCompany}}</td>
+                                    <td>{{INVL.invoice.currencyCode}}</td>
+                                    <td>{{INVL.itemValue}}</td>
+                                    <td>{{INVL.prodCode}}</td>
+                                    <td>{{INVL.unitPrice}}</td>
+                                    <td>{{INVL.totalLineValue}}</td>
+                                    <td>{{INVL.itemName}}</td>
+                                    <td>{{INVL.quantity}}</td>
+                                    <td>{{INVL.uomName}} {{INVL.id}}</td>
+                                    <td style="width: 170px!important;">
+                                      <button matTooltip="Unassign" (click)="DeleteInvoiceLine(INVL.id)"
+                                        *ngIf="INVL.showAs == true" mat-raised-button class="buttonSpacing"><i
+                                          class="mdi mdi-close-box-outline"
+                                          style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Confirm Unassignement?" *ngIf="INVL.showAs == false"
+                                        (click)="DeleteInvoiceLineConfrim(INVL.id, SADL.id)" mat-raised-button
+                                        class="buttonSpacing"><i class="mdi mdi-close-box"
+                                          style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                      <button matTooltip="Cancel Unassignement" *ngIf="INVL.showAs == false"
+                                        (click)="CancelDeleteInvoiceLine(INVL.id)" mat-raised-button color="primary"
+                                        class="buttonSpacing"><i class="mdi mdi-undo-variant"
+                                          style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                                    </td>
+                                  </tr>
+                                </tbody>
+
+                              </table>
+
+
                             </mat-expansion-panel>
                           </mat-accordion>
                         </td>
@@ -166,46 +179,47 @@
 
     </mat-accordion>
 
-
-
-
   </div>
+
+</div>
 
 <!--Edit Modal-->
 <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
-<div class="modal fade" style="width:80% !important ; left:10%; margin-top: 10% !important;" id="editCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<div class="modal fade" style="width:80% !important ; left:10%; margin-top: 5% !important;" id="editCompany"
+  tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog" style="width:100% !important" role="document">
-    <div class="modal-content"  style="width:100% !important">
-      <div class="modal-header"  style="width:100% !important; background-color: rgb(228, 233, 241) !important;">
-        <h5 class="modal-title" id="modalContent" style="color:black">Available Invoice Lines ({{this.CheckListInvoice.rowCount}}) {{this.CheckListRequestInvoice.filter}} </h5>
+    <div class="modal-content" style="width:100% !important">
+      <div class="modal-header" style="width:100% !important; background-color: rgb(228, 233, 241) !important;">
+        <h5 class="modal-title" id="modalContent" style="color:black">Available Invoice Lines</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-       
+
 
       </div>
       <form>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
 
-                <mat-form-field>
-                  <mat-label>Showing</mat-label>
-                  <mat-select (selectionChange)="pageChanged(0)" [(value)]="selected">
-                    <mat-option value="1">10</mat-option>
-                    <mat-option value="15">15</mat-option>
-                    <mat-option value="25">25</mat-option>
-                  </mat-select>
-                </mat-form-field>
+              <mat-form-field>
+                <mat-label>Showing</mat-label>
+                <mat-select (selectionChange)="pageChanged(0)" [(value)]="selected">
+                  <mat-option value="10">10</mat-option>
+                  <mat-option value="15">15</mat-option>
+                  <mat-option value="25">25</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-              </div>
-              <div class="col-md-6">
-              <input type="text"
-              class="form-control form-control-sm pull-right  form-control-{{ currentTheme }}"
-              placeholder="Search" (keyup)="LoadInvoiceLines(true)"  [value]="this.CheckListRequestInvoice.filter" (input)="this.CheckListRequestInvoice.filter = $event.target.value" style="max-width: 250px !important;float: right !important;" />
             </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control form-control-sm pull-right  form-control-{{ currentTheme }}"
+                placeholder="Search" (keyup)="LoadInvoiceLines(true)" [value]="this.CheckListRequestInvoice.filter"
+                (input)="this.CheckListRequestInvoice.filter = $event.target.value"
+                style="max-width: 250px !important;float: right !important;" />
             </div>
-            <div class="row">
+          </div>
+          <div class="row">
             <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
               <thead>
                 <th>Invoice No</th>
@@ -222,7 +236,7 @@
                 <th>Action</th>
               </thead>
               <tbody *ngIf="this.noResult == false">
-                <tr  *ngFor="let line of this.CheckListInvoice.invoiceLines | paginate: this.InvoicePaging" >
+                <tr *ngFor="let line of this.CheckListInvoice.invoiceLines | paginate: this.InvoicePaging">
                   <td>{{line.i_invoiceNo}}</td>
                   <td>{{line.i_fromCompany}}</td>
                   <td>{{line.i_toCompany}}</td>
@@ -235,60 +249,53 @@
                   <td>{{line.il_quantity}}</td>
                   <td>{{line.il_uomName}}</td>
                   <td style="min-width: 40px;">
-                    
-                     <button (click)="InvoiceAssgin(line.il_id)" matTooltip="Assign" *ngIf="line.il_showAs == true"  mat-raised-button    class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-blank" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                     <button (click)="InvoiceUnassign(line.il_id)" matTooltip="Unassign" *ngIf="line.il_showAs == false" mat-raised-button  class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-marked" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
-                     
+
+                    <button (click)="InvoiceAssgin(line.il_id)" matTooltip="Assign" *ngIf="line.il_showAs == true"
+                      mat-raised-button class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-blank"
+                        style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                    <button (click)="InvoiceUnassign(line.il_id)" matTooltip="Unassign" *ngIf="line.il_showAs == false"
+                      mat-raised-button class="buttonSpacing"><i class="mdi mdi-checkbox-multiple-marked"
+                        style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+
                   </td>
                 </tr>
-               
+
               </tbody>
             </table>
 
-            
+
 
 
           </div>
 
 
 
-         
-          
+
+
           <div class="row" style="margin-top: 5px;">
             <div class="col-md-6" style="text-align: left !important;">
-              Showing {{this.CheckListRequestInvoice.rowStart}} to {{this.CheckListRequestInvoice.rowEnd}} of {{this.InvoicePaging.totalItems}}
+              Showing {{this.CheckListRequestInvoice.rowStart}} to {{this.CheckListRequestInvoice.rowEnd}} of
+              {{this.InvoicePaging.totalItems}}
             </div>
             <div class="col-md-6" style="text-align: right !important;">
-          <pagination-controls 
-          id="INVL"
-          (pageChange)="pageChanged($event)"
-          maxSize="500"
-          directionLinks="true"
-          autoHide="false"
-          responsive="true"
-          previousLabel="Previous"
-          nextLabel="Next"
-          screenReaderPaginationLabel="Pagination"
-          screenReaderPageLabel="page"
-          screenReaderCurrentLabel="You're on page">>
-        </pagination-controls>
-      </div>
+              <pagination-controls id="INVL" (pageChange)="pageChanged($event)" maxSize="500" directionLinks="true"
+                autoHide="false" responsive="true" previousLabel="Previous" nextLabel="Next"
+                screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page">>
+              </pagination-controls>
+            </div>
 
-         </div> <!--End of row-->
+          </div>
+          <!--End of row-->
 
 
         </div>
-      <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" (click)="InvoiceLineAssign()">Save</button>
-        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" #closeeditModal>Close</button> 
-      </div>
-    </form>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-success btn-sm" data-dismiss="modal"
+            (click)="InvoiceLineAssign()">Save</button>
+          <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-
-
-
-
-
- 
