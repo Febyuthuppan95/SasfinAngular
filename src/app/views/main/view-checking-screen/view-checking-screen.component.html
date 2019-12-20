@@ -25,7 +25,7 @@
     </div>
 
     <br /> <br />
-    <button (click)="OpenModal()">click</button>
+    
 
 
 
@@ -96,7 +96,7 @@
                         <td>{{SADL.lineNo}}</td>
                         <td>{{SADL.quantity}}</td>
                         <td>
-                          <button style="background-color:rgb(25, 101, 216);" matTooltip="Assign Invoice Line" color="primary"  mat-raised-button (click)="OpenModal()" class="buttonSpacing pull-right  float-right"><i class="mdi mdi-checkbox-multiple-marked-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
+                          <button style="background-color:rgb(25, 101, 216);" matTooltip="Assign Invoice Line" color="primary"  mat-raised-button (click)="OpenModal(SADL.id)" class="buttonSpacing pull-right  float-right"><i class="mdi mdi-checkbox-multiple-marked-outline" style="font-size: 20px !important; font-weight: bold !important;"></i></button>
                         </td>
                       </tr>
                       <!--Start Of Invoice Lines-->
@@ -187,7 +187,18 @@
       <form>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6"></div>
+              <div class="col-md-6">
+
+                <mat-form-field>
+                  <mat-label>Showing</mat-label>
+                  <mat-select (selectionChange)="pageChanged(0)" [(value)]="selected">
+                    <mat-option value="1">10</mat-option>
+                    <mat-option value="15">15</mat-option>
+                    <mat-option value="25">25</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
               <div class="col-md-6">
               <input type="text"
               class="form-control form-control-sm pull-right  form-control-{{ currentTheme }}"
@@ -243,8 +254,10 @@
 
          
           
-          <div class="row">
-            <div class="col-md-6"></div>
+          <div class="row" style="margin-top: 5px;">
+            <div class="col-md-6" style="text-align: left !important;">
+              Showing {{this.CheckListRequestInvoice.rowStart}} to {{this.CheckListRequestInvoice.rowEnd}} of {{this.InvoicePaging.totalItems}}
+            </div>
             <div class="col-md-6" style="text-align: right !important;">
           <pagination-controls 
           id="INVL"
@@ -266,7 +279,8 @@
 
         </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" (click)="InvoiceLineAssign()">Save</button>
+        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" #closeeditModal>Close</button> 
       </div>
     </form>
     </div>

@@ -128,5 +128,13 @@ export class CS_Paging
   totalItems: number;
 }
 
+export class CS_InvoiceLineAdd
+{
+  userid: number;
+  sad500id: number;
+  invoicelines: number[];
+
+}
+
 
   

@@ -2,11 +2,12 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import { CheckListService } from 'src/app/services/CheckList.Service';
-import { SC_Transaction, SP_CheckingScreenList, CS_SAD500, SP_CheckScreenInvoiceSelection, CS_Paging } from 'src/app/models/HttpResponses/CheckList';
+import { SC_Transaction, SP_CheckingScreenList, CS_SAD500, SP_CheckScreenInvoiceSelection, CS_Paging, CS_InvoiceLineAdd } from 'src/app/models/HttpResponses/CheckList';
 import { CheckListRequest } from 'src/app/models/HttpRequests/CheckListRequest';
 import { element } from 'protractor';
 import { UserService } from 'src/app/services/user.Service';
 import { first } from 'rxjs/operators';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
 
 @Component({
@@ -30,6 +31,14 @@ export class ViewCheckingScreenComponent implements OnInit {
   FirstLoad: boolean = true;
   noResult:boolean;
   InvoicePaging: CS_Paging = null;
+  SelectedSADLine = null;
+  InvoiceLineAdd: CS_InvoiceLineAdd = {
+    userid :0,
+    sad500id: 0,
+    invoicelines: null 
+  };
+  
+  selected = '1';
 
 
   @ViewChild('openeditModal', {static: true})
@@ -39,10 +48,10 @@ export class ViewCheckingScreenComponent implements OnInit {
   closeeditModal: ElementRef;
 
 
-  OpenModal()
+  OpenModal(ID: Number)
   {
-  
     this.LoadInvoiceLines(false);
+    this.SelectedSADLine = ID;
   }
 
   CloseModal()
@@ -68,10 +77,6 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   }
 
-  pageChanged($event){
-  }
-
-
   ResetInvoice()
   {
 
@@ -85,17 +90,34 @@ export class ViewCheckingScreenComponent implements OnInit {
       orderBy: '',
       orderByDirection: '',
       rowStart: 1,
-      rowEnd: 50
+      rowEnd: 1
     };
  
    this.InvoicePaging = {
      id: "INVL",
-     itemsPerPage: 50,
+     itemsPerPage: 1,
      currentPage: 1, 
-     totalItems: 50
+     totalItems: 3
    }; 
    
+  }
+
+  pageChanged($event){
+   
+    if($event != 0)
+    this.InvoicePaging.currentPage = $event;
+    else
+    this.InvoicePaging.currentPage = 1;
+
+    this.CheckListRequestInvoice.rowStart = Number(this.selected) * (this.InvoicePaging.currentPage -1) + 1;
+    this.CheckListRequestInvoice.rowEnd = Number(this.selected) * (this.InvoicePaging.currentPage);
+    this.InvoicePaging.itemsPerPage = Number(this.selected);
     
+ 
+
+
+    this.LoadInvoiceLines(true);
+
   }
 
 
@@ -196,10 +218,12 @@ LoadInvoiceLines(keyup:boolean)
   this.csService.listInvoiceLines(this.CheckListRequestInvoice).then(
     (res:SP_CheckScreenInvoiceSelection) => {
       if(res.outcome.outcome == "SUCCESS"){
-       this.CheckListInvoice = null;
+        this.CheckListInvoice = null;
         this.CheckListInvoice = res;
         this.noResult = false;
+        this.InvoicePaging.totalItems = res.rowCount;
         this.ResetButtonsInvoice();
+
         if(this.FirstLoad == true)
          this.FirstLoad = false;
          else
@@ -230,6 +254,46 @@ LoadInvoiceLines(keyup:boolean)
     });
 
   }
+
+ InvoiceLineAssign()
+ {
+
+  var selected = this.CheckListInvoice.invoiceLines.find(x => x.il_showAs == false);
+  
+
+  if(selected != undefined) // Only run the code if something is actually selected.
+  {
+  this.InvoiceLineAdd.sad500id = this.SelectedSADLine;
+  this.InvoiceLineAdd.userid = this.userService.getCurrentUser().userID;
+  this.InvoiceLineAdd.invoicelines = new Array();
+  this.CheckListInvoice.invoiceLines.forEach((element) => {
+      if(element.il_showAs == false) //meaning that the invoiceline is selected
+      {
+        var a = element.il_id;
+        this.InvoiceLineAdd.invoicelines.push(element.il_id); //add to the array to be added
+      }
+
+  });
+
+
+
+  //Send the data to the api
+  this.csService.listInvoiceLinesAssign(this.InvoiceLineAdd).then(
+    (res:Outcome) => {
+      if(res.outcome == "SUCCESS"){
+      }
+      else
+      {
+        
+      }
+         
+    }
+   );
+
+
+}
+
+ }
 
 
 }
