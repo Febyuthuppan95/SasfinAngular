@@ -192,6 +192,7 @@ import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 
 
 @NgModule({
@@ -327,6 +328,7 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
     ContextMenuCompanyContactsComponent,
+    ViewCaptureLandingComponent,
 
   ],
   imports: [

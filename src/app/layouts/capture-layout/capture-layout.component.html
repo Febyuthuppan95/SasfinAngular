@@ -1,8 +1,17 @@
+<!-- loader.component.html -->
+<!-- <div class="progress-loader" [hidden]="!loading">
+
+  <mat-progress-spinner class="loader"  [mode]="'indeterminate'">
+  </mat-progress-spinner>
+
+</div> -->
+
+<!--main code-->
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
   <div class="">
-  <span *ngFor="let attach of this.attachmentListShowing">
+  <!-- <span *ngFor="let attach of this.attachmentListShowing">
     <button mat-mini-fab *ngIf="attach !== undefined"
       style="cursor: pointer;margin-bottom: 24px"
       [ngClass]="{statusNone: attach.statusID === 1, 'bg-warning': attach.statusID === 2,
@@ -11,17 +20,17 @@
       matTooltipPosition="after"
     (click)="previewCapture(attach.file, attach.attachmentID)">{{ attach.fileType[0] }}
     </button>
-    <!-- &nbsp; {{attach.name}} -->
+    &nbsp; {{attach.name}}
     <br>
-  </span>
+  </span> -->
   <span *ngIf="this.attachmentList">
-  <button mat-mini-fab
+  <!-- <button mat-mini-fab
   *ngIf="this.attachmentList.length > 4"
   (click)="moreAttachments()"
   style="cursor: pointer;margin-bottom: 24px"
   class="bg-primary text-light"
   matTooltip="More"
-  matTooltipPosition="after"><span class="mdi mdi-apps"></span></button>
+  matTooltipPosition="after"><span class="mdi mdi-apps"></span></button> -->
 </span>
 </div>
 </div>
@@ -45,6 +54,10 @@
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>
     </div>
 </div>
+
+
+
+
 <!-- <div class="dock dock-bottom" [ngClass]="{'hide-dock': !this.showDocks}">
     <div class="text-center">
         <button style="z-index: 99999999999999;" mat-mini-fab matTooltip="Communications" matTooltipPosition="above"><span class="mdi mdi-comment"></span></button>

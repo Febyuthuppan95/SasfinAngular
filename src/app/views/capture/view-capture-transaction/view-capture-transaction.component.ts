@@ -48,11 +48,14 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
 
   ngAfterViewInit(): void {
     this.componentService.setContainer(this.captureForm);
+    console.log('this ' + this.captureForm);
     this.loadComponent();
   }
 
   loadComponent() {
+    console.log('that  ' + this.currentDoctype);
     switch (this.currentDoctype) {
+
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
         break;

@@ -243,7 +243,6 @@ export class SidebarComponent implements OnInit {
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        console.log(res);
         this.CaptureInfo = res.captureattachment;
 
         this.docPath = res.captureattachment.filepath;
@@ -261,7 +260,6 @@ export class SidebarComponent implements OnInit {
 
       },
       msg => {
-        this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'

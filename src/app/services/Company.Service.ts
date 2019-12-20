@@ -47,6 +47,8 @@ export class CompanyService {
     let sessionData4: SelectedPermit = null;
     // CompanyServiceClaimReport
     let sessionData5: SelectedClaimReport = null;
+    // Capture
+    let sessionData6: SelectedCapture = null;
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -68,6 +70,10 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`) !== undefined || null) {
       sessionData5 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.ClaimReportData}`));
     }
+    // Capture
+    if (sessionStorage.getItem(`${environment.Sessions.CaptureData}`) !== undefined || null) {
+      sessionData6 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.CaptureData}`));
+    }
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
@@ -79,6 +85,8 @@ export class CompanyService {
     this.SelectedPermit = new BehaviorSubject<SelectedPermit>(sessionData4);
     // CompanyServiceClaimReport
     this.SelectedClaimReport = new BehaviorSubject<SelectedClaimReport>(sessionData5);
+    // Capture
+    this.SelectedCapture = new BehaviorSubject<SelectedCapture>(sessionData6);
 
   }
   // company
@@ -91,6 +99,8 @@ export class CompanyService {
   SelectedPermit: BehaviorSubject<SelectedPermit>;
   // CompanyServiceClaimReport
   SelectedClaimReport: BehaviorSubject<SelectedClaimReport>;
+  // Capture
+  SelectedCapture: BehaviorSubject<SelectedCapture>;
 
   // company
   setCompany(company: SelectedCompany) {
@@ -117,6 +127,12 @@ export class CompanyService {
     this.SelectedClaimReport.next(ClaimReport);
     sessionStorage.setItem(`${environment.Sessions.ClaimReportData}`, JSON.stringify(ClaimReport));
   }
+   // Capture
+   setCapture(Capture: SelectedCapture) {
+    this.SelectedCapture.next(Capture);
+    sessionStorage.setItem(`${environment.Sessions.CaptureData}`, JSON.stringify(Capture));
+  }
+
 
   // company
   observeCompany() {
@@ -138,6 +154,10 @@ export class CompanyService {
    observeClaimReport() {
     return this.SelectedClaimReport.asObservable();
   }
+    // Capture
+    observeCapture() {
+      return this.SelectedCapture.asObservable();
+    }
 
   // company
   flushCompanySession() {
@@ -155,9 +175,13 @@ export class CompanyService {
   flushPermitSession() {
     sessionStorage.removeItem(`${environment.Sessions.PermitData}`);
   }
-  // Permit
+  // CompanyServiceClaimReport
   flushClaimReportSession() {
     sessionStorage.removeItem(`${environment.Sessions.ClaimReportData}`);
+  }
+  // Capture
+  flushCaptureSession() {
+    sessionStorage.removeItem(`${environment.Sessions.CaptureData}`);
   }
 
 
@@ -1064,4 +1088,8 @@ export class SelectedClaimReport {
   claimNumber: number;
   serviceId: number;
   serviceName: string;
+}
+
+export class SelectedCapture {
+  capturestate: boolean;
 }

@@ -63,7 +63,7 @@ lineState: string;
 lineErrors: InvoiceLine[] = [];
 toggleLines = false;
 transactionID: number;
-currencyQuery: string = '';
+currencyQuery = '';
 toCompanyQuery = '';
 fromCompanyQuery = '';
 toCompanyList: Company[] = [];
@@ -278,7 +278,7 @@ loader = false;
 
   loadCurrency(): void {
     this.currencyService.list({userID: this.currentUser.userID, specificCurrencyID: -1, filter: '', rowStart: 1, rowEnd: 1000}).then(
-      (res: ListCurrencies) =>{
+      (res: ListCurrencies) => {
         this.currencies = res.currenciesList;
         this.currenciesTemp = this.currencies;
       },
@@ -496,6 +496,7 @@ loader = false;
   }
 
   matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }

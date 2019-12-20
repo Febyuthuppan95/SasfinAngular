@@ -12,7 +12,7 @@ export class CaptureAttachment {
   attachmentdate: string;
   companyID: number;
   companyName: string;
-  filetypeID: number;
+  fileTypeID: number;
   filetype: string;
   filename: string;
   filepath: string;
