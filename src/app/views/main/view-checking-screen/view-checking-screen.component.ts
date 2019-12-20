@@ -8,6 +8,7 @@ import { element } from 'protractor';
 import { UserService } from 'src/app/services/user.Service';
 import { first } from 'rxjs/operators';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 
 @Component({
@@ -49,10 +50,14 @@ export class ViewCheckingScreenComponent implements OnInit {
   @ViewChild('closeeditModal', { static: true })
   closeeditModal: ElementRef;
 
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
+
 
   OpenModal(ID: Number) {
     this.LoadInvoiceLines(false);
     this.SelectedSADLine = ID;
+
   }
 
   CloseModal() {
@@ -160,6 +165,8 @@ export class ViewCheckingScreenComponent implements OnInit {
           this.CheckList = null;
           this.CheckList = res;
           this.SADnoResult = true;
+          this.notify.toastrwarning('Warning', 'No Records Found');
+
         }
 
       }
@@ -184,6 +191,7 @@ export class ViewCheckingScreenComponent implements OnInit {
   ngDoCheck()
   {
     this.pageLoadComplete = true;
+    //this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
   }
 
   DeleteInvoiceLine(ID: number) {
@@ -213,8 +221,11 @@ export class ViewCheckingScreenComponent implements OnInit {
         if (res.outcome == "SUCCESS") {
 
           this.LoadList();
+          this.notify.successmsg('Success', 'Invoice Line Unassigned');
         }
         else {
+
+          this.notify.errorsmsg('Error', 'Unable to unassign invoice line');
 
         }
 
@@ -247,9 +258,9 @@ export class ViewCheckingScreenComponent implements OnInit {
         else if (res.outcome.outcomeMessage == "0 Links found") {
           this.CheckListInvoice = null;
           this.noResult = true;
-
           if (keyup == false)
           this.openeditModal.nativeElement.click();
+          this.notify.infotoastr('Notification', 'No Avialable Invoice Lines');
 
         }
 
@@ -298,9 +309,13 @@ export class ViewCheckingScreenComponent implements OnInit {
         (res: Outcome) => {
           if (res.outcome == "SUCCESS") {
             this.LoadList();
+            this.notify.successmsg('Success', 'Invoice Line(s) Assgined to SAD 500 Line');
+
 
           }
           else {
+
+            this.notify.errorsmsg('Error', 'Unable to Assign Invoice Lines');
 
           }
 
