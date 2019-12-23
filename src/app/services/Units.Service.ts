@@ -14,7 +14,7 @@ export class UnitMeasureService {
    */
   constructor(private httpClient: HttpClient) {}
 
-  public list(params: ListUnitsOfMeasureRequest) {
+  public list(params) {
     const requestModel = JSON.parse(JSON.stringify(params));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/unitofmeasure/list`;

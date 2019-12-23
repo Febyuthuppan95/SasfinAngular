@@ -192,9 +192,10 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
+// tslint:disable-next-line: max-line-length
+// tslint:disable-next-line: max-line-length
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
-
-
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -326,9 +327,8 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
-    ContextMenuCompanyContactsComponent,
     ViewCaptureLandingComponent,
-
+    SplitDocumentComponent
   ],
   imports: [
     BrowserModule,
