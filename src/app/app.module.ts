@@ -1,9 +1,11 @@
-// import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +22,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -321,7 +324,8 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
-    ContextMenuCompanyContactsComponent
+    ContextMenuCompanyContactsComponent,
+    ChatConversationComponent
   ],
   imports: [
     BrowserModule,
