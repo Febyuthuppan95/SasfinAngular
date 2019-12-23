@@ -336,6 +336,7 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     SplitDocumentComponent,
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
+    ViewCheckingScreenComponent
   ],
   imports: [
     BrowserModule,
