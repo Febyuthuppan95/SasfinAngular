@@ -23,4 +23,6 @@ export class SAD500Line {
     isPersist?: boolean;
     quantity: number;
     quantityError?: string;
+    previousDeclaration: string;
+    previousDeclarationError?: string;
 }

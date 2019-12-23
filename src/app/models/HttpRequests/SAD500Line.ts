@@ -31,6 +31,7 @@ export class SAD500LineCreateRequest {
   rowNum?: number;
   isPersist?: boolean;
   quantity: number;
+  previousDeclaration: string;
 }
 
 export class SAD500LineUpdateModel {

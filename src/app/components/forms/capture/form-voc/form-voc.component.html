@@ -26,7 +26,7 @@
     <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
       <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}" type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
       <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
-        <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
+        <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name, unit.unitOfMeasureID)">
           {{unit.name}}, {{unit.description}}
         </mat-option>
       </mat-autocomplete>
@@ -44,6 +44,7 @@
           <div class="form-group">
               <label for="quantity">Quantity</label>
             <input type="number" id="quantity"
+            [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
               class="form-control form-control-sm shadow-sm form-control-light"
               placeholder="Quantity" />
               <!-- <p class="invalid-control-label" *ngIf="this.form.customsValueError !== null">{{this.form.customsValueError}}</p> -->
@@ -105,3 +106,5 @@
     <button *ngIf="this.isUpdate" type="submit" class="btn btn-primary btn-sm">Update</button>
   </div> -->
 </form>
+
+<app-notification></app-notification>

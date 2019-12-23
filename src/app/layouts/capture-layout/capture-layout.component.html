@@ -12,6 +12,7 @@
 <div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
   <div class="">
   <!-- <span *ngFor="let attach of this.attachmentListShowing">
+  <span *ngFor="let attach of this.attachmentListShowing">
     <button mat-mini-fab *ngIf="attach !== undefined"
       style="cursor: pointer;margin-bottom: 24px"
       [ngClass]="{statusNone: attach.statusID === 1, 'bg-warning': attach.statusID === 2,
