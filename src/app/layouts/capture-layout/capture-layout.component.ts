@@ -103,6 +103,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
 
   ngOnInit() {
+    this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
@@ -341,7 +342,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
       if (status) {
-        this.router.navigate(['transaction/attachment']);
+        this.companyService.setCapture({ capturestate: false});
+        this.router.navigate(['transaction/capturerlanding']);
       }
     });
   }

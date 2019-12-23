@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { UserIdleService } from 'angular-user-idle';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
-import { CompanyService } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedCompany, SelectedCapture } from 'src/app/services/Company.Service';
 import { MatDialog } from '@angular/material';
 import { EventService } from 'src/app/services/event.service';
 import { DocumentService } from 'src/app/services/Document.Service';
@@ -67,6 +67,13 @@ export class ViewCaptureLandingComponent implements OnInit {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
+
+    this.companyService.observeCapture()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCapture) => {
+      this.start = obj.capturestate;
+    });
+
     if (this.start) {
       this.loadNextAttachment();
     }
