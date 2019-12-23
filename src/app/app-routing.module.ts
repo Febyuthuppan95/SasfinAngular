@@ -122,7 +122,7 @@ const routes: Routes = [
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
-          { path: 'transaction/checklist', component: ViewCheckingScreenComponent},
+          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

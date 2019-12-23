@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.Service';
 import { first } from 'rxjs/operators';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ViewCheckingScreenComponent implements OnInit {
     private themeService: ThemeService,
     public csService: CheckListService,
     private userService: UserService,
+    private route: ActivatedRoute
   ) { }
 
   @Input() currentTheme: string = 'light';
@@ -64,13 +66,13 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.closeeditModal.nativeElement.click();
   }
 
-
+  //const id = 
 
   Reset() {
     this.CheckListRequest = {
 
       userID: this.userService.getCurrentUser().userID,
-      transactionID: 2,
+      transactionID: Number(this.route.snapshot.paramMap.get('id')),
       filter: 'test',
       orderBy: 'Test',
       orderByDirection: 'test',
@@ -88,7 +90,7 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.CheckListRequestInvoice = {
 
       userID: this.userService.getCurrentUser().userID,
-      transactionID: 2,
+      transactionID: Number(this.route.snapshot.paramMap.get('id')),
       filter: '',
       orderBy: '',
       orderByDirection: '',
@@ -178,7 +180,7 @@ export class ViewCheckingScreenComponent implements OnInit {
   ngOnInit() {
 
 
-
+    const id = this.route.snapshot.paramMap.get('id');
     this.FirstLoad = true;
     this.ResetInvoice();
     this.LoadList();
@@ -258,12 +260,10 @@ export class ViewCheckingScreenComponent implements OnInit {
         else if (res.outcome.outcomeMessage == "0 Links found") {
           this.CheckListInvoice = null;
           this.noResult = true;
-          if (keyup == false)
+          if (keyup == false && this.FirstLoad == false)
           this.openeditModal.nativeElement.click();
           this.notify.infotoastr('Notification', 'No Avialable Invoice Lines');
-
         }
-
       }
     );
   }
