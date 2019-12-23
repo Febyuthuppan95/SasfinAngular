@@ -196,6 +196,11 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
 // tslint:disable-next-line: max-line-length
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 import { SplitDocumentComponent } from './components/split-document/split-document.component';
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
+import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
+import { CheckListService } from './services/CheckList.Service';
+import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -328,7 +333,9 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
     ViewCaptureLandingComponent,
-    SplitDocumentComponent
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent,
+    FormCustomWorksheetLinesComponent,
   ],
   imports: [
     BrowserModule,
@@ -389,7 +396,8 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     ComponentService,
     TariffService,
     ReportsService,
-    EventService
+    EventService,
+    CheckListService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -406,7 +414,9 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent
+    FormWaybillComponent,
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent
   ]
 })
 export class AppModule { }

@@ -61,6 +61,7 @@ import { ViewCompanyServiceclaimReportComponent } from './views/main/view-compan
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 
 
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -124,7 +125,8 @@ const routes: Routes = [
           { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent },
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
-          { path: 'transaction/invoices', component: ViewInvoicesComponent }
+          { path: 'transaction/invoices', component: ViewInvoicesComponent },
+          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

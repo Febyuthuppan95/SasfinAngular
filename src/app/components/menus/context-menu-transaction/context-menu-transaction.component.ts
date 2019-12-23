@@ -52,4 +52,12 @@ export class ContextMenuTransactionComponent implements OnInit {
     this.router.navigate(['transaction', 'invoices']);
   }
 
+  viewCheckList() {
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '', transactionName: this.transactionName });
+    this.router.navigate(['transaction', 'checklist', this.transactionID]);
+
+    //transaction/checklist
+  }
+
 }
