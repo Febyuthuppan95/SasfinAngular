@@ -193,7 +193,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
 import { CheckListService } from './services/CheckList.Service';
-
+import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -327,6 +328,8 @@ import { CheckListService } from './services/CheckList.Service';
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
     ViewCheckingScreenComponent, 
+    FormCustomWorksheetComponent,
+    FormCustomWorksheetLinesComponent,
   ],
   imports: [
     BrowserModule,
@@ -407,7 +410,8 @@ import { CheckListService } from './services/CheckList.Service';
     SubmitDialogComponent,
     FormVOCComponent,
     FormWaybillComponent,
-    SplitDocumentComponent
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent
   ]
 })
 export class AppModule { }

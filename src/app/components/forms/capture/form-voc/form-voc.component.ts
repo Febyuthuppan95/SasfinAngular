@@ -17,6 +17,11 @@ import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeas
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { MatDialog } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { TransactionService } from 'src/app/services/Transaction.Service';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { Router } from '@angular/router';
+import { EventService } from 'src/app/services/event.service';
+import { VOCListResponse, VOC } from 'src/app/models/HttpResponses/VOC';
 
 @Component({
   selector: 'app-form-voc',
@@ -25,7 +30,8 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 })
 export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-                private tariffService: TariffService, private captureService: CaptureService, private dialog: MatDialog) { }
+                private tariffService: TariffService, private captureService: CaptureService, private dialog: MatDialog,
+                private transactionService: TransactionService, private router: Router, private eventService: EventService) { }
 
     currentUser: User;
 
@@ -50,10 +56,14 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     dutyListTemp: Duty[] = [];
     assignedDutiesTemp: Duty[] = [];
     dutiesToBeSavedTemp: Duty[] = [];
-    dutiesQuery: string = '';
-    dutieAssignedQuery: string = '';
+    dutiesQuery = '';
+    dutieAssignedQuery = '';
     focusDutiesQuery = false;
     focusAssignedQuery = false;
+    currentVOC: VOC;
+
+    @ViewChild(NotificationComponent, { static: true })
+    private notify: NotificationComponent;
 
     @ViewChild('dutiesAssignedEl', { static: false })
     dutiesAssignedEl: ElementRef;
@@ -75,26 +85,36 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
       lineNo: '',
       unitOfMeasureID: -1,
       unitOfMeasure: '',
-      productCode: '',
-      value: '',
-      cpcError: null,
       tariffError: null,
       customsValueError: null,
       lineNoError: null,
       unitOfMeasureError: null,
-      productCodeError: null,
-      valueError: null,
+      quantity: 0,
+      quantityError: null,
     };
 
     isUpdate: boolean;
     dialogOpen = false;
+    currentAttachmentID: number;
+    currentTransactionID: number;
+    unitOfMeasureID: number;
 
     ngOnInit() {
       this.themeService.observeTheme()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(theme => this.currentTheme = theme);
 
+      this.transactionService.observerCurrentAttachment()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.currentAttachmentID = data.attachmentID;
+        this.currentTransactionID = data.transactionID;
+      });
+
       this.currentUser = this.userService.getCurrentUser();
+
+      this.eventService.observeCaptureEvent().pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => this.submit());
 
       this.loadUnits();
       this.loadTarrifs();
@@ -104,7 +124,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
       this.shortcuts.push(
           {
-            key: 'alt + a',
+            key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
@@ -137,6 +157,44 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
       );
     }
 
+    loadVoc() {
+      this.captureService.vocList({
+        userID: this.currentUser.userID,
+        vocID: this.currentAttachmentID,
+        filter: '',
+        transactionID: this.currentTransactionID,
+        orderBy: '',
+        orderByDirection: '',
+        rowStart: 1,
+        rowEnd: 10
+      }).then(
+        (res: VOCListResponse) => {
+          if (res.outcome.outcome === 'SUCCESS') {
+            if (res.vocs.length !== 0) {
+              this.currentVOC = res.vocs[0];
+              this.form.quantity = this.currentVOC.quantity;
+              this.form.customsValue = this.currentVOC.customsValue;
+              this.form.lineNo = this.currentVOC.lineNo;
+              this.form.tariff = this.currentVOC.tariff;
+              this.form.unitOfMeasure = this.currentVOC.unitOfMeasure;
+              this.form.unitOfMeasureID = this.currentVOC.unitOfMeasureID;
+              this.form.tariffID = this.currentVOC.tariffID;
+              this.form.customsValueError = this.currentVOC.customsValueError;
+              this.form.lineNoError = this.currentVOC.lineNoError;
+              this.form.quantityError = this.currentVOC.quantityError;
+              this.form.tariffError = this.currentVOC.tariffError;
+              this.form.unitOfMeasureError = this.currentVOC.unitOfMeasureError;
+            }
+          } else {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          }
+        },
+        (msg) => {
+
+        }
+      );
+    }
+
     submit() {
       if (!this.dialogOpen) {
         this.dialogOpen = true;
@@ -145,7 +203,30 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
           this.dialogOpen = false;
 
           if (status) {
-              // update VOC
+              this.captureService.vocUpdate({
+                userID: this.currentUser.userID,
+                vocID: this.currentAttachmentID,
+                tariff: this.form.tariff,
+                unitOfMeasure: this.form.unitOfMeasure,
+                quantity: this.form.quantity,
+                customsValue: this.form.customsValue,
+                lineNo: this.form.lineNo,
+                tariffID: 2,
+                unitOfMeasureID: this.unitOfMeasureID,
+                sad500LineID: this.currentVOC.sad500LineID
+              }).then(
+                (res: Outcome) => {
+                  if (res.outcome === 'SUCCESS') {
+                    this.notify.successmsg(res.outcome, res.outcomeMessage);
+                    this.router.navigate(['transaction', 'attachments']);
+                  } else {
+                    this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+                  }
+                },
+                (msg) => {
+                  this.notify.errorsmsg('Failure', 'Something went wrong');
+                }
+              );
           }
         });
       }
@@ -232,8 +313,10 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    selectedUnit(name) {
+    selectedUnit(name: string, id: number) {
       this.form.unitOfMeasure = name;
+      this.unitOfMeasureID = id;
+
     }
 
     filterTariff() {

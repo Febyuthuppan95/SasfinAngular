@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invoice/form-invoice.component';
 import { FormWaybillComponent } from 'src/app/components/forms/capture/form-waybill/form-waybill.component';
 import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
+import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
 
 @Component({
   selector: 'app-view-capture-transaction',
@@ -74,6 +75,10 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
       }
       case 'Waybill': {
         this.componentService.renderComponent(FormWaybillComponent);
+        break;
+      }
+      case 'Custom Worksheet': {
+        this.componentService.renderComponent(FormCustomWorksheetComponent);
         break;
       }
     }
