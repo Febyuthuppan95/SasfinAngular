@@ -192,9 +192,15 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
+// tslint:disable-next-line: max-line-length
+// tslint:disable-next-line: max-line-length
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
-
-
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
+import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
+import { CheckListService } from './services/CheckList.Service';
+import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -326,9 +332,11 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
-    ContextMenuCompanyContactsComponent,
     ViewCaptureLandingComponent,
-
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent,
+    FormCustomWorksheetLinesComponent,
+    ViewCheckingScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -389,7 +397,8 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     ComponentService,
     TariffService,
     ReportsService,
-    EventService
+    EventService,
+    CheckListService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -406,7 +415,9 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent
+    FormWaybillComponent,
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent
   ]
 })
 export class AppModule { }

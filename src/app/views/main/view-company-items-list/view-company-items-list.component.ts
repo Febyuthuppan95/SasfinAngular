@@ -240,7 +240,6 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     }
 
     this.updatePagination();
-
     this.loadCompanyItemsList(false);
   }
 

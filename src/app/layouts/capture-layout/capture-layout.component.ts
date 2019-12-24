@@ -323,7 +323,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           });
 
           this.attachmentListShowing.forEach((attach) => {
-            if (attach !== undefined) {
+            if (attach.statusID !== undefined) {
               attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
               attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
               attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;

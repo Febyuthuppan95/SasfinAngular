@@ -66,6 +66,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     { title: 'Line No', propertyName: 'lineNo', order: { enable: true, tag: 'LineNo' } },
     { title: 'Unit Of Measure', propertyName: 'unitOfMeasure', order: { enable: true, tag: 'UnitOfMeasure' } },
     { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
+    { title: 'Previous Declaration', propertyName: 'previousDeclaration', order: { enable: true, tag: 'PreviousDeclaration' } },
   ];
 
   private unsubscribe$ = new Subject<void>();

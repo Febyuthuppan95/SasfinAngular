@@ -134,6 +134,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     { name: 'VOC', value: 5, description: 'VOC' },
     { name: 'INVOICE', value: 6, description: 'Invoice' },
     { name: 'WAYBILL', value: 7, description: 'Waybill' },
+    { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' },
   ];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
