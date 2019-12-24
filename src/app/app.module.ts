@@ -204,6 +204,7 @@ import { CheckListService } from './services/CheckList.Service';
 import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
 // tslint:disable-next-line: max-line-length
 import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 @NgModule({
   declarations: [
@@ -341,6 +342,7 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
     SplitDocumentComponent,
+    ViewCaptureLandingComponent
   ],
   imports: [
     BrowserModule,
