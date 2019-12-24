@@ -11,7 +11,6 @@ export class ChatBubbleComponent implements OnInit {
 
   @Input() sender: boolean;
   @Input() message: string;
-  
   ngOnInit() {
   }
 

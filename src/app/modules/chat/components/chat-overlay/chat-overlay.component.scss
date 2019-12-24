@@ -13,18 +13,48 @@
 .chat-container {
   position: fixed;
   top: 24px;
-  bottom: 24px;
+  bottom: 14px;
   left: 24px;
-  right: 24px;
+  right: 38px;
   z-index: -999999999;
   opacity: 0;
   transition: opacity ease-in-out 0.3s;
+  
  
   .chat-box{
     width: 100%;
+    
+  }
+}
+#chatbox {
+  max-width: 500px;
+  margin-left: calc(100% - 500px);
+  }
+@media(min-width: 776px) {
+  #chatbox {
+    max-width: 450px;
+    margin-left: calc(100% - 450px);
   }
 }
 
+@media(min-width: 991px) {
+  #chatbox {
+    max-width: 450px;
+    margin-left: calc(100% - 450px);
+  }
+}
+// @media(min-width: 1200px) {
+//   #chatbox {
+//     max-width: 500px;
+//   margin-left: calc(100% - 500px);
+//   }
+// }
+// @media(min-width: 1500px){
+//   #chatbox {
+//     max-width: 500px;
+//   margin-left: calc(100% - 500px);
+//   }
+// }
 .chat-tile-header {
   padding: 24px;
   background: #3f7afa;

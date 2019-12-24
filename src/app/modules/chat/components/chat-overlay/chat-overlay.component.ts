@@ -26,6 +26,7 @@ export class ChatOverlayComponent implements OnInit {
   ngOnInit() {}
 
   dismissEvent() {
+    console.log('dismissed');
     this.dismiss.emit();
   }
 

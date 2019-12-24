@@ -1,10 +1,10 @@
 <div class="chat-tile">
   <div class="chat-tile-header">
-      <button mat-icon-button >
-          <mat-icon diameter="30">arrow_drop_down_circle</mat-icon>
-        </button>
-        <span class="example-spacer"></span>
-      <button mat-mini-fab matTooltip="Contacts" matTooltipPosition="below" class="header-button" ><span class="mdi mdi-account-multiple"></span></button>
+    <button mat-mini-fab matTooltip="Contacts" matTooltipPosition="below" class="header-button" ><span class="mdi mdi-account-multiple"></span></button>
+      <span class="example-spacer"></span>
+      <button mat-icon-button (click)="this.dismissEvent()">
+        <mat-icon diameter="30">arrow_drop_down_circle</mat-icon>
+      </button>
     <h5></h5>
   </div>
   <div class="chat-body">

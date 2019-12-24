@@ -1,11 +1,11 @@
 <!-- <div class="chat-overlay" *ngIf="this.enableChat" [ngClass]="{showOverlayBackdrop: this.showChat}" (click)="dismissEvent()"></div> -->
 
-<div class="chat-container" *ngIf="this.enableChat" [ngClass]="{showOverlay: this.showChat}">
+<div class="chat-container" *ngIf="this.enableChat" [ngClass]="{showOverlay: this.showChat}" >
   <div class="row vh-100">
-    <div class="offset-sm-10 chat-box">
-      <!-- <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list> -->
+    <div id="chatbox" class="chat-box" >
+      <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list>
       <!-- <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list> -->
-      <app-chat-conversation *ngIf="this.displayConversations"></app-chat-conversation>
+      <app-chat-conversation (dismiss)="dismissEvent()" *ngIf="this.displayConversations"></app-chat-conversation>
     </div>
     <!-- <div class="col-sm-9">
       <div class="chat-tile">
