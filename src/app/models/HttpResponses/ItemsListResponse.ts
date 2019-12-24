@@ -14,6 +14,7 @@ export class Items {
   description: string;
   tariffID: number;
   tariff: number;
+  tariffName: string;
   type: string;
   vulnerable: string;
 }

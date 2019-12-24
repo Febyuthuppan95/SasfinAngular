@@ -110,6 +110,23 @@ export class TransactionService {
     });
   }
 
+  public async GetAttatchments(requestModel) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/capture/CaptureAttachment`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   /**
    * Upload
    */
@@ -135,6 +152,7 @@ export class TransactionService {
     }
   }
 
+  // tslint:disable-next-line: max-line-length
   public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500LineID?: number) {
     const requestModel = {
       name,

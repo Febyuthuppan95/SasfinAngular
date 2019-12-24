@@ -20,6 +20,8 @@ import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog
 import { EventService } from 'src/app/services/event.service';
 import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
+import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { DocumentService } from 'src/app/services/Document.Service';
 
 @Component({
   selector: 'app-capture-layout',
@@ -31,6 +33,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private router: Router,
+              private docService: DocumentService,
               private userIdle: UserIdleService,
               private transactionService: TransactionService,
               private companyService: CompanyService,
@@ -85,6 +88,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentType: string;
   helpValue = false;
 
+
+  CaptureInfo: CaptureAttachment;
+  docPath: string;
+  fileType: string;
+  fileTypeID: number;
+  companyID: number;
+  companyName: string;
+
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
   openMore = true;
   openPreview = true;
@@ -92,6 +103,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
 
   ngOnInit() {
+    this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
@@ -316,9 +328,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
               attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
               attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
-            }
 
-            this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+              this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+            }
           });
         },
         (msg) => {}
@@ -330,7 +342,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
       if (status) {
-        this.router.navigate(['transaction', 'attachments']);
+        this.companyService.setCapture({ capturestate: false});
+        this.router.navigate(['transaction/capturerlanding']);
       }
     });
   }
@@ -387,6 +400,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   submitCapture() {
+
     if (!this.dialogOpen) {
       this.dialogOpen = true;
 
@@ -395,9 +409,22 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (status) {
           this.eventService.triggerCaptureEvent();
-        }
+          this.router.navigate(['transaction/capturerlanding']);
+     }
       });
     }
   }
+  //   if (!this.dialogOpen) {
+  //     this.dialogOpen = true;
+
+  //     this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+  //       this.dialogOpen = false;
+
+  //       if (status) {
+  //         this.eventService.triggerCaptureEvent();
+  //       }
+  //     });
+  //   }
+  // }
 
 }

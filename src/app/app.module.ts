@@ -181,11 +181,13 @@ import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/su
 
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+
 import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
+
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
@@ -193,14 +195,16 @@ import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 // tslint:disable-next-line: max-line-length
-import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
 import { CheckListService } from './services/CheckList.Service';
 import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
 // tslint:disable-next-line: max-line-length
 import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
-import { SplitDocumentComponent } from './components/split-document/split-document.component';
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 @NgModule({
   declarations: [
     AppComponent,

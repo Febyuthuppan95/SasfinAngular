@@ -43,16 +43,20 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
+      console.log(data);
     });
   }
 
   ngAfterViewInit(): void {
     this.componentService.setContainer(this.captureForm);
+    console.log('this ' + this.captureForm);
     this.loadComponent();
   }
 
   loadComponent() {
+    console.log('that  ' + this.currentDoctype);
     switch (this.currentDoctype) {
+
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
         break;
