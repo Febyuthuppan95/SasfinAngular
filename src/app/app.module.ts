@@ -1,11 +1,10 @@
-import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+
 
 // tslint:disable-next-line: max-line-length
-import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -193,7 +192,14 @@ import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-d
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
-
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
+import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
+import { CheckListService } from './services/CheckList.Service';
+import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -325,7 +331,10 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
-    ChatConversationComponent
+    ChatConversationComponent,
+    ViewCheckingScreenComponent,
+    FormCustomWorksheetComponent,
+    FormCustomWorksheetLinesComponent,
   ],
   imports: [
     BrowserModule,
@@ -386,7 +395,8 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     ComponentService,
     TariffService,
     ReportsService,
-    EventService
+    EventService,
+    CheckListService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -403,7 +413,9 @@ import { PreviewReportComponent } from './components/preview-report/preview-repo
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent
+    FormWaybillComponent,
+    SplitDocumentComponent,
+    FormCustomWorksheetComponent
   ]
 })
 export class AppModule { }
