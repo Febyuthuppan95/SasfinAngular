@@ -67,8 +67,8 @@
               "buildOptimizer": true,
               "budgets": [{
                 "type": "initial",
-                "maximumWarning": "2mb",
-                "maximumError": "5mb"
+                "maximumWarning": "4mb",
+                "maximumError": "10mb"
               }]
             },
             "test": {
@@ -87,8 +87,8 @@
               "buildOptimizer": true,
               "budgets": [{
                 "type": "initial",
-                "maximumWarning": "2mb",
-                "maximumError": "5mb"
+                "maximumWarning": "4mb",
+                "maximumError": "10mb"
               }]
             },
             "uat": {
@@ -107,8 +107,8 @@
               "buildOptimizer": true,
               "budgets": [{
                 "type": "initial",
-                "maximumWarning": "2mb",
-                "maximumError": "5mb"
+                "maximumWarning": "4mb",
+                "maximumError": "10mb"
               }]
             }
           }

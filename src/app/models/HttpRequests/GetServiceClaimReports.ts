@@ -1,6 +1,6 @@
 export class GetServiceClaimReports {
   userID: number;
-  companyServiceClaimID: number;
+  companyID: number;
   filter: string;
   orderBy: string;
   orderByDirection: string;

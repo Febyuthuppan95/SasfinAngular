@@ -15,13 +15,14 @@ export class TransactionService {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.transactionData}`));
     }
 
-    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string }>(sessionData);
+    // tslint:disable-next-line: max-line-length
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>(sessionData);
   }
 
-  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string }>;
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>;
   public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
 
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string }) {
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
   }

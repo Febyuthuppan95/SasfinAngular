@@ -400,6 +400,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     this.cityID = 0;
     this.disableAddressSelect = false;
     this.selectedAddressIndex = 0;
+    this.CitySearch = '';
     this.openaddModal.nativeElement.click();
   }
 

@@ -22,6 +22,7 @@ import { SAD500LinesByPermit, SAD500LinesByPermitResponse } from 'src/app/models
 import { isEmpty } from 'rxjs/operators';
 import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -157,8 +158,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   companyID = 0;
   companyName = '';
   permitslist = [];
-  startdate: Date;
-  enddate: Date;
+  submissiondate: Date;
   complete = false;
 
   ngOnInit() {
@@ -293,6 +293,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   populatecompanyService($event) {
+     this.myInputVariable.nativeElement.value = null;
      this.openPopulateModal.nativeElement.click();
   }
 
@@ -301,12 +302,15 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
      this.openReportsModal.nativeElement.click();
   }
 
-  enddateselected(date) {
+  enddateselected(date: Date) {
+    const today = new Date();
+    const date2 = new Date(date);
+    const result = this.compareDate(date2, today);
 
-    if (this.startdate === null || this.startdate === undefined) {
+    if (result === 1) {
       this.notify.toastrwarning(
         'information',
-        'please choose start date.'
+        'Cannot choose a date earlier then the current date. Please choose a date in the future.'
       );
 
       this.myInputVariable.nativeElement.value = null;
@@ -314,8 +318,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       const model: GetPermitsByDate = {
         userID: this.currentUser.userID,
         filter: this.filter,
-        permitstartDate: this.startdate,
-        permitsendDate: date,
+        submissiondate: date,
         companyID: this.companyID,
         rowStart: this.rowStart,
         rowEnd: this.rowEnd,
@@ -380,11 +383,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
    polulateLines() {
-
-    if (!this.complete) {
       const requestModel = {
         userID: this.currentUser.userID,
-        sad500linesIDs: this.SAD500SelectedLines
+        sad500linesIDs: this.SAD500SelectedLines,
+        status: this.complete
       };
 
       this.companyService.addSAD500Linesclaim(requestModel).then(
@@ -401,33 +403,36 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
           this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
         }
       );
-    } else {
-      // const requestModel = {
-      //   userID: this.currentUser.userID,
-      //   sad500lines: this.SAD500SelectedLines
-      // };
-      // this.companyService.addSAD500Linesclaim(requestModel).then(
-      //   (res: {outcome: Outcome}) => {
-      //     if (res.outcome.outcome === 'SUCCESS') {
-      //         this.notify.successmsg('Success', 'SAD500 lines has been Added and claim has been added');
-      //         this.closePopulateModal.nativeElement.click();
-      //         this.loadServiceClaims(false);
-      //       } else {
-      //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-      //     }
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
-      //   }
-      // );
-    }
    }
 
-   reports() {
-    const requestModel = {
+  compareDate(date1: Date, date2: Date): number {
+    const d1Year = date1.getFullYear();
+    const d1Month = date1.getMonth();
+    const d1Day = date1.getDate();
 
-    };
+    const d2Year = date2.getFullYear();
+    const d2Month = date2.getMonth();
+    const d2Day = date2.getDate();
 
+    if (d1Year < d2Year) {
+      return 1;
+    } else if (d1Year > d2Year) {
+      return -1;
+    } else if (d1Year === d2Year) {
+      if (d1Month < d2Month) {
+        return 1;
+      } else if (d1Month > d2Month) {
+        return -1;
+      } else if (d1Month === d2Month) {
+        if (d1Day < d2Day) {
+          return 1;
+        } else if (d1Day > d2Day) {
+          return -1;
+        } else if (d1Day === d2Day) {
+          return 0;
+        }
+      }
+    }
   }
 }
 

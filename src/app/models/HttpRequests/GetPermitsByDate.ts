@@ -1,8 +1,7 @@
 export class GetPermitsByDate {
   userID: number;
   companyID: number;
-  permitstartDate: Date;
-  permitsendDate: Date;
+  submissiondate: Date;
   filter: string;
   orderBy: string;
   orderByDirection: string;

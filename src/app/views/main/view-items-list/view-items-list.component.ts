@@ -23,6 +23,8 @@ import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServ
 import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
 import { takeUntil } from 'rxjs/operators';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
+import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
+import { ItemType } from 'src/app/models/HttpResponses/ItemType';
 
 @Component({
   selector: 'app-view-items-list',
@@ -156,7 +158,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   description = '';
   tariff = '';
   tariffID = 0;
-  type = '';
+  type2 = '';
   mIDP = '';
   pI = '';
   vulnerable = '';
@@ -196,6 +198,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   displayservices: Service[] = [];
   returnedservices: Array<Service>;
   tarifflist: Tariff[] = [];
+  itemTypes: ItemType[];
 
 
   ngOnInit() {
@@ -319,6 +322,34 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     );
   }
 
+  loadItemTypes(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      itemTypeID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getItemTypesList(model).then(
+      (res: ItemTypeListResponse) => {
+
+        this.itemTypes = res.itemTypeLists;
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
   loadTariffs(displayGrowl: boolean) {
 
     this.companyService
@@ -414,7 +445,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.description = this.Item.description;
     this.tariff = this.Item.tariff;
     this.tariffID = this.Item.tariffID;
-    this.type = this.Item.type;
+    // this.type = this.Item.type;
     this.mIDP = this.Item.mIDP;
     this.pI = this.Item.pI;
     this.vulnerable = this.Item.vulnerable;
@@ -434,7 +465,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       item: this.item,
       description: this.description,
       tariffID: this.tariffID,
-      type: this.type,
+      // type: this.type,
       mIDP: this.mIDP,
       pI: this.pI,
       vulnerable: this.vulnerable,
@@ -447,9 +478,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadItems(false);
           this.closeeditModal.nativeElement.click();
-          if (deleted == true)
+          if (deleted === true) {
           this.closeRemoveModal.nativeElement.click();
-        
+          }
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         }
@@ -501,29 +532,11 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
   }
-
-  // removeItemValue(id: number) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.Item.itemID,
-  //     isDeleted: 1
-  //   };
-
-  //   this.companyService.RemoveItemList(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
+  }
+  onTypeChange(id: number) {
+
   }
   onTariffChange(selectedtariffid: number) {
     this.tariffID = selectedtariffid;
