@@ -22,11 +22,13 @@ export class CaptureService {
   // tslint:disable-next-line: max-line-length
   sad500LineList = (requestModel: SAD500LineListRequest) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/list`, requestModel);
   sad500LineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/update`, requestModel);
+  // tslint:disable-next-line: max-line-length
   sad500LineAdd = async (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/create`, requestModel);
   // tslint:disable-next-line: max-line-length
   sad500LineDutyAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/duty/add`, requestModel);
   // tslint:disable-next-line: max-line-length
   sad500LineDutyRemove = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/duty/remove`, requestModel);
+  // tslint:disable-next-line: max-line-length
   sad500LineDutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/duty/list`, requestModel);
 
   importClearingUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/transactions/update/ici`, requestModel);
@@ -42,9 +44,11 @@ export class CaptureService {
   invoiceAdd = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/capture/invoice/create`, requestModel);
   invoiceLineList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, requestModel);
   invoiceLineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/add`, requestModel);
+  // tslint:disable-next-line: max-line-length
   invoiceLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/update`, requestModel);
 
   dutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/duties`, requestModel);
+  // tslint:disable-next-line: max-line-length
   splitPDF = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/public/generate/split-document`, requestModel);
 
   waybillUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/waybill/update`, requestModel);
@@ -52,10 +56,18 @@ export class CaptureService {
 
   vocUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/update`, requestModel);
   vocList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/list`, requestModel);
+  vocDutyAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/add`, requestModel);
+  vocDutyRemove = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/remove`, requestModel);
+  vocDutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/list`, requestModel);
 
+  // tslint:disable-next-line: max-line-length
   customWorksheetList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/list`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/update`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/create`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/update`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/list`, requestModel);
 }

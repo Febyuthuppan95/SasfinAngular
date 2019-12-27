@@ -415,12 +415,21 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   upload() {
-    this.attachmentName = null;
-    this.attachmentTypeIndex = 0;
-    this.currentAttachment = 0;
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
+    this.attachmentName = '';
+    this.selectedTransactionType = - 1;
+    this.currentAttachment++;
+    this.disableAttachmentType = false;
+    this.disableSAD500 = false;
+    this.disableSAD500Lines = false;
+    this.attachmentTypeIndex = 0;
+    this.preview = null;
+    this.attachmentTypeIndex = 0;
+    this.selectedSAD500Line = -1;
     this.selectAttachmentType.reset(-1);
+    this.selectSAD500Control.reset(-1);
+    this.selectSAD500LinesControl.reset(-1);
     this.inputFile.nativeElement.value = '';
     this.openModal.nativeElement.click();
   }
@@ -482,11 +491,15 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.selectedTransactionType = - 1;
       this.currentAttachment++;
       this.disableAttachmentType = false;
+      this.disableSAD500 = false;
+      this.disableSAD500Lines = false;
       this.attachmentTypeIndex = 0;
       this.preview = null;
       this.attachmentTypeIndex = 0;
       this.selectedSAD500Line = -1;
       this.selectAttachmentType.reset(-1);
+      this.selectSAD500Control.reset(-1);
+      this.selectSAD500LinesControl.reset(-1);
     }
   }
 
