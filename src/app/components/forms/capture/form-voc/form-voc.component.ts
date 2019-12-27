@@ -61,6 +61,8 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     focusDutiesQuery = false;
     focusAssignedQuery = false;
     currentVOC: VOC;
+    dutyIndex = 0;
+    duties: Duty[] = [];
 
     @ViewChild(NotificationComponent, { static: true })
     private notify: NotificationComponent;
@@ -248,69 +250,49 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
       this.form.tariff = description;
     }
 
-    assignDuty(duty: Duty) {
-      this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-      if (this.isUpdate) {
-        this.assignedDuties.push(duty);
-
-        this.captureService.sad500LineDutyAdd({
-          userID: 3,
-          dutyID: duty.dutyTaxTypeID,
-          sad500LineID: this.updateSAD500Line.sad500LineID
-        }).then(
-          (res: Outcome) => {
-            if (res.outcome === 'SUCCESS') {
-
-            } else {
-              // Did not assign
-              // Revert changes
-              this.dutyList.duties.push(duty);
-              this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-            }
-          },
-          (msg) => {
-            // Did not assign
-            // Revert changes
-            this.dutyList.duties.push(duty);
-            this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+    saveLineDuty(line: Duty) {
+      this.captureService.vocDutyAdd({
+        userID: this.currentUser.userID,
+        dutyID: line.dutyTaxTypeID,
+        vocID: line.vocID,
+      }).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.nextDutyAsync();
+            console.log('Line Duty Saved');
+          } else {
+            console.log('Line Duty Not Saved');
           }
-        );
+        },
+        (msg) => {
+          console.log('Line Duty Client Error');
+        }
+      );
+    }
+
+    nextDutyAsync() {
+      this.dutyIndex++;
+      if (this.dutyIndex < this.duties.length) {
+        const pendingDuty = this.duties[this.dutyIndex];
+        pendingDuty.vocID = this.currentAttachmentID;
+
+        this.saveLineDuty(pendingDuty);
       } else {
-        this.dutiesToBeSaved.push(duty);
+        this.submit();
       }
+    }
+
+    assignDuty(duty: Duty) {
+      duty.vocID = this.currentAttachmentID;
+      this.duties.push(duty);
+      this.dutiesToBeSaved.push(duty);
+      this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     }
 
     revokeDuty(duty: Duty) {
       this.dutyList.duties.push(duty);
-
-      if (this.isUpdate) {
-        this.assignedDuties = this.assignedDuties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-
-        this.captureService.sad500LineDutyRemove({
-          userID: 3,
-          dutyID: duty.dutyTaxTypeID,
-          sad500LineID: this.updateSAD500Line.sad500LineID
-        }).then(
-          (res: Outcome) => {
-            if (res.outcome === 'SUCCESS') {
-
-            } else {
-              // Did not assign
-              // Revert changes
-              this.assignedDuties.push(duty);
-              this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-            }
-          },
-          (msg) => {
-            // Did not assign
-            // Revert changes
-            this.assignedDuties.push(duty);
-            this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-          }
-        );
-      } else {
-        this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
-      }
+      this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
+      this.duties = this.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     }
 
     selectedUnit(name: string, id: number) {

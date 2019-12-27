@@ -57,4 +57,5 @@ export class Duty {
   code?: string;
   dutyTaxTypeID: number;
   sad500Line?: number;
+  vocID?: number;
 }
