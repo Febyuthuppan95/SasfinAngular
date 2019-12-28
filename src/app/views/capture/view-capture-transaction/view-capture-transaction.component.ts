@@ -12,6 +12,8 @@ import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invo
 import { FormWaybillComponent } from 'src/app/components/forms/capture/form-waybill/form-waybill.component';
 import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
 import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
+
 
 @Component({
   selector: 'app-view-capture-transaction',

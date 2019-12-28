@@ -42,7 +42,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private eventService: EventService) {}
 
   shortcuts: ShortcutInput[] = [];
-
+  showChat = false;
   inspectingPreview = false;
   showDocks = true;
 
@@ -427,4 +427,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   //   }
   // }
 
+  toggleChat() {
+    this.showChat = !this.showChat;
+  }
 }

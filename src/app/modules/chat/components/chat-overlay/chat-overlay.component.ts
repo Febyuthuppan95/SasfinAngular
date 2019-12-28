@@ -20,6 +20,7 @@ export class ChatOverlayComponent implements OnInit {
 
   displayContacts = false;
   displayConversations = true;
+  displaySelectedConversation = false;
 
   constructor() { }
 

@@ -4,8 +4,8 @@
   <div class="row vh-100">
     <div id="chatbox" class="chat-box" >
       <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list>
-      <!-- <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list> -->
-      <app-chat-conversation (dismiss)="dismissEvent()" *ngIf="this.displayConversations"></app-chat-conversation>
+      <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()"></app-chat-conversation-list>
+      <app-chat-conversation (dismiss)="dismissEvent()" *ngIf="this.displaySelectedConversation"></app-chat-conversation>
     </div>
     <!-- <div class="col-sm-9">
       <div class="chat-tile">
@@ -25,6 +25,6 @@
           </form>
         </div>
       </div>
-    </div> -->
-  </div>
+    </div>
+  </div> -->
 </div>

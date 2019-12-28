@@ -1,13 +1,11 @@
 export class UserList {
-  rowNum: string;
-  userId: string;
+  rowNum: number;
+  userId: number;
   firstName: string;
   surname: string;
   email: string;
-  empNo: string;
   extension?: string;
   designation: string;
-  status: string;
-  statusID: string;
+  online: boolean;
   profileImage?: string;
 }

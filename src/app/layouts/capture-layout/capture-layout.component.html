@@ -36,7 +36,10 @@
 </div>
 </div>
 <div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
-
+  <div class="text-center">
+    <button mat-mini-fab class="toggle-chat" (click)="toggleChat()"><span class="mdi mdi-comment"></span>
+    </button>
+  </div>
 </div>
 <div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="float-left">
@@ -53,6 +56,7 @@
     <div class="text-center">
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="companyInfo()" class="bg-primary text-light" matTooltip="Company Information" matTooltipPosition="below"><span class="mdi mdi-information-variant"></span></button>&nbsp;&nbsp;
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>
+      
     </div>
 </div>
 
@@ -98,6 +102,7 @@
     </div>
   </nav> -->
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
+  
 <div class="col-6 bg-light" style="overflow-y: auto;">
   <!-- <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div> -->
   <app-document-viewer [focus]="this.focusPDF" *ngIf="!this.inspectingPreview"></app-document-viewer>
@@ -115,6 +120,7 @@
     </div>
   </div>
 </div>
+
 </div>
 
 <div class="shortcutView" *ngIf="this.showHelp">
@@ -128,7 +134,12 @@
 </div>
 
 <app-notification></app-notification>
-
+<app-chat-overlay
+    [enableChat]="true"
+    [showChat]="this.showChat"
+    (dismiss)="toggleChat()">
+  </app-chat-overlay>
+  
 <!-- TimeOut modal -->
 <button class="hide" data-toggle="modal" data-target="#timeout" #opentimeoutModal></button>
 <div class="modalcustom fade no-click-backdrop" id="timeout" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
