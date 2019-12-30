@@ -44,15 +44,7 @@ export class ViewLoginComponent implements OnInit {
     if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
     }
-    this.channelService.observeUserConnection().subscribe(hub  => {
-      if (hub !== null) {
-          hub.invoke('UserConnectInit', this.currentUser).then(
-          (res) => {
-            // method
-            console.log(res);
-        });
-      }
-    });
+   
   }
 
   onLoginSubmit() {
@@ -65,10 +57,20 @@ export class ViewLoginComponent implements OnInit {
       this.pendingRequest = true;
       this.userService.authenticate(this.txtEmail, this.txtPassword).then(
         (res: LoginResponse) => {
-
+          
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
+            // this.channelService.observeUserConnection().subscribe(hub  => {
+            //   if (hub !== null) {
+            //       console.log('Connecting');
+            //       hub.invoke('UserConnectInit', res.userID).then(
+            //       (ress) => {
+            //         // method
+            //         console.log(ress);
+            //     });
+            //   }
+            // });
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             if (res.designation === 'Capturer') {

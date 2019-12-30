@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 export class ChannelService {
   private hubUserConnection: signalR.HubConnection = null;
   private userHub = new BehaviorSubject<signalR.HubConnection>(this.hubUserConnection);
+  
   constructor() {
     this.hubUserConnection = new signalR.HubConnectionBuilder()
     .withUrl(
@@ -22,6 +23,7 @@ export class ChannelService {
     });
     this.startConnection();
   }
+
   startConnection() {
     this.hubUserConnection
     .start()
@@ -32,6 +34,7 @@ export class ChannelService {
       setTimeout(() => this.startConnection(), 3000);
     });
   }
+  
   public observeUserConnection = () => this.userHub.asObservable();
   public setUserConnection = (obj: signalR.HubConnection) => this.userHub.next(obj);
 
