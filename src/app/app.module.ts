@@ -206,6 +206,7 @@ import { FormCustomWorksheetComponent } from './components/forms/capture/form-cu
 import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ChannelService } from './modules/chat/services/channel.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -404,7 +405,8 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
     TariffService,
     ReportsService,
     EventService,
-    CheckListService
+    CheckListService,
+    ChannelService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

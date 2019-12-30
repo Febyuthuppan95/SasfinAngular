@@ -14,7 +14,7 @@ export class ChatService {
   constructor(private httpClient: HttpClient) { }
 
   observeConversation = () => this.selectedConversation.asObservable();
-  setConverastion = (next: SelectedConversation) => this.selectedConversation.next(next);
+  setConversation = (next: SelectedConversation) => this.selectedConversation.next(next);
 
   conversationList = (requestModel: ChatConversationListRequest) => {
     return new Promise((resolve, reject) => {

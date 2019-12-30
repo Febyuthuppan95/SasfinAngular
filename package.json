@@ -52,6 +52,7 @@
     "@angular/cli": "^8.3.21",
     "@angular/compiler-cli": "^8.2.14",
     "@angular/language-service": "^8.2.14",
+    "@aspnet/signalr": "^1.1.4",
     "@types/hammerjs": "^2.0.36",
     "@types/jasmine": "^3.5.0",
     "@types/jasminewd2": "^2.0.8",

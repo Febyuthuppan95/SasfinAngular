@@ -30,7 +30,8 @@ export const environment = {
       list: 'https://localhost:44397/api/v1.0/users/list',
       create: 'https://localhost:44397/api/v1.0/users/add',
       update: 'https://localhost:44397/api/v1.0/users/update',
-      upload: 'https://localhost:44397/api/v1.0/users/upload'
+      upload: 'https://localhost:44397/api/v1.0/users/upload',
+      hub: 'https://localhost:44397/Communication/Hub'
     }
   }
 };

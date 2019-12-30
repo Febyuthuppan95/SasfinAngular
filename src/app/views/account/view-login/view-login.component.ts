@@ -4,6 +4,8 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ChatService } from 'src/app/modules/chat/services/chat.service';
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 
 
 
@@ -23,7 +25,9 @@ export class ViewLoginComponent implements OnInit {
     private userService: UserService,
     private themeService: ThemeService,
     private renderer: Renderer2,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private chatService: ChatService,
+    private channelService: ChannelService
     ) { }
 
   @ViewChild('login', { static: true })
@@ -39,6 +43,11 @@ export class ViewLoginComponent implements OnInit {
     if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
     }
+    this.channelService.observeUserConnection().subscribe(hub  => {
+      if(hub !== null){
+        hub.invoke('UserConnectInit', this.)
+      }
+    });
   }
 
   onLoginSubmit() {
