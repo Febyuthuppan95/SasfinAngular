@@ -1,3 +1,4 @@
+import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
@@ -19,7 +20,7 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
   pendingRequest = false;
-
+  currentUser: User;
   constructor(
     private router: Router,
     private userService: UserService,
@@ -44,8 +45,12 @@ export class ViewLoginComponent implements OnInit {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
     }
     this.channelService.observeUserConnection().subscribe(hub  => {
-      if(hub !== null){
-        hub.invoke('UserConnectInit', this.)
+      if (hub !== null) {
+          hub.invoke('UserConnectInit', this.currentUser).then(
+          (res) => {
+            // method
+            console.log(res);
+        });
       }
     });
   }

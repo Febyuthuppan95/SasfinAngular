@@ -23,6 +23,6 @@ export class ChatConversationTileComponent implements OnInit {
   }
 
   selectConversation(userID: any) {
-    this.chatService.setConverastion({ userID });
+    // this.chatService.setConverastion({ userID });
   }
 }
