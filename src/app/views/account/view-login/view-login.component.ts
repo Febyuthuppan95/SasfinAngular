@@ -61,16 +61,16 @@ export class ViewLoginComponent implements OnInit {
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
-            // this.channelService.observeUserConnection().subscribe(hub  => {
-            //   if (hub !== null) {
-            //       console.log('Connecting');
-            //       hub.invoke('UserConnectInit', res.userID).then(
-            //       (ress) => {
-            //         // method
-            //         console.log(ress);
-            //     });
-            //   }
-            // });
+            this.channelService.observeUserConnection().subscribe(hub  => {
+              if (hub !== null) {
+                  console.log('Connecting');
+                  hub.invoke('UserConnectInit', res.userID).then(
+                  (ress) => {
+                    // method
+                    console.log(ress);
+                });
+              }
+            });
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
             if (res.designation === 'Capturer') {
