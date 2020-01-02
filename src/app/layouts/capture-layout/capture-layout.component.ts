@@ -1,3 +1,4 @@
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
@@ -39,7 +40,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private companyService: CompanyService,
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
-              private eventService: EventService) {}
+              private eventService: EventService,
+              private channelService: ChannelService) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;

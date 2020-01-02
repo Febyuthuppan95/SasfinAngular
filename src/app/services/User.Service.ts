@@ -1,3 +1,4 @@
+
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
@@ -14,7 +15,7 @@ export class UserService {
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router,
+    private router: Router
   ) {}
 
   /**

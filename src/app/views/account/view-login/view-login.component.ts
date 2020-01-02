@@ -1,3 +1,4 @@
+import { Invoice } from './../../../models/HttpResponses/Invoices';
 import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
@@ -44,7 +45,6 @@ export class ViewLoginComponent implements OnInit {
     if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
     }
-   
   }
 
   onLoginSubmit() {
@@ -57,22 +57,13 @@ export class ViewLoginComponent implements OnInit {
       this.pendingRequest = true;
       this.userService.authenticate(this.txtEmail, this.txtPassword).then(
         (res: LoginResponse) => {
-          
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
-            this.channelService.observeUserConnection().subscribe(hub  => {
-              if (hub !== null) {
-                  console.log('Connecting');
-                  hub.invoke('UserConnectInit', res.userID).then(
-                  (ress) => {
-                    // method
-                    console.log(ress);
-                });
-              }
-            });
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
+            this.channelService.startConnection();
+            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+
             if (res.designation === 'Capturer') {
               this.router.navigate(['transaction/capturerlanding']);
             } else {
@@ -89,7 +80,6 @@ export class ViewLoginComponent implements OnInit {
           this.notify.errorsmsg('Failure', 'Username or password is incorrect.');
         });
     }
-
   }
 
   togglePassword() {
