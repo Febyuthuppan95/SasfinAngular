@@ -1,6 +1,10 @@
+
+
+// tslint:disable-next-line: max-line-length
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
+import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -74,7 +79,6 @@ import { ContextMenuTransactionFileComponent } from './components/menus/context-
 // tslint:disable-next-line: max-line-length
 import { ContextMenuTransactionAttachmentComponent } from './components/menus/context-menu-transaction-attachment/context-menu-transaction-attachment.component';
 import { ViewCaptureTransactionComponent } from './views/capture/view-capture-transaction/view-capture-transaction.component';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ContextMenuUserrightsComponent } from './components/menus/context-menu-userrights/context-menu-userrights.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuDesignationrightsComponent } from './components/menus/context-menu-designationrights/context-menu-designationrights.component';
@@ -174,27 +178,35 @@ import { ReportsService } from './services/Reports.Service';
 import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
+
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
+
 import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
+
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
-import { SplitDocumentComponent } from './components/split-document/split-document.component';
 import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 // tslint:disable-next-line: max-line-length
-import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+// tslint:disable-next-line: max-line-length
+import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
 import { CheckListService } from './services/CheckList.Service';
 import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+// tslint:disable-next-line: max-line-length
 import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ChannelService } from './modules/chat/services/channel.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -317,7 +329,6 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     ContextMenuTariffsComponent,
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
-    SplitDocumentComponent,
     PDFViewerComponent,
     FormInvoiceLinesComponent,
     QuitDialogComponent,
@@ -327,9 +338,12 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
-    ViewCheckingScreenComponent, 
+    ChatConversationComponent,
+    ViewCheckingScreenComponent,
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
+    SplitDocumentComponent,
+    ViewCaptureLandingComponent
   ],
   imports: [
     BrowserModule,
@@ -350,7 +364,6 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     ),
     NgbModule,
     NgxPaginationModule,
-    NgxExtendedPdfViewerModule,
     MaterialModule,
     AngularDraggableModule,
     KeyboardShortcutsModule,
@@ -392,7 +405,8 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     TariffService,
     ReportsService,
     EventService,
-    CheckListService
+    CheckListService,
+    ChannelService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -410,7 +424,6 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     SubmitDialogComponent,
     FormVOCComponent,
     FormWaybillComponent,
-    SplitDocumentComponent,
     FormCustomWorksheetComponent
   ]
 })

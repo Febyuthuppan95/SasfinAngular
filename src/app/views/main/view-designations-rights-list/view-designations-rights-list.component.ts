@@ -134,7 +134,7 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
       filter: this.filter,
       userID: this.currentUser.userID,
       rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
+      rowEnd: 1000,
       specificRightID: -1,
       orderBy: this.orderBy,
       orderByDirection: this.orderByDirection
@@ -144,16 +144,22 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
     .then(
       (res: RightListResponse) => {
         this.rightsList = res.rightList;
-        this.designationRightsList.forEach(dRight => {
-          let count = 0;
-          this.rightsList.forEach(right => {
-            if (dRight.rightID === right.rightID) {
-              this.rightsList.splice(count, 1);
-            } else {
-              count ++;
-            }
-          });
+
+
+        this.designationRightsList.forEach(right => {
+          this.rightsList = this.rightsList.filter(x => x.rightID !== right.rightID);
         });
+
+        // this.designationRightsList.forEach(dRight => {
+        //   let count = 0;
+        //   this.rightsList.forEach(right => {
+        //     if (dRight.rightID === right.rightID) {
+        //       this.rightsList.splice(count, 1);
+        //     } else {
+        //       count ++;
+        //     }
+        //   });
+        // });
       },
       msg => {
         this.showLoader = false;

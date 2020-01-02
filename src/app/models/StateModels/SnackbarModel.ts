@@ -4,4 +4,5 @@ export class SnackbarModel {
   content?: string;
   title?: string;
   slug?: string;
+  viewSelector?: string;
 }

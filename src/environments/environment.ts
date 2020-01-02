@@ -12,7 +12,9 @@ export const environment = {
   ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
   ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
+  WebSocketConnection: 'https://localhost:44397/api/v1.0/chat',
   Sessions: {
+    CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
     PermitData: '780f766e-8d4b-43f8-a067-059a82b7da13',
     BOMData: '3ba86905-764b-44ce-9e8c-6363187bd864',
@@ -28,7 +30,8 @@ export const environment = {
       list: 'https://localhost:44397/api/v1.0/users/list',
       create: 'https://localhost:44397/api/v1.0/users/add',
       update: 'https://localhost:44397/api/v1.0/users/update',
-      upload: 'https://localhost:44397/api/v1.0/users/upload'
+      upload: 'https://localhost:44397/api/v1.0/users/upload',
+      hub: 'https://localhost:44397/Communication/Hub'
     }
   }
 };

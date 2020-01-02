@@ -1,13 +1,14 @@
 <div class="chat-tile">
     <div class="chat-tile-header">
-        <button mat-mini-fab matTooltip="Contacts" matTooltipPosition="below" class="header-button" (click)="showContacts()"><span class="mdi mdi-account-multiple"></span></button>
+        <button mat-mini-fab matTooltip="New Issue" matTooltipPosition="below" class="header-button" (click)="createIssue()"><span class="mdi mdi-plus"></span></button>
       <h5>Conversations</h5>
     </div>
     <div class="chat-body">
       <input type="search" class="form-control rounded" placeholder="Search conversations...">
       <br>
-      <div class="contact-list">
-          <app-chat-conversation-tile *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile>
+      <div class="contact-list" *ngIf="this.conversations">
+          <!-- <app-chat-conversation-tile *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile> -->
+          <app-chat-conversation-tile  *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile>
       </div>
     <div class="chat-tile-footer">
       <div class="row" style="height: auto !important;">
@@ -18,10 +19,15 @@
               &nbsp;
             </div>
         </div>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             <p>{{currentUser.firstName}}&nbsp;{{currentUser.surname}}</p>
             <p class="chat-user-email">{{currentUser.email}}</p>
             <p class="chat-user-des">{{currentUser.designation}}</p>
+        </div>
+        <div class="col-sm-2">
+          <div class="image-container">
+            <button mat-button class="mdi mdi-dots-horizontal-circle-outline"></button>
+          </div>
         </div>
       </div>
     </div>

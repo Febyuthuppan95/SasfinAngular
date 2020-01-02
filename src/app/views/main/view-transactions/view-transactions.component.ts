@@ -282,7 +282,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
         (res: TransactionListResponse) => {
           if (res.transactions.length === 0) {
             this.notify.toastrwarning(
-              'Warning',
+              res.outcome.outcome,
               res.outcome.outcomeMessage
             );
           } else {

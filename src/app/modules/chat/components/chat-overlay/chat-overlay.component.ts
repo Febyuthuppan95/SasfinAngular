@@ -20,12 +20,14 @@ export class ChatOverlayComponent implements OnInit {
 
   displayContacts = false;
   displayConversations = true;
+  displaySelectedConversation = false;
 
   constructor() { }
 
   ngOnInit() {}
 
   dismissEvent() {
+    console.log('dismissed');
     this.dismiss.emit();
   }
 

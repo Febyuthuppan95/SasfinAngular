@@ -1,9 +1,12 @@
+import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ChatService } from 'src/app/modules/chat/services/chat.service';
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 
 
 
@@ -17,13 +20,15 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
   pendingRequest = false;
-
+  currentUser: User;
   constructor(
     private router: Router,
     private userService: UserService,
     private themeService: ThemeService,
     private renderer: Renderer2,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private chatService: ChatService,
+    private channelService: ChannelService
     ) { }
 
   @ViewChild('login', { static: true })
@@ -39,6 +44,7 @@ export class ViewLoginComponent implements OnInit {
     if (elem.length > 0) {
       this.renderer.removeClass(elem[0], elem[0].classList[0]);
     }
+   
   }
 
   onLoginSubmit() {
@@ -51,13 +57,27 @@ export class ViewLoginComponent implements OnInit {
       this.pendingRequest = true;
       this.userService.authenticate(this.txtEmail, this.txtPassword).then(
         (res: LoginResponse) => {
-
+          
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
+            this.channelService.observeUserConnection().subscribe(hub  => {
+              if (hub !== null) {
+                  console.log('Connecting');
+                  hub.invoke('UserConnectInit', res.userID).then(
+                  (ress) => {
+                    // method
+                    console.log(ress);
+                });
+              }
+            });
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
-            this.router.navigate(['users']);
+            if (res.designation === 'Capturer') {
+              this.router.navigate(['transaction/capturerlanding']);
+            } else {
+              this.router.navigate(['users']);
+            }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }

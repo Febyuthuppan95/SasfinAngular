@@ -96,7 +96,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '#',
+      title: '',
       propertyName: 'rowNum',
       order: {
         enable: false,

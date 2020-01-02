@@ -12,6 +12,8 @@ import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invo
 import { FormWaybillComponent } from 'src/app/components/forms/capture/form-waybill/form-waybill.component';
 import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
 import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
+
 
 @Component({
   selector: 'app-view-capture-transaction',
@@ -43,16 +45,20 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
+      console.log(data);
     });
   }
 
   ngAfterViewInit(): void {
     this.componentService.setContainer(this.captureForm);
+    console.log('this ' + this.captureForm);
     this.loadComponent();
   }
 
   loadComponent() {
+    console.log('that  ' + this.currentDoctype);
     switch (this.currentDoctype) {
+
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
         break;

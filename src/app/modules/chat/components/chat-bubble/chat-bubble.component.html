@@ -1,1 +1,5 @@
-<p>chat-bubble works!</p>
+<div class="row" [style.text-align]="sender ? 'right' : 'left'"> <!--Bubbles are rows. Text is on the right side if you are the sender.-->
+    <mat-card><!--message inside this card-->
+        <p>{{message}}</p>
+    </mat-card>
+</div>

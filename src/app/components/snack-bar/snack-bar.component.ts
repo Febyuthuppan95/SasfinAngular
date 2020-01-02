@@ -8,9 +8,11 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { UpdateObjectHelpRequest } from 'src/app/models/HttpRequests/UpdateObjectHelpRequest';
 import { UpdateObjectHelpResponse } from 'src/app/models/HttpResponses/UpdateObjectHelpResponse';
 import { GetObjectHelpRequest } from 'src/app/models/HttpRequests/GetObjectHelpRequest';
-import { GetObjectHelpResponse } from 'src/app/models/HttpResponses/GetObjectHelpResponse';
+import {GetObjectHelpResponse, GetObjectHelpListResponse} from 'src/app/models/HttpResponses/GetObjectHelpResponse';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
+import {log} from 'util';
 
 
 @Component({
@@ -22,9 +24,12 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   constructor(
     private helpSnackbarService: HelpSnackbar,
     private objectHelpService: ObjectHelpService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {
-    this.settings = new SnackbarModel();
+   this.settings = new SnackbarModel();
+
+  // this.settings = 'test';
     this.focus = new SnackbarModel();
   }
 
@@ -43,6 +48,8 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   focus: SnackbarModel;
   enabled: boolean;
   currentUser: User = this.userService.getCurrentUser();
+  // objectHelpList: GetObjectHelpResponse[];
+  objectHelpDictionary: Map<string, string>;
 
   ngOnInit() {
     this.helpSnackbarService.observeHelpContext()
@@ -51,19 +58,23 @@ export class SnackBarComponent implements OnInit, OnDestroy {
       this.settings.display = context.display;
 
       if (context.slug !== undefined) {
-
         const request: GetObjectHelpRequest = {
           userID: 3,
           specificObjectHelpID: -1,
-          slug: context.slug
+          slug: context.slug,
+          viewSelector: ''
         };
 
         this.objectHelpService.get(request).then(
-          (res: GetObjectHelpResponse) => {
-            this.settings.content = res.description;
-            this.settings.title = res.name;
-            this.settings.id = res.objectHelpID;
-            this.focus.id = res.objectHelpID;
+          (res: GetObjectHelpListResponse) => {
+            // console.log(res.objectHelpList);
+            // this.objectHelpList = res.objectHelpList;
+            // console.log(this.objectHelpList);
+            // console.log(res);
+            this.settings.title = res.objectHelpList[0].name;
+            this.settings.content = res.objectHelpList[0].description;
+            this.settings.id = res.objectHelpList[0].objectHelpID;
+            this.focus.id = res.objectHelpList[0].objectHelpID;
           },
           (msg) => {}
         );
@@ -103,7 +114,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     .update(request)
     .then(
       (res: UpdateObjectHelpResponse) => {
-        if (res.outcome.outcome === 'Access denied'){
+        if (res.outcome.outcome === 'Access denied') {
           this.notify.errorsmsg(
             'Error',
             res.outcome.outcome

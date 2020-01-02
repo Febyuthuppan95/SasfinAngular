@@ -15,6 +15,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -24,7 +26,7 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar) { }
+              private eventService: EventService, private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -118,6 +120,15 @@ dialogOpen = false;
     });
   }
 
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
+
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
@@ -209,7 +220,7 @@ dialogOpen = false;
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction', 'attachments']);
+          this.router.navigate(['transaction/attachment']);
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }

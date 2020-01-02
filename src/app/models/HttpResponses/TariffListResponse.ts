@@ -9,7 +9,7 @@ export class TariffListResponse {
 export class Tariff {
   rowNum: number;
   id: number;
-  // tariffID: number;
+  tariffName: string;
   // tariffCode: string;
   tariff: string;
   Amount: number;
