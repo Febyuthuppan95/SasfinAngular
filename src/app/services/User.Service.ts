@@ -1,3 +1,4 @@
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -15,7 +16,8 @@ export class UserService {
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private channelService: ChannelService
   ) {}
 
   /**
@@ -29,7 +31,7 @@ export class UserService {
    * Logout
    */
   public logout() {
-    this.cookieService.delete('currentUser', '/');
+    this.channelService.stopConnection();this.cookieService.delete('currentUser', '/');
     this.router.navigateByUrl('/account/login');
   }
 
