@@ -1,3 +1,4 @@
+import { ChatConversationIssue } from './../models/requests';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChatConversationListRequest, ChatContactListRequest, ChatSendMessageRequest } from '../models/requests';
@@ -18,7 +19,7 @@ export class ChatService {
 
   conversationList = (requestModel: ChatConversationListRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/conversation/list`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -35,7 +36,7 @@ export class ChatService {
 
   conversationGet = (requestModel: ChatConversationListRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/conversation/get`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/get`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -52,7 +53,7 @@ export class ChatService {
 
   contactList = (requestModel: ChatContactListRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/contact/list`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/contact/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -69,7 +70,7 @@ export class ChatService {
 
   sendMessage = (requestModel: ChatSendMessageRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/message/send`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/message/send`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -81,6 +82,22 @@ export class ChatService {
             reject(msg);
           }
         );
+    });
+  }
+  createIssue = (requestModel: ChatConversationIssue) => {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/chat/issue`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
     });
   }
 }

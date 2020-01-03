@@ -138,7 +138,10 @@
 <app-chat-overlay
     [enableChat]="true"
     [showChat]="this.showChat"
-    (dismiss)="toggleChat()">
+    (dismiss)="toggleChat()"
+    [(transactionID)]="this.transactionID"
+    [(attachmentID)]="this.attachmentID"
+    [(attachmentType)]="this.attachmentType">
   </app-chat-overlay>
   
 <!-- TimeOut modal -->

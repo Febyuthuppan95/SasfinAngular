@@ -15,6 +15,10 @@ export class ChatOverlayComponent implements OnInit {
 
   @Input() enableChat: boolean;
   @Input() showChat: boolean;
+  @Input() transactionID: number;
+  @Input() attachmentID: number;
+  @Input() attachmentType: string;
+  
 
   @Output() dismiss = new EventEmitter<void>();
 

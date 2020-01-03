@@ -8,10 +8,10 @@
     <h5></h5>
   </div>
   <div class="chat-body">
-    <app-chat-bubble></app-chat-bubble>
+    <app-chat-bubble *ngFor="let message of this.messageList" (message)="message.message" (sender)="message.receivingUserID == this.currentUserID ? true : false"></app-chat-bubble>
   </div>
   <div class="chat-tile-footer">
-      <form>
+      <form (submit)="messageSend()">
           <div class="form-group">
               <button mat-mini-fab class="send-button bg-primary text-light"><span class="mdi mdi-send"></span>
               </button>

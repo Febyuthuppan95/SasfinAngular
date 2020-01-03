@@ -1,5 +1,13 @@
-.image-container img {
-    width: 32px;
-    height: 32px;
-    border-radius: 100%;
+.conversation-tile {
+    margin-top: 14px;
+    padding: 18px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    color: #212121;
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
+}
+
+.conversation-tile:hover {
+    background: #F2F2F2;
+    transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s;
 }

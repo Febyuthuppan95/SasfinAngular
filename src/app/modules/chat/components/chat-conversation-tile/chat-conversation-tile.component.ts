@@ -1,3 +1,4 @@
+import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
@@ -12,17 +13,17 @@ export class ChatConversationTileComponent implements OnInit {
 
   constructor(private chatService: ChatService) { }
 
-  @Input() user: UserList;
+  @Input() public conversation: Conversation;
 
   imageURL: string = null;
 
   ngOnInit() {
-    if (this.user.profileImage !== null && this.user.profileImage !== undefined) {
-      this.imageURL = `${environment.ApiProfileImages}/${this.user.profileImage}`;
-    }
   }
 
   selectConversation(userID: any) {
     // this.chatService.setConverastion({ userID });
+  }
+  gotoConversation() {
+    
   }
 }
