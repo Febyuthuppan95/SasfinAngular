@@ -204,8 +204,6 @@ loader = false;
             invoiceID: this.attachmentID,
             fromCompanyID: this.form.fromCompanyID.value,
             fromCompany: this.form.fromCompany.value,
-            toCompanyID: this.form.toCompanyID.value,
-            toCompany: this.form.toCompany.value,
             invoiceNo: this.form.invoiceNo.value,
             currencyID: this.form.currencyID.value,
             isDeleted: 0,
@@ -473,11 +471,6 @@ loader = false;
     this.currencies = this.currencies.filter(x => this.matchRuleShort(x.name, `*${this.currencyQuery}*`));
   }
 
-  filterToCompany() {
-    this.toCompanyList = this.toCompanyListTemp;
-    this.toCompanyList = this.toCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.toCompany.value}*`));
-  }
-
   filterFromCompany() {
     this.fromCompanyList = this.fromCompanyListTemp;
     this.fromCompanyList = this.fromCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.fromCompany.value}*`));
@@ -487,12 +480,8 @@ loader = false;
     this.form.currencyID.value = currencyID;
   }
 
-  selectedToCompany(toCompanyID: number) {
-    this.form.toCompanyID.value = toCompanyID;
-  }
-
-  selectedFromCompany(fromCompanyID: number) {
-    this.form.fromCompanyID.value = fromCompanyID;
+  selectedFromCompany(fromCompanyID: Company) {
+    this.form.fromCompanyID.value = fromCompanyID.companyID;
   }
 
   matchRuleShort(str, rule) {

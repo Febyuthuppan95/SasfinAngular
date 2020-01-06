@@ -71,10 +71,12 @@ export class SnackBarComponent implements OnInit, OnDestroy {
             // this.objectHelpList = res.objectHelpList;
             // console.log(this.objectHelpList);
             // console.log(res);
-            this.settings.title = res.objectHelpList[0].name;
-            this.settings.content = res.objectHelpList[0].description;
-            this.settings.id = res.objectHelpList[0].objectHelpID;
-            this.focus.id = res.objectHelpList[0].objectHelpID;
+            if (res.objectHelpList.length > 0) {
+              this.settings.title = res.objectHelpList[0].name;
+              this.settings.content = res.objectHelpList[0].description;
+              this.settings.id = res.objectHelpList[0].objectHelpID;
+              this.focus.id = res.objectHelpList[0].objectHelpID;
+            }
           },
           (msg) => {}
         );
