@@ -1,3 +1,4 @@
+import { CompanyService } from './../../../../services/Company.Service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
@@ -25,14 +26,20 @@ export class ChatOverlayComponent implements OnInit {
   displayContacts = false;
   displayConversations = true;
   displaySelectedConversation = false;
+  currentCompany: number;
+  constructor(private companyService: CompanyService) { }
 
-  constructor() { }
-
-  ngOnInit() {}
+  ngOnInit() {
+    this.companyService.observeCompany().subscribe( (company) => {this.currentCompany = company.companyID;});
+  }
 
   dismissEvent() {
     console.log('dismissed');
     this.dismiss.emit();
+  }
+  setCurrentSupervisor() {
+    // Get supervisor for current user based on Company Service
+
   }
 
   displayContactsEvent() {

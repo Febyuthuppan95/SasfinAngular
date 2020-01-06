@@ -12,9 +12,9 @@ export class CompService {
   serviceID: number;
   companyID: string;
   serviceName: string;
-  resConsultantID: string;
+  resConsultantID: number;
   consultantName: string;
-  resCapturerID: string;
+  resCapturerID: number;
   capturerName: string;
   startDate: string;
   endDate: string;

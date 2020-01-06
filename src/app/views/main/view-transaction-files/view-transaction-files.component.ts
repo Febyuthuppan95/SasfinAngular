@@ -355,7 +355,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.focusHelp = id;
     this.focusPath = fileName;
     this.focusStatusID = statusID;
-    this.focusType = doctype;
+    this.focusType = this.transactionTypes.find(x => x.description === doctype).name;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

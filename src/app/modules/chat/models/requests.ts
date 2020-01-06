@@ -1,4 +1,10 @@
+import { Conversation } from './../components/chat-conversation-list/chat-conversation-list.component';
+import { Outcome } from './../../../models/HttpResponses/DoctypeResponse';
 export class ChatConversationListRequest {
+    userID: number;
+    rowStart: number;
+    rowEnd: number;
+    filter: string;
 
 }
 
@@ -22,3 +28,4 @@ export class ChatConversationIssue {
     documentID: number;
     userID: number;
 }
+

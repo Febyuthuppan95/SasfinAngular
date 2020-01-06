@@ -25,7 +25,7 @@ export class ChatConversationComponent implements OnInit {
     this.dismiss.emit();
   }
   messagesLoad() {
-
+    
   }
   messageSend() {
     const messageParams: ChatSendMessageRequest = {

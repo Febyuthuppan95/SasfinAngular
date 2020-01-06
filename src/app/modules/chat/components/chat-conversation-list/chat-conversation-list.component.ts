@@ -1,3 +1,7 @@
+import { ChatConversationListResponse } from './../../models/responses';
+import { CompanyServiceResponse } from './../../../../models/HttpResponses/CompanyServiceResponse';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { User } from './../../../../models/HttpResponses/User';
 import { ChatConversationIssue } from './../../models/requests';
 import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
@@ -12,28 +16,72 @@ import { UserList } from 'src/app/models/HttpResponses/UserList';
   templateUrl: './chat-conversation-list.component.html',
   styleUrls: ['./chat-conversation-list.component.scss']
 })
-export class ChatConversationListComponent implements OnInit{
+export class ChatConversationListComponent implements OnInit {
 
   @Output() contacts = new EventEmitter<void>();
   @Input() transactionID: number;
   @Input() attachmentID: number;
   @Input() attachmentType: string;
+  @Input() companyID: number;
 
-  currentUser = this.userService.getCurrentUser();
-  currentRecipient = 0;
+  currentUser: User;
+  currentRecipient: number;
   conversations: Conversation[];
-  
+
 
   constructor(
     private userService: UserService,
     private transactionService: TransactionService,
-    private chatService: ChatService) { }
+    private chatService: ChatService,
+    private companyService: CompanyService) { }
 
   ngOnInit() {
     // Load User Conversations
     this.conversations = [];
+    this.currentUser = this.userService.getCurrentUser();
+    this.setResponsibleUser();
+
   }
 
+  setResponsibleUser() {
+    const model = {
+      filter: '',
+      userID: this.currentUser.userID,
+      specificCompanyID: this.companyID,
+      specificServiceID: 1,
+      rowStart: 1,
+      rowEnd: 10,
+      orderBy: '',
+      orderByDirection: ''
+    };
+    this.companyService.service(model).then(
+      (res: CompanyServiceResponse) => {
+        console.log(res);
+        if ((this.currentUser.userID === res.services[0].resCapturerID) &&
+            (this.currentUser.userID !== res.services[0].resConsultantID)) {
+          // if capturer lead
+              this.currentRecipient = res.services[0].resConsultantID;
+        } else {
+          this.currentRecipient = res.services[0].resCapturerID;
+        }
+      },
+      (msg) => {
+
+      }
+    );
+  }
+  getConversations() {
+    const model = {
+      userID: this.currentUser.userID,
+      rowStart: 1,
+      rowEnd: 10,
+      filter: ''
+    };
+    this.chatService.conversationList(model).then(
+      (res: ChatConversationListResponse) => {
+        this.conversations = res.conversations;
+      });
+  }
   createIssue() {
     // Create a new issue -- direct to conversation with consultant
     const request: ChatConversationIssue = {
@@ -45,15 +93,14 @@ export class ChatConversationListComponent implements OnInit{
     this.chatService.createIssue(request).then(
       (res: ConversationIssue) => {
         console.log(res);
-        this.conversations.push({conversationID: 0, recipientID: this.currentRecipient, issueID: 0,
-          latestMessage: 'Click to enter new message', latestMessageDate: new Date(2020, 2, 1).toLocaleDateString(),
-           issueDoc: 1, issueFileType: 'SAD'});
+        this.conversations.push({conversationID: res.conversationID, recipientID: this.currentRecipient, issueID: res.issueID,
+          latestMessage: 'Click to enter new message', latestMessageDate: new Date().toLocaleDateString(),
+           issueDoc: request.documentID, issueFileType: request.fileType});
       },
       (msg) => {
 
       }
     );
-    
 
   }
 

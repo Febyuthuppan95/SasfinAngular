@@ -17,8 +17,8 @@ export class ChatService {
   observeConversation = () => this.selectedConversation.asObservable();
   setConversation = (next: SelectedConversation) => this.selectedConversation.next(next);
 
-  conversationList = (requestModel: ChatConversationListRequest) => {
-    return new Promise((resolve, reject) => {
+  public async conversationList(requestModel: ChatConversationListRequest) {
+    return await new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/list`;
       this.httpClient
         .post(apiURL, requestModel)

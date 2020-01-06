@@ -16,8 +16,7 @@ export class UserService {
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router,
-    private channelService: ChannelService
+    private router: Router
   ) {}
 
   /**
@@ -31,7 +30,6 @@ export class UserService {
    * Logout
    */
   public logout() {
-    this.channelService.stopConnection();this.cookieService.delete('currentUser', '/');
     this.router.navigateByUrl('/account/login');
   }
 
