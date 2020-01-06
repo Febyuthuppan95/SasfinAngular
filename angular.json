@@ -21,7 +21,34 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json"
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets/dist/images/favicon.png",
+              "src/assets/dist/",
+              "src/assets",
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ngx-extended-pdf-viewer/assets/locale",
+                  "output": "/assets/locale/"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "node_modules/ngx-extended-pdf-viewer/assets/images",
+                  "output": "/assets/images/"
+                }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/dist/css/style.css",
+              "src/app.scss",
+              "src/theme.scss",
+              "src/mobile.scss"
+            ],
+            "scripts": [
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.worker.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/viewer.js"
+            ]
           },
           "configurations": {
             "production": {

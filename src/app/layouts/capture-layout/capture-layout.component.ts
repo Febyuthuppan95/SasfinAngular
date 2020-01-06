@@ -138,7 +138,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     });
 
     // get the help value
-    this.helpValue  = this.themeService.observeHelpValue();
+    // this.helpValue  = this.themeService.observeHelpValue();
 
     // Start watching for user inactivity.
     this.userIdle.startWatching();
@@ -233,7 +233,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   goBack() {
-    this.router.navigate(['transaction', 'attachments']);
+    this.router.navigate(['transaction/attachments']);
   }
 
   loadCaptureInfo() {
