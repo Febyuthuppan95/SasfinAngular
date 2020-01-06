@@ -102,7 +102,18 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.submit()
+            command: e => {
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+                  if (status) {
+              this.submit();
+                  }
+                });
+              }
+            }
         },
     );
 
@@ -110,13 +121,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             specificCustomsReleaseID: this.attachmentID,
@@ -143,10 +147,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             (msg) => {
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
-          );        }
-      });
-    }
-  }
+          );
+        }
 
   loadCapture() {
     this.captureService.customsReleaseGet({

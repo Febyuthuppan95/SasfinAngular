@@ -227,7 +227,8 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
         }
 
         this.tableData = res.captureInfo;
-
+        console.log('a');
+        console.log(this.tableData);
         this.dataset = res;
         this.rowCount = res.rowCount;
 
@@ -342,7 +343,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.requestModelAddInfo.info = null;
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
-   (<HTMLInputElement>document.getElementById('mydropdown')).value = '-1';
+    (<HTMLInputElement> document.getElementById('mydropdown')).value = '-1';
 
 
   }
@@ -351,9 +352,10 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     if (this.requestModelAddInfo.info == null || this.requestModelAddInfo.info === '' || this.requestModelAddInfo.info === undefined) {
       this.notify.toastrwarning('Warning', 'Please fill in all fields');
     // tslint:disable-next-line: max-line-length
-    } else if (this.requestModelAddInfo.doctypeID == null || this.requestModelAddInfo.doctypeID === -1 || this.requestModelAddInfo.info === undefined) {
+    } else if (this.requestModelAddInfo.doctypeID == null || this.requestModelAddInfo.doctypeID === -1 || this.requestModelAddInfo.info === undefined || this.requestModelAddInfo.doctypeID === 0) {
       this.notify.toastrwarning('Warning', 'Please fill in all fields');
     } else {
+      // console.log(this.requestModelAddInfo.doctypeID);
       this.transactionService.captureInfoAdd(this.requestModelAddInfo).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -372,6 +374,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   onDoctypeChange(id: number) {
+    console.log('id is = ' + id);
     this.requestModelAddInfo.doctypeID = id;
   }
 
@@ -379,6 +382,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.transactionService.doctypeList(this.requestModelDoctypeList).then(
       (res: DoctypeListResponse) => {
           this.doctypeResponse = res;
+          console.log(this.doctypeResponse);
       },
       (msg) => {
         this.notify.errorsmsg('Failure', 'Cannot Reach Server');

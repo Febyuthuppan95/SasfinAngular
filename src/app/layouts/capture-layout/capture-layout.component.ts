@@ -409,8 +409,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (status) {
           this.eventService.triggerCaptureEvent();
-          this.router.navigate(['transaction/capturerlanding']);
-     }
+         }
       });
     }
   }
