@@ -1,8 +1,10 @@
+import { ChatNewMessage } from './signalr';
+import { Conversation } from './../components/chat-conversation-list/chat-conversation-list.component';
 import { Outcome } from './../../../models/HttpResponses/DoctypeResponse';
 export class ChatConversationListResponse {
     rowCount: number;
     outcome: Outcome;
-    conversations: ConversationListItem[];
+    conversations: Conversation[];
 }
 
 
@@ -21,5 +23,7 @@ export class ChatSendMessageResponse {
 }
 
 export class ChatConversationGetResponse {
-
+    rowCount: number;
+    messages: ChatNewMessage[];
+    outcome: Outcome;
 }

@@ -1,3 +1,4 @@
+import { SelectedConversation } from './../../services/chat.service';
 import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
@@ -14,7 +15,8 @@ export class ChatConversationTileComponent implements OnInit {
   constructor(private chatService: ChatService) { }
 
   @Input() public conversation: Conversation;
-
+  @Output() public displaySelectedConversation: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public conversationID: EventEmitter<number> = new EventEmitter<number>();
   imageURL: string = null;
 
   ngOnInit() {
@@ -23,8 +25,14 @@ export class ChatConversationTileComponent implements OnInit {
   selectConversation(userID: any) {
     // this.chatService.setConverastion({ userID });
   }
-  gotoConversation() {
+  gotoConversation(convoID: number) {
+    const model: SelectedConversation = {
+      conversationID: convoID
+    };
+    this.chatService.setConversation(model);
+    console.log(convoID);
     // Need ConversationID
-    
+    this.displaySelectedConversation.emit(true);
+    this.conversationID.emit(convoID);
   }
 }

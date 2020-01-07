@@ -23,11 +23,12 @@ export class ChatConversationListComponent implements OnInit {
   @Input() attachmentID: number;
   @Input() attachmentType: string;
   @Input() companyID: number;
+  @Output() conversationID = new EventEmitter<number>();
 
   currentUser: User;
   currentRecipient: number;
   conversations: Conversation[];
-
+  selectedConvo = new EventEmitter<number>();
 
   constructor(
     private userService: UserService,
@@ -40,6 +41,7 @@ export class ChatConversationListComponent implements OnInit {
     this.conversations = [];
     this.currentUser = this.userService.getCurrentUser();
     this.setResponsibleUser();
+    this.getConversations();
 
   }
 
@@ -79,9 +81,20 @@ export class ChatConversationListComponent implements OnInit {
     };
     this.chatService.conversationList(model).then(
       (res: ChatConversationListResponse) => {
-        this.conversations = res.conversations;
+        if (res.rowCount > 0) {
+          this.conversations = res.conversations;
+          console.log(this.conversations);
+        } else {
+
+        }
+      }, (msg) => {
       });
   }
+  setConvo = ($event: number) => {
+    this.selectedConvo.emit($event);
+    console.log($event);
+  }
+
   createIssue() {
     // Create a new issue -- direct to conversation with consultant
     const request: ChatConversationIssue = {
@@ -94,8 +107,8 @@ export class ChatConversationListComponent implements OnInit {
       (res: ConversationIssue) => {
         console.log(res);
         this.conversations.push({conversationID: res.conversationID, recipientID: this.currentRecipient, issueID: res.issueID,
-          latestMessage: 'Click to enter new message', latestMessageDate: new Date().toLocaleDateString(),
-           issueDoc: request.documentID, issueFileType: request.fileType});
+          lastMessage: 'Click to enter new message', messageDate: new Date().toLocaleDateString(),
+           documentID: request.documentID, fileType: request.fileType});
       },
       (msg) => {
 
@@ -110,10 +123,10 @@ export interface Conversation {
   conversationID: number;
   recipientID: number;
   issueID: number;
-  issueDoc: number;
-  issueFileType: string;
-  latestMessage: string;
-  latestMessageDate: Date | string;
+  documentID: number;
+  fileType: string;
+  lastMessage: string;
+  messageDate: Date | string;
 }
 
 export interface ConversationIssue {

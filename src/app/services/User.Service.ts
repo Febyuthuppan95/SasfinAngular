@@ -1,13 +1,12 @@
-import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-
 import { HttpClient } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../environments/environment';
-import { User } from '../models/HttpResponses/User';
 import { AddUserRight, UpdateUserRight } from '../models/HttpRequests/UserRights';
-import { GetUserList, UpdateUserRequest, AddUserRequest } from '../models/HttpRequests/Users';
+import { AddUserRequest, GetUserList, UpdateUserRequest } from '../models/HttpRequests/Users';
+import { User } from '../models/HttpResponses/User';
+
 
 @Injectable({
   providedIn: 'root'

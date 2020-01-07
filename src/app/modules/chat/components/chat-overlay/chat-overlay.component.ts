@@ -1,5 +1,6 @@
+import { SelectedConversation } from './../../services/chat.service';
 import { CompanyService } from './../../../../services/Company.Service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
@@ -19,18 +20,29 @@ export class ChatOverlayComponent implements OnInit {
   @Input() transactionID: number;
   @Input() attachmentID: number;
   @Input() attachmentType: string;
-  
+
 
   @Output() dismiss = new EventEmitter<void>();
 
   displayContacts = false;
   displayConversations = true;
   displaySelectedConversation = false;
+  selectedConversation: number;
   currentCompany: number;
-  constructor(private companyService: CompanyService) { }
+  constructor(
+    private companyService: CompanyService,
+    private chatService: ChatService) { }
 
   ngOnInit() {
     this.companyService.observeCompany().subscribe( (company) => {this.currentCompany = company.companyID;});
+    this.chatService.observeConversation()
+    .subscribe((conversation: SelectedConversation) => {
+      console.log(conversation);
+      this.selectedConversation = conversation === null ? -1 : conversation.conversationID;
+      this.displaySelectedConversation = this.selectedConversation === -1 ? false : true;
+      this.displayConversations = !this.displaySelectedConversation;
+      console.log(this.selectedConversation);
+    });
   }
 
   dismissEvent() {

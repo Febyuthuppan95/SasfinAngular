@@ -1,9 +1,9 @@
-<div class="conversation-tile shadow-sm" (onclick)="gotoConversation()">
+<div class="conversation-tile shadow-sm" (click)="gotoConversation(this.conversation.conversationID)">
   <div class="row">
     <div class="col-sm-12">
-      <span class="float-right">{{this.conversation.latestMessageDate.toString()}}</span>
-      <span><strong>{{this.conversation.issueFileType}}-{{this.conversation.issueDoc}}-{{this.conversation.issueID}}-{{this.conversation.conversationID}}</strong></span><br>
-      <span><small class="text-muted">{{this.conversation.latestMessage}}...</small></span>
+      <span class="float-right">{{this.conversation.messageDate.toString()}}</span>
+      <span><strong>{{this.conversation.fileType}}-{{this.conversation.documentID}}-{{this.conversation.issueID}}-{{this.conversation.conversationID}}</strong></span><br>
+      <span><small class="text-muted">{{this.conversation.lastMessage}}...</small></span>
       </div>
   </div>
 </div>

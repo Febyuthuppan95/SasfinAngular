@@ -15,6 +15,12 @@ export class ChatConversationGetRequest {
 export class ChatContactListRequest {
 
 }
+export class ChatConversationMessageList {
+    conversationID: number;
+    userID: number;
+    rowStart: number;
+    rowEnd: number;
+}
 
 export class ChatSendMessageRequest {
 conversationID: number;

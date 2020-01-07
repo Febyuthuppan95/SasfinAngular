@@ -1,4 +1,4 @@
-import { ChatConversationIssue } from './../models/requests';
+import { ChatConversationIssue, ChatConversationMessageList } from './../models/requests';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChatConversationListRequest, ChatContactListRequest, ChatSendMessageRequest } from '../models/requests';
@@ -37,6 +37,23 @@ export class ChatService {
   conversationGet = (requestModel: ChatConversationListRequest) => {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/get`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public async conversationMessagesGet(requestModel: ChatConversationMessageList) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/chat/messages`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -104,5 +121,5 @@ export class ChatService {
 
 export class SelectedConversation {
   conversationID?: number;
-  userID: number;
+  userID?: number;
 }

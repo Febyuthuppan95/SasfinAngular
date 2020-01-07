@@ -8,9 +8,9 @@
       <br>
       <div class="contact-list" *ngIf="this.conversations">
           <!-- <app-chat-conversation-tile *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile> -->
-          <app-chat-conversation-tile  *ngFor="let convo of conversations" [conversation]="convo"></app-chat-conversation-tile>
+          <app-chat-conversation-tile  *ngFor="let convo of conversations" [conversation]="convo" (conversationID)="setConvo($event)"></app-chat-conversation-tile>
       </div>
-    <div class="chat-tile-footer">
+    <!-- <div class="chat-tile-footer">
       <div class="row" style="height: auto !important;">
         <div class="col-sm-2">
             <div class="image-container">
@@ -30,5 +30,5 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
