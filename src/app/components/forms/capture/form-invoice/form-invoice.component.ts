@@ -498,7 +498,9 @@ loader = false;
   matchRuleShort(str, rule) {
     // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
-    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+    const regexTest =  new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$', 'i');
+    return  regexTest.test(str);
+    // return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 
 

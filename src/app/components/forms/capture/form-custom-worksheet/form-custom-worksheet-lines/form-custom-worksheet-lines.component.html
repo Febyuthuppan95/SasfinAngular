@@ -25,7 +25,7 @@
         [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"/>
         <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p>
     </div>
-  <div class="form-group" *ngIf="this.form.custVal != undefined">
+  <div class="form-group">
     <label for="custVal">custVal</label>
     <input type="number" id="custVal"
       [(ngModel)]="this.form.custVal" [ngModelOptions]="{standalone: true}"

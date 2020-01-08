@@ -364,6 +364,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, id, name) {
+    console.log('ok');
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
