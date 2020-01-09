@@ -220,7 +220,7 @@ dialogOpen = false;
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction/attachment']);
+          this.router.navigate(['transaction/capturerlanding']);
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }

@@ -75,6 +75,15 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   @ViewChild('auto', {static: false})
   private autoComplete: MatAutocomplete;
 
+  @ViewChild('myInput1', { static: true })
+  myInputVariable1: ElementRef;
+
+  @ViewChild('myInput2', { static: true })
+  myInputVariable2: ElementRef;
+
+  @ViewChild('myInput3', { static: true })
+  myInputVariable3: ElementRef;
+
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -445,6 +454,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
 
   Add() {
+    this.myInputVariable1.nativeElement.value = -1;
+    this.myInputVariable2.nativeElement.value = -1;
+    this.myInputVariable3.nativeElement.value = -1;
     this.StartDate = null;
     this.EndDate = null;
     this.ConID = -1;
@@ -481,7 +493,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.EndDate === null || this.EndDate.toString() === '') {
       error++;
     }
-    if(new Date(this.StartDate) > new Date(this.EndDate)){
+    if (new Date(this.StartDate) > new Date(this.EndDate)) {
       error++;
       this.notify.toastrwarning('Error', 'End date cannot be before start date')
     }
@@ -549,7 +561,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.EndDate === null || this.EndDate.toString() === '') {
       error++;
     }
-    if(new Date(this.StartDate) > new Date(this.EndDate)){
+    if (new Date(this.StartDate) > new Date(this.EndDate)) {
       error++;
       this.notify.toastrwarning('Error', 'End date cannot be before start date')
     }

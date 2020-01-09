@@ -17,12 +17,12 @@
       <form class="form-inline">
         <select
           *ngIf="this.tableHeader.filters.selectRowCount"
-          [value]='15'
+          [value]='this.recordsPerPage'
           [(ngModel)]="recordsPerPage"
           [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
           (change)="recordsPerPageChange($event.target.value)">
-            <option value='15'  selected>Showing 15</option>
+            <option value='15' selected>Showing 15</option>
             <option value='25'>Showing 25</option>
             <option value='50'>Showing 50</option>
         </select>
@@ -80,7 +80,7 @@
 <app-pagination
   *ngIf="this.paginate"
   [currentTheme]="this.currentTheme"
-  [recordCount]="+this.rowStart + +this.displayData.length - +1"
+  [(recordCount)]="this.displayData.length"
   [recordsPerPage]="this.recordsPerPage"
   [rowStart]="this.rowStart"
   [rowEnd]="this.rowEnd"

@@ -204,8 +204,6 @@ loader = false;
             invoiceID: this.attachmentID,
             fromCompanyID: this.form.fromCompanyID.value,
             fromCompany: this.form.fromCompany.value,
-            toCompanyID: this.form.toCompanyID.value,
-            toCompany: this.form.toCompany.value,
             invoiceNo: this.form.invoiceNo.value,
             currencyID: this.form.currencyID.value,
             isDeleted: 0,
@@ -230,7 +228,7 @@ loader = false;
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                this.router.navigate(['transaction/attachment']);
+                this.router.navigate(['transaction/capturerlanding']);
               } else {
                 this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }

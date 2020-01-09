@@ -243,6 +243,9 @@
   .modal-add-rights {
     height: 200px;
      overflow-y: auto;
+     .right-list li {
+      overflow-wrap: break-word;
+    }
     ::-webkit-scrollbar {
       width: 20px;
     }
@@ -294,6 +297,9 @@
   // }
   .modal-list-rights .right-list {
     padding-right: 0px;
+    li {
+      overflow-wrap: break-word;
+    }
   }
   .right-list li a {
     border: none;

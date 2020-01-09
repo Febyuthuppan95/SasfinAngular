@@ -218,7 +218,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
                 (res: Outcome) => {
                   if (res.outcome === 'SUCCESS') {
                     this.notify.successmsg(res.outcome, res.outcomeMessage);
-                    this.router.navigate(['transaction', 'attachments']);
+                    this.router.navigate(['transaction/capturerlanding']);
                   } else {
                     this.notify.errorsmsg(res.outcome, res.outcomeMessage);
                   }
