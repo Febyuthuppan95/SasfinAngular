@@ -103,7 +103,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
 
   ngOnInit() {
-    this.companyService.setCapture({ capturestate: true});
+    // this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
@@ -133,7 +133,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
-      this.loadAttachments();
       this.loadCaptureInfo();
     });
 
@@ -294,48 +293,48 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
    }
   }
 
-  loadAttachments() {
-    const model = {
-      filter: '',
-      userID: this.currentUser.userID,
-      specificTransactionID: this.transactionID,
-      specificAttachmentID: -1,
-      rowStart: 1,
-      rowEnd: 25,
-      orderBy: '',
-      orderByDirection: ''
-    };
+  // loadAttachments() {
+  //   const model = {
+  //     filter: '',
+  //     userID: this.currentUser.userID,
+  //     specificTransactionID: this.transactionID,
+  //     specificAttachmentID: -1,
+  //     rowStart: 1,
+  //     rowEnd: 25,
+  //     orderBy: '',
+  //     orderByDirection: ''
+  //   };
 
-    this.transactionService
-      .listAttatchments(model)
-      .then(
-        (res: TransactionFileListResponse) => {
-          this.attachmentList = res.attachments;
-          const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
-          this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
+  //   this.transactionService
+  //     .listAttatchments(model)
+  //     .then(
+  //       (res: TransactionFileListResponse) => {
+  //         this.attachmentList = res.attachments;
+  //         const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
+  //         this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
-          this.attachmentListShowing.push(current);
+  //         this.attachmentListShowing.push(current);
 
-          this.attachmentList.forEach((item, i) => {
-            if (i < 4) {
-              this.attachmentListShowing.push(item);
-            }
-          });
+  //         this.attachmentList.forEach((item, i) => {
+  //           if (i < 4) {
+  //             this.attachmentListShowing.push(item);
+  //           }
+  //         });
 
-          this.attachmentListShowing.forEach((attach) => {
-            if (attach !== undefined) {
-              attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
-              attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
-              attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
-              attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+  //         this.attachmentListShowing.forEach((attach) => {
+  //           if (attach !== undefined) {
+  //             attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
+  //             attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
+  //             attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
+  //             attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
 
-              this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
-            }
-          });
-        },
-        (msg) => {}
-      );
-  }
+  //             this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+  //           }
+  //         });
+  //       },
+  //       (msg) => {}
+  //     );
+  // }
 
 
   /* Key Handler Directive Outputs */
@@ -383,7 +382,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         });
 
         this.dialogAttachments.afterClosed().subscribe((obj: TransactionFile) => {
-          console.log(obj);
           this.openMore = true;
           this.dialogAttachments = null;
 

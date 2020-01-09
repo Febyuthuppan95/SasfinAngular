@@ -1,5 +1,16 @@
-<app-pdf-viewer
+<!-- <app-pdf-viewer
+  *ngIf="this.displayPDF"
   [(pdf)]="this.pdfSRC">
-</app-pdf-viewer>
+</app-pdf-viewer> -->
+
+<pdf-viewer
+  *ngIf="this.displayPDF"
+  class="viewer"
+  [(src)]="pdfSRC"
+  [render-text]="true"
+  [(page)]="page"
+  [zoom]="zoom"
+  [fit-to-page]="true">
+</pdf-viewer>
 
 <app-notification></app-notification>

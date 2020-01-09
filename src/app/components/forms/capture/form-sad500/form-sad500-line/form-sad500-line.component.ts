@@ -174,6 +174,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     // tslint:disable-next-line: max-line-length
     this.unitService.list({ userID: this.currentUser.userID, specificUnitOfMeasureID: -1, rowStart: 1, rowEnd: 1000, filter: '', orderBy: '', orderByDirection: '' }).then(
       (res: ListUnitsOfMeasure) => {
+        console.log(res.unitOfMeasureList);
         if (res.outcome.outcome === 'SUCCESS') {
           this.unitOfMeasureList = res.unitOfMeasureList;
           this.unitOfMeasureListTemp = res.unitOfMeasureList;

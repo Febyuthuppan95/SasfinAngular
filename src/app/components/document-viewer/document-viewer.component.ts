@@ -19,11 +19,12 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
 
   private unsubscribeTransaction$ = new Subject<void>();
 
-  pdfSRC: string;
+  pdfSRC: ArrayBuffer;
   displayPDF = false;
   page = 1;
   zoom = 1;
   shortcuts: ShortcutInput[] = [];
+  src: string;
 
   ngOnInit() {
     this.docService.observeActiveDocument()
@@ -31,7 +32,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
     .subscribe((fileName) => {
       if (fileName !== null || undefined) {
         this.docService.get(fileName).then(
-          (res: string) => {
+          (res: ArrayBuffer) => {
+            console.log(res);
             this.pdfSRC = res;
             this.displayPDF = true;
           },

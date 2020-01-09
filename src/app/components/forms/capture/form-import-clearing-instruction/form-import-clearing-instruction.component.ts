@@ -117,7 +117,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             importersCode: this.form.importersCode.value,
             supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
-            attachmentStatus: 2,
+            attachmentStatus: 3,
           };
 
           this.captureService.iciUpdate(requestModel).then(

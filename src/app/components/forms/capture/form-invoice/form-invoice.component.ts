@@ -209,7 +209,7 @@ loader = false;
             invoiceNo: this.form.invoiceNo.value,
             currencyID: this.form.currencyID.value,
             isDeleted: 0,
-            attachmentStatusID: 2,
+            attachmentStatusID: 3,
           };
 
           if (this.form.fromCompanyID.value === null) {
@@ -230,7 +230,9 @@ loader = false;
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                this.router.navigate(['transaction/attachment']);
+
+                this.companyService.setCapture({ capturestate: true });
+                this.router.navigateByUrl('transaction/capturerlanding');
               } else {
                 this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }

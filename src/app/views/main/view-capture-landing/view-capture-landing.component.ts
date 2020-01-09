@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-view-capture-landing',
@@ -34,6 +35,10 @@ export class ViewCaptureLandingComponent implements OnInit {
               private snackbarService: HelpSnackbar,
               private eventService: EventService) { }
 
+@ViewChild(NotificationComponent, { static: false })
+private notify: NotificationComponent;
+
+
 
   private unsubscribe$ = new Subject<void>();
 
@@ -52,6 +57,7 @@ export class ViewCaptureLandingComponent implements OnInit {
   start = false;
 
   loading = false;
+
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
@@ -72,11 +78,12 @@ export class ViewCaptureLandingComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCapture) => {
       this.start = obj.capturestate;
+      console.log(this.start);
+      if (this.start) {
+        this.loadNextAttachment();
+      }
     });
 
-    if (this.start) {
-      this.loadNextAttachment();
-    }
   }
 
   loadNextAttachment() {
@@ -87,22 +94,29 @@ export class ViewCaptureLandingComponent implements OnInit {
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        this.CaptureInfo = res.captureattachment;
+        console.log(res.captureattachment.attachmentID);
+        if (res.captureattachment.attachmentID !== 0 || res.captureattachment.transactionID !== 0) {
+          this.CaptureInfo = res.captureattachment;
 
-        this.docPath = res.captureattachment.filepath;
-        this.transactionID = res.captureattachment.transactionID;
-        this.attachmentID = res.captureattachment.attachmentID;
-        this.fileType = res.captureattachment.filetype;
-        this.fileTypeID = res.captureattachment.fileTypeID;
-        this.companyID = res.captureattachment.companyID;
-        this.companyName = res.captureattachment.companyName;
+          this.docPath = res.captureattachment.filepath;
+          this.transactionID = res.captureattachment.transactionID;
+          this.attachmentID = res.captureattachment.attachmentID;
+          this.fileType = res.captureattachment.filetype;
+          this.fileTypeID = res.captureattachment.fileTypeID;
+          this.companyID = res.captureattachment.companyID;
+          this.companyName = res.captureattachment.companyName;
 
-        this.docService.loadDocumentToViewer(this.docPath);
-        // tslint:disable-next-line: max-line-length
-        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
-        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-        this.router.navigate(['capture', 'transaction', 'attachment']);
-        this.loading = false;
+          this.docService.loadDocumentToViewer(this.docPath);
+          // tslint:disable-next-line: max-line-length
+          this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+          this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+          this.router.navigate(['capture', 'transaction', 'attachment']);
+          this.loading = false;
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.start = false;
+        }
+
       },
       msg => {
         this.loading = false;

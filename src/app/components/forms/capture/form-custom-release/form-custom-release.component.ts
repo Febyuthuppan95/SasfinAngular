@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { MatDialog } from '@angular/material';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-form-custom-release',
@@ -26,7 +27,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private router: Router,
               private captureService: CaptureService,
               private eventService: EventService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private companyService: CompanyService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -132,14 +134,16 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
             isDeleted: 0,
-            attachmentStatusID: 2,
+            attachmentStatusID: 3,
           };
 
           this.transactionService.customsReleaseUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                this.router.navigate(['transaction/attachment']);
+
+                this.companyService.setCapture({ capturestate: true });
+                this.router.navigateByUrl('transaction/capturerlanding');
               } else {
                 this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }
