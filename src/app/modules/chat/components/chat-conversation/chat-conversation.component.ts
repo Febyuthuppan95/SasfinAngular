@@ -1,3 +1,4 @@
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { User } from './../../../../models/HttpResponses/User';
 import { SelectedConversation } from './../../services/chat.service';
 import { ChatSendMessageResponse, ChatConversationGetResponse } from './../../models/responses';
@@ -18,7 +19,8 @@ export class ChatConversationComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private userService: UserService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private channelService: ChannelService
   ) { }
   @Input() conversationID: number;
   @Output() dismiss = new EventEmitter<void>();
@@ -36,6 +38,17 @@ export class ChatConversationComponent implements OnInit {
       if (this.conversationID !== -1) {
         this.currentUser = this.userService.getCurrentUser();
         this.messagesLoad();
+      }
+    });
+    this.channelService.observeUserConnection().subscribe((hub: signalR.HubConnection) => {
+      if (hub !== null) {
+        hub.on('userChatConnection', (res: ChatSendMessageRequest) => {
+          console.log(res);
+          if (this.conversationID === res.conversationID) {
+            this.messageList.push({message: res.message,
+              messageID: -1, receivingUserID: res.receivingUserID, sender: true});
+          }
+        });
       }
     });
     this.form = this.formBuilder.group({
@@ -101,4 +114,10 @@ export class ChatConversationComponent implements OnInit {
   }
 
 
+}
+export class SignalRMessage {
+  conversationID: number;
+  message: string;
+  messageID: number;
+  receivingUserID: number;
 }

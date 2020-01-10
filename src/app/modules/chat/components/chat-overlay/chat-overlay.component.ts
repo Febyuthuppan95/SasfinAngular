@@ -40,7 +40,7 @@ export class ChatOverlayComponent implements OnInit, OnDestroy {
     this.channelService.observeUserConnection().subscribe((hub: signalR.HubConnection) => {
       if (hub !== null) {
         hub.on('userChatConnection', (msg: string) => {
-          
+          // stuff here
         });
       }
     });
