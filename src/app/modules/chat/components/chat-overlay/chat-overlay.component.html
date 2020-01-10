@@ -4,7 +4,7 @@
   <div class="row vh-100">
     <div id="chatbox" class="chat-box" >
       <!-- <app-chat-contact-list *ngIf="this.displayContacts" (showConversations)="displayCOnversationsEvent()"></app-chat-contact-list> -->
-      <app-chat-conversation-list *ngIf="this.displayConversations" (contacts)="displayContactsEvent()" (selectedConvo)="setConvo($event)" [(companyID)]="this.currentCompany" [(transactionID)]="this.transactionID" [(attachmentID)]="this.attachmentID" [(attachmentType)]="this.attachmentType"></app-chat-conversation-list>
+      <app-chat-conversation-list (dismiss)="dismissEvent()" *ngIf="this.displayConversations" (contacts)="displayContactsEvent()" (selectedConvo)="setConvo($event)" [(companyID)]="this.currentCompany" [(transactionID)]="this.transactionID" [(attachmentID)]="this.attachmentID" [(attachmentType)]="this.attachmentType"></app-chat-conversation-list>
       <app-chat-conversation (dismiss)="dismissEvent()" (resetConversation)="setConvo(-1)" *ngIf="this.displaySelectedConversation" ></app-chat-conversation>
     </div>
     <!-- <div class="col-sm-9">

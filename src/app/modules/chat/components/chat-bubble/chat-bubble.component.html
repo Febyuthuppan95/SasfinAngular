@@ -1,5 +1,6 @@
-<div class="row" [style.text-align]="sender ? 'right' : 'left'"> <!--Bubbles are rows. Text is on the right side if you are the sender.-->
-    <mat-card><!--message inside this card-->
-        <p>{{message}}</p>
+<div class="row" > <!--Bubbles are rows. Text is on the right side if you are the sender.-->
+    <mat-card [ngClass]="this.sender ? 'bubble-right' : 'bubble-left'"><!--message inside this card-->
+        <p>{{this.message.message}}</p>
     </mat-card>
 </div>
+<div class="spacer row"></div>

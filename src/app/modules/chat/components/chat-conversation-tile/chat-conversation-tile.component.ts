@@ -20,14 +20,17 @@ export class ChatConversationTileComponent implements OnInit {
   imageURL: string = null;
 
   ngOnInit() {
+    console.log(this.conversation);
   }
 
   selectConversation(userID: any) {
     // this.chatService.setConverastion({ userID });
   }
-  gotoConversation(convoID: number) {
+  gotoConversation(convoID: number, convoRecipient: number) {
+    console.log(convoRecipient);
     const model: SelectedConversation = {
-      conversationID: convoID
+      conversationID: convoID,
+      recipientID: convoRecipient
     };
     this.chatService.setConversation(model);
     console.log(convoID);

@@ -7,7 +7,7 @@ import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Transaction } from './../../../../models/HttpResponses/TransactionListResponse';
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
 
@@ -16,7 +16,7 @@ import { UserList } from 'src/app/models/HttpResponses/UserList';
   templateUrl: './chat-conversation-list.component.html',
   styleUrls: ['./chat-conversation-list.component.scss']
 })
-export class ChatConversationListComponent implements OnInit {
+export class ChatConversationListComponent implements OnInit, OnChanges {
 
   @Output() contacts = new EventEmitter<void>();
   @Input() transactionID: number;
@@ -24,6 +24,7 @@ export class ChatConversationListComponent implements OnInit {
   @Input() attachmentType: string;
   @Input() companyID: number;
   @Output() conversationID = new EventEmitter<number>();
+  @Output() dismiss = new EventEmitter<void>();
 
   currentUser: User;
   currentRecipient: number;
@@ -38,11 +39,16 @@ export class ChatConversationListComponent implements OnInit {
 
   ngOnInit() {
     // Load User Conversations
+    this.genOnInit();
+  }
+  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    this.genOnInit();
+  }
+  genOnInit() {
     this.conversations = [];
     this.currentUser = this.userService.getCurrentUser();
     this.setResponsibleUser();
     this.getConversations();
-
   }
 
   setResponsibleUser() {
@@ -73,6 +79,7 @@ export class ChatConversationListComponent implements OnInit {
     );
   }
   getConversations() {
+    console.log(this.currentUser.userID);
     const model = {
       userID: this.currentUser.userID,
       rowStart: 1,
@@ -81,11 +88,10 @@ export class ChatConversationListComponent implements OnInit {
     };
     this.chatService.conversationList(model).then(
       (res: ChatConversationListResponse) => {
-        if (res.rowCount > 0) {
+        if (res !== null) {
           this.conversations = res.conversations;
           console.log(this.conversations);
         } else {
-
         }
       }, (msg) => {
       });
@@ -111,12 +117,12 @@ export class ChatConversationListComponent implements OnInit {
            documentID: request.documentID, fileType: request.fileType});
       },
       (msg) => {
-
       }
     );
-
   }
-
+  dismissEvent() {
+    this.dismiss.emit();
+  }
 }
 
 export interface Conversation {

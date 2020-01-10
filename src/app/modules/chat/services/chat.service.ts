@@ -87,7 +87,7 @@ export class ChatService {
 
   sendMessage = (requestModel: ChatSendMessageRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/users/chat/message/send`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/send`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -122,4 +122,5 @@ export class ChatService {
 export class SelectedConversation {
   conversationID?: number;
   userID?: number;
+  recipientID?: number;
 }

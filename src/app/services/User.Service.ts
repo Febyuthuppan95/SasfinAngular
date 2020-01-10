@@ -29,6 +29,7 @@ export class UserService {
    * Logout
    */
   public logout() {
+    this.cookieService.delete('currentUser', '/');
     this.router.navigateByUrl('/account/login');
   }
 

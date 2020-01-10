@@ -1,7 +1,7 @@
 <div class="chat-tile">
     <div class="chat-tile-header">
         <button mat-mini-fab matTooltip="New Issue" matTooltipPosition="below" class="header-button" (click)="createIssue()"><span class="mdi mdi-plus"></span></button>
-      <h5>Conversations</h5>
+      <h5><div class="chat-title" (click)="this.dismissEvent()">Conversations</div></h5>
     </div>
     <div class="chat-body">
       <input type="search" class="form-control rounded" placeholder="Search conversations...">

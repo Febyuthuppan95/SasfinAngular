@@ -1,4 +1,4 @@
-<div class="conversation-tile shadow-sm" (click)="gotoConversation(this.conversation.conversationID)">
+<div class="conversation-tile shadow-sm" (click)="gotoConversation(this.conversation.conversationID, this.conversation.recipientID)">
   <div class="row">
     <div class="col-sm-12">
       <span class="float-right">{{this.conversation.messageDate.toString()}}</span>
