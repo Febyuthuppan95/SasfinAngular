@@ -124,7 +124,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     });
 
     this.loadUserRights();
-    this.loadAssignedRights();
+
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -149,7 +149,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
   }
 
   loadAvailableRights() {
-    console.log('Loading Available Rights');
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -163,7 +162,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-        console.log('Loading Available Rights Complete');
         this.showLoader = false;
         this.rightsList = res.rightList;
 
@@ -172,7 +170,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         });
       },
       msg => {
-        console.log('Loading Available Rights Failed');
         this.showLoader = false;
         // this.notify.errorsmsg(
         //   'Server Error',
@@ -219,7 +216,10 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         }
 
         this.loadAvailableRights();
+
         // this.paginateData();
+
+        this.showLoader = false;
       },
       msg => {
         // Process Failure
@@ -249,7 +249,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        console.log(res);
         // Process Success
         if (!this.openAddModal) {
           if (res.outcome.outcome === 'SUCCESS') {
@@ -257,6 +256,8 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
+
+
           }
         }
 
@@ -271,6 +272,8 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         } else {
           this.noData = false;
         }
+
+        this.loadAssignedRights();
         // this.paginateData();
       },
       msg => {
