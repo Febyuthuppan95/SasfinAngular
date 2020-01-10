@@ -102,6 +102,16 @@ export class CompanyService {
   // Capture
   SelectedCapture: BehaviorSubject<SelectedCapture>;
 
+  testObservation = new BehaviorSubject<SelectedCompany>(null).asObservable();
+
+  // subService.listen(this.testObservation).subscribe((val: object) => {});
+  // listen (obsv: Observerable<any>) {
+//      obsv.pipe(...).subscribe(...)
+//
+  // }
+  // subService.testObservaton.pipe(...).subscribe(...);
+  // subService.close();
+
   // company
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
@@ -138,6 +148,8 @@ export class CompanyService {
   observeCompany() {
     return this.selectedCompany.asObservable();
   }
+
+
   // item
   observeItem() {
     return this.selectedItem.asObservable();
@@ -1092,4 +1104,5 @@ export class SelectedClaimReport {
 
 export class SelectedCapture {
   capturestate: boolean;
+  token?: string;
 }

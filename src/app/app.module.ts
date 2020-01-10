@@ -193,6 +193,7 @@ import { PDFViewerComponent } from './components/pdfviewer/pdfviewer.component';
 import { EventService } from './services/event.service';
 import { PreviewReportComponent } from './components/preview-report/preview-report.component';
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
+import { SplitDocumentComponent } from './components/split-document/split-document.component';
 
 
 @NgModule({
@@ -328,7 +329,7 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     ContextMenuCompanyContactsComponent,
     ContextMenuCompanyContactsComponent,
     ViewCaptureLandingComponent,
-
+    SplitDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -406,7 +407,8 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
     QuitDialogComponent,
     SubmitDialogComponent,
     FormVOCComponent,
-    FormWaybillComponent
+    FormWaybillComponent,
+    SplitDocumentComponent
   ]
 })
 export class AppModule { }

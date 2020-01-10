@@ -12,6 +12,7 @@ import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-sidebar',
@@ -236,6 +237,6 @@ export class SidebarComponent implements OnInit {
   }
 
   loadCaptureScreen() {
-    this.companyService.setCapture({ capturestate: true});
+    this.companyService.setCapture({ capturestate: true, token: UUID.UUID()}); // Generated token to prevent duplicate events
   }
 }
