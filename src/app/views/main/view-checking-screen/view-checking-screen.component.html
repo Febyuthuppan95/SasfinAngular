@@ -17,7 +17,7 @@
       <div class="col md 9"></div>
     </div>
     <br />
-    <div class="row">
+    <div class="row" *ngIf="this.CheckList !== null">
       <div class="col-md12">
         <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID :
           {{this.CheckList.transaction.id}}
@@ -28,7 +28,7 @@
     <br /> <br />
 
     <h4 *ngIf="this.SADnoResult == true">No SAD500's found for this transaction</h4>
-
+    <div *ngIf="this.CheckList !== null">
     <mat-accordion *ngFor="let SAD of this.CheckList.transaction.saD500s">
       <mat-expansion-panel id="expansion-panel-0" [expanded]="true"
         style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
@@ -178,7 +178,7 @@
       </mat-expansion-panel>
 
     </mat-accordion>
-
+  </div>
   </div>
 
 </div>

@@ -20,5 +20,4 @@ export class ReportQueue {
   reportQueueStatus: string;
   startDate: string;
   endDate: string;
-
 }

@@ -238,7 +238,7 @@ loader = false;
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                this.router.navigate(['transaction/attachment']);
+                this.router.navigate(['transaction/capturerlanding']);
               } else {
                 this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }
@@ -487,7 +487,9 @@ loader = false;
   matchRuleShort(str, rule) {
     // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
-    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+    const regexTest =  new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$', 'i');
+    return  regexTest.test(str);
+    // return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 
 

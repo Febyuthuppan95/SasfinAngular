@@ -42,7 +42,7 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
   @ViewChild('openViewBackgroundModal', { static: true })
   openViewBackgroundModal: ElementRef;
 
-  @ViewChild('myInput', { static: true })
+  @ViewChild('myInput', { static: false })
   myInputVariable: ElementRef;
 
   currentTheme = 'light';
