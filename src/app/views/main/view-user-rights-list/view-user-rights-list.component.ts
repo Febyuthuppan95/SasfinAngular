@@ -124,7 +124,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     });
 
     this.loadUserRights();
-    this.loadAssignedRights()
+    this.loadAssignedRights();
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -149,6 +149,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
   }
 
   loadAvailableRights() {
+    console.log('Loading Available Rights');
     const model: GetRightList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -162,7 +163,8 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     .getRightList(model)
     .then(
       (res: RightListResponse) => {
-
+        console.log('Loading Available Rights Complete');
+        this.showLoader = false;
         this.rightsList = res.rightList;
 
         this.assignedRights.forEach(right => {
@@ -170,6 +172,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
         });
       },
       msg => {
+        console.log('Loading Available Rights Failed');
         this.showLoader = false;
         // this.notify.errorsmsg(
         //   'Server Error',
@@ -194,7 +197,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        console.log(res);
         // Process Success
         if (!this.openAddModal) {
           if (res.outcome.outcome === 'SUCCESS') {
@@ -208,7 +210,6 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
 
         this.assignedRights = res.userRightsList;
         this.rowCount = res.rowCount;
-        this.showLoader = false;
         this.showingRecords = res.userRightsList.length;
         this.totalShowing += this.rowStart + this.userRightsList.length - 1;
         if (this.rowCount === 0) {
@@ -262,7 +263,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
 
         this.userRightsList = res.userRightsList;
         this.rowCount = res.rowCount;
-        this.showLoader = false;
+        // this.showLoader = false;
         this.showingRecords = res.userRightsList.length;
         this.totalShowing += this.rowStart + this.userRightsList.length - 1;
         if (this.rowCount === 0) {
@@ -309,11 +310,11 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  confirmRemove(content, id, Name) {
-    this.rightId = id;
+  confirmRemove(content, right: UserRightsList) {
+    this.rightId = right.rightID;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       // (result);
-      this.removeRight(this.rightId);
+      this.removeRight(right);
       // Remove the right
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -324,44 +325,70 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
   confirmAdd() {
     this.openAddModal.nativeElement.click();
   }
-  removeRight(id: number) {
+
+  removeRight(right: UserRightsList) {
+    const rightReturn: RightList = {
+      name: right.name,
+      description: right.description,
+      rightID: right.rightID
+    };
+
+    this.rightsList.push(rightReturn);
+    this.assignedRights = this.assignedRights.filter(x => x.rightID !== right.rightID);
 
     const requestModel: UpdateUserRight = {
       userID: this.currentUser.userID,
-      userRightID: id,
+      userRightID: right.userRightID,
     };
+
+    console.log(requestModel);
     const result = this.userService
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {
-
         if (res.outcome.outcome === 'FAILURE') {
           this.notify.errorsmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
+
+          this.assignedRights.push(right);
+          this.rightsList = this.rightsList.filter(x => x.rightID !== right.rightID);
         } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
-        }
 
-        this.loadUserRights();
+          this.loadAssignedRights();
+        }
       },
       msg => {
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
+
+        this.assignedRights.push(right);
+        this.rightsList = this.rightsList.filter(x => x.rightID !== right.rightID);
       }
     );
   }
 
-  addNewRight(id, name) {
+  addNewRight(right: RightList) {
+    const rightReturn: UserRightsList = {
+      name: right.name,
+      description: right.description,
+      rightID: right.rightID,
+      userRightID: -1
+    };
+
+    this.assignedRights.push(rightReturn);
+    this.rightsList = this.rightsList.filter(x => x.rightID !== right.rightID);
+
     const requestModel: AddUserRight = {
       userID: this.currentUser.userID,
       addedUserID: this.specificUser,
-      rightID: id,
+      rightID: right.rightID,
     };
     const result = this.userService
     .addUserright(requestModel).then(
@@ -371,15 +398,24 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
+
+          this.rightsList.push(right);
+          this.assignedRights = this.assignedRights.filter(x => x.rightID !== right.rightID);
+
         } else {
           this.notify.successmsg(
             res.outcome.outcome,
             res.outcome.outcomeMessage
           );
+
+          this.assignedRights.find(x => x.rightID === rightReturn.rightID);
         }
         this.loadUserRights();
       },
       msg => {
+        this.rightsList.push(right);
+        this.assignedRights = this.assignedRights.filter(x => x.rightID !== right.rightID);
+
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'

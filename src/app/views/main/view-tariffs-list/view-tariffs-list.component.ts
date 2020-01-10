@@ -31,6 +31,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.rowStart = 1;
+    this.recordsPerPage = 15;
     this.rowCountPerPage = 15;
     this.activePage = +1;
     this.prevPageState = true;
@@ -121,7 +122,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-  recordsPerPage = 15;
+  recordsPerPage: number;
   sidebarCollapsed = true;
   contextMenu = false;
   contextMenuX = 0;
@@ -156,8 +157,9 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
-
+    console.log(this.recordsPerPage);
     this.loadTariffs(false);
+    console.log(this.recordsPerPage);
   }
 
   loadTariffs(displayGrowl: boolean) {

@@ -62,13 +62,8 @@ export class PaginationComponent implements OnInit, OnChanges {
     let rowStart = 1;
     let rowEnd = rowStart + +this.recordsPerPage - 1;
 
-    // console.log(rowStart);
-    // console.log(rowEnd);
-    // console.log(this.recordsPerPage);
-
     // Number of Pages
     const pageCount = +this.rowCount / +this.recordsPerPage;
-    console.log(this.recordsPerPage);
 
     this.pages = [];
 
@@ -83,13 +78,11 @@ export class PaginationComponent implements OnInit, OnChanges {
       rowEnd += +this.recordsPerPage;
     }
 
-    console.log(this.pages);
     this.updatePagination();
   }
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
-    console.log(page);
     this.rowStart = page.rowStart;
     this.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;

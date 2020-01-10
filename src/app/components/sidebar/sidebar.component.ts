@@ -215,7 +215,7 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'CompanyAddInfoTypes') {
             this.showcompanyAddInfoTypes = true;
           }
-          if (uRight.name === 'Locations') {
+          if (uRight.name === 'Places') {
             this.showlocations = true;
           }
           if (uRight.name === 'AttchmentCapture') {

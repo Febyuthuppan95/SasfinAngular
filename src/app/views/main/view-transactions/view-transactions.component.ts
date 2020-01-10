@@ -165,6 +165,8 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.loadTransactions();
     this.loadStatuses();
     this.loadTypes();
+
+    console.log(this.rowStart + ', ' + this. rowEnd + ', ' + this.rowCount + ', ' + this.showingRecords);
   }
 
   loadStatuses() {
@@ -292,15 +294,16 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
             );
           }
           this.dataList = res.transactions;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.transactions.length;
+
+          this.showLoader = false;
+
           if (res.rowCount === 0) {
             this.noData = true;
-            this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
-            this.rowCount = res.rowCount;
-            this.showLoader = false;
-            this.showingRecords = res.transactions.length;
             this.totalShowing = +this.rowStart + +this.dataset.transactions.length - 1;
             this.paginateData();
           }
@@ -364,6 +367,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, id, name) {
+    console.log('ok');
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;

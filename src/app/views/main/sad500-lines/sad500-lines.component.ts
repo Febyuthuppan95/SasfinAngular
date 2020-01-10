@@ -65,8 +65,8 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     { title: 'Customs Value', propertyName: 'customsValue', order: { enable: true, tag: 'CustomsValue' } },
     { title: 'Line No', propertyName: 'lineNo', order: { enable: true, tag: 'LineNo' } },
     { title: 'Unit Of Measure', propertyName: 'unitOfMeasure', order: { enable: true, tag: 'UnitOfMeasure' } },
-    { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
-    { title: 'Previous Declaration', propertyName: 'previousDeclaration', order: { enable: true, tag: 'PreviousDeclaration' } },
+    // { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
+    // { title: 'Previous Declaration', propertyName: 'previousDeclaration', order: { enable: true, tag: 'PreviousDeclaration' } },
   ];
 
   private unsubscribe$ = new Subject<void>();
@@ -97,7 +97,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     this.captureService.sad500LineList({ userID: 3, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
         this.dataset = res.lines;
-        console.log(this.dataset);
       },
       (msg) => {
         if (!environment.production) {

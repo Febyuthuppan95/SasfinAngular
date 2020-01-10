@@ -16,7 +16,8 @@
   </ul>
 </nav>
 <br />
-<p class="ls-text-{{ currentTheme }}" style="margin-top:36px;">Showing {{ this.rowStart }} to {{  +rowStart + +recordCount - 1}} of
+<p *ngIf="(this.rowCount > 0)" class="ls-text-{{ currentTheme }}" style="margin-top:36px;">Showing {{ this.rowStart }} to {{  +rowStart + +recordCount - 1}} of
   {{ this.rowCount }}
 </p>
+<p *ngIf="(this.rowCount === 0)" class="ls-text-{{ currentTheme }}">Showing 0 to 0 of 0</p>
 
