@@ -1,4 +1,4 @@
-<div class="shadow tile ls-tile-{{ currentTheme }}">
+<!-- <div class="shadow tile ls-tile-{{ currentTheme }}">
   <div class="ls-card-body">
     <div class="float-right">
       <ng-container *ngIf="showLoader">
@@ -110,6 +110,33 @@
     <br />
     <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
+  </div>
+</div> -->
+
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.dataList"
+      [(dataset)]="this.dataList"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.showingRecords"
+      [(rowStart)]="this.rowStart"
+      [(rowEnd)]="this.rowEnd"
+      [(rowCount)]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (selectedRecord)="setClickedRow($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (addButtonEvent)="addCompany()"
+      (searchEvent)="searchBar($event)">
+    </app-table>
   </div>
 </div>
 
