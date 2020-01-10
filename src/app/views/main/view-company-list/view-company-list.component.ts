@@ -13,7 +13,7 @@ import { CompanyList, AddCompany, UpdateCompany } from 'src/app/models/HttpReque
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
-import { SelectedRecord, TableHeader, TableHeading } from 'src/app/models/Table';
+import { SelectedRecord, TableHeader, TableHeading, Order } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-company-list',
@@ -88,7 +88,7 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
-  showingRecords: number;
+  showingRecords = 15;
   activePage: number;
 
   focusCompanyID: number;
@@ -259,7 +259,6 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
             this.dataList = res.companies;
             this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.companies.length;
             this.totalShowing = +this.rowStart + +this.dataset.companies.length - 1;
             // this.paginateData();
 
@@ -274,6 +273,14 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
 
         }
       );
+  }
+
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadCompanies();
   }
 
   // updateSort(orderBy: string) {

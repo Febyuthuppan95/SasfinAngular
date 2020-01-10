@@ -217,7 +217,7 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
   rowStart: number;
   rowEnd: number;
   rowCountPerPage: number;
-  showingRecords: number;
+  showingRecords = 15;
   filter: string;
   activePage: number;
   orderBy: string;
@@ -324,7 +324,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
           } else {
             this.noData = false;
             this.rowCount = res.rowCount;
-            this.showingRecords = res.userList.length;
 
             this.showLoader = false;
             this.totalShowing = +this.rowStart + +this.userList.length - 1;
