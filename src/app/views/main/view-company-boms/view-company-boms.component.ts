@@ -59,6 +59,9 @@ export class ViewCompanyBOMsComponent implements OnInit {
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
 
+  @ViewChild('bomFile', { static: false })
+  bomFile: ElementRef;
+
   // @ViewChild('openRemoveModal', {static: true})
   // openRemoveModal: ElementRef;
   // @ViewChild('closeRemoveModal', {static: true})
@@ -147,6 +150,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   companyID = 0;
   companyName = '';
   BomFile: File;
+  filePreview: string;
 
 
   ngOnInit() {
@@ -277,6 +281,9 @@ export class ViewCompanyBOMsComponent implements OnInit {
   }
   add() {
     // Render modal
+    this.filePreview = null;
+    this.bomFile.nativeElement.value = '';
+    this.BomFile = null;
     this.openAddModal.nativeElement.click();
   }
   queueBOM() {
@@ -285,8 +292,9 @@ export class ViewCompanyBOMsComponent implements OnInit {
   }
   onFileChange(files: FileList) {
     this.BomFile = files.item(0);
-    console.log(this.BomFile);
+    this.filePreview = this.BomFile.name;
   }
+
   saveBOMUpload() {
     // Save
     this.IDocumentService.upload(this.BomFile).then(

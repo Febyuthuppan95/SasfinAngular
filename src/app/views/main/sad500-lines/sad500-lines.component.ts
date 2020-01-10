@@ -65,7 +65,8 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     { title: 'Customs Value', propertyName: 'customsValue', order: { enable: true, tag: 'CustomsValue' } },
     { title: 'Line No', propertyName: 'lineNo', order: { enable: true, tag: 'LineNo' } },
     { title: 'Unit Of Measure', propertyName: 'unitOfMeasure', order: { enable: true, tag: 'UnitOfMeasure' } },
-    { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
+    // { title: 'Quantity', propertyName: 'quantity', order: { enable: true, tag: 'Quantity' } },
+    // { title: 'Previous Declaration', propertyName: 'previousDeclaration', order: { enable: true, tag: 'PreviousDeclaration' } },
   ];
 
   private unsubscribe$ = new Subject<void>();
@@ -96,7 +97,6 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     this.captureService.sad500LineList({ userID: 3, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
         this.dataset = res.lines;
-        console.log(this.dataset);
       },
       (msg) => {
         if (!environment.production) {
@@ -114,6 +114,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     this.contextMenuY = $event.event.clientY + 5;
     this.contextMenuEnable = true;
     this.currentRecord = $event.record;
+    alert('row click');
   }
 
   update(obj: SAD500Line) {
@@ -134,13 +135,14 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
       this.captureService.sad500LineUpdate(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
-            this.loadDataset();
             this.closeAddModal.nativeElement.click();
+            this.loadDataset();
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
         (msg) => {
+          this.notify.errorsmsg('Failure', 'Something went wrong');
         }
       );
     }

@@ -137,8 +137,10 @@
       </ul>
     </nav>
     <br />
-    <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+    <p *ngIf="(!noData)" class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
+
+    <p *ngIf="(noData)" class="ls-text-{{ currentTheme }}">0 to 0 of 0</p>
   </div>
 </div>
 

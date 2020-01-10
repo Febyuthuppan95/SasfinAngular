@@ -43,7 +43,14 @@
         [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         placeholder="Quantity" style="margin-top:0"/>
-        <p class="invalid-control-label" *ngIf="this.form.quantityError !== null && this.form.lineNoError !== undefined">{{this.form.quantityError}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.quantityError !== null && this.form.quantityError !== undefined">{{this.form.quantityError}}</p>
+    </div>
+    <div class="form-group" *ngIf="this.form.previousDeclaration != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.previousDeclaration" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        placeholder="Previous Declaration" style="margin-top:0"/>
+        <p class="invalid-control-label" *ngIf="this.form.previousDeclarationError !== null && this.form.previousDeclarationError !== undefined">{{this.form.previousDeclarationError}}</p>
     </div>
   <div class="form-group" *ngIf="this.form.tariff != undefined">
         <input [(ngModel)]="this.form.tariff" type="text"

@@ -84,7 +84,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     lineNoError: null,
     unitOfMeasureError: null,
     quantity: 0,
-    quantityError: null
+    quantityError: null,
+    previousDeclarationError: null,
+    previousDeclaration: ''
   };
 
   isUpdate: boolean;
@@ -163,7 +165,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         lineNoError: null,
         unitOfMeasureError: null,
         quantity: 0,
-        quantityError: null
+        quantityError: null,
+        previousDeclarationError: null,
+        previousDeclaration: ''
       };
       this.loadDuties();
     }
@@ -199,6 +203,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasureID: 1,
         unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantityError,
+        previousDeclaration: this.form.previousDeclaration
       });
     } else {
       this.submitSADLine.emit({
@@ -211,7 +216,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasureID: 1,
         unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantity,
-        duties: this.dutiesToBeSaved
+        duties: this.dutiesToBeSaved,
+        previousDeclaration: this.form.previousDeclaration
       });
 
       this.dutiesToBeSaved = [];

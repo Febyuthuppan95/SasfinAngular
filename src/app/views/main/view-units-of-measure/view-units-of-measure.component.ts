@@ -19,22 +19,36 @@ import { Subject } from 'rxjs';
 })
 export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
 
-  constructor(private themeService: ThemeService, private unitService: UnitMeasureService) {}
+  constructor(private themeService: ThemeService,
+              private unitService: UnitMeasureService) {
+                this.rowStart = 1;
+                this.rowCountPerPage = 15;
+                this.activePage = +1;
+                this.prevPageState = true;
+                this.nextPageState = false;
+                this.prevPage = +this.activePage - 1;
+                this.nextPage = +this.activePage + 1;
+                this.filter = '';
+                this.orderBy = 'Name';
+                this.orderDirection = 'ASC';
+                this.totalShowing = 0;
+              }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
   currentTheme = 'light';
 
-  unitsOfMeasure: ListUnitsOfMeasureRequest = {
-    userID: 3,
-    specificUnitOfMeasureID: -1,
-    filter: '',
-    orderBy: 'Name',
-    orderByDirection: 'ASC',
-    rowStart: 1,
-    rowEnd: 15
-  };
+  // unitsOfMeasure: ListUnitsOfMeasureRequest = {
+  //   userID: 3,
+  //   specificUnitOfMeasureID: -1,
+  //   filter: '',
+  filter: string;
+  orderBy: string;
+  orderDirection: string;
+  //   rowStart: 1,
+  //   rowEnd: 15
+  // };
 
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
@@ -98,8 +112,21 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   }
 
   loadUnitsOfMeasures() {
-    this.unitService.list(this.unitsOfMeasure).then(
+    console.log('running');
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+
+    const unitsOfMeasure = {
+      userID: 3,
+      specificUnitOfMeasureID: -1,
+      filter: this.filter,
+      orderBy: 'Name',
+      orderByDirection: 'ASC',
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd
+    };
+    this.unitService.list(unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
+        console.log(res);
         this.showLoader = false;
         {
           if (res.outcome.outcome === 'SUCCESS') {
@@ -110,21 +137,36 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
           }
         }
 
+        this.dataset = res.unitOfMeasureList;
+        this.totalDisplayCount = res.unitOfMeasureList.length;
 
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.dataset = res.unitOfMeasureList;
-          this.rowCount = res.rowCount;
-          this.noData = false;
-
-          if (res.rowCount > this.selectRowDisplay) {
-            this.totalDisplayCount = res.unitOfMeasureList.length;
-          } else {
-            this.totalDisplayCount = res.rowCount;
-          }
-
-        } else {
+        if (res.rowCount === 0) {
           this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showLoader = false;
+          this.totalDisplayCount = res.unitOfMeasureList.length;
+          this.totalShowing = +this.rowStart + +this.dataset.length - 1;
+         // this.paginateData();
         }
+
+        // if (res.rowCount === 0) {
+        //   this.noData = true;
+        //   this.rowCount = res.rowCount;
+
+          // if (res.rowCount > this.selectRowDisplay) {
+          //   this.totalDisplayCount = res.unitOfMeasureList.length;
+          // } else {
+          //   this.totalDisplayCount = res.rowCount;
+          // }
+
+        // } else {
+        //   this.noData = false;
+        //   this.rowCount = res.rowCount;
+        //   this.totalShowing = +this.rowStart + +this.dataset.length - 1;
+        // }
       },
       (msg) => {
         this.showLoader = false;
@@ -138,8 +180,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
-    this.unitsOfMeasure.rowStart = page.rowStart;
-    this.unitsOfMeasure.rowEnd = page.rowEnd;
+    this.rowStart = page.rowStart;
+    this.rowEnd = page.rowEnd;
     this.activePage = +pageNumber;
     this.prevPage = +this.activePage - 1;
     this.nextPage = +this.activePage + 1;
@@ -168,46 +210,52 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   }
 
   updatePagination() {
-    this.showingPages = Array<Pagination>();
-    this.showingPages[0] = this.pages[this.activePage - 1];
-    const pagenumber = +this.totalRowCount / +this.selectRowDisplay;
+    if (this.dataset.length <= this.totalShowing) {
+      this.prevPageState = false;
+      this.nextPageState = false;
+    } else {
+      this.showingPages = Array<Pagination>();
+      this.showingPages[0] = this.pages[this.activePage - 1];
+      const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-    if (this.activePage < pagenumber) {
-      this.showingPages[1] = this.pages[+this.activePage];
+      if (this.activePage < pagenumber) {
+        this.showingPages[1] = this.pages[+this.activePage];
 
-      if (this.showingPages[1] === undefined) {
-        const page = new Pagination();
-        page.page = 1;
-        page.rowStart = 1;
-        page.rowEnd = this.unitsOfMeasure.rowEnd;
-        this.showingPages[1] = page;
+        if (this.showingPages[1] === undefined) {
+          const page = new Pagination();
+          page.page = 1;
+          page.rowStart = 1;
+          page.rowEnd = this.rowEnd;
+          this.showingPages[1] = page;
+        }
+      }
+
+      if (+this.activePage + 1 <= pagenumber) {
+        this.showingPages[2] = this.pages[+this.activePage + 1];
       }
     }
 
-    if (+this.activePage + 1 <= pagenumber) {
-      this.showingPages[2] = this.pages[+this.activePage + 1];
-    }
   }
 
   updateSort(orderBy: string) {
-    if (this.unitsOfMeasure.orderBy === orderBy) {
-      if (this.unitsOfMeasure.orderByDirection === 'ASC') {
-        this.unitsOfMeasure.orderByDirection = 'DESC';
+    if (this.orderBy === orderBy) {
+      if (this.orderDirection === 'ASC') {
+        this.orderDirection = 'DESC';
       } else {
-        this.unitsOfMeasure.orderByDirection = 'ASC';
+        this.orderDirection = 'ASC';
       }
     } else {
-      this.unitsOfMeasure.orderByDirection = 'ASC';
+      this.orderDirection = 'ASC';
     }
 
-    this.unitsOfMeasure.orderBy = orderBy;
-    this.orderIndicator = `${this.unitsOfMeasure.orderBy}_${this.unitsOfMeasure.orderByDirection}`;
+    this.orderBy = orderBy;
+    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
     this.loadUnitsOfMeasures();
   }
 
   searchBar() {
-    this.unitsOfMeasure.rowStart = 1;
-    this.unitsOfMeasure.rowEnd = this.selectRowDisplay;
+    this.rowStart = 1;
+    this.rowEnd = this.selectRowDisplay;
     this.loadUnitsOfMeasures();
   }
 
@@ -275,15 +323,15 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
         (res: UpdateUnitsOfMeasureResponse) => {
           this.closeModal.nativeElement.click();
 
-          this.unitsOfMeasure = {
-            userID: 3,
-            specificUnitOfMeasureID: -1,
-            filter: '',
-            orderBy: 'Name',
-            orderByDirection: 'ASC',
-            rowStart: 1,
-            rowEnd: 15
-          };
+          // const unitsOfMeasure = {
+          //   userID: 3,
+          //   specificUnitOfMeasureID: -1,
+          //   filter: '',
+          //   orderBy: 'Name',
+          //   orderByDirection: 'ASC',
+          //   rowStart: 1,
+          //   rowEnd: 15
+          // };
 
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadUnitsOfMeasures();
