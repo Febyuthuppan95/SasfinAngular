@@ -61,13 +61,19 @@ export class ViewLoginComponent implements OnInit {
           expireDate.setDate(expireDate.getDate() + 1);
           if (res.authenticated) {
             this.userService.persistLogin(JSON.stringify(res));
+<<<<<<< HEAD
             this.channelService.startConnection();
             this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
 
             if (res.designation === 'Capturer') {
               this.router.navigate(['transaction/capturerlanding']);
             } else {
+=======
+            if (res.designation !== 'Capturer') {
+>>>>>>> 8a7f2587a232c6f28c54a4a70d2e9ef8935c3734
               this.router.navigate(['users']);
+            } else {
+              this.router.navigate(['transaction/capturerlanding']);
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);

@@ -236,35 +236,6 @@ export class SidebarComponent implements OnInit {
   }
 
   loadCaptureScreen() {
-    const model = {
-      captureID: this.currentUser.userID,
-    };
-    this.transactionService
-    .GetAttatchments(model)
-    .then(
-      (res: CaptureAttachmentResponse) => {
-        this.CaptureInfo = res.captureattachment;
-
-        this.docPath = res.captureattachment.filepath;
-        this.transactionID = res.captureattachment.transactionID;
-        this.attachmentID = res.captureattachment.attachmentID;
-        this.fileType = res.captureattachment.filetype;
-        this.companyID = res.captureattachment.companyID;
-        this.companyName = res.captureattachment.companyName;
-
-        this.docService.loadDocumentToViewer(this.docPath);
-        // tslint:disable-next-line: max-line-length
-        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
-        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-        this.router.navigate(['capture', 'transaction', 'attachment']);
-
-      },
-      msg => {
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
+    this.companyService.setCapture({ capturestate: true});
   }
 }

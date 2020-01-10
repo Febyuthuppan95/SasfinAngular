@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   constructor() { }
 
-  @Input() pdf: string;
+  @Input() pdf: ArrayBuffer;
   @Input() minZoom: number;
 
   page = 1;

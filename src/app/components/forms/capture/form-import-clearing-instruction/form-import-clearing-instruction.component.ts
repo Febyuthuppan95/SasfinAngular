@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -26,7 +27,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService,
               private eventService: EventService, private dialog: MatDialog,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar, private companyService: CompanyService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -91,19 +92,24 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.submit()
+            command: e =>{
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+
+                  if (status) {
+                    this.submit();
+                  }
+                });
+              }
+            }
         },
     );
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             specificICIID: this.attachmentID,
@@ -111,14 +117,16 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             importersCode: this.form.importersCode.value,
             supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
-            attachmentStatus: 2,
+            attachmentStatus: 3,
           };
 
           this.captureService.iciUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
-              this.router.navigate(['transaction/attachment']);
+
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
               } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }
@@ -128,9 +136,6 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
               }
             );
         }
-      });
-    }
-  }
 
   loadICI() {
     this.captureService.iciList(
@@ -146,13 +151,14 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
       }).then(
       (res: ICIListResponse) => {
-        console.log(res);
-        this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
-        this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
-        this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-        this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
-        this.form.importersCode.value = res.clearingInstructions[0].importersCode;
-        this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
+        if (res.clearingInstructions.length > 0) {
+          this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
+          this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
+          this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
+          this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
+          this.form.importersCode.value = res.clearingInstructions[0].importersCode;
+          this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
+        }
       },
       (msg) => {
         console.log(msg);
