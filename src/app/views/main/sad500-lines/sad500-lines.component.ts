@@ -115,6 +115,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     this.contextMenuY = $event.event.clientY + 5;
     this.contextMenuEnable = true;
     this.currentRecord = $event.record;
+    alert('row click');
   }
 
   update(obj: SAD500Line) {
@@ -135,13 +136,14 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
       this.captureService.sad500LineUpdate(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
-            this.loadDataset();
             this.closeAddModal.nativeElement.click();
+            this.loadDataset();
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
         (msg) => {
+          this.notify.errorsmsg('Failure', 'Something went wrong');
         }
       );
     }
