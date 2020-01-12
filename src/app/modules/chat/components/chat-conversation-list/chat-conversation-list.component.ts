@@ -64,7 +64,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     };
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
-        console.log(res);
         if ((this.currentUser.userID === res.services[0].resCapturerID) &&
             (this.currentUser.userID !== res.services[0].resConsultantID)) {
           // if capturer lead
@@ -79,7 +78,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     );
   }
   getConversations() {
-    console.log(this.currentUser.userID);
     const model = {
       userID: this.currentUser.userID,
       rowStart: 1,
@@ -90,7 +88,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
       (res: ChatConversationListResponse) => {
         if (res !== null) {
           this.conversations = res.conversations;
-          console.log(this.conversations);
         } else {
         }
       }, (msg) => {
@@ -98,7 +95,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
   }
   setConvo = ($event: number) => {
     this.selectedConvo.emit($event);
-    console.log($event);
   }
 
   createIssue() {
@@ -111,7 +107,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     };
     this.chatService.createIssue(request).then(
       (res: ConversationIssue) => {
-        console.log(res);
         this.conversations.push({conversationID: res.conversationID, recipientID: this.currentRecipient, issueID: res.issueID,
           lastMessage: 'Click to enter new message', messageDate: new Date().toLocaleDateString(),
            documentID: request.documentID, fileType: request.fileType});

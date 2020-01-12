@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { AddUserRight, UpdateUserRight } from '../models/HttpRequests/UserRights';
 import { AddUserRequest, GetUserList, UpdateUserRequest } from '../models/HttpRequests/Users';
 import { User } from '../models/HttpResponses/User';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -18,6 +19,12 @@ export class UserService {
     private router: Router
   ) {}
 
+  private isAuth = new BehaviorSubject<boolean>(this.cookieService.check('currentUser'));
+  public observeLogin = this.isAuth.asObservable();
+
+  public setAuth = (isAuth: boolean) => {
+    this.isAuth.next(isAuth);
+  }
   /**
    * IsLoggedIn
    */
@@ -30,6 +37,7 @@ export class UserService {
    */
   public logout() {
     this.cookieService.delete('currentUser', '/');
+    this.setAuth(false);
     this.router.navigateByUrl('/account/login');
   }
 
