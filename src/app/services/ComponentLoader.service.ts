@@ -17,6 +17,7 @@ export class ComponentService {
   public renderComponent(componentInjected: any) {
     const factory = this.factoryResolver.resolveComponentFactory(componentInjected);
     const component = factory.create(this.rootViewContainer.parentInjector);
+
     this.rootViewContainer.insert(component.hostView);
   }
 }
