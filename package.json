@@ -35,7 +35,6 @@
     "ng2-pdf-viewer": "^5.3.4",
     "ngx-cookie-service": "^2.3.0",
     "ngx-currency": "^2.2.1",
-    "ngx-extended-pdf-viewer": "^1.8.4",
     "ngx-image-compress": "^8.0.4",
     "ngx-keyboard-shortcuts": "^1.0.1",
     "ngx-pagination": "^4.0.0",
@@ -70,6 +69,6 @@
     "source-map-explorer": "^2.2.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "^3.4.5"
+    "typescript": "~3.4.5"
   }
 }
