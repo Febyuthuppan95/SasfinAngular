@@ -12,7 +12,7 @@ import { PDFSource } from 'ng2-pdf-viewer';
 export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   constructor() { }
 
-  @Input() pdf: ArrayBuffer;
+  @Input() pdf: string | ArrayBuffer;
   @Input() minZoom: number;
 
   page = 1;
@@ -29,7 +29,6 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(): void {
     if (this.pdf !== undefined) {
-      console.log(this.pdf);
       this.ready = true;
     } else {
       this.ready = false;

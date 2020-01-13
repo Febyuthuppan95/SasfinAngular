@@ -19,7 +19,7 @@ export class SplitDocumentComponent implements OnInit {
 
   file: File;
   displayPreview = false;
-  filePreview: string;
+  filePreview: ArrayBuffer | string;
   private fileReader = new FileReader();
 
   transactionTypes = [
@@ -52,7 +52,7 @@ export class SplitDocumentComponent implements OnInit {
     this.fileReader = new FileReader();
     this.fileReader.readAsDataURL(this.file);
     this.fileReader.onload = (e) => {
-      this.filePreview = this.fileReader.result.toString();
+      this.filePreview = this.fileReader.result;
     };
 
     this.displayPreview = true;
