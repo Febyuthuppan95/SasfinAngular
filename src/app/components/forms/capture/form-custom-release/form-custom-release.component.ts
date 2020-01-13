@@ -140,7 +140,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                this.router.navigate(['transaction/capturerlanding']);
+
+                this.companyService.setCapture({ capturestate: true });
+                this.router.navigateByUrl('transaction/capturerlanding');
               } else {
                 this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }
@@ -149,7 +151,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
-  }
+        }
 
   loadCapture() {
     this.captureService.customsReleaseGet({
