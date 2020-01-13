@@ -64,12 +64,14 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     };
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
-        if ((this.currentUser.userID === res.services[0].resCapturerID) &&
-            (this.currentUser.userID !== res.services[0].resConsultantID)) {
-          // if capturer lead
-              this.currentRecipient = res.services[0].resConsultantID;
-        } else {
-          this.currentRecipient = res.services[0].resCapturerID;
+        if (res.services.length > 0) {
+          if ((this.currentUser.userID === res.services[0].resCapturerID) &&
+          (this.currentUser.userID !== res.services[0].resConsultantID)) {
+            // if capturer lead
+            this.currentRecipient = res.services[0].resConsultantID;
+          } else {
+            this.currentRecipient = res.services[0].resCapturerID;
+          }
         }
       },
       (msg) => {
