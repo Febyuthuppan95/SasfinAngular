@@ -33,10 +33,13 @@ export class ChatConversationComponent implements OnInit {
   @Output() resetConversation = new EventEmitter<void>();
   ngOnInit() {
     this.chatService.observeConversation().subscribe((conversation: SelectedConversation) => {
+      this.currentUser = this.userService.getCurrentUser();
       this.conversationID = conversation === null ? -1 : conversation.conversationID;
-      this.recipientID = conversation === null ? -1 : conversation.recipientID;
+      this.recipientID = conversation === null ? -1
+      : conversation.recipientID === this.currentUser.userID
+      ? conversation.userID : conversation.recipientID;
+      console.log(this.recipientID);
       if (this.conversationID !== -1) {
-        this.currentUser = this.userService.getCurrentUser();
         this.messagesLoad();
       }
     });
@@ -46,7 +49,7 @@ export class ChatConversationComponent implements OnInit {
           console.log(res);
           if (this.conversationID === res.conversationID) {
             this.messageList.push({message: res.message,
-              messageID: -1, receivingUserID: res.receivingUserID, sender: true});
+              messageID: -1, receivingUserID: res.sendingUserID, sender: true});
           }
         });
       }
@@ -89,9 +92,10 @@ export class ChatConversationComponent implements OnInit {
     const messageParams: ChatSendMessageRequest = {
       conversationID: this.conversationID,
       receivingUserID: this.recipientID,
-      userID: this.currentUser.userID,
+      sendingUserID: this.currentUser.userID,
       message: this.form.get('message').value
     };
+    console.log(messageParams);
     this.chatService.sendMessage(messageParams).then(
       (res: ChatSendMessageResponse) => {
         console.log(res);

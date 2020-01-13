@@ -25,7 +25,7 @@ export class ChatConversationMessageList {
 export class ChatSendMessageRequest {
 conversationID: number;
 receivingUserID: number;
-userID: number;
+sendingUserID: number;
 message: string;
 }
 export class ChatConversationIssue {
