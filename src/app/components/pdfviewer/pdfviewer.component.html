@@ -1,11 +1,9 @@
-<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts" *ngIf="this.shortcuts"></ng-keyboard-shortcuts>
 
 <pdf-viewer
-  *ngIf="ready"
   class="viewer"
-  [src]="pdf"
+  [src]="'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf'"
   [render-text]="true"
-  [(page)]="page"
   [zoom]="zoom"
   [fit-to-page]="true">
 </pdf-viewer>
