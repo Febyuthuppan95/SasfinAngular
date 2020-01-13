@@ -137,13 +137,17 @@ dialogOpen = false;
           key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            if (!this.toggleLines) {
-              this.saveLines();
-            } else {
-              this.submit(); // remove
-            }
+          command: e => {    
+            if (!this.dialogOpen) {
+            this.dialogOpen = true;
+      
+            this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+              this.dialogOpen = false;
+      
+              if (status) {this.saveLines()}
+            });
           }
+        }
         },
         {
           key: 'alt + l',
@@ -279,13 +283,7 @@ dialogOpen = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -304,9 +302,7 @@ dialogOpen = false;
             this.submit();
           }
         }
-      });
-    }
-  }
+
 
   nextLineAsync() {
     this.lineIndex++;

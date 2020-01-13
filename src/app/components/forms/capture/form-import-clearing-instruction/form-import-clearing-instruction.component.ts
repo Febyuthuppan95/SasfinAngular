@@ -91,19 +91,23 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.submit()
+            command: e => {    
+              if (!this.dialogOpen) {
+              this.dialogOpen = true;
+        
+              this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                this.dialogOpen = false;
+        
+                if (status) {this.submit()}
+              });
+            }
+          }
         },
     );
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             specificICIID: this.attachmentID,
@@ -128,9 +132,6 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
               }
             );
         }
-      });
-    }
-  }
 
   loadICI() {
     this.captureService.iciList(

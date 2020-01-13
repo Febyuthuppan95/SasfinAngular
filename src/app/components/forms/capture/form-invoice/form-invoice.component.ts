@@ -173,9 +173,17 @@ loader = false;
           key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-              this.saveLines();
+          command: e => {    
+            if (!this.dialogOpen) {
+            this.dialogOpen = true;
+      
+            this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+              this.dialogOpen = false;
+      
+              if (status) {this.saveLines()}
+            });
           }
+        }
         },
         {
           key: 'alt + l',
@@ -391,13 +399,7 @@ loader = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             const currentLine = this.lineQueue[this.lineIndex];
 
@@ -429,9 +431,7 @@ loader = false;
             this.submit();
           }
         }
-      });
-    }
-  }
+
 
   nextLineAsync() {
     this.lineIndex++;

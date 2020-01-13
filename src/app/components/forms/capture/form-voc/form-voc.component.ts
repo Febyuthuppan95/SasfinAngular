@@ -129,7 +129,17 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
               if (this.showLines) {
-                this.submit();
+                command: e => {    
+                  if (!this.dialogOpen) {
+                  this.dialogOpen = true;
+            
+                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                    this.dialogOpen = false;
+            
+                    if (status) {this.submit()}
+                  });
+                }
+              }
               }
             }
           },
@@ -196,13 +206,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     submit() {
-      if (!this.dialogOpen) {
-        this.dialogOpen = true;
 
-        this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-          this.dialogOpen = false;
-
-          if (status) {
               this.captureService.vocUpdate({
                 userID: this.currentUser.userID,
                 vocID: this.currentAttachmentID,
@@ -228,9 +232,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
               );
           }
-        });
-      }
-    }
+
 
     loadTarrifs() {
       this.tariffService.list().then(
