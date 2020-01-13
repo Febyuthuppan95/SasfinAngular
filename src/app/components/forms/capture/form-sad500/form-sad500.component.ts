@@ -177,6 +177,7 @@ dialogOpen = false;
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (!this.toggleLines) {
+<<<<<<< HEAD
               {
                 if (!this.dialogOpen) {
                   this.dialogOpen = true;
@@ -188,6 +189,19 @@ dialogOpen = false;
                   });
                 }
               }
+=======
+              command: e => {    
+                if (!this.dialogOpen) {
+                this.dialogOpen = true;
+          
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+          
+                  if (status) {this.saveLines()}
+                });
+              }
+            }
+>>>>>>> 1a55ebba0b4e3511d7a5e4ad104eb610d84e7d60
             }
           }
         },
@@ -345,13 +359,7 @@ dialogOpen = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -376,9 +384,7 @@ dialogOpen = false;
           } else {
             this.submit();
           }        }
-      });
-    }
-  }
+
 
   saveLineDuty(line: Duty) {
     this.captureService.sad500LineDutyAdd({

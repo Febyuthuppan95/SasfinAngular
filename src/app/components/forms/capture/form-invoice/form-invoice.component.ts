@@ -185,7 +185,7 @@ loader = false;
                 });
               }
             }
-          }
+          }        
         },
         {
           key: 'alt + l',

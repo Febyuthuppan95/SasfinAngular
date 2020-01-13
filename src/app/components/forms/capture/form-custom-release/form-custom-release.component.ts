@@ -104,6 +104,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
+<<<<<<< HEAD
             command: e => {
               if (!this.dialogOpen) {
                 this.dialogOpen = true;
@@ -115,6 +116,19 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
                 });
               }
             }
+=======
+            command: e => {    
+              if (!this.dialogOpen) {
+              this.dialogOpen = true;
+        
+              this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                this.dialogOpen = false;
+        
+                if (status) {this.submit()}
+              });
+            }
+          }
+>>>>>>> 1a55ebba0b4e3511d7a5e4ad104eb610d84e7d60
         },
     );
 
@@ -148,8 +162,13 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             (msg) => {
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
+<<<<<<< HEAD
           );
   }
+=======
+          );        
+        }
+>>>>>>> 1a55ebba0b4e3511d7a5e4ad104eb610d84e7d60
 
   loadCapture() {
     this.captureService.customsReleaseGet({
