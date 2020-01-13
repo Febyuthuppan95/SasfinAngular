@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { User } from 'src/app/models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -21,7 +21,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
   templateUrl: './view-capture-landing.component.html',
   styleUrls: ['./view-capture-landing.component.scss']
 })
-export class ViewCaptureLandingComponent implements OnInit {
+export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
 
 
   constructor(private themeService: ThemeService,
@@ -55,9 +55,8 @@ private notify: NotificationComponent;
   transactionID: number;
   attachmentID: number;
   start = false;
-
   loading = false;
-
+  tmpCompanyToken: string; // No Duplicate events
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
@@ -78,9 +77,11 @@ private notify: NotificationComponent;
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCapture) => {
       this.start = obj.capturestate;
-      console.log(this.start);
       if (this.start) {
-        this.loadNextAttachment();
+        if (obj.token !== this.tmpCompanyToken) {
+          this.loadNextAttachment();
+          this.tmpCompanyToken = obj.token;
+        }
       }
     });
 
@@ -122,5 +123,10 @@ private notify: NotificationComponent;
         this.loading = false;
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

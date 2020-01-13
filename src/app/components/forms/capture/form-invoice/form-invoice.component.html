@@ -30,7 +30,7 @@
   <div class="form-group" *ngIf="this.form.fromCompany != undefined">
     <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="fromCompanyIDAuto">
     <mat-autocomplete #fromCompanyIDAuto="matAutocomplete">
-      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit.companyID)">
+      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit)">
         {{unit.name}}
       </mat-option>
     </mat-autocomplete>

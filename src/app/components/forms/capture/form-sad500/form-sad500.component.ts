@@ -177,7 +177,17 @@ dialogOpen = false;
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (!this.toggleLines) {
-              this.saveLines();
+              {
+                if (!this.dialogOpen) {
+                  this.dialogOpen = true;
+                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                    this.dialogOpen = false;
+                    if (status) {
+                      this.submit();
+                    }
+                  });
+                }
+              }
             }
           }
         },
@@ -335,13 +345,7 @@ dialogOpen = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -366,9 +370,7 @@ dialogOpen = false;
           } else {
             this.submit();
           }        }
-      });
-    }
-  }
+
 
   saveLineDuty(line: Duty) {
     this.captureService.sad500LineDutyAdd({

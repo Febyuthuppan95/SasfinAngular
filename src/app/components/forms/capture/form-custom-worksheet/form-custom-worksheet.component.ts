@@ -138,11 +138,20 @@ dialogOpen = false;
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-            if (!this.toggleLines) {
-              this.saveLines();
-            } else {
-              this.submit(); // remove
+            {
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+                  if (status) {
+                    if (!this.toggleLines) {
+                      this.saveLines();
+                    }
+                  }
+                });
+              }
             }
+
           }
         },
         {
@@ -181,7 +190,7 @@ dialogOpen = false;
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction', 'attachments']);
+          this.router.navigate(['transaction/capturerlanding']);
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
@@ -279,13 +288,6 @@ dialogOpen = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -303,9 +305,6 @@ dialogOpen = false;
           } else {
             this.submit();
           }
-        }
-      });
-    }
   }
 
   nextLineAsync() {

@@ -74,19 +74,22 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.submit()
+            command: e => {
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+                  if (status) {
+                    this.submit();
+                  }
+                });
+              }
+            }
         },
     );
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             waybillID: this.attachmentID,
@@ -108,11 +111,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             },
               (msg) => {
               this.notify.errorsmsg('Failure', 'Cannot reach server');
-              }
-            );
-        }
-      });
-    }
+              });
   }
 
   loadData() {

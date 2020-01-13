@@ -62,10 +62,6 @@ export class PaginationComponent implements OnInit, OnChanges {
     let rowStart = 1;
     let rowEnd = rowStart + +this.recordsPerPage - 1;
 
-    // console.log(rowStart);
-    // console.log(rowEnd);
-    // console.log(this.recordsPerPage);
-
     // Number of Pages
     const pageCount = +this.rowCount / +this.recordsPerPage;
 
