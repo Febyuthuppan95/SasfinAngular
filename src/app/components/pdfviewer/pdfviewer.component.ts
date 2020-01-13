@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input, OnChange
 import { Subject } from 'rxjs';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
+import { PDFSource } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -21,12 +22,14 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     if (this.pdf !== undefined) {
+      console.log(this.pdf);
       this.ready = true;
     }
   }
 
   ngOnChanges(): void {
     if (this.pdf !== undefined) {
+      console.log(this.pdf);
       this.ready = true;
     } else {
       this.ready = false;

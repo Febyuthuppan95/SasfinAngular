@@ -18,7 +18,8 @@ export class SplitDocumentComponent implements OnInit {
   };
 
   file: File;
-  filePreview: ArrayBuffer | string;
+  displayPreview = false;
+  filePreview: string;
   private fileReader = new FileReader();
 
   transactionTypes = [
@@ -30,7 +31,7 @@ export class SplitDocumentComponent implements OnInit {
   ];
 
   ngOnInit() {
-    console.log(this);
+
   }
 
   addSection() {
@@ -47,12 +48,14 @@ export class SplitDocumentComponent implements OnInit {
 
   inputFileChange(files: File[]) {
     this.file = files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.filePreview = reader.result;
+
+    this.fileReader = new FileReader();
+    this.fileReader.readAsDataURL(this.file);
+    this.fileReader.onload = (e) => {
+      this.filePreview = this.fileReader.result.toString();
     };
 
-    reader.readAsDataURL(this.file);
+    this.displayPreview = true;
   }
 
   typeChange(index: number, value: number) {
@@ -80,6 +83,10 @@ export class SplitDocumentComponent implements OnInit {
         this.dialogRef.close({state: false});
       }
     );
+  }
+
+  dismiss() {
+    this.dialogRef.close(false);
   }
 
 }

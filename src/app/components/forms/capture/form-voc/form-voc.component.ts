@@ -130,8 +130,16 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              if (this.showLines) {
-                this.submit();
+              {
+                if (!this.dialogOpen) {
+                  this.dialogOpen = true;
+                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                    this.dialogOpen = false;
+                    if (status) {
+                      this.submit();
+                    }
+                  });
+                }
               }
             }
           },
@@ -198,13 +206,6 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     submit() {
-      if (!this.dialogOpen) {
-        this.dialogOpen = true;
-
-        this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-          this.dialogOpen = false;
-
-          if (status) {
               this.captureService.vocUpdate({
                 userID: this.currentUser.userID,
                 vocID: this.currentAttachmentID,
@@ -220,7 +221,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
                 (res: Outcome) => {
                   if (res.outcome === 'SUCCESS') {
                     this.notify.successmsg(res.outcome, res.outcomeMessage);
-                    this.router.navigate(['transaction', 'attachments']);
+                    this.router.navigate(['transaction/capturerlanding']);
                   } else {
                     this.notify.errorsmsg(res.outcome, res.outcomeMessage);
                   }
@@ -229,9 +230,6 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
                   this.notify.errorsmsg('Failure', 'Something went wrong');
                 }
               );
-          }
-        });
-      }
     }
 
     loadTarrifs() {

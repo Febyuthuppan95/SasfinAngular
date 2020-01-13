@@ -80,7 +80,6 @@ export class SnackBarComponent implements OnInit, OnDestroy {
               }
             }
 
-
           },
           (msg) => {}
         );

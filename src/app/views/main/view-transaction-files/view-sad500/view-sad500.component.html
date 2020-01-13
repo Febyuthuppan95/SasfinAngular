@@ -25,4 +25,13 @@
   </div>
 </div>
 
+<app-menu
+  *ngIf="this.contextMenuEnable"
+  [contextShow]="this.contextMenuEnable"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.recordIndex = -1; this.contextMenuEnable = false;">
+  <app-context-menu-sadlines></app-context-menu-sadlines>
+</app-menu>
+
 <app-notification></app-notification>

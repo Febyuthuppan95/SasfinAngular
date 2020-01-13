@@ -12,6 +12,8 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CompanyList, AddCompany, UpdateCompany } from 'src/app/models/HttpRequests/Company';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { SelectedRecord, TableHeader, TableHeading, Order } from 'src/app/models/Table';
 
 @Component({
   selector: 'app-view-company-list',
@@ -86,7 +88,7 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
-  showingRecords: number;
+  showingRecords = 15;
   activePage: number;
 
   focusCompanyID: number;
@@ -105,6 +107,58 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
+  tableHeader: TableHeader = {
+    title: 'Companies',
+    addButton: {
+     enable: true,
+    },
+    backButton: {
+      enable: false
+    },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
+
+  tableHeadings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      }
+    },
+    {
+      title: 'Name',
+      propertyName: 'name',
+      order: {
+        enable: true,
+      },
+    },
+    {
+      title: 'Registration No',
+      propertyName: 'regNo',
+      order: {
+        enable: true,
+      },
+    },
+    {
+      title: 'Registration Export No',
+      propertyName: 'regExportNo',
+      order: {
+        enable: true,
+      },
+    },
+    {
+      title: 'VAT No',
+      propertyName: 'vatNo',
+      order: {
+        enable: true,
+      },
+    },
+  ];
+
   ngOnInit() {
 
   this.themeService.observeTheme()
@@ -115,58 +169,66 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
 }
 
 
-  paginateData() {
-    let rowStart = 1;
-    let rowEnd = +this.rowCountPerPage;
-    const pageCount = +this.rowCount / +this.rowCountPerPage;
-    this.pages = Array<Pagination>();
+  // paginateData() {
+  //   let rowStart = 1;
+  //   let rowEnd = +this.rowCountPerPage;
+  //   const pageCount = +this.rowCount / +this.rowCountPerPage;
+  //   this.pages = Array<Pagination>();
 
-    for (let i = 0; i < pageCount; i++) {
-      const item = new Pagination();
-      item.page = i + 1;
-      item.rowStart = +rowStart;
-      item.rowEnd = +rowEnd;
-      this.pages[i] = item;
-      rowStart = +rowEnd + 1;
-      rowEnd += +this.rowCountPerPage;
-    }
+  //   for (let i = 0; i < pageCount; i++) {
+  //     const item = new Pagination();
+  //     item.page = i + 1;
+  //     item.rowStart = +rowStart;
+  //     item.rowEnd = +rowEnd;
+  //     this.pages[i] = item;
+  //     rowStart = +rowEnd + 1;
+  //     rowEnd += +this.rowCountPerPage;
+  //   }
 
-    this.updatePagination();
-  }
+  //   this.updatePagination();
+  // }
 
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
-
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
-
-    let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    const mod = +this.rowCount % +this.rowCountPerPage;
-
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
+  pageChange(obj: PaginationChange) {
+    this.rowStart = obj.rowStart;
+    this.rowEnd = obj.rowEnd;
 
     this.loadCompanies();
+    // const page = this.pages[+pageNumber - 1];
+    // this.rowStart = page.rowStart;
+    // this.rowEnd = page.rowEnd;
+    // this.activePage = +pageNumber;
+    // this.prevPage = +this.activePage - 1;
+    // this.nextPage = +this.activePage + 1;
+
+    // if (this.prevPage < 1) {
+    //   this.prevPageState = true;
+    // } else {
+    //   this.prevPageState = false;
+    // }
+
+    // let pagenumber = +this.rowCount / +this.rowCountPerPage;
+    // const mod = +this.rowCount % +this.rowCountPerPage;
+
+    // if (mod > 0) {
+    //   pagenumber++;
+    // }
+
+    // if (this.nextPage > pagenumber) {
+    //   this.nextPageState = true;
+    // } else {
+    //   this.nextPageState = false;
+    // }
+
+    // this.updatePagination();
+
+    // this.loadCompanies();
   }
 
-  searchBar() {
+  recordsPerPageChange () {
+
+  }
+
+  searchBar(filter: string) {
     this.rowStart = 1;
     this.loadCompanies();
   }
@@ -197,9 +259,8 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
             this.dataList = res.companies;
             this.rowCount = res.rowCount;
             this.showLoader = false;
-            this.showingRecords = res.companies.length;
             this.totalShowing = +this.rowStart + +this.dataset.companies.length - 1;
-            this.paginateData();
+            // this.paginateData();
 
           }
         },
@@ -214,70 +275,71 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
       );
   }
 
-  updateSort(orderBy: string) {
-    if (this.orderBy === orderBy) {
-      if (this.orderDirection === 'ASC') {
-        this.orderDirection = 'DESC';
-      } else {
-        this.orderDirection = 'ASC';
-      }
-    } else {
-      this.orderDirection = 'ASC';
-    }
-
-    this.orderBy = orderBy;
-    this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
     this.loadCompanies();
   }
 
-  updatePagination() {
-    if (this.dataset.companies.length <= this.totalShowing) {
-      this.prevPageState = false;
-      this.nextPageState = false;
-    } else {
-      this.showingPages = Array<Pagination>();
-      this.showingPages[0] = this.pages[this.activePage - 1];
-      const pagenumber = +this.rowCount / +this.rowCountPerPage;
+  // updateSort(orderBy: string) {
+  //   if (this.orderBy === orderBy) {
+  //     if (this.orderDirection === 'ASC') {
+  //       this.orderDirection = 'DESC';
+  //     } else {
+  //       this.orderDirection = 'ASC';
+  //     }
+  //   } else {
+  //     this.orderDirection = 'ASC';
+  //   }
 
-      if (this.activePage < pagenumber) {
-        this.showingPages[1] = this.pages[+this.activePage];
+  //   this.orderBy = orderBy;
+  //   this.orderIndicator = `${this.orderBy}_${this.orderDirection}`;
+  //   this.loadCompanies();
+  // }
 
-        if (this.showingPages[1] === undefined) {
-          const page = new Pagination();
-          page.page = 1;
-          page.rowStart = 1;
-          page.rowEnd = this.rowEnd;
-          this.showingPages[1] = page;
-        }
-      }
+  // updatePagination() {
+  //   if (this.dataset.companies.length <= this.totalShowing) {
+  //     this.prevPageState = false;
+  //     this.nextPageState = false;
+  //   } else {
+  //     this.showingPages = Array<Pagination>();
+  //     this.showingPages[0] = this.pages[this.activePage - 1];
+  //     const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
-      if (+this.activePage + 1 <= pagenumber) {
-        this.showingPages[2] = this.pages[+this.activePage + 1];
-      }
-    }
+  //     if (this.activePage < pagenumber) {
+  //       this.showingPages[1] = this.pages[+this.activePage];
 
-  }
+  //       if (this.showingPages[1] === undefined) {
+  //         const page = new Pagination();
+  //         page.page = 1;
+  //         page.rowStart = 1;
+  //         page.rowEnd = this.rowEnd;
+  //         this.showingPages[1] = page;
+  //       }
+  //     }
 
-  toggleFilters() {
-    this.displayFilter = !this.displayFilter;
-  }
+  //     if (+this.activePage + 1 <= pagenumber) {
+  //       this.showingPages[2] = this.pages[+this.activePage + 1];
+  //     }
+  //   }
+
+  // }
+
+  // toggleFilters() {
+  //   this.displayFilter = !this.displayFilter;
+  // }
 
   popClick(event, company) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
-
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
     this.focusCompanyID = company.companyID;
     this.focusHelpName = company.name;
     this.CompanyName = company.name;
     this.RegNo = company.regNo;
     this.ExportRegNo = company.regExportNo;
     this.VATNo = company.vatNo;
-
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -291,8 +353,23 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
     this.contextMenu = false;
     this.selectedRow = -1;
   }
-  setClickedRow(index) {
-    this.selectedRow = index;
+  setClickedRow(obj: SelectedRecord) {
+    // this.selectedRow = index;
+    this.contextMenuX = obj.event.clientX + 3;
+    this.contextMenuY = obj.event.clientY + 5;
+    this.focusCompanyID = obj.record.companyID;
+    this.focusHelpName = obj.record.name;
+    this.CompanyName = obj.record.name;
+    this.RegNo = obj.record.regNo;
+    this.ExportRegNo = obj.record.regExportNo;
+    this.VATNo = obj.record.vatNo;
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
   }
 
   EditCompony($event) {

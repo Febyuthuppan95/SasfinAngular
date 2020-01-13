@@ -174,7 +174,17 @@ loader = false;
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-              this.saveLines();
+            {
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+                  if (status) {
+                    this.saveLines();
+                  }
+                });
+              }
+            }
           }
         },
         {
@@ -204,8 +214,6 @@ loader = false;
             invoiceID: this.attachmentID,
             fromCompanyID: this.form.fromCompanyID.value,
             fromCompany: this.form.fromCompany.value,
-            toCompanyID: this.form.toCompanyID.value,
-            toCompany: this.form.toCompany.value,
             invoiceNo: this.form.invoiceNo.value,
             currencyID: this.form.currencyID.value,
             isDeleted: 0,
@@ -395,13 +403,6 @@ loader = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             const currentLine = this.lineQueue[this.lineIndex];
 
@@ -432,9 +433,6 @@ loader = false;
           } else {
             this.submit();
           }
-        }
-      });
-    }
   }
 
   nextLineAsync() {
@@ -475,11 +473,6 @@ loader = false;
     this.currencies = this.currencies.filter(x => this.matchRuleShort(x.name, `*${this.currencyQuery}*`));
   }
 
-  filterToCompany() {
-    this.toCompanyList = this.toCompanyListTemp;
-    this.toCompanyList = this.toCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.toCompany.value}*`));
-  }
-
   filterFromCompany() {
     this.fromCompanyList = this.fromCompanyListTemp;
     this.fromCompanyList = this.fromCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.fromCompany.value}*`));
@@ -489,18 +482,16 @@ loader = false;
     this.form.currencyID.value = currencyID;
   }
 
-  selectedToCompany(toCompanyID: number) {
-    this.form.toCompanyID.value = toCompanyID;
-  }
-
-  selectedFromCompany(fromCompanyID: number) {
-    this.form.fromCompanyID.value = fromCompanyID;
+  selectedFromCompany(fromCompanyID: Company) {
+    this.form.fromCompanyID.value = fromCompanyID.companyID;
   }
 
   matchRuleShort(str, rule) {
     // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
-    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+    const regexTest =  new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$', 'i');
+    return  regexTest.test(str);
+    // return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 
 
