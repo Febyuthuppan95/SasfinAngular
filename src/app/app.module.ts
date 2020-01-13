@@ -424,7 +424,8 @@ import { ChannelService } from './modules/chat/services/channel.service';
     SubmitDialogComponent,
     FormVOCComponent,
     FormWaybillComponent,
-    FormCustomWorksheetComponent
+    FormCustomWorksheetComponent,
+    SplitDocumentComponent
   ]
 })
 export class AppModule { }
