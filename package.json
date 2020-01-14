@@ -33,6 +33,7 @@
     "lodash.deburr": "^4.1.0",
     "ng-keyboard-shortcuts": "^8.2.4",
     "ng2-pdf-viewer": "^5.3.4",
+    "ngx-auto-unsubscribe": "^3.0.1",
     "ngx-cookie-service": "^2.3.0",
     "ngx-currency": "^2.2.1",
     "ngx-image-compress": "^8.0.4",
