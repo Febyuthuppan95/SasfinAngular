@@ -10,7 +10,7 @@
   </div>
     <input id="attachDocument" (change)="inputFileChange($event.target.files)" type="file" hidden/>
   <div class="row" style="overflow: hidden">
-    <div style="overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
+    <div style=" width: 58% ;overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
         <app-pdf-viewer
         *ngIf="this.filePreview"
         [pdf]="this.filePreview">
