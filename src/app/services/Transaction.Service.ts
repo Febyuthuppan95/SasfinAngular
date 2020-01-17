@@ -127,6 +127,23 @@ export class TransactionService {
     });
   }
 
+  public async GetAttatchmentStats(requestModel) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/capture/AttachmentStats`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   /**
    * Upload
    */

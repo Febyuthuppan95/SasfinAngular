@@ -6,3 +6,31 @@
   height: 100px;
   position: fixed;
 }
+.example-card {
+  max-width: 96%;
+  height: 200px;
+
+}
+.card-err{
+  max-width: 98%;
+  height: 200px;
+}
+h1 {
+  font-size: 128px !important;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.btn-block {
+  width: 50% !important;
+  margin-left: 25%;
+  background: #2196f3 !important;
+  font-size: xx-large !important;
+}
+
+.mat-card {
+  padding: 0 !important;
+}

@@ -71,7 +71,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
             // this.objectHelpList = res.objectHelpList;
             // console.log(this.objectHelpList);
             // console.log(res);
-            if (res.objectHelpList !== undefined) {
+            if (res.objectHelpList) {
               if (res.objectHelpList.length > 0) {
                 this.settings.title = res.objectHelpList[0].name;
                 this.settings.content = res.objectHelpList[0].description;
