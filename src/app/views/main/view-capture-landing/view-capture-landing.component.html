@@ -1,6 +1,74 @@
-<div class="progress-loader" [hidden]="!loading">
+<div>
+  <div class="row">
+    <div class="col-md-2">
+      <mat-card class="example-card text-center">
+        <mat-card-content>
+          <h1  class="fontsize text-center">
+           {{ACT}}
+          </h1>
+          <div style="background-color: #ccff90; padding: 16px;">
+            <h6>Captured today by me</h6>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-2">
+      <mat-card class="example-card text-center">
 
-  <mat-progress-spinner class="loader"  [mode]="'indeterminate'">
-  </mat-progress-spinner>
+        <mat-card-content>
+          <h1  class="fontsize text-center">
+            {{TACT}}
+          </h1>
+          <div style="background: #84ffff; padding: 10px;">
+            <h6>Total Attachments Captured Today</h6>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-4">
+      <mat-card  class="card-err text-center">
+        <mat-card-content>
+          <h1  class="fontsize text-center">
+            {{ERR}}
+          </h1>
+          <div style="background: #ff8a80; color: #ffffff; padding: 16px;">
+          <h6>Attachments With Errors</h6>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-2">
+      <mat-card  class="example-card text-center">
 
+        <mat-card-content>
+          <h1  class="fontsize text-center">
+           {{Inc}}
+          </h1>
+          <div style="background: #ffff8d; padding: 16px;">
+            <h6>Incomplete Attachments</h6>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-2">
+      <mat-card  class="example-card text-center">
+        <mat-card-content>
+          <h1  class="fontsize text-center">
+            {{ATBC}}
+          </h1>
+          <div style="background: #82b1ff; color: #ffffff; padding: 10px;">
+            <h6>Attachments To Be captured</h6>
+          </div >
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+    <button class="btn btn-primary btn-block" style="left: 50%; margin-top: 100px;" (click)="loadCaptureScreen()">Start Capturing</button>
+
+    <div class="progress-loader" [hidden]="!loading">
+    <mat-progress-spinner class="loader"  [mode]="'indeterminate'">
+    </mat-progress-spinner>
+
+  </div>
 </div>
