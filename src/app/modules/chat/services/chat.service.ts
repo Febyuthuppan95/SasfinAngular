@@ -1,3 +1,4 @@
+import { Conversation } from './../components/chat-conversation-list/chat-conversation-list.component';
 import { ChatConversationIssue, ChatConversationMessageList } from './../models/requests';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -120,6 +121,7 @@ export class ChatService {
 }
 
 export class SelectedConversation {
+  conversation?: Conversation;
   conversationID?: number;
   userID?: number;
   recipientID?: number;

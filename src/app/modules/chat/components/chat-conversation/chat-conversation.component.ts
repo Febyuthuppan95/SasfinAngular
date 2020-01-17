@@ -1,3 +1,4 @@
+import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { User } from './../../../../models/HttpResponses/User';
 import { SelectedConversation } from './../../services/chat.service';
@@ -20,13 +21,15 @@ export class ChatConversationComponent implements OnInit {
     private chatService: ChatService,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private transactionServ
   ) { }
   @Input() conversationID: number;
   @Output() dismiss = new EventEmitter<void>();
   messageList: ChatNewMessage[];
   currentUser: User;
   messageCount: number;
+  conversation: Conversation;
   messageToSend = new FormControl('', [Validators.required]);
   recipientID: number;
   form: FormGroup;
@@ -38,7 +41,7 @@ export class ChatConversationComponent implements OnInit {
       this.recipientID = conversation === null ? -1
       : conversation.recipientID === this.currentUser.userID
       ? conversation.userID : conversation.recipientID;
-      console.log(this.recipientID);
+      this.conversation = conversation === null ? null : conversation.conversation;
       if (this.conversationID !== -1) {
         this.messagesLoad();
       }
@@ -116,7 +119,9 @@ export class ChatConversationComponent implements OnInit {
   back() {
     this.resetConversation.emit();
   }
-
+  gotoLink() {
+    
+  }
 
 }
 export class SignalRMessage {

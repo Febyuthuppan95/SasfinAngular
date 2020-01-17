@@ -5,7 +5,7 @@
     </button>
       <span class="example-spacer" ></span>
       <button mat-mini-fab matTooltip="Chats" matTooltipPosition="below"  ><span class="mdi mdi-wechat" (click)="back()"></span></button>
-    <h5></h5>
+  <h5 (click)="gotoLink()">{{this.conversation.fileType}}-{{this.conversation.documentID}}-{{this.conversation.issueID}}-{{this.conversation.conversationID}}</h5>
   </div>
   <div class="chat-body">
     <div class="chat-row" *ngFor="let message of this.messageList">

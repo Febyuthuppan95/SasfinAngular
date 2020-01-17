@@ -27,6 +27,7 @@ export class ChatConversationTileComponent implements OnInit {
   }
   gotoConversation(convoID: number, convoRecipient: number) {
     const model: SelectedConversation = {
+      conversation: this.conversation,
       conversationID: convoID,
       recipientID: convoRecipient
     };
