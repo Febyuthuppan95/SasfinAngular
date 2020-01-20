@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { TransactionService } from './../../../../services/Transaction.Service';
 import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { User } from './../../../../models/HttpResponses/User';
@@ -22,7 +24,8 @@ export class ChatConversationComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private channelService: ChannelService,
-    private transactionServ
+    private transactionService: TransactionService,
+    private router: Router
   ) { }
   @Input() conversationID: number;
   @Output() dismiss = new EventEmitter<void>();
@@ -30,6 +33,7 @@ export class ChatConversationComponent implements OnInit {
   currentUser: User;
   messageCount: number;
   conversation: Conversation;
+  transactionID: number;
   messageToSend = new FormControl('', [Validators.required]);
   recipientID: number;
   form: FormGroup;
@@ -38,6 +42,7 @@ export class ChatConversationComponent implements OnInit {
     this.chatService.observeConversation().subscribe((conversation: SelectedConversation) => {
       this.currentUser = this.userService.getCurrentUser();
       this.conversationID = conversation === null ? -1 : conversation.conversationID;
+      this.transactionID = conversation === null ? -1 : conversation.transactionID;
       this.recipientID = conversation === null ? -1
       : conversation.recipientID === this.currentUser.userID
       ? conversation.userID : conversation.recipientID;
@@ -120,7 +125,10 @@ export class ChatConversationComponent implements OnInit {
     this.resetConversation.emit();
   }
   gotoLink() {
-    
+    console.log('going to link');
+    // Redirect to dummy route
+    this.router.navigate([`transaction/attachment/${this.transactionID}/${this.conversation.documentID}/
+    ${this.conversation.fileType}/${this.conversation.fileType}`]);
   }
 
 }

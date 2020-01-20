@@ -125,4 +125,5 @@ export class SelectedConversation {
   conversationID?: number;
   userID?: number;
   recipientID?: number;
+  transactionID?: number;
 }
