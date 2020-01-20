@@ -94,9 +94,9 @@ private notify: NotificationComponent;
 
     if (this.start) {
       this.loadNextAttachment();
-    } else {
-      this.loadAttachmentStats();
     }
+
+    this.loadAttachmentStats();
   }
 
   loadNextAttachment() {
@@ -127,7 +127,7 @@ private notify: NotificationComponent;
           this.loading = false;
         } else {
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.start = false;
+          this.companyService.setCapture({ capturestate: false});
         }
 
       },
@@ -160,31 +160,8 @@ private notify: NotificationComponent;
   }
 
   loadCaptureScreen() {
-    const model = {
-      captureID: this.currentUser.userID,
-    };
-    this.transactionService
-    .GetAttatchments(model)
-    .then(
-      (res: CaptureAttachmentResponse) => {
-        this.CaptureInfo = res.captureattachment;
-
-        this.docPath = res.captureattachment.filepath;
-        this.transactionID = res.captureattachment.transactionID;
-        this.attachmentID = res.captureattachment.attachmentID;
-        this.fileType = res.captureattachment.filetype;
-        this.companyID = res.captureattachment.companyID;
-        this.companyName = res.captureattachment.companyName;
-
-        this.docService.loadDocumentToViewer(this.docPath);
-        // tslint:disable-next-line: max-line-length
-        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
-        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-        this.router.navigate(['capture', 'transaction', 'attachment']);
-      },
-      msg => {
-      }
-    );
+    this.companyService.setCapture({ capturestate: true});
+    this.loadNextAttachment();
   }
 
   ngOnDestroy() {

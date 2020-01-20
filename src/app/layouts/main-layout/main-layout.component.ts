@@ -47,8 +47,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   @ViewChild(SidebarComponent, { static: true })
   private sidebar: SidebarComponent;
 
-  @ViewChild(FooterComponent, { static: true })
-  private footer: FooterComponent;
+  // @ViewChild(FooterComponent, { static: true })
+  // private footer: FooterComponent;
 
   @ViewChild(SnackBarComponent, { static: true })
   private snackBar: SnackBarComponent;
@@ -166,7 +166,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   updateChildrenComponents() {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
-    this.footer.currentTheme = this.currentTheme;
+    // this.footer.currentTheme = this.currentTheme;
   }
 
   collapseSidebar() {
