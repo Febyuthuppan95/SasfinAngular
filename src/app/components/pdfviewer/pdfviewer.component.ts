@@ -22,7 +22,7 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     if (this.pdf !== undefined) {
-      console.log(this.pdf);
+      console.log('yes  ' + this.pdf);
       this.ready = true;
     }
   }

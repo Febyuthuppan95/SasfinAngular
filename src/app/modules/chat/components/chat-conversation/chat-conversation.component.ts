@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { TransactionService } from './../../../../services/Transaction.Service';
+import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { User } from './../../../../models/HttpResponses/User';
 import { SelectedConversation } from './../../services/chat.service';
@@ -20,23 +23,31 @@ export class ChatConversationComponent implements OnInit {
     private chatService: ChatService,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    private channelService: ChannelService
+    private channelService: ChannelService,
+    private transactionService: TransactionService,
+    private router: Router
   ) { }
   @Input() conversationID: number;
   @Output() dismiss = new EventEmitter<void>();
   messageList: ChatNewMessage[];
   currentUser: User;
   messageCount: number;
+  conversation: Conversation;
+  transactionID: number;
   messageToSend = new FormControl('', [Validators.required]);
   recipientID: number;
   form: FormGroup;
   @Output() resetConversation = new EventEmitter<void>();
   ngOnInit() {
     this.chatService.observeConversation().subscribe((conversation: SelectedConversation) => {
+      this.currentUser = this.userService.getCurrentUser();
       this.conversationID = conversation === null ? -1 : conversation.conversationID;
-      this.recipientID = conversation === null ? -1 : conversation.recipientID;
+      this.transactionID = conversation === null ? -1 : conversation.transactionID;
+      this.recipientID = conversation === null ? -1
+      : conversation.recipientID === this.currentUser.userID
+      ? conversation.userID : conversation.recipientID;
+      this.conversation = conversation === null ? null : conversation.conversation;
       if (this.conversationID !== -1) {
-        this.currentUser = this.userService.getCurrentUser();
         this.messagesLoad();
       }
     });
@@ -46,7 +57,7 @@ export class ChatConversationComponent implements OnInit {
           console.log(res);
           if (this.conversationID === res.conversationID) {
             this.messageList.push({message: res.message,
-              messageID: -1, receivingUserID: res.receivingUserID, sender: true});
+              messageID: -1, receivingUserID: res.sendingUserID, sender: true});
           }
         });
       }
@@ -89,9 +100,10 @@ export class ChatConversationComponent implements OnInit {
     const messageParams: ChatSendMessageRequest = {
       conversationID: this.conversationID,
       receivingUserID: this.recipientID,
-      userID: this.currentUser.userID,
+      sendingUserID: this.currentUser.userID,
       message: this.form.get('message').value
     };
+    console.log(messageParams);
     this.chatService.sendMessage(messageParams).then(
       (res: ChatSendMessageResponse) => {
         console.log(res);
@@ -112,7 +124,12 @@ export class ChatConversationComponent implements OnInit {
   back() {
     this.resetConversation.emit();
   }
-
+  gotoLink() {
+    console.log('going to link');
+    // Redirect to dummy route
+    this.router.navigate([`transaction/attachment/${this.transactionID}/${this.conversation.documentID}/
+    ${this.conversation.fileType}/${this.conversation.fileType}`]);
+  }
 
 }
 export class SignalRMessage {

@@ -126,12 +126,14 @@ const routes: Routes = [
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
-          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
+          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent}
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
-        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent }
+        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent },
+        { path: 'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+         component: ViewCaptureTransactionComponent }
       ]},
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
     ]
