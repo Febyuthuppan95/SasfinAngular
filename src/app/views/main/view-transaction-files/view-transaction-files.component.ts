@@ -418,7 +418,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.attachmentQueueDisplay = [];
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
-    this.currentAttachment++;
+    this.currentAttachment = 0;
     this.disableAttachmentType = false;
     this.disableSAD500 = false;
     this.disableSAD500Lines = false;
@@ -484,9 +484,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
       this.attachmentQueue[this.currentAttachment].sad500LineID = this.selectedSAD500Line;
 
-      console.log(this.attachmentQueue);
+      console.log(this.currentAttachment);
 
       this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
+
+      console.log(this.attachmentQueue);
 
       this.attachmentName = '';
       this.selectedTransactionType = - 1;
