@@ -485,13 +485,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
       this.attachmentQueue[this.currentAttachment].sad500LineID = this.selectedSAD500Line;
-<<<<<<< HEAD
-
-      console.log(this.currentAttachment);
-=======
 
       console.log(this.attachmentQueue);
->>>>>>> d067149ae32368bcd1cc710a9f900f3f12549eea
 
       this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
 
