@@ -151,6 +151,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
+    console.log(this.attachmentQueueDisplay);
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -380,6 +381,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   uploadAttachments() {
     this.uploading = true;
+    console.log(this.attachmentQueue);
     this.attachmentQueue.forEach((attach, index) => {
       attach.status = 'Uploading';
       attach.uploading = false;
@@ -418,7 +420,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.attachmentQueueDisplay = [];
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
-    this.currentAttachment = 0;
+    // this.currentAttachment++;
     this.disableAttachmentType = false;
     this.disableSAD500 = false;
     this.disableSAD500Lines = false;
@@ -483,8 +485,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
       this.attachmentQueue[this.currentAttachment].sad500LineID = this.selectedSAD500Line;
+<<<<<<< HEAD
 
       console.log(this.currentAttachment);
+=======
+
+      console.log(this.attachmentQueue);
+>>>>>>> d067149ae32368bcd1cc710a9f900f3f12549eea
 
       this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
 
