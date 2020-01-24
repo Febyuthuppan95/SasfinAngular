@@ -1,3 +1,4 @@
+import { ChatRedirectComponent } from './modules/chat/components/chat-redirect/chat-redirect.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -126,7 +127,8 @@ const routes: Routes = [
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
-          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent}
+          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
+          { path: 'refreshComponent', component: ChatRedirectComponent}
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

@@ -30,6 +30,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
   currentRecipient: number;
   conversations: Conversation[];
   selectedConvo = new EventEmitter<number>();
+  search = '';
 
   constructor(
     private userService: UserService,
@@ -65,6 +66,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
         if (res.services.length > 0) {
+          console.log(res.services);
           if ((this.currentUser.userID === res.services[0].resCapturerID) &&
           (this.currentUser.userID !== res.services[0].resConsultantID)) {
             // if capturer lead
@@ -75,7 +77,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
         }
       },
       (msg) => {
-
+        
       }
     );
   }
@@ -84,12 +86,19 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
       userID: this.currentUser.userID,
       rowStart: 1,
       rowEnd: 10,
-      filter: ''
+      filter: this.search.toString()
     };
+    console.log(this.search);
+    this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
+      if (curr !== null) {
+        this.transactionID = curr.transactionID;
+      }
+    });
     this.chatService.conversationList(model).then(
       (res: ChatConversationListResponse) => {
         if (res !== null) {
           this.conversations = res.conversations;
+          console.log(this.conversations);
         } else {
         }
       }, (msg) => {
@@ -103,6 +112,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     // Create a new issue -- direct to conversation with consultant
     const request: ChatConversationIssue = {
       receivingUserID: this.currentRecipient,
+      transactionID: this.transactionID,
       fileType: this.attachmentType,
       documentID: this.attachmentID,
       userID: this.currentUser.userID
@@ -125,6 +135,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
 export interface Conversation {
   conversationID: number;
   recipientID: number;
+  transactionID?: number;
   issueID: number;
   documentID: number;
   fileType: string;

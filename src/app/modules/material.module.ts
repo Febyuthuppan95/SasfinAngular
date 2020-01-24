@@ -31,6 +31,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redirect.component';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule
-  ]
+  ],
+  declarations: [ChatRedirectComponent]
 })
 export class MaterialModule { }

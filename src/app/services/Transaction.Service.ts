@@ -23,8 +23,10 @@ export class TransactionService {
   public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
 
   public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
+    
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+    console.log(next);
   }
 
   /**

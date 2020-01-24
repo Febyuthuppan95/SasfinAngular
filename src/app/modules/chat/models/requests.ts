@@ -30,6 +30,7 @@ message: string;
 }
 export class ChatConversationIssue {
     receivingUserID: number;
+    transactionID: number;
     fileType: string;
     documentID: number;
     userID: number;
