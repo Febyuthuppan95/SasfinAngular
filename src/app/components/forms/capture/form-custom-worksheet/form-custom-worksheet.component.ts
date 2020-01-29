@@ -73,6 +73,7 @@ lineIndex = 0;
 dialogOpen = false;
 
   ngOnInit() {
+    console.log('worksheet');
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);

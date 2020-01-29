@@ -27,3 +27,8 @@ export class ChatConversationGetResponse {
     messages: ChatNewMessage[];
     outcome: Outcome;
 }
+
+export class ChatIssueCreateReponse {
+    issueID: number;
+    outcome: Outcome;
+}

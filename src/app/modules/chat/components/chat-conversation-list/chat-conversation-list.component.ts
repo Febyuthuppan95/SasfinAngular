@@ -111,7 +111,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
   createIssue() {
     // Create a new issue -- direct to conversation with consultant
     const request: ChatConversationIssue = {
-      receivingUserID: this.currentRecipient,
+      reason: '',
       transactionID: this.transactionID,
       fileType: this.attachmentType,
       documentID: this.attachmentID,
@@ -124,7 +124,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
            documentID: request.documentID, fileType: request.fileType});
       },
       (msg) => {
-      }
+      } 
     );
   }
   dismissEvent() {

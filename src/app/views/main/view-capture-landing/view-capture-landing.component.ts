@@ -119,7 +119,7 @@ private notify: NotificationComponent;
           this.fileTypeID = res.captureattachment.fileTypeID;
           this.companyID = res.captureattachment.companyID;
           this.companyName = res.captureattachment.companyName;
-
+          console.log(res);
           this.docService.loadDocumentToViewer(this.docPath);
           // tslint:disable-next-line: max-line-length
           this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });

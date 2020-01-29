@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Escalate Capture</h1>
+<div mat-dialog-content style="overflow: none !important;">
+    <div style="text-align: center;">
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <textarea [(ngModel)]="this.reason" [ngModelOptions]="{standalone: true}" matInput placeholder="Please enter a reason for this escalation"></textarea>
+            </mat-form-field>
+            <mat-form-field mat-dialog-actions>
+                <button mat-raised-button  (click)="onNoClick()">Cancel</button>
+                <button mat-raised-button color="primary" [mat-dialog-close]="this.reason">Escalate</button>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
