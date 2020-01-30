@@ -17,4 +17,6 @@ export class TransactionFile {
   statusID: number;
   tooltip?: string;
   current?: boolean;
+  issueID?: number;
+  resolved?: boolean;
 }

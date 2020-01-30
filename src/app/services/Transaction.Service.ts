@@ -20,11 +20,15 @@ export class TransactionService {
   }
 
   currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>;
-  public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
+  public observerCurrentAttachment() {
+    console.log(this.currentAttachment);
+    return this.currentAttachment.asObservable(); }
 
   public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
+    
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+    console.log(next);
   }
 
   /**

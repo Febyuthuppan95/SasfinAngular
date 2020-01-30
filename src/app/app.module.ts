@@ -207,6 +207,7 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ChannelService } from './modules/chat/services/channel.service';
+import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -343,7 +344,8 @@ import { ChannelService } from './modules/chat/services/channel.service';
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
     SplitDocumentComponent,
-    ViewCaptureLandingComponent
+    ViewCaptureLandingComponent,
+    EscalateDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -425,7 +427,8 @@ import { ChannelService } from './modules/chat/services/channel.service';
     FormVOCComponent,
     FormWaybillComponent,
     FormCustomWorksheetComponent,
-    SplitDocumentComponent
+    SplitDocumentComponent,
+    EscalateDialogComponent
   ]
 })
 export class AppModule { }

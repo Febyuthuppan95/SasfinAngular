@@ -37,7 +37,7 @@
 </div>
 <div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
   <div class="text-center">
-    <button mat-mini-fab class="toggle-chat" (click)="toggleChat()"><span class="mdi mdi-comment"></span>
+    <button mat-mini-fab class="Escalate" (click)="toggelEscalate()"><span class="mdi mdi-alert-circle-outline"></span>
     </button>
   </div>
 </div>
@@ -135,15 +135,14 @@
 </div>
 
 <app-notification></app-notification>
-<app-chat-overlay
+<!-- <app-chat-overlay
     [enableChat]="true"
     [showChat]="this.showChat"
     (dismiss)="toggleChat()"
     [(transactionID)]="this.transactionID"
     [(attachmentID)]="this.attachmentID"
     [(attachmentType)]="this.attachmentType">
-  </app-chat-overlay>
-  
+  </app-chat-overlay> -->
 <!-- TimeOut modal -->
 <button class="hide" data-toggle="modal" data-target="#timeout" #opentimeoutModal></button>
 <div class="modalcustom fade no-click-backdrop" id="timeout" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -171,3 +170,4 @@
       </div>
     </div>
   </div>
+  <!--Escalate Modal-->

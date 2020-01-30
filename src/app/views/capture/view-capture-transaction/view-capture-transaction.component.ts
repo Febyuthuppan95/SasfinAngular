@@ -54,21 +54,21 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   }
 
   loadComponent() {
-    switch (this.currentDoctype) {
-
+    console.log(this.currentDoctype);
+    switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
         break;
       }
-      case 'Customs Release Notification': {
+      case 'CUSRELEASE': {
         this.componentService.renderComponent(FormCustomReleaseComponent);
         break;
       }
-      case 'Import Clearing Instruction': {
+      case 'ICI': {
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
-      case 'Invoice': {
+      case 'INVOICE': {
         this.componentService.renderComponent(FormInvoiceComponent);
         break;
       }
@@ -76,11 +76,11 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormVOCComponent);
         break;
       }
-      case 'Waybill': {
+      case 'WAYBILL': {
         this.componentService.renderComponent(FormWaybillComponent);
         break;
       }
-      case 'Custom Worksheet': {
+      case 'CUSWORK': {
         this.componentService.renderComponent(FormCustomWorksheetComponent);
         break;
       }

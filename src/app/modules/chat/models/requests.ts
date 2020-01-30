@@ -29,7 +29,8 @@ sendingUserID: number;
 message: string;
 }
 export class ChatConversationIssue {
-    receivingUserID: number;
+    reason: string;
+    transactionID: number;
     fileType: string;
     documentID: number;
     userID: number;

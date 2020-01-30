@@ -450,6 +450,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: triple-equals
     if (this.selectedTransactionType == 5) {
       this.isVOC = true;
+      this.loadSAD500s();
     } else {
       this.isVOC = false;
     }
@@ -519,6 +520,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       transactionID: this.transactionID,
     }).then(
       (res: SAD500ListResponse) => {
+        console.log(res);
         this.sad500s = res.sad500s;
       },
       (msg) => {
@@ -539,6 +541,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       sad500ID: this.selectedSAD500,
     }).then(
       (res: SPSAD500LineList) => {
+        
         this.selectedSAD500Line = -1;
         this.sad500Line = res.lines;
       },

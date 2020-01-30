@@ -4,31 +4,10 @@
       <h5><div class="chat-title" (click)="this.dismissEvent()">Conversations</div></h5>
     </div>
     <div class="chat-body">
-      <input type="search" class="form-control rounded" placeholder="Search conversations...">
+      <input [(ngModel)]="this.search" [ngModelOptions]="{'standalone': true}"  class="form-control rounded" placeholder="Search conversations..." (keyup)="getConversations()" >
       <br>
       <div class="contact-list" *ngIf="this.conversations">
           <!-- <app-chat-conversation-tile *ngFor="let user of conversations" [user]="user.user"></app-chat-conversation-tile> -->
           <app-chat-conversation-tile  *ngFor="let convo of conversations" [conversation]="convo" (conversationID)="setConvo($event)"></app-chat-conversation-tile>
       </div>
-    <!-- <div class="chat-tile-footer">
-      <div class="row" style="height: auto !important;">
-        <div class="col-sm-2">
-            <div class="image-container">
-              <img class="chat-profile-image" src="./../../../../assets/dist/images/default.svg"/>
-              <span class="online-status online shadow-sm"></span>
-              &nbsp;
-            </div>
-        </div>
-        <div class="col-sm-8">
-            <p>{{currentUser.firstName}}&nbsp;{{currentUser.surname}}</p>
-            <p class="chat-user-email">{{currentUser.email}}</p>
-            <p class="chat-user-des">{{currentUser.designation}}</p>
-        </div>
-        <div class="col-sm-2">
-          <div class="image-container">
-            <button mat-button class="mdi mdi-dots-horizontal-circle-outline"></button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>

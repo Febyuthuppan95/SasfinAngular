@@ -125,15 +125,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     .subscribe(() => {});
 
 
-    this.channelService.observeUserConnection().subscribe((hub: signalR.HubConnection) => {
-      if (hub !== null) {
-        hub.on('userChatConnection', (msg: string) => {
-          this.snackBarMat.open(msg, '', {
-            duration: 2000
-          });
-        });
-      }
-    });
+    // this.channelService.observeUserConnection().subscribe((hub: signalR.HubConnection) => {
+    //   if (hub !== null) {
+    //     hub.on('userChatConnection', (msg: string) => {
+    //       this.snackBarMat.open(msg, '', {
+    //         duration: 2000
+    //       });
+    //     });
+    //   }
+    // });
   }
 
   closeHelpContext() {

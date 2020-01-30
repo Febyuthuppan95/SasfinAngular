@@ -9,6 +9,9 @@
     opacity: 0;
     transition: opacity ease-in-out 0.3s;
   }
+  div h5:hover {
+    cursor: pointer;
+  }
   
   .chat-container {
     position: fixed;
@@ -27,6 +30,17 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     color: #f2f2f2;
+    .title-link {
+      left:95px;
+    }
+    .back-button {
+      position:absolute;
+      left: 10px;
+    }
+    .close-button {
+      position: absolute;
+      right: 10px;
+    }
   }
   
   .chat-tile-footer {

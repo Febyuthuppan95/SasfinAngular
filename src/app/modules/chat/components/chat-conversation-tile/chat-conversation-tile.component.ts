@@ -26,10 +26,12 @@ export class ChatConversationTileComponent implements OnInit {
     // this.chatService.setConverastion({ userID });
   }
   gotoConversation(convoID: number, convoRecipient: number) {
+    console.log(convoRecipient);
     const model: SelectedConversation = {
       conversation: this.conversation,
       conversationID: convoID,
-      recipientID: convoRecipient
+      recipientID: convoRecipient,
+      transactionID: this.conversation.transactionID
     };
     this.chatService.setConversation(model);
     // Need ConversationID

@@ -1,3 +1,7 @@
+import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
+import { ChatConversationIssue } from './../../modules/chat/models/requests';
+import { ChatService } from './../../modules/chat/services/chat.service';
+
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,8 +13,9 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
+import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -41,7 +46,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
-              private channelService: ChannelService) {}
+              private channelService: ChannelService,
+              private chatService: ChatService,
+              private snackBarMat: MatSnackBar) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -132,6 +139,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
+      console.log(obj);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
@@ -270,7 +278,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
-
+        console.log(this.companyInfoList);
         if (this.companyInfoList.captureInfo.length > 0) {
           this.noCaptureInformation = false;
         }
@@ -337,8 +345,42 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   //       (msg) => {}
   //     );
   // }
+  toggelEscalate() {
+    // Modal toggle
+    const escalateDialog = this.dialog.open(EscalateDialogComponent);
+    escalateDialog.afterClosed().subscribe(result => {
+      this.escalate(result);
+    });
+  }
 
-
+  escalate(userReason: string) {
+    const model: ChatConversationIssue = {
+      transactionID: this.transactionID,
+      userID: this.currentUser.userID,
+      reason: userReason,
+      fileType: this.attachmentType,
+      documentID: this.attachmentID
+    };
+    this.chatService.createIssue(model).then(
+      (res: ChatIssueCreateReponse) => {
+        console.log(res);
+        if (res.issueID > 0) {
+          this.companyService.setCapture({ capturestate: false});
+          this.router.navigate(['transaction/capturerlanding']);
+        } else {
+          this.snackBarMat.open(res.outcome.outcomeMessage, '', {
+            duration: 2000
+           });
+        }
+      },
+      (msg) => {
+        this.snackBarMat.open(msg, '', {
+          duration: 2000
+         });
+      }
+    );
+    // service
+  }
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
