@@ -174,7 +174,7 @@ export class TransactionService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500LineID?: number) {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number) {
     const requestModel = {
       name,
       fileName: file.name,
@@ -182,9 +182,8 @@ export class TransactionService {
       transactionID,
       userID,
       company,
-      sad500LineID
+      sad500ID
     };
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('requestModel', JSON.stringify(requestModel));
