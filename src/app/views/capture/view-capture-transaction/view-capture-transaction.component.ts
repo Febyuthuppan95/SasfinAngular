@@ -60,11 +60,16 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormSAD500Component);
         break;
       }
-      case 'CUSRELEASE': {
+      case ('CUSRELEASE' || 'CUSTOMS RELEASE NOTIFICATION') : {
         this.componentService.renderComponent(FormCustomReleaseComponent);
         break;
       }
       case 'ICI': {
+        this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        break;
+      }
+      case 'IMPORT CLEARING INSTRUCTION': {
+        console.log('erer');
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
@@ -81,6 +86,10 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'CUSWORK': {
+        this.componentService.renderComponent(FormCustomWorksheetComponent);
+        break;
+      }
+      case 'CUSTOMS WORKSHEET': {
         this.componentService.renderComponent(FormCustomWorksheetComponent);
         break;
       }

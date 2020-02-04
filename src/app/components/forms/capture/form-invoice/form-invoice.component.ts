@@ -212,10 +212,12 @@ loader = false;
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
-            fromCompanyID: this.form.fromCompanyID.value,
+            fromCompanyID: -1,
             fromCompany: this.form.fromCompany.value,
+            toCompanyID: -1,
+            toCompany: '',
             invoiceNo: this.form.invoiceNo.value,
-            currencyID: this.form.currencyID.value,
+            currencyID: -1,
             isDeleted: 0,
             attachmentStatusID: 3,
           };
@@ -262,10 +264,15 @@ loader = false;
         quantity: obj.quantity,
         itemValue: obj. itemValue,
         isDeleted: 0,
+        unitPrice: obj.unitPrice,
+        totalLineValue: obj.totalLineValue,
+        unitOfMeasure: obj.unitOfMeasure,
+        unitOfMeasureID: obj.unitOfMeasureID
       };
 
       this.captureService.invoiceLineUpdate(requestModel).then(
         (res: Outcome) => {
+          console.log(res);
           if (res.outcome === 'SUCCESS') {
             this.loadLines();
             this.lineState = 'Updated successfully';

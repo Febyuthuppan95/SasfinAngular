@@ -460,8 +460,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   onSAD500Select(id: number) {
     this.selectedSAD500 = id;
     this.disableSAD500 = true;
-
-    this.loadSAD500Lines();
+    this.selectedSAD500Line = id;
+    // this.loadSAD500Lines();
   }
 
   onSAD500LineSelect(id: number) {
@@ -515,6 +515,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       userID: this.currentUser.userID,
       filter: '',
       rowStart: 1,
+      sad500ID: -1,
       rowEnd: 100,
       orderBy: '',
       orderDirection: '',
