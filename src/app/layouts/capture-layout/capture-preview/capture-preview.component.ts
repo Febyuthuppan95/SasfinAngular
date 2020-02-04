@@ -26,6 +26,7 @@ export class CapturePreviewComponent implements OnInit {
   count = 0;
 
   ngOnInit() {
+    console.log(this.data.src);
     this.failedToLoad = false;
 
     this.docService.get(this.data.src).then(
