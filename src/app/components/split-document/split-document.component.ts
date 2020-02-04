@@ -1,15 +1,19 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-split-document',
   templateUrl: './split-document.component.html',
   styleUrls: ['./split-document.component.scss']
 })
-export class SplitDocumentComponent implements OnInit {
+export class SplitDocumentComponent implements OnInit, OnDestroy {
 
-  constructor(private captureService: CaptureService, private dialogRef: MatDialogRef<SplitDocumentComponent>,
+  constructor(private captureService: CaptureService, private companyService: CompanyService,
+              private dialogRef: MatDialogRef<SplitDocumentComponent>,
               @Inject(MAT_DIALOG_DATA) private data: { userID: number, transactionID: number}) { }
 
   sections: SplitPDFRequest[] = [];
@@ -18,19 +22,26 @@ export class SplitDocumentComponent implements OnInit {
   };
 
   file: File;
+  displayPreview = false;
   filePreview: ArrayBuffer | string;
+  companyName: string;
   private fileReader = new FileReader();
 
   transactionTypes = [
-    { name: 'ICI', value: 1 },
-    { name: 'SAD500', value: 2 },
-    { name: 'PACKING', value: 3 },
-    { name: 'CUSRELEASE', value: 4 },
-    { name: 'VOC', value: 5 },
+    { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
+    { name: 'SAD500', value: 2, description: 'SAD500' },
+    { name: 'PACKING', value: 3, description: 'Packing' },
+    { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
+    { name: 'VOC', value: 5, description: 'VOC' },
+    { name: 'INVOICE', value: 6, description: 'Invoice' },
+    { name: 'WAYBILL', value: 7, description: 'Waybill' },
+    { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' },
   ];
 
   ngOnInit() {
-    console.log(this);
+    this.companyService.observeCompany().subscribe((data) => {
+        this.companyName = data.companyName;
+    });
   }
 
   addSection() {
@@ -41,18 +52,22 @@ export class SplitDocumentComponent implements OnInit {
       },
       name: '',
       userID: this.data.userID,
-      transactionID: this.data.transactionID
+      transactionID: this.data.transactionID,
+      attachmentType: '',
+      companyName: this.companyName
     });
   }
 
   inputFileChange(files: File[]) {
     this.file = files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.filePreview = reader.result;
+
+    this.fileReader = new FileReader();
+    this.fileReader.readAsDataURL(this.file);
+    this.fileReader.onload = (e) => {
+      this.filePreview = this.fileReader.result;
     };
 
-    reader.readAsDataURL(this.file);
+    this.displayPreview = true;
   }
 
   typeChange(index: number, value: number) {
@@ -68,6 +83,10 @@ export class SplitDocumentComponent implements OnInit {
       err++;
     }
 
+
+    console.log(this.requestData);
+
+    if (err === 0) {
     const formData = new FormData();
     formData.append('requestModel', JSON.stringify(this.requestData));
     formData.append('file', this.file);
@@ -80,7 +99,14 @@ export class SplitDocumentComponent implements OnInit {
         this.dialogRef.close({state: false});
       }
     );
+    }
   }
+
+  dismiss() {
+    this.dialogRef.close(false);
+  }
+
+  ngOnDestroy() {}
 
 }
 
@@ -95,4 +121,5 @@ export class SplitPDFRequest {
     transactionID?: number;
     name?: string;
     attachmentType?: string;
+    companyName: string;
 }

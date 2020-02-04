@@ -1,3 +1,8 @@
+import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
+import { ChatConversationIssue } from './../../modules/chat/models/requests';
+import { ChatService } from './../../modules/chat/services/chat.service';
+
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
@@ -8,8 +13,9 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
+import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -39,10 +45,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private companyService: CompanyService,
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
-              private eventService: EventService) {}
+              private eventService: EventService,
+              private channelService: ChannelService,
+              private chatService: ChatService,
+              private snackBarMat: MatSnackBar) {}
 
   shortcuts: ShortcutInput[] = [];
-
+  showChat = false;
   inspectingPreview = false;
   showDocks = true;
 
@@ -103,7 +112,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
 
   ngOnInit() {
-    this.companyService.setCapture({ capturestate: true});
+    // this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
     this.themeService.observeBackground()
@@ -130,15 +139,15 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
+      console.log(obj);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
-      this.loadAttachments();
       this.loadCaptureInfo();
     });
 
     // get the help value
-    this.helpValue  = this.themeService.observeHelpValue();
+    // this.helpValue  = this.themeService.observeHelpValue();
 
     // Start watching for user inactivity.
     this.userIdle.startWatching();
@@ -233,7 +242,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   goBack() {
-    this.router.navigate(['transaction', 'attachments']);
+    this.router.navigate(['transaction/attachments']);
   }
 
   loadCaptureInfo() {
@@ -269,7 +278,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
-
+        console.log(this.companyInfoList);
         if (this.companyInfoList.captureInfo.length > 0) {
           this.noCaptureInformation = false;
         }
@@ -294,50 +303,84 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
    }
   }
 
-  loadAttachments() {
-    const model = {
-      filter: '',
-      userID: this.currentUser.userID,
-      specificTransactionID: this.transactionID,
-      specificAttachmentID: -1,
-      rowStart: 1,
-      rowEnd: 25,
-      orderBy: '',
-      orderByDirection: ''
-    };
+  // loadAttachments() {
+  //   const model = {
+  //     filter: '',
+  //     userID: this.currentUser.userID,
+  //     specificTransactionID: this.transactionID,
+  //     specificAttachmentID: -1,
+  //     rowStart: 1,
+  //     rowEnd: 25,
+  //     orderBy: '',
+  //     orderByDirection: ''
+  //   };
 
-    this.transactionService
-      .listAttatchments(model)
-      .then(
-        (res: TransactionFileListResponse) => {
-          this.attachmentList = res.attachments;
-          const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
-          this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
+  //   this.transactionService
+  //     .listAttatchments(model)
+  //     .then(
+  //       (res: TransactionFileListResponse) => {
+  //         this.attachmentList = res.attachments;
+  //         const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
+  //         this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
-          this.attachmentListShowing.push(current);
+  //         this.attachmentListShowing.push(current);
 
-          this.attachmentList.forEach((item, i) => {
-            if (i < 4) {
-              this.attachmentListShowing.push(item);
-            }
-          });
+  //         this.attachmentList.forEach((item, i) => {
+  //           if (i < 4) {
+  //             this.attachmentListShowing.push(item);
+  //           }
+  //         });
 
-          this.attachmentListShowing.forEach((attach) => {
-            if (attach.statusID !== undefined) {
-              attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
-              attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
-              attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
-              attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+  //         this.attachmentListShowing.forEach((attach) => {
+  //           if (attach !== undefined) {
+  //             attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
+  //             attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
+  //             attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
+  //             attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
 
-              this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
-            }
-          });
-        },
-        (msg) => {}
-      );
+  //             this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+  //           }
+  //         });
+  //       },
+  //       (msg) => {}
+  //     );
+  // }
+  toggelEscalate() {
+    // Modal toggle
+    const escalateDialog = this.dialog.open(EscalateDialogComponent);
+    escalateDialog.afterClosed().subscribe(result => {
+      this.escalate(result);
+    });
   }
 
-
+  escalate(userReason: string) {
+    const model: ChatConversationIssue = {
+      transactionID: this.transactionID,
+      userID: this.currentUser.userID,
+      reason: userReason,
+      fileType: this.attachmentType,
+      documentID: this.attachmentID
+    };
+    this.chatService.createIssue(model).then(
+      (res: ChatIssueCreateReponse) => {
+        console.log(res);
+        if (res.issueID > 0) {
+          this.companyService.setCapture({ capturestate: false});
+          this.router.navigate(['transaction/capturerlanding']);
+        } else {
+          this.snackBarMat.open(res.outcome.outcomeMessage, '', {
+            duration: 2000
+           });
+        }
+      },
+      (msg) => {
+        this.snackBarMat.open(msg, '', {
+          duration: 2000
+         });
+      }
+    );
+    // service
+  }
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
@@ -383,7 +426,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         });
 
         this.dialogAttachments.afterClosed().subscribe((obj: TransactionFile) => {
-          console.log(obj);
           this.openMore = true;
           this.dialogAttachments = null;
 
@@ -409,8 +451,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (status) {
           this.eventService.triggerCaptureEvent();
-          this.router.navigate(['transaction/capturerlanding']);
-     }
+         }
       });
     }
   }
@@ -427,4 +468,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   //   }
   // }
 
+  toggleChat() {
+    this.showChat = !this.showChat;
+  }
 }

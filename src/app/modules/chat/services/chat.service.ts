@@ -1,3 +1,5 @@
+import { Conversation } from './../components/chat-conversation-list/chat-conversation-list.component';
+import { ChatConversationIssue, ChatConversationMessageList } from './../models/requests';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChatConversationListRequest, ChatContactListRequest, ChatSendMessageRequest } from '../models/requests';
@@ -14,11 +16,11 @@ export class ChatService {
   constructor(private httpClient: HttpClient) { }
 
   observeConversation = () => this.selectedConversation.asObservable();
-  setConverastion = (next: SelectedConversation) => this.selectedConversation.next(next);
+  setConversation = (next: SelectedConversation) => this.selectedConversation.next(next);
 
-  conversationList = (requestModel: ChatConversationListRequest) => {
-    return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/conversation/list`;
+  public async conversationList(requestModel: ChatConversationListRequest) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -35,7 +37,24 @@ export class ChatService {
 
   conversationGet = (requestModel: ChatConversationListRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/conversation/get`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/conversation/get`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public async conversationMessagesGet(requestModel: ChatConversationMessageList) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/chat/messages`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -52,7 +71,7 @@ export class ChatService {
 
   contactList = (requestModel: ChatContactListRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/contact/list`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/contact/list`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -69,7 +88,7 @@ export class ChatService {
 
   sendMessage = (requestModel: ChatSendMessageRequest) => {
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/chat/message/send`;
+      const apiURL = `${environment.ApiEndpoint}/users/chat/send`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()
@@ -83,9 +102,28 @@ export class ChatService {
         );
     });
   }
+  createIssue = (requestModel: ChatConversationIssue) => {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/users/chat/issue`;
+      this.httpClient
+      .post(apiURL, requestModel)
+      .toPromise()
+      .then(
+        res => {
+          resolve(res);
+        },
+        msg => {
+          reject(msg);
+        }
+      );
+    });
+  }
 }
 
 export class SelectedConversation {
+  conversation?: Conversation;
   conversationID?: number;
-  userID: number;
+  userID?: number;
+  recipientID?: number;
+  transactionID?: number;
 }

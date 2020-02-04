@@ -14,6 +14,7 @@ import { EventService } from 'src/app/services/event.service';
 import { MatDialog } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-form-waybill',
@@ -22,8 +23,11 @@ import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
 })
 export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService, private eventService: EventService, private dialog: MatDialog) { }
+  constructor(private themeService: ThemeService, private userService: UserService,
+              private transactionService: TransactionService,
+              private router: Router, private captureService: CaptureService,
+              private eventService: EventService, private dialog: MatDialog,
+              private companyService: CompanyService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -70,43 +74,44 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.submit()
+            command: e => {
+              if (!this.dialogOpen) {
+                this.dialogOpen = true;
+                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                  this.dialogOpen = false;
+                  if (status) {
+                    this.submit();
+                  }
+                });
+              }
+            }
         },
     );
   }
 
   submit() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
-
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           const requestModel = {
             userID: this.currentUser.userID,
             waybillID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             isDeleted: 0,
-            attachmentStatus: 2,
+            attachmentStatus: 3,
           };
 
           this.captureService.waybillUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
-              this.router.navigate(['transaction/attachment']);
+
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
               } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
               }
             },
               (msg) => {
               this.notify.errorsmsg('Failure', 'Cannot reach server');
-              }
-            );
-        }
-      });
-    }
+              });
   }
 
   loadData() {

@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../environments/environment';
-import { User } from '../models/HttpResponses/User';
 import { AddUserRight, UpdateUserRight } from '../models/HttpRequests/UserRights';
-import { GetUserList, UpdateUserRequest, AddUserRequest } from '../models/HttpRequests/Users';
+import { AddUserRequest, GetUserList, UpdateUserRequest } from '../models/HttpRequests/Users';
+import { User } from '../models/HttpResponses/User';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,15 @@ export class UserService {
   constructor(
     private cookieService: CookieService,
     private httpClient: HttpClient,
-    private router: Router,
+    private router: Router
   ) {}
 
+  private isAuth = new BehaviorSubject<boolean>(this.cookieService.check('currentUser'));
+  public observeLogin = this.isAuth.asObservable();
+
+  public setAuth = (isAuth: boolean) => {
+    this.isAuth.next(isAuth);
+  }
   /**
    * IsLoggedIn
    */
@@ -29,6 +37,7 @@ export class UserService {
    */
   public logout() {
     this.cookieService.delete('currentUser', '/');
+    this.setAuth(false);
     this.router.navigateByUrl('/account/login');
   }
 

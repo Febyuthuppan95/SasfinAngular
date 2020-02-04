@@ -1,1 +1,6 @@
-<p>chat-bubble works!</p>
+<div class="row" > <!--Bubbles are rows. Text is on the right side if you are the sender.-->
+    <mat-card [ngClass]="this.sender ? 'bubble-right' : 'bubble-left'"><!--message inside this card-->
+        <p>{{this.message.message}}</p>
+    </mat-card>
+</div>
+<div class="spacer row"></div>

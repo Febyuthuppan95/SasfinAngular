@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { User } from 'src/app/models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -14,13 +14,15 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { AttachmentStatsResponse } from 'src/app/models/HttpResponses/AttachmentStatsResponse';
 
 @Component({
   selector: 'app-view-capture-landing',
   templateUrl: './view-capture-landing.component.html',
   styleUrls: ['./view-capture-landing.component.scss']
 })
-export class ViewCaptureLandingComponent implements OnInit {
+export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
 
 
   constructor(private themeService: ThemeService,
@@ -33,6 +35,10 @@ export class ViewCaptureLandingComponent implements OnInit {
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
               private eventService: EventService) { }
+
+@ViewChild(NotificationComponent, { static: false })
+private notify: NotificationComponent;
+
 
 
   private unsubscribe$ = new Subject<void>();
@@ -49,9 +55,15 @@ export class ViewCaptureLandingComponent implements OnInit {
   companyName: string;
   transactionID: number;
   attachmentID: number;
-  start = false;
+  ACT: number;
+  TACT: number;
+  ATBC: number;
+  Inc: number;
+  ERR: number;
 
+  start = false;
   loading = false;
+  tmpCompanyToken: string; // No Duplicate events
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
@@ -72,11 +84,20 @@ export class ViewCaptureLandingComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCapture) => {
       this.start = obj.capturestate;
+      // console.log(this.start + ', ' + obj.capturestate);
+      if (this.start) {
+        // if (obj.token !== this.tmpCompanyToken) {
+          this.loadNextAttachment();
+        //   this.tmpCompanyToken = obj.token;
+        // }
+      }
     });
 
     if (this.start) {
       this.loadNextAttachment();
     }
+
+    this.loadAttachmentStats();
   }
 
   loadNextAttachment() {
@@ -87,26 +108,65 @@ export class ViewCaptureLandingComponent implements OnInit {
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        this.CaptureInfo = res.captureattachment;
+        console.log(res.captureattachment.attachmentID);
+        if (res.captureattachment.attachmentID !== 0 || res.captureattachment.transactionID !== 0) {
+          this.CaptureInfo = res.captureattachment;
 
-        this.docPath = res.captureattachment.filepath;
-        this.transactionID = res.captureattachment.transactionID;
-        this.attachmentID = res.captureattachment.attachmentID;
-        this.fileType = res.captureattachment.filetype;
-        this.fileTypeID = res.captureattachment.fileTypeID;
-        this.companyID = res.captureattachment.companyID;
-        this.companyName = res.captureattachment.companyName;
+          this.docPath = res.captureattachment.filepath;
+          this.transactionID = res.captureattachment.transactionID;
+          this.attachmentID = res.captureattachment.attachmentID;
+          this.fileType = res.captureattachment.filetype;
+          this.fileTypeID = res.captureattachment.fileTypeID;
+          this.companyID = res.captureattachment.companyID;
+          this.companyName = res.captureattachment.companyName;
+          console.log(res);
+          this.docService.loadDocumentToViewer(this.docPath);
+          // tslint:disable-next-line: max-line-length
+          this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+          this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+          this.router.navigate(['capture', 'transaction', 'attachment']);
+          this.loading = false;
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.companyService.setCapture({ capturestate: false});
+        }
 
-        this.docService.loadDocumentToViewer(this.docPath);
-        // tslint:disable-next-line: max-line-length
-        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
-        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-        this.router.navigate(['capture', 'transaction', 'attachment']);
-        this.loading = false;
       },
       msg => {
         this.loading = false;
       }
     );
+  }
+
+
+  loadAttachmentStats() {
+    const model = {
+      captureID: this.currentUser.userID,
+    };
+    this.transactionService
+    .GetAttatchmentStats(model)
+    .then(
+      (res: AttachmentStatsResponse) => {
+
+        this.ACT = res.act;
+        this.TACT = res.tact;
+        this.ATBC = res.atbc;
+        this.Inc = res.inc;
+        this.ERR = res.err;
+      },
+      msg => {
+        this.loading = false;
+      }
+    );
+  }
+
+  loadCaptureScreen() {
+    this.companyService.setCapture({ capturestate: true});
+    this.loadNextAttachment();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,3 +1,4 @@
+import { ChatRedirectComponent } from './modules/chat/components/chat-redirect/chat-redirect.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -87,7 +88,7 @@ const routes: Routes = [
           { path: 'users', component: ViewUserListComponent },
           { path: 'designations', component: ViewDesignationsListComponent },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent },
-          {path: 'user-rights/:name/:id', component: ViewUserRightsListComponent},
+          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent },
           { path: 'backgrounds', component: ViewBackgroundsListComponent },
           { path: 'rights', component: ViewRightsListComponent },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent },
@@ -127,11 +128,14 @@ const routes: Routes = [
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
           { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
+          { path: 'refreshComponent', component: ChatRedirectComponent}
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
-        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent }
+        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent },
+        { path: 'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+         component: ViewCaptureTransactionComponent }
       ]},
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
     ]

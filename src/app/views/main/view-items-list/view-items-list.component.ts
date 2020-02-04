@@ -81,9 +81,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     description: string,
     tariffID: number,
     tariff: string,
-    type: number,
-    mIDP: string,
-    pI: string,
+    typeID: number,
+    type: string,
     vulnerable: string,
 
   };
@@ -158,9 +157,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   description = '';
   tariff = '';
   tariffID = 0;
+  itemtype = '';
   itemtypeID = 0;
-  mIDP = '';
-  pI = '';
   vulnerable = '';
 
   items: Items[] = [];
@@ -210,6 +208,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     });
 
     this.loadItems(true);
+    this.loadServices(false);
+    this.loadTariffs(false);
+    this.loadItemTypes(false);
 
   }
 
@@ -395,6 +396,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   popClick(event, obj) {
     this.Item = obj;
+    console.log(obj);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -434,10 +436,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   }
 
   editItem(id: number) {
-    this.loadServices(false);
-    this.loadTariffs(false);
-    this.loadItemTypes(false);
-
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.itemID = this.Item.itemID;
@@ -445,12 +443,14 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.description = this.Item.description;
     this.tariff = this.Item.tariff;
     this.tariffID = this.Item.tariffID;
-    this.itemtypeID = this.Item.type;
-    this.mIDP = this.Item.mIDP;
-    this.pI = this.Item.pI;
+    this.itemtype = this.Item.type;
+    this.itemtypeID = this.Item.typeID;
+    console.log(this.itemtype);
+    console.log(this.itemtypeID);
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
   }
+
   removeItem(id: number) {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -466,13 +466,10 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       description: this.description,
       tariffID: this.tariffID,
       type: this.itemtypeID,
-      mIDP: this.mIDP,
-      pI: this.pI,
       vulnerable: this.vulnerable,
       service: '',
       isDeleted: deleted
     };
-    console.log(this.tariffID);
     this.companyService.itemupdate(requestModel).then(
       (res: UpdateItemResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {

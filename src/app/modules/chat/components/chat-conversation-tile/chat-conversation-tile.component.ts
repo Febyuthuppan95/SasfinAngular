@@ -1,3 +1,5 @@
+import { SelectedConversation } from './../../services/chat.service';
+import { Conversation } from './../chat-conversation-list/chat-conversation-list.component';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { UserList } from 'src/app/models/HttpResponses/UserList';
@@ -12,17 +14,28 @@ export class ChatConversationTileComponent implements OnInit {
 
   constructor(private chatService: ChatService) { }
 
-  @Input() user: UserList;
-
+  @Input() public conversation: Conversation;
+  @Output() public displaySelectedConversation: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public conversationID: EventEmitter<number> = new EventEmitter<number>();
   imageURL: string = null;
 
   ngOnInit() {
-    if (this.user.profileImage !== null && this.user.profileImage !== undefined) {
-      this.imageURL = `${environment.ApiProfileImages}/${this.user.profileImage}`;
-    }
   }
 
   selectConversation(userID: any) {
-    this.chatService.setConverastion({ userID });
+    // this.chatService.setConverastion({ userID });
+  }
+  gotoConversation(convoID: number, convoRecipient: number) {
+    console.log(convoRecipient);
+    const model: SelectedConversation = {
+      conversation: this.conversation,
+      conversationID: convoID,
+      recipientID: convoRecipient,
+      transactionID: this.conversation.transactionID
+    };
+    this.chatService.setConversation(model);
+    // Need ConversationID
+    this.displaySelectedConversation.emit(true);
+    this.conversationID.emit(convoID);
   }
 }

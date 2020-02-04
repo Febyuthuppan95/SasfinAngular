@@ -12,6 +12,7 @@ import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-sidebar',
@@ -215,7 +216,7 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'CompanyAddInfoTypes') {
             this.showcompanyAddInfoTypes = true;
           }
-          if (uRight.name === 'Locations') {
+          if (uRight.name === 'Places') {
             this.showlocations = true;
           }
           if (uRight.name === 'AttchmentCapture') {
@@ -236,35 +237,8 @@ export class SidebarComponent implements OnInit {
   }
 
   loadCaptureScreen() {
-    const model = {
-      captureID: this.currentUser.userID,
-    };
-    this.transactionService
-    .GetAttatchments(model)
-    .then(
-      (res: CaptureAttachmentResponse) => {
-        this.CaptureInfo = res.captureattachment;
-
-        this.docPath = res.captureattachment.filepath;
-        this.transactionID = res.captureattachment.transactionID;
-        this.attachmentID = res.captureattachment.attachmentID;
-        this.fileType = res.captureattachment.filetype;
-        this.companyID = res.captureattachment.companyID;
-        this.companyName = res.captureattachment.companyName;
-
-        this.docService.loadDocumentToViewer(this.docPath);
-        // tslint:disable-next-line: max-line-length
-        this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
-        this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-        this.router.navigate(['capture', 'transaction', 'attachment']);
-
-      },
-      msg => {
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
+    console.log('yes');
+    this.companyService.setCapture({ capturestate: true, token: UUID.UUID()}); // Generated token to prevent duplicate events
+    this.router.navigateByUrl('transaction/capturerlanding');
   }
 }

@@ -1,16 +1,9 @@
-<div class="chat-contact shadow-sm" (click)="selectConversation(this.user.userId)">
+<div class="conversation-tile shadow-sm" (click)="gotoConversation(this.conversation.conversationID, this.conversation.recipientID)">
   <div class="row">
-    <div class="col-sm-2">
-      <div class="image-container">
-          <img class="chat-contact-img shadow-sm" src="./../../../../assets/dist/images/default.svg" *ngIf="this.imageURL === null"/>
-          <img class="chat-contact-img shadow-sm" [src]="this.imageURL" *ngIf="this.imageURL !== null"/>
-          <span class="online-status online shadow-sm"></span>
-        </div>
-    </div>
-    <div class="col-sm-10">
-        &nbsp;{{this.user.firstName}}&nbsp;{{this.user.surname}}<br>
-        &nbsp;<small class="text-muted">{{this.user.email}}</small>
-    </div>
+    <div class="col-sm-12">
+      <span class="float-right">{{this.conversation.messageDate.toString()}}</span>
+      <span><strong>{{this.conversation.fileType}}-{{this.conversation.documentID}}-{{this.conversation.issueID}}-{{this.conversation.conversationID}}</strong></span><br>
+      <span><small class="text-muted">{{this.conversation.lastMessage}}...</small></span>
+      </div>
   </div>
-
 </div>

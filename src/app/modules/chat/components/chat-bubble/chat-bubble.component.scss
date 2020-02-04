@@ -1,0 +1,27 @@
+.bubble-left,
+.bubble-right {
+    line-height: 100%;
+    display: block;
+    position: relative;
+    padding: .25em .5em;
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 5px;
+    margin-bottom: 2em;
+    clear: both;
+    width: 80%;
+}
+.bubble-left {
+    // float: left;       
+    margin-right:20%;
+}
+
+.bubble-right {
+    // float:right;
+    margin-left:20%;
+    background: #6996ff;
+    color: #fff;
+}
+.spacer {
+    padding: 10px;
+}

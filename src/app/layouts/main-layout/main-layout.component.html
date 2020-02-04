@@ -7,14 +7,12 @@
     </div>
     <div class="main" [ngClass]="(!sidebarCollapse)? 'col-lg-10' : 'list-div'">
       <router-outlet></router-outlet>
-      <app-footer></app-footer>
+      <!-- <app-footer></app-footer> -->
     </div>
   </div>
 </div>
 <app-floating-button (myEvent)="openEditTile()"></app-floating-button>
 
-<button mat-mini-fab class="toggle-chat" (click)="toggleChat()"><span class="mdi mdi-comment"></span>
-</button>
 
 <app-edit-dashboard-style (closeSidebar)="closeEditTile()" (help)="toggleHelp($event)" (background)="updateBackground($event)">
 </app-edit-dashboard-style>

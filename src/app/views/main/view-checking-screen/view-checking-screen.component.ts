@@ -66,7 +66,7 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.closeeditModal.nativeElement.click();
   }
 
-  //const id = 
+  //const id =
 
   Reset() {
     this.CheckListRequest = {
@@ -190,10 +190,9 @@ export class ViewCheckingScreenComponent implements OnInit {
 
   }
 
-  ngDoCheck()
-  {
+  ngDoCheck() {
     this.pageLoadComplete = true;
-    //this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
+    // this.notify.toastrwarning('Warning', 'Please enter all fields when updating a help glossary item.');
   }
 
   DeleteInvoiceLine(ID: number) {
@@ -201,8 +200,9 @@ export class ViewCheckingScreenComponent implements OnInit {
     this.CheckList.transaction.saD500s.forEach((element) => {
       element.saD500Lines.forEach(line => {
         line.invoiceLines.forEach(iline => {
-          if (iline.id == ID)
+          if (iline.id === ID) {
             iline.showAs = false;
+          }
         });
       });
     });

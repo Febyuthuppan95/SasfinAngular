@@ -12,6 +12,8 @@ import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invo
 import { FormWaybillComponent } from 'src/app/components/forms/capture/form-waybill/form-waybill.component';
 import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
 import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
+
 
 @Component({
   selector: 'app-view-capture-transaction',
@@ -43,33 +45,30 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
-      console.log(data);
     });
   }
 
   ngAfterViewInit(): void {
     this.componentService.setContainer(this.captureForm);
-    console.log('this ' + this.captureForm);
     this.loadComponent();
   }
 
   loadComponent() {
-    console.log('that  ' + this.currentDoctype);
-    switch (this.currentDoctype) {
-
+    console.log(this.currentDoctype);
+    switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
         break;
       }
-      case 'Customs Release Notification': {
+      case 'CUSRELEASE': {
         this.componentService.renderComponent(FormCustomReleaseComponent);
         break;
       }
-      case 'Import Clearing Instruction': {
+      case 'ICI': {
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
-      case 'Invoice': {
+      case 'INVOICE': {
         this.componentService.renderComponent(FormInvoiceComponent);
         break;
       }
@@ -77,11 +76,11 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormVOCComponent);
         break;
       }
-      case 'Waybill': {
+      case 'WAYBILL': {
         this.componentService.renderComponent(FormWaybillComponent);
         break;
       }
-      case 'Custom Worksheet': {
+      case 'CUSWORK': {
         this.componentService.renderComponent(FormCustomWorksheetComponent);
         break;
       }

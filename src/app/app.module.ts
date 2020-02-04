@@ -1,9 +1,10 @@
-// import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
+
+
 // tslint:disable-next-line: max-line-length
-import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
 import { BrowserModule } from '@angular/platform-browser';
+import { ChatConversationComponent } from './modules/chat/components/chat-conversation/chat-conversation.component';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -200,7 +202,12 @@ import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/v
 import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
 import { CheckListService } from './services/CheckList.Service';
 import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
+// tslint:disable-next-line: max-line-length
 import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
+// tslint:disable-next-line: max-line-length
+import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
+import { ChannelService } from './modules/chat/services/channel.service';
+import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -332,11 +339,13 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
-    ViewCaptureLandingComponent,
-    SplitDocumentComponent,
+    ChatConversationComponent,
+    ViewCheckingScreenComponent,
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
-    ViewCheckingScreenComponent
+    SplitDocumentComponent,
+    ViewCaptureLandingComponent,
+    EscalateDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -398,7 +407,8 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     TariffService,
     ReportsService,
     EventService,
-    CheckListService
+    CheckListService,
+    ChannelService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -416,8 +426,9 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
     SubmitDialogComponent,
     FormVOCComponent,
     FormWaybillComponent,
+    FormCustomWorksheetComponent,
     SplitDocumentComponent,
-    FormCustomWorksheetComponent
+    EscalateDialogComponent
   ]
 })
 export class AppModule { }

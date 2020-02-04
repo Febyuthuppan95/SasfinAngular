@@ -36,7 +36,10 @@
 </div>
 </div>
 <div class="dock dock-right" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
-
+  <div class="text-center">
+    <button mat-mini-fab class="Escalate" (click)="toggelEscalate()" matTooltip="Escalate Attachment"><span class="mdi mdi-alert-circle-outline mdi-24px" ></span>
+    </button>
+  </div>
 </div>
 <div class="dock dock-top-left" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="float-left">
@@ -53,6 +56,7 @@
     <div class="text-center">
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="companyInfo()" class="bg-primary text-light" matTooltip="Company Information" matTooltipPosition="below"><span class="mdi mdi-information-variant"></span></button>&nbsp;&nbsp;
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>
+      
     </div>
 </div>
 
@@ -98,9 +102,10 @@
     </div>
   </nav> -->
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
+  
 <div class="col-6 bg-light" style="overflow-y: auto;">
   <!-- <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div> -->
-  <app-document-viewer [focus]="this.focusPDF" *ngIf="!this.inspectingPreview"></app-document-viewer>
+  <app-document-viewer [focus]="this.focusPDF"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">
   <router-outlet></router-outlet>
@@ -115,6 +120,7 @@
     </div>
   </div>
 </div>
+
 </div>
 
 <div class="shortcutView" *ngIf="this.showHelp">
@@ -124,11 +130,19 @@
     <img src="./../../../assets/svg/keyboard-shortcuts/Invoices.svg" *ngIf="this.attachmentType === 'Invoice'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/ICI.svg" *ngIf="this.attachmentType === 'Import Clearing Instruction'"/>
     <img src="./../../../assets/svg/keyboard-shortcuts/VOC.svg" *ngIf="this.attachmentType === 'VOC'"/>
+    <img src="./../../../assets/svg/keyboard-shortcuts/CustomWorksheet.svg" *ngIf="this.attachmentType === 'Customs Worksheet'"/>
   </div>
 </div>
 
 <app-notification></app-notification>
-
+<!-- <app-chat-overlay
+    [enableChat]="true"
+    [showChat]="this.showChat"
+    (dismiss)="toggleChat()"
+    [(transactionID)]="this.transactionID"
+    [(attachmentID)]="this.attachmentID"
+    [(attachmentType)]="this.attachmentType">
+  </app-chat-overlay> -->
 <!-- TimeOut modal -->
 <button class="hide" data-toggle="modal" data-target="#timeout" #opentimeoutModal></button>
 <div class="modalcustom fade no-click-backdrop" id="timeout" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -156,3 +170,4 @@
       </div>
     </div>
   </div>
+  <!--Escalate Modal-->

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input, OnChange
 import { Subject } from 'rxjs';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
+import { PDFSource } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   constructor() { }
 
-  @Input() pdf: string;
+  @Input() pdf: string | ArrayBuffer;
   @Input() minZoom: number;
 
   page = 1;
@@ -21,6 +22,7 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit(): void {
     if (this.pdf !== undefined) {
+      console.log('yes  ' + this.pdf);
       this.ready = true;
     }
   }

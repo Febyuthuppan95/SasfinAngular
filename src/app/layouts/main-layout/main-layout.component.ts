@@ -15,6 +15,8 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-main-layout',
@@ -28,7 +30,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     private IMenuService: MenuService,
     private userIdle: UserIdleService,
     private userService: UserService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private channelService: ChannelService,
+    private snackBarMat: MatSnackBar
     ) {}
 
   @ViewChild(EditDashboardStyleComponent, { static: true })
@@ -43,8 +47,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   @ViewChild(SidebarComponent, { static: true })
   private sidebar: SidebarComponent;
 
-  @ViewChild(FooterComponent, { static: true })
-  private footer: FooterComponent;
+  // @ViewChild(FooterComponent, { static: true })
+  // private footer: FooterComponent;
 
   @ViewChild(SnackBarComponent, { static: true })
   private snackBar: SnackBarComponent;
@@ -77,10 +81,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
       this.updateChildrenComponents();
     });
-
-
     this.cookieService.set('sidebar', 'true');
-
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((result: string) => {
@@ -122,6 +123,17 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.userIdle.ping$
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(() => {});
+
+
+    // this.channelService.observeUserConnection().subscribe((hub: signalR.HubConnection) => {
+    //   if (hub !== null) {
+    //     hub.on('userChatConnection', (msg: string) => {
+    //       this.snackBarMat.open(msg, '', {
+    //         duration: 2000
+    //       });
+    //     });
+    //   }
+    // });
   }
 
   closeHelpContext() {
@@ -154,7 +166,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   updateChildrenComponents() {
     this.navbar.currentTheme = this.currentTheme;
     this.sidebar.currentTheme = this.currentTheme;
-    this.footer.currentTheme = this.currentTheme;
+    // this.footer.currentTheme = this.currentTheme;
   }
 
   collapseSidebar() {

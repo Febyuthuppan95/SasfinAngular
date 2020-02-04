@@ -5,7 +5,7 @@ import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
-import { TableConfig, Order } from 'src/app/models/Table';
+import { TableConfig, Order, SelectedRecord } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
@@ -50,8 +50,8 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
       { title: 'Total Customs Value', propertyName: 'totalCustomsValue', order: { enable: false } },
       { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
       { title: 'PCC', propertyName: 'pcc', order: { enable: false } },
-      { title: 'LRN', propertyName: 'mrn', order: { enable: false } },
-      { title: 'MRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'LRN', propertyName: 'lrn', order: { enable: false } },
+      { title: 'MRN', propertyName: 'mrn', order: { enable: false } },
       { title: 'Status', propertyName: 'status', order: { enable: false } }
     ],
     rowStart: 1,
@@ -72,6 +72,11 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
     orderDirection: 'ASC',
     transactionID: -1,
   };
+
+  contextMenuX = 0;
+  contextMenuY = 0;
+  contextMenuEnable = false;
+  currentRecord: SelectedRecord;
 
   private unsubscribeTransaction$ = new Subject<void>();
 
@@ -144,6 +149,15 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
     this.listRequest.rowEnd = $event.rowEnd;
     this.loadDataset();
   }
+
+  selectedRecord($event: SelectedRecord) {
+    this.contextMenuX = $event.event.clientX + 3;
+    this.contextMenuY = $event.event.clientY + 5;
+    this.contextMenuEnable = true;
+    this.currentRecord = $event.record;
+    alert('row click');
+  }
+
 
   ngOnDestroy(): void {
     this.unsubscribeTransaction$.next();

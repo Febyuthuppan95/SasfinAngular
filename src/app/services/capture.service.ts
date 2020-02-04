@@ -56,10 +56,18 @@ export class CaptureService {
 
   vocUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/update`, requestModel);
   vocList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/list`, requestModel);
+  vocDutyAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/add`, requestModel);
+  vocDutyRemove = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/remove`, requestModel);
+  vocDutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/voc/duty/list`, requestModel);
 
+  // tslint:disable-next-line: max-line-length
   customWorksheetList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/list`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/update`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/create`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/update`, requestModel);
+  // tslint:disable-next-line: max-line-length
   customWorksheetLineList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/list`, requestModel);
 }

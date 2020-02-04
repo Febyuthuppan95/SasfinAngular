@@ -10,13 +10,13 @@
   </div>
     <input id="attachDocument" (change)="inputFileChange($event.target.files)" type="file" hidden/>
   <div class="row" style="overflow: hidden">
-    <div style="overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
+    <div style=" width: 58% ;overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
         <app-pdf-viewer
-        *ngIf="this.file"
+        *ngIf="this.filePreview"
         [pdf]="this.filePreview">
         </app-pdf-viewer>
     </div>
-    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.filePreview">
+    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.displayPreview">
         <form class="bg-light" style="padding: 24px; width: 100%;">
             <div *ngIf="this.file !== undefined" class="split-pdf">
               <div class="form-group text-right">
@@ -41,7 +41,7 @@
             </div>
         </form>
         <div class="form-group text-right" style="padding: 24px">
-            <button class="btn btn-light btn-sm">Cancel</button>
+            <button class="btn btn-light btn-sm" (click)="dismiss()">Cancel</button>
             <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm">Submit</button>
           </div>
       </div>

@@ -208,9 +208,8 @@ $dockSize: 64px;
 }
 
 .dock-right {
-  top: $dockSize;
-  bottom: $dockSize;
-  right: 0;
+  bottom: 20px;
+  right: 5px;
   width: $dockSize;
   position: fixed;
   padding: 12px;
@@ -226,7 +225,15 @@ $dockSize: 64px;
   padding: 12px;
   z-index: 99999;
 }
-
+.dock-bottom-right{
+  right: 20px;
+  left: 0;
+  bottom: 20px;
+  height: $dockSize;
+  position: fixed;
+  padding: 12px;
+  z-index: 99999;
+}
 .dock-top {
   right: 256px;
   left: 256px;

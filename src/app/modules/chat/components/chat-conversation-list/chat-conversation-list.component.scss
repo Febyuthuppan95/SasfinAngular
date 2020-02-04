@@ -20,6 +20,9 @@
   opacity: 0;
   transition: opacity ease-in-out 0.3s;
 }
+.chat-title {
+  cursor: pointer;
+}
 
 .chat-tile-header {
   padding: 24px;

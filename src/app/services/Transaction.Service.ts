@@ -20,11 +20,15 @@ export class TransactionService {
   }
 
   currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>;
-  public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
+  public observerCurrentAttachment() {
+    console.log(this.currentAttachment);
+    return this.currentAttachment.asObservable(); }
 
   public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
+    
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+    console.log(next);
   }
 
   /**
@@ -127,6 +131,23 @@ export class TransactionService {
     });
   }
 
+  public async GetAttatchmentStats(requestModel) {
+    return await new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/capture/AttachmentStats`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   /**
    * Upload
    */
@@ -153,7 +174,7 @@ export class TransactionService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500LineID?: number) {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number) {
     const requestModel = {
       name,
       fileName: file.name,
@@ -161,9 +182,8 @@ export class TransactionService {
       transactionID,
       userID,
       company,
-      sad500LineID
+      sad500ID
     };
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('requestModel', JSON.stringify(requestModel));

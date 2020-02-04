@@ -17,6 +17,7 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { CompanyService } from 'src/app/services/Company.Service';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -26,7 +27,8 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
+              private eventService: EventService, private snackbar: MatSnackBar, private snackbarService: HelpSnackbar,
+              private companyService: CompanyService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -175,7 +177,17 @@ dialogOpen = false;
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (!this.toggleLines) {
-              this.saveLines();
+              {
+                if (!this.dialogOpen) {
+                  this.dialogOpen = true;
+                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                    this.dialogOpen = false;
+                    if (status) {
+                      this.submit();
+                    }
+                  });
+                }
+              }
             }
           }
         },
@@ -213,14 +225,16 @@ dialogOpen = false;
       totalCustomsValue: this.form.totalCustomsValue.value,
       mrn: this.form.MRN.value,
       isDeleted: 0,
-      attachmentStatusID: 2,
+      attachmentStatusID: 3,
     };
 
     this.captureService.sad500Update(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction/attachment']);
+
+          this.companyService.setCapture({ capturestate: true });
+          this.router.navigateByUrl('transaction/capturerlanding');
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
@@ -331,13 +345,7 @@ dialogOpen = false;
   }
 
   saveLines() {
-    if (!this.dialogOpen) {
-      this.dialogOpen = true;
 
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-        this.dialogOpen = false;
-
-        if (status) {
           if (this.lineIndex < this.lineQueue.length) {
             this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -362,9 +370,7 @@ dialogOpen = false;
           } else {
             this.submit();
           }        }
-      });
-    }
-  }
+
 
   saveLineDuty(line: Duty) {
     this.captureService.sad500LineDutyAdd({

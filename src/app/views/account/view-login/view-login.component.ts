@@ -1,9 +1,13 @@
+import { Invoice } from './../../../models/HttpResponses/Invoices';
+import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ChatService } from 'src/app/modules/chat/services/chat.service';
+import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 
 
 
@@ -17,13 +21,15 @@ export class ViewLoginComponent implements OnInit {
   txtEmail: string;
   txtPassword: string;
   pendingRequest = false;
-
+  currentUser: User;
   constructor(
     private router: Router,
     private userService: UserService,
     private themeService: ThemeService,
     private renderer: Renderer2,
-    private elRef: ElementRef
+    private elRef: ElementRef,
+    private chatService: ChatService,
+    private channelService: ChannelService
     ) { }
 
   @ViewChild('login', { static: true })
@@ -51,16 +57,17 @@ export class ViewLoginComponent implements OnInit {
       this.pendingRequest = true;
       this.userService.authenticate(this.txtEmail, this.txtPassword).then(
         (res: LoginResponse) => {
-
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
+          this.userService.setAuth(res.authenticated);
+
           if (res.authenticated) {
-            this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             this.userService.persistLogin(JSON.stringify(res));
-            if (res.designation === 'Capturer') {
-              this.router.navigate(['transaction/capturerlanding']);
-            } else {
+            this.userService.setAuth(res.authenticated);
+            if (res.designation !== 'Capturer') {
               this.router.navigate(['users']);
+            } else {
+              this.router.navigate(['transaction/capturerlanding']);
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -73,7 +80,6 @@ export class ViewLoginComponent implements OnInit {
           this.notify.errorsmsg('Failure', 'Username or password is incorrect.');
         });
     }
-
   }
 
   togglePassword() {
