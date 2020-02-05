@@ -208,6 +208,7 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ChannelService } from './modules/chat/services/channel.service';
 import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
+import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -345,7 +346,8 @@ import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialo
     FormCustomWorksheetLinesComponent,
     SplitDocumentComponent,
     ViewCaptureLandingComponent,
-    EscalateDialogComponent
+    EscalateDialogComponent,
+    EscalateBottomSheetComponent
   ],
   imports: [
     BrowserModule,

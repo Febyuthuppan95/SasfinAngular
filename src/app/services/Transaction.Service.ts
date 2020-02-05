@@ -23,9 +23,8 @@ export class TransactionService {
   public observerCurrentAttachment() {
     console.log(this.currentAttachment);
     return this.currentAttachment.asObservable(); }
-
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
-    
+  // tslint:disable-next-line: max-line-length
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string}) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
     console.log(next);

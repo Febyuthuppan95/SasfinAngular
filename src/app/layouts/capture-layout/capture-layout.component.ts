@@ -1,3 +1,4 @@
+import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
 import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
@@ -362,10 +363,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       fileType: this.attachmentType,
       documentID: this.attachmentID
     };
+    console.log(model);
     this.chatService.createIssue(model).then(
       (res: ChatIssueCreateReponse) => {
         console.log(res);
-        if (res.issueID > 0) {
+        if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
           this.companyService.setCapture({ capturestate: false});
           this.router.navigate(['transaction/capturerlanding']);
         } else {
@@ -374,8 +376,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
            });
         }
       },
-      (msg) => {
-        this.snackBarMat.open(msg, '', {
+      (msg: Outcome) => {
+        console.log(msg.outcomeMessage);
+        this.snackBarMat.open('An Error occurred while escalating', '', {
           duration: 2000
          });
       }
@@ -472,4 +475,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   toggleChat() {
     this.showChat = !this.showChat;
   }
+}
+
+
+export class HttpError {
+  status: string;
+  ok: boolean;
+  error: object;
 }

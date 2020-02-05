@@ -16,4 +16,6 @@ export class CaptureAttachment {
   filetype: string;
   filename: string;
   filepath: string;
+  issueID?: number;
+  reason?: string;
 }
