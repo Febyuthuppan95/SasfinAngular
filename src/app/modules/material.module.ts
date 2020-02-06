@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatCheckboxModule} from '@angular/material';
+import {MatCheckboxModule, MatBottomSheetModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -67,7 +67,8 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatBottomSheetModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -101,7 +102,8 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatBottomSheetModule
   ],
   declarations: [ChatRedirectComponent]
 })

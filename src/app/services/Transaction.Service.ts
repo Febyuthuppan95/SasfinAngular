@@ -16,10 +16,10 @@ export class TransactionService {
     }
 
     // tslint:disable-next-line: max-line-length
-    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>(sessionData);
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>(sessionData);
   }
-
-  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>;
+// tslint:disable-next-line: max-line-length
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>;
   public observerCurrentAttachment() {
     console.log(this.currentAttachment);
     return this.currentAttachment.asObservable(); }

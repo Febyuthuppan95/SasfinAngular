@@ -23,12 +23,17 @@
     <input type="text"[focus]="this.focusMainForm"
       [(ngModel)]="this.form.invoiceNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-invoice-invoiceno')"
       [ngClass]="{'form-control-invalid': this.form.invoiceNo.error !== null}"
       placeholder="Invoice No" />
       <p class="invalid-control-label" *ngIf="this.form.invoiceNo.error !== null">{{this.form.invoiceNo.error}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.fromCompany != undefined">
-    <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="fromCompanyIDAuto">
+    <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" 
+    [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" 
+    class="form-control form-control-sm shadow-sm form-control-light"
+    (mouseover)="updateHelpContext('form-invoice-from-company')"
+    [matAutocomplete]="fromCompanyIDAuto">
     <mat-autocomplete #fromCompanyIDAuto="matAutocomplete">
       <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit)">
         {{unit.name}}
@@ -37,7 +42,11 @@
     <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.fromCompany.error}}</p>
     </div>
     <div class="form-group" *ngIf="this.form.currencyID != undefined">
-      <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" class="form-control form-control-sm shadow-sm form-control-light"  [matAutocomplete]="unitOfMeasureAuto">
+      <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" 
+      [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" 
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-invoice-unit-of-measure')"
+      [matAutocomplete]="unitOfMeasureAuto">
       <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
         <mat-option *ngFor="let unit of this.currencies" [value]="unit.code" (onSelectionChange)="selectedCurrency(unit.currencyID)">
           {{unit.name}}, {{unit.code}}

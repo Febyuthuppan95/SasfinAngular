@@ -46,7 +46,7 @@
         <button style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-light" (click)="toggelEscalate()" matTooltip="Escalate Attachment" matTooltipPosition="after"><span class="mdi mdi-exclamation" ></span>
         </button>
         &nbsp;&nbsp;
-        <button style="z-index: 99999999999999;" mat-mini-fab class="bg-info text-light" (click)="toggleReason()" matTooltip="View Escalation Reason" matTooltipPosition="after"><span class="mdi mdi-eye" ></span>
+        <button *ngIf="this.escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-info text-light" (click)="toggleReason()" matTooltip="View Escalation Reason" matTooltipPosition="after"><span class="mdi mdi-eye" ></span>
         </button>
     </div>
 </div>

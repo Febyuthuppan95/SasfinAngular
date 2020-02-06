@@ -1,3 +1,4 @@
+import { EscalateBottomSheetComponent } from './escalate-bottom-sheet/escalate-bottom-sheet.component';
 import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
 import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
@@ -14,7 +15,7 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
@@ -49,7 +50,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private eventService: EventService,
               private channelService: ChannelService,
               private chatService: ChatService,
-              private snackBarMat: MatSnackBar) {}
+              private snackBarMat: MatSnackBar,
+              private escalationReason: MatBottomSheet) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -97,7 +99,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   focusPDF = false;
   attachmentType: string;
   helpValue = false;
-
+  escalated = false;
 
   CaptureInfo: CaptureAttachment;
   docPath: string;
@@ -111,6 +113,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   openPreview = true;
   dialogOpen = false;
   noCaptureInformation = true;
+  reason = '';
 
   ngOnInit() {
     // this.companyService.setCapture({ capturestate: true});
@@ -140,10 +143,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
-      console.log(obj);
+      console.log(obj.issueID);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
+      this.reason = obj.reason;
+      this.escalated = obj.issueID > 0 ? true : false;
       this.loadCaptureInfo();
       this.loadAttachments();
     });
@@ -178,7 +183,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     .subscribe(() => {});
 
   }
-
+  toggleReason(): void {
+    this.escalationReason.open(EscalateBottomSheetComponent, {
+      data: this.reason
+    });
+  }
   closeHelpContext() {
     const newContext: SnackbarModel = {
       display: false,

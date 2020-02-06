@@ -430,7 +430,8 @@ import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-
     FormWaybillComponent,
     FormCustomWorksheetComponent,
     SplitDocumentComponent,
-    EscalateDialogComponent
+    EscalateDialogComponent,
+    EscalateBottomSheetComponent
   ]
 })
 export class AppModule { }

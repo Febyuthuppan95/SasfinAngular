@@ -1,3 +1,5 @@
+import { HelpSnackbar } from './../../../../services/HelpSnackbar.service';
+import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -30,7 +32,7 @@ export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
             private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
-            private snackbar: MatSnackBar) { }
+            private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -534,7 +536,14 @@ loader = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
