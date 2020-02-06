@@ -1,3 +1,5 @@
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { NotificationComponent } from '../../../notification/notification.component';
@@ -28,7 +30,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private captureService: CaptureService,
               private eventService: EventService,
               private dialog: MatDialog,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService,
+              private snackbarService: HelpSnackbar) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -179,7 +182,14 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       }
     );
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

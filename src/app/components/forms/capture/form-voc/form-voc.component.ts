@@ -1,3 +1,5 @@
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
@@ -31,7 +33,8 @@ import { VOCListResponse, VOC } from 'src/app/models/HttpResponses/VOC';
 export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
                 private tariffService: TariffService, private captureService: CaptureService, private dialog: MatDialog,
-                private transactionService: TransactionService, private router: Router, private eventService: EventService) { }
+                private transactionService: TransactionService, private router: Router, private eventService: EventService,
+                private snackbarService: HelpSnackbar) { }
 
     currentUser: User;
 
@@ -372,6 +375,14 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
           (msg) => {}
         );
       }
+    }
+    updateHelpContext(slug: string) {
+      const newContext: SnackbarModel = {
+        display: true,
+        slug
+      };
+  
+      this.snackbarService.setHelpContext(newContext);
     }
 
     ngOnDestroy(): void {

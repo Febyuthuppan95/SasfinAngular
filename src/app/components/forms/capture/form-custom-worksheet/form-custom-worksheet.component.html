@@ -23,6 +23,7 @@
       <input type="text"
         [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-customs-worksheet-lrn')"
         [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
         placeholder="LRN" />
         <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
@@ -31,6 +32,7 @@
       <input type="text"
         [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-customs-worksheet-fileref')"
         [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
         placeholder="File Ref" />
         <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>

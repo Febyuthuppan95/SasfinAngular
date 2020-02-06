@@ -5,6 +5,7 @@
     <input type="text" [focus]="focusSADLine"
       [(ngModel)]="this.form.coo" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-totallinevalue')"
       placeholder="COO"
       [ngClass]="{'form-control-invalid': this.form.cooError !== null && this.form.cooError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.cooError !== null && this.form.cooError !== undefined" style="width: 100%;">{{this.form.cooError}}</p>
@@ -13,6 +14,7 @@
     <input type="text"
       [(ngModel)]="this.form.tariffHeading" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-tariffheading')"
       placeholder="Tariff Heading"
       [ngClass]="{'form-control-invalid': this.form.tariffHeadingError !== null && this.form.tariffHeadingError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.tariffHeadingError !== null && this.form.tariffHeadingError !== undefined" style="width: 100%;">{{this.form.tariffHeadingError}}</p>
@@ -21,6 +23,7 @@
       <input type="text"  id="hsQuantity"
         [(ngModel)]="this.form.commonFactor" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')"
         placeholder="Common Factor"
         [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"/>
         <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p>
@@ -30,7 +33,8 @@
     <input type="number" id="custVal"
       [(ngModel)]="this.form.custVal" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="custVal"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')"
+      placeholder="Customs Value"
       [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.custValError !== null && this.form.custValError !== undefined" style="width: 100%;">{{this.form.custValError}}</p>
   </div>
@@ -39,7 +43,8 @@
     <input type="text"  id="hsQuantity"
       [(ngModel)]="this.form.hsQuantity" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="hsQuantity"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')"
+      placeholder="HS Quantity"
       [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined" style="width: 100%;">{{this.form.hsQuantityError}}</p>
   </div>
@@ -48,7 +53,8 @@
     <input type="text" id="foreignInv"
       [(ngModel)]="this.form.foreignInv" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="foreignInv"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')"
+      placeholder="Foreign Invoice"
       [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.foreignInvError !== null && this.form.foreignInvError !== undefined" style="width: 100%;">{{this.form.foreignInvError}}</p>
   </div>
@@ -57,7 +63,8 @@
     <input type="text" id="duty"
       [(ngModel)]="this.form.duty" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="duty"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')"
+      placeholder="Duty"
       [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.dutyError !== null && this.form.dutyError !== undefined" style="width: 100%;">{{this.form.dutyError}}</p>
   </div>

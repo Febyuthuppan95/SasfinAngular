@@ -1,3 +1,5 @@
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -28,7 +30,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private themeService: ThemeService,
       private userService: UserService,
       private captureService: CaptureService,
-      private unitService: UnitMeasureService) { }
+      private unitService: UnitMeasureService,
+      private snackbarService: HelpSnackbar) { }
 
     currentUser: User;
     currentTheme: string;
@@ -188,7 +191,14 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.form.unitOfMeasure = unit.name;
       this.form.unitOfMeasureID = unit.unitOfMeasureID;
     }
-
+    updateHelpContext(slug: string) {
+      const newContext: SnackbarModel = {
+        display: true,
+        slug
+      };
+  
+      this.snackbarService.setHelpContext(newContext);
+    }
     ngOnDestroy(): void {
       this.unsubscribe$.next();
       this.unsubscribe$.complete();

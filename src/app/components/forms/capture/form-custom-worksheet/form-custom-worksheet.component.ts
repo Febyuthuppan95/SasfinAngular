@@ -1,3 +1,5 @@
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -24,7 +26,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar) { }
+              private eventService: EventService, private snackbar: MatSnackBar,
+              private snackbarService: HelpSnackbar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -351,7 +354,14 @@ dialogOpen = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

@@ -1,3 +1,5 @@
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
@@ -22,7 +24,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService) { }
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser: User;
   currentTheme: string;
@@ -151,6 +154,14 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   matchRuleShort(str, rule) {
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {

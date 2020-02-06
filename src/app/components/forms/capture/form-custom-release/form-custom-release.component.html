@@ -11,6 +11,7 @@
     <input type="text"
       [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-mrn')"
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
       placeholder="MRN" />
       <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
@@ -19,6 +20,7 @@
     <input type="text"
       [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-lrn')"
       [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
       placeholder="LRN" />
       <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
@@ -27,6 +29,7 @@
     <input type="text"
       [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
+      (mouseover)="updateHelpContext('form-cusrelease-serialno')"
       [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
       placeholder="Serial No" />
       <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
@@ -36,6 +39,7 @@
     <input type="text"
       [(ngModel)]="this.form.importersCode.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-importerscode')"
       [ngClass]="{'form-control-invalid': this.form.importersCode.error !== null}"
 
       placeholder="Importers Code" />
@@ -46,8 +50,8 @@
     <input type="text"
       [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-waybillno')"
       [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
-
       placeholder="Waybill No" />
       <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
   </div>
@@ -55,6 +59,7 @@
     <input type="text"
       [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-pcc')"
       [ngClass]="{'form-control-invalid': this.form.PCC.error !== null}"
 
       placeholder="PCC" />
@@ -65,6 +70,7 @@
     <input type="text"
       [(ngModel)]="this.form.FOB.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-fob')"
       [ngClass]="{'form-control-invalid': this.form.FOB.error !== null}"
 
       placeholder="FOB" />

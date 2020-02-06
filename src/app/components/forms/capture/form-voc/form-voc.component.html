@@ -10,6 +10,7 @@
     <input type="text" [focus]="this.focusSADLine"
       [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-voc-lineno')"
       placeholder="Line No"
       [ngClass]="{'form-control-invalid': this.form.lineNoError !== null && this.form.lineNoError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null && this.form.lineNoError !== undefined" style="width: 100%;">{{this.form.lineNoError}}</p>
