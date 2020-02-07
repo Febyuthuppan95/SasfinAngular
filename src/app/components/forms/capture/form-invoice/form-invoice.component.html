@@ -41,19 +41,65 @@
     </mat-autocomplete>
     <p class="invalid-control-label" *ngIf="this.form.fromCompany.error !== null">{{this.form.fromCompany.error}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.currencyID != undefined">
-      <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" 
-      [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" 
+  <div class="form-group" *ngIf="this.form.currencyID != undefined">
+    <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}" 
+    [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure" 
+    class="form-control form-control-sm shadow-sm form-control-light"
+    (mouseover)="updateHelpContext('form-invoice-unit-of-measure')"
+    [matAutocomplete]="unitOfMeasureAuto">
+    <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+      <mat-option *ngFor="let unit of this.currencies" [value]="unit.code" (onSelectionChange)="selectedCurrency(unit.currencyID)">
+        {{unit.name}}, {{unit.code}}
+      </mat-option>
+    </mat-autocomplete>
+    <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
+    </div>
+  <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
+    <input type="text"[focus]="this.focusMainForm"
+      [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-invoice-unit-of-measure')"
-      [matAutocomplete]="unitOfMeasureAuto">
-      <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
-        <mat-option *ngFor="let unit of this.currencies" [value]="unit.code" (onSelectionChange)="selectedCurrency(unit.currencyID)">
-          {{unit.name}}, {{unit.code}}
+      (mouseover)="updateHelpContext('form-invoice-invoicedate')"
+      [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
+      placeholder="Invoice Date" />
+      <p class="invalid-control-label" *ngIf="this.form.invoiceDate.error !== null">{{this.form.invoiceDate.error}}</p>
+  </div>
+  <div class="form-group" *ngIf="this.form.coo != undefined">
+    <input type="text"[focus]="this.focusMainForm"
+      [(ngModel)]="this.form.coo.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-invoice-coo')"
+      [ngClass]="{'form-control-invalid': this.form.coo.error !== null}"
+      placeholder="COO" />
+      <p class="invalid-control-label" *ngIf="this.form.coo.error !== null">{{this.form.coo.error}}</p>
+  </div>
+  <div class="form-group" *ngIf="this.form.coo != undefined">
+    <input type="text"[focus]="this.focusMainForm"
+      [(ngModel)]="this.form.coo.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-invoice-coo')"
+      [ngClass]="{'form-control-invalid': this.form.coo.error !== null}"
+      placeholder="COO" />
+      <p class="invalid-control-label" *ngIf="this.form.coo.error !== null">{{this.form.coo.error}}</p>
+  </div>
+  <div class="form-group" *ngIf="this.form.incoType != undefined">
+    <label for="quantityValue">Inco Type</label>
+      <input [(ngModel)]="this.form.incoType" type="text"
+      [ngClass]="{'form-control-invalid': this.form.incoType.error !== null && this.form.incoType.error !== undefined}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (keyup)="filterIncoType()"
+      placeholder="IncoType" aria-label="IncoType"
+      [formControl]="myControl"
+      [matAutocomplete]="incoTypeAuto"
+      (mouseover)="updateHelpContext('form-invoice-incotype')">
+
+      <mat-autocomplete #tariffAuto="matAutocomplete" >
+        <mat-option *ngFor="let inco of incoTypes" [value]="inco.description"
+        (onSelectionChange)="selectedIncoType(inco.description)">
+          {{inco.description}}
         </mat-option>
       </mat-autocomplete>
-      <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
-      </div>
+      <p class="invalid-control-label" *ngIf="this.form.incoType.error !== null && this.form.incoType.error !== undefined">{{this.form.incoType.error}}</p>
+  </div>
   </form>
 </span>
   <span style="display: none" [ngClass]="{'show': this.toggleLines}">
