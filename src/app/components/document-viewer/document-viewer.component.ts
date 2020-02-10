@@ -22,9 +22,11 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   pdfSRC: ArrayBuffer;
   displayPDF = false;
   page = 1;
-  zoom = 1;
+  zoom_to = 0.8;
+  rotation = 0;
   shortcuts: ShortcutInput[] = [];
   src: string;
+  originalSize: boolean = true;
 
   ngOnInit() {
     this.docService.observeActiveDocument()
@@ -64,9 +66,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e =>  {
-            if (this.zoom < 2) {
-              this.zoom += 0.2;
-            }
+            this.zoom_in();
           }
         },
         {
@@ -74,12 +74,44 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-            if (this.zoom !== 1) {
-              this.zoom -= 0.2;
-            }
+            this.zoom_out();
+          }
+        },
+        {
+          key: 'ctrl + r',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.rotatePDF(this.rotation + 90);
           }
         },
     );
+  }
+
+  pageChange(page: number) {
+    if (page <= 0) {
+      page = 1;
+    }
+
+    this.page = page;
+  }
+
+  rotatePDF(deg: number) {
+    this.rotation = deg;
+  }
+
+  zoomChange(variant: number) {
+    this.zoom_to = this.zoom_to + variant;
+  }
+
+  zoom_in() {
+    this.zoom_to = this.zoom_to + 0.2;
+  }
+
+  zoom_out() {
+    if (this.zoom_to >= 0.4) {
+       this.zoom_to = this.zoom_to - 0.2;
+    }
   }
 
   ngOnDestroy(): void {
