@@ -209,6 +209,7 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
 import { ChannelService } from './modules/chat/services/channel.service';
 import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
+import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -347,7 +348,8 @@ import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-
     SplitDocumentComponent,
     ViewCaptureLandingComponent,
     EscalateDialogComponent,
-    EscalateBottomSheetComponent
+    EscalateBottomSheetComponent,
+    DutyAssignDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -431,7 +433,8 @@ import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-
     FormCustomWorksheetComponent,
     SplitDocumentComponent,
     EscalateDialogComponent,
-    EscalateBottomSheetComponent
+    EscalateBottomSheetComponent,
+    DutyAssignDialogComponent
   ]
 })
 export class AppModule { }

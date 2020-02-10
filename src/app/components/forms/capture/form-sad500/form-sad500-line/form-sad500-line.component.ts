@@ -1,3 +1,8 @@
+import { Location } from '@angular/common';
+import { ListCountriesResponse } from './../../../../../models/HttpResponses/ListCountriesResponse';
+import { ListCountriesRequest, Country } from './../../../../../models/HttpRequests/Locations';
+import { PlaceService } from './../../../../../services/Place.Service';
+import { DutyAssignDialogComponent } from './duty-assign-dialog/duty-assign-dialog.component';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { SAD500LineCreateRequest, DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -17,6 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -28,7 +34,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
               private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService) { }
 
   currentUser: User;
 
@@ -46,6 +52,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   selectedTariffVal: string;
   selectedUnitVal: string;
   private unsubscribe$ = new Subject<void>();
+
+  countriesList: Country[] = [];
+  countriesListTemp: {rowNum: number, countryID: number, name: string}[];
+  countryID = -1;
+  countryQuery = '';
 
   dutyList: DutyListResponse;
   assignedDuties: Duty[] = [];
@@ -86,9 +97,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     quantity: 0,
     quantityError: null,
     previousDeclarationError: null,
-    previousDeclaration: ''
+    previousDeclaration: '',
+    vat: null,
+    vatError: '',
+    supplyUnit: null,
+    supplyUnitError: '',
+    cooID: -1,
+    cooIDError: ''
   };
-
+  
   isUpdate: boolean;
 
   ngOnInit() {
@@ -101,7 +118,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.loadUnits();
     this.loadTarrifs();
     this.loadDuties();
-
+    this.loadCountries();
   }
 
   updateHelpContext(slug: string) {
@@ -167,7 +184,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         quantity: 0,
         quantityError: null,
         previousDeclarationError: null,
-        previousDeclaration: ''
+        previousDeclaration: '',
+        vat: 0,
+        vatError: null,
+        supplyUnit: '',
+        supplyUnitError: null,
+        cooID: -1,
+        cooIDError: null
       };
       this.loadDuties();
     }
@@ -203,7 +226,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasureID: 1,
         unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantityError,
-        previousDeclaration: this.form.previousDeclaration
+        previousDeclaration: this.form.previousDeclaration,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit
       });
     } else {
       this.submitSADLine.emit({
@@ -217,7 +242,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantity,
         duties: this.dutiesToBeSaved,
-        previousDeclaration: this.form.previousDeclaration
+        previousDeclaration: this.form.previousDeclaration,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit
       });
 
       this.dutiesToBeSaved = [];
@@ -234,6 +261,26 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       (msg) => {
       }
     );
+  }
+  loadCountries() {
+    const request: ListCountriesRequest = {
+      userID: this.currentUser.userID,
+      specificCountryID: -1,
+      rowStart: 1,
+      rowEnd: 500,
+      orderBy: '',
+      orderByDirection: '',
+      filter: ''
+    };
+    this.placeService.getCountriesCall(request).then(
+      (res: ListCountriesResponse) => {
+        this.countriesList = res.countriesList;
+      }
+    );
+  }
+  filterCountries() {
+    this.countriesList = this.countriesListTemp;
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
   }
 
   selectedTariff(description) {
@@ -336,7 +383,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
-
+  assignDutyDialog(item: Duty) {
+    const dutyAssignDialog = this.dialog.open(DutyAssignDialogComponent, {
+      data: item
+    });
+    dutyAssignDialog.afterClosed().subscribe((result: Duty) => {
+      console.log(result);
+      item.duty = result.duty;
+      this.assignDuty(item);
+    });
+  }
   loadDuties() {
     this.captureService.dutyList({
       dutyTaxTypeID: -1,

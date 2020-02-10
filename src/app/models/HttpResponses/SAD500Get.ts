@@ -18,8 +18,8 @@ export class SAD500Get {
   waybillNoError: string;
   supplierRefError: string;
   mrnError: string;
-  totalCustomsDuty: string;
-  totalCustomsDutyError: string;
+  totalDuty: string;
+  totalDutyError: string;
   fileRef: string;
   fileRefError: string;
   rebateCode: string;

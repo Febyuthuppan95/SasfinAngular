@@ -25,4 +25,6 @@ export class SAD500Line {
     quantityError?: string;
     previousDeclaration: string;
     previousDeclarationError?: string;
+    vat: number;
+    supplyUnit: string;
 }

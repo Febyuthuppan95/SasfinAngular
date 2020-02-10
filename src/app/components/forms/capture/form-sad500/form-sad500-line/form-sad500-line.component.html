@@ -10,27 +10,63 @@
       [ngClass]="{'form-control-invalid': this.form.lineNoError !== null && this.form.lineNoError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null && this.form.lineNoError !== undefined" style="width: 100%;">{{this.form.lineNoError}}</p>
   </div>
-  <!-- <div class="form-group" *ngIf="this.form.productCode != undefined">
+  <div class="form-group" *ngIf="this.form.vat != undefined">
+    <label for="customsValue">VAT</label>
     <input type="text"
-      [(ngModel)]="this.form.productCode" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.vat" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-sad500-line-product-code')"
-      placeholder="Product Code" style="margin-top:0"/>
-      <p class="invalid-control-label" *ngIf="this.form.productCodeError !== null && this.form.lineNoError !== undefined">{{this.form.productCodeError}}</p>
+      (mouseover)="updateHelpContext('form-sad500-line-vat')"
+      placeholder="VAT" style="margin-top:0"/>
+      <p class="invalid-control-label" *ngIf="this.form.vatError !== null && this.form.vatError !== undefined">{{this.form.vatError}}</p>
   </div>
-  <div class="form-group" *ngIf="this.form.value != undefined">
+  <div class="form-group" *ngIf="this.form.supplyUnit != undefined">
+    <div class="row">
+      <div class="col-md-3">
+        <label for="customsValue">Supply Unit</label>
+        <input type="text"
+          [(ngModel)]="this.form.supplyUnit" [ngModelOptions]="{standalone: true}"
+          class="form-control form-control-sm shadow-sm form-control-light"
+          (mouseover)="updateHelpContext('form-sad500-line-supply-unit')"
+          placeholder="Supply Unit" style="margin-top:0"/>
+          <p class="invalid-control-label" *ngIf="this.form.supplyUnitError !== null && this.form.supplyUnitError !== undefined">{{this.form.supplyUnitError}}</p>
+      </div>
+      <div class="col-md-9">
+        <label for="customsValue">Unit of Measure</label>
+        <input [(ngModel)]="this.form.unitOfMeasure"
+        (keyup)="filterUnit()"
+        [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}"
+        type="text" placeholder="Unit Of Measure"
+        aria-label="Unit of Measure"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-sad500-line-unit-of-measure')"
+        [formControl]="unitOfMeasure"
+        [matAutocomplete]="unitOfMeasureAuto">
+        <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+          <mat-option *ngFor="let unit of unitOfMeasureList"
+          [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
+            {{unit.name}}, {{unit.description}}
+          </mat-option>
+        </mat-autocomplete>
+        <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined">{{this.form.unitOfMeasureError}}</p>
+      </div>
+    </div>
+   
+  </div>
+  <!-- <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
+    
+  </div> -->
+  <!-- <div class="form-group" *ngIf="this.form.value != undefined">
     <input type="text"
       [(ngModel)]="this.form.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-sad500-line-value')"
       placeholder="Value" />
       <p class="invalid-control-label" *ngIf="this.form.valueError !== null && this.form.lineNoError !== undefined">{{this.form.valueError}}</p>
-  </div>
   </div> -->
 
 <br>
-  <div class="form-group">
-  <label for="quantityValue">Customs Value</label>
+  <div class="form-group" *ngIf="this.form.customsValue != undefined">
+  <label for="customsValue">Customs Value</label>
   <input type="number" id="customsValue"
     [(ngModel)]="this.form.customsValue" [ngModelOptions]="{standalone: true}"
     class="form-control form-control-sm shadow-sm form-control-light"
@@ -56,8 +92,8 @@
         placeholder="Previous Declaration" style="margin-top:0"/>
         <p class="invalid-control-label" *ngIf="this.form.previousDeclarationError !== null && this.form.previousDeclarationError !== undefined">{{this.form.previousDeclarationError}}</p>
     </div>
-  <div class="form-group" *ngIf="this.form.tariff != undefined">
-      <label for="quantityValue">Customs Value</label>
+  <div class="form-group" *ngIf="this.form.cooID != undefined">
+      <label for="tariff">Tariff</label>
         <input [(ngModel)]="this.form.tariff" type="text"
         [ngClass]="{'form-control-invalid': this.form.tariffError !== null && this.form.tariffError !== undefined}"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -75,90 +111,91 @@
         </mat-autocomplete>
         <p class="invalid-control-label" *ngIf="this.form.tariffError !== null && this.form.tariffError !== undefined">{{this.form.tariffError}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
-      <input [(ngModel)]="this.form.unitOfMeasure"
-      (keyup)="filterUnit()"
-      [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}"
-      type="text" placeholder="Unit Of Measure"
-      aria-label="Unit of Measure"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-sad500-line-unit-of-measure')"
-      [formControl]="unitOfMeasure"
-      [matAutocomplete]="unitOfMeasureAuto">
-      <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
-        <mat-option *ngFor="let unit of unitOfMeasureList"
-        [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
-          {{unit.name}}, {{unit.description}}
-        </mat-option>
-      </mat-autocomplete>
-      <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined">{{this.form.unitOfMeasureError}}</p>
+    <div class="form-group" *ngIf="this.form.cooID != undefined">
+      <label for="tariff">Tariff</label>
+        <input [(ngModel)]="this.form.tariff" type="text"
+        [ngClass]="{'form-control-invalid': this.form.tariffError !== null && this.form.tariffError !== undefined}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (keyup)="filterTariff()"
+        placeholder="Tariff" aria-label="Tariff"
+        [formControl]="myControl"
+        [matAutocomplete]="tariffAuto"
+        (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+
+        <mat-autocomplete #tariffAuto="matAutocomplete" >
+          <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
+          (onSelectionChange)="selectedTariff(tariff.description)">
+            {{tariff.description}}
+          </mat-option>
+        </mat-autocomplete>
+        <p class="invalid-control-label" *ngIf="this.form.tariffError !== null && this.form.tariffError !== undefined">{{this.form.tariffError}}</p>
+    </div>
+    <div class="form-group" style="margin-bottom: 0">
+      <div class="row" style="margin-bottom: 0">
+        <div class="col-6" style="margin-bottom: 0">
+          <p><strong class="text-muted text-mini-heading">Duty Tax Types</strong></p>
+          <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutyList !== undefined">
+            <li>
+              <div class="form-group">
+                <input type="search"
+                [(ngModel)]="this.dutiesQuery"
+                [ngModelOptions]="{standalone: true}"
+                (keyup)="filterDuties()"
+                class="form-control form-control-sm"
+                (mouseover)="updateHelpContext('form-sad500-line-duty-tax-search')"
+                placeholder="Search">
+              </div>
+            </li>
+            <li class="duty-item" *ngFor="let item of dutyList.duties; let i = index" (click)="assignDutyDialog(item)" (keypress)="assignDutyDialog(item)" [tabindex]="i">
+              <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
+              <small>{{item.code}}</small>
+            </li>
+          </ul>
         </div>
-        <div class="form-group" style="margin-bottom: 0">
-          <div class="row" style="margin-bottom: 0">
-            <div class="col-6" style="margin-bottom: 0">
-              <p><strong class="text-muted text-mini-heading">Duty Tax Types</strong></p>
-              <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutyList !== undefined">
+        <div class="col-6" *ngIf="this.isUpdate" style="margin-bottom: 0">
+          <p><strong class="text-muted text-mini-heading">Assigned Duty Tax Types</strong></p>
+          <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.assignedDuties === undefined">
+            <li><small class="test-muted">No Duty Types Assigned</small></li>
+          </ul>
+          <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.assignedDuties !== undefined">
+              <li>
+                <div class="form-group">
+                  <input tabindex="-1" [focus]="focusDutiesQuery"
+                  type="search" [(ngModel)]="this.dutieAssignedQuery"
+                  [ngModelOptions]="{standalone: true}"
+                  (keyup)="filterAssignedDuties()"
+                  class="form-control form-control-sm"
+                  placeholder="Search">
+                </div>
+              </li>
+              <li *ngFor="let item of assignedDuties; let i = index" class="duty-item" (click)="revokeDuty(item)" [tabindex]="i">
+                  <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
+                  <small>{{item.code}}</small>
+              </li>
+          </ul>
+        </div>
+        <div class="col-6" *ngIf="!this.isUpdate">
+            <p><strong class="text-muted text-mini-heading">Assigned Duty Tax Types</strong></p>
+            <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutiesToBeSaved.length === 0">
+              <li><small class="test-muted">No Duty Types Assigned</small></li>
+            </ul>
+            <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutiesToBeSaved.length > 0">
                 <li>
                   <div class="form-group">
-                    <input type="search"
-                    [(ngModel)]="this.dutiesQuery"
-                    [ngModelOptions]="{standalone: true}"
-                    (keyup)="filterDuties()"
-                    class="form-control form-control-sm"
-                    (mouseover)="updateHelpContext('form-sad500-line-duty-tax-search')"
+                    <input [focus]="focusAssignedQuery" type="search" [(ngModel)]="this.dutieAssignedQuery"
+                    [ngModelOptions]="{standalone: true}" (keyup)="filterAssignedDuties()" class="form-control form-control-sm"
+                    (mouseover)="updateHelpContext('form-sad500-line-search')"
                     placeholder="Search">
                   </div>
                 </li>
-                <li class="duty-item" *ngFor="let item of dutyList.duties; let i = index" (click)="assignDuty(item)" (keypress)="assignDuty(item)" [tabindex]="i">
-                  <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                  <small>{{item.code}}</small>
+                <li *ngFor="let item of dutiesToBeSaved; let i = index" class="duty-item" (click)="revokeDuty(item)" (keypress)="revokeDuty(item)" [tabindex]="i">
+                    <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
+                    <small>{{item.code}}</small>
                 </li>
-              </ul>
-            </div>
-            <div class="col-6" *ngIf="this.isUpdate" style="margin-bottom: 0">
-              <p><strong class="text-muted text-mini-heading">Assigned Duty Tax Types</strong></p>
-              <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.assignedDuties === undefined">
-                <li><small class="test-muted">No Duty Types Assigned</small></li>
-              </ul>
-              <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.assignedDuties !== undefined">
-                  <li>
-                    <div class="form-group">
-                      <input tabindex="-1" [focus]="focusDutiesQuery"
-                      type="search" [(ngModel)]="this.dutieAssignedQuery"
-                      [ngModelOptions]="{standalone: true}"
-                      (keyup)="filterAssignedDuties()"
-                      class="form-control form-control-sm"
-                      placeholder="Search">
-                    </div>
-                  </li>
-                  <li *ngFor="let item of assignedDuties; let i = index" class="duty-item" (click)="revokeDuty(item)" [tabindex]="i">
-                      <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                      <small>{{item.code}}</small>
-                  </li>
-              </ul>
-            </div>
-            <div class="col-6" *ngIf="!this.isUpdate">
-                <p><strong class="text-muted text-mini-heading">Assigned Duty Tax Types</strong></p>
-                <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutiesToBeSaved.length === 0">
-                  <li><small class="test-muted">No Duty Types Assigned</small></li>
-                </ul>
-                <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutiesToBeSaved.length > 0">
-                    <li>
-                      <div class="form-group">
-                        <input [focus]="focusAssignedQuery" type="search" [(ngModel)]="this.dutieAssignedQuery"
-                        [ngModelOptions]="{standalone: true}" (keyup)="filterAssignedDuties()" class="form-control form-control-sm"
-                        (mouseover)="updateHelpContext('form-sad500-line-search')"
-                        placeholder="Search">
-                      </div>
-                    </li>
-                    <li *ngFor="let item of dutiesToBeSaved; let i = index" class="duty-item" (click)="revokeDuty(item)" (keypress)="revokeDuty(item)" [tabindex]="i">
-                        <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
-                        <small>{{item.code}}</small>
-                    </li>
-                </ul>
-              </div>
+            </ul>
           </div>
-        </div>
+      </div>
+    </div>
   <!-- <div class="form-group text-right" style="margin: 0;">
     <button *ngIf="!this.isUpdate" type="submit" class="btn btn-primary btn-sm">Add</button>
     <button *ngIf="this.isUpdate" type="submit" class="btn btn-primary btn-sm">Update</button>

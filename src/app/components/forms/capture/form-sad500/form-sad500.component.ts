@@ -246,7 +246,7 @@ dialogOpen = false;
       isDeleted: 0,
       attachmentStatusID: 3,
       fileRef: this.form.fileRef.value,
-      rebate: this.form.rebateCode.value
+      rebateCode: this.form.rebateCode.value
     };
 
     this.captureService.sad500Update(requestModel).then(
@@ -330,6 +330,9 @@ dialogOpen = false;
         this.form.fileRef.error = res.fileRefError;
         this.form.rebateCode.value = res.rebateCode;
         this.form.rebateCode.error = res.rebateCodeError;
+        this.form.totalCustomsDuty.value = res.totalDuty;
+        this.form.totalCustomsDuty.error = res.totalDutyError;
+
       },
       (msg) => {
       }

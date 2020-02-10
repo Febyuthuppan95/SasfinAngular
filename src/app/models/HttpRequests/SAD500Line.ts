@@ -32,6 +32,8 @@ export class SAD500LineCreateRequest {
   isPersist?: boolean;
   quantity: number;
   previousDeclaration: string;
+  vat: number;
+  supplyUnit: string;
 }
 
 export class SAD500LineUpdateModel {
