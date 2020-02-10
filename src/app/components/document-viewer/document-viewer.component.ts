@@ -50,19 +50,19 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-            key: 'ctrl + right',
+            key: 'alt + right',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.page++
         },
         {
-          key: 'ctrl + left',
+          key: 'alt + left',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.page--
         },
         {
-          key: 'ctrl + up',
+          key: 'alt + up',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e =>  {
@@ -70,7 +70,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           }
         },
         {
-          key: 'ctrl + down',
+          key: 'alt + down',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
@@ -78,7 +78,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           }
         },
         {
-          key: 'ctrl + r',
+          key: 'alt + r',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
