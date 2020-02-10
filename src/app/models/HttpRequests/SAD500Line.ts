@@ -46,6 +46,8 @@ export class SAD500LineUpdateModel {
     lineNo: string;
     isDeleted: number;
     quantity: number;
+    cooID: number;
+    supplyUnit: string;
 }
 
 export class DutyListResponse {
@@ -58,6 +60,7 @@ export class Duty {
   duty: number;
   name: string;
   code?: string;
+  value: number;
   dutyTaxTypeID: number;
   sad500Line?: number;
   vocID?: number;

@@ -94,6 +94,10 @@ form = {
     value: null,
     error: null,
   },
+  totalCustomsDuty: {
+    value: null,
+    error: null
+  }
 };
 
 lineQueue: SAD500LineCreateRequest[] = [];
@@ -223,6 +227,7 @@ dialogOpen = false;
       waybillNo: this.form.waybillNo.value,
       supplierRef: this.form.supplierRef.value,
       totalCustomsValue: this.form.totalCustomsValue.value,
+      totalCustomsDuty: this.form.totalCustomsDuty.value,
       mrn: this.form.MRN.value,
       isDeleted: 0,
       attachmentStatusID: 3,
@@ -258,7 +263,9 @@ dialogOpen = false;
       quantity: obj.quantity,
       customsValue: obj.customsValue,
       isDeleted: 0,
-      lineNo: obj.lineNo
+      lineNo: obj.lineNo,
+      cooID: -1,
+      supplyUnit: ''
     };
 
     this.captureService.sad500LineUpdate(requestModel).then(
