@@ -72,7 +72,7 @@
         placeholder="Total Customs Value" />
         <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.totalCustomsValue != undefined">
+    <div class="form-group" *ngIf="this.form.totalCustomsDuty != undefined">
       <input type="text"
         [(ngModel)]="this.form.totalCustomsDuty.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -96,7 +96,7 @@
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
         (mouseover)="updateHelpContext('form-sad500-file-or-supplier-ref')"
-        placeholder="Supplier Ref/File Number" />
+        placeholder="Supplier Ref" />
         <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
 
     </div>
@@ -108,6 +108,16 @@
         (mouseover)="updateHelpContext('form-sad500-file-ref')"
         placeholder="File Number" />
         <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>
+
+    </div>
+    <div class="form-group" *ngIf="this.form.rebateCode != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.rebateCode.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.rebateCode.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-rebate-code')"
+        placeholder="Rebate Code" />
+        <p class="invalid-control-label" *ngIf="this.form.rebateCode.error !== null">{{this.form.rebateCode.error}}</p>
 
     </div>
   </form>

@@ -94,7 +94,19 @@ form = {
     value: null,
     error: null,
   },
+  CPCC: {
+    value: null,
+    error: null 
+  },
   totalCustomsDuty: {
+    value: null,
+    error: null
+  },
+  fileRef: {
+    value: null,
+    error: null
+  },
+  rebateCode: {
     value: null,
     error: null
   }
@@ -103,6 +115,7 @@ form = {
 lineQueue: SAD500LineCreateRequest[] = [];
 lineIndex = 0;
 dutyIndex = 0;
+transactionID = 0;
 
 dialogOpen = false;
 
@@ -120,6 +133,7 @@ dialogOpen = false;
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
+        this.transactionID = curr.transactionID;
         this.loadCapture();
         this.loadLines();
       }
@@ -227,10 +241,12 @@ dialogOpen = false;
       waybillNo: this.form.waybillNo.value,
       supplierRef: this.form.supplierRef.value,
       totalCustomsValue: this.form.totalCustomsValue.value,
-      totalCustomsDuty: this.form.totalCustomsDuty.value,
+      totalDuty: this.form.totalCustomsDuty.value,
       mrn: this.form.MRN.value,
       isDeleted: 0,
       attachmentStatusID: 3,
+      fileRef: this.form.fileRef.value,
+      rebate: this.form.rebateCode.value
     };
 
     this.captureService.sad500Update(requestModel).then(
@@ -290,7 +306,8 @@ dialogOpen = false;
   loadCapture() {
     this.captureService.sad500Get({
       specificID: this.attachmentID,
-      userID: 3
+      userID: this.currentUser.userID,
+      transactionID: this.transactionID
     }).then(
       (res: SAD500Get) => {
         this.form.MRN.value = res.mrn;
@@ -309,6 +326,10 @@ dialogOpen = false;
         this.form.PCC.error = res.pccError;
         this.form.CPC.value = res.cpc;
         this.form.CPC.error = res.cpcError;
+        this.form.fileRef.value = res.fileRef;
+        this.form.fileRef.error = res.fileRefError;
+        this.form.rebateCode.value = res.rebateCode;
+        this.form.rebateCode.error = res.rebateCodeError;
       },
       (msg) => {
       }
