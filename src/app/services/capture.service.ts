@@ -46,6 +46,7 @@ export class CaptureService {
   invoiceLineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/add`, requestModel);
   // tslint:disable-next-line: max-line-length
   invoiceLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/update`, requestModel);
+  incoTermTypeList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/incoterms/list`, requestModel);
 
   dutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/duties`, requestModel);
   // tslint:disable-next-line: max-line-length

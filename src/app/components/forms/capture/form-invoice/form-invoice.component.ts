@@ -1,3 +1,5 @@
+import { FormControl } from '@angular/forms';
+import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { HelpSnackbar } from './../../../../services/HelpSnackbar.service';
 import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
@@ -13,7 +15,6 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Subject } from 'rxjs';
 import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 import { takeUntil } from 'rxjs/operators';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { InvoiceGetResponse, InvoiceLinesResponse, InvoiceLine } from 'src/app/models/HttpResponses/Invoices';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
@@ -72,6 +73,11 @@ toCompanyList: Company[] = [];
 toCompanyListTemp: Company[] = [];
 fromCompanyList: Company[] = [];
 fromCompanyListTemp: Company[] = [];
+incoTermsList: IncoTerm[] = [];
+incoTermsListTemp: { rowNum: number, incoTermTypeID: number, name: string, description: string}[];
+incoTypeID = -1;
+incoTypeQuery = '';
+myControl = new FormControl();
 
 // Todo add guid for invoice items
 
@@ -96,10 +102,22 @@ form = {
     value: null,
     error: null,
   },
+  invoiceDate: {
+    value: null,
+    error: null
+  },
   currencyID: {
     value: null,
     error: undefined,
   },
+  incoType: {
+    value: null,
+    error: undefined
+  },
+  coo: {
+    value: null,
+    error: null
+  }
 };
 
 dialogOpen = false;
@@ -129,6 +147,30 @@ loader = false;
         this.loadLines();
       }
     });
+    this.loadIncoTypes();
+  }
+  loadIncoTypes() {
+    // Load
+    const model = {
+      userID: this.currentUser.userID
+    };
+    this.captureService.incoTermTypeList(model).then(
+      (res: IncoTermTypesReponse) => {
+        if (res.termTypes.length > 0) {
+          this.incoTermsList = res.termTypes;
+        }
+      },
+      (msg) => {
+        // Snackbar
+      }
+    );
+  }
+  filterIncoType() {
+    this.incoTermsList = this.incoTermsListTemp;
+    this.incoTermsList = this.incoTermsList.filter(x => this.matchRuleShort(x.name, `*${this.incoTypeQuery}*`));
+  }
+  selectedIncoType(id: number) {
+    this.incoTypeID = id;
   }
 
   ngAfterViewInit(): void {
@@ -550,3 +592,16 @@ loader = false;
   }
 
 }
+
+export class IncoTermTypesReponse {
+  outcome: Outcome;
+  termTypes: IncoTerm[];
+
+}
+export class IncoTerm {
+  rowNum: number;
+  incoTermTypeID: number;
+  name: string;
+  description: string;
+}
+
