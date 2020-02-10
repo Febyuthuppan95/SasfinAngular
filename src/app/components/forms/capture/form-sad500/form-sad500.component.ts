@@ -383,7 +383,8 @@ dialogOpen = false;
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
       dutyID: line.dutyTaxTypeID,
-      sad500LineID: line.sad500Line
+      sad500LineID: line.sad500Line,
+      value: line.value
     }).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
