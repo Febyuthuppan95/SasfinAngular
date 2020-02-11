@@ -159,7 +159,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             fileRef: this.form.fileRef.value,
             totalCustomsValue: this.form.totalCustomsValue.value,
             totalDuty: this.form.totalDuty.value,
-            supplierRef: this.form.supplierRef,
+            supplierRef: this.form.supplierRef.value,
+            ediStatusID: 1,
             isDeleted: 0,
             attachmentStatusID: 3,
           };
