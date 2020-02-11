@@ -64,7 +64,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       unitOfMeasure: null,
       unitPriceError: null,
       unitOfMeasureError: null,
-      totalLineValueError: null,
+      totalLineValueError: null
     };
 
     isUpdate: boolean;

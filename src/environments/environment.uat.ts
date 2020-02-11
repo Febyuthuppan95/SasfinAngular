@@ -1,8 +1,31 @@
 export const environment = {
   production: false,
-  AssetRoute: 'http://197.189.218.50:8889/assets/dist/images/backgrounds',
-  ApiEndpoint: 'http://197.189.218.50:8889',
+  AssetRoute: 'http://197.189.218.50:7779/assets/dist',
+  ImageRoute: 'http://197.189.218.50:7779/assets/dist/images',
+  ApiEndpoint: 'http://197.189.218.50:8889/api/v1.0',
+  ApiBackgroundImages: 'http://197.189.218.50:8889/api/v1.0/public/images/background',
+  ApiProfileImages: 'http://197.189.218.50:8889/api/v1.0/public/images/profile',
+  ApiDocuments: 'http://197.189.218.50:8889/api/v1.0/public/document',
+  WebSocketConnection: 'http://197.189.218.50:8889/api/v1.0/chat',
   Sessions: {
-    companyData: '41d516a5-9339-4b7c-a810-be1ce3150722'
+    CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
+    ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
+    PermitData: '780f766e-8d4b-43f8-a067-059a82b7da13',
+    BOMData: '3ba86905-764b-44ce-9e8c-6363187bd864',
+    itemData: '7f539ac4-3f99-428f-a04c-5ba2d4bd1172',
+    companyData: '41d516a5-9339-4b7c-a810-be1ce3150722',
+    transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
+    attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5'
   },
+
+  // We should consider doing this for api endpoints -- Ashton
+  api: {
+    users: {
+      list: 'http://197.189.218.50:8889/api/v1.0/users/list',
+      create: 'http://197.189.218.50:8889/api/v1.0/users/add',
+      update: 'http://197.189.218.50:8889/api/v1.0/users/update',
+      upload: 'http://197.189.218.50:8889/api/v1.0/users/upload',
+      hub: 'http://197.189.218.50:8889/Communication/Hub'
+    }
+  }
 };
