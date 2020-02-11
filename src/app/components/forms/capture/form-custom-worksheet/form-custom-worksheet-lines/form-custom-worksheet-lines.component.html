@@ -69,11 +69,14 @@
   </div>
   <div class="form-group">
     <label for="currencyID">Currency</label>
-  <input type="text" id="currencyID"
-    [(ngModel)]="this.form.currencyID" type="number" [ngModelOptions]="{standalone: true}"
-    class="form-control form-control-sm shadow-sm form-control-light"
-    (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')"
-    placeholder="Currency"/>
+    <select
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [formControl]=currency
+        (mouseover)="updateHelpContext('form-customs-worksheet-line-currency')">
+      <option [value]=-1 selected disabled>Select A Currency</option>
+      <option [value]=199>ZAR</option>
+      <option [value]=200>GBP</option>
+    </select>
   </div>
   <div class="form-group">
     <div class="form-group">
