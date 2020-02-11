@@ -69,6 +69,10 @@ form = {
   fileRef: {
     value: null,
     error: null
+  },
+  waybillNo: {
+    value: null,
+    error: null
   }
 };
 
@@ -148,9 +152,7 @@ dialogOpen = false;
                 this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
                   this.dialogOpen = false;
                   if (status) {
-                    if (!this.toggleLines) {
-                      this.saveLines();
-                    }
+                    this.saveLines();
                   }
                 });
               }
@@ -188,6 +190,7 @@ dialogOpen = false;
       lrn: this.form.LRN.value,
       isDeleted: 0,
       assessStatusID: 3,
+      waybillNo: this.form.waybillNo.value,
     };
 
     this.captureService.customWorksheetUpdate(requestModel).then(
@@ -200,6 +203,7 @@ dialogOpen = false;
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
@@ -237,6 +241,8 @@ dialogOpen = false;
           this.form.LRN.error = res.customsWorksheets[0].lrnError;
           this.form.fileRef.value = res.customsWorksheets[0].fileRef;
           this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
+          this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
+          this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
         }
       },
       (msg) => {}

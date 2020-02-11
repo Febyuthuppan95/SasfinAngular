@@ -18,4 +18,12 @@ export class CustomWorksheetLine {
   custVal: number;
   duty: number;
   commonFactor: string;
+  unitOfMeasureID: number;
+  cooID: number;
+  invoiceNo: number;
+  prodCode: number;
+  tariffID: number;
+  vat: number;
+  supplyUnit: number;
+  currencyID: number;
 }

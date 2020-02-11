@@ -56,7 +56,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     hsQuantityError: null,
     foreignInvError: null,
     dutyError: null,
-    commonFactorError: null
+    commonFactorError: null,
+    unitOfMeasureID: null,
+    cooID: null,
+    invoiceNo: null,
+    prodCode: null,
+    tariffID: null,
+    vat: null,
+    supplyUnit: null,
+    currencyID: null,
   };
 
   isUpdate: boolean;
@@ -117,7 +125,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         hsQuantityError: null,
         foreignInvError: null,
         dutyError: null,
-        commonFactorError: null
+        commonFactorError: null,
+        unitOfMeasureID: null,
+        cooID: null,
+        invoiceNo: null,
+        prodCode: null,
+        tariffID: null,
+        vat: null,
+        supplyUnit: null,
+        currencyID: null,
       };
     }
   }
@@ -132,7 +148,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
         duty: this.form.duty,
-        commonFactor: this.form.commonFactor
+        commonFactor: this.form.commonFactor,
+        unitOfMeasureID: this.form.unitOfMeasureID,
+        cooID: this.form.cooID,
+        invoiceNo: this.form.invoiceNo,
+        prodCode: this.form.prodCode,
+        tariffID: this.form.tariffID,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        currencyID: this.form.currencyID,
       };
 
       this.updateSADLine.emit(model);
@@ -144,7 +168,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
         duty: this.form.duty,
-        commonFactor: this.form.commonFactor
+        commonFactor: this.form.commonFactor,
+        unitOfMeasureID: this.form.unitOfMeasureID,
+        cooID: this.form.cooID,
+        invoiceNo: this.form.invoiceNo,
+        prodCode: this.form.prodCode,
+        tariffID: this.form.tariffID,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        currencyID: this.form.currencyID,
       };
 
       this.submitSADLine.emit(model);
