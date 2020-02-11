@@ -106,7 +106,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     cooID: -1,
     cooIDError: ''
   };
-  
   isUpdate: boolean;
 
   ngOnInit() {
@@ -230,7 +229,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         quantity: this.form.quantityError,
         previousDeclaration: this.form.previousDeclaration,
         vat: this.form.vat,
-        supplyUnit: this.form.supplyUnit
+        supplyUnit: this.form.supplyUnit,
+        cooID: this.countryID
       });
     } else {
       this.submitSADLine.emit({
@@ -246,7 +246,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         duties: this.dutiesToBeSaved,
         previousDeclaration: this.form.previousDeclaration,
         vat: this.form.vat,
-        supplyUnit: this.form.supplyUnit
+        supplyUnit: this.form.supplyUnit,
+        cooID: this.countryID
       });
 
       this.dutiesToBeSaved = [];
@@ -278,6 +279,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       (res: CountriesListResponse) => {
         
         this.countriesList = res.countriesList;
+        this.countriesListTemp = res.countriesList;
         console.log(this.countriesList);
       }
     );

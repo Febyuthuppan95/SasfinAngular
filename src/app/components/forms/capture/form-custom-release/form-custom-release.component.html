@@ -76,6 +76,56 @@
       placeholder="FOB" />
       <p class="invalid-control-label" *ngIf="this.form.FOB.error !== null">{{this.form.FOB.error}}</p>
   </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-supplier-ref')"
+      [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
+
+      placeholder="Supplier Ref" />
+      <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-total-customs-value')"
+      [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
+
+      placeholder="Total Customs Value" />
+      <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.totalDuty.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-total-duty')"
+      [ngClass]="{'form-control-invalid': this.form.totalDuty.error !== null}"
+
+      placeholder="Total Customs Duty" />
+      <p class="invalid-control-label" *ngIf="this.form.totalDuty.error !== null">{{this.form.totalDuty.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-file-ref')"
+      [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
+
+      placeholder="File Ref" />
+      <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.boe.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-boe')"
+      [ngClass]="{'form-control-invalid': this.form.boe.error !== null}"
+
+      placeholder="Bill of Entry" />
+      <p class="invalid-control-label" *ngIf="this.form.boe.error !== null">{{this.form.boe.error}}</p>
+  </div>
 </form>
 
 <app-notification></app-notification>

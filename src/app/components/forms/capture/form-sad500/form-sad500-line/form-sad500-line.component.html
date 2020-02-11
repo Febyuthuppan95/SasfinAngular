@@ -94,7 +94,7 @@
     </div>
   <div class="form-group" *ngIf="this.form.cooID != undefined">
       <label for="coo">COO</label>
-        <input [(ngModel)]="this.cooQuery" type="text"
+        <input [(ngModel)]="this.countryQuery" type="text"
         [ngClass]="{'form-control-invalid': this.form.cooIDError !== null && this.form.cooIDError !== undefined}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (keyup)="filterCountries()"
@@ -104,7 +104,7 @@
         (mouseover)="updateHelpContext('form-sad500-line-coo')">
 
         <mat-autocomplete #cooAuto="matAutocomplete" >
-          <mat-option *ngFor="let country of countriesList" [value]="country.countryID"
+          <mat-option *ngFor="let country of countriesList" [value]="country.code"
           (onSelectionChange)="selectedCountry(country.countryID)">
             {{country.code}} - {{country.name}}
           </mat-option>
@@ -147,7 +147,7 @@
               </div>
             </li>
             <li class="duty-item" *ngFor="let item of dutyList.duties; let i = index" (click)="assignDutyDialog(item)" (keypress)="assignDutyDialog(item)" [tabindex]="i">
-              <small class="float-right" style="margin-top: 4px">{{item.duty}}</small>
+              <small class="float-right" style="margin-top: 4px">0</small>
               <small>{{item.code}}</small>
             </li>
           </ul>

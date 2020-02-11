@@ -19,6 +19,10 @@ export class CRNGet {
    statusID: number;
    status?: string;
    rowNum?: number;
+   supplierRef: string;
+   fileRef: string;
+   totalDuty: number;
+   totalCustomsValue: number;
 }
 
 export class CRNList {
