@@ -16,6 +16,8 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
 import { ListCountriesRequest, CountriesListResponse, CountryItem } from 'src/app/models/HttpRequests/Locations';
 import { PlaceService } from 'src/app/services/Place.Service';
+import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 
 @Component({
   selector: 'app-form-custom-worksheet-lines',
@@ -59,14 +61,14 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     foreignInvError: null,
     dutyError: null,
     commonFactorError: null,
-    unitOfMeasureID: null,
-    cooID: null,
+    unitOfMeasureID: -1,
+    cooID: -1,
     invoiceNo: null,
     prodCode: null,
-    tariffID: null,
-    vat: null,
-    supplyUnit: null,
-    currencyID: null,
+    tariffID: -1,
+    vat: 0,
+    supplyUnit: 0,
+    currencyID: -1,
   };
 
   isUpdate: boolean;
@@ -75,7 +77,19 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
   countryID = -1;
   countryQuery = '';
+
   cooControl = new FormControl();
+  unitOfMeasure = new FormControl();
+  tariff = new FormControl();
+  currency = new FormControl();
+
+  tariffs: { amount: number; description: string; duty: number; unit: string; tariffID: number }[];
+  tariffsTemp: { amount: number; description: string; duty: number; unit: string; tariffID: number }[];
+  tariffQuery = '';
+
+  unitOfMeasureList: UnitsOfMeasure[];
+  unitOfMeasureListTemp: UnitsOfMeasure[];
+  unitQuery: string;
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -83,6 +97,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     .subscribe(theme => this.currentTheme = theme);
 
     this.currentUser = this.userService.getCurrentUser();
+    this.loadCountries();
+    this.loadTarrifs();
+    this.loadUnits();
   }
 
   ngAfterViewInit(): void {
@@ -210,10 +227,25 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       }
     );
   }
+
+
+  loadTarrifs() {
+    this.tariffService.list().then(
+      (res: { tariffList: { amount: number; description: string; duty: number; unit: string; tariffID: number }[],
+              outcome: Outcome, rowCount: number }) => {
+        this.tariffs = res.tariffList;
+        this.tariffsTemp = res.tariffList;
+      },
+      (msg) => {
+      }
+    );
+  }
+
   filterCountries() {
     this.countriesList = this.countriesListTemp;
     this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
   }
+
   selectedCountry(country: number) {
     this.countryID = country;
   }
@@ -229,6 +261,39 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+
+  selectedTariff(tariff) {
+    this.form.tariffID = tariff;
+  }
+
+  filterTariff() {
+    this.tariffs = this.tariffsTemp;
+    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tariffQuery}*`));
+  }
+
+  loadUnits(): void {
+    // tslint:disable-next-line: max-line-length
+    this.unitService.list({ userID: this.currentUser.userID, specificUnitOfMeasureID: -1, rowStart: 1, rowEnd: 1000, filter: '', orderBy: '', orderByDirection: '' }).then(
+      (res: ListUnitsOfMeasure) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.unitOfMeasureList = res.unitOfMeasureList;
+          this.unitOfMeasureListTemp = res.unitOfMeasureList;
+        }
+      },
+      (msg) => {
+
+      }
+    );
+  }
+
+  filterUnit() {
+    this.unitOfMeasureList = this.unitOfMeasureListTemp;
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery}*`));
+  }
+
+  selectedUnit(unit) {
+    this.form.unitOfMeasureID = unit.unitOfMeasureID;
   }
 
   ngOnDestroy(): void {

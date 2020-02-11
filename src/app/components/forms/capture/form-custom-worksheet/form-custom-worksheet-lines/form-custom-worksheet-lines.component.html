@@ -76,20 +76,36 @@
     placeholder="Currency"/>
   </div>
   <div class="form-group">
-    <label for="unitOfMeasureID">Unit of Measure</label>
-  <input type="text" id="unitOfMeasureID"
-    [(ngModel)]="this.form.unitOfMeasureID" type="number" [ngModelOptions]="{standalone: true}"
-    class="form-control form-control-sm shadow-sm form-control-light"
-    (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')"
-    placeholder="Unit Of Measure"/>
+    <div class="form-group">
+        <input [(ngModel)]="this.unitQuery" (keyup)="filterUnit()"
+        type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
+        [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+        <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
+            {{unit.name}}, {{unit.description}}
+          </mat-option>
+        </mat-autocomplete>
+    </div>
   </div>
   <div class="form-group">
-    <label for="tariffID">Tariff</label>
-  <input type="text" id="tariffID"
-    [(ngModel)]="this.form.tariffID" type="number" [ngModelOptions]="{standalone: true}"
-    class="form-control form-control-sm shadow-sm form-control-light"
-    (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')"
-    placeholder="Tariff"/>
+    <label for="tariff">Tariff</label>
+      <input type="text"
+      [(ngModel)]="this.tariffQuery"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (keyup)="filterTariff()"
+      placeholder="Tariff" aria-label="Tariff"
+      [formControl]="tariff"
+      [matAutocomplete]="tariffAuto"
+      (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+
+      <mat-autocomplete #tariffAuto="matAutocomplete" >
+        <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
+        (onSelectionChange)="selectedTariff(tariff.tariffID)">
+          {{tariff.description}}
+        </mat-option>
+      </mat-autocomplete>
   </div>
   <div class="form-group">
   <input type="text"
