@@ -14,6 +14,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
+import { ListCountriesRequest, CountriesListResponse, CountryItem } from 'src/app/models/HttpRequests/Locations';
+import { PlaceService } from 'src/app/services/Place.Service';
 
 @Component({
   selector: 'app-form-custom-worksheet-lines',
@@ -25,7 +27,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
               private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar, private placeService: PlaceService) { }
 
   currentUser: User;
   currentTheme: string;
@@ -56,10 +58,24 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     hsQuantityError: null,
     foreignInvError: null,
     dutyError: null,
-    commonFactorError: null
+    commonFactorError: null,
+    unitOfMeasureID: null,
+    cooID: null,
+    invoiceNo: null,
+    prodCode: null,
+    tariffID: null,
+    vat: null,
+    supplyUnit: null,
+    currencyID: null,
   };
 
   isUpdate: boolean;
+
+  countriesList: CountryItem[] = [];
+  countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
+  countryID = -1;
+  countryQuery = '';
+  cooControl = new FormControl();
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -117,7 +133,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         hsQuantityError: null,
         foreignInvError: null,
         dutyError: null,
-        commonFactorError: null
+        commonFactorError: null,
+        unitOfMeasureID: null,
+        cooID: null,
+        invoiceNo: null,
+        prodCode: null,
+        tariffID: null,
+        vat: null,
+        supplyUnit: null,
+        currencyID: null,
       };
     }
   }
@@ -132,7 +156,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
         duty: this.form.duty,
-        commonFactor: this.form.commonFactor
+        commonFactor: this.form.commonFactor,
+        unitOfMeasureID: this.form.unitOfMeasureID,
+        cooID: this.form.cooID,
+        invoiceNo: this.form.invoiceNo,
+        prodCode: this.form.prodCode,
+        tariffID: this.form.tariffID,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        currencyID: this.form.currencyID,
       };
 
       this.updateSADLine.emit(model);
@@ -144,11 +176,46 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
         duty: this.form.duty,
-        commonFactor: this.form.commonFactor
+        commonFactor: this.form.commonFactor,
+        unitOfMeasureID: this.form.unitOfMeasureID,
+        cooID: this.form.cooID,
+        invoiceNo: this.form.invoiceNo,
+        prodCode: this.form.prodCode,
+        tariffID: this.form.tariffID,
+        vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        currencyID: this.form.currencyID,
       };
 
       this.submitSADLine.emit(model);
     }
+  }
+
+  loadCountries() {
+    const request: ListCountriesRequest = {
+      userID: this.currentUser.userID,
+      specificCountryID: -1,
+      rowStart: 1,
+      rowEnd: 500,
+      orderBy: '',
+      orderByDirection: '',
+      filter: ''
+    };
+    this.placeService.getCountriesCall(request).then(
+      (res: CountriesListResponse) => {
+
+        this.countriesList = res.countriesList;
+        this.countriesListTemp = res.countriesList;
+        console.log(this.countriesList);
+      }
+    );
+  }
+  filterCountries() {
+    this.countriesList = this.countriesListTemp;
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
+  }
+  selectedCountry(country: number) {
+    this.countryID = country;
   }
 
   matchRuleShort(str, rule) {

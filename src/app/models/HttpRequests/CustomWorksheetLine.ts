@@ -18,4 +18,12 @@ export class CustomWorksheetLineReq {
   commonFactorError?: string;
   isPersistant?: boolean;
   userID?: number;
+  unitOfMeasureID: number;
+  cooID: number;
+  invoiceNo: number;
+  prodCode: number;
+  tariffID: number;
+  vat: number;
+  supplyUnit: number;
+  currencyID: number;
 }

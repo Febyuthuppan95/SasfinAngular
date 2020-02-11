@@ -14,4 +14,6 @@ export class CustomsWorksheet {
   transactonID: number;
   lrnError: string;
   fileRefError: string;
+  waybillNo: string;
+  waybillNoError: string;
 }
