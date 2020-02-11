@@ -97,6 +97,13 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     .subscribe(theme => this.currentTheme = theme);
 
     this.currentUser = this.userService.getCurrentUser();
+
+    this.currency.valueChanges
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((val) => {
+      this.form.currencyID = val;
+    });
+
     this.loadCountries();
     this.loadTarrifs();
     this.loadUnits();
