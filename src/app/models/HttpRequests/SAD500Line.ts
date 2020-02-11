@@ -34,6 +34,7 @@ export class SAD500LineCreateRequest {
   previousDeclaration: string;
   vat: number;
   supplyUnit: string;
+  cooID: number;
 }
 
 export class SAD500LineUpdateModel {

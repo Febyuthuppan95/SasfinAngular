@@ -76,6 +76,26 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       value: null,
       error: null,
     },
+    supplierRef: {
+      value: null,
+      error: null
+    },
+    totalCustomsValue: {
+      value: null,
+      error: null
+    },
+    totalDuty: {
+      value: null,
+      error: null
+    },
+    fileRef: {
+      value: null,
+      error: null
+    },
+    boe: {
+      value: null,
+      error: null
+    }
   };
 
   attachmentSubscription: Subscription;
@@ -135,6 +155,11 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
+            boe: this.form.boe.value,
+            fileRef: this.form.fileRef.value,
+            totalCustomsValue: this.form.totalCustomsValue.value,
+            totalDuty: this.form.totalDuty.value,
+            supplierRef: this.form.supplierRef,
             isDeleted: 0,
             attachmentStatusID: 3,
           };
@@ -176,6 +201,10 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;
         this.form.PCC.error = res.pccError;
+        this.form.supplierRef.value = res.supplierRef;
+        this.form.totalDuty.value = res.totalDuty;
+        this.form.totalCustomsValue.value = res.totalCustomsValue;
+        this.form.fileRef.value = res.fileRef;
       },
       (msg) => {
 
