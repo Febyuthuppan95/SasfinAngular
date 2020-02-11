@@ -22,13 +22,14 @@ export class CitiesList {
 export class ListCountriesRequest extends ListBase {
   specificCountryID: number;
 }
-export class ListCountriesResponse {
+export class CountriesListResponse {
   outcome: Outcome;
-  countriesList: Country[];
+  countriesList: CountryItem[];
 }
 
-export class Country {
+export class CountryItem {
   rowNum: number;
   countryID: number;
   name: string;
+  code: string;
 }

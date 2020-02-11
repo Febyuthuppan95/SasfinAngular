@@ -93,25 +93,25 @@
         <p class="invalid-control-label" *ngIf="this.form.previousDeclarationError !== null && this.form.previousDeclarationError !== undefined">{{this.form.previousDeclarationError}}</p>
     </div>
   <div class="form-group" *ngIf="this.form.cooID != undefined">
-      <label for="tariff">Tariff</label>
-        <input [(ngModel)]="this.form.tariff" type="text"
-        [ngClass]="{'form-control-invalid': this.form.tariffError !== null && this.form.tariffError !== undefined}"
+      <label for="coo">COO</label>
+        <input [(ngModel)]="this.cooQuery" type="text"
+        [ngClass]="{'form-control-invalid': this.form.cooIDError !== null && this.form.cooIDError !== undefined}"
         class="form-control form-control-sm shadow-sm form-control-light"
-        (keyup)="filterTariff()"
-        placeholder="Tariff" aria-label="Tariff"
+        (keyup)="filterCountries()"
+        placeholder="COO" aria-label="COOID"
         [formControl]="myControl"
-        [matAutocomplete]="tariffAuto"
-        (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+        [matAutocomplete]="cooAuto"
+        (mouseover)="updateHelpContext('form-sad500-line-coo')">
 
-        <mat-autocomplete #tariffAuto="matAutocomplete" >
-          <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
-          (onSelectionChange)="selectedTariff(tariff.description)">
-            {{tariff.description}}
+        <mat-autocomplete #cooAuto="matAutocomplete" >
+          <mat-option *ngFor="let country of countriesList" [value]="country.countryID"
+          (onSelectionChange)="selectedCountry(country.countryID)">
+            {{country.code}} - {{country.name}}
           </mat-option>
         </mat-autocomplete>
-        <p class="invalid-control-label" *ngIf="this.form.tariffError !== null && this.form.tariffError !== undefined">{{this.form.tariffError}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.cooIDError !== null && this.form.cooIDError !== undefined">{{this.form.cooIDError}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.cooID != undefined">
+    <div class="form-group" *ngIf="this.form.tariff != undefined">
       <label for="tariff">Tariff</label>
         <input [(ngModel)]="this.form.tariff" type="text"
         [ngClass]="{'form-control-invalid': this.form.tariffError !== null && this.form.tariffError !== undefined}"

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ListCountriesResponse } from './../../../../../models/HttpResponses/ListCountriesResponse';
-import { ListCountriesRequest, Country } from './../../../../../models/HttpRequests/Locations';
+import { ListCountriesRequest, CountriesListResponse, CountryItem } from './../../../../../models/HttpRequests/Locations';
 import { PlaceService } from './../../../../../services/Place.Service';
 import { DutyAssignDialogComponent } from './duty-assign-dialog/duty-assign-dialog.component';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
@@ -53,8 +53,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   selectedUnitVal: string;
   private unsubscribe$ = new Subject<void>();
 
-  countriesList: Country[] = [];
-  countriesListTemp: {rowNum: number, countryID: number, name: string}[];
+  countriesList: CountryItem[] = [];
+  countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
   countryID = -1;
   countryQuery = '';
 
@@ -102,6 +102,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     vatError: '',
     supplyUnit: null,
     supplyUnitError: '',
+    coo: '',
     cooID: -1,
     cooIDError: ''
   };
@@ -189,6 +190,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         vatError: null,
         supplyUnit: '',
         supplyUnitError: null,
+        coo: '',
         cooID: -1,
         cooIDError: null
       };
@@ -273,14 +275,19 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       filter: ''
     };
     this.placeService.getCountriesCall(request).then(
-      (res: ListCountriesResponse) => {
+      (res: CountriesListResponse) => {
+        
         this.countriesList = res.countriesList;
+        console.log(this.countriesList);
       }
     );
   }
   filterCountries() {
     this.countriesList = this.countriesListTemp;
     this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
+  }
+  selectedCountry(country: number) {
+    this.countryID = country;
   }
 
   selectedTariff(description) {
