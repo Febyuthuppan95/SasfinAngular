@@ -81,7 +81,7 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'VOC': {
-        this.componentService.renderComponent(FormVOCComponent);
+        this.componentService.renderComponent(FormSAD500Component);
         break;
       }
       case 'WAYBILL': {

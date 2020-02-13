@@ -184,19 +184,19 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
         (res: VOCListResponse) => {
           if (res.outcome.outcome === 'SUCCESS') {
             if (res.vocs.length !== 0) {
-              this.currentVOC = res.vocs[0];
-              this.form.quantity = this.currentVOC.quantity;
-              this.form.customsValue = this.currentVOC.customsValue;
-              this.form.lineNo = this.currentVOC.lineNo;
-              this.form.tariff = this.currentVOC.tariff;
-              this.form.unitOfMeasure = this.currentVOC.unitOfMeasure;
-              this.form.unitOfMeasureID = this.currentVOC.unitOfMeasureID;
-              this.form.tariffID = this.currentVOC.tariffID;
-              this.form.customsValueError = this.currentVOC.customsValueError;
-              this.form.lineNoError = this.currentVOC.lineNoError;
-              this.form.quantityError = this.currentVOC.quantityError;
-              this.form.tariffError = this.currentVOC.tariffError;
-              this.form.unitOfMeasureError = this.currentVOC.unitOfMeasureError;
+              // this.currentVOC = res.vocs[0];
+              // this.form.quantity = this.currentVOC.quantity;
+              // this.form.customsValue = this.currentVOC.customsValue;
+              // this.form.lineNo = this.currentVOC.lineNo;
+              // this.form.tariff = this.currentVOC.tariff;
+              // this.form.unitOfMeasure = this.currentVOC.unitOfMeasure;
+              // this.form.unitOfMeasureID = this.currentVOC.unitOfMeasureID;
+              // this.form.tariffID = this.currentVOC.tariffID;
+              // this.form.customsValueError = this.currentVOC.customsValueError;
+              // this.form.lineNoError = this.currentVOC.lineNoError;
+              // this.form.quantityError = this.currentVOC.quantityError;
+              // this.form.tariffError = this.currentVOC.tariffError;
+              // this.form.unitOfMeasureError = this.currentVOC.unitOfMeasureError;
             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
@@ -219,7 +219,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
                 lineNo: this.form.lineNo,
                 tariffID: 2,
                 unitOfMeasureID: this.unitOfMeasureID,
-                sad500LineID: this.currentVOC.sad500LineID
+                sad500LineID: -1
               }).then(
                 (res: Outcome) => {
                   if (res.outcome === 'SUCCESS') {
