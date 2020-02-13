@@ -210,6 +210,7 @@ import { ChannelService } from './modules/chat/services/channel.service';
 import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
 import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
+import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -349,7 +350,8 @@ import { DutyAssignDialogComponent } from './components/forms/capture/form-sad50
     ViewCaptureLandingComponent,
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
-    DutyAssignDialogComponent
+    DutyAssignDialogComponent,
+    FormVocLineComponent
   ],
   imports: [
     BrowserModule,
