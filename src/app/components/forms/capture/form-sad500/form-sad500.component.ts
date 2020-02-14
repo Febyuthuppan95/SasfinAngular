@@ -294,7 +294,24 @@ dialogOpen = false;
       rebateCode: this.form.rebateCode.value
     };
     if (this.attachmentType === 'VOC') { // Save VOC Header
-      this.captureService.vocUpdate(requestModel).then(
+      // First Create new SAD500 record
+
+      // this.captureService.sad500Create(requestModel).then(
+      //   (res: Outcome) => {
+      //     if (res.outcome === 'SUCCESS') {
+      //       this.notify.successmsg(res.outcome, res.outcomeMessage);
+  
+      //       this.companyService.setCapture({ capturestate: true });
+      //       this.router.navigateByUrl('transaction/capturerlanding');
+      //     } else {
+      //       this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      //     }
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', 'Cannot reach server');
+      //   }
+      // );
+      this.captureService.vocUpdate({userID: this.currentUser.userID}).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -407,6 +424,8 @@ dialogOpen = false;
     specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
+        // this.lines = this.sad500CreatedLines.length;
+        console.log(this.lines);
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
@@ -418,7 +437,16 @@ dialogOpen = false;
       }
     );
   }
+  // loadLineDuty() {
+  //   this.captureService.sad500LineDutyList({}).then(
+  //     (res: SAD500LineDutyList) => {
 
+  //     },
+  //     (msg) => {
+
+  //     }
+  //   )
+  // }
   addToQueue(obj: SAD500LineCreateRequest) {
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID;
@@ -467,6 +495,7 @@ dialogOpen = false;
 
 
   saveLineDuty(line: Duty) {
+    console.log(line);
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
       dutyID: line.dutyTaxTypeID,
@@ -512,6 +541,7 @@ dialogOpen = false;
   }
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
+    console.log(item);
     this.lines = i;
   }
 
@@ -526,12 +556,14 @@ dialogOpen = false;
     if (this.lines < this.sad500CreatedLines.length - 1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
+      
     }
 
     if (this.lines === -1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
     }
+    console.log(this.focusLineData);
   }
 
   specificLine(index: number) {

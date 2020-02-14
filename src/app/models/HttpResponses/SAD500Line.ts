@@ -29,3 +29,6 @@ export class SAD500Line {
     supplyUnit: string;
     cooID: number;
 }
+export class SAD500LineDutyList {
+    
+}

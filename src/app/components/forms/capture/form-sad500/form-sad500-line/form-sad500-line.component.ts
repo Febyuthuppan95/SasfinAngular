@@ -152,7 +152,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    console.log(this.updateSAD500Line);
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
+      
       this.isUpdate = true;
 
       this.form.customsValue = this.updateSAD500Line.customsValue;
@@ -297,14 +299,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   assignDuty(duty: Duty) {
+    
     this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     if (this.isUpdate) {
+      console.log(duty);
       this.assignedDuties.push(duty);
-
       this.captureService.sad500LineDutyAdd({
         userID: 3,
         dutyID: duty.dutyTaxTypeID,
-        sad500LineID: this.updateSAD500Line.sad500LineID
+        sad500LineID: this.updateSAD500Line.sad500LineID,
+        value: duty.duty
       }).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -412,6 +416,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       orderDirection: 'Name'
     }).then(
       (res: DutyListResponse) => {
+        console.log(res);
         this.dutyList = res;
         this.dutyListTemp = res.duties;
 

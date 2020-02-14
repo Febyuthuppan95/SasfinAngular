@@ -12,8 +12,8 @@
   </div>
   </div>
   <h1 class="capture-form-title text-dark">
-    <span *ngIf="this.toggleLines">SAD500 Lines</span>
-    <span *ngIf="!this.toggleLines">SAD500</span>
+    <span *ngIf="this.toggleLines">{{this.attachmentType}} Lines</span>
+    <span *ngIf="!this.toggleLines">{{this.attachmentType}}</span>
   </h1>
 </div>
 <span [ngClass]="{'hide': this.toggleLines}">

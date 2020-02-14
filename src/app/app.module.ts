@@ -211,6 +211,7 @@ import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialo
 import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
 import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
+import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -351,7 +352,8 @@ import { FormVocLineComponent } from './components/forms/capture/form-voc/form-v
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
     DutyAssignDialogComponent,
-    FormVocLineComponent
+    FormVocLineComponent,
+    ViewCaptureQueueOverviewComponent
   ],
   imports: [
     BrowserModule,
