@@ -1,3 +1,4 @@
+import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ChatRedirectComponent } from './modules/chat/components/chat-redirect/chat-redirect.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -98,6 +99,7 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
+          { path: 'capture-queue', component: ViewCaptureQueueOverviewComponent },
           { path: 'reportsqueues', component: ViewReportQueuesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
