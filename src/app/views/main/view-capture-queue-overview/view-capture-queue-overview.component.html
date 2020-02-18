@@ -34,5 +34,5 @@
     (resetContext)="this.recordIndex = -1; this.contextMenuEnable = false;">
   </app-menu> -->
   <div class="contextOverlay" *ngIf="(contextMenuEnable)" (click)="popOff()"></div>
-  <app-context-menu-capture-queue *ngIf="this.contextMenuEnable" [x]="this.contextMenuX" [y]="this.contextMenuY"></app-context-menu-capture-queue>
+  <app-context-menu-capture-queue *ngIf="this.contextMenuEnable" (promoteCompany)="setPriority(this.focusCompanyID)" [companyID]="this.focusCompanyID" [x]="this.contextMenuX" [y]="this.contextMenuY"></app-context-menu-capture-queue>
   <app-notification></app-notification>

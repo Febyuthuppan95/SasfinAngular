@@ -100,14 +100,35 @@ export class ViewCaptureQueueOverviewComponent implements OnInit {
   back() {
 
   }
-  popClick(event, company) {
-    console.log('hello');
-    this.contextMenuX = event.clientX + 3;
-    this.contextMenuY = event.clientY + 5;
-    this.focusCompanyID = company;
+  setPriority() {
+    const model = {
+      userID: this.currentUser.userID,
+      companyID: this.focusCompanyID
+    };
+    this.transactionService.captureQueueUpdate(model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.toastrwarning(res.outcome, res.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    );
   }
-  setClickedRow(index) {
-    this.selectedRow = index;
+  setClickedRow(obj: SelectedRecord) {
+    this.contextMenuX = obj.event.clientX + 3;
+    this.contextMenuY = obj.event.clientY + 5;
+    this.focusCompanyID = obj.record.companyID;
+    this.themeService.toggleContextMenu(!this.contextMenuEnable);
+    this.contextMenuEnable = !this.contextMenuEnable;
+  }
+  popOff() {
+    this.contextMenuEnable = false;
+    this.focusCompanyID = -1;
+    this.selectedRow = -1;
   }
   searchFilter(query: string) {
     this.listRequest.filter = query;

@@ -276,4 +276,12 @@ export class TransactionService {
       .then(res => resolve(res), msg => reject(msg));
     });
   }
+  public captureQueueUpdate(model: object) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/capturequeue/update`;
+      this.httpClient.post(apiURL, model)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
 }

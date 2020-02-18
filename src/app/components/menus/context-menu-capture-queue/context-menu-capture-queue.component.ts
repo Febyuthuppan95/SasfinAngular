@@ -17,6 +17,7 @@ export class ContextMenuCaptureQueueComponent implements OnInit {
 
   @Output() promoteCompany = new EventEmitter<number>();
   ngOnInit() {
+    console.log(this.companyID);
   }
 
   setPriority() {
