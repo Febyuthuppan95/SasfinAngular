@@ -2,11 +2,11 @@ export const environment = {
   production: false,
   AssetRoute: 'http://lateralsolutions.ddns.net/sasfin/assets/dist',
   ImageRoute: 'http://lateralsolutions.ddns.net/sasfin/assets/dist/images',
-  ApiEndpoint: 'https://lateral.solutions/sasfin/api/api/v1.0',
-  ApiBackgroundImages: 'http://197.189.218.50:7779/api/v1.0/public/images/background',
-  ApiProfileImages: 'http://197.189.218.50:7779/api/v1.0/public/images/profile',
-  ApiDocuments: 'http://197.189.218.50:7779/api/v1.0/public/document',
-  WebSocketConnection: 'http://197.189.218.50:7779/api/v1.0/chat',
+  ApiEndpoint: 'http://lateralsolutions.ddns.net/sasfin/api/api/v1.0',
+  ApiBackgroundImages: 'http://lateralsolutions.ddns.net/api/v1.0/public/images/background',
+  ApiProfileImages: 'http://lateralsolutions.ddns.net/api/v1.0/public/images/profile',
+  ApiDocuments: 'http://lateralsolutions.ddns.net/api/v1.0/public/document',
+  WebSocketConnection: 'http://lateralsolutions.ddns.net/api/v1.0/chat',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -21,11 +21,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'http://197.189.218.50:7779/api/v1.0/users/list',
-      create: 'http://197.189.218.50:7779/api/v1.0/users/add',
-      update: 'http://197.189.218.50:7779/api/v1.0/users/update',
-      upload: 'http://197.189.218.50:7779/api/v1.0/users/upload',
-      hub: 'http://197.189.218.50:7779/Communication/Hub'
+      list: 'http://lateralsolutions.ddns.net/api/v1.0/users/list',
+      create: 'http://lateralsolutions.ddns.net/api/v1.0/users/add',
+      update: 'http://lateralsolutions.ddns.net/api/v1.0/users/update',
+      upload: 'http://lateralsolutions.ddns.net/api/v1.0/users/upload',
+      hub: 'http://lateralsolutions.ddns.net/Communication/Hub'
     }
   }
 };
