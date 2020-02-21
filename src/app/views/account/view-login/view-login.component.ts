@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment.prod';
 import { Invoice } from './../../../models/HttpResponses/Invoices';
 import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
@@ -38,7 +39,7 @@ export class ViewLoginComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
   typePassword: boolean;
-
+  logoImageUrl = `${environment.ImageRoute}/logo.png`;
   ngOnInit() {
     const elem = document.getElementsByClassName('modal-backdrop');
 
