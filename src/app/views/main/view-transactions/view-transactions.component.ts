@@ -402,7 +402,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   addTransaction() {
     let errors = 0;
-
+    this.selectedStatus = 3;
     if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
       errors++;
     }
