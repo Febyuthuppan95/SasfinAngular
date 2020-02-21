@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   AssetRoute: 'http://lateralsolutions.ddns.net/sasfin/assets/dist',
   ImageRoute: 'http://lateralsolutions.ddns.net/sasfin/assets/dist/images',
-  ApiEndpoint: 'http://lateralsolutions.ddns.net/sasfin/api/api/v1.0',
+  ApiEndpoint: 'http://lateralsolutions.ddns.net/api/v1.0',
   ApiBackgroundImages: 'http://lateralsolutions.ddns.net/api/v1.0/public/images/background',
   ApiProfileImages: 'http://lateralsolutions.ddns.net/api/v1.0/public/images/profile',
   ApiDocuments: 'http://lateralsolutions.ddns.net/api/v1.0/public/document',
