@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
@@ -31,7 +32,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private eventService: EventService,
               private dialog: MatDialog,
               private companyService: CompanyService,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar,
+              private formBuilder: FormBuilder) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -47,6 +49,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   attachmentID: number;
 
   currentTheme: string;
+  formValid: FormGroup;
+
   form = {
     serialNo: {
       value: null,
@@ -143,7 +147,55 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
-
+  buildForm() {
+    this.formValid = this.formBuilder.group({
+      serialNo: [this.form.serialNo, { validators: [Validators.required], updateOn: 'blur'}],
+      LRN: {
+        value: null,
+        error: null,
+      },
+      importersCode: {
+        value: null,
+        error: null,
+      },
+      PCC: {
+        value: null,
+        error: null,
+      },
+      FOB: {
+        value: null,
+        error: null,
+      },
+      waybillNo: {
+        value: null,
+        error: null,
+      },
+      MRN: {
+        value: null,
+        error: null,
+      },
+      supplierRef: {
+        value: null,
+        error: null
+      },
+      totalCustomsValue: {
+        value: null,
+        error: null
+      },
+      totalDuty: {
+        value: null,
+        error: null
+      },
+      fileRef: {
+        value: null,
+        error: null
+      },
+      boe: {
+        value: null,
+        error: null
+      }
+    });
+  }
   submit() {
           const requestModel = {
             userID: this.currentUser.userID,

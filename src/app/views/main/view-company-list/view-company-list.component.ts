@@ -1,3 +1,4 @@
+import { TableConfig } from './../../../models/Table';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -120,7 +121,64 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
       selectRowCount: true,
     }
   };
-
+  tableConfig: TableConfig = {
+    header:  {
+      title: 'Companies',
+      addButton: {
+      enable: true,
+      },
+      backButton: {
+        enable: false
+      },
+      filters: {
+        search: true,
+        selectRowCount: true,
+      }
+    },
+    headings: [
+      {
+        title: '',
+        propertyName: 'rowNum',
+        order: {
+          enable: false,
+        }
+      },
+      {
+        title: 'Name',
+        propertyName: 'name',
+        order: {
+          enable: true,
+        },
+      },
+      {
+        title: 'Registration No',
+        propertyName: 'regNo',
+        order: {
+          enable: true,
+        },
+      },
+      {
+        title: 'Registration Export No',
+        propertyName: 'regExportNo',
+        order: {
+          enable: true,
+        },
+      },
+      {
+        title: 'VAT No',
+        propertyName: 'vatNo',
+        order: {
+          enable: true,
+        },
+      }
+    ],
+    rowStart: 1,
+    rowEnd: 15,
+    recordsPerPage: 15,
+    orderBy: '',
+    orderByDirection: '',
+    dataset: null
+  };
   tableHeadings: TableHeading[] = [
     {
       title: '',
@@ -250,6 +308,7 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
     this.companyService
       .list(model).then(
         (res: CompaniesListResponse) => {
+          this.dataList = res.companies;
           if (res.rowCount === 0) {
             this.noData = true;
             this.showLoader = false;

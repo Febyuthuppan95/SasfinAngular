@@ -127,6 +127,7 @@ private notify: NotificationComponent;
           this.router.navigate(['capture', 'transaction', 'attachment']);
           this.loading = false;
         } else {
+          console.log(res);
           this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.companyService.setCapture({ capturestate: false});
         }
