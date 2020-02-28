@@ -127,14 +127,11 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     if (this.updateLine !== null && this.updateLine !== undefined) {
       this.isUpdate = true;
-      this.form.coo = this.updateLine.coo;
-      this.form.tariffHeading = this.updateLine.tariffHeading;
       this.form.custVal = this.updateLine.custVal;
       this.form.hsQuantity = this.updateLine.hsQuantity;
       this.form.foreignInv = this.updateLine.foreignInv;
       this.form.duty = this.updateLine.duty;
       this.form.cooError = this.updateLine.cooError;
-      this.form.tariffHeadingError = this.updateLine.tariffHeadingError;
       this.form.custValError = this.updateLine.custValError;
       this.form.hsQuantityError = this.updateLine.hsQuantityError;
       this.form.foreignInvError = this.updateLine.foreignInvError;
@@ -174,8 +171,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     if (this.isUpdate) {
       const model: CustomWorksheetLineReq = {
         customWorksheetLineID: this.lineData.customWorksheetLineID,
-        coo: this.form.coo,
-        tariffHeading: this.form.tariffHeading,
         hsQuantity: this.form.hsQuantity,
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
@@ -186,7 +181,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         invoiceNo: this.form.invoiceNo,
         prodCode: this.form.prodCode,
         tariffID: this.form.tariffID,
-        vat: this.form.vat,
         supplyUnit: this.form.supplyUnit,
         currencyID: this.form.currencyID,
       };
@@ -194,8 +188,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       this.updateSADLine.emit(model);
     } else {
       const model: CustomWorksheetLineReq = {
-        coo: this.form.coo,
-        tariffHeading: this.form.tariffHeading,
         hsQuantity: this.form.hsQuantity,
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
@@ -206,7 +198,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         invoiceNo: this.form.invoiceNo,
         prodCode: this.form.prodCode,
         tariffID: this.form.tariffID,
-        vat: this.form.vat,
         supplyUnit: this.form.supplyUnit,
         currencyID: this.form.currencyID,
       };
