@@ -215,8 +215,9 @@ export class ViewDesignationsRightsListComponent implements OnInit, OnDestroy {
 
         this.paginateData();
 
-        this.loadAvailableRights();
+        
         }
+        this.loadAvailableRights();
       },
       msg => {
         // Process Failure

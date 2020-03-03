@@ -1,3 +1,5 @@
+import { Currency, CurrencyListResponse } from './../../../../../models/HttpResponses/Currency';
+import { CurrenciesService } from './../../../../../services/Currencies.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
@@ -18,6 +20,7 @@ import { ListCountriesRequest, CountriesListResponse, CountryItem } from 'src/ap
 import { PlaceService } from 'src/app/services/Place.Service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
+import { CurrenciesListRequest } from 'src/app/models/HttpRequests/CurrenciesList';
 
 @Component({
   selector: 'app-form-custom-worksheet-lines',
@@ -29,7 +32,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
               private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar, private placeService: PlaceService) { }
+              private snackbarService: HelpSnackbar, private placeService: PlaceService, private currencyService: CurrenciesService) { }
 
   currentUser: User;
   currentTheme: string;
@@ -77,14 +80,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
   countryID = -1;
   countryQuery = '';
-
+  currenciesList: Currency[] = [];
+  currenciesListTemp: Currency[] = [];
   cooControl = new FormControl();
   unitOfMeasure = new FormControl();
   tariff = new FormControl();
   currency = new FormControl();
-
-  tariffs: { amount: number; description: string; duty: number; unit: string; tariffID: number }[];
-  tariffsTemp: { amount: number; description: string; duty: number; unit: string; tariffID: number }[];
+  currencyQuery = '';
+  tariffs: { amount: number; description: string; duty: number; unit: string; id: number }[];
+  tariffsTemp: { amount: number; description: string; duty: number; unit: string; id: number }[];
   tariffQuery = '';
 
   unitOfMeasureList: UnitsOfMeasure[];
@@ -107,6 +111,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     this.loadCountries();
     this.loadTarrifs();
     this.loadUnits();
+    this.loadCurrencies();
   }
 
   ngAfterViewInit(): void {
@@ -169,6 +174,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   submit() {
     if (this.isUpdate) {
+      console.log(this.form);
       const model: CustomWorksheetLineReq = {
         customWorksheetLineID: this.lineData.customWorksheetLineID,
         hsQuantity: this.form.hsQuantity,
@@ -187,6 +193,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
       this.updateSADLine.emit(model);
     } else {
+      console.log(this.form);
       const model: CustomWorksheetLineReq = {
         hsQuantity: this.form.hsQuantity,
         foreignInv: this.form.foreignInv,
@@ -229,9 +236,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   loadTarrifs() {
     this.tariffService.list().then(
-      (res: { tariffList: { amount: number; description: string; duty: number; unit: string; tariffID: number }[],
+      (res: { tariffList: { amount: number; description: string; duty: number; unit: string; id: number }[],
               outcome: Outcome, rowCount: number }) => {
         this.tariffs = res.tariffList;
+        console.log(this.tariffs);
         this.tariffsTemp = res.tariffList;
       },
       (msg) => {
@@ -246,6 +254,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   selectedCountry(country: number) {
     this.countryID = country;
+    this.form.cooID = this.countryID;
+  }
+  selectedCurrency(currency: number) {
+    this.currency.setValue(currency);
   }
 
   matchRuleShort(str, rule) {
@@ -261,7 +273,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     this.snackbarService.setHelpContext(newContext);
   }
 
-  selectedTariff(tariff) {
+  selectedTariff(tariff: number) {
+    console.log(tariff);
     this.form.tariffID = tariff;
   }
 
@@ -284,7 +297,35 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       }
     );
   }
+  loadCurrencies() {
+    const model: CurrenciesListRequest = {
+      userID: this.currentUser.userID,
+      specificCurrencyID: -1,
+      filter: '',
+      orderBy: 'Name',
+      orderByDirection: 'ASC',
+      rowStart: 1,
+      rowEnd: 1000
+    };
+    this.currencyService.list(model).then(
+      (res: CurrencyListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.currenciesList = res.currenciesList;
+          this.currenciesListTemp = res.currenciesList;
+        } else {
+          // nothing
+        }
+      },
+      (msg) => {
 
+      }
+    );
+  }
+
+  filterCurrency() {
+    this.currenciesList = this.currenciesListTemp;
+    this.currenciesList = this.currenciesList.filter(x => x.code.match(this.currency.value));
+  }
   filterUnit() {
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
     this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery}*`));
@@ -299,3 +340,5 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     this.unsubscribe$.complete();
   }
 }
+
+

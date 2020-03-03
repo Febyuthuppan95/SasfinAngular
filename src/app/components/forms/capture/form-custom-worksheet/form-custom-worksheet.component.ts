@@ -299,6 +299,7 @@ dialogOpen = false;
 
   saveLines() {
           if (this.lineIndex < this.lineQueue.length) {
+            console.log(this.lineQueue);
             this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
