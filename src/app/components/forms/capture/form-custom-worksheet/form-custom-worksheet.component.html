@@ -52,10 +52,10 @@
     <br>
       <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px;" class="line-list">
           <button mat-raised-button class="float-right bg-primary text-light" *ngIf="this.lines !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
-          <p *ngIf="!this.linesCreated" style="font-size: 16px;">No SAD500 Lines Added</p>
+          <p *ngIf="!this.linesCreated" style="font-size: 16px;">No Customs Worksheet Lines Added</p>
           <p *ngIf="this.linesCreated">
             <button (click)="prevLine()" *ngIf="this.lineQueue.length !== 0 || this.linesCreated.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="this.lineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
-            <span class="badge badge-transparent" *ngIf="this.lines > -1">Line {{ this.lines + 1 }} of {{ this.linesCreated.length }}</span>
+            <span class="badge badge-transparent" *ngIf="this.lines > -1">Line {{ this.lines }} of {{ this.linesCreated.length }}</span>
             <span class="badge badge-transparent" *ngIf="this.lines === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
           &nbsp;
           <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="this.lineQueue.length !== 0 || this.linesCreated.length !== 0" [disabled]="this.lineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-right"></span></button>

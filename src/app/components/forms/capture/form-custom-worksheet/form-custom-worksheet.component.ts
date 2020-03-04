@@ -261,10 +261,12 @@ dialogOpen = false;
       }).then(
       (res: CustomWorksheetLinesResponse) => {
         this.linesCreated = res.lines;
-        console.log(res);
-
+        console.log(this.linesCreated);
+        console.log(this.lines);
+        this.lines = this.linesCreated.length;
         if (this.lines > -1) {
-          this.focusLineData = this.linesCreated[this.lines];
+          this.focusLineData = this.linesCreated[this.lines - 1];
+          console.log(this.focusLineData);
         }
 
         // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
@@ -341,6 +343,7 @@ dialogOpen = false;
   }
 
   nextLine() {
+    console.log(this.lines);
     if (this.lines < this.linesCreated.length - 1) {
       this.lines++;
       this.focusLineData = this.linesCreated[this.lines];

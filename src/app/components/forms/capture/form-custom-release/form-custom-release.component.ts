@@ -55,6 +55,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     serialNo: {
       value: null,
       error: null,
+      type: 'SER',
+      typeError: ''
     },
     LRN: {
       value: null,

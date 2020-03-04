@@ -102,12 +102,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     this.currentUser = this.userService.getCurrentUser();
 
-    this.currency.valueChanges
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((val) => {
-      this.form.currencyID = val;
-    });
-
+    // this.currency.valueChanges
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((val) => {
+    //   this.form.currencyID = val;
+    // });
+   
     this.loadCountries();
     this.loadTarrifs();
     this.loadUnits();
@@ -127,9 +127,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
           }
         },
     );
+    console.log(this.updateLine);
+    console.log(this.lineData);
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    console.log(this.updateLine);
     if (this.updateLine !== null && this.updateLine !== undefined) {
       this.isUpdate = true;
       this.form.custVal = this.updateLine.custVal;
@@ -143,6 +146,14 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       this.form.dutyError = this.updateLine.dutyError;
       this.form.commonFactor = this.updateLine.commonFactor;
       this.form.commonFactorError = this.updateLine.commonFactorError;
+      this.form.supplyUnit = this.updateLine.supplyUnit;
+      this.form.unitOfMeasureID = this.updateLine.unitOfMeasureID;
+      this.form.currencyID = this.updateLine.currencyID;
+      this.form.tariffID = this.updateLine.tariffID;
+      this.form.invoiceNo = this.updateLine.invoiceNo;
+      this.form.prodCode = this.updateLine.prodCode;
+      this.form.cooID = this.updateLine.cooID;
+      
     } else {
       this.isUpdate = false;
       this.form = {
@@ -174,9 +185,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   submit() {
     if (this.isUpdate) {
-      console.log(this.form);
+      console.log(this.updateLine);
       const model: CustomWorksheetLineReq = {
-        customWorksheetLineID: this.lineData.customWorksheetLineID,
+        customWorksheetLineID: this.updateLine.customWorksheetLineID,
         hsQuantity: this.form.hsQuantity,
         foreignInv: this.form.foreignInv,
         custVal: this.form.custVal,
@@ -190,8 +201,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         supplyUnit: this.form.supplyUnit,
         currencyID: this.form.currencyID,
       };
-
-      this.updateSADLine.emit(model);
+      const valid: { errors: object[], count: number } = this.validate.model(model);
+      console.log(valid);
+      if (valid.count > 0) {
+        
+      }
+      // this.updateSADLine.emit(model);
     } else {
       console.log(this.form);
       const model: CustomWorksheetLineReq = {
@@ -208,8 +223,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         supplyUnit: this.form.supplyUnit,
         currencyID: this.form.currencyID,
       };
-
-      this.submitSADLine.emit(model);
+      const valid: { errors: object[], count: number } = this.validate.model(model);
+      console.log(valid);
+      if (valid.count > 0) {
+        
+      }
+      // this.submitSADLine.emit(model);
     }
   }
 
@@ -225,10 +244,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     };
     this.placeService.getCountriesCall(request).then(
       (res: CountriesListResponse) => {
-
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
-        console.log(this.countriesList);
+        this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID).code;
       }
     );
   }
@@ -239,8 +257,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       (res: { tariffList: { amount: number; description: string; duty: number; unit: string; id: number }[],
               outcome: Outcome, rowCount: number }) => {
         this.tariffs = res.tariffList;
-        console.log(this.tariffs);
         this.tariffsTemp = res.tariffList;
+        this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID).description;
       },
       (msg) => {
       }
@@ -249,7 +267,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   filterCountries() {
     this.countriesList = this.countriesListTemp;
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
   }
 
   selectedCountry(country: number) {
@@ -257,7 +275,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     this.form.cooID = this.countryID;
   }
   selectedCurrency(currency: number) {
-    this.currency.setValue(currency);
+    
+    this.form.currencyID = currency;
+    console.log(this.form.currencyID);
+    // this.currency.setValue(currency);
   }
 
   matchRuleShort(str, rule) {
@@ -280,7 +301,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   filterTariff() {
     this.tariffs = this.tariffsTemp;
-    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tariffQuery}*`));
+    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tariffQuery.toUpperCase}*`));
   }
 
   loadUnits(): void {
@@ -290,6 +311,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if (res.outcome.outcome === 'SUCCESS') {
           this.unitOfMeasureList = res.unitOfMeasureList;
           this.unitOfMeasureListTemp = res.unitOfMeasureList;
+          this.unitQuery = this.isUpdate ? this.unitOfMeasureList.find(x => x.unitOfMeasureID === this.form.unitOfMeasureID).name : '';
         }
       },
       (msg) => {
@@ -312,6 +334,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if (res.outcome.outcome === 'SUCCESS') {
           this.currenciesList = res.currenciesList;
           this.currenciesListTemp = res.currenciesList;
+          this.currencyQuery = this.currenciesList.find(x => x.currencyID === this.form.currencyID).code;
         } else {
           // nothing
         }
@@ -323,12 +346,13 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   }
 
   filterCurrency() {
+    console.log();
     this.currenciesList = this.currenciesListTemp;
-    this.currenciesList = this.currenciesList.filter(x => x.code.match(this.currency.value));
+    this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery.toUpperCase()}*`));
   }
   filterUnit() {
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
-    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery}*`));
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery.toUpperCase()}*`));
   }
 
   selectedUnit(unit) {

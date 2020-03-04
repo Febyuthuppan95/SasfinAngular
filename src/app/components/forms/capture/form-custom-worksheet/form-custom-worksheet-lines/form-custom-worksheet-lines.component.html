@@ -67,7 +67,7 @@
           class="form-control form-control-sm shadow-sm form-control-light"
           (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
           [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
-          <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+          <mat-autocomplete #unitOfMeasureAuto="matAutocomplete" >
             <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
               {{unit.name}}, {{unit.description}}
             </mat-option>
@@ -101,7 +101,7 @@
       [matAutocomplete]="currencyAuto"
       (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
       <mat-autocomplete #currencyAuto="matAutocomplete" >
-        <mat-option *ngFor="let currency of currenciesList" [value]="currency.name"
+        <mat-option *ngFor="let currency of currenciesList" [value]="currency.code"
         (onSelectionChange)="selectedCurrency(currency.currencyID)">
           {{currency.code}} - {{currency.name}}
         </mat-option>
