@@ -1,3 +1,6 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { NotificationComponent } from '../../../notification/notification.component';
@@ -28,7 +31,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private captureService: CaptureService,
               private eventService: EventService,
               private dialog: MatDialog,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService,
+              private snackbarService: HelpSnackbar,
+              private formBuilder: FormBuilder) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -44,10 +49,14 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   attachmentID: number;
 
   currentTheme: string;
+  formValid: FormGroup;
+
   form = {
     serialNo: {
       value: null,
       error: null,
+      type: 'SER',
+      typeError: ''
     },
     LRN: {
       value: null,
@@ -73,6 +82,26 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       value: null,
       error: null,
     },
+    supplierRef: {
+      value: null,
+      error: null
+    },
+    totalCustomsValue: {
+      value: null,
+      error: null
+    },
+    totalDuty: {
+      value: null,
+      error: null
+    },
+    fileRef: {
+      value: null,
+      error: null
+    },
+    boe: {
+      value: null,
+      error: null
+    }
   };
 
   attachmentSubscription: Subscription;
@@ -120,7 +149,55 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
-
+  buildForm() {
+    this.formValid = this.formBuilder.group({
+      serialNo: [this.form.serialNo, { validators: [Validators.required], updateOn: 'blur'}],
+      LRN: {
+        value: null,
+        error: null,
+      },
+      importersCode: {
+        value: null,
+        error: null,
+      },
+      PCC: {
+        value: null,
+        error: null,
+      },
+      FOB: {
+        value: null,
+        error: null,
+      },
+      waybillNo: {
+        value: null,
+        error: null,
+      },
+      MRN: {
+        value: null,
+        error: null,
+      },
+      supplierRef: {
+        value: null,
+        error: null
+      },
+      totalCustomsValue: {
+        value: null,
+        error: null
+      },
+      totalDuty: {
+        value: null,
+        error: null
+      },
+      fileRef: {
+        value: null,
+        error: null
+      },
+      boe: {
+        value: null,
+        error: null
+      }
+    });
+  }
   submit() {
           const requestModel = {
             userID: this.currentUser.userID,
@@ -132,6 +209,12 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
+            boe: this.form.boe.value,
+            fileRef: this.form.fileRef.value,
+            totalCustomsValue: this.form.totalCustomsValue.value,
+            totalDuty: this.form.totalDuty.value,
+            supplierRef: this.form.supplierRef.value,
+            ediStatusID: 1,
             isDeleted: 0,
             attachmentStatusID: 3,
           };
@@ -173,13 +256,24 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;
         this.form.PCC.error = res.pccError;
+        this.form.supplierRef.value = res.supplierRef;
+        this.form.totalDuty.value = res.totalDuty;
+        this.form.totalCustomsValue.value = res.totalCustomsValue;
+        this.form.fileRef.value = res.fileRef;
       },
       (msg) => {
 
       }
     );
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

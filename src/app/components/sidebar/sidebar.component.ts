@@ -93,6 +93,7 @@ export class SidebarComponent implements OnInit {
   @Input() showreportqueues = false;
   @Input() showlocations = false;
   @Input() showCapturer = true;
+  @Input() showcapturequeue = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -221,6 +222,9 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'AttchmentCapture') {
             this.showCapturer = true;
+          }
+          if (uRight.name === 'CompanyTransactionsCaptureList') {
+            this.showcapturequeue = true;
           }
         });
       },

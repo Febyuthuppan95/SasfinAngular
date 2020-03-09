@@ -1,13 +1,12 @@
 <div class="chat-tile">
   <div class="chat-tile-header">
-    <button mat-icon-button (click)="this.dismissEvent()" class="header-button">
-      <mat-icon diameter="30">arrow_drop_down_circle</mat-icon>
-    </button>
-      <span class="example-spacer" ></span>
-      <button mat-mini-fab matTooltip="Chats" matTooltipPosition="below"  ><span class="mdi mdi-wechat" (click)="back()"></span></button>
-  <div><h5 (click)="gotoLink()">{{this.conversation.fileType}}-{{this.conversation.documentID}}-{{this.conversation.issueID}}-{{this.conversation.conversationID}}</h5></div>
+    <button mat-icon-button matTooltip="Chats" matTooltipPosition="below" (click)="back()"><mat-icon diameter="30" class="back-button">arrow_back_ios</mat-icon></button>
+    <span class="example-spacer" ></span>
+    <button mat-button (click)="gotoLink()" class="title-link">{{this.conversation.fileType}}...{{this.conversation.conversationID}}</button>
+    <span class="example-spacer" ></span>
+    <button mat-icon-button (click)="this.dismissEvent()" class="close-button"><mat-icon diameter="30">arrow_drop_down_circle</mat-icon></button>
   </div>
-  <div class="chat-body">
+  <div class="chat-body" #chatWindow>
     <div class="chat-row" *ngFor="let message of this.messageList">
       <app-chat-bubble [(message)]="message"></app-chat-bubble>
     </div>
@@ -15,7 +14,7 @@
   <div class="chat-tile-footer">
       <form (ngSubmit)="messageSend()" [formGroup]="form">
           <div class="form-group">
-              <button type="button" mat-mini-fab class="send-button bg-primary text-light"><span class="mdi mdi-send"></span>
+              <button type="button" [disabled]="this.recipientID === -1" mat-mini-fab class="send-button bg-primary text-light"><span class="mdi mdi-send"></span>
               </button>
               <input type="text" class="form-control shadow-sm rounded" placeholder="type a message..." [formControl]="messageToSend"/>
           </div>

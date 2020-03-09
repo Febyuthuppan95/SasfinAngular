@@ -1,64 +1,166 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px;border-radius: 10px; background: #f2f2f2;">
-  <div class="form-group" *ngIf="this.form.coo != undefined">
-    <input type="text" [focus]="focusSADLine"
-      [(ngModel)]="this.form.coo" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="COO"
-      [ngClass]="{'form-control-invalid': this.form.cooError !== null && this.form.cooError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.cooError !== null && this.form.cooError !== undefined" style="width: 100%;">{{this.form.cooError}}</p>
-  </div>
-  <div class="form-group" *ngIf="this.form.tariffHeading != undefined">
-    <input type="text"
-      [(ngModel)]="this.form.tariffHeading" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="Tariff Heading"
-      [ngClass]="{'form-control-invalid': this.form.tariffHeadingError !== null && this.form.tariffHeadingError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.tariffHeadingError !== null && this.form.tariffHeadingError !== undefined" style="width: 100%;">{{this.form.tariffHeadingError}}</p>
-  </div>
   <div class="form-group" *ngIf="this.form.commonFactor != undefined">
+    <label for="custVal">Common Factor</label>
       <input type="text"  id="hsQuantity"
         [(ngModel)]="this.form.commonFactor" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')"
         placeholder="Common Factor"
         [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"/>
         <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p>
     </div>
   <div class="form-group">
-    <label for="custVal">custVal</label>
+    <label for="custVal">Customs Value</label>
     <input type="number" id="custVal"
       [(ngModel)]="this.form.custVal" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="custVal"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')"
+      placeholder="Customs Value"
       [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.custValError !== null && this.form.custValError !== undefined" style="width: 100%;">{{this.form.custValError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
-      <label for="hsQuantity">hsQuantity</label>
+      <label for="hsQuantity">HS Quantity</label>
     <input type="text"  id="hsQuantity"
       [(ngModel)]="this.form.hsQuantity" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="hsQuantity"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')"
+      placeholder="HS Quantity"
       [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined" style="width: 100%;">{{this.form.hsQuantityError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
-      <label for="foreignInv">foreignInv</label>
+      <label for="foreignInv">Foreign Inv</label>
     <input type="text" id="foreignInv"
       [(ngModel)]="this.form.foreignInv" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="foreignInv"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')"
+      placeholder="Foreign Invoice"
       [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.foreignInvError !== null && this.form.foreignInvError !== undefined" style="width: 100%;">{{this.form.foreignInvError}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.duty != undefined">
-      <label for="duty">duty</label>
+      <label for="duty">Duty</label>
     <input type="text" id="duty"
       [(ngModel)]="this.form.duty" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
-      placeholder="duty"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')"
+      placeholder="Duty"
       [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.dutyError !== null && this.form.dutyError !== undefined" style="width: 100%;">{{this.form.dutyError}}</p>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-3 " style="float: left; padding-left:0px;">
+      <label for="supplyUnit">Supply Unit</label>
+      <input type="text" id="supplyUnit"
+        [(ngModel)]="this.form.supplyUnit" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')"
+        placeholder="Supply Unit"/>
+    </div>
+    <div class="col-sm-9" style="float:left;">
+      <label for="currencyID">Unit of Measure</label>
+          <input [(ngModel)]="this.unitQuery" (keyup)="filterUnit()"
+          type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
+          class="form-control form-control-sm shadow-sm form-control-light"
+          (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
+          [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+          <mat-autocomplete #unitOfMeasureAuto="matAutocomplete" >
+            <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
+              {{unit.name}}, {{unit.description}}
+            </mat-option>
+          </mat-autocomplete>
+      </div>
+  </div>
+  <!-- <div class="form-group col-sm-6">
+    <div class="form-group">
+      <label for="currencyID">Unit of Measure</label>
+        <input [(ngModel)]="this.unitQuery" (keyup)="filterUnit()"
+        type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
+        [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
+        <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
+            {{unit.name}}, {{unit.description}}
+          </mat-option>
+        </mat-autocomplete>
+    </div>
+  </div> -->
+  
+  <div class="form-group">
+    <label for="currencyID">Currency</label>
+    <input type="text"
+      [(ngModel)]="this.currencyQuery"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (keyup)="filterCurrency()"
+      placeholder="Currency" aria-label="Currency"
+      [formControl]="currency"
+      [matAutocomplete]="currencyAuto"
+      (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+      <mat-autocomplete #currencyAuto="matAutocomplete" >
+        <mat-option *ngFor="let currency of currenciesList" [value]="currency.code"
+        (onSelectionChange)="selectedCurrency(currency.currencyID)">
+          {{currency.code}} - {{currency.name}}
+        </mat-option>
+      </mat-autocomplete>
+    <!-- <select
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [formControl]="currency"
+        (mouseover)="updateHelpContext('form-customs-worksheet-line-currency')">
+      <option [value]=-1 selected disabled>Select A Currency</option>
+      <option [value]=199>ZAR</option>
+      <option [value]=200>GBP</option>
+    </select> -->
+  </div>
+  <div class="form-group">
+    <label for="tariff">Tariff</label>
+      <input type="text"
+      [(ngModel)]="this.tariffQuery"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (keyup)="filterTariff()"
+      placeholder="Tariff" aria-label="Tariff"
+      [formControl]="tariff"
+      [matAutocomplete]="tariffAuto"
+      (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+
+      <mat-autocomplete #tariffAuto="matAutocomplete" >
+        <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
+        (onSelectionChange)="selectedTariff(tariff.id)">
+          {{tariff.description}}
+        </mat-option>
+      </mat-autocomplete>
+  </div>
+  <div class="form-group">
+  <label for="currencyID">Invoice No</label>
+  <input type="text"
+    [(ngModel)]="this.form.invoiceNo" type="text" [ngModelOptions]="{standalone: true}"
+    class="form-control form-control-sm shadow-sm form-control-light"
+    (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Invoice No"/>
+  </div>
+  <div class="form-group">
+    <label for="currencyID">Prduct Code</label>
+    <input type="text"
+      [(ngModel)]="this.form.prodCode" type="text" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Product Code"/>
+  </div>
+  <div class="form-group">
+    <label for="currencyID">Country of Origin</label>
+    <input [(ngModel)]="this.countryQuery" type="text"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (keyup)="filterCountries()"
+      placeholder="COO" aria-label="COOID"
+      [formControl]="cooControl"
+      [matAutocomplete]="cooAuto"
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-coo')">
+      <mat-autocomplete #cooAuto="matAutocomplete" >
+        <mat-option *ngFor="let country of countriesList" [value]="country.code"
+        (onSelectionChange)="selectedCountry(country.countryID)">
+          {{country.code}} - {{country.name}}
+        </mat-option>
+      </mat-autocomplete>
   </div>
 </form>

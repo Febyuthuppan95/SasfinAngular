@@ -1,3 +1,4 @@
+import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -60,8 +61,16 @@ sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
 lineErrors: SAD500Line[] = [];
 toggleLines = false;
-
+vocSAD500ID = -1;
 form = {
+  referenceNo: {
+    value: null,
+    error: null
+  },
+  reason: {
+    value: null,
+    error: null
+  },
   serialNo: {
     value: null,
     error: null,
@@ -94,12 +103,29 @@ form = {
     value: null,
     error: null,
   },
+  CPCC: {
+    value: null,
+    error: null,
+  },
+  totalCustomsDuty: {
+    value: null,
+    error: null
+  },
+  fileRef: {
+    value: null,
+    error: null
+  },
+  rebateCode: {
+    value: null,
+    error: null
+  }
 };
 
 lineQueue: SAD500LineCreateRequest[] = [];
 lineIndex = 0;
 dutyIndex = 0;
-
+transactionID = 0;
+attachmentType = '';
 dialogOpen = false;
 
   ngOnInit() {
@@ -113,11 +139,18 @@ dialogOpen = false;
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    .subscribe((curr: { transactionID: number, attachmentID: number, docType: string }) => {
+      console.log(curr);
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
-        this.loadCapture();
-        this.loadLines();
+        this.transactionID = curr.transactionID;
+        this.attachmentType = curr.docType;
+        if (curr.docType === 'VOC') {
+          this.vocGet();
+        } else {
+          this.loadCapture();
+          this.loadLines();
+        }
       }
     });
   }
@@ -211,54 +244,124 @@ dialogOpen = false;
         },
     );
   }
+  // vocGet() {
+  //   const requestModel = {
+  //     userID: this.currentUser.userID,
 
+  //   }
+  // }
+  vocGet = () => this.captureService.vocList({
+    userID: this.currentUser.userID,
+    vocID: this.attachmentID,
+    transactionID: this.transactionID,
+    filter: '',
+    orderBy: '',
+    orderByDirection: '',
+    rowStart: 1,
+    rowEnd: 10
+  }).then(
+    (res: VOCListResponse) => {
+      console.log(res);
+      if (res.rowCount !== 0) {
+        this.vocSAD500ID = res.vocs[0].sad500ID;
+        this.loadCapture();
+        this.loadLines();
+      } else {
+        this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+      }
+    },
+    (msg) => {
+      this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+    })
   submit() {
     const requestModel = {
       userID: this.currentUser.userID,
-      specificSAD500ID: this.attachmentID,
+      specificSAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       pcc: this.form.PCC.value,
       cpc: this.form.CPC.value,
+      originalID: -1,
+      replacedByID: -1,
       waybillNo: this.form.waybillNo.value,
       supplierRef: this.form.supplierRef.value,
       totalCustomsValue: this.form.totalCustomsValue.value,
+      totalDuty: this.form.totalCustomsDuty.value,
       mrn: this.form.MRN.value,
       isDeleted: 0,
       attachmentStatusID: 3,
+      fileRef: this.form.fileRef.value,
+      rebateCode: this.form.rebateCode.value
     };
+    if (this.attachmentType === 'VOC') { // Save VOC Header
+      // First Create new SAD500 record
 
-    this.captureService.sad500Update(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-
-          this.companyService.setCapture({ capturestate: true });
-          this.router.navigateByUrl('transaction/capturerlanding');
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      // this.captureService.sad500Create(requestModel).then(
+      //   (res: Outcome) => {
+      //     if (res.outcome === 'SUCCESS') {
+      //       this.notify.successmsg(res.outcome, res.outcomeMessage);
+  
+      //       this.companyService.setCapture({ capturestate: true });
+      //       this.router.navigateByUrl('transaction/capturerlanding');
+      //     } else {
+      //       this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      //     }
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', 'Cannot reach server');
+      //   }
+      // );
+      this.captureService.vocUpdate({userID: this.currentUser.userID}).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
+      );
+    } else {
+      this.captureService.sad500Update(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+  
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+        }
+      );
+    }
   }
 
   updateLine(obj: SAD500Line) {
     this.lineState = 'Saving';
-    const requestModel: SAD500LineUpdateModel = {
+    const requestModel = {
       userID: this.currentUser.userID,
-      sad500ID: this.attachmentID,
+      sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       specificSAD500LineID: obj.sad500LineID,
-      unitOfMeasure: obj.unitOfMeasure,
+      // unitOfMeasure: obj.unitOfMeasure,
       unitOfMeasureID: obj.unitOfMeasureID,
-      tariff: obj.tariff,
+      // tariff: obj.tariff,
       tariffID: obj.tariffID,
       quantity: obj.quantity,
       customsValue: obj.customsValue,
       isDeleted: 0,
-      lineNo: obj.lineNo
+      lineNo: obj.lineNo,
+      cooID: -1,
+      supplyUnit: '',
+      replacedByLineID: -1,
+      orginalLineID: -1
     };
 
     this.captureService.sad500LineUpdate(requestModel).then(
@@ -281,9 +384,11 @@ dialogOpen = false;
   }
 
   loadCapture() {
+    console.log(this.vocSAD500ID);
     this.captureService.sad500Get({
-      specificID: this.attachmentID,
-      userID: 3
+      specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+      userID: this.currentUser.userID,
+      transactionID: this.transactionID
     }).then(
       (res: SAD500Get) => {
         this.form.MRN.value = res.mrn;
@@ -302,6 +407,13 @@ dialogOpen = false;
         this.form.PCC.error = res.pccError;
         this.form.CPC.value = res.cpc;
         this.form.CPC.error = res.cpcError;
+        this.form.fileRef.value = res.fileRef;
+        this.form.fileRef.error = res.fileRefError;
+        this.form.rebateCode.value = res.rebateCode;
+        this.form.rebateCode.error = res.rebateCodeError;
+        this.form.totalCustomsDuty.value = res.totalDuty;
+        this.form.totalCustomsDuty.error = res.totalDutyError;
+
       },
       (msg) => {
       }
@@ -309,13 +421,16 @@ dialogOpen = false;
   }
 
   loadLines() {
-    this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
+    // tslint:disable-next-line: max-line-length
+    this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+    specificSAD500LineID: -1 }).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
+        // this.lines = this.sad500CreatedLines.length;
+        console.log(this.lines);
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
-
         this.lineErrors = res.lines.filter(x => x.lineNoError !== null
           || x.quantityError !== null
           || x.unitOfMeasureError !== null || x.tariffError !== null);
@@ -324,10 +439,19 @@ dialogOpen = false;
       }
     );
   }
+  // loadLineDuty() {
+  //   this.captureService.sad500LineDutyList({}).then(
+  //     (res: SAD500LineDutyList) => {
 
+  //     },
+  //     (msg) => {
+
+  //     }
+  //   )
+  // }
   addToQueue(obj: SAD500LineCreateRequest) {
     obj.userID = this.currentUser.userID;
-    obj.sad500ID = this.attachmentID;
+    obj.sad500ID = this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID;
     obj.isPersist = false;
 
     this.lineQueue.push(obj);
@@ -345,38 +469,40 @@ dialogOpen = false;
   }
 
   saveLines() {
-
-          if (this.lineIndex < this.lineQueue.length) {
-            this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
-              (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-                if (res.outcome === 'SUCCESS') {
-                  console.log('Line saved');
-                  const currentLine = this.lineQueue[this.lineIndex];
-                  currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-                  this.dutyIndex = 0;
-                  if (currentLine.duties.length > 0) {
-                    this.saveLineDuty(currentLine.duties[0]);
-                  } else {
-                    this.nextLineAsync();
-                  }
-                } else {
-                  console.log('Line not saved');
-                }
-              },
-              (msg) => {
-                console.log('Client Error');
-              }
-            );
+    if (this.lineIndex < this.lineQueue.length) {
+      this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
+        (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+          if (res.outcome === 'SUCCESS') {
+            console.log('Line saved');
+            const currentLine = this.lineQueue[this.lineIndex];
+            currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+            this.dutyIndex = 0;
+            if (currentLine.duties.length > 0) {
+              this.saveLineDuty(currentLine.duties[0]);
+            } else {
+              this.nextLineAsync();
+            }
           } else {
-            this.submit();
-          }        }
+            console.log('Line not saved');
+          }
+        },
+        (msg) => {
+          console.log('Client Error');
+        }
+      );
+    } else {
+      this.submit();
+    }
+  }
 
 
   saveLineDuty(line: Duty) {
+    console.log(line);
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
       dutyID: line.dutyTaxTypeID,
-      sad500LineID: line.sad500Line
+      sad500LineID: line.sad500Line,
+      value: line.value
     }).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
@@ -417,6 +543,7 @@ dialogOpen = false;
   }
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
+    console.log(item);
     this.lines = i;
   }
 
@@ -431,12 +558,14 @@ dialogOpen = false;
     if (this.lines < this.sad500CreatedLines.length - 1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
+      
     }
 
     if (this.lines === -1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
     }
+    console.log(this.focusLineData);
   }
 
   specificLine(index: number) {

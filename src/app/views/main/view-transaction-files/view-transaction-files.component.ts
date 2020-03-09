@@ -137,7 +137,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' },
   ];
   attachmentName: string;
-  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
+  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number }[] = [];
   attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
   selectedTransactionType: number;
   selectedSAD500: number;
@@ -393,7 +393,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.transactionID,
         this.currentUser.userID,
         this.companyName,
-        attach.sad500LineID
+        attach.sad500ID
       ).then(
         (res) => {
             attach.uploading = false;
@@ -404,6 +404,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
             this.preview = null;
             this.attachmentName = null;
             this.selectAttachmentType.reset(-1);
+            this.attachmentQueue = [];
             this.closeModal.nativeElement.click();
 
         },
@@ -450,6 +451,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: triple-equals
     if (this.selectedTransactionType == 5) {
       this.isVOC = true;
+      this.loadSAD500s();
     } else {
       this.isVOC = false;
     }
@@ -458,8 +460,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   onSAD500Select(id: number) {
     this.selectedSAD500 = id;
     this.disableSAD500 = true;
-
-    this.loadSAD500Lines();
+    this.selectedSAD500Line = id;
+    // this.loadSAD500Lines();
   }
 
   onSAD500LineSelect(id: number) {
@@ -484,7 +486,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
-      this.attachmentQueue[this.currentAttachment].sad500LineID = this.selectedSAD500Line;
+      this.attachmentQueue[this.currentAttachment].sad500ID = this.selectedSAD500Line;
 
       console.log(this.attachmentQueue);
 
@@ -513,12 +515,14 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       userID: this.currentUser.userID,
       filter: '',
       rowStart: 1,
+      sad500ID: -1,
       rowEnd: 100,
       orderBy: '',
       orderDirection: '',
       transactionID: this.transactionID,
     }).then(
       (res: SAD500ListResponse) => {
+        console.log(res);
         this.sad500s = res.sad500s;
       },
       (msg) => {
@@ -539,6 +543,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       sad500ID: this.selectedSAD500,
     }).then(
       (res: SPSAD500LineList) => {
+        
         this.selectedSAD500Line = -1;
         this.sad500Line = res.lines;
       },

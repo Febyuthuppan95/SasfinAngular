@@ -1,3 +1,8 @@
+import { Location } from '@angular/common';
+import { ListCountriesResponse } from './../../../../../models/HttpResponses/ListCountriesResponse';
+import { ListCountriesRequest, CountriesListResponse, CountryItem } from './../../../../../models/HttpRequests/Locations';
+import { PlaceService } from './../../../../../services/Place.Service';
+import { DutyAssignDialogComponent } from './duty-assign-dialog/duty-assign-dialog.component';
 import { Component, OnInit, EventEmitter, Output, OnChanges, Input, AfterViewInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { SAD500LineCreateRequest, DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -17,6 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -28,7 +34,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
               private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService) { }
 
   currentUser: User;
 
@@ -46,6 +52,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   selectedTariffVal: string;
   selectedUnitVal: string;
   private unsubscribe$ = new Subject<void>();
+
+  countriesList: CountryItem[] = [];
+  countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
+  countryID = -1;
+  countryQuery = '';
 
   dutyList: DutyListResponse;
   assignedDuties: Duty[] = [];
@@ -86,9 +97,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     quantity: 0,
     quantityError: null,
     previousDeclarationError: null,
-    previousDeclaration: ''
+    previousDeclaration: '',
+    vat: null,
+    vatError: '',
+    supplyUnit: null,
+    supplyUnitError: '',
+    coo: '',
+    cooID: -1,
+    cooIDError: ''
   };
-
   isUpdate: boolean;
 
   ngOnInit() {
@@ -101,7 +118,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.loadUnits();
     this.loadTarrifs();
     this.loadDuties();
-
+    this.loadCountries();
   }
 
   updateHelpContext(slug: string) {
@@ -135,13 +152,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    console.log(this.updateSAD500Line);
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
+      
       this.isUpdate = true;
 
       this.form.customsValue = this.updateSAD500Line.customsValue;
       this.form.lineNo = this.updateSAD500Line.lineNo;
-      this.form.tariff = this.updateSAD500Line.tariff;
-      this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
+      this.form.tariff = '';
+      this.form.unitOfMeasure = '';
       this.form.tariffError = this.updateSAD500Line.tariffError;
       this.form.customsValueError = this.updateSAD500Line.customsValueError;
       this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
@@ -167,7 +186,14 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         quantity: 0,
         quantityError: null,
         previousDeclarationError: null,
-        previousDeclaration: ''
+        previousDeclaration: '',
+        vat: 0,
+        vatError: null,
+        supplyUnit: '',
+        supplyUnitError: null,
+        coo: '',
+        cooID: -1,
+        cooIDError: null
       };
       this.loadDuties();
     }
@@ -197,27 +223,37 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         sad500LineID: this.updateSAD500Line.sad500LineID,
         sad500ID: -1,
         tariffID: 1,
-        tariff: this.form.tariff,
+        // tariff: this.form.tariff,
         customsValue: this.form.customsValue,
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
-        unitOfMeasure: this.form.unitOfMeasure,
+        // unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantityError,
-        previousDeclaration: this.form.previousDeclaration
+        previousDeclaration: this.form.previousDeclaration,
+        // vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        cooID: this.countryID,
+        replacedByLineID: -1,
+        originalLineID: -1
       });
     } else {
       this.submitSADLine.emit({
         userID: -1,
         sad500ID: -1,
         tariffID: 1,
-        tariff: this.form.tariff,
+        // tariff: '',
         customsValue: this.form.customsValue,
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
-        unitOfMeasure: this.form.unitOfMeasure,
+        // unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantity,
         duties: this.dutiesToBeSaved,
-        previousDeclaration: this.form.previousDeclaration
+        previousDeclaration: this.form.previousDeclaration,
+        // vat: this.form.vat,
+        supplyUnit: this.form.supplyUnit,
+        cooID: this.countryID,
+        replacedByLineID: -1,
+        originalLineID: -1
       });
 
       this.dutiesToBeSaved = [];
@@ -235,20 +271,48 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       }
     );
   }
+  loadCountries() {
+    const request: ListCountriesRequest = {
+      userID: this.currentUser.userID,
+      specificCountryID: -1,
+      rowStart: 1,
+      rowEnd: 500,
+      orderBy: '',
+      orderByDirection: '',
+      filter: ''
+    };
+    this.placeService.getCountriesCall(request).then(
+      (res: CountriesListResponse) => {
+        
+        this.countriesList = res.countriesList;
+        this.countriesListTemp = res.countriesList;
+        console.log(this.countriesList);
+      }
+    );
+  }
+  filterCountries() {
+    this.countriesList = this.countriesListTemp;
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
+  }
+  selectedCountry(country: number) {
+    this.countryID = country;
+  }
 
   selectedTariff(description) {
     this.form.tariff = description;
   }
 
   assignDuty(duty: Duty) {
+    
     this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     if (this.isUpdate) {
+      console.log(duty);
       this.assignedDuties.push(duty);
-
       this.captureService.sad500LineDutyAdd({
         userID: 3,
         dutyID: duty.dutyTaxTypeID,
-        sad500LineID: this.updateSAD500Line.sad500LineID
+        sad500LineID: this.updateSAD500Line.sad500LineID,
+        value: duty.duty
       }).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -336,7 +400,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
-
+  assignDutyDialog(item: Duty) {
+    const dutyAssignDialog = this.dialog.open(DutyAssignDialogComponent, {
+      data: item
+    });
+    dutyAssignDialog.afterClosed().subscribe((result: Duty) => {
+      console.log(result);
+      item.duty = result.duty;
+      this.assignDuty(item);
+    });
+  }
   loadDuties() {
     this.captureService.dutyList({
       dutyTaxTypeID: -1,
@@ -347,6 +420,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       orderDirection: 'Name'
     }).then(
       (res: DutyListResponse) => {
+        console.log(res);
         this.dutyList = res;
         this.dutyListTemp = res.duties;
 

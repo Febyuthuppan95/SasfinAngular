@@ -8,7 +8,7 @@ import { ChatSendMessageResponse, ChatConversationGetResponse } from './../../mo
 import { ChatSendMessageRequest } from './../../models/requests';
 import { ChatNewMessage } from './../../models/signalr';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef, AfterContentChecked } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
@@ -17,7 +17,8 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
   templateUrl: './chat-conversation.component.html',
   styleUrls: ['./chat-conversation.component.scss']
 })
-export class ChatConversationComponent implements OnInit {
+export class ChatConversationComponent implements OnInit, AfterContentChecked {
+  
 
   constructor(
     private chatService: ChatService,
@@ -29,23 +30,28 @@ export class ChatConversationComponent implements OnInit {
   ) { }
   @Input() conversationID: number;
   @Output() dismiss = new EventEmitter<void>();
+  @ViewChild('chatWindow', { static: false}) private chatWindow: ElementRef;
+
   messageList: ChatNewMessage[];
   currentUser: User;
   messageCount: number;
   conversation: Conversation;
   transactionID: number;
   messageToSend = new FormControl('', [Validators.required]);
-  recipientID: number;
+  recipientID = -1;
   form: FormGroup;
   @Output() resetConversation = new EventEmitter<void>();
   ngOnInit() {
+    this.scrollToBottom();
     this.chatService.observeConversation().subscribe((conversation: SelectedConversation) => {
       this.currentUser = this.userService.getCurrentUser();
       this.conversationID = conversation === null ? -1 : conversation.conversationID;
       this.transactionID = conversation === null ? -1 : conversation.transactionID;
+      console.log(this.transactionID);
       this.recipientID = conversation === null ? -1
       : conversation.recipientID === this.currentUser.userID
       ? conversation.userID : conversation.recipientID;
+      console.log(conversation);
       this.conversation = conversation === null ? null : conversation.conversation;
       if (this.conversationID !== -1) {
         this.messagesLoad();
@@ -67,6 +73,10 @@ export class ChatConversationComponent implements OnInit {
     });
     // Load conversation messages
     // Hub monitor messages
+  }
+  // tslint:disable-next-line: use-lifecycle-interface
+  ngAfterContentChecked(): void {
+    this.scrollToBottom();
   }
   dismissEvent() {
     this.dismiss.emit();
@@ -97,38 +107,47 @@ export class ChatConversationComponent implements OnInit {
 
   }
   messageSend() {
-    const messageParams: ChatSendMessageRequest = {
-      conversationID: this.conversationID,
-      receivingUserID: this.recipientID,
-      sendingUserID: this.currentUser.userID,
-      message: this.form.get('message').value
-    };
-    console.log(messageParams);
-    this.chatService.sendMessage(messageParams).then(
-      (res: ChatSendMessageResponse) => {
-        console.log(res);
-        // print to screen
-        if (res.outcome.outcome === 'Success') {
-          this.messageList.push({ message: messageParams.message,
-            messageID: res.messageID, receivingUserID: messageParams.receivingUserID, sender: true});
-        } else {
-          // Message sending failure
+    if ( (this.recipientID > 0) && ( this.form.get('message').value !== '')) {
+      const messageParams: ChatSendMessageRequest = {
+        conversationID: this.conversationID,
+        receivingUserID: this.recipientID,
+        sendingUserID: this.currentUser.userID,
+        message: this.form.get('message').value
+      };
+      console.log(messageParams);
+      this.chatService.sendMessage(messageParams).then(
+        (res: ChatSendMessageResponse) => {
+          console.log(res);
+          // print to screen
+          if (res.outcome.outcome === 'Success') {
+            this.messageList.push({ message: messageParams.message,
+              messageID: res.messageID, receivingUserID: messageParams.receivingUserID, sender: true});
+          } else {
+            // Message sending failure
+          }
+        },
+        (msg) => {
+          //
         }
-      },
-      (msg) => {
-        //
-      }
-    );
-    this.form.reset();
+      );
+      this.form.reset();
+    }
   }
+  scrollToBottom(): void {
+    try {
+        this.chatWindow.nativeElement.scrollTop = this.chatWindow.nativeElement.scrollHeight;
+    } catch (err) { }
+}
   back() {
     this.resetConversation.emit();
   }
   gotoLink() {
     console.log('going to link');
     // Redirect to dummy route
-    this.router.navigate([`transaction/attachment/${this.transactionID}/${this.conversation.documentID}/
-    ${this.conversation.fileType}/${this.conversation.fileType}`]);
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.conversation.documentID, docType: this.conversation.fileType });
+    // this.router.navigate(['capture', 'transaction', 'attachment']);
+    this.router.navigateByUrl('/refreshComponent');
   }
 
 }
@@ -138,3 +157,4 @@ export class SignalRMessage {
   messageID: number;
   receivingUserID: number;
 }
+;

@@ -1,3 +1,7 @@
+import { FormControl } from '@angular/forms';
+import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
+import { HelpSnackbar } from './../../../../services/HelpSnackbar.service';
+import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -11,7 +15,6 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { Subject } from 'rxjs';
 import { SAD500LineCreateRequest } from 'src/app/models/HttpRequests/SAD500Line';
 import { takeUntil } from 'rxjs/operators';
-import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { InvoiceGetResponse, InvoiceLinesResponse, InvoiceLine } from 'src/app/models/HttpResponses/Invoices';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
@@ -30,7 +33,7 @@ export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
             private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
-            private snackbar: MatSnackBar) { }
+            private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -70,6 +73,11 @@ toCompanyList: Company[] = [];
 toCompanyListTemp: Company[] = [];
 fromCompanyList: Company[] = [];
 fromCompanyListTemp: Company[] = [];
+incoTermsList: IncoTerm[] = [];
+incoTermsListTemp: { rowNum: number, incoTermTypeID: number, name: string, description: string}[];
+incoTypeID = -1;
+incoTypeQuery = '';
+myControl = new FormControl();
 
 // Todo add guid for invoice items
 
@@ -94,10 +102,22 @@ form = {
     value: null,
     error: null,
   },
+  invoiceDate: {
+    value: null,
+    error: null
+  },
   currencyID: {
     value: null,
     error: undefined,
   },
+  incoType: {
+    value: null,
+    error: undefined
+  },
+  coo: {
+    value: null,
+    error: null
+  }
 };
 
 dialogOpen = false;
@@ -127,6 +147,30 @@ loader = false;
         this.loadLines();
       }
     });
+    this.loadIncoTypes();
+  }
+  loadIncoTypes() {
+    // Load
+    const model = {
+      userID: this.currentUser.userID
+    };
+    this.captureService.incoTermTypeList(model).then(
+      (res: IncoTermTypesReponse) => {
+        if (res.termTypes.length > 0) {
+          this.incoTermsList = res.termTypes;
+        }
+      },
+      (msg) => {
+        // Snackbar
+      }
+    );
+  }
+  filterIncoType() {
+    this.incoTermsList = this.incoTermsListTemp;
+    this.incoTermsList = this.incoTermsList.filter(x => this.matchRuleShort(x.name, `*${this.incoTypeQuery}*`));
+  }
+  selectedIncoType(id: number) {
+    this.incoTypeID = id;
   }
 
   ngAfterViewInit(): void {
@@ -212,10 +256,12 @@ loader = false;
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
-            fromCompanyID: this.form.fromCompanyID.value,
+            fromCompanyID: -1,
             fromCompany: this.form.fromCompany.value,
+            toCompanyID: -1,
+            toCompany: '',
             invoiceNo: this.form.invoiceNo.value,
-            currencyID: this.form.currencyID.value,
+            currencyID: -1,
             isDeleted: 0,
             attachmentStatusID: 3,
           };
@@ -262,10 +308,15 @@ loader = false;
         quantity: obj.quantity,
         itemValue: obj. itemValue,
         isDeleted: 0,
+        unitPrice: obj.unitPrice,
+        totalLineValue: obj.totalLineValue,
+        unitOfMeasure: obj.unitOfMeasure,
+        unitOfMeasureID: obj.unitOfMeasureID
       };
 
       this.captureService.invoiceLineUpdate(requestModel).then(
         (res: Outcome) => {
+          console.log(res);
           if (res.outcome === 'SUCCESS') {
             this.loadLines();
             this.lineState = 'Updated successfully';
@@ -527,10 +578,30 @@ loader = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
 }
+
+export class IncoTermTypesReponse {
+  outcome: Outcome;
+  termTypes: IncoTerm[];
+
+}
+export class IncoTerm {
+  rowNum: number;
+  incoTermTypeID: number;
+  name: string;
+  description: string;
+}
+

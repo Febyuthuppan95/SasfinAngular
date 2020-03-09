@@ -1,3 +1,9 @@
+import { EscalateBottomSheetComponent } from './escalate-bottom-sheet/escalate-bottom-sheet.component';
+import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
+import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
+import { ChatConversationIssue } from './../../modules/chat/models/requests';
+import { ChatService } from './../../modules/chat/services/chat.service';
+
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
@@ -9,8 +15,9 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
+import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -41,7 +48,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
-              private channelService: ChannelService) {}
+              private channelService: ChannelService,
+              private chatService: ChatService,
+              private snackBarMat: MatSnackBar,
+              private escalationReason: MatBottomSheet) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -89,7 +99,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   focusPDF = false;
   attachmentType: string;
   helpValue = false;
-
+  escalated = false;
 
   CaptureInfo: CaptureAttachment;
   docPath: string;
@@ -103,6 +113,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   openPreview = true;
   dialogOpen = false;
   noCaptureInformation = true;
+  reason = '';
 
   ngOnInit() {
     // this.companyService.setCapture({ capturestate: true});
@@ -132,10 +143,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
+      console.log(obj.issueID);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
+      this.reason = obj.reason;
+      this.escalated = obj.issueID > 0 ? true : false;
       this.loadCaptureInfo();
+      this.loadAttachments();
     });
 
     // get the help value
@@ -168,7 +183,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     .subscribe(() => {});
 
   }
-
+  toggleReason(): void {
+    this.escalationReason.open(EscalateBottomSheetComponent, {
+      data: this.reason
+    });
+  }
   closeHelpContext() {
     const newContext: SnackbarModel = {
       display: false,
@@ -270,7 +289,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
-
+        console.log(this.companyInfoList);
         if (this.companyInfoList.captureInfo.length > 0) {
           this.noCaptureInformation = false;
         }
@@ -295,50 +314,86 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
    }
   }
 
-  // loadAttachments() {
-  //   const model = {
-  //     filter: '',
-  //     userID: this.currentUser.userID,
-  //     specificTransactionID: this.transactionID,
-  //     specificAttachmentID: -1,
-  //     rowStart: 1,
-  //     rowEnd: 25,
-  //     orderBy: '',
-  //     orderByDirection: ''
-  //   };
+  loadAttachments() {
+    const model = {
+      filter: '',
+      userID: this.currentUser.userID,
+      specificTransactionID: this.transactionID,
+      specificAttachmentID: -1,
+      rowStart: 1,
+      rowEnd: 25,
+      orderBy: '',
+      orderByDirection: ''
+    };
 
-  //   this.transactionService
-  //     .listAttatchments(model)
-  //     .then(
-  //       (res: TransactionFileListResponse) => {
-  //         this.attachmentList = res.attachments;
-  //         const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
-  //         this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
+    this.transactionService
+      .listAttatchments(model)
+      .then(
+        (res: TransactionFileListResponse) => {
+          this.attachmentList = res.attachments;
+          const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
+          this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
-  //         this.attachmentListShowing.push(current);
+          this.attachmentListShowing.push(current);
 
-  //         this.attachmentList.forEach((item, i) => {
-  //           if (i < 4) {
-  //             this.attachmentListShowing.push(item);
-  //           }
-  //         });
+          this.attachmentList.forEach((item, i) => {
+            if (i < 4) {
+              this.attachmentListShowing.push(item);
+            }
+          });
 
-  //         this.attachmentListShowing.forEach((attach) => {
-  //           if (attach !== undefined) {
-  //             attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
-  //             attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
-  //             attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
-  //             attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+          this.attachmentListShowing.forEach((attach) => {
+            if (attach !== undefined) {
+              attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
+              attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
+              attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
+              attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
 
-  //             this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
-  //           }
-  //         });
-  //       },
-  //       (msg) => {}
-  //     );
-  // }
+              this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+            }
+          });
+        },
+        (msg) => {}
+      );
+  }
+  toggelEscalate() {
+    // Modal toggle
+    const escalateDialog = this.dialog.open(EscalateDialogComponent);
+    escalateDialog.afterClosed().subscribe(result => {
+      this.escalate(result);
+    });
+  }
 
-
+  escalate(userReason: string) {
+    const model: ChatConversationIssue = {
+      transactionID: this.transactionID,
+      userID: this.currentUser.userID,
+      reason: userReason,
+      fileType: this.attachmentType,
+      documentID: this.attachmentID
+    };
+    console.log(model);
+    this.chatService.createIssue(model).then(
+      (res: ChatIssueCreateReponse) => {
+        console.log(res);
+        if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
+          this.companyService.setCapture({ capturestate: false});
+          this.router.navigate(['transaction/capturerlanding']);
+        } else {
+          this.snackBarMat.open(res.outcome.outcomeMessage, '', {
+            duration: 2000
+           });
+        }
+      },
+      (msg: Outcome) => {
+        console.log(msg.outcomeMessage);
+        this.snackBarMat.open('An Error occurred while escalating', '', {
+          duration: 2000
+         });
+      }
+    );
+    // service
+  }
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
@@ -429,4 +484,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   toggleChat() {
     this.showChat = !this.showChat;
   }
+}
+
+
+export class HttpError {
+  status: string;
+  ok: boolean;
+  error: object;
 }

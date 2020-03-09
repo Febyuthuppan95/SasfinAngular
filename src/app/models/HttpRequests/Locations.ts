@@ -1,3 +1,4 @@
+import { Outcome } from './../HttpResponses/DoctypeResponse';
 import { ListBase } from './ListBase';
 
 export class ListCitiesRequest extends ListBase {
@@ -20,4 +21,15 @@ export class CitiesList {
 
 export class ListCountriesRequest extends ListBase {
   specificCountryID: number;
+}
+export class CountriesListResponse {
+  outcome: Outcome;
+  countriesList: CountryItem[];
+}
+
+export class CountryItem {
+  rowNum: number;
+  countryID: number;
+  name: string;
+  code: string;
 }

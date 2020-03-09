@@ -114,7 +114,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
     this.contextMenuY = $event.event.clientY + 5;
     this.contextMenuEnable = true;
     this.currentRecord = $event.record;
-    alert('row click');
+    // alert('row click');
   }
 
   update(obj: SAD500Line) {
@@ -122,14 +122,16 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         userID: this.currentUser.userID,
         sad500ID: this.attachmentID,
         specificSAD500LineID: obj.sad500LineID,
-        unitOfMeasure: obj.unitOfMeasure,
+        // unitOfMeasure: obj.unitOfMeasure,
         unitOfMeasureID: obj.unitOfMeasureID,
-        tariff: obj.tariff,
+        // tariff: obj.tariff,
         tariffID: obj.tariffID,
         quantity: obj.quantity,
         customsValue: obj.customsValue,
         isDeleted: 0,
-        lineNo: obj.lineNo
+        lineNo: obj.lineNo,
+        cooID: -1,
+        supplyUnit: ''
       };
 
       this.captureService.sad500LineUpdate(requestModel).then(
@@ -152,14 +154,16 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         userID: this.currentUser.userID,
         sad500ID: this.attachmentID,
         specificSAD500LineID: obj.sad500LineID,
-        unitOfMeasure: obj.unitOfMeasure,
+        // unitOfMeasure: obj.unitOfMeasure,
         unitOfMeasureID: obj.unitOfMeasureID,
-        tariff: obj.tariff,
+        // tariff: obj.tariff,
         tariffID: obj.tariffID,
         quantity: obj.quantity,
         customsValue: obj.customsValue,
         isDeleted: 1,
-        lineNo: obj.lineNo
+        lineNo: obj.lineNo,
+        cooID: -1,
+        supplyUnit: ''
       };
 
       this.captureService.sad500LineUpdate(requestModel).then(

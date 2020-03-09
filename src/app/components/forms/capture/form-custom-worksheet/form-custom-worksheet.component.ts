@@ -1,3 +1,6 @@
+import { ValidateService } from 'src/app/services/Validation.Service';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -24,7 +27,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar) { }
+              private eventService: EventService, private snackbar: MatSnackBar,
+              private snackbarService: HelpSnackbar, validateService: ValidateService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -62,10 +66,21 @@ form = {
   LRN: {
     value: null,
     error: null,
+    type: 'LRN',
+    typeError: null
   },
   fileRef: {
     value: null,
-    error: null
+    error: null,
+    type: 'File',
+    typeError: null
+
+  },
+  waybillNo: {
+    value: null,
+    error: null,
+    type: 'WAY',
+    typeError: null
   }
 };
 
@@ -73,6 +88,8 @@ lineIndex = 0;
 dialogOpen = false;
 
   ngOnInit() {
+ 
+    console.log('worksheet');
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
@@ -144,9 +161,7 @@ dialogOpen = false;
                 this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
                   this.dialogOpen = false;
                   if (status) {
-                    if (!this.toggleLines) {
-                      this.saveLines();
-                    }
+                    this.saveLines();
                   }
                 });
               }
@@ -184,6 +199,7 @@ dialogOpen = false;
       lrn: this.form.LRN.value,
       isDeleted: 0,
       assessStatusID: 3,
+      waybillNo: this.form.waybillNo.value,
     };
 
     this.captureService.customWorksheetUpdate(requestModel).then(
@@ -196,6 +212,7 @@ dialogOpen = false;
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
@@ -233,6 +250,8 @@ dialogOpen = false;
           this.form.LRN.error = res.customsWorksheets[0].lrnError;
           this.form.fileRef.value = res.customsWorksheets[0].fileRef;
           this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
+          this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
+          this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
         }
       },
       (msg) => {}
@@ -251,10 +270,12 @@ dialogOpen = false;
       }).then(
       (res: CustomWorksheetLinesResponse) => {
         this.linesCreated = res.lines;
-        console.log(res);
-
+        console.log(this.linesCreated);
+        console.log(this.lines);
+        this.lines = this.linesCreated.length;
         if (this.lines > -1) {
-          this.focusLineData = this.linesCreated[this.lines];
+          this.focusLineData = this.linesCreated[this.lines - 1];
+          console.log(this.focusLineData);
         }
 
         // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
@@ -289,6 +310,7 @@ dialogOpen = false;
 
   saveLines() {
           if (this.lineIndex < this.lineQueue.length) {
+            console.log(this.lineQueue);
             this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
@@ -330,6 +352,7 @@ dialogOpen = false;
   }
 
   nextLine() {
+    console.log(this.lines);
     if (this.lines < this.linesCreated.length - 1) {
       this.lines++;
       this.focusLineData = this.linesCreated[this.lines];
@@ -350,7 +373,14 @@ dialogOpen = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
 
+    this.snackbarService.setHelpContext(newContext);
+  }
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

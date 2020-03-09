@@ -10,11 +10,19 @@ export class ValidateService {
   // tslint:disable-next-line: max-line-length
   public emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
   public passwordRegex = new RegExp('^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})');
-
+  public numberRegex = new RegExp(/^-?(0|[1-9]\d*)?$/);
+  
   private requiredField = 'This field is required.';
   private emailFormatIncorrect = '';
   private passwordFormatIncorrect = 'This field is required.';
+  
 
+  // Rules for Capture Field Types
+  regexRules = {
+    alphabet: new RegExp(/([a-zA-z])\w+/g),
+    number: new RegExp(/^-?(0|[1-9]\d*)?$/),
+    date: new RegExp(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/)
+  };
 
   // Regex Check
   public regexTest = (regexRule: RegExp, inputValue: string): boolean => regexRule.test(inputValue);
@@ -37,8 +45,15 @@ export class ValidateService {
     let count = 0;
     let type;
 
-    objectKeys.forEach((key, index) => {
+    objectKeys.forEach((key, index) => { // Vaildate
+
+      console.log(key);
+      console.log(index);
+      let reqError = '';
+      let typeError = '';
+      let fieldError = '';
       if (this.isEmpty(objectValues[index])) {
+        reqError = this.requiredField;
         errors.push({ error: this.requiredField });
         count++;
       } else {

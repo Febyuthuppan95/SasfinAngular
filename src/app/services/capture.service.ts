@@ -21,6 +21,7 @@ export class CaptureService {
 
   // tslint:disable-next-line: max-line-length
   sad500LineList = (requestModel: SAD500LineListRequest) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/list`, requestModel);
+  
   sad500LineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/update`, requestModel);
   // tslint:disable-next-line: max-line-length
   sad500LineAdd = async (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/sad500Lines/create`, requestModel);
@@ -46,6 +47,7 @@ export class CaptureService {
   invoiceLineAdd = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/add`, requestModel);
   // tslint:disable-next-line: max-line-length
   invoiceLineUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines/update`, requestModel);
+  incoTermTypeList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/incoterms/list`, requestModel);
 
   dutyList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/duties`, requestModel);
   // tslint:disable-next-line: max-line-length

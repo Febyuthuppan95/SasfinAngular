@@ -1,0 +1,38 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <app-table
+      *ngIf="this.tableConfig.dataset"
+      [dataset]="this.tableConfig.dataset"
+      [headings]="this.tableConfig.headings"
+      [recordsPerPage]="this.tableConfig.recordsPerPage"
+      [rowStart]="this.tableConfig.rowStart"
+      [rowEnd]="this.tableConfig.rowEnd"
+      [rowCount]="this.tableConfig.rowCount"
+      [orderBy]="this.tableConfig.orderBy"
+      [orderByDirection]="this.tableConfig.orderByDirection"
+      [tableHeader]="this.tableConfig.header"
+      (backButtonEvent)="back()"
+      (orderChange)="orderChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchFilter($event)"
+      (selectedRecord)="setClickedRow($event)"
+      (pageChange)="pageChange($event)">
+      </app-table>
+    </div>
+  </div>
+  
+  <!-- <app-menu
+    *ngIf="this.contextMenuEnable"
+    [contextShow]="this.contextMenuEnable"
+    [x]="this.contextMenuX"
+    [y]="this.contextMenuY"
+    (resetContext)="this.recordIndex = -1; this.contextMenuEnable = false;">
+  </app-menu> -->
+  <div class="contextOverlay" *ngIf="(contextMenuEnable)" (click)="popOff()"></div>
+  <app-context-menu-capture-queue *ngIf="this.contextMenuEnable" (promoteCompany)="setPriority(this.focusCompanyID)" [companyID]="this.focusCompanyID" [x]="this.contextMenuX" [y]="this.contextMenuY"></app-context-menu-capture-queue>
+  <app-notification></app-notification>

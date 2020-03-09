@@ -16,15 +16,18 @@ export class TransactionService {
     }
 
     // tslint:disable-next-line: max-line-length
-    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>(sessionData);
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>(sessionData);
   }
-
-  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string }>;
-  public observerCurrentAttachment() { return this.currentAttachment.asObservable(); }
-
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string }) {
+// tslint:disable-next-line: max-line-length
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>;
+  public observerCurrentAttachment() {
+    console.log(this.currentAttachment);
+    return this.currentAttachment.asObservable(); }
+  // tslint:disable-next-line: max-line-length
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string}) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
+    console.log(next);
   }
 
   /**
@@ -170,7 +173,7 @@ export class TransactionService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500LineID?: number) {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number) {
     const requestModel = {
       name,
       fileName: file.name,
@@ -178,9 +181,8 @@ export class TransactionService {
       transactionID,
       userID,
       company,
-      sad500LineID
+      sad500ID
     };
-
     const formData = new FormData();
     formData.append('file', file);
     formData.append('requestModel', JSON.stringify(requestModel));
@@ -262,6 +264,22 @@ export class TransactionService {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/update/customsrelease`;
       this.httpClient.post(apiURL, requestModel)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+  public captureQueueGet(model: object) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/capturequeue/list`;
+      this.httpClient.post(apiURL, model)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
+  public captureQueueUpdate(model: object) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/capturequeue/update`;
+      this.httpClient.post(apiURL, model)
       .toPromise()
       .then(res => resolve(res), msg => reject(msg));
     });

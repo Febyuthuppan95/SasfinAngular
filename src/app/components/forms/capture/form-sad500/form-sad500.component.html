@@ -12,8 +12,8 @@
   </div>
   </div>
   <h1 class="capture-form-title text-dark">
-    <span *ngIf="this.toggleLines">SAD500 Lines</span>
-    <span *ngIf="!this.toggleLines">SAD500</span>
+    <span *ngIf="this.toggleLines">{{this.attachmentType}} Lines</span>
+    <span *ngIf="!this.toggleLines">{{this.attachmentType}}</span>
   </h1>
 </div>
 <span [ngClass]="{'hide': this.toggleLines}">
@@ -72,6 +72,15 @@
         placeholder="Total Customs Value" />
         <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
     </div>
+    <div class="form-group" *ngIf="this.form.totalCustomsDuty != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.totalCustomsDuty.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.totalCustomsDuty.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-total-customs-duty')"
+        placeholder="Total Customs Duty" />
+        <p class="invalid-control-label" *ngIf="this.form.totalCustomsDuty.error !== null">{{this.form.totalCustomsDuty.error}}</p>
+    </div>
     <div class="form-group" *ngIf="this.form.waybillNo != undefined">
       <input type="text"
         [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
@@ -87,8 +96,28 @@
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
         (mouseover)="updateHelpContext('form-sad500-file-or-supplier-ref')"
-        placeholder="Supplier Ref/File Number" />
+        placeholder="Supplier Ref" />
         <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
+
+    </div>
+    <div class="form-group" *ngIf="this.form.fileRef != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-file-ref')"
+        placeholder="File Number" />
+        <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>
+
+    </div>
+    <div class="form-group" *ngIf="this.form.rebateCode != undefined">
+      <input type="text"
+        [(ngModel)]="this.form.rebateCode.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.rebateCode.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-rebate-code')"
+        placeholder="Rebate Code" />
+        <p class="invalid-control-label" *ngIf="this.form.rebateCode.error !== null">{{this.form.rebateCode.error}}</p>
 
     </div>
   </form>

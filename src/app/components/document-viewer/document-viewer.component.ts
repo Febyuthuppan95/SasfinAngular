@@ -22,9 +22,11 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   pdfSRC: ArrayBuffer;
   displayPDF = false;
   page = 1;
-  zoom = 1;
+  zoom_to = 0.8;
+  rotation = 0;
   shortcuts: ShortcutInput[] = [];
   src: string;
+  originalSize: boolean = true;
 
   ngOnInit() {
     this.docService.observeActiveDocument()
@@ -48,38 +50,68 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   ngAfterViewInit(): void {
     this.shortcuts.push(
         {
-            key: 'ctrl + right',
+            key: 'alt + right',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.page++
         },
         {
-          key: 'ctrl + left',
+          key: 'alt + left',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.page--
         },
         {
-          key: 'ctrl + up',
+          key: 'alt + up',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e =>  {
-            if (this.zoom < 2) {
-              this.zoom += 0.2;
-            }
+            this.zoom_in();
           }
         },
         {
-          key: 'ctrl + down',
+          key: 'alt + down',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-            if (this.zoom !== 1) {
-              this.zoom -= 0.2;
-            }
+            this.zoom_out();
+          }
+        },
+        {
+          key: 'alt + r',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.rotatePDF(this.rotation + 90);
           }
         },
     );
+  }
+
+  pageChange(page: number) {
+    if (page <= 0) {
+      page = 1;
+    }
+
+    this.page = page;
+  }
+
+  rotatePDF(deg: number) {
+    this.rotation = deg;
+  }
+
+  zoomChange(variant: number) {
+    this.zoom_to = this.zoom_to + variant;
+  }
+
+  zoom_in() {
+    this.zoom_to = this.zoom_to + 0.2;
+  }
+
+  zoom_out() {
+    if (this.zoom_to >= 0.4) {
+       this.zoom_to = this.zoom_to - 0.2;
+    }
   }
 
   ngOnDestroy(): void {

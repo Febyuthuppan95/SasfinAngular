@@ -11,11 +11,11 @@ export class SAD500Line {
     sad500LineID?: number;
     sad500ID: number;
     tariffID: number;
-    tariff: string;
+    // tariff: string;
     customsValue: number;
     lineNo: string;
     unitOfMeasureID: number;
-    unitOfMeasure: string;
+    // unitOfMeasure: string;
     tariffError?: string;
     customsValueError?: number;
     lineNoError?: string;
@@ -25,4 +25,12 @@ export class SAD500Line {
     quantityError?: string;
     previousDeclaration: string;
     previousDeclarationError?: string;
+    // vat: number;
+    supplyUnit: string;
+    cooID: number;
+    originalLineID: number;
+    replacedByLineID: number;
+}
+export class SAD500LineDutyList {
+    
 }

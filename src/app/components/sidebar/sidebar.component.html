@@ -90,6 +90,14 @@
     <span class="menu-title">Items</span>
   </a>
   </li>
+  <li *ngIf="showcapturequeue" class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-capture-queue-link')"
+  matTooltip="Capture Queue Overview" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/capture-queue" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-view-list menu-icon"></i>
+    <span class="menu-title">Capture Queue Overview</span>
+  </a>
+  </li>
   <li *ngIf="showreportqueues" class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-reportqueues-link')"
   matTooltip="Reports Queues" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
@@ -100,7 +108,7 @@
   </li>
   <li *ngIf="showCapturer" class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-showCapturer-link')"
-  matTooltip="Start Caputering" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  matTooltip="Start Capturing" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" (click)="loadCaptureScreen()" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-checkbox-multiple-marked-circle-outline menu-icon"></i>
     <span class="menu-title">Start Capturing</span>

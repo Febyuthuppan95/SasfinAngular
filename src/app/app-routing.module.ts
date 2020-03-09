@@ -1,3 +1,5 @@
+import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
+import { ChatRedirectComponent } from './modules/chat/components/chat-redirect/chat-redirect.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -97,6 +99,7 @@ const routes: Routes = [
           { path: 'services', component: ContextMenuServiceListComponent },
           { path: 'tariffs', component: ContextTariffsListComponent },
           { path: 'items', component: ContextItemsListComponent },
+          { path: 'capture-queue', component: ViewCaptureQueueOverviewComponent },
           { path: 'reportsqueues', component: ViewReportQueuesListComponent },
           { path: 'addresstypes', component: ViewAddressTypesListComponent },
           { path: 'companies/info', component: ViewCompanyInfoComponent },
@@ -126,7 +129,8 @@ const routes: Routes = [
           { path: 'transaction/sad500s', component: ViewSAD500Component },
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
-          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent}
+          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
+          { path: 'refreshComponent', component: ChatRedirectComponent}
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

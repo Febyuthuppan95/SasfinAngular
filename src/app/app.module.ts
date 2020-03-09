@@ -207,6 +207,12 @@ import { FormCustomWorksheetLinesComponent } from './components/forms/capture/fo
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ChannelService } from './modules/chat/services/channel.service';
+import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
+import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
+import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
+import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
+import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
+import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -343,7 +349,13 @@ import { ChannelService } from './modules/chat/services/channel.service';
     FormCustomWorksheetComponent,
     FormCustomWorksheetLinesComponent,
     SplitDocumentComponent,
-    ViewCaptureLandingComponent
+    ViewCaptureLandingComponent,
+    EscalateDialogComponent,
+    EscalateBottomSheetComponent,
+    DutyAssignDialogComponent,
+    FormVocLineComponent,
+    ViewCaptureQueueOverviewComponent,
+    ContextMenuCaptureQueueComponent
   ],
   imports: [
     BrowserModule,
@@ -425,7 +437,10 @@ import { ChannelService } from './modules/chat/services/channel.service';
     FormVOCComponent,
     FormWaybillComponent,
     FormCustomWorksheetComponent,
-    SplitDocumentComponent
+    SplitDocumentComponent,
+    EscalateDialogComponent,
+    EscalateBottomSheetComponent,
+    DutyAssignDialogComponent
   ]
 })
 export class AppModule { }

@@ -11,6 +11,7 @@
     <input type="text"
       [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-mrn')"
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
       placeholder="MRN" />
       <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
@@ -19,6 +20,7 @@
     <input type="text"
       [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-lrn')"
       [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
       placeholder="LRN" />
       <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null">{{this.form.LRN.error}}</p>
@@ -27,6 +29,7 @@
     <input type="text"
       [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
+      (mouseover)="updateHelpContext('form-cusrelease-serialno')"
       [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
       placeholder="Serial No" />
       <p class="invalid-control-label" *ngIf="this.form.serialNo.error !== null">{{this.form.serialNo.error}}</p>
@@ -36,6 +39,7 @@
     <input type="text"
       [(ngModel)]="this.form.importersCode.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-importerscode')"
       [ngClass]="{'form-control-invalid': this.form.importersCode.error !== null}"
 
       placeholder="Importers Code" />
@@ -46,8 +50,8 @@
     <input type="text"
       [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-waybillno')"
       [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
-
       placeholder="Waybill No" />
       <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null">{{this.form.waybillNo.error}}</p>
   </div>
@@ -55,6 +59,7 @@
     <input type="text"
       [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-pcc')"
       [ngClass]="{'form-control-invalid': this.form.PCC.error !== null}"
 
       placeholder="PCC" />
@@ -65,10 +70,51 @@
     <input type="text"
       [(ngModel)]="this.form.FOB.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-fob')"
       [ngClass]="{'form-control-invalid': this.form.FOB.error !== null}"
 
       placeholder="FOB" />
       <p class="invalid-control-label" *ngIf="this.form.FOB.error !== null">{{this.form.FOB.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-supplier-ref')"
+      [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
+
+      placeholder="Supplier Ref" />
+      <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-total-customs-value')"
+      [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
+
+      placeholder="Total Customs Value" />
+      <p class="invalid-control-label" *ngIf="this.form.totalCustomsValue.error !== null">{{this.form.totalCustomsValue.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.totalDuty.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-total-duty')"
+      [ngClass]="{'form-control-invalid': this.form.totalDuty.error !== null}"
+
+      placeholder="Total Customs Duty" />
+      <p class="invalid-control-label" *ngIf="this.form.totalDuty.error !== null">{{this.form.totalDuty.error}}</p>
+  </div>
+  <div class="form-group">
+    <input type="text"
+      [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      (mouseover)="updateHelpContext('form-cusrelease-file-ref')"
+      [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
+
+      placeholder="File Ref" />
+      <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null">{{this.form.fileRef.error}}</p>
   </div>
 </form>
 

@@ -134,13 +134,13 @@
         <div class="form-group" *ngIf="isVOC">
           <select (change)="onSAD500Select($event.target.value)" class="form-control" required [(selectedIndex)]="sad500Index" [formControl]="selectSAD500Control">
             <option value="-1" [disabled]="this.disableSAD500" selected>Please select an SAD500</option>
-            <option *ngFor="let type of this.sad500DataList" value="{{type.attachmentID}}">{{type.name}}, {{type.status}}</option>
+            <option *ngFor="let sad of this.sad500s" value="{{sad.customReleaseID}}">SAD500 - {{sad.mrn}} - {{sad.status}}</option>
           </select>
         </div>
-        <div class="form-group" *ngIf="this.sad500Line.length !== 0">
+      <div class="form-group" *ngIf="this.sad500s.length === 10">
           <select (change)="onSAD500LineSelect($event.target.value)" class="form-control" required [(selectedIndex)]="sad500LineIndex" [formControl]="selectSAD500LinesControl">
             <option value="-1" [disabled]="this.disableSAD500Lines" selected>Please select an SAD500 Line</option>
-            <option *ngFor="let type of this.sad500Line" value="{{type.sad500LineID}}">{{type.customsValue}}, {{type.lineNo}}, {{type.quantity}}</option>
+            <option *ngFor="let sad of this.sad500s" value="{{sad.customReleaseID}}">SAD500 - {{sad.mrn}} - {{sad.status}}</option>
           </select>
         </div>
         <div class="form-group d-inline">

@@ -16,4 +16,14 @@ export const environment = {
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
     attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5'
   },
+  // We should consider doing this for api endpoints -- Ashton
+  api: {
+    users: {
+      list: 'http://197.189.218.50:7777/api/v1.0/users/list',
+      create: 'http://197.189.218.50:7777/api/v1.0/users/add',
+      update: 'http://197.189.218.50:7777/api/v1.0/users/update',
+      upload: 'http://197.189.218.50:7777/api/v1.0/users/upload',
+      hub: 'http://197.189.218.50:7777/Communication/Hub'
+    }
+  }
 };
