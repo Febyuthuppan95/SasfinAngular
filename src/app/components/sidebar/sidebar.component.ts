@@ -237,8 +237,8 @@ export class SidebarComponent implements OnInit {
   }
 
   loadCaptureScreen() {
-    console.log('yes');
-    this.companyService.setCapture({ capturestate: true, token: UUID.UUID()}); // Generated token to prevent duplicate events
+
+    // this.companyService.setCapture({ capturestate: true, token: UUID.UUID()}); // Generated token to prevent duplicate events
     this.router.navigateByUrl('transaction/capturerlanding');
   }
 }
