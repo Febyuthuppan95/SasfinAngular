@@ -1,3 +1,4 @@
+import { ValidateService } from 'src/app/services/Validation.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
@@ -27,7 +28,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
               private eventService: EventService, private snackbar: MatSnackBar,
-              private snackbarService: HelpSnackbar) { }
+              private snackbarService: HelpSnackbar, validateService: ValidateService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -65,14 +66,21 @@ form = {
   LRN: {
     value: null,
     error: null,
+    type: 'LRN',
+    typeError: null
   },
   fileRef: {
     value: null,
-    error: null
+    error: null,
+    type: 'File',
+    typeError: null
+
   },
   waybillNo: {
     value: null,
-    error: null
+    error: null,
+    type: 'WAY',
+    typeError: null
   }
 };
 
@@ -80,6 +88,7 @@ lineIndex = 0;
 dialogOpen = false;
 
   ngOnInit() {
+ 
     console.log('worksheet');
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
