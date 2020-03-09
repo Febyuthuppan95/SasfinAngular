@@ -43,9 +43,9 @@ export class SAD500LineUpdateModel {
     userID: number;
     sad500ID: number;
     specificSAD500LineID: number;
-    tariff: string;
+    // tariff: string;
     tariffID: number;
-    unitOfMeasure: string;
+    // unitOfMeasure: string;
     unitOfMeasureID: number;
     customsValue: number;
     lineNo: string;

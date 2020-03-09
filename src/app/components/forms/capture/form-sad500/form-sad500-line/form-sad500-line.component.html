@@ -10,7 +10,7 @@
       [ngClass]="{'form-control-invalid': this.form.lineNoError !== null && this.form.lineNoError !== undefined}"/>
       <p class="invalid-control-label" *ngIf="this.form.lineNoError !== null && this.form.lineNoError !== undefined" style="width: 100%;">{{this.form.lineNoError}}</p>
   </div>
-  <div class="form-group" *ngIf="this.form.vat != undefined">
+  <!-- <div class="form-group" *ngIf="this.form.vat != undefined">
     <label for="customsValue">VAT</label>
     <input type="text"
       [(ngModel)]="this.form.vat" [ngModelOptions]="{standalone: true}"
@@ -18,7 +18,7 @@
       (mouseover)="updateHelpContext('form-sad500-line-vat')"
       placeholder="VAT" style="margin-top:0"/>
       <p class="invalid-control-label" *ngIf="this.form.vatError !== null && this.form.vatError !== undefined">{{this.form.vatError}}</p>
-  </div>
+  </div> -->
   <div class="form-group" *ngIf="this.form.supplyUnit != undefined">
     <div class="row">
       <div class="col-md-3">
