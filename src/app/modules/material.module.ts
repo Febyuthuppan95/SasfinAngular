@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatCheckboxModule, MatBottomSheetModule} from '@angular/material';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -31,6 +31,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+
 import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redirect.component';
 
 
@@ -68,7 +69,8 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatNativeDateModule
   ],
   exports: [
     BrowserAnimationsModule,

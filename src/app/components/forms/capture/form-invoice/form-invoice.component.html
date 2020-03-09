@@ -54,14 +54,28 @@
     </mat-autocomplete>
     <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
     </div>
+    <!-- <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
+      <input type="text"[focus]="this.focusMainForm"
+        [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-invoice-invoicedate')"
+        [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
+        placeholder="Invoice Date" />
+        <p class="invalid-control-label" *ngIf="this.form.invoiceDate.error !== null">{{this.form.invoiceDate.error}}</p>
+    </div> -->
   <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
-    <input type="text"[focus]="this.focusMainForm"
+    <mat-form-field>
+      <!-- <input matInput type="text"[focus]="this.focusMainForm"
       [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-invoice-invoicedate')"
       [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
-      placeholder="Invoice Date" />
-      <p class="invalid-control-label" *ngIf="this.form.invoiceDate.error !== null">{{this.form.invoiceDate.error}}</p>
+      placeholder="Invoice Date" [matDatepicker]="invoiceDate"/>-->
+      <mat-label>Invoice Date</mat-label> 
+      <input matInput [matDatepicker]="invoiceDate" >
+      <mat-datepicker-toggle matSuffix [for]="invoiceDate"></mat-datepicker-toggle>
+      <mat-datepicker #invoiceDate></mat-datepicker>
+    </mat-form-field>
   </div>
   <div class="form-group" *ngIf="this.form.coo != undefined">
     <input type="text"[focus]="this.focusMainForm"
