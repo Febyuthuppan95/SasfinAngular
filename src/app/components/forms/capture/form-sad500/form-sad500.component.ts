@@ -346,20 +346,22 @@ dialogOpen = false;
 
   updateLine(obj: SAD500Line) {
     this.lineState = 'Saving';
-    const requestModel: SAD500LineUpdateModel = {
+    const requestModel = {
       userID: this.currentUser.userID,
       sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       specificSAD500LineID: obj.sad500LineID,
-      unitOfMeasure: obj.unitOfMeasure,
+      // unitOfMeasure: obj.unitOfMeasure,
       unitOfMeasureID: obj.unitOfMeasureID,
-      tariff: obj.tariff,
+      // tariff: obj.tariff,
       tariffID: obj.tariffID,
       quantity: obj.quantity,
       customsValue: obj.customsValue,
       isDeleted: 0,
       lineNo: obj.lineNo,
       cooID: -1,
-      supplyUnit: ''
+      supplyUnit: '',
+      replacedByLineID: -1,
+      orginalLineID: -1
     };
 
     this.captureService.sad500LineUpdate(requestModel).then(

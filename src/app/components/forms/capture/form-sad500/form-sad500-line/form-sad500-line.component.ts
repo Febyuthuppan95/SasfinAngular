@@ -159,8 +159,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
       this.form.customsValue = this.updateSAD500Line.customsValue;
       this.form.lineNo = this.updateSAD500Line.lineNo;
-      this.form.tariff = this.updateSAD500Line.tariff;
-      this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
+      this.form.tariff = '';
+      this.form.unitOfMeasure = '';
       this.form.tariffError = this.updateSAD500Line.tariffError;
       this.form.customsValueError = this.updateSAD500Line.customsValueError;
       this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
@@ -223,33 +223,37 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         sad500LineID: this.updateSAD500Line.sad500LineID,
         sad500ID: -1,
         tariffID: 1,
-        tariff: this.form.tariff,
+        // tariff: this.form.tariff,
         customsValue: this.form.customsValue,
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
-        unitOfMeasure: this.form.unitOfMeasure,
+        // unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantityError,
         previousDeclaration: this.form.previousDeclaration,
-        vat: this.form.vat,
+        // vat: this.form.vat,
         supplyUnit: this.form.supplyUnit,
-        cooID: this.countryID
+        cooID: this.countryID,
+        replacedByLineID: -1,
+        originalLineID: -1
       });
     } else {
       this.submitSADLine.emit({
         userID: -1,
         sad500ID: -1,
         tariffID: 1,
-        tariff: this.form.tariff,
+        // tariff: '',
         customsValue: this.form.customsValue,
         lineNo: this.form.lineNo,
         unitOfMeasureID: 1,
-        unitOfMeasure: this.form.unitOfMeasure,
+        // unitOfMeasure: this.form.unitOfMeasure,
         quantity: this.form.quantity,
         duties: this.dutiesToBeSaved,
         previousDeclaration: this.form.previousDeclaration,
-        vat: this.form.vat,
+        // vat: this.form.vat,
         supplyUnit: this.form.supplyUnit,
-        cooID: this.countryID
+        cooID: this.countryID,
+        replacedByLineID: -1,
+        originalLineID: -1
       });
 
       this.dutiesToBeSaved = [];

@@ -15,14 +15,14 @@ export class SAD500LineCreateRequest {
   userID: number;
   sad500ID: number;
   tariffID: number;
-  tariff: string;
+  // tariff: string;
   customsValue: number;
   // cpc: string;
   // productCode: string;
   // value: number;
   lineNo: string;
   unitOfMeasureID: number;
-  unitOfMeasure: string;
+  // unitOfMeasure: string;
   saved?: boolean;
   failed?: boolean;
   updateSubmit?: boolean;
@@ -32,9 +32,11 @@ export class SAD500LineCreateRequest {
   isPersist?: boolean;
   quantity: number;
   previousDeclaration: string;
-  vat: number;
+  // vat: number;
   supplyUnit: string;
   cooID: number;
+  originalLineID: number;
+  replacedByLineID: number;
 }
 
 export class SAD500LineUpdateModel {
