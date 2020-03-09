@@ -104,7 +104,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         this.form.prodCodeError = this.updateSAD500Line.prodCodeError;
         this.form.unitPrice = this.updateSAD500Line.unitPrice;
         this.form.totalLineValue = this.updateSAD500Line.totalLineValue;
-        this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
+        // this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
         this.form.unitOfMeasureID = this.updateSAD500Line.unitOfMeasureID;
         this.form.unitPriceError = this.updateSAD500Line.unitPriceError;
         this.form.totalLineValueError = this.updateSAD500Line.totalLineValueError;
@@ -140,7 +140,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           invoiceLineID: this.updateSAD500Line.invoiceLineID,
           unitPrice: this.form.unitPrice,
           totalLineValue: this.form.totalLineValue,
-          unitOfMeasure: this.form.unitOfMeasure,
+          // unitOfMeasure: this.form.unitOfMeasure,
           unitOfMeasureID: this.form.unitOfMeasureID,
           guid: UUID.UUID(),
         };
@@ -154,7 +154,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           itemValue: this.form.itemValue,
           unitPrice: this.form.unitPrice,
           totalLineValue: this.form.totalLineValue,
-          unitOfMeasure: this.form.unitOfMeasure,
+          // unitOfMeasure: this.form.unitOfMeasure,
           unitOfMeasureID: this.form.unitOfMeasureID,
           guid: UUID.UUID(),
         };

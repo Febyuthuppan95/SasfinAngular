@@ -41,7 +41,7 @@ export class InvoiceLine {
   userID?: number;
   isPersist?: boolean;
   unitOfMeasureID: number;
-  unitOfMeasure: string;
+  // unitOfMeasure: string;
   unitOfMeasureError?: string;
   totalLineValue: number;
   totalLineValueError?: string;

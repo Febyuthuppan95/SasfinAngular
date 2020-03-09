@@ -256,29 +256,27 @@ loader = false;
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
-            fromCompanyID: -1,
-            fromCompany: this.form.fromCompany.value,
-            toCompanyID: -1,
-            toCompany: '',
+            companyID: this.form.fromCompany.value,
             invoiceNo: this.form.invoiceNo.value,
             currencyID: -1,
             isDeleted: 0,
             attachmentStatusID: 3,
+            incoTermTypeID: this.form.incoType
           };
 
-          if (this.form.fromCompanyID.value === null) {
-            const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
-            if (fromCompany !== undefined) {
-              this.form.fromCompanyID.value = fromCompany.companyID;
-            }
-          }
+          // if (this.form.fromCompanyID.value === null) {
+          //   const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
+          //   if (fromCompany !== undefined) {
+          //     this.form.fromCompanyID.value = fromCompany.companyID;
+          //   }
+          // }
 
-          if (this.form.toCompanyID.value === null) {
-            const toCompany = this.toCompanyList.find(x => x.name === this.toCompanyQuery);
-            if (toCompany !== undefined) {
-              this.form.toCompanyID.value = toCompany.companyID;
-            }
-          }
+          // if (this.form.toCompanyID.value === null) {
+          //   const toCompany = this.toCompanyList.find(x => x.name === this.toCompanyQuery);
+          //   if (toCompany !== undefined) {
+          //     this.form.toCompanyID.value = toCompany.companyID;
+          //   }
+          // }
 
           this.captureService.invoiceUpdate(requestModel).then(
             (res: Outcome) => {
@@ -310,7 +308,7 @@ loader = false;
         isDeleted: 0,
         unitPrice: obj.unitPrice,
         totalLineValue: obj.totalLineValue,
-        unitOfMeasure: obj.unitOfMeasure,
+        // unitOfMeasure: obj.unitOfMeasure,
         unitOfMeasureID: obj.unitOfMeasureID
       };
 
@@ -465,7 +463,7 @@ loader = false;
               itemValue: currentLine.itemValue,
               unitPrice: currentLine.unitPrice,
               totalLineValue: currentLine.totalLineValue,
-              unitOfMeasure: currentLine.unitOfMeasure,
+              // unitOfMeasure: currentLine.unitOfMeasure,
               unitOfMeasureID: currentLine.unitOfMeasureID
             };
 

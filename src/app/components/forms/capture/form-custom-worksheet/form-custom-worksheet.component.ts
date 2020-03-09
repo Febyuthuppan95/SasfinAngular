@@ -198,7 +198,7 @@ dialogOpen = false;
       fileRef: this.form.fileRef.value,
       lrn: this.form.LRN.value,
       isDeleted: 0,
-      assessStatusID: 3,
+      attachmentStatusID: 3,
       waybillNo: this.form.waybillNo.value,
     };
 

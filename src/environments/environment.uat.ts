@@ -2,11 +2,11 @@ export const environment = {
   production: false,
   AssetRoute: 'https://lateral.solutions/sasfin/assets/dist',
   ImageRoute: 'https://lateral.solutions/sasfin/assets/dist/images',
-  ApiEndpoint: 'https://lateral.solutions/sasfin/api/api/v1.0',
-  ApiBackgroundImages: 'https://lateral.solutions/sasfin/api/api/v1.0/public/images/background',
-  ApiProfileImages: 'https://lateral.solutions/sasfin/api/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://lateral.solutions/sasfin/api/api/v1.0/public/document',
-  WebSocketConnection: 'https://lateral.solutions/sasfin/api/api/v1.0/chat',
+  ApiEndpoint: 'https://lateral.solutions/sasfinapi/api/v1.0',
+  ApiBackgroundImages: 'https://lateral.solutions/sasfinapi/api/v1.0/public/images/background',
+  ApiProfileImages: 'https://lateral.solutions/sasfinapi/api/v1.0/public/images/profile',
+  ApiDocuments: 'https://lateral.solutions/sasfinapi/api/v1.0/public/document',
+  WebSocketConnection: 'https://lateral.solutions/sasfinapi/api/v1.0/chat',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -21,11 +21,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'https://lateral.solutions/sasfin/api/api/v1.0/users/list',
-      create: 'https://lateral.solutions/sasfin/api/api/v1.0/users/add',
-      update: 'https://lateral.solutions/sasfin/api/api/v1.0/users/update',
-      upload: 'https://lateral.solutions/sasfin/api/api/v1.0/users/upload',
-      hub: 'https://lateral.solutions/sasfin/api/Communication/Hub'
+      list: 'https://lateral.solutions/sasfinapi/api/v1.0/users/list',
+      create: 'https://lateral.solutions/sasfinapi/api/v1.0/users/add',
+      update: 'https://lateral.solutions/sasfinapi/api/v1.0/users/update',
+      upload: 'https://lateral.solutions/sasfinapi/api/v1.0/users/upload',
+      hub: 'https://lateral.solutions/sasfinapi/Communication/Hub'
     }
   }
 };
