@@ -54,3 +54,12 @@
 .fill-bar {
   margin-top: 12px; margin-bottom: 12px;
 }
+.datepicker {
+  width: 100%;
+  div > div > .mat-form-field-infix {
+    border-top:none !important;
+  }
+}
+.mat-form-field-infix {
+  border-top:none !important;
+}

@@ -1,3 +1,5 @@
+import { PlaceService } from './../../../../../services/Place.Service';
+import { ListCountriesRequest, CountriesListResponse, CountryItem } from './../../../../../models/HttpRequests/Locations';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
@@ -31,7 +33,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private userService: UserService,
       private captureService: CaptureService,
       private unitService: UnitMeasureService,
-      private snackbarService: HelpSnackbar) { }
+      private snackbarService: HelpSnackbar,
+      private placeService: PlaceService) { }
 
     currentUser: User;
     currentTheme: string;
@@ -64,9 +67,13 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       unitOfMeasure: null,
       unitPriceError: null,
       unitOfMeasureError: null,
-      totalLineValueError: null
+      totalLineValueError: null,
+      cooID: -1,
+      cooIDError: null
     };
-
+    countriesList: CountryItem[] = [];
+    countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
+    countryQuery = '';
     isUpdate: boolean;
 
     ngOnInit() {
@@ -125,6 +132,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           unitPriceError: null,
           unitOfMeasureError: null,
           totalLineValueError: null,
+          cooID: -1,
+          cooIDError: null
         };
       }
 
@@ -198,6 +207,33 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       };
   
       this.snackbarService.setHelpContext(newContext);
+    }
+
+    loadCountries() {
+      const request: ListCountriesRequest = {
+        userID: this.currentUser.userID,
+        specificCountryID: -1,
+        rowStart: 1,
+        rowEnd: 500,
+        orderBy: '',
+        orderByDirection: '',
+        filter: ''
+      };
+      this.placeService.getCountriesCall(request).then(
+        (res: CountriesListResponse) => {
+          this.countriesList = res.countriesList;
+          this.countriesListTemp = res.countriesList;
+          this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID).code;
+        }
+      );
+    }
+    selectedCountry(country: number) {
+      // this.countryID = country;
+      this.form.cooID = country;
+    }
+    filterCountries() {
+      this.countriesList = this.countriesListTemp;
+      this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
     }
     ngOnDestroy(): void {
       this.unsubscribe$.next();

@@ -1,3 +1,5 @@
+import { PlaceService } from './../../../../services/Place.Service';
+import { ListCountriesRequest, CountriesListResponse, CountryItem } from './../../../../models/HttpRequests/Locations';
 import { FormControl } from '@angular/forms';
 import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { HelpSnackbar } from './../../../../services/HelpSnackbar.service';
@@ -33,7 +35,8 @@ export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
             private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
-            private snackbar: MatSnackBar, private snackbarService: HelpSnackbar) { }
+            private snackbar: MatSnackBar, private snackbarService: HelpSnackbar,
+            private placeService: PlaceService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -78,6 +81,10 @@ incoTermsListTemp: { rowNum: number, incoTermTypeID: number, name: string, descr
 incoTypeID = -1;
 incoTypeQuery = '';
 myControl = new FormControl();
+cooControl = new FormControl();
+countriesList: CountryItem[] = [];
+countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
+countryQuery = '';
 
 // Todo add guid for invoice items
 
@@ -114,7 +121,7 @@ form = {
     value: null,
     error: undefined
   },
-  coo: {
+  cooID: {
     value: null,
     error: null
   }
@@ -583,6 +590,34 @@ loader = false;
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+
+  loadCountries() {
+    const request: ListCountriesRequest = {
+      userID: this.currentUser.userID,
+      specificCountryID: -1,
+      rowStart: 1,
+      rowEnd: 500,
+      orderBy: '',
+      orderByDirection: '',
+      filter: ''
+    };
+    this.placeService.getCountriesCall(request).then(
+      (res: CountriesListResponse) => {
+        console.log(res);
+        this.countriesList = res.countriesList;
+        this.countriesListTemp = res.countriesList;
+        this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
+      }
+    );
+  }
+  selectedCountry(country: number) {
+    // this.countryID = country;
+    this.form.cooID.value = country;
+  }
+  filterCountries() {
+    this.countriesList = this.countriesListTemp;
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
   }
   ngOnDestroy(): void {
     this.unsubscribe$.next();

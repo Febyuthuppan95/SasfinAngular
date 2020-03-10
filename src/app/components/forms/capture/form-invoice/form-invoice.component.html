@@ -20,14 +20,45 @@
   <br>
 <form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
   <div class="form-group" *ngIf="this.form.invoiceNo != undefined">
-    <input type="text"[focus]="this.focusMainForm"
-      [(ngModel)]="this.form.invoiceNo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-invoice-invoiceno')"
-      [ngClass]="{'form-control-invalid': this.form.invoiceNo.error !== null}"
-      placeholder="Invoice No" />
-      <p class="invalid-control-label" *ngIf="this.form.invoiceNo.error !== null">{{this.form.invoiceNo.error}}</p>
+    <div class="row">
+      <div class="col-md-9">
+        <input type="text"[focus]="this.focusMainForm"
+        [(ngModel)]="this.form.invoiceNo.value" [ngModelOptions]="{standalone: true}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (mouseover)="updateHelpContext('form-invoice-invoiceno')"
+        [ngClass]="{'form-control-invalid': this.form.invoiceNo.error !== null}"
+        placeholder="Invoice No" />
+        <p class="invalid-control-label" *ngIf="this.form.invoiceNo.error !== null">{{this.form.invoiceNo.error}}</p>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="datepicker">
+          <input matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
+          [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
+          (mouseover)="updateHelpContext('form-invoice-invoicedate')"
+          [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
+          placeholder="Invoice Date" />
+         <!-- <mat-label>Invoice Date</mat-label> 
+          <input matInput [matDatepicker]="invoiceDate" > -->
+          <mat-datepicker-toggle matPrefix [for]="invoiceDate"></mat-datepicker-toggle>
+          <mat-datepicker #invoiceDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
   </div>
+<!-- 
+  <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
+    <mat-form-field class="datepicker">
+      <input matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
+      [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
+      (mouseover)="updateHelpContext('form-invoice-invoicedate')"
+      [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
+      placeholder="Invoice Date" />
+    <mat-label>Invoice Date</mat-label> 
+      <input matInput [matDatepicker]="invoiceDate" > 
+      <mat-datepicker-toggle matPrefix [for]="invoiceDate"></mat-datepicker-toggle>
+      <mat-datepicker #invoiceDate></mat-datepicker>
+    </mat-form-field>
+  </div> -->
   <div class="form-group" *ngIf="this.form.fromCompany != undefined">
     <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}" 
     [ngClass]="{'form-control-invalid': this.form.fromCompany.error !== null}" type="text" placeholder="From Company" aria-label="From Company" 
@@ -54,46 +85,22 @@
     </mat-autocomplete>
     <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
     </div>
-    <!-- <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
-      <input type="text"[focus]="this.focusMainForm"
-        [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
-        class="form-control form-control-sm shadow-sm form-control-light"
-        (mouseover)="updateHelpContext('form-invoice-invoicedate')"
-        [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
-        placeholder="Invoice Date" />
-        <p class="invalid-control-label" *ngIf="this.form.invoiceDate.error !== null">{{this.form.invoiceDate.error}}</p>
-    </div> -->
-  <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
-    <mat-form-field>
-      <!-- <input matInput type="text"[focus]="this.focusMainForm"
-      [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-invoice-invoicedate')"
-      [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
-      placeholder="Invoice Date" [matDatepicker]="invoiceDate"/>-->
-      <mat-label>Invoice Date</mat-label> 
-      <input matInput [matDatepicker]="invoiceDate" >
-      <mat-datepicker-toggle matSuffix [for]="invoiceDate"></mat-datepicker-toggle>
-      <mat-datepicker #invoiceDate></mat-datepicker>
-    </mat-form-field>
-  </div>
-  <div class="form-group" *ngIf="this.form.coo != undefined">
-    <input type="text"[focus]="this.focusMainForm"
-      [(ngModel)]="this.form.coo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-invoice-coo')"
-      [ngClass]="{'form-control-invalid': this.form.coo.error !== null}"
-      placeholder="COO" />
-      <p class="invalid-control-label" *ngIf="this.form.coo.error !== null">{{this.form.coo.error}}</p>
-  </div>
-  <div class="form-group" *ngIf="this.form.coo != undefined">
-    <input type="text"[focus]="this.focusMainForm"
-      [(ngModel)]="this.form.coo.value" [ngModelOptions]="{standalone: true}"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-invoice-coo')"
-      [ngClass]="{'form-control-invalid': this.form.coo.error !== null}"
-      placeholder="COO" />
-      <p class="invalid-control-label" *ngIf="this.form.coo.error !== null">{{this.form.coo.error}}</p>
+   
+  <div class="form-group" *ngIf="this.form.cooID != undefined">
+    <input [(ngModel)]="this.countryQuery" type="text"
+    class="form-control form-control-sm shadow-sm form-control-light"
+    (keyup)="filterCountries()"
+    placeholder="COO" aria-label="COOID"
+    [formControl]="cooControl"
+    [matAutocomplete]="cooAuto"
+    (mouseover)="updateHelpContext('form-customs-worksheet-line-coo')">
+    <mat-autocomplete #cooAuto="matAutocomplete" >
+      <mat-option *ngFor="let country of countriesList" [value]="country.code"
+      (onSelectionChange)="selectedCountry(country.countryID)">
+        {{country.code}} - {{country.name}}
+      </mat-option>
+    </mat-autocomplete>
+      <p class="invalid-control-label" *ngIf="this.form.cooID.error !== null">{{this.form.cooID.error}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.incoType != undefined">
     <label for="quantityValue">Inco Type</label>
