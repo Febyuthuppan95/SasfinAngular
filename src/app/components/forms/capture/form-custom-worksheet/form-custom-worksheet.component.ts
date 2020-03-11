@@ -246,12 +246,14 @@ dialogOpen = false;
     }).then(
       (res: CustomsWorksheetListResponse) => {
         if (res.customsWorksheets.length === 1) {
+          console.log(res);
           this.form.LRN.value = res.customsWorksheets[0].lrn;
           this.form.LRN.error = res.customsWorksheets[0].lrnError;
           this.form.fileRef.value = res.customsWorksheets[0].fileRef;
           this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
           this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
           this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
+          console.log(this.form);
         }
       },
       (msg) => {}

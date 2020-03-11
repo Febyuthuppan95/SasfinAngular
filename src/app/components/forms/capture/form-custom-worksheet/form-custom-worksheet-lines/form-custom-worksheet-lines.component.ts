@@ -247,6 +247,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID).code;
+        console.log(this.countryQuery);
       }
     );
   }
@@ -259,6 +260,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.tariffs = res.tariffList;
         this.tariffsTemp = res.tariffList;
         this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID).description;
+        console.log(this.tariffQuery);
       },
       (msg) => {
       }
@@ -312,6 +314,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
           this.unitOfMeasureList = res.unitOfMeasureList;
           this.unitOfMeasureListTemp = res.unitOfMeasureList;
           this.unitQuery = this.isUpdate ? this.unitOfMeasureList.find(x => x.unitOfMeasureID === this.form.unitOfMeasureID).name : '';
+          console.log(this.unitQuery);
         }
       },
       (msg) => {
