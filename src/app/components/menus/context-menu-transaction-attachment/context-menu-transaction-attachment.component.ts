@@ -26,7 +26,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   ngOnInit() {}
 
   capture() {
-    if (this.statusID === 1) {
+    if (this.statusID !== 5 && this.statusID !== 2 && this.statusID !== 4) {
       this.docService.loadDocumentToViewer(this.docPath);
       // tslint:disable-next-line: max-line-length
       this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
