@@ -26,7 +26,7 @@
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
       (mouseover)="updateHelpContext('form-sad500-MRN')"
       placeholder="MRN" />
-      <p class="invalid-control-label" *ngIf="this.form.MRN.error !== null">{{this.form.MRN.error}}</p>
+      <p class="invalid-control-label" >{{this.form.MRN.error}}<button mat-button color="warning">Override</button></p>
   </div>
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
       <input [focus]="this.focusMainForm" type="text"

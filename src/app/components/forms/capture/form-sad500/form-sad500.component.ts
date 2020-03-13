@@ -65,59 +65,123 @@ vocSAD500ID = -1;
 form = {
   referenceNo: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   reason: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   serialNo: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   LRN: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   PCC: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   totalCustomsValue: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   waybillNo: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   supplierRef: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   MRN: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   CPC: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   CPCC: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   totalCustomsDuty: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   fileRef: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   rebateCode: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
+  },
+  importersCode: {
+    value: null,
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   }
 };
 
@@ -291,7 +355,38 @@ dialogOpen = false;
       isDeleted: 0,
       attachmentStatusID: 3,
       fileRef: this.form.fileRef.value,
-      rebateCode: this.form.rebateCode.value
+      rebateCode: this.form.rebateCode.value,
+      importerdCode: this.form.importersCode.value,
+
+      lrnOBit: this.form.LRN.OBit,
+      lrnOUserID: this.form.LRN.OUserID,
+      lrnODate: this.form.LRN.ODate,
+      lrnOReason: this.form.LRN.OReason,
+
+      mrnOBit: this.form.MRN.OBit,
+      mrnOUserID: this.form.MRN.OUserID,
+      mrnODate: this.form.MRN.ODate,
+      mrnOReason: this.form.MRN.OReason,
+
+      cpcOBit: this.form.CPC.OBit,
+      cpcOUserID: this.form.CPC.OUserID,
+      cpcODate: this.form.CPC.ODate,
+      cpcOReason: this.form.CPC.OReason,
+
+      importersCodeOBit: this.form.importersCode.OBit,
+      importersCodeOUserID: this.form.importersCode.OUserID,
+      importersCodeODate: this.form.importersCode.ODate,
+      importersCodeOReason: this.form.importersCode.OReason,
+
+      fileRefOBit: this.form.fileRef.OBit,
+      fileRefOUserID: this.form.fileRef.OUserID,
+      fileRefODate: this.form.fileRef.ODate,
+      fileRefOReason: this.form.fileRef.OReason,
+
+      totalDutyOBit: this.form.totalCustomsDuty.OBit,
+      totalDutyOUserID: this.form.totalCustomsDuty.OUserID,
+      totalDutyODate: this.form.totalCustomsDuty.ODate,
+      totalDutyOReason: this.form.totalCustomsDuty.OReason,
     };
     if (this.attachmentType === 'VOC') { // Save VOC Header
       // First Create new SAD500 record
@@ -300,7 +395,7 @@ dialogOpen = false;
       //   (res: Outcome) => {
       //     if (res.outcome === 'SUCCESS') {
       //       this.notify.successmsg(res.outcome, res.outcomeMessage);
-  
+
       //       this.companyService.setCapture({ capturestate: true });
       //       this.router.navigateByUrl('transaction/capturerlanding');
       //     } else {
@@ -330,7 +425,7 @@ dialogOpen = false;
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
-  
+
             this.companyService.setCapture({ capturestate: true });
             this.router.navigateByUrl('transaction/capturerlanding');
           } else {
@@ -392,27 +487,71 @@ dialogOpen = false;
     }).then(
       (res: SAD500Get) => {
         this.form.MRN.value = res.mrn;
-        this.form.MRN.error = res.mrnError;
         this.form.serialNo.value = res.serialNo;
-        this.form.serialNo.error = res.serialNoError;
         this.form.totalCustomsValue.value = res.totalCustomsValue;
-        this.form.totalCustomsValue.error = res.totalCustomsValueError;
         this.form.waybillNo.value = res.waybillNo;
-        this.form.waybillNo.error = res.waybillNoError;
         this.form.supplierRef.value = res.supplierRef;
-        this.form.supplierRef.error = res.supplierRefError;
         this.form.LRN.value = res.lrn;
-        this.form.LRN.error = res.lrnError;
         this.form.PCC.value = res.pcc;
-        this.form.PCC.error = res.pccError;
         this.form.CPC.value = res.cpc;
-        this.form.CPC.error = res.cpcError;
         this.form.fileRef.value = res.fileRef;
-        this.form.fileRef.error = res.fileRefError;
         this.form.rebateCode.value = res.rebateCode;
-        this.form.rebateCode.error = res.rebateCodeError;
         this.form.totalCustomsDuty.value = res.totalDuty;
-        this.form.totalCustomsDuty.error = res.totalDutyError;
+
+        this.form.waybillNo.OBit = res.waybillNoOBit;
+        this.form.waybillNo.OUserID = res.waybillNoOUserID;
+        this.form.waybillNo.ODate = res.waybillNoODate;
+        this.form.waybillNo.OReason = res.waybillNoOReason;
+
+        this.form.serialNo.OBit = res.serialNoOBit;
+        this.form.serialNo.OUserID = res.serialNoOUserID;
+        this.form.serialNo.ODate = res.serialNoODate;
+        this.form.serialNo.OReason = res.serialNoOReason;
+
+        this.form.PCC.OBit = res.pccOBit;
+        this.form.PCC.OUserID = res.pccOUserID;
+        this.form.PCC.ODate = res.pccODate;
+        this.form.PCC.OReason = res.pccOReason;
+
+        this.form.supplierRef.OBit = res.supplierRefOBit;
+        this.form.supplierRef.OUserID = res.supplierRefOUserID;
+        this.form.supplierRef.ODate = res.supplierRefODate;
+        this.form.supplierRef.OReason = res.supplierRefOReason;
+
+        this.form.totalCustomsValue.OBit = res.totalCustomValueOBit;
+        this.form.totalCustomsValue.OUserID = res.totalCustomValueOUserID;
+        this.form.totalCustomsValue.ODate = res.totalCustomValueODate;
+        this.form.totalCustomsValue.OReason = res.totalCustomValueOReason;
+
+        this.form.LRN.OBit = res.lrnOBit;
+        this.form.LRN.OUserID = res.lrnOUserID;
+        this.form.LRN.ODate = res.lrnODate;
+        this.form.LRN.OReason = res.lrnOReason;
+
+        this.form.MRN.OBit = res.mrnOBit;
+        this.form.MRN.OUserID = res.mrnOUserID;
+        this.form.MRN.ODate = res.mrnODate;
+        this.form.MRN.OReason = res.mrnOReason;
+
+        this.form.CPC.OBit = res.cpcOBit;
+        this.form.CPC.OUserID = res.cpcOUserID;
+        this.form.CPC.ODate = res.cpcODate;
+        this.form.CPC.OReason = res.cpcOReason;
+
+        this.form.importersCode.OBit = res.importersCodeOBit;
+        this.form.importersCode.OUserID = res.importersCodeOUserID;
+        this.form.importersCode.ODate = res.importersCodeODate;
+        this.form.importersCode.OReason = res.importersCodeOReason;
+
+        this.form.fileRef.OBit = res.fileRefOBit;
+        this.form.fileRef.OUserID = res.fileRefOUserID;
+        this.form.fileRef.ODate = res.fileRefODate;
+        this.form.fileRef.OReason = res.fileRefOReason;
+
+        this.form.totalCustomsDuty.OBit = res.totalDutyOBit;
+        this.form.totalCustomsDuty.OUserID = res.totalDutyOUserID;
+        this.form.totalCustomsDuty.OReason = res.totalDutyOReason;
+        this.form.totalCustomsDuty.OReason = res.totalDutyOReason;
 
       },
       (msg) => {
@@ -558,14 +697,13 @@ dialogOpen = false;
     if (this.lines < this.sad500CreatedLines.length - 1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
-      
+
     }
 
     if (this.lines === -1) {
       this.lines++;
       this.focusLineData = this.sad500CreatedLines[this.lines];
     }
-    console.log(this.focusLineData);
   }
 
   specificLine(index: number) {

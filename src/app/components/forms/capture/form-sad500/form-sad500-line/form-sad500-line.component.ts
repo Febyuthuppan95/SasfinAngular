@@ -83,28 +83,94 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   form = {
-    tariffID: -1,
-    tariff: '',
-    customsValue: 0,
-    lineNo: '',
-    unitOfMeasureID: -1,
-    unitOfMeasure: '',
-    cpcError: null,
-    tariffError: null,
-    customsValueError: null,
-    lineNoError: null,
-    unitOfMeasureError: null,
-    quantity: 0,
-    quantityError: null,
-    previousDeclarationError: null,
-    previousDeclaration: '',
-    vat: null,
-    vatError: '',
-    supplyUnit: null,
-    supplyUnitError: '',
-    coo: '',
-    cooID: -1,
-    cooIDError: ''
+    tariffID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    tariff: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    customsValue: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    lineNo: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    unitOfMeasureID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    unitOfMeasure: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    quantity: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    previousDeclaration: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    vat: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    supplyUnit: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    cooID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    }
   };
   isUpdate: boolean;
 
@@ -154,46 +220,112 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     console.log(this.updateSAD500Line);
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
-      
+
       this.isUpdate = true;
 
-      this.form.customsValue = this.updateSAD500Line.customsValue;
-      this.form.lineNo = this.updateSAD500Line.lineNo;
-      this.form.tariff = '';
-      this.form.unitOfMeasure = '';
-      this.form.tariffError = this.updateSAD500Line.tariffError;
-      this.form.customsValueError = this.updateSAD500Line.customsValueError;
-      this.form.unitOfMeasureError = this.updateSAD500Line.unitOfMeasureError;
-      this.form.lineNoError = this.updateSAD500Line.lineNoError;
-      this.form.quantity = this.updateSAD500Line.quantity;
-      this.form.quantityError = this.updateSAD500Line.quantityError;
+      this.form.customsValue.error = this.updateSAD500Line.customsValue;
+      this.form.lineNo.error = this.updateSAD500Line.lineNo;
+      this.form.tariff.value = '';
+      this.form.unitOfMeasure.value = '';
+      this.form.tariff.error = this.updateSAD500Line.tariffError;
+      this.form.customsValue.error = this.updateSAD500Line.customsValueError;
+      this.form.unitOfMeasure.error = this.updateSAD500Line.unitOfMeasureError;
+      this.form.lineNo.error = this.updateSAD500Line.lineNoError;
+      this.form.quantity.value = this.updateSAD500Line.quantity;
+      this.form.quantity.error = this.updateSAD500Line.quantityError;
       this.loadDuties();
     } else {
       this.isUpdate = false;
       this.dutiesToBeSaved = [];
       this.form = {
-        tariffID: -1,
-        tariff: '',
-        customsValue: 0,
-        lineNo: '',
-        unitOfMeasureID: -1,
-        unitOfMeasure: '',
-        cpcError: null,
-        tariffError: null,
-        customsValueError: null,
-        lineNoError: null,
-        unitOfMeasureError: null,
-        quantity: 0,
-        quantityError: null,
-        previousDeclarationError: null,
-        previousDeclaration: '',
-        vat: 0,
-        vatError: null,
-        supplyUnit: '',
-        supplyUnitError: null,
-        coo: '',
-        cooID: -1,
-        cooIDError: null
+        tariffID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        tariff: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        customsValue: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        lineNo: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        unitOfMeasureID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        unitOfMeasure: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        quantity: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        previousDeclaration: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        vat: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        supplyUnit: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        cooID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        }
       };
       this.loadDuties();
     }
@@ -224,17 +356,56 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         sad500ID: -1,
         tariffID: 1,
         // tariff: this.form.tariff,
-        customsValue: this.form.customsValue,
-        lineNo: this.form.lineNo,
+        customsValue: this.form.customsValue.value,
+        lineNo: this.form.lineNo.value,
         unitOfMeasureID: 1,
         // unitOfMeasure: this.form.unitOfMeasure,
-        quantity: this.form.quantityError,
-        previousDeclaration: this.form.previousDeclaration,
+        quantity: this.form.quantity.error,
+        previousDeclaration: this.form.previousDeclaration.value,
         // vat: this.form.vat,
-        supplyUnit: this.form.supplyUnit,
+        supplyUnit: this.form.supplyUnit.value,
         cooID: this.countryID,
         replacedByLineID: -1,
         originalLineID: -1
+
+        // lineNoOBit
+        // lineNoOUserID
+        // lineNoODate
+        // lineNoOReason
+
+        // customsValueOBit
+        // customsValueOUserID
+        // customsValueODate
+        // customsValueOReason
+
+        // quantityOBit
+        // quantityOUserID
+        // quantityODate
+        // quantityOReason
+
+        // previousDeclarationOBit
+        // previousDeclarationOUserID
+        // previousDeclarationODate
+        // previousDeclarationOReason
+
+        // dutyOBit
+        // dutyOUserID
+        // dutyODate
+        // dutyOReason
+
+        // vatOBit
+        // vatOUserID
+        // vatODate
+        // vatOReason
+
+        // supplyUnitOBit
+        // supplyUnitOUserID
+        // supplyUnitODate
+        // supllyUnitOReason
+
+
+
+
       });
     } else {
       this.submitSADLine.emit({
@@ -242,15 +413,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         sad500ID: -1,
         tariffID: 1,
         // tariff: '',
-        customsValue: this.form.customsValue,
-        lineNo: this.form.lineNo,
+        customsValue: this.form.customsValue.value,
+        lineNo: this.form.lineNo.value,
         unitOfMeasureID: 1,
         // unitOfMeasure: this.form.unitOfMeasure,
-        quantity: this.form.quantity,
+        quantity: this.form.quantity.value,
         duties: this.dutiesToBeSaved,
-        previousDeclaration: this.form.previousDeclaration,
+        previousDeclaration: this.form.previousDeclaration.value,
         // vat: this.form.vat,
-        supplyUnit: this.form.supplyUnit,
+        supplyUnit: this.form.supplyUnit.value,
         cooID: this.countryID,
         replacedByLineID: -1,
         originalLineID: -1
@@ -283,7 +454,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     };
     this.placeService.getCountriesCall(request).then(
       (res: CountriesListResponse) => {
-        
+
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         console.log(this.countriesList);
@@ -303,7 +474,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   assignDuty(duty: Duty) {
-    
+
     this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     if (this.isUpdate) {
       console.log(duty);
