@@ -66,21 +66,27 @@ form = {
   LRN: {
     value: null,
     error: null,
-    type: 'LRN',
-    typeError: null
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   fileRef: {
     value: null,
     error: null,
-    type: 'File',
-    typeError: null
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
 
   },
   waybillNo: {
     value: null,
     error: null,
-    type: 'WAY',
-    typeError: null
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   }
 };
 
@@ -88,7 +94,7 @@ lineIndex = 0;
 dialogOpen = false;
 
   ngOnInit() {
- 
+
     console.log('worksheet');
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -200,6 +206,21 @@ dialogOpen = false;
       isDeleted: 0,
       attachmentStatusID: 3,
       waybillNo: this.form.waybillNo.value,
+
+      waybillNoOBit: this.form.waybillNo.OBit,
+      waybillNoOUserID: this.form.waybillNo.OUserID,
+      waybillNoODate: this.form.waybillNo.ODate,
+      waybillNoOReason: this.form.waybillNo.OReason,
+
+      lrnOBit: this.form.LRN.OBit,
+      lrnOUserID: this.form.LRN.OUserID,
+      lrnODate: this.form.LRN.ODate,
+      lrnOReason: this.form.LRN.OReason,
+
+      fileRefOBit: this.form.fileRef.OBit,
+      fileRefOUserID: this.form.fileRef.OUserID,
+      fileRefODate: this.form.fileRef.ODate,
+      fileRefOReason: this.form.fileRef.OReason,
     };
 
     this.captureService.customWorksheetUpdate(requestModel).then(
@@ -253,6 +274,22 @@ dialogOpen = false;
           this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
           this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
           this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
+
+          this.form .waybillNo.OBit = res.customsWorksheets[0].waybillNoOBit;
+          this.form .waybillNo.OUserID = res.customsWorksheets[0].waybillNoOUserID;
+          this.form .waybillNo.ODate = res.customsWorksheets[0].waybillNoODate;
+          this.form .waybillNo.OReason = res.customsWorksheets[0].waybillNoOReason;
+
+          this.form .fileRef.OBit = res.customsWorksheets[0].fileRefOBit;
+          this.form .fileRef.OUserID = res.customsWorksheets[0].fileRefOUserID;
+          this.form .fileRef.ODate = res.customsWorksheets[0].fileRefODate;
+          this.form .fileRef.OReason = res.customsWorksheets[0].fileRefOReason;
+
+          this.form.LRN.OBit = res.customsWorksheets[0].lrnOBit;
+          this.form.LRN.OUserID = res.customsWorksheets[0].lrnOUserID;
+          this.form.LRN.ODate = res.customsWorksheets[0].lrnODate;
+          this.form.LRN.OReason = res.customsWorksheets[0].lrnOReason;
+
           console.log(this.form);
         }
       },
@@ -269,15 +306,11 @@ dialogOpen = false;
       orderBy: '',
       orderByDirection: '',
       filter: ''
-      }).then(
-      (res: CustomWorksheetLinesResponse) => {
+      }).then((res: CustomWorksheetLinesResponse) => {
         this.linesCreated = res.lines;
-        console.log(this.linesCreated);
-        console.log(this.lines);
         this.lines = this.linesCreated.length;
         if (this.lines > -1) {
           this.focusLineData = this.linesCreated[this.lines - 1];
-          console.log(this.focusLineData);
         }
 
         // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
