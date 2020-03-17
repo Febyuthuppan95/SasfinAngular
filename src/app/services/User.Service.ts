@@ -47,14 +47,15 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
-    console.log(currentUser);
     this.cookieService.set(
       'currentUser',
       currentUser,
       1000 * 60 * 60 * 24,
-      '/'
+      '/',
+      null,
+      false,
+      'Lax'
     );
-    console.log(this.getCurrentUser());
 
   }
 
