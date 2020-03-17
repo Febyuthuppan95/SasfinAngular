@@ -50,28 +50,126 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   form = {
-    coo: '',
-    tariffHeading: '',
-    custVal: 0,
-    hsQuantity: 0,
-    foreignInv: 0,
-    duty: 0,
-    commonFactor: '',
-    cooError: null,
-    tariffHeadingError: null,
-    custValError: null,
-    hsQuantityError: null,
-    foreignInvError: null,
-    dutyError: null,
-    commonFactorError: null,
-    unitOfMeasureID: -1,
-    cooID: -1,
-    invoiceNo: null,
-    prodCode: null,
-    tariffID: -1,
-    vat: 0,
-    supplyUnit: 0,
-    currencyID: -1,
+    coo: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    tariffHeading: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    custVal: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    hsQuantity: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    foreignInv: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    duty: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    commonFactor: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    unitOfMeasureID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    cooID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    invoiceNo: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    prodCode: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    tariffID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    vat: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    supplyUnit: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
+    currencyID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
   };
 
   isUpdate: boolean;
@@ -107,7 +205,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     // .subscribe((val) => {
     //   this.form.currencyID = val;
     // });
-   
+
     this.loadCountries();
     this.loadTarrifs();
     this.loadUnits();
@@ -135,50 +233,148 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     console.log(this.updateLine);
     if (this.updateLine !== null && this.updateLine !== undefined) {
       this.isUpdate = true;
-      this.form.custVal = this.updateLine.custVal;
-      this.form.hsQuantity = this.updateLine.hsQuantity;
-      this.form.foreignInv = this.updateLine.foreignInv;
-      this.form.duty = this.updateLine.duty;
-      this.form.cooError = this.updateLine.cooError;
-      this.form.custValError = this.updateLine.custValError;
-      this.form.hsQuantityError = this.updateLine.hsQuantityError;
-      this.form.foreignInvError = this.updateLine.foreignInvError;
-      this.form.dutyError = this.updateLine.dutyError;
-      this.form.commonFactor = this.updateLine.commonFactor;
-      this.form.commonFactorError = this.updateLine.commonFactorError;
-      this.form.supplyUnit = this.updateLine.supplyUnit;
-      this.form.unitOfMeasureID = this.updateLine.unitOfMeasureID;
-      this.form.currencyID = this.updateLine.currencyID;
-      this.form.tariffID = this.updateLine.tariffID;
-      this.form.invoiceNo = this.updateLine.invoiceNo;
-      this.form.prodCode = this.updateLine.prodCode;
-      this.form.cooID = this.updateLine.cooID;
-      
+      this.form.custVal.value = this.updateLine.custVal;
+      this.form.hsQuantity.value = this.updateLine.hsQuantity;
+      this.form.foreignInv.value = this.updateLine.foreignInv;
+      this.form.duty.value = this.updateLine.duty;
+      this.form.coo.error = this.updateLine.cooError;
+      this.form.custVal.error = this.updateLine.custValError;
+      this.form.hsQuantity.error = this.updateLine.hsQuantityError;
+      this.form.foreignInv.error = this.updateLine.foreignInvError;
+      this.form.duty.error = this.updateLine.dutyError;
+      this.form.commonFactor.value = this.updateLine.commonFactor;
+      this.form.commonFactor.error = this.updateLine.commonFactorError;
+      this.form.supplyUnit.value = this.updateLine.supplyUnit;
+      this.form.unitOfMeasureID.value = this.updateLine.unitOfMeasureID;
+      this.form.currencyID.value = this.updateLine.currencyID;
+      this.form.tariffID.value = this.updateLine.tariffID;
+      this.form.invoiceNo.value = this.updateLine.invoiceNo;
+      this.form.prodCode.value = this.updateLine.prodCode;
+      this.form.cooID.value = this.updateLine.cooID;
+
     } else {
       this.isUpdate = false;
       this.form = {
-        coo: '',
-        tariffHeading: '',
-        custVal: 0,
-        hsQuantity: 0,
-        foreignInv: 0,
-        duty: 0,
-        commonFactor: '',
-        cooError: null,
-        tariffHeadingError: null,
-        custValError: null,
-        hsQuantityError: null,
-        foreignInvError: null,
-        dutyError: null,
-        commonFactorError: null,
-        unitOfMeasureID: null,
-        cooID: null,
-        invoiceNo: null,
-        prodCode: null,
-        tariffID: null,
-        vat: null,
-        supplyUnit: null,
-        currencyID: null,
+        coo: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        tariffHeading: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        custVal: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        hsQuantity: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        foreignInv: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        duty: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        commonFactor: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        unitOfMeasureID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        cooID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        invoiceNo: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        prodCode: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        tariffID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        vat: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        supplyUnit: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
+        currencyID: {
+          value: null,
+          error: null,
+          OBit: null,
+          OUserID: null,
+          ODate: null,
+          OReason: null,
+        },
       };
     }
   }
@@ -188,45 +384,158 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       console.log(this.updateLine);
       const model: CustomWorksheetLineReq = {
         customWorksheetLineID: this.updateLine.customWorksheetLineID,
-        hsQuantity: this.form.hsQuantity,
-        foreignInv: this.form.foreignInv,
-        custVal: this.form.custVal,
-        duty: this.form.duty,
-        commonFactor: this.form.commonFactor,
-        unitOfMeasureID: this.form.unitOfMeasureID,
-        cooID: this.form.cooID,
-        invoiceNo: this.form.invoiceNo,
-        prodCode: this.form.prodCode,
-        tariffID: this.form.tariffID,
-        supplyUnit: this.form.supplyUnit,
-        currencyID: this.form.currencyID,
+        hsQuantity: this.form.hsQuantity.value,
+        foreignInv: this.form.foreignInv.value,
+        custVal: this.form.custVal.value,
+        duty: this.form.duty.value,
+        commonFactor: this.form.commonFactor.value,
+        unitOfMeasureID: this.form.unitOfMeasureID.value,
+        cooID: this.form.cooID.value,
+        invoiceNo: this.form.invoiceNo.value,
+        prodCode: this.form.prodCode.value,
+        tariffID: this.form.tariffID.value,
+        supplyUnit: this.form.supplyUnit.value,
+        currencyID: this.form.currencyID.value,
+        vat: this.form.vat.value,
+
+        cooOBit: this.form.cooID.OBit,
+        cooOUserID: this.form.cooID.OUserID,
+        cooODate: this.form.cooID.ODate,
+        cooOReason: this.form.cooID.OReason,
+
+        tariffHeadingOBit: this.form.tariffHeading.OBit,
+        tariffHeadingOUserID: this.form.tariffHeading.OUserID,
+        tariffHeadingODate: this.form.tariffHeading.ODate,
+        tariffHeadingOReason: this.form.tariffHeading.OReason,
+
+        hsQuantityOBit: this.form.hsQuantity.OBit,
+        hsQuantityOUserID: this.form.hsQuantity.OUserID,
+        hsQuantityODate: this.form.hsQuantity.ODate,
+        hsQuantityOReason: this.form.hsQuantity.OReason,
+
+        foreignInvOBit: this.form.foreignInv.OBit,
+        foreignInvOUserID: this.form.foreignInv.OUserID,
+        foreignInvODate: this.form.foreignInv.ODate,
+        foreignInvOReason: this.form.foreignInv.OReason,
+
+        custValOBit: this.form.custVal.OBit,
+        custValOUserID: this.form.custVal.OUserID,
+        custValODate: this.form.custVal.ODate,
+        custValOReason: this.form.custVal.OReason,
+
+        dutyOBit: this.form.duty.OBit,
+        dutyOUserID: this.form.duty.OUserID,
+        dutyODate: this.form.duty.ODate,
+        dutyOReason: this.form.duty.OReason,
+
+        commonFactorOBit: this.form.commonFactor.OBit,
+        commonFactorOUserID: this.form.commonFactor.OUserID,
+        commonFactorODate: this.form.commonFactor.ODate,
+        commonFactorOReason: this.form.commonFactor.OReason,
+
+        invoiceNoOBit: this.form.invoiceNo.OBit,
+        invoiceNoOUserID: this.form.invoiceNo.OUserID,
+        invooiceNoODate: this.form.invoiceNo.ODate,
+        invoiceNoOReason: this.form.invoiceNo.OReason,
+
+        prodCodeOBit: this.form.prodCode.OBit,
+        prodCodeOUserID: this.form.prodCode.OUserID,
+        prodCodeODate: this.form.prodCode.ODate.ODate,
+        prodCodeOReason: this.form.prodCode.OReason,
+
+        vatOBit: this.form.vat.OBit,
+        vatOUserID: this.form.vat.OUserID,
+        vatODate: this.form.vat.ODate,
+        vatOReason: this.form.vat.OReason,
+
+        supplyUnitOBit: this.form.supplyUnit.OBit,
+        supplyUnitOUserID: this.form.supplyUnit.OUserID,
+        supplyUnitODate: this.form.supplyUnit.ODate,
+        supplyUnitOReason: this.form.supplyUnit.OReason,
       };
       const valid: { errors: object[], count: number } = this.validate.model(model);
       console.log(valid);
       if (valid.count > 0) {
-        
+
       }
       // this.updateSADLine.emit(model);
     } else {
       console.log(this.form);
       const model: CustomWorksheetLineReq = {
-        hsQuantity: this.form.hsQuantity,
-        foreignInv: this.form.foreignInv,
-        custVal: this.form.custVal,
-        duty: this.form.duty,
-        commonFactor: this.form.commonFactor,
-        unitOfMeasureID: this.form.unitOfMeasureID,
-        cooID: this.form.cooID,
-        invoiceNo: this.form.invoiceNo,
-        prodCode: this.form.prodCode,
-        tariffID: this.form.tariffID,
-        supplyUnit: this.form.supplyUnit,
-        currencyID: this.form.currencyID,
+        hsQuantity: this.form.hsQuantity.value,
+        foreignInv: this.form.foreignInv.value,
+        custVal: this.form.custVal.value,
+        duty: this.form.duty.value,
+        commonFactor: this.form.commonFactor.value,
+        unitOfMeasureID: this.form.unitOfMeasureID.value,
+        cooID: this.form.cooID.value,
+        invoiceNo: this.form.invoiceNo.value,
+        prodCode: this.form.prodCode.value,
+        tariffID: this.form.tariffID.value,
+        supplyUnit: this.form.supplyUnit.value,
+        currencyID: this.form.currencyID.value,
+        vat: this.form.vat.value,
+
+        cooOBit: this.form.cooID.OBit,
+        cooOUserID: this.form.cooID.OUserID,
+        cooODate: this.form.cooID.ODate,
+        cooOReason: this.form.cooID.OReason,
+
+        tariffHeadingOBit: this.form.tariffHeading.OBit,
+        tariffHeadingOUserID: this.form.tariffHeading.OUserID,
+        tariffHeadingODate: this.form.tariffHeading.ODate,
+        tariffHeadingOReason: this.form.tariffHeading.OReason,
+
+        hsQuantityOBit: this.form.hsQuantity.OBit,
+        hsQuantityOUserID: this.form.hsQuantity.OUserID,
+        hsQuantityODate: this.form.hsQuantity.ODate,
+        hsQuantityOReason: this.form.hsQuantity.OReason,
+
+        foreignInvOBit: this.form.foreignInv.OBit,
+        foreignInvOUserID: this.form.foreignInv.OUserID,
+        foreignInvODate: this.form.foreignInv.ODate,
+        foreignInvOReason: this.form.foreignInv.OReason,
+
+        custValOBit: this.form.custVal.OBit,
+        custValOUserID: this.form.custVal.OUserID,
+        custValODate: this.form.custVal.ODate,
+        custValOReason: this.form.custVal.OReason,
+
+        dutyOBit: this.form.duty.OBit,
+        dutyOUserID: this.form.duty.OUserID,
+        dutyODate: this.form.duty.ODate,
+        dutyOReason: this.form.duty.OReason,
+
+        commonFactorOBit: this.form.commonFactor.OBit,
+        commonFactorOUserID: this.form.commonFactor.OUserID,
+        commonFactorODate: this.form.commonFactor.ODate,
+        commonFactorOReason: this.form.commonFactor.OReason,
+
+        invoiceNoOBit: this.form.invoiceNo.OBit,
+        invoiceNoOUserID: this.form.invoiceNo.OUserID,
+        invooiceNoODate: this.form.invoiceNo.ODate,
+        invoiceNoOReason: this.form.invoiceNo.OReason,
+
+        prodCodeOBit: this.form.prodCode.OBit,
+        prodCodeOUserID: this.form.prodCode.OUserID,
+        prodCodeODate: this.form.prodCode.ODate.ODate,
+        prodCodeOReason: this.form.prodCode.OReason,
+
+        vatOBit: this.form.vat.OBit,
+        vatOUserID: this.form.vat.OUserID,
+        vatODate: this.form.vat.ODate,
+        vatOReason: this.form.vat.OReason,
+
+        supplyUnitOBit: this.form.supplyUnit.OBit,
+        supplyUnitOUserID: this.form.supplyUnit.OUserID,
+        supplyUnitODate: this.form.supplyUnit.ODate,
+        supplyUnitOReason: this.form.supplyUnit.OReason,
+
       };
       const valid: { errors: object[], count: number } = this.validate.model(model);
       console.log(valid);
       if (valid.count > 0) {
-        
+
       }
       // this.submitSADLine.emit(model);
     }
@@ -246,7 +555,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       (res: CountriesListResponse) => {
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
-        this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID).code;
+        this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
         console.log(this.countryQuery);
       }
     );
@@ -259,7 +568,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
               outcome: Outcome, rowCount: number }) => {
         this.tariffs = res.tariffList;
         this.tariffsTemp = res.tariffList;
-        this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID).description;
+        this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID.value).description;
         console.log(this.tariffQuery);
       },
       (msg) => {
@@ -274,16 +583,17 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   selectedCountry(country: number) {
     this.countryID = country;
-    this.form.cooID = this.countryID;
+    this.form.cooID.value = this.countryID;
   }
   selectedCurrency(currency: number) {
-    
-    this.form.currencyID = currency;
+
+    this.form.currencyID.value = currency;
     console.log(this.form.currencyID);
     // this.currency.setValue(currency);
   }
 
   matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
@@ -298,7 +608,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   selectedTariff(tariff: number) {
     console.log(tariff);
-    this.form.tariffID = tariff;
+    this.form.tariffID.value = tariff;
   }
 
   filterTariff() {
@@ -313,7 +623,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if (res.outcome.outcome === 'SUCCESS') {
           this.unitOfMeasureList = res.unitOfMeasureList;
           this.unitOfMeasureListTemp = res.unitOfMeasureList;
-          this.unitQuery = this.isUpdate ? this.unitOfMeasureList.find(x => x.unitOfMeasureID === this.form.unitOfMeasureID).name : '';
+          // tslint:disable-next-line: max-line-length
+          this.unitQuery = this.isUpdate ? this.unitOfMeasureList.find(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value).name : '';
           console.log(this.unitQuery);
         }
       },
@@ -337,7 +648,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if (res.outcome.outcome === 'SUCCESS') {
           this.currenciesList = res.currenciesList;
           this.currenciesListTemp = res.currenciesList;
-          this.currencyQuery = this.currenciesList.find(x => x.currencyID === this.form.currencyID).code;
+          this.currencyQuery = this.currenciesList.find(x => x.currencyID === this.form.currencyID.value).code;
         } else {
           // nothing
         }
