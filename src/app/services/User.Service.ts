@@ -23,12 +23,14 @@ export class UserService {
   public observeLogin = this.isAuth.asObservable();
 
   public setAuth = (isAuth: boolean) => {
+    console.log(isAuth);
     this.isAuth.next(isAuth);
   }
   /**
    * IsLoggedIn
    */
   public isLoggedIn(): boolean {
+    console.log(this.cookieService.check('currentUser'));
     return this.cookieService.check('currentUser');
   }
 
@@ -45,12 +47,15 @@ export class UserService {
    * persistLogin
    */
   public persistLogin(currentUser: string) {
+    console.log(currentUser);
     this.cookieService.set(
       'currentUser',
       currentUser,
       1000 * 60 * 60 * 24,
       '/'
     );
+    console.log(this.getCurrentUser());
+
   }
 
 
