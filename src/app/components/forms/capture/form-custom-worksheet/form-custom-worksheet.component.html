@@ -26,7 +26,7 @@
         (mouseover)="updateHelpContext('form-customs-worksheet-lrn')"
         [ngClass]="{'form-control-invalid': this.form.LRN.error !== null && this.form.LRN.error}"
         placeholder="LRN" />
-        <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null && this.form.LRN.error">{{this.form.LRN.error}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.LRN.error !== null && this.form.LRN.error">{{this.form.LRN.error}}<button style=" position:relative; left:80%" mat-button mat-raised-button color="warning"></button></p>
     </div>
     <div class="form-group" *ngIf="this.form.fileRef != undefined">
       <input type="text"
@@ -35,7 +35,7 @@
         (mouseover)="updateHelpContext('form-customs-worksheet-fileref')"
         [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null && this.form.fileRef.error}"
         placeholder="File Ref" />
-        <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null && this.form.fileRef.error">{{this.form.fileRef.error}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.fileRef.error !== null && this.form.fileRef.error">{{this.form.fileRef.error}}<button style=" position:relative; left:80%" mat-button mat-raised-button color="warning"></button></p>
     </div>
     <div class="form-group" *ngIf="this.form.waybillNo != undefined">
       <input type="text"
@@ -44,7 +44,7 @@
         (mouseover)="updateHelpContext('form-customs-worksheet-fileref')"
         [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null && this.form.waybillNo.error}"
         placeholder="Waybill No" />
-        <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null && this.form.waybillNo.error">{{this.form.waybillNo.error}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null && this.form.waybillNo.error">{{this.form.waybillNo.error}}<button style=" position:relative; left:80%" mat-button mat-raised-button color="warning"></button></p>
     </div>
   </form>
 </span>
