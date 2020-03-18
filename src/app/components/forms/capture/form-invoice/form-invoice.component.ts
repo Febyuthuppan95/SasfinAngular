@@ -419,6 +419,11 @@ loader = false;
           this.form.invoiceNo.error = res.invoices[0].invoiceNoError;
           this.form.currencyID.value = res.invoices[0].currencyID;
           this.form.currencyID.error = res.invoices[0].currencyError;
+
+          this.form.invoiceNo.OBit = res.invoices[0].invoiceNoOBit;
+          this.form.invoiceNo.OUserID = res.invoices[0].invoiceNoOUserID;
+          this.form.invoiceNo.ODate = res.invoices[0].invoiceNoODate;
+          this.form.invoiceNo.OReason = res.invoices[0].invoiceNoOReason;
         }
       },
       (msg) => {

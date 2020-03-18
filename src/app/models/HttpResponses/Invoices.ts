@@ -20,6 +20,11 @@ export class Invoice {
   toCompanyError: string;
   fromCompanyError: string;
   currencyError: string;
+
+  invoiceNoOBit: boolean;
+  invoiceNoOUserID: number;
+  invoiceNoODate: string;
+  invoiceNoOReason: string
 }
 
 export class InvoiceLinesResponse {

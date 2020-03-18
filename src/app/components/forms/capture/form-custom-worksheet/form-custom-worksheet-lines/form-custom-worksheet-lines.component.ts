@@ -230,7 +230,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-    //console.log(this.updateLine);
+    // console.log(this.updateLine);
     if (this.updateLine !== null && this.updateLine !== undefined) {
       this.isUpdate = true;
       this.form.custVal.value = this.updateLine.custVal;
@@ -381,7 +381,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   submit() {
     if (this.isUpdate) {
-      //console.log(this.updateLine);
+      // console.log(this.updateLine);
       const model: CustomWorksheetLineReq = {
         customWorksheetLineID: this.updateLine.customWorksheetLineID,
         hsQuantity: this.form.hsQuantity.value,
@@ -556,7 +556,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
-        //console.log(this.countryQuery);
+        // console.log(this.countryQuery);
       }
     );
   }

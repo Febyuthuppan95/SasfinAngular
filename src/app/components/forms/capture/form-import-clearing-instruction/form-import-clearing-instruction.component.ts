@@ -40,19 +40,31 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   transactionID: number;
 
   currentTheme: string;
-  form = {
-  importersCode: {
-  value: null,
-  error: null,
-  },
-  waybillNo: {
-  value: null,
-  error: null
-  },
-  supplierRef: {
-  value: null,
-  error: null,
-  },
+    form = {
+      importersCode: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+      },
+      waybillNo: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+      },
+      supplierRef: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
+    },
   };
 
   dialogOpen = false;
@@ -92,7 +104,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e =>{
+            command: e => {
               if (!this.dialogOpen) {
                 this.dialogOpen = true;
 
@@ -118,6 +130,21 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
             attachmentStatus: 3,
+
+            supplierRefOBit: this.form.supplierRef.OBit,
+            supplierRefOUserID: this.form.supplierRef.OUserID,
+            supplierRefODate: this.form.supplierRef.ODate,
+            supplierRefOReason: this.form.supplierRef.OReason,
+
+            importersCodeOBit: this.form.importersCode.OBit,
+            importersCodeOUserID: this.form.importersCode.OUserID,
+            importersCodeODate: this.form.importersCode.ODate,
+            importersCodeOReason: this.form.importersCode.OReason,
+
+            waybillNoOBit: this.form.waybillNo.OBit,
+            waybillNoOUserID: this.form.waybillNo.OUserID,
+            waybillNoODate: this.form.waybillNo.ODate,
+            waybillNoOReason: this.form.waybillNo.OReason,
           };
 
           this.captureService.iciUpdate(requestModel).then(

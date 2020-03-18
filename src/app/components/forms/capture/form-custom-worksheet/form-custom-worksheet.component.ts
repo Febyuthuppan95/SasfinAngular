@@ -346,7 +346,7 @@ dialogOpen = false;
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
                   this.nextLineAsync();
-                  //console.log('Line saved');
+                  // console.log('Line saved');
                 } else {
                  // console.log('Line not saved');
                 }
