@@ -185,6 +185,22 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
           this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
           this.form.importersCode.value = res.clearingInstructions[0].importersCode;
           this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
+
+          this.form.supplierRef.OBit = res.clearingInstructions[0].supplierRefOBit;
+          this.form.supplierRef.OUserID = res.clearingInstructions[0].supplierRefOUserID;
+          this.form.supplierRef.ODate = res.clearingInstructions[0].supplierRefODate;
+          this.form.supplierRef.OReason = res.clearingInstructions[0].supplierRefOReason;
+
+          this.form.importersCode.OBit = res.clearingInstructions[0].importersCodeOBit;
+          this.form.importersCode.OUserID = res.clearingInstructions[0].importersCodeOUserID;
+          this.form.importersCode.ODate = res.clearingInstructions[0].importersCodeODate;
+          this.form.importersCode.OReason = res.clearingInstructions[0].importersCodeOReason;
+
+          this.form.waybillNo.OBit = res.clearingInstructions[0].waybillNoOBit;
+          this.form.waybillNo.OUserID = res.clearingInstructions[0].waybillNoOUserID;
+          this.form.waybillNo.ODate = res.clearingInstructions[0].waybillNoODate;
+          this.form.waybillNo.OReason = res.clearingInstructions[0].waybillNoOReason;
+
         }
       },
       (msg) => {

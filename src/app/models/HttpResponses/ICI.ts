@@ -17,4 +17,19 @@ export class ICI {
   waybillNoError: string;
   status: string;
   statusID: number;
+
+  supplierRefOBit: boolean;
+  supplierRefOUserID: number;
+  supplierRefODate: string;
+  supplierRefOReason: string;
+
+  importersCodeOBit: boolean;
+  importersCodeOUserID: number;
+  importersCodeODate: string;
+  importersCodeOReason: string;
+
+  waybillNoOBit: boolean;
+  waybillNoOUserID: number;
+  waybillNoODate: string;
+  waybillNoOReason: string;
 }
