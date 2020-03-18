@@ -225,12 +225,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
           }
         },
     );
-    console.log(this.updateLine);
-    console.log(this.lineData);
+    // console.log(this.updateLine);
+    // console.log(this.lineData);
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-    console.log(this.updateLine);
+    //console.log(this.updateLine);
     if (this.updateLine !== null && this.updateLine !== undefined) {
       this.isUpdate = true;
       this.form.custVal.value = this.updateLine.custVal;
@@ -381,7 +381,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
   submit() {
     if (this.isUpdate) {
-      console.log(this.updateLine);
+      //console.log(this.updateLine);
       const model: CustomWorksheetLineReq = {
         customWorksheetLineID: this.updateLine.customWorksheetLineID,
         hsQuantity: this.form.hsQuantity.value,
@@ -454,13 +454,13 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         supplyUnitOReason: this.form.supplyUnit.OReason,
       };
       const valid: { errors: object[], count: number } = this.validate.model(model);
-      console.log(valid);
+      // console.log(valid);
       if (valid.count > 0) {
 
       }
       // this.updateSADLine.emit(model);
     } else {
-      console.log(this.form);
+      // console.log(this.form);
       const model: CustomWorksheetLineReq = {
         hsQuantity: this.form.hsQuantity.value,
         foreignInv: this.form.foreignInv.value,
@@ -533,7 +533,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
       };
       const valid: { errors: object[], count: number } = this.validate.model(model);
-      console.log(valid);
+      // console.log(valid);
       if (valid.count > 0) {
 
       }
@@ -556,7 +556,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
-        console.log(this.countryQuery);
+        //console.log(this.countryQuery);
       }
     );
   }
@@ -569,7 +569,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.tariffs = res.tariffList;
         this.tariffsTemp = res.tariffList;
         this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID.value).description;
-        console.log(this.tariffQuery);
+        // console.log(this.tariffQuery);
       },
       (msg) => {
       }
@@ -588,7 +588,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   selectedCurrency(currency: number) {
 
     this.form.currencyID.value = currency;
-    console.log(this.form.currencyID);
+    // console.log(this.form.currencyID);
     // this.currency.setValue(currency);
   }
 
@@ -607,7 +607,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   }
 
   selectedTariff(tariff: number) {
-    console.log(tariff);
+    // console.log(tariff);
     this.form.tariffID.value = tariff;
   }
 
@@ -625,7 +625,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
           this.unitOfMeasureListTemp = res.unitOfMeasureList;
           // tslint:disable-next-line: max-line-length
           this.unitQuery = this.isUpdate ? this.unitOfMeasureList.find(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value).name : '';
-          console.log(this.unitQuery);
+          // console.log(this.unitQuery);
         }
       },
       (msg) => {
@@ -660,7 +660,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   }
 
   filterCurrency() {
-    console.log();
     this.currenciesList = this.currenciesListTemp;
     this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery.toUpperCase()}*`));
   }

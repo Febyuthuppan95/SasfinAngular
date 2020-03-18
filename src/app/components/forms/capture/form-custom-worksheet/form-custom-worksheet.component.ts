@@ -267,7 +267,6 @@ dialogOpen = false;
     }).then(
       (res: CustomsWorksheetListResponse) => {
         if (res.customsWorksheets.length === 1) {
-          console.log(res);
           this.form.LRN.value = res.customsWorksheets[0].lrn;
           this.form.LRN.error = res.customsWorksheets[0].lrnError;
           this.form.fileRef.value = res.customsWorksheets[0].fileRef;
@@ -290,7 +289,6 @@ dialogOpen = false;
           this.form.LRN.ODate = res.customsWorksheets[0].lrnODate;
           this.form.LRN.OReason = res.customsWorksheets[0].lrnOReason;
 
-          console.log(this.form);
         }
       },
       (msg) => {}
@@ -327,8 +325,6 @@ dialogOpen = false;
     obj.isPersistant = false;
     obj.userID = this.currentUser.userID;
 
-    console.log(obj);
-
     this.lineQueue.push(obj);
     this.linesCreated.push(obj);
     // this.lineState = 'Line added to queue';
@@ -350,9 +346,9 @@ dialogOpen = false;
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
                   this.nextLineAsync();
-                  console.log('Line saved');
+                  //console.log('Line saved');
                 } else {
-                  console.log('Line not saved');
+                 // console.log('Line not saved');
                 }
               },
               (msg) => {

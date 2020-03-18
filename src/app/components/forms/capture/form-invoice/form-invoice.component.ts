@@ -90,40 +90,76 @@ countryQuery = '';
 
 form = {
   fromCompany: {
-    value: '',
+    value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   fromCompanyID: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   toCompanyID: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   toCompany: {
-    value: '',
+    value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   invoiceNo: {
     value: null,
     error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   invoiceDate: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   currencyID: {
     value: null,
-    error: undefined,
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   incoType: {
     value: null,
-    error: undefined
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   },
   cooID: {
     value: null,
-    error: null
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
   }
 };
 
@@ -163,6 +199,7 @@ loader = false;
     };
     this.captureService.incoTermTypeList(model).then(
       (res: IncoTermTypesReponse) => {
+        console.log(res);
         if (res.termTypes.length > 0) {
           this.incoTermsList = res.termTypes;
         }
@@ -236,7 +273,7 @@ loader = false;
                 });
               }
             }
-          }        
+          }
         },
         {
           key: 'alt + l',
@@ -263,12 +300,18 @@ loader = false;
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
-            companyID: this.form.fromCompany.value,
             invoiceNo: this.form.invoiceNo.value,
+            companyID: this.form.fromCompany.value,
             currencyID: -1,
-            isDeleted: 0,
             attachmentStatusID: 3,
-            incoTermTypeID: this.form.incoType
+            invoiceDate: this.form.invoiceDate.value,
+            incoTermTypeID: this.form.incoType.value,
+            isDeleted: 0,
+
+            invoiceNoOBit: this.form.invoiceNo.OBit,
+            invoiceNoOUserID: this.form.invoiceNo.OUserID,
+            invoiceNoODate: this.form.invoiceNo.ODate,
+            invoiceNoOReason: this.form.invoiceNo.OReason,
           };
 
           // if (this.form.fromCompanyID.value === null) {

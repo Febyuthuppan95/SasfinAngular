@@ -35,7 +35,6 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
       if (fileName !== null || undefined) {
         this.docService.get(fileName).then(
           (res: ArrayBuffer) => {
-            console.log(res);
             this.pdfSRC = res;
             this.displayPDF = true;
           },

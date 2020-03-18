@@ -65,7 +65,7 @@ export class ViewLoginComponent implements OnInit {
 
           if (res.authenticated) {
             console.log(res.authenticated);
-            
+
             this.userService.persistLogin(JSON.stringify(res));
             this.userService.setAuth(res.authenticated);
             if (res.designation !== 'Capturer') {

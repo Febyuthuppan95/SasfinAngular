@@ -175,8 +175,7 @@ export class UserService {
 
     const promise = new Promise((resolve, reject) => {
       const apiURL = `${
-        environment.ApiEndpoint
-      }/account/request/changepassword`;
+        environment.ApiEndpoint}/account/request/changepassword`;
       this.httpClient
         .post(apiURL, requestModel)
         .toPromise()

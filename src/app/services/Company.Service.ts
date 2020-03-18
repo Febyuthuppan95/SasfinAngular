@@ -1105,6 +1105,6 @@ export class SelectedClaimReport {
 }
 
 export class SelectedCapture {
-  capturestate: boolean;
+  capturestate = false;
   token?: string;
 }
