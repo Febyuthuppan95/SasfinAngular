@@ -1,6 +1,9 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class SAD500Get {
+  attachmentErrors: AttachmentErrorResponse;
+
   customReleaseID: number;
   serialNo: string;
   lrn: string;

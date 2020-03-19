@@ -475,11 +475,11 @@ dialogOpen = false;
   }
 
   loadCapture() {
-    console.log(this.vocSAD500ID);
     this.captureService.sad500Get({
       specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       userID: this.currentUser.userID,
-      transactionID: this.transactionID
+      transactionID: this.transactionID,
+      fileType: this.attachmentType === 'VOC' ? 'VOC' : 'SAD',
     }).then(
       (res: SAD500Get) => {
         this.form.MRN.value = res.mrn;
@@ -549,6 +549,33 @@ dialogOpen = false;
         this.form.totalCustomsDuty.OReason = res.totalDutyOReason;
         this.form.totalCustomsDuty.OReason = res.totalDutyOReason;
 
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          res.attachmentErrors.attachmentErrors.forEach(error => {
+            if (error.fieldName === 'ImporterCode') {
+              this.form.importersCode.error = error.errorDescription;
+            } else if (error.fieldName === 'WaybillNo') {
+              this.form.waybillNo.error = error.errorDescription;
+            } else if (error.fieldName === 'SupplierRef') {
+              this.form.supplierRef.error = error.errorDescription;
+            } else if (error.fieldName === 'SerialNo') {
+              this.form.serialNo.error = error.errorDescription;
+            } else if (error.fieldName === 'PCC') {
+              this.form.PCC.error = error.errorDescription;
+            } else if (error.fieldName === 'TotalCustomsValue') {
+              this.form.totalCustomsValue.error = error.errorDescription;
+            } else if (error.fieldName === 'LRN') {
+              this.form.LRN.error = error.errorDescription;
+            } else if (error.fieldName === 'MRN') {
+              this.form.MRN.error = error.errorDescription;
+            } else if (error.fieldName === 'CPC') {
+              this.form.CPC.error = error.errorDescription;
+            } else if (error.fieldName === 'FileRef') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'TotalCustomsDuty') {
+              this.form.totalCustomsDuty.error = error.errorDescription;
+            }
+          });
+      }
       },
       (msg) => {
       }
