@@ -331,6 +331,35 @@ dialogOpen = false;
           this.focusLineData = this.linesCreated[this.lines - 1];
         }
 
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          res.attachmentErrors.attachmentErrors.forEach(error => {
+           if (error.fieldName === 'Country Of Orgin') {
+              this.form.waybillNo.error = error.errorDescription;
+            } else if (error.fieldName === 'Tariff') {
+              this.form.LRN.error = error.errorDescription;
+            } else if (error.fieldName === 'Quantity') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Foreign Inv') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Customs Value') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Duty') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Common Factor') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'InvoiceNo') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Product Code') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'VAT') {
+              this.form.fileRef.error = error.errorDescription;
+            } else if (error.fieldName === 'Supply Unit') {
+              this.form.fileRef.error = error.errorDescription;
+            }
+
+          });
+        }
+
         // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
         //   || x.quantityError !== null
         //   || x.unitOfMeasureError !== null || x.tariffError !== null);
@@ -361,7 +390,6 @@ dialogOpen = false;
 
   saveLines() {
           if (this.lineIndex < this.lineQueue.length) {
-            console.log(this.lineQueue);
             this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
               (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                 if (res.outcome === 'SUCCESS') {
@@ -403,7 +431,6 @@ dialogOpen = false;
   }
 
   nextLine() {
-    console.log(this.lines);
     if (this.lines < this.linesCreated.length - 1) {
       this.lines++;
       this.focusLineData = this.linesCreated[this.lines];

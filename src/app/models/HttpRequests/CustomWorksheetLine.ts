@@ -1,6 +1,9 @@
 export class CustomWorksheetLineReq {
+
   customWorksheetID?: number;
   customWorksheetLineID?: number;
+  invoiceID: number;
+  tariffHeading: string;
   hsQuantity: number;
   foreignInv: number;
   custVal: number;
