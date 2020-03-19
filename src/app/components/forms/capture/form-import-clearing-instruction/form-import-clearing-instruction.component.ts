@@ -171,26 +171,24 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         }
 
   loadICI() {
-    this.captureService.iciList(
-      {
-        userID: this.currentUser.userID,
-        specificICIID: this.attachmentID,
-        transactionID: this.transactionID,
-        rowStart: 1,
-        rowEnd: 15,
-        orderBy: '',
-        orderDirection: 'DESC',
-        filter: ''
-
-      }).then(
+    const requestModel = {
+      userID: this.currentUser.userID,
+      specificICIID: this.attachmentID,
+      transactionID: this.transactionID,
+      rowStart: 1,
+      rowEnd: 15,
+      orderBy: '',
+      orderDirection: 'DESC',
+      filter: ''
+    };
+    this.captureService.iciList(requestModel).then(
       (res: ICIListResponse) => {
+        console.log('check from here');
+        console.log(res.attachmentErrors);
         if (res.clearingInstructions.length > 0) {
           this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
-          this.form.waybillNo.error = res.clearingInstructions[0].waybillNoError;
           this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
-          this.form.supplierRef.error = res.clearingInstructions[0].supplierRefError;
           this.form.importersCode.value = res.clearingInstructions[0].importersCode;
-          this.form.importersCode.error = res.clearingInstructions[0].importersCodeError;
 
           this.form.supplierRef.OBit = res.clearingInstructions[0].supplierRefOBit;
           this.form.supplierRef.OUserID = res.clearingInstructions[0].supplierRefOUserID;
@@ -207,7 +205,18 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
           this.form.waybillNo.ODate = res.clearingInstructions[0].waybillNoODate;
           this.form.waybillNo.OReason = res.clearingInstructions[0].waybillNoOReason;
 
+          if (res.attachmentErrors.attachmentErrors.length > 0) {
+            res.attachmentErrors.attachmentErrors.forEach(error => {
+              if (error.fieldName === 'ImporterCode') {
+                this.form.importersCode.error = error.errorDescription;
+              } else if (error.fieldName === 'WaybillNo') {
+                this.form.waybillNo.error = error.errorDescription;
+              } else if (error.fieldName === 'SupplierRef') {
+                this.form.supplierRef.error = error.errorDescription;
+              }
+            });
         }
+      }
       },
       (msg) => {
         console.log(msg);

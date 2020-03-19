@@ -1,9 +1,11 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class ICIListResponse {
   outcome: Outcome;
   rowCount: number;
   clearingInstructions: ICI[];
+  attachmentErrors: AttachmentErrorResponse;
 }
 
 export class ICI {

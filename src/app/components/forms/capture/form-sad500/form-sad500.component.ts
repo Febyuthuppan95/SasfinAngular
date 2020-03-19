@@ -308,12 +308,7 @@ dialogOpen = false;
         },
     );
   }
-  // vocGet() {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
 
-  //   }
-  // }
   vocGet = () => this.captureService.vocList({
     userID: this.currentUser.userID,
     vocID: this.attachmentID,
@@ -337,6 +332,7 @@ dialogOpen = false;
     (msg) => {
       this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
     })
+
   submit() {
     const requestModel = {
       userID: this.currentUser.userID,
