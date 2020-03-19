@@ -13,6 +13,17 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-import-clearing-instruction-importers-code')"
       placeholder="Importers Code"/>
+      <div *ngIf="this.form.importersCode.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.importersCode.OBit == false || this.form.importersCode.OBit == null" style="width: inherit" >
+          error <!-- <p>{{this.form.importersCode.error}}</p> -->
+          <button (click)="OverrideImportersCodeClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.importersCode.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.importersCode.OBit == true" [disabled]="disabledIC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.importersCode.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideImportersExcept()" [disabled]="disabledIC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideImporters()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
       <small style="margin-left: 12px; color: #777;">6 Digit Code. Example: 104488</small>
   </div>
   <div class="form-group">
@@ -21,6 +32,17 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-import-clearing-instruction-waybill-no')"
       placeholder="Waybill No" />
+      <div *ngIf="this.form.waybillNo.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.waybillNo.OBit == false || this.form.waybillNo.OBit == null" style="width: inherit" >
+          error <!-- <p>{{this.form.waybillNo.error}}</p> -->
+          <button (click)="OverrideWaybillClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.waybillNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledWay" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.waybillNo.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideWaybillExcept()" [disabled]="disabledWay" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideWaybill()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
       <small style="margin-left: 12px; color: #777;">May also be labelled "REMOVAL TRANSPORT CODE"</small>
   </div>
   <div class="form-group">
@@ -29,6 +51,17 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-import-clearing-instruction-supplier-ref')"
       placeholder="Supplier Ref" />
+      <div *ngIf="this.form.supplierRef.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.supplierRef.OBit == false || this.form.supplierRef.OBit == null" style="width: inherit" >
+          error <!-- <p>{{this.form.supplierRef.error}}</p> -->
+          <button (click)="OverrideSupplyRefClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.supplierRef.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.supplierRef.OBit == true"  [disabled]="disabledSupp" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.supplierRef.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideSupplyRefExcept()" [disabled]="disabledSupp" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideSupplyRef()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
   </div>
 </form>
 

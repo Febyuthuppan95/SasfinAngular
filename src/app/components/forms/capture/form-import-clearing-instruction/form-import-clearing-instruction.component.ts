@@ -38,6 +38,12 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
   transactionID: number;
+  iciOReason: string;
+  waybillNoOReason: string;
+  supplyRefOReason: string;
+  disabledIC: boolean;
+  disabledWay: boolean;
+  disabledSupp: boolean;
 
   currentTheme: string;
     form = {
@@ -146,7 +152,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             waybillNoODate: this.form.waybillNo.ODate,
             waybillNoOReason: this.form.waybillNo.OReason,
           };
-
+          console.log(requestModel);
           this.captureService.iciUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -207,6 +213,71 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         console.log(msg);
       }
     );
+  }
+
+  OverrideImportersCodeClick() {
+    this.form.importersCode.OUserID = this.currentUser.userID;
+    this.form.importersCode.OBit = true;
+    this.form.importersCode.ODate = new Date();
+    this.disabledIC = false;
+    this.iciOReason = '';
+  }
+
+  OverrideImportersExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledIC = true;
+    console.log(this.form.importersCode);
+  }
+
+  UndoOverrideImporters() {
+    this.form.importersCode.OUserID = null;
+    this.form.importersCode.OBit = null;
+    this.form.importersCode.ODate = null;
+    this.form.importersCode.OReason = null;
+    this.iciOReason = '';
+    this.disabledIC = false;
+  }
+
+  OverrideWaybillClick() {
+    this.form.waybillNo.OUserID = this.currentUser.userID;
+    this.form.waybillNo.OBit = true;
+    this.form.waybillNo.ODate = new Date();
+    this.disabledWay = false;
+    this.waybillNoOReason = '';
+  }
+
+  OverrideWaybillExcept() {
+    this.disabledWay = true;
+  }
+
+  UndoOverrideWaybill() {
+    this.form.waybillNo.OUserID = null;
+    this.form.waybillNo.OBit = null;
+    this.form.waybillNo.ODate = null;
+    this.form.waybillNo.OReason = null;
+    this.waybillNoOReason = '';
+    this.disabledWay = false;
+  }
+
+  OverrideSupplyRefClick() {
+    this.form.supplierRef.OUserID = this.currentUser.userID;
+    this.form.supplierRef.OBit = true;
+    this.form.supplierRef.ODate = new Date();
+    this.disabledSupp = false;
+    this.supplyRefOReason = '';
+  }
+
+  OverrideSupplyRefExcept() {
+    this.disabledSupp = true;
+  }
+
+  UndoOverrideSupplyRef() {
+    this.form.supplierRef.OUserID = null;
+    this.form.supplierRef.OBit = null;
+    this.form.supplierRef.ODate = null;
+    this.form.supplierRef.OReason = null;
+    this.supplyRefOReason = '';
+    this.disabledSupp = false;
   }
 
   ngOnDestroy(): void {
