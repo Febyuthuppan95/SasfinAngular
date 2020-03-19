@@ -1,4 +1,5 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class CRNGet {
    customReleaseID: number;
@@ -29,4 +30,5 @@ export class CRNList {
   customs: CRNGet[];
   outcome: Outcome;
   rowCount: number;
+  attachmentErrors: AttachmentErrorResponse;
 }

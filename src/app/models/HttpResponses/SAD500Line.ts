@@ -1,9 +1,11 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class SPSAD500LineList {
     rowCount: string;
     lines: SAD500Line[];
     outcome: Outcome;
+    attachmentErrors: AttachmentErrorResponse;
 }
 
 export class SAD500Line {
@@ -32,5 +34,4 @@ export class SAD500Line {
     replacedByLineID: number;
 }
 export class SAD500LineDutyList {
-    
 }

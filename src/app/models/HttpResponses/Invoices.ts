@@ -1,9 +1,11 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class InvoiceGetResponse {
   outcome: Outcome;
   rowCount: number;
   invoices: Invoice[];
+  attachmentErrors: AttachmentErrorResponse;
 }
 
 export class Invoice {
@@ -24,13 +26,14 @@ export class Invoice {
   invoiceNoOBit: boolean;
   invoiceNoOUserID: number;
   invoiceNoODate: string;
-  invoiceNoOReason: string
+  invoiceNoOReason: string;
 }
 
 export class InvoiceLinesResponse {
   outcome: Outcome;
   rowCount: number;
   lines: InvoiceLine[];
+  attachmentErrors: AttachmentErrorResponse;
 }
 
 export class InvoiceLine {

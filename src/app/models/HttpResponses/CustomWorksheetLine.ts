@@ -1,9 +1,11 @@
 import { Outcome } from './Outcome';
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 
 export class CustomWorksheetLinesResponse {
   lines: CustomWorksheetLine[];
   rowCount: number;
   outcome: Outcome;
+  attachmentErrors: AttachmentErrorResponse;
 }
 
 export class CustomWorksheetLine {

@@ -25,6 +25,7 @@ import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/Custo
 })
 export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDestroy {
 
+
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
               private eventService: EventService, private snackbar: MatSnackBar,
@@ -61,6 +62,13 @@ linesCreated: CustomWorksheetLineReq[] = [];
 lineState: string;
 lineErrors: CustomWorksheetLineReq[] = [];
 toggleLines = false;
+
+disabledfileRef: boolean;
+fileRefOReason: string;
+disabledWay: boolean;
+waybillNoOReason: string;
+disabledLRN: boolean;
+LRNOReason: string;
 
 form = {
   LRN: {
@@ -289,6 +297,18 @@ dialogOpen = false;
           this.form.LRN.ODate = res.customsWorksheets[0].lrnODate;
           this.form.LRN.OReason = res.customsWorksheets[0].lrnOReason;
 
+          if (res.attachmentErrors.attachmentErrors.length > 0) {
+            res.attachmentErrors.attachmentErrors.forEach(error => {
+             if (error.fieldName === 'WaybillNo') {
+                this.form.waybillNo.error = error.errorDescription;
+              } else if (error.fieldName === 'LRN') {
+                this.form.LRN.error = error.errorDescription;
+              } else if (error.fieldName === 'FileRef') {
+                this.form.fileRef.error = error.errorDescription;
+              }
+            });
+          }
+
         }
       },
       (msg) => {}
@@ -412,6 +432,72 @@ dialogOpen = false;
 
     this.snackbarService.setHelpContext(newContext);
   }
+
+  OverridefileRefClick() {
+    this.form.fileRef.OUserID = this.currentUser.userID;
+    this.form.fileRef.OBit = true;
+    this.form.fileRef.ODate = new Date();
+    this.disabledfileRef = false;
+    this.fileRefOReason = '';
+  }
+
+  OverridefileRefExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledfileRef = true;
+  }
+
+  UndoOverridefileRef() {
+    this.form.fileRef.OUserID = null;
+    this.form.fileRef.OBit = null;
+    this.form.fileRef.ODate = null;
+    this.form.fileRef.OReason = null;
+    this.fileRefOReason = '';
+    this.disabledfileRef = false;
+  }
+
+  OverrideWaybillClick() {
+    this.form.waybillNo.OUserID = this.currentUser.userID;
+    this.form.waybillNo.OBit = true;
+    this.form.waybillNo.ODate = new Date();
+    this.disabledWay = false;
+    this.waybillNoOReason = '';
+  }
+
+  OverrideWaybillExcept() {
+    this.disabledWay = true;
+  }
+
+  UndoOverrideWaybill() {
+    this.form.waybillNo.OUserID = null;
+    this.form.waybillNo.OBit = null;
+    this.form.waybillNo.ODate = null;
+    this.form.waybillNo.OReason = null;
+    this.waybillNoOReason = '';
+    this.disabledWay = false;
+  }
+
+  OverrideLRNClick() {
+    this.form.LRN.OUserID = this.currentUser.userID;
+    this.form.LRN.OBit = true;
+    this.form.LRN.ODate = new Date();
+    this.disabledLRN = false;
+    this.LRNOReason = '';
+  }
+
+  OverrideLRNExcept() {
+    this.disabledLRN = true;
+  }
+
+  UndoOverrideLRN() {
+    this.form.LRN.OUserID = null;
+    this.form.LRN.OBit = null;
+    this.form.LRN.ODate = null;
+    this.form.LRN.OReason = null;
+    this.LRNOReason = '';
+    this.disabledLRN = false;
+  }
+
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
