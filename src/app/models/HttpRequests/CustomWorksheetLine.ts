@@ -2,7 +2,7 @@ import { AttachmentErrorResponse } from '../HttpResponses/AttachmentErrorRespons
 
 export class CustomWorksheetLineReq {
 
-  attachmentErrors: AttachmentErrorResponse;
+  // attachmentErrors: AttachmentErrorResponse;
 
   customWorksheetID?: number;
   customWorksheetLineID?: number;

@@ -323,7 +323,8 @@ dialogOpen = false;
       rowEnd: 1000,
       orderBy: '',
       orderByDirection: '',
-      filter: ''
+      filter: '',
+      transactionID: this.transactionID,
       }).then((res: CustomWorksheetLinesResponse) => {
         this.linesCreated = res.lines;
         this.lines = this.linesCreated.length;
