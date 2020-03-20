@@ -252,6 +252,35 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       this.form.prodCode.value = this.updateLine.prodCode;
       this.form.cooID.value = this.updateLine.cooID;
 
+      if (this.updateLine.attachmentErrors.attachmentErrors.length > 0) {
+        this.updateLine.attachmentErrors.attachmentErrors.forEach(error => {
+         if (error.fieldName === 'Country Of Orgin') {
+            this.form.cooID.error = error.errorDescription;
+          } else if (error.fieldName === 'Tariff') {
+            this.form.tariffHeading.error = error.errorDescription;
+          } else if (error.fieldName === 'Quantity') {
+            this.form.hsQuantity.error = error.errorDescription;
+          } else if (error.fieldName === 'Foreign Inv') {
+            this.form.foreignInv.error = error.errorDescription;
+          } else if (error.fieldName === 'Customs Value') {
+            this.form.custVal.error = error.errorDescription;
+          } else if (error.fieldName === 'Duty') {
+            this.form.duty.error = error.errorDescription;
+          } else if (error.fieldName === 'Common Factor') {
+            this.form.commonFactor.error = error.errorDescription;
+          } else if (error.fieldName === 'InvoiceNo') {
+            this.form.invoiceNo.error = error.errorDescription;
+          } else if (error.fieldName === 'Product Code') {
+            this.form.prodCode.error = error.errorDescription;
+          } else if (error.fieldName === 'VAT') {
+            this.form.vat.error = error.errorDescription;
+          } else if (error.fieldName === 'Supply Unit') {
+            this.form.supplyUnit.error = error.errorDescription;
+          }
+
+        });
+      }
+
     } else {
       this.isUpdate = false;
       this.form = {
@@ -386,6 +415,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         customWorksheetLineID: this.updateLine.customWorksheetLineID,
         hsQuantity: this.form.hsQuantity.value,
         foreignInv: this.form.foreignInv.value,
+        tariffHeading: this.form.tariffHeading.value,
         custVal: this.form.custVal.value,
         duty: this.form.duty.value,
         commonFactor: this.form.commonFactor.value,

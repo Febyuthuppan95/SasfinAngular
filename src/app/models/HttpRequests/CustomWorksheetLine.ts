@@ -1,8 +1,11 @@
+import { AttachmentErrorResponse } from '../HttpResponses/AttachmentErrorResponse';
+
 export class CustomWorksheetLineReq {
+
+  attachmentErrors: AttachmentErrorResponse;
 
   customWorksheetID?: number;
   customWorksheetLineID?: number;
-  invoiceID: number;
   tariffHeading: string;
   hsQuantity: number;
   foreignInv: number;
