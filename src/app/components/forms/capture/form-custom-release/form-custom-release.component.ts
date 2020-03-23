@@ -513,7 +513,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.snackbarService.setHelpContext(newContext);
   }
 
-  OverrideISerialNoClick() {
+  OverrideSerialNoClick() {
     this.form.serialNo.OUserID = this.currentUser.userID;
     this.form.serialNo.OBit = true;
     this.form.serialNo.ODate = new Date();
