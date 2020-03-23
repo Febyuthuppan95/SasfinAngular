@@ -3,13 +3,13 @@
 <form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px;border-radius: 10px; background: #f2f2f2;">
   <div class="form-group" *ngIf="this.form.commonFactor != undefined">
     <label for="custVal">Common Factor</label>
-      <input type="text"  id="hsQuantity"
+      <input type="text"  id="commonFactor"
         [(ngModel)]="this.form.commonFactor" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')"
-        placeholder="Common Factor"
-        [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"/>
-        <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p>
+        placeholder="Common Factor" />
+        <!-- [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"
+        <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p> -->
     </div>
   <div class="form-group">
     <label for="custVal">Customs Value</label>
@@ -18,8 +18,9 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')"
       placeholder="Customs Value"
-      [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.custValError !== null && this.form.custValError !== undefined" style="width: 100%;">{{this.form.custValError}}</p>
+     />
+     <!-- [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"
+      <p class="invalid-control-label" *ngIf="this.form.custValError !== null && this.form.custValError !== undefined" style="width: 100%;">{{this.form.custValError}}</p> -->
   </div>
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
       <label for="hsQuantity">HS Quantity</label>
@@ -28,8 +29,9 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')"
       placeholder="HS Quantity"
-      [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined" style="width: 100%;">{{this.form.hsQuantityError}}</p>
+      />
+      <!-- [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"
+      <p class="invalid-control-label" *ngIf="this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined" style="width: 100%;">{{this.form.hsQuantityError}}</p> -->
   </div>
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
       <label for="foreignInv">Foreign Inv</label>
@@ -38,8 +40,9 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')"
       placeholder="Foreign Invoice"
-      [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.foreignInvError !== null && this.form.foreignInvError !== undefined" style="width: 100%;">{{this.form.foreignInvError}}</p>
+      />
+      <!-- [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"
+      <p class="invalid-control-label" *ngIf="this.form.foreignInvError !== null && this.form.foreignInvError !== undefined" style="width: 100%;">{{this.form.foreignInvError}}</p> -->
   </div>
   <div class="form-group" *ngIf="this.form.duty != undefined">
       <label for="duty">Duty</label>
@@ -48,8 +51,9 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')"
       placeholder="Duty"
-      [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.dutyError !== null && this.form.dutyError !== undefined" style="width: 100%;">{{this.form.dutyError}}</p>
+      />
+      <!-- [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"
+      <p class="invalid-control-label" *ngIf="this.form.dutyError !== null && this.form.dutyError !== undefined" style="width: 100%;">{{this.form.dutyError}}</p> -->
   </div>
   <div class="form-group">
     <div class="col-sm-3 " style="float: left; padding-left:0px;">
@@ -89,7 +93,7 @@
         </mat-autocomplete>
     </div>
   </div> -->
-  
+
   <div class="form-group">
     <label for="currencyID">Currency</label>
     <input type="text"

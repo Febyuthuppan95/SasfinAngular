@@ -17,488 +17,480 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
-import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
+import { CustomWorksheetLinesResponse, CustomWorksheetLine } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 @Component({
-  selector: 'app-form-custom-worksheet',
-  templateUrl: './form-custom-worksheet.component.html',
-  styleUrls: ['./form-custom-worksheet.component.scss']
+    selector: 'app-form-custom-worksheet',
+    templateUrl: './form-custom-worksheet.component.html',
+    styleUrls: ['./form-custom-worksheet.component.scss']
 })
 export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDestroy {
+    constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
+                private router: Router, private captureService: CaptureService, private dialog: MatDialog,
+                private eventService: EventService, private snackbar: MatSnackBar,
+                private snackbarService: HelpSnackbar, validateService: ValidateService) { }
 
+    shortcuts: ShortcutInput[] = [];
 
-  constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-              private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-              private eventService: EventService, private snackbar: MatSnackBar,
-              private snackbarService: HelpSnackbar, validateService: ValidateService) { }
+    @ViewChild(NotificationComponent, { static: true })
+    private notify: NotificationComponent;
 
-shortcuts: ShortcutInput[] = [];
+    @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
-@ViewChild(NotificationComponent, { static: true })
-private notify: NotificationComponent;
+    @ViewChild('sadLinesTooltip', { static: false })
+    sadLinesTooltip: MatTooltip;
 
-@ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+    @ViewChild('sad500Tooltip', { static: false })
+    sad500Tooltip: MatTooltip;
 
-@ViewChild('sadLinesTooltip', {static : false})
-sadLinesTooltip: MatTooltip;
+    currentUser = this.userService.getCurrentUser();
+    attachmentID: number;
+    transactionID: number;
+    linePreview = -1;
+    lines = -1;
+    focusMainForm: boolean;
+    focusLineForm: boolean;
+    focusLineData: CustomWorksheetLine = null;
+    private unsubscribe$ = new Subject<void>();
 
-@ViewChild('sad500Tooltip', {static : false})
-sad500Tooltip: MatTooltip;
+    currentTheme: string;
+    loader: boolean;
 
-currentUser = this.userService.getCurrentUser();
-attachmentID: number;
-transactionID: number;
-linePreview = -1;
-lines = -1;
-focusMainForm: boolean;
-focusLineForm: boolean;
-focusLineData: CustomWorksheetLineReq = null;
-private unsubscribe$ = new Subject<void>();
+    lineQueue: CustomWorksheetLine[] = []; // Here
+    linesCreated: CustomWorksheetLine[] = [];
+    lineState: string;
+    lineErrors: CustomWorksheetLine[] = [];
+    toggleLines = false;
 
-currentTheme: string;
-loader: boolean;
+    disabledfileRef: boolean;
+    fileRefOReason: string;
+    disabledWay: boolean;
+    waybillNoOReason: string;
+    disabledLRN: boolean;
+    LRNOReason: string;
 
-lineQueue: CustomWorksheetLineReq[] = [];
-linesCreated: CustomWorksheetLineReq[] = [];
-lineState: string;
-lineErrors: CustomWorksheetLineReq[] = [];
-toggleLines = false;
-
-disabledfileRef: boolean;
-fileRefOReason: string;
-disabledWay: boolean;
-waybillNoOReason: string;
-disabledLRN: boolean;
-LRNOReason: string;
-
-form = {
-  LRN: {
-    value: null,
-    error: null,
-    OBit: null,
-    OUserID: null,
-    ODate: null,
-    OReason: null,
-  },
-  fileRef: {
-    value: null,
-    error: null,
-    OBit: null,
-    OUserID: null,
-    ODate: null,
-    OReason: null,
-
-  },
-  waybillNo: {
-    value: null,
-    error: null,
-    OBit: null,
-    OUserID: null,
-    ODate: null,
-    OReason: null,
-  }
-};
-
-lineIndex = 0;
-dialogOpen = false;
-
-  ngOnInit() {
-
-    console.log('worksheet');
-    this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(value => this.currentTheme = value);
-
-    this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.saveLines());
-
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadCapture();
-        this.loadLines();
-      }
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.shortcuts.push(
-        {
-            key: 'alt + .',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.nextLine()
+    form = {
+        LRN: {
+            value: null,
+            error: null,
+            OBit: null,
+            OUserID: null,
+            ODate: null,
+            OReason: null,
         },
-        {
-          key: 'alt + ,',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.prevLine()
+        fileRef: {
+            value: null,
+            error: null,
+            OBit: null,
+            OUserID: null,
+            ODate: null,
+            OReason: null,
         },
-        {
-          key: 'alt + /',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.focusLineForm = !this.focusLineForm
-        },
-        {
-          key: 'alt + m',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.focusMainForm = !this.focusMainForm;
-            this.focusLineData = null;
-            this.lines = -1;
-          }
-        },
-        {
-          key: 'alt + n',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.focusLineForm = !this.focusLineForm;
-            this.focusLineData = null;
-            this.lines = -1;
-          }
-        },
-        {
-          key: 'alt + s',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            {
-              if (!this.dialogOpen) {
-                this.dialogOpen = true;
-                this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-                  this.dialogOpen = false;
-                  if (status) {
-                    this.saveLines();
-                  }
-                });
-              }
-            }
-
-          }
-        },
-        {
-          key: 'alt + l',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.toggleLines = !this.toggleLines;
-
-            if (this.toggleLines) {
-              this.sad500Tooltip.hide();
-              this.sadLinesTooltip.show();
-              setTimeout(() => { this.sadLinesTooltip.hide(); } , 1000);
-            } else {
-              this.sadLinesTooltip.hide();
-              this.sad500Tooltip.show();
-              setTimeout(() => { this.sad500Tooltip.hide(); } , 1000);
-            }
-          }
-        },
-    );
-  }
-
-  submit() {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      customworksheetID: this.attachmentID,
-      transactionID: this.transactionID,
-      fileRef: this.form.fileRef.value,
-      lrn: this.form.LRN.value,
-      isDeleted: 0,
-      attachmentStatusID: 3,
-      waybillNo: this.form.waybillNo.value,
-
-      waybillNoOBit: this.form.waybillNo.OBit,
-      waybillNoOUserID: this.form.waybillNo.OUserID,
-      waybillNoODate: this.form.waybillNo.ODate,
-      waybillNoOReason: this.form.waybillNo.OReason,
-
-      lrnOBit: this.form.LRN.OBit,
-      lrnOUserID: this.form.LRN.OUserID,
-      lrnODate: this.form.LRN.ODate,
-      lrnOReason: this.form.LRN.OReason,
-
-      fileRefOBit: this.form.fileRef.OBit,
-      fileRefOUserID: this.form.fileRef.OUserID,
-      fileRefODate: this.form.fileRef.ODate,
-      fileRefOReason: this.form.fileRef.OReason,
+        waybillNo: {
+            value: null,
+            error: null,
+            OBit: null,
+            OUserID: null,
+            ODate: null,
+            OReason: null,
+        }
     };
 
-    this.captureService.customWorksheetUpdate(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.router.navigate(['transaction/capturerlanding']);
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-        }
-      },
-      (msg) => {
-        console.log(JSON.stringify(msg));
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
-  }
+    lineIndex = 0;
+    dialogOpen = false;
 
-  updateLine(obj: CustomWorksheetLineReq) {
-    this.captureService.customWorksheetLineAdd(obj).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadLines();
-          this.lines = -1;
-          this.focusLineData = null;
-        }
-      },
-      (msg) => {
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
-  }
+    ngOnInit() {
+        console.log('worksheet');
+        this.themeService.observeTheme()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(value => this.currentTheme = value);
 
-  loadCapture() {
-    this.captureService.customWorksheetList({
-      customsWorksheetID: this.attachmentID,
-      userID: this.currentUser.userID,
-      transactionID: this.transactionID,
-      rowStart: 1,
-      rowEnd: 10,
-      filter: '',
-      orderBy: '',
-      orderByDirection: '',
-    }).then(
-      (res: CustomsWorksheetListResponse) => {
-        if (res.customsWorksheets.length === 1) {
-          this.form.LRN.value = res.customsWorksheets[0].lrn;
-          this.form.LRN.error = res.customsWorksheets[0].lrnError;
-          this.form.fileRef.value = res.customsWorksheets[0].fileRef;
-          this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
-          this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
-          this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
+        this.eventService.observeCaptureEvent()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(() => this.saveLines());
 
-          this.form .waybillNo.OBit = res.customsWorksheets[0].waybillNoOBit;
-          this.form .waybillNo.OUserID = res.customsWorksheets[0].waybillNoOUserID;
-          this.form .waybillNo.ODate = res.customsWorksheets[0].waybillNoODate;
-          this.form .waybillNo.OReason = res.customsWorksheets[0].waybillNoOReason;
-
-          this.form .fileRef.OBit = res.customsWorksheets[0].fileRefOBit;
-          this.form .fileRef.OUserID = res.customsWorksheets[0].fileRefOUserID;
-          this.form .fileRef.ODate = res.customsWorksheets[0].fileRefODate;
-          this.form .fileRef.OReason = res.customsWorksheets[0].fileRefOReason;
-
-          this.form.LRN.OBit = res.customsWorksheets[0].lrnOBit;
-          this.form.LRN.OUserID = res.customsWorksheets[0].lrnOUserID;
-          this.form.LRN.ODate = res.customsWorksheets[0].lrnODate;
-          this.form.LRN.OReason = res.customsWorksheets[0].lrnOReason;
-
-          if (res.attachmentErrors.attachmentErrors.length > 0) {
-            res.attachmentErrors.attachmentErrors.forEach(error => {
-             if (error.fieldName === 'WaybillNo') {
-                this.form.waybillNo.error = error.errorDescription;
-              } else if (error.fieldName === 'LRN') {
-                this.form.LRN.error = error.errorDescription;
-              } else if (error.fieldName === 'FileRef') {
-                this.form.fileRef.error = error.errorDescription;
-              }
-            });
-          }
-
-        }
-      },
-      (msg) => {}
-    );
-  }
-
-  loadLines() {
-    this.captureService.customWorksheetLineList({
-      userID: this.currentUser.userID,
-      customsWorksheetID: this.attachmentID,
-      rowStart: 1,
-      rowEnd: 1000,
-      orderBy: '',
-      orderByDirection: '',
-      filter: '',
-      transactionID: this.transactionID,
-      }).then((res: CustomWorksheetLinesResponse) => {
-        this.linesCreated = res.lines;
-        this.lines = this.linesCreated.length;
-        if (this.lines > -1) {
-          this.focusLineData = this.linesCreated[this.lines - 1];
-        }
-        // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
-        //   || x.quantityError !== null
-        //   || x.unitOfMeasureError !== null || x.tariffError !== null);
-      },
-      (msg) => {
-      }
-    );
-  }
-
-  addToQueue(obj: CustomWorksheetLineReq) {
-    obj.customWorksheetID = this.attachmentID;
-    obj.isPersistant = false;
-    obj.userID = this.currentUser.userID;
-
-    this.lineQueue.push(obj);
-    this.linesCreated.push(obj);
-    // this.lineState = 'Line added to queue';
-    this.focusLineForm = !this.focusLineForm;
-    this.focusLineData = null;
-    this.lines = -1;
-    // setTimeout(() => this.lineState = '', 3000);
-    this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
-      duration: 3000,
-      panelClass: ['capture-snackbar'],
-      horizontalPosition: 'center',
-    });
-  }
-
-  saveLines() {
-          if (this.lineIndex < this.lineQueue.length) {
-            this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
-              (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-                if (res.outcome === 'SUCCESS') {
-                  this.nextLineAsync();
-                  // console.log('Line saved');
-                } else {
-                 // console.log('Line not saved');
+        this.transactionService.observerCurrentAttachment()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+                if (curr !== null || curr !== undefined) {
+                    this.attachmentID = curr.attachmentID;
+                    this.transactionID = curr.transactionID;
+                    this.loadCapture();
+                    this.loadLines();
                 }
-              },
-              (msg) => {
-                console.log(`Client Error: ${JSON.stringify(msg)}`);
-              }
+            });
+    }
+
+    ngAfterViewInit(): void {
+        this.shortcuts.push(
+            {
+                key: 'alt + .',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => this.nextLine()
+            },
+            {
+                key: 'alt + ,',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => this.prevLine()
+            },
+            {
+                key: 'alt + /',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => this.focusLineForm = !this.focusLineForm
+            },
+            {
+                key: 'alt + m',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => {
+                    this.focusMainForm = !this.focusMainForm;
+                    this.focusLineData = null;
+                    this.lines = -1;
+                }
+            },
+            {
+                key: 'alt + n',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => {
+                    this.focusLineForm = !this.focusLineForm;
+                    this.focusLineData = null;
+                    this.lines = -1;
+                }
+            },
+            {
+                key: 'alt + s',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => {
+                    {
+                        if (!this.dialogOpen) {
+                            this.dialogOpen = true;
+                            this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                                this.dialogOpen = false;
+                                if (status) {
+                                    this.saveLines();
+                                }
+                            });
+                        }
+                    }
+                }
+            },
+            {
+                key: 'alt + l',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => {
+                    this.toggleLines = !this.toggleLines;
+
+                    if (this.toggleLines) {
+                        this.sad500Tooltip.hide();
+                        this.sadLinesTooltip.show();
+                        setTimeout(() => { this.sadLinesTooltip.hide(); }, 1000);
+                    } else {
+                        this.sadLinesTooltip.hide();
+                        this.sad500Tooltip.show();
+                        setTimeout(() => { this.sad500Tooltip.hide(); }, 1000);
+                    }
+                }
+            },
+        );
+    }
+
+    submit() {
+        const requestModel = {
+            userID: this.currentUser.userID,
+            customworksheetID: this.attachmentID,
+            transactionID: this.transactionID,
+            fileRef: this.form.fileRef.value,
+            lrn: this.form.LRN.value,
+            isDeleted: 0,
+            attachmentStatusID: 3,
+            waybillNo: this.form.waybillNo.value,
+
+            waybillNoOBit: this.form.waybillNo.OBit,
+            waybillNoOUserID: this.form.waybillNo.OUserID,
+            waybillNoODate: this.form.waybillNo.ODate,
+            waybillNoOReason: this.form.waybillNo.OReason,
+
+            lrnOBit: this.form.LRN.OBit,
+            lrnOUserID: this.form.LRN.OUserID,
+            lrnODate: this.form.LRN.ODate,
+            lrnOReason: this.form.LRN.OReason,
+
+            fileRefOBit: this.form.fileRef.OBit,
+            fileRefOUserID: this.form.fileRef.OUserID,
+            fileRefODate: this.form.fileRef.ODate,
+            fileRefOReason: this.form.fileRef.OReason,
+        };
+
+        this.captureService.customWorksheetUpdate(requestModel).then(
+            (res: Outcome) => {
+                if (res.outcome === 'SUCCESS') {
+                    this.notify.successmsg(res.outcome, res.outcomeMessage);
+                    this.router.navigate(['transaction/capturerlanding']);
+                } else {
+                    this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+                }
+            },
+            (msg) => {
+                console.log(JSON.stringify(msg));
+                this.notify.errorsmsg('Failure', 'Cannot reach server');
+            }
+        );
+    }
+
+    updateLine(obj: CustomWorksheetLineReq) {
+        this.captureService.customWorksheetLineAdd(obj).then(
+            (res: Outcome) => {
+                if (res.outcome === 'SUCCESS') {
+                    this.loadLines();
+                    this.lines = -1;
+                    this.focusLineData = null;
+                }
+            },
+            (msg) => {
+                this.notify.errorsmsg('Failure', 'Cannot reach server');
+            }
+        );
+    }
+
+    loadCapture() {
+        this.captureService.customWorksheetList({
+            customsWorksheetID: this.attachmentID,
+            userID: this.currentUser.userID,
+            transactionID: this.transactionID,
+            rowStart: 1,
+            rowEnd: 15,
+            filter: '',
+            orderBy: '',
+            orderByDirection: '',
+        }).then(
+            (res: CustomsWorksheetListResponse) => {
+                if (res.customsWorksheets.length === 1) {
+                    this.form.LRN.value = res.customsWorksheets[0].lrn;
+                    this.form.LRN.error = res.customsWorksheets[0].lrnError;
+                    this.form.fileRef.value = res.customsWorksheets[0].fileRef;
+                    this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
+                    this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
+                    this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
+
+                    this.form.waybillNo.OBit = res.customsWorksheets[0].waybillNoOBit;
+                    this.form.waybillNo.OUserID = res.customsWorksheets[0].waybillNoOUserID;
+                    this.form.waybillNo.ODate = res.customsWorksheets[0].waybillNoODate;
+                    this.form.waybillNo.OReason = res.customsWorksheets[0].waybillNoOReason;
+
+                    this.form.fileRef.OBit = res.customsWorksheets[0].fileRefOBit;
+                    this.form.fileRef.OUserID = res.customsWorksheets[0].fileRefOUserID;
+                    this.form.fileRef.ODate = res.customsWorksheets[0].fileRefODate;
+                    this.form.fileRef.OReason = res.customsWorksheets[0].fileRefOReason;
+
+                    this.form.LRN.OBit = res.customsWorksheets[0].lrnOBit;
+                    this.form.LRN.OUserID = res.customsWorksheets[0].lrnOUserID;
+                    this.form.LRN.ODate = res.customsWorksheets[0].lrnODate;
+                    this.form.LRN.OReason = res.customsWorksheets[0].lrnOReason;
+
+                    if (res.attachmentErrors.attachmentErrors.length > 0) {
+                        res.attachmentErrors.attachmentErrors.forEach(error => {
+                            if (error.fieldName === 'WaybillNo') {
+                                this.form.waybillNo.error = error.errorDescription;
+                            } else if (error.fieldName === 'LRN') {
+                                this.form.LRN.error = error.errorDescription;
+                            } else if (error.fieldName === 'FileRef') {
+                                this.form.fileRef.error = error.errorDescription;
+                            }
+                        });
+                    }
+                }
+            },
+            (msg) => { }
+        );
+    }
+
+    loadLines() {
+        this.captureService.customWorksheetLineList({
+            userID: this.currentUser.userID,
+            customsWorksheetID: this.attachmentID,
+            rowStart: 1,
+            rowEnd: 1000,
+            orderBy: '',
+            orderByDirection: '',
+            filter: '',
+            transactionID: this.transactionID,
+        }).then((res: CustomWorksheetLinesResponse) => {
+            this.linesCreated = res.lines;
+            this.lines = this.linesCreated.length;
+            if (this.lines > -1) {
+                this.focusLineData = this.linesCreated[this.lines - 1];
+            }
+            // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
+            //   || x.quantityError !== null
+            //   || x.unitOfMeasureError !== null || x.tariffError !== null);
+        },
+            (msg) => {
+            }
+        );
+    }
+
+    addToQueue(obj: CustomWorksheetLine) {
+        obj.customWorksheetID = this.attachmentID;
+        obj.isPersistant = false;
+        obj.userID = this.currentUser.userID;
+
+        this.lineQueue.push(obj);
+        this.linesCreated.push(obj);
+        // this.lineState = 'Line added to queue';
+        this.focusLineForm = !this.focusLineForm;
+        this.focusLineData = null;
+        this.lines = -1;
+        // setTimeout(() => this.lineState = '', 3000);
+        this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar'],
+            horizontalPosition: 'center',
+        });
+    }
+
+    saveLines() {
+        if (this.lineIndex < this.lineQueue.length) {
+            this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
+                (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+                    if (res.outcome === 'SUCCESS') {
+                        this.nextLineAsync();
+                        // console.log('Line saved');
+                    } else {
+                        // console.log('Line not saved');
+                    }
+                },
+                (msg) => {
+                    console.log(`Client Error: ${JSON.stringify(msg)}`);
+                }
             );
-          } else {
+        } else {
             this.submit();
-          }
-  }
-
-  nextLineAsync() {
-    this.lineIndex++;
-
-    if (this.lineIndex < this.lineQueue.length) {
-      this.saveLines();
-    } else {
-      this.loader = false;
-      this.submit();
-    }
-  }
-
-  revisitSAD500Line(item: CustomWorksheetLineReq, i?: number) {
-    this.lines = i;
-  }
-
-  prevLine() {
-    if (this.lines >= 1) {
-      this.lines--;
-      this.focusLineData = this.linesCreated[this.lines];
-    }
-  }
-
-  nextLine() {
-    if (this.lines < this.linesCreated.length - 1) {
-      this.lines++;
-      this.focusLineData = this.linesCreated[this.lines];
+        }
     }
 
-    if (this.lines === -1) {
-      this.lines++;
-      this.focusLineData = this.linesCreated[this.lines];
+    nextLineAsync() {
+        this.lineIndex++;
+
+        if (this.lineIndex < this.lineQueue.length) {
+            this.saveLines();
+        } else {
+            this.loader = false;
+            this.submit();
+        }
     }
-  }
 
-  specificLine(index: number) {
-    this.focusLineData = this.linesCreated[index];
-  }
+    revisitSAD500Line(item: CustomWorksheetLineReq, i?: number) {
+        this.lines = i;
+    }
 
-  newLine() {
-    this.focusLineForm = !this.focusLineForm;
-    this.focusLineData = null;
-    this.lines = -1;
-  }
-  updateHelpContext(slug: string) {
-    const newContext: SnackbarModel = {
-      display: true,
-      slug
-    };
+    prevLine() {
+        if (this.lines >= 1) {
+            this.lines--;
+            this.focusLineData = this.linesCreated[this.lines];
+        }
+    }
 
-    this.snackbarService.setHelpContext(newContext);
-  }
+    nextLine() {
+        if (this.lines < this.linesCreated.length - 1) {
+            this.lines++;
+            this.focusLineData = this.linesCreated[this.lines];
+        }
 
-  OverridefileRefClick() {
-    this.form.fileRef.OUserID = this.currentUser.userID;
-    this.form.fileRef.OBit = true;
-    this.form.fileRef.ODate = new Date();
-    this.disabledfileRef = false;
-    this.fileRefOReason = '';
-  }
+        if (this.lines === -1) {
+            this.lines++;
+            this.focusLineData = this.linesCreated[this.lines];
+        }
+    }
 
-  OverridefileRefExcept() {
-    // this.form.importersCode.OReason = reason;
-    this.disabledfileRef = true;
-  }
+    specificLine(index: number) {
+        this.focusLineData = this.linesCreated[index];
+    }
 
-  UndoOverridefileRef() {
-    this.form.fileRef.OUserID = null;
-    this.form.fileRef.OBit = null;
-    this.form.fileRef.ODate = null;
-    this.form.fileRef.OReason = null;
-    this.fileRefOReason = '';
-    this.disabledfileRef = false;
-  }
+    newLine() {
+        this.focusLineForm = !this.focusLineForm;
+        this.focusLineData = null;
+        this.lines = -1;
+    }
+    updateHelpContext(slug: string) {
+        const newContext: SnackbarModel = {
+            display: true,
+            slug
+        };
 
-  OverrideWaybillClick() {
-    this.form.waybillNo.OUserID = this.currentUser.userID;
-    this.form.waybillNo.OBit = true;
-    this.form.waybillNo.ODate = new Date();
-    this.disabledWay = false;
-    this.waybillNoOReason = '';
-  }
+        this.snackbarService.setHelpContext(newContext);
+    }
 
-  OverrideWaybillExcept() {
-    this.disabledWay = true;
-  }
+    OverridefileRefClick() {
+        this.form.fileRef.OUserID = this.currentUser.userID;
+        this.form.fileRef.OBit = true;
+        this.form.fileRef.ODate = new Date();
+        this.disabledfileRef = false;
+        this.fileRefOReason = '';
+    }
 
-  UndoOverrideWaybill() {
-    this.form.waybillNo.OUserID = null;
-    this.form.waybillNo.OBit = null;
-    this.form.waybillNo.ODate = null;
-    this.form.waybillNo.OReason = null;
-    this.waybillNoOReason = '';
-    this.disabledWay = false;
-  }
+    OverridefileRefExcept() {
+        // this.form.importersCode.OReason = reason;
+        this.disabledfileRef = true;
+    }
 
-  OverrideLRNClick() {
-    this.form.LRN.OUserID = this.currentUser.userID;
-    this.form.LRN.OBit = true;
-    this.form.LRN.ODate = new Date();
-    this.disabledLRN = false;
-    this.LRNOReason = '';
-  }
+    UndoOverridefileRef() {
+        this.form.fileRef.OUserID = null;
+        this.form.fileRef.OBit = null;
+        this.form.fileRef.ODate = null;
+        this.form.fileRef.OReason = null;
+        this.fileRefOReason = '';
+        this.disabledfileRef = false;
+    }
 
-  OverrideLRNExcept() {
-    this.disabledLRN = true;
-  }
+    OverrideWaybillClick() {
+        this.form.waybillNo.OUserID = this.currentUser.userID;
+        this.form.waybillNo.OBit = true;
+        this.form.waybillNo.ODate = new Date();
+        this.disabledWay = false;
+        this.waybillNoOReason = '';
+    }
 
-  UndoOverrideLRN() {
-    this.form.LRN.OUserID = null;
-    this.form.LRN.OBit = null;
-    this.form.LRN.ODate = null;
-    this.form.LRN.OReason = null;
-    this.LRNOReason = '';
-    this.disabledLRN = false;
-  }
+    OverrideWaybillExcept() {
+        this.disabledWay = true;
+    }
 
+    UndoOverrideWaybill() {
+        this.form.waybillNo.OUserID = null;
+        this.form.waybillNo.OBit = null;
+        this.form.waybillNo.ODate = null;
+        this.form.waybillNo.OReason = null;
+        this.waybillNoOReason = '';
+        this.disabledWay = false;
+    }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+    OverrideLRNClick() {
+        this.form.LRN.OUserID = this.currentUser.userID;
+        this.form.LRN.OBit = true;
+        this.form.LRN.ODate = new Date();
+        this.disabledLRN = false;
+        this.LRNOReason = '';
+    }
 
+    OverrideLRNExcept() {
+        this.disabledLRN = true;
+    }
+
+    UndoOverrideLRN() {
+        this.form.LRN.OUserID = null;
+        this.form.LRN.OBit = null;
+        this.form.LRN.ODate = null;
+        this.form.LRN.OReason = null;
+        this.LRNOReason = '';
+        this.disabledLRN = false;
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
 }
