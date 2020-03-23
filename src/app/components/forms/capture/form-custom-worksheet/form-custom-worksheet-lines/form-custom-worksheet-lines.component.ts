@@ -29,6 +29,16 @@ import { CustomWorksheetLine } from 'src/app/models/HttpResponses/CustomWorkshee
     styleUrls: ['./form-custom-worksheet-lines.component.scss']
 })
 export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+    disabledcommonFactor: boolean;
+  commonFactorOReason: string;
+  disabledcustVal: boolean;
+  custValOReason: string;
+  disabledhsQuantity: boolean;
+  hsQuantityOReason: string;
+  disabledforeignInv: boolean;
+  foreignInvOReason: string;
+  disabledduty: boolean;
+  dutyOReason: string;
     constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
                 private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
                 private snackbarService: HelpSnackbar, private placeService: PlaceService, private currencyService: CurrenciesService) { }
@@ -663,6 +673,120 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     selectedUnit(unit) {
         this.form.unitOfMeasureID = unit.unitOfMeasureID;
+    }
+
+    OverridecommonFactorClick() {
+      this.form.commonFactor.OUserID = this.currentUser.userID;
+      this.form.commonFactor.OBit = true;
+      this.form.commonFactor.ODate = new Date();
+      this.disabledcommonFactor = false;
+      this.commonFactorOReason = '';
+    }
+
+    OverridecommonFactorExcept() {
+      // this.form.importersCode.OReason = reason;
+      this.disabledcommonFactor = true;
+      console.log(this.form.commonFactor);
+    }
+
+    UndoOverridecommonFactor() {
+      this.form.commonFactor.OUserID = null;
+      this.form.commonFactor.OBit = null;
+      this.form.commonFactor.ODate = null;
+      this.form.commonFactor.OReason = null;
+      this.commonFactorOReason = '';
+      this.disabledcommonFactor = false;
+    }
+
+    OverridecustValClick() {
+      this.form.custVal .OUserID = this.currentUser.userID;
+      this.form.custVal.OBit = true;
+      this.form.custVal .ODate = new Date();
+      this.disabledcustVal = false;
+      this.custValOReason = '';
+    }
+
+    OverridecustValExcept() {
+      // this.form.LRN .OReason = reason;
+      this.disabledcustVal  = true;
+      console.log(this.form.custVal);
+    }
+
+    UndoOverridecustVal() {
+      this.form.custVal.OUserID = null;
+      this.form.custVal.OBit = null;
+      this.form.custVal.ODate = null;
+      this.form.custVal.OReason = null;
+      this.custValOReason = '';
+      this.disabledcustVal = false;
+    }
+
+    OverridehsQuantityClick() {
+      this.form.hsQuantity.OUserID = this.currentUser.userID;
+      this.form.hsQuantity.OBit = true;
+      this.form.hsQuantity.ODate = new Date();
+      this.disabledhsQuantity = false;
+      this.hsQuantityOReason = '';
+    }
+
+    OverridehsQuantityExcept() {
+      this.disabledhsQuantity  = true;
+      console.log(this.form.hsQuantity);
+    }
+
+    UndoOverridehsQuantity() {
+      this.form.hsQuantity.OUserID = null;
+      this.form.hsQuantity.OBit = null;
+      this.form.hsQuantity.ODate = null;
+      this.form.hsQuantity.OReason = null;
+      this. hsQuantityOReason = '';
+      this.disabledhsQuantity = false;
+    }
+
+    OverrideforeignInvClick() {
+      this.form.foreignInv.OUserID = this.currentUser.userID;
+      this.form.foreignInv.OBit = true;
+      this.form.foreignInv.ODate = new Date();
+      this.disabledforeignInv = false;
+      this.foreignInvOReason = '';
+    }
+
+    OverrideforeignInvExcept() {
+      // this.form.LRN .OReason = reason;
+      this.disabledforeignInv  = true;
+      console.log(this.form.foreignInv);
+    }
+
+    UndoOverrideforeignInv() {
+      this.form.foreignInv.OUserID = null;
+      this.form.foreignInv.OBit = null;
+      this.form.foreignInv.ODate = null;
+      this.form.foreignInv.OReason = null;
+      this. foreignInvOReason = '';
+      this.disabledforeignInv = false;
+    }
+
+    OverridedutyClick() {
+      this.form.duty.OUserID = this.currentUser.userID;
+      this.form.duty.OBit = true;
+      this.form.duty.ODate = new Date();
+      this.disabledduty = false;
+      this.dutyOReason = '';
+    }
+
+    OverridedutyExcept() {
+      // this.form.LRN .OReason = reason;
+      this.disabledduty  = true;
+      console.log(this.form.duty);
+    }
+
+    UndoOverrideduty() {
+      this.form.duty.OUserID = null;
+      this.form.duty.OBit = null;
+      this.form.duty.ODate = null;
+      this.form.duty.OReason = null;
+      this. dutyOReason = '';
+      this.disabledduty = false;
     }
 
     ngOnDestroy(): void {

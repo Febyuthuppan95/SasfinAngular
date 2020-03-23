@@ -8,9 +8,19 @@
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')"
         placeholder="Common Factor" />
-        <!-- [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"
-        <p class="invalid-control-label" *ngIf="this.form.commonFactorError !== null && this.form.commonFactorError !== undefined" style="width: 100%;">{{this.form.commonFactorError}}</p> -->
-    </div>
+        <!-- [ngClass]="{'form-control-invalid': this.form.commonFactorError !== null && this.form.commonFactorError !== undefined}"-->
+        <div *ngIf="this.form.commonFactor.error !== null" class="input-group mb-3 invalid-control-label">
+          <p *ngIf="this.form.commonFactor.OBit == false || this.form.commonFactor.OBit == null" style="width: inherit" >
+          {{this.form.commonFactor.error}}
+          <button (click)="OverridecommonFactorClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+          </p>
+          <input [(ngModel)]="this.form.commonFactor.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.commonFactor.OBit == true" [disabled]="disabledcommonFactor" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <div *ngIf="this.form.commonFactor.OBit == true"  class="input-group-append ">
+            <button (click)="OverridecommonFactorExcept()" [disabled]="disabledcommonFactor" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+            <button (click)="UndoOverridecommonFactor()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+          </div>
+        </div>
+      </div>
   <div class="form-group">
     <label for="custVal">Customs Value</label>
     <input type="number" id="custVal"
@@ -19,8 +29,18 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')"
       placeholder="Customs Value"
      />
-     <!-- [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"
-      <p class="invalid-control-label" *ngIf="this.form.custValError !== null && this.form.custValError !== undefined" style="width: 100%;">{{this.form.custValError}}</p> -->
+     <!-- [ngClass]="{'form-control-invalid': this.form.custValError !== null && this.form.custValError !== undefined}"-->
+     <div *ngIf="this.form.custVal.error !== null" class="input-group mb-3 invalid-control-label">
+      <p *ngIf="this.form.custVal.OBit == false || this.form.custVal.OBit == null" style="width: inherit" >
+      {{this.form.custVal.error}}
+      <button (click)="OverridecustValClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+      </p>
+      <input [(ngModel)]="this.form.custVal.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.custVal.OBit == true" [disabled]="disabledcustVal" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+      <div *ngIf="this.form.custVal.OBit == true"  class="input-group-append ">
+        <button (click)="OverridecustValExcept()" [disabled]="disabledcustVal" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+        <button (click)="UndoOverridecustVal()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+      </div>
+    </div>
   </div>
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
       <label for="hsQuantity">HS Quantity</label>
@@ -30,9 +50,19 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')"
       placeholder="HS Quantity"
       />
-      <!-- [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"
-      <p class="invalid-control-label" *ngIf="this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined" style="width: 100%;">{{this.form.hsQuantityError}}</p> -->
-  </div>
+      <!-- [ngClass]="{'form-control-invalid': this.form.hsQuantityError !== null && this.form.hsQuantityError !== undefined}"-->
+      <div *ngIf="this.form.hsQuantity.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.hsQuantity.OBit == false || this.form.hsQuantity.OBit == null" style="width: inherit" >
+        {{this.form.hsQuantity.error}}
+        <button (click)="OverridehsQuantityClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.hsQuantity.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.hsQuantity.OBit == true" [disabled]="disabledhsQuantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.hsQuantity.OBit == true"  class="input-group-append ">
+          <button (click)="OverridehsQuantityExcept()" [disabled]="disabledhsQuantity" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverridehsQuantity()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
       <label for="foreignInv">Foreign Inv</label>
     <input type="text" id="foreignInv"
@@ -41,9 +71,19 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')"
       placeholder="Foreign Invoice"
       />
-      <!-- [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"
-      <p class="invalid-control-label" *ngIf="this.form.foreignInvError !== null && this.form.foreignInvError !== undefined" style="width: 100%;">{{this.form.foreignInvError}}</p> -->
-  </div>
+      <!-- [ngClass]="{'form-control-invalid': this.form.foreignInvError !== null && this.form.foreignInvError !== undefined}"-->
+      <div *ngIf="this.form.foreignInv.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.foreignInv.OBit == false || this.form.foreignInv.OBit == null" style="width: inherit" >
+        {{this.form.foreignInv.error}}
+        <button (click)="OverrideforeignInvClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.foreignInv.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.foreignInv.OBit == true" [disabled]="disabledforeignInv" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.foreignInv.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideforeignInvExcept()" [disabled]="disabledforeignInv" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideforeignInv()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group" *ngIf="this.form.duty != undefined">
       <label for="duty">Duty</label>
     <input type="text" id="duty"
@@ -52,9 +92,19 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')"
       placeholder="Duty"
       />
-      <!-- [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"
-      <p class="invalid-control-label" *ngIf="this.form.dutyError !== null && this.form.dutyError !== undefined" style="width: 100%;">{{this.form.dutyError}}</p> -->
-  </div>
+      <!-- [ngClass]="{'form-control-invalid': this.form.dutyError !== null && this.form.dutyError !== undefined}"-->
+      <div *ngIf="this.form.duty.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.duty.OBit == false || this.form.duty.OBit == null" style="width: inherit" >
+        {{this.form.duty.error}}
+        <button (click)="OverridedutyClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.duty.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.duty.OBit == true" [disabled]="disabledduty" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.duty.OBit == true"  class="input-group-append ">
+          <button (click)="OverridedutyExcept()" [disabled]="disabledduty" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideduty()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group">
     <div class="col-sm-3 " style="float: left; padding-left:0px;">
       <label for="supplyUnit">Supply Unit</label>
