@@ -7,13 +7,23 @@
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-invoice-line-prodcode')"
       placeholder="Product Code"
-      [ngClass]="{'form-control-invalid': this.form.prodCodeError !== null && this.form.prodCodeError !== undefined}"/>
-      <p class="invalid-control-label" *ngIf="this.form.prodCodeError !== null && this.form.prodCodeError !== undefined" style="width: 100%;">{{this.form.prodCodeError}}</p>
-  </div>
+      [ngClass]="{'form-control-invalid': this.form.prodCode.error !== null && this.form.prodCode.error !== undefined}"/>
+      <div *ngIf="this.form.prodCode.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.prodCode.OBit == false || this.form.prodCode.OBit == null" style="width: inherit" >
+          {{this.form.prodCode.error}}
+          <button (click)="OverrideprodCodeClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.prodCode.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.prodCode.OBit == true" [disabled]="disabledprodCode" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.prodCode.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideprodCodeExcept()" [disabled]="disabledprodCode"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideprodCode()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group">
     <div class="form-group">
-        <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined}" 
-        type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure" 
+        <input [(ngModel)]="this.form.unitOfMeasure" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined}"
+        type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
         [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
@@ -22,7 +32,7 @@
             {{unit.name}}, {{unit.description}}
           </mat-option>
         </mat-autocomplete>
-        <p class="invalid-control-label" *ngIf="this.form.unitOfMeasureError !== null && this.form.unitOfMeasureError !== undefined">{{this.form.unitOfMeasureError}}</p>
+        <p class="invalid-control-label" *ngIf="this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined">{{this.form.unitOfMeasure.error}}</p>
           </div>
   </div>
   <div class="form-group">
@@ -31,38 +41,77 @@
       [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-invoice-line-quantity')"
-      [ngClass]="{'form-control-invalid': this.form.quantityError !== null && this.form.quantityError !== undefined}"
+      [ngClass]="{'form-control-invalid': this.form.quantity.error !== null && this.form.quantity.error !== undefined}"
       placeholder="Quantity" style="margin-top:0"/>
-      <p class="invalid-control-label" *ngIf="this.form.quantityError !== null && this.form.quantityError !== undefined">{{this.form.quantityError}}</p>
-  </div>
+      <div *ngIf="this.form.quantity.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.quantity.OBit == false || this.form.quantity.OBit == null" style="width: inherit" >
+          {{this.form.quantity.error}}
+          <button (click)="OverridequantityClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.quantity.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.quantity.OBit == true" [disabled]="disabledquantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.quantity.OBit == true"  class="input-group-append ">
+          <button (click)="OverridequantityExcept()" [disabled]="disabledquantity"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverridequantity()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group">
     <label class="text-muted">Item Value</label>
     <input type="number"
       [(ngModel)]="this.form.itemValue" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-invoice-line-itemvalue')"
-      [ngClass]="{'form-control-invalid': this.form.itemValueError !== null && this.form.itemValueError !== undefined}"
+      [ngClass]="{'form-control-invalid': this.form.itemValue.error !== null && this.form.itemValue.error !== undefined}"
       placeholder="Item Value" />
-      <p class="invalid-control-label" *ngIf="this.form.itemValueError !== null && this.form.itemValueError !== undefined">{{this.form.itemValueError}}</p>
-  </div>
+      <div *ngIf="this.form.itemValue.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.itemValue.OBit == false || this.form.itemValue.OBit == null" style="width: inherit" >
+          {{this.form.itemValue.error}}
+          <button (click)="OverrideitemValueClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.itemValue.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.itemValue.OBit == true" [disabled]="disableditemValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.itemValue.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideitemValueExcept()" [disabled]="disableditemValue"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideitemValue()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+    </div>
   <div class="form-group">
       <label class="text-muted">Unit Price</label>
       <input type="number"
         [(ngModel)]="this.form.unitPrice" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-invoice-line-unitprice')"
-        [ngClass]="{'form-control-invalid': this.form.unitPriceError !== null && this.form.unitPriceError !== undefined}"
-        placeholder="Quantity" style="margin-top:0"/>
-        <p class="invalid-control-label" *ngIf="this.form.unitPriceError !== null && this.form.quantityError !== undefined">{{this.form.unitPriceError}}</p>
-    </div>
+        [ngClass]="{'form-control-invalid': this.form.unitPrice.error !== null && this.form.unitPrice.error !== undefined}"
+        placeholder="Unit Price" style="margin-top:0"/>
+        <div *ngIf="this.form.unitPrice.error !== null" class="input-group mb-3 invalid-control-label">
+          <p *ngIf="this.form.unitPrice.OBit == false || this.form.unitPrice.OBit == null" style="width: inherit" >
+            {{this.form.unitPrice.error}}
+            <button (click)="OverrideunitPriceClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+          </p>
+          <input [(ngModel)]="this.form.unitPrice.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.unitPrice.OBit == true" [disabled]="disabledunitPrice" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <div *ngIf="this.form.unitPrice.OBit == true"  class="input-group-append ">
+            <button (click)="OverrideunitPriceExcept()" [disabled]="disabledunitPrice"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+            <button (click)="UndoOverrideunitPrice()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+          </div>
+        </div>     </div>
+
     <div class="form-group">
         <label class="text-muted">Total Line Value</label>
         <input type="number"
           [(ngModel)]="this.form.totalLineValue" [ngModelOptions]="{standalone: true}"
           class="form-control form-control-sm shadow-sm form-control-light"
           (mouseover)="updateHelpContext('form-invoice-line-totallinevalue')"
-          [ngClass]="{'form-control-invalid': this.form.totalLineValueError !== null && this.form.totalLineValueError !== undefined}"
-          placeholder="Quantity" style="margin-top:0"/>
-          <p class="invalid-control-label" *ngIf="this.form.totalLineValueError !== null && this.form.totalLineValueError !== undefined">{{this.form.totalLineValueError}}</p>
-      </div>
+          [ngClass]="{'form-control-invalid': this.form.totalLineValue.error !== null && this.form.totalLineValue.error !== undefined}"
+          placeholder="totalLineValue" style="margin-top:0"/>
+          <div *ngIf="this.form.totalLineValue.error !== null" class="input-group mb-3 invalid-control-label">
+            <p *ngIf="this.form.totalLineValue.OBit == false || this.form.totalLineValue.OBit == null" style="width: inherit" >
+              {{this.form.totalLineValue.error}}
+              <button (click)="OverridetotalLineValueClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+            </p>
+            <input [(ngModel)]="this.form.totalLineValue.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.totalLineValue.OBit == true" [disabled]="disabledtotalLineValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+            <div *ngIf="this.form.totalLineValue.OBit == true"  class="input-group-append ">
+              <button (click)="OverridetotalLineValueExcept()" [disabled]="disabledtotalLineValue"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+              <button (click)="UndoOverridetotalLineValue()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+            </div>
+          </div>       </div>
 </form>

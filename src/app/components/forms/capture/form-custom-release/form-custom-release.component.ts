@@ -475,25 +475,25 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
         if (res.attachmentErrors.attachmentErrors.length > 0) {
           res.attachmentErrors.attachmentErrors.forEach(error => {
-              if (error.fieldName === 'Country Of Orgin') {
+              if (error.fieldName === 'SerialNo') {
                   this.form.serialNo.error = error.errorDescription;
-              } else if (error.fieldName === 'Tariff') {
+              } else if (error.fieldName === 'LRN') {
                   this.form.LRN.error = error.errorDescription;
-              } else if (error.fieldName === 'Quantity') {
+              } else if (error.fieldName === 'ImporterCode') {
                   this.form.importersCode.error = error.errorDescription;
-              } else if (error.fieldName === 'Foreign Inv') {
+              } else if (error.fieldName === 'PCC') {
                   this.form.PCC.error = error.errorDescription;
-              } else if (error.fieldName === 'Customs Value') {
+              } else if (error.fieldName === 'FOB') {
                   this.form.FOB.error = error.errorDescription;
-              } else if (error.fieldName === 'Duty') {
+              } else if (error.fieldName === 'WaybillNo') {
                   this.form.waybillNo.error = error.errorDescription;
-              } else if (error.fieldName === 'Common Factor') {
+              } else if (error.fieldName === 'FileRef') {
                   this.form.fileRef.error = error.errorDescription;
-              } else if (error.fieldName === 'InvoiceNo') {
+              } else if (error.fieldName === 'TotalCustomsValue') {
                   this.form.totalCustomsValue.error = error.errorDescription;
-              } else if (error.fieldName === 'Product Code') {
+              } else if (error.fieldName === 'TotalDuty') {
                   this.form.totalDuty.error = error.errorDescription;
-              } else if (error.fieldName === 'VAT') {
+              } else if (error.fieldName === 'MRN') {
                   this.form.MRN.error = error.errorDescription;
               }
           });

@@ -31,6 +31,8 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
   styleUrls: ['./form-invoice.component.scss']
 })
 export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
+  disabledinvoiceNo: boolean;
+  invoiceNoOReason: string;
 
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
@@ -314,6 +316,7 @@ loader = false;
             invoiceNoOReason: this.form.invoiceNo.OReason,
           };
 
+
           // if (this.form.fromCompanyID.value === null) {
           //   const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
           //   if (fromCompany !== undefined) {
@@ -424,6 +427,14 @@ loader = false;
           this.form.invoiceNo.OUserID = res.invoices[0].invoiceNoOUserID;
           this.form.invoiceNo.ODate = res.invoices[0].invoiceNoODate;
           this.form.invoiceNo.OReason = res.invoices[0].invoiceNoOReason;
+
+          if (res.attachmentErrors.attachmentErrors.length > 0) {
+            res.attachmentErrors.attachmentErrors.forEach(error => {
+              if (error.fieldName === 'InvoiceNo') {
+                this.form.invoiceNo.error = error.errorDescription;
+              }
+            });
+          }
         }
       },
       (msg) => {
@@ -435,23 +446,20 @@ loader = false;
     this.captureService.invoiceLineList({
       userID: this.currentUser.userID,
       invoiceID: this.attachmentID,
+      transactionID: this.transactionID,
       invoiceLineID: -1,
       filter: '',
       orderBy: '',
       orderByDirection: '',
       rowStart: 1,
       rowEnd: 1000,
+
     }).then(
       (res: InvoiceLinesResponse) => {
         this.sad500CreatedLines = res.lines;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
-
-        this.lineErrors = res.lines.filter(x =>
-          x.quantityError !== null
-          || x.prodCodeError !== null
-          || x.itemValueError !== null);
       },
       (msg) => {
       }
@@ -667,6 +675,29 @@ loader = false;
     this.countriesList = this.countriesListTemp;
     this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
   }
+
+  OverrideinvoiceNoClick() {
+    this.form.invoiceNo.OUserID = this.currentUser.userID;
+    this.form.invoiceNo.OBit = true;
+    this.form.invoiceNo.ODate = new Date();
+    this.disabledinvoiceNo = false;
+    this.invoiceNoOReason = '';
+  }
+
+  OverrideinvoiceNoExcept() {
+    this.disabledinvoiceNo = true;
+    console.log(this.form.invoiceNo);
+  }
+
+  UndoOverrideinvoiceNo() {
+    this.form.invoiceNo.OUserID = null;
+    this.form.invoiceNo.OBit = null;
+    this.form.invoiceNo.ODate = null;
+    this.form.invoiceNo.OReason = null;
+    this.invoiceNoOReason = '';
+    this.disabledinvoiceNo = false;
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
