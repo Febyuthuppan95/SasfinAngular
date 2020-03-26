@@ -30,6 +30,14 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./form-sad500-line.component.scss']
 })
 export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  disabledlineNo: boolean;
+  lineNoOReason: string;
+  disabledsupplyUnit: boolean;
+  supplyUnitOReason: string;
+  disabledcustomsValue: boolean;
+  customsValueOReason: string;
+  disabledquantity: boolean;
+  quantityOReason: string;
 
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
@@ -568,6 +576,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
@@ -627,6 +636,98 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         (msg) => {}
       );
     }
+  }
+
+  OverridelineNoClick() {
+    this.form.lineNo.OUserID = this.currentUser.userID;
+    this.form.lineNo.OBit = true;
+    this.form.lineNo.ODate = new Date();
+    this.disabledlineNo = false;
+    this.lineNoOReason = '';
+  }
+
+  OverridelineNoExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledlineNo = true;
+    console.log(this.form.lineNo);
+  }
+
+  UndoOverridelineNo() {
+    this.form.lineNo.OUserID = null;
+    this.form.lineNo.OBit = null;
+    this.form.lineNo.ODate = null;
+    this.form.lineNo.OReason = null;
+    this.lineNoOReason = '';
+    this.disabledlineNo = false;
+  }
+
+  OverridesupplyUnitClick() {
+    this.form.supplyUnit.OUserID = this.currentUser.userID;
+    this.form.supplyUnit.OBit = true;
+    this.form.supplyUnit.ODate = new Date();
+    this.disabledsupplyUnit = false;
+    this.supplyUnitOReason = '';
+  }
+
+  OverridesupplyUnitExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledsupplyUnit = true;
+    console.log(this.form.supplyUnit);
+  }
+
+  UndoOverridesupplyUnit() {
+    this.form.supplyUnit.OUserID = null;
+    this.form.supplyUnit.OBit = null;
+    this.form.supplyUnit.ODate = null;
+    this.form.supplyUnit.OReason = null;
+    this.supplyUnitOReason = '';
+    this.disabledsupplyUnit = false;
+  }
+
+  OverridecustomsValueClick() {
+    this.form.customsValue.OUserID = this.currentUser.userID;
+    this.form.customsValue.OBit = true;
+    this.form.customsValue.ODate = new Date();
+    this.disabledcustomsValue = false;
+    this.customsValueOReason = '';
+  }
+
+  OverridecustomsValueExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledcustomsValue = true;
+    console.log(this.form.customsValue);
+  }
+
+  UndoOverridecustomsValue() {
+    this.form.customsValue.OUserID = null;
+    this.form.customsValue.OBit = null;
+    this.form.customsValue.ODate = null;
+    this.form.customsValue.OReason = null;
+    this.customsValueOReason = '';
+    this.disabledcustomsValue = false;
+  }
+
+  OverridequantityClick() {
+    this.form.quantity.OUserID = this.currentUser.userID;
+    this.form.quantity.OBit = true;
+    this.form.quantity.ODate = new Date();
+    this.disabledquantity = false;
+    this.quantityOReason = '';
+  }
+
+  OverridequantityExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledquantity = true;
+    console.log(this.form.quantity);
+  }
+
+  UndoOverridequantity() {
+    this.form.quantity.OUserID = null;
+    this.form.quantity.OBit = null;
+    this.form.quantity.ODate = null;
+    this.form.quantity.OReason = null;
+    this.quantityOReason = '';
+    this.disabledquantity = false;
   }
 
   ngOnDestroy(): void {

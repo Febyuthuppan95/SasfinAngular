@@ -25,6 +25,28 @@ import { CompanyService } from 'src/app/services/Company.Service';
   styleUrls: ['./form-sad500.component.scss']
 })
 export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
+  disabledwaybillNo: boolean;
+  waybillNoOReason: string;
+  disabledserialNo: boolean;
+  serialNoOReason: string;
+  disabledPCC: boolean;
+  PCCOReason: string;
+  disabledsupplierRef: boolean;
+  supplierRefOReason: string;
+  disabledtotalCustomsValue: boolean;
+  totalCustomsValueOReason: string;
+  disabledLRN: boolean;
+  LRNOReason: string;
+  disabledMRN: boolean;
+  MRNOReason: string;
+  disabledCPC: boolean;
+  CPCOReason: string;
+  disabledimportersCode: boolean;
+  importersCodeOReason: string;
+  disabledfileRef: boolean;
+  fileRefOReason: string;
+  totalCustomsDutyOReason: string;
+  disabledtotalCustomsDuty: boolean;
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
@@ -584,8 +606,12 @@ dialogOpen = false;
 
   loadLines() {
     // tslint:disable-next-line: max-line-length
-    this.captureService.sad500LineList({ userID: this.currentUser.userID, sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
-    specificSAD500LineID: -1 }).then(
+    this.captureService.sad500LineList({
+      userID: this.currentUser.userID,
+      sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+      specificSAD500LineID: -1,
+      transactionID: this.transactionID,
+    }).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
         // this.lines = this.sad500CreatedLines.length;
@@ -737,6 +763,259 @@ dialogOpen = false;
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
     this.lines = -1;
+  }
+
+  OverridewaybillNoClick() {
+    this.form.waybillNo.OUserID = this.currentUser.userID;
+    this.form.waybillNo.OBit = true;
+    this.form.waybillNo.ODate = new Date();
+    this.disabledwaybillNo = false;
+    this.waybillNoOReason = '';
+  }
+
+  OverridewaybillNoExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledwaybillNo = true;
+    console.log(this.form.waybillNo);
+  }
+
+  UndoOverridewaybillNo() {
+    this.form.waybillNo.OUserID = null;
+    this.form.waybillNo.OBit = null;
+    this.form.waybillNo.ODate = null;
+    this.form.waybillNo.OReason = null;
+    this.waybillNoOReason = '';
+    this.disabledwaybillNo = false;
+  }
+
+  OverrideserialNoClick() {
+    this.form.serialNo.OUserID = this.currentUser.userID;
+    this.form.serialNo.OBit = true;
+    this.form.serialNo.ODate = new Date();
+    this.disabledserialNo = false;
+    this.serialNoOReason = '';
+  }
+
+  OverrideserialNoExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledserialNo = true;
+    console.log(this.form.serialNo);
+  }
+
+  UndoOverrideserialNo() {
+    this.form.serialNo.OUserID = null;
+    this.form.serialNo.OBit = null;
+    this.form.serialNo.ODate = null;
+    this.form.serialNo.OReason = null;
+    this.serialNoOReason = '';
+    this.disabledserialNo = false;
+  }
+
+  OverridePCCClick() {
+    this.form.PCC.OUserID = this.currentUser.userID;
+    this.form.PCC.OBit = true;
+    this.form.PCC.ODate = new Date();
+    this.disabledPCC = false;
+    this.PCCOReason = '';
+  }
+
+  OverridePCCExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledPCC = true;
+    console.log(this.form.PCC);
+  }
+
+  UndoOverridePCC() {
+    this.form.PCC.OUserID = null;
+    this.form.PCC.OBit = null;
+    this.form.PCC.ODate = null;
+    this.form.PCC.OReason = null;
+    this.PCCOReason = '';
+    this.disabledPCC = false;
+  }
+
+  OverridesupplierRefClick() {
+    this.form.supplierRef.OUserID = this.currentUser.userID;
+    this.form.supplierRef.OBit = true;
+    this.form.supplierRef.ODate = new Date();
+    this.disabledsupplierRef = false;
+    this.supplierRefOReason = '';
+  }
+
+  OverridesupplierRefExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledsupplierRef = true;
+    console.log(this.form.supplierRef);
+  }
+
+  UndoOverridesupplierRef() {
+    this.form.supplierRef.OUserID = null;
+    this.form.supplierRef.OBit = null;
+    this.form.supplierRef.ODate = null;
+    this.form.supplierRef.OReason = null;
+    this.supplierRefOReason = '';
+    this.disabledsupplierRef = false;
+  }
+
+  OverridetotalCustomsValueClick() {
+    this.form.totalCustomsValue.OUserID = this.currentUser.userID;
+    this.form.totalCustomsValue.OBit = true;
+    this.form.totalCustomsValue.ODate = new Date();
+    this.disabledtotalCustomsValue = false;
+    this.totalCustomsValueOReason = '';
+  }
+
+  OverridetotalCustomsValueExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledtotalCustomsValue = true;
+    console.log(this.form.totalCustomsValue);
+  }
+
+  UndoOverridetotalCustomsValue() {
+    this.form.totalCustomsValue.OUserID = null;
+    this.form.totalCustomsValue.OBit = null;
+    this.form.totalCustomsValue.ODate = null;
+    this.form.totalCustomsValue.OReason = null;
+    this.totalCustomsValueOReason = '';
+    this.disabledtotalCustomsValue = false;
+  }
+
+  OverrideLRNClick() {
+    this.form.LRN.OUserID = this.currentUser.userID;
+    this.form.LRN.OBit = true;
+    this.form.LRN.ODate = new Date();
+    this.disabledLRN = false;
+    this.LRNOReason = '';
+  }
+
+  OverrideLRNExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledLRN = true;
+    console.log(this.form.LRN);
+  }
+
+  UndoOverrideLRN() {
+    this.form.LRN.OUserID = null;
+    this.form.LRN.OBit = null;
+    this.form.LRN.ODate = null;
+    this.form.LRN.OReason = null;
+    this.LRNOReason = '';
+    this.disabledLRN = false;
+  }
+
+  OverrideMRNClick() {
+    this.form.MRN.OUserID = this.currentUser.userID;
+    this.form.MRN.OBit = true;
+    this.form.MRN.ODate = new Date();
+    this.disabledMRN = false;
+    this.MRNOReason = '';
+  }
+
+  OverrideMRNExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledMRN = true;
+    console.log(this.form.MRN);
+  }
+
+  UndoOverrideMRN() {
+    this.form.MRN.OUserID = null;
+    this.form.MRN.OBit = null;
+    this.form.MRN.ODate = null;
+    this.form.MRN.OReason = null;
+    this.MRNOReason = '';
+    this.disabledMRN = false;
+  }
+
+  OverrideCPCClick() {
+    this.form.CPC.OUserID = this.currentUser.userID;
+    this.form.CPC.OBit = true;
+    this.form.CPC.ODate = new Date();
+    this.disabledCPC = false;
+    this.CPCOReason = '';
+  }
+
+  OverrideCPCExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledCPC = true;
+    console.log(this.form.CPC);
+  }
+
+  UndoOverrideCPC() {
+    this.form.CPC.OUserID = null;
+    this.form.CPC.OBit = null;
+    this.form.CPC.ODate = null;
+    this.form.CPC.OReason = null;
+    this.CPCOReason = '';
+    this.disabledCPC = false;
+  }
+
+  OverrideimportersCodeClick() {
+    this.form.importersCode.OUserID = this.currentUser.userID;
+    this.form.importersCode.OBit = true;
+    this.form.importersCode.ODate = new Date();
+    this.disabledimportersCode = false;
+    this.importersCodeOReason = '';
+  }
+
+  OverrideimportersCodeExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledimportersCode = true;
+    console.log(this.form.importersCode);
+  }
+
+  UndoOverrideimportersCode() {
+    this.form.importersCode.OUserID = null;
+    this.form.importersCode.OBit = null;
+    this.form.importersCode.ODate = null;
+    this.form.importersCode.OReason = null;
+    this.importersCodeOReason = '';
+    this.disabledimportersCode = false;
+  }
+
+  OverridefileRefClick() {
+    this.form.fileRef.OUserID = this.currentUser.userID;
+    this.form.fileRef.OBit = true;
+    this.form.fileRef.ODate = new Date();
+    this.disabledfileRef = false;
+    this.fileRefOReason = '';
+  }
+
+  OverridefileRefExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledfileRef = true;
+    console.log(this.form.fileRef);
+  }
+
+  UndoOverridefileRef() {
+    this.form.fileRef.OUserID = null;
+    this.form.fileRef.OBit = null;
+    this.form.fileRef.ODate = null;
+    this.form.fileRef.OReason = null;
+    this.fileRefOReason = '';
+    this.disabledfileRef = false;
+  }
+
+  OverridetotalCustomsDutyClick() {
+    this.form.totalCustomsDuty.OUserID = this.currentUser.userID;
+    this.form.totalCustomsDuty.OBit = true;
+    this.form.totalCustomsDuty.ODate = new Date();
+    this.disabledtotalCustomsDuty = false;
+    this.totalCustomsDutyOReason = '';
+  }
+
+  OverridetotalCustomsDutyExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledtotalCustomsDuty = true;
+    console.log(this.form.totalCustomsDuty);
+  }
+
+  UndoOverridetotalCustomsDuty() {
+    this.form.totalCustomsDuty.OUserID = null;
+    this.form.totalCustomsDuty.OBit = null;
+    this.form.totalCustomsDuty.ODate = null;
+    this.form.totalCustomsDuty.OReason = null;
+    this.totalCustomsDutyOReason = '';
+    this.disabledtotalCustomsDuty = false;
   }
 
   ngOnDestroy(): void {

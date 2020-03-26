@@ -9,6 +9,7 @@ export class SAD500LineListRequest {
   orderByDirection?: string;
   rowStart?: number;
   rowEnd?: number;
+  transactionID: number;
 }
 
 export class SAD500LineCreateRequest {
