@@ -94,7 +94,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
   }
 
   loadDataset() {
-    this.captureService.sad500LineList({ userID: 3, sad500ID: this.attachmentID, specificSAD500LineID: -1 }).then(
+    this.captureService.sad500LineList({ userID: 3, sad500ID: this.attachmentID, specificSAD500LineID: -1}).then(
       (res: SPSAD500LineList) => {
         this.dataset = res.lines;
       },
