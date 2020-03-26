@@ -38,7 +38,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
   showLoader: boolean;
   attachmentID: number;
   contextMenuEnable = false;
-  recordIndex: number = -1;
+  recordIndex = -1;
   currentUser = this.userService.getCurrentUser();
 
   contextMenuX: number;
