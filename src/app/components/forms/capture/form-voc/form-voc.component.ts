@@ -84,18 +84,102 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
     form = {
-      tariffID: -1,
-      tariff: '',
-      customsValue: 0,
-      lineNo: '',
-      unitOfMeasureID: -1,
-      unitOfMeasure: '',
-      tariffError: null,
-      customsValueError: null,
-      lineNoError: null,
-      unitOfMeasureError: null,
-      quantity: 0,
-      quantityError: null,
+      tariffID: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      tariff: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      customsValue: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      lineNo: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      unitOfMeasureID: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      unitOfMeasure: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      tariffError: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      customsValueError: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      lineNoError: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      unitOfMeasureError: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      quantity: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
+      quantityError: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+    },
     };
 
     isUpdate: boolean;
@@ -184,20 +268,15 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
         (res: VOCListResponse) => {
           if (res.outcome.outcome === 'SUCCESS') {
             if (res.vocs.length !== 0) {
-              // this.currentVOC = res.vocs[0];
-              // this.form.quantity = this.currentVOC.quantity;
-              // this.form.customsValue = this.currentVOC.customsValue;
-              // this.form.lineNo = this.currentVOC.lineNo;
-              // this.form.tariff = this.currentVOC.tariff;
-              // this.form.unitOfMeasure = this.currentVOC.unitOfMeasure;
-              // this.form.unitOfMeasureID = this.currentVOC.unitOfMeasureID;
-              // this.form.tariffID = this.currentVOC.tariffID;
-              // this.form.customsValueError = this.currentVOC.customsValueError;
-              // this.form.lineNoError = this.currentVOC.lineNoError;
-              // this.form.quantityError = this.currentVOC.quantityError;
-              // this.form.tariffError = this.currentVOC.tariffError;
-              // this.form.unitOfMeasureError = this.currentVOC.unitOfMeasureError;
-            }
+            //   this.currentVOC = res.vocs[0];
+            //   this.form.quantity.value = this.currentVOC.quantity;
+            //   this.form.customsValue.value = this.currentVOC.customsValue;
+            //   this.form.lineNo.value = this.currentVOC.lineNo;
+            //   this.form.tariff.value = this.currentVOC.tariff;
+            //   this.form.unitOfMeasure.value = this.currentVOC.unitOfMeasure;
+            //   this.form.unitOfMeasureID.value = this.currentVOC.unitOfMeasureID;
+            //   this.form.tariffID.value = this.currentVOC.tariffID;
+             }
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
@@ -212,12 +291,12 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
               this.captureService.vocUpdate({
                 userID: this.currentUser.userID,
                 vocID: this.currentAttachmentID,
-                tariff: this.form.tariff,
-                unitOfMeasure: this.form.unitOfMeasure,
-                quantity: this.form.quantity,
-                customsValue: this.form.customsValue,
-                lineNo: this.form.lineNo,
-                tariffID: 2,
+                tariff: this.form.tariff.value,
+                unitOfMeasure: this.form.unitOfMeasure.value,
+                quantity: this.form.quantity.value,
+                customsValue: this.form.customsValue.value,
+                lineNo: this.form.lineNo.value,
+                tariffID: this.form.tariffID.value,
                 unitOfMeasureID: this.unitOfMeasureID,
                 sad500LineID: -1
               }).then(
@@ -248,7 +327,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectedTariff(description) {
-      this.form.tariff = description;
+      this.form.tariff.value = description;
     }
 
     saveLineDuty(line: Duty) {
@@ -297,19 +376,19 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectedUnit(name: string, id: number) {
-      this.form.unitOfMeasure = name;
+      this.form.unitOfMeasure.value = name;
       this.unitOfMeasureID = id;
 
     }
 
     filterTariff() {
       this.tariffs = this.tariffsTemp;
-      this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.form.tariff}*`));
+      this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.form.tariff.value}*`));
     }
 
     filterUnit() {
       this.unitOfMeasureList = this.unitOfMeasureListTemp;
-      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure.value}*`));
     }
 
     filterDuties() {
@@ -326,6 +405,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     matchRuleShort(str, rule) {
+      // tslint:disable-next-line: no-shadowed-variable
       const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
       return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
     }
@@ -381,7 +461,7 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
         display: true,
         slug
       };
-  
+
       this.snackbarService.setHelpContext(newContext);
     }
 
