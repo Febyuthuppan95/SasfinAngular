@@ -35,7 +35,7 @@ export class PlaceService {
     });
   }
 
-  getCountriesCall(request: ListCountriesRequest) {
+  getCountriesCall(request: object) {
     const requestModel = JSON.parse(JSON.stringify(request));
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/countries/list`;

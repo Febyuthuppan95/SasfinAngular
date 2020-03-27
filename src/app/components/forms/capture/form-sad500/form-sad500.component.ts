@@ -226,7 +226,6 @@ dialogOpen = false;
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number, docType: string }) => {
-      console.log(curr);
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.transactionID = curr.transactionID;
@@ -342,7 +341,6 @@ dialogOpen = false;
     rowEnd: 10
   }).then(
     (res: VOCListResponse) => {
-      console.log(res);
       if (res.rowCount !== 0) {
         this.vocSAD500ID = res.vocs[0].sad500ID;
         this.loadCapture();
@@ -498,8 +496,8 @@ dialogOpen = false;
 
   loadCapture() {
     this.captureService.sad500Get({
-      specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       userID: this.currentUser.userID,
+      specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       transactionID: this.transactionID,
       fileType: this.attachmentType === 'VOC' ? 'VOC' : 'SAD',
     }).then(
@@ -614,14 +612,11 @@ dialogOpen = false;
     }).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
-        // this.lines = this.sad500CreatedLines.length;
-        console.log(this.lines);
+
+        this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
-        this.lineErrors = res.lines.filter(x => x.lineNoError !== null
-          || x.quantityError !== null
-          || x.unitOfMeasureError !== null || x.tariffError !== null);
       },
       (msg) => {
       }
@@ -685,7 +680,6 @@ dialogOpen = false;
 
 
   saveLineDuty(line: Duty) {
-    console.log(line);
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
       dutyID: line.dutyTaxTypeID,
@@ -718,6 +712,7 @@ dialogOpen = false;
   }
 
   nextDutyAsync(currentSAD: SAD500LineCreateRequest) {
+
     this.dutyIndex++;
 
     if (this.dutyIndex < currentSAD.duties.length) {
@@ -731,7 +726,6 @@ dialogOpen = false;
   }
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
-    console.log(item);
     this.lines = i;
   }
 
@@ -776,7 +770,6 @@ dialogOpen = false;
   OverridewaybillNoExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledwaybillNo = true;
-    console.log(this.form.waybillNo);
   }
 
   UndoOverridewaybillNo() {
@@ -799,7 +792,6 @@ dialogOpen = false;
   OverrideserialNoExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledserialNo = true;
-    console.log(this.form.serialNo);
   }
 
   UndoOverrideserialNo() {
@@ -822,7 +814,6 @@ dialogOpen = false;
   OverridePCCExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledPCC = true;
-    console.log(this.form.PCC);
   }
 
   UndoOverridePCC() {
@@ -845,7 +836,6 @@ dialogOpen = false;
   OverridesupplierRefExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledsupplierRef = true;
-    console.log(this.form.supplierRef);
   }
 
   UndoOverridesupplierRef() {
@@ -868,7 +858,6 @@ dialogOpen = false;
   OverridetotalCustomsValueExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledtotalCustomsValue = true;
-    console.log(this.form.totalCustomsValue);
   }
 
   UndoOverridetotalCustomsValue() {

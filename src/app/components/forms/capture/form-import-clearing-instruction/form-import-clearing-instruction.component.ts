@@ -152,7 +152,9 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
             waybillNoODate: this.form.waybillNo.ODate,
             waybillNoOReason: this.form.waybillNo.OReason,
           };
+          console.log('this one');
           console.log(requestModel);
+          console.log('end');
           this.captureService.iciUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {

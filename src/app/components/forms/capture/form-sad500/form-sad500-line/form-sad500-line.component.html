@@ -1,9 +1,8 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px;border-radius: 10px; background: #f2f2f2;">
-  <div class="form-group" *ngIf="this.form.lineNo != undefined">
-    <input type="text" [focus]="this.focusSADLine"
-      [(ngModel)]="this.form.lineNo" [ngModelOptions]="{standalone: true}"
+  <div class="form-group" >
+    <input type="text" [focus]="this.focusSADLine" [(ngModel)]="this.form.lineNo.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-sad500-line-line-no')"
       placeholder="Line No"
@@ -29,15 +28,13 @@
       placeholder="VAT" style="margin-top:0"/>
       <p class="invalid-control-label" *ngIf="this.form.vatError !== null && this.form.vatError !== undefined">{{this.form.vatError}}</p>
   </div> -->
-  <div class="form-group" *ngIf="this.form.supplyUnit != undefined">
+  <div class="form-group" *ngIf="this.form.supplyUnit.value != undefined">
     <div class="row">
       <div class="col-md-3">
         <label for="customsValue">Supply Unit</label>
-        <input type="text"
-          [(ngModel)]="this.form.supplyUnit" [ngModelOptions]="{standalone: true}"
+        <input type="text" [(ngModel)]="this.form.supplyUnit.value" [ngModelOptions]="{standalone: true}"
           class="form-control form-control-sm shadow-sm form-control-light"
-          (mouseover)="updateHelpContext('form-sad500-line-supply-unit')"
-          placeholder="Supply Unit" style="margin-top:0"/>
+          (mouseover)="updateHelpContext('form-sad500-line-supply-unit')" placeholder="Supply Unit" style="margin-top:0"/>
           <div *ngIf="this.form.supplyUnit.error !== null" class="input-group mb-3 invalid-control-label">
             <p *ngIf="this.form.supplyUnit.OBit == false || this.form.supplyUnit.OBit == null" style="width: inherit" >
               {{this.form.supplyUnit.error}}
@@ -52,15 +49,13 @@
         </div>
       <div class="col-md-9">
         <label for="customsValue">Unit of Measure</label>
-        <input [(ngModel)]="this.form.unitOfMeasure"
+        <input [(ngModel)]="this.form.unitOfMeasure.value"
         (keyup)="filterUnit()"
         [ngClass]="{'form-control-invalid': this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined}"
-        type="text" placeholder="Unit Of Measure"
-        aria-label="Unit of Measure"
+        type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-sad500-line-unit-of-measure')"
-        [formControl]="unitOfMeasure"
-        [matAutocomplete]="unitOfMeasureAuto">
+        [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
         <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
           <mat-option *ngFor="let unit of unitOfMeasureList"
           [value]="unit.name" (onSelectionChange)="selectedUnit(unit.name)">
@@ -85,10 +80,10 @@
   </div> -->
 
 <br>
-  <div class="form-group" *ngIf="this.form.customsValue != undefined">
+  <div class="form-group" *ngIf="this.form.customsValue.value != undefined">
   <label for="customsValue">Customs Value</label>
   <input type="number" id="customsValue"
-    [(ngModel)]="this.form.customsValue" [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="this.form.customsValue.value" [ngModelOptions]="{standalone: true}"
     class="form-control form-control-sm shadow-sm form-control-light"
     (mouseover)="updateHelpContext('form-sad500-line-customs-value')"
     placeholder="Customs Value" />
@@ -104,10 +99,10 @@
       </div>
     </div>
   </div>
-  <div class="form-group" *ngIf="this.form.quantity != undefined">
+  <div class="form-group" *ngIf="this.form.quantity.value != undefined">
       <label for="quantityValue">Quantity</label>
       <input type="number" id="quantityValue"
-        [(ngModel)]="this.form.quantity" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="this.form.quantity.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-sad500-line-quantity')"
         placeholder="Quantity" style="margin-top:0"/>
@@ -122,16 +117,16 @@
             <button (click)="UndoOverridequantity()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
           </div>
         </div>    </div>
-    <div class="form-group" *ngIf="this.form.previousDeclaration != undefined">
+    <div class="form-group" *ngIf="this.form.previousDeclaration.value != undefined">
       <label for="quantityValue">Previous Declaration</label>
-      <input type="text"
-        [(ngModel)]="this.form.previousDeclaration" [ngModelOptions]="{standalone: true}"
+      <input type="text" [(ngModel)]="this.form.previousDeclaration.value"
+        [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-sad500-line-previous-declaration')"
         placeholder="Previous Declaration" style="margin-top:0"/>
         <p class="invalid-control-label" *ngIf="this.form.previousDeclaration.error !== null && this.form.previousDeclaration.error !== undefined">{{this.form.previousDeclaration.error}}</p>
     </div>
-  <div class="form-group" *ngIf="this.form.cooID != undefined">
+  <div class="form-group" *ngIf="this.form.cooID.value != undefined">
       <label for="coo">COO</label>
         <input [(ngModel)]="this.countryQuery" type="text"
         [ngClass]="{'form-control-invalid': this.form.cooID.error !== null && this.form.cooID.error !== undefined}"
@@ -150,9 +145,9 @@
         </mat-autocomplete>
         <p class="invalid-control-label" *ngIf="this.form.cooID.error !== null && this.form.cooID.error !== undefined">{{this.form.cooID.error}}</p>
     </div>
-    <div class="form-group" *ngIf="this.form.tariff != undefined">
+    <div class="form-group" *ngIf="this.form.tariff.value != undefined">
       <label for="tariff">Tariff</label>
-        <input [(ngModel)]="this.form.tariff" type="text"
+        <input [(ngModel)]="this.form.tariff.value" type="text"
         [ngClass]="{'form-control-invalid': this.form.tariff.error !== null && this.form.tariff.error !== undefined}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (keyup)="filterTariff()"
