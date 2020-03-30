@@ -374,7 +374,7 @@ dialogOpen = false;
       rebateCode: this.form.rebateCode.value,
       importerdCode: this.form.importersCode.value,
 
-      lrnOBit: this.form.LRN.OBit,
+      lrnOBit: this.form.LRN.OBit, //#sorrynotsorry
       lrnOUserID: this.form.LRN.OUserID,
       lrnODate: this.form.LRN.ODate,
       lrnOReason: this.form.LRN.OReason,

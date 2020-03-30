@@ -111,7 +111,8 @@
         </div>
       </div>
     </div>
-    <div class="form-group" *ngIf="this.form.totalCustomsValue != undefined">
+    <div class="form-group">
+      <label>Total Customs Value</label>
       <input type="text"
         [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -131,6 +132,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.totalCustomsDuty != undefined">
+      <label>Total Customs Value</label>
       <input type="text"
         [(ngModel)]="this.form.totalCustomsDuty.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -219,7 +221,7 @@
 </span>
   <span style="display: none" [ngClass]="{'show': this.toggleLines}">
     <br>
-      <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px;" class="line-list">
+      <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px; height: 62px;" class="line-list">
           <button mat-raised-button class="float-right bg-primary text-light" *ngIf="this.lines !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
           <p *ngIf="!this.sad500CreatedLines" style="font-size: 16px;">No SAD500 Lines Added</p>
           <p *ngIf="this.sad500CreatedLines">

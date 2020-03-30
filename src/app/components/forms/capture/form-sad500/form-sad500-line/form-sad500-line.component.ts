@@ -182,6 +182,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   };
   isUpdate: boolean;
 
+  unitOfMeasureQuery: string = '';
+  tarrifQuery: string = '';
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -477,8 +480,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.countryID = country;
   }
 
-  selectedTariff(description) {
-    this.form.tariff = description;
+  selectedTariff(id: number) {
+    this.form.tariff.value = id;
   }
 
   assignDuty(duty: Duty) {
@@ -548,18 +551,18 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     }
   }
 
-  selectedUnit(name) {
-    this.form.unitOfMeasure = name;
+  selectedUnit(id: number) {
+    this.form.unitOfMeasureID.value = id;
   }
 
   filterTariff() {
     this.tariffs = this.tariffsTemp;
-    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.form.tariff}*`));
+    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tarrifQuery}*`));
   }
 
   filterUnit() {
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
-    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitOfMeasureQuery}*`));
   }
 
   filterDuties() {
