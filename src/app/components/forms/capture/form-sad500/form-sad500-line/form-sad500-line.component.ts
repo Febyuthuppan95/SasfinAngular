@@ -23,6 +23,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { MatDialog } from '@angular/material';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -79,7 +80,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   @ViewChild('dutiesAssignedEl', { static: false })
   dutiesAssignedEl: ElementRef;
-
+  private notify: NotificationComponent;
   @Input() lineData: SAD500Line;
   @Input() updateSAD500Line: SAD500Line;
   @Input() focusSADLine: boolean;
@@ -215,7 +216,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (this.showLines) {
-              this.submit();
+              if (this.updateSAD500Line !== null || this.updateSAD500Line !== undefined) {
+                this.submit();
+              } else {
+                console.log('SAD500 not found.');
+                this.notify.errorsmsg(
+                  'Error',
+                  'SAD500 not found.'
+                );
+              }
+
             }
           }
         },
@@ -229,9 +239,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-    console.log(this.updateSAD500Line);
+    console.log('aaa');
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
-
+      console.log('bbb');
       this.isUpdate = true;
 
       this.form.customsValue.error = this.updateSAD500Line.customsValue;
@@ -246,6 +256,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.quantity.error = this.updateSAD500Line.quantityError;
       this.loadDuties();
     } else {
+      console.log('ccc');
       this.isUpdate = false;
       this.dutiesToBeSaved = [];
       this.form = {
@@ -338,6 +349,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           OReason: null,
         }
       };
+      this.updateSAD500Line = null;
       this.loadDuties();
     }
 
@@ -347,7 +359,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     // tslint:disable-next-line: max-line-length
     this.unitService.list({ userID: this.currentUser.userID, specificUnitOfMeasureID: -1, rowStart: 1, rowEnd: 1000, filter: '', orderBy: '', orderByDirection: '' }).then(
       (res: ListUnitsOfMeasure) => {
-        console.log(res.unitOfMeasureList);
         if (res.outcome.outcome === 'SUCCESS') {
           this.unitOfMeasureList = res.unitOfMeasureList;
           this.unitOfMeasureListTemp = res.unitOfMeasureList;
@@ -360,135 +371,137 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   submit() {
-    if (this.isUpdate) {
-      this.updateSADLine.emit({
-        // rowNum: -1,
-        userID: this.currentUser.userID,
-        sad500LineID: this.updateSAD500Line.sad500LineID,
-        sad500ID: -1,
-        tariffID: this.form.tariff.value,
-        cooID: this.countryID,
-        unitOfMeasureID: this.form.unitOfMeasureID.value,
-        quantity: this.form.quantity.value,
-        customsValue: this.form.customsValue.value,
-        lineNo: this.form.lineNo.value,
-        previousDeclaration: this.form.previousDeclaration.value,
-        supplyUnit: this.form.supplyUnit.value,
-        replacedByLineID: -1,
-        originalLineID: -1,
 
-        lineNoOBit: this.form.lineNo.OBit,
-        lineNoOUserID: this.form.lineNo.OUserID,
-        lineNoODate: this.form.lineNo.OUserID,
-        lineNoOReason: this.form.lineNo.OUserID,
+      if (this.isUpdate) {
+        this.updateSADLine.emit({
+          // rowNum: -1,
 
-        customsValueOBit: this.form.customsValue.OBit,
-        customsValueOUserID: this.form.customsValue.OUserID,
-        customsValueODate: this.form.customsValue.OUserID,
-        customsValueOReason: this.form.customsValue.OUserID,
+          userID: this.currentUser.userID,
+          sad500LineID: this.updateSAD500Line.sad500LineID,
+          sad500ID: -1,
+          tariffID: this.form.tariff.value,
+          cooID: this.countryID,
+          unitOfMeasureID: this.form.unitOfMeasureID.value,
+          quantity: this.form.quantity.value,
+          customsValue: this.form.customsValue.value,
+          lineNo: this.form.lineNo.value,
+          previousDeclaration: this.form.previousDeclaration.value,
+          supplyUnit: this.form.supplyUnit.value,
+          replacedByLineID: -1,
+          originalLineID: -1,
 
-        quantityOBit: this.form.quantity.OBit,
-        quantityOUserID: this.form.quantity.OUserID,
-        quantityODate: this.form.quantity.OUserID,
-        quantityOReason: this.form.quantity.OUserID,
+          lineNoOBit: this.form.lineNo.OBit,
+          lineNoOUserID: this.form.lineNo.OUserID,
+          lineNoODate: this.form.lineNo.OUserID,
+          lineNoOReason: this.form.lineNo.OUserID,
 
-        previousDeclarationOBit: this.form.previousDeclaration.OBit,
-        previousDeclarationOUserID: this.form.previousDeclaration.OUserID,
-        previousDeclarationODate: this.form.previousDeclaration.OUserID,
-        previousDeclarationOReason: this.form.previousDeclaration.OUserID,
+          customsValueOBit: this.form.customsValue.OBit,
+          customsValueOUserID: this.form.customsValue.OUserID,
+          customsValueODate: this.form.customsValue.OUserID,
+          customsValueOReason: this.form.customsValue.OUserID,
 
-        dutyOBit: this.form.duty.OBit,
-        dutyOUserID: this.form.duty.OUserID,
-        dutyODate: this.form.duty.OUserID,
-        dutyOReason: this.form.duty.OUserID,
+          quantityOBit: this.form.quantity.OBit,
+          quantityOUserID: this.form.quantity.OUserID,
+          quantityODate: this.form.quantity.OUserID,
+          quantityOReason: this.form.quantity.OUserID,
 
-        vatOBit: this.form.vat.OBit,
-        vatOUserID: this.form.vat.OUserID,
-        vatODate: this.form.vat.OUserID,
-        vatOReason: this.form.vat.OUserID,
+          previousDeclarationOBit: this.form.previousDeclaration.OBit,
+          previousDeclarationOUserID: this.form.previousDeclaration.OUserID,
+          previousDeclarationODate: this.form.previousDeclaration.OUserID,
+          previousDeclarationOReason: this.form.previousDeclaration.OUserID,
 
-        supplyUnitOBit: this.form.supplyUnit.OBit,
-        supplyUnitOUserID: this.form.supplyUnit.OUserID,
-        supplyUnitODate: this.form.supplyUnit.OUserID,
-        supllyUnitOReason: this.form.supplyUnit.OUserID,
+          dutyOBit: this.form.duty.OBit,
+          dutyOUserID: this.form.duty.OUserID,
+          dutyODate: this.form.duty.OUserID,
+          dutyOReason: this.form.duty.OUserID,
+
+          vatOBit: this.form.vat.OBit,
+          vatOUserID: this.form.vat.OUserID,
+          vatODate: this.form.vat.OUserID,
+          vatOReason: this.form.vat.OUserID,
+
+          supplyUnitOBit: this.form.supplyUnit.OBit,
+          supplyUnitOUserID: this.form.supplyUnit.OUserID,
+          supplyUnitODate: this.form.supplyUnit.OUserID,
+          supllyUnitOReason: this.form.supplyUnit.OUserID,
 
 
 
 
-      });
-    } else {
-      this.submitSADLine.emit({
-        // userID: -1,
-        // sad500ID: -1,
-        // tariffID: 1,
-        // // tariff: '',
-        // customsValue: this.form.customsValue.value,
-        // lineNo: this.form.lineNo.value,
-        // unitOfMeasureID: 1,
-        // // unitOfMeasure: this.form.unitOfMeasure,
-        // quantity: this.form.quantity.value,
-        // duties: this.dutiesToBeSaved,
-        // previousDeclaration: this.form.previousDeclaration.value,
-        // // vat: this.form.vat,
-        // supplyUnit: this.form.supplyUnit.value,
-        // cooID: this.countryID,
-        // replacedByLineID: -1,
-        // originalLineID: -1
+        });
+      } else {
+        this.submitSADLine.emit({
+          // userID: -1,
+          // sad500ID: -1,
+          // tariffID: 1,
+          // // tariff: '',
+          // customsValue: this.form.customsValue.value,
+          // lineNo: this.form.lineNo.value,
+          // unitOfMeasureID: 1,
+          // // unitOfMeasure: this.form.unitOfMeasure,
+          // quantity: this.form.quantity.value,
+          // duties: this.dutiesToBeSaved,
+          // previousDeclaration: this.form.previousDeclaration.value,
+          // // vat: this.form.vat,
+          // supplyUnit: this.form.supplyUnit.value,
+          // cooID: this.countryID,
+          // replacedByLineID: -1,
+          // originalLineID: -1
 
-        userID: this.currentUser.userID,
-        sad500LineID: this.updateSAD500Line.sad500LineID,
-        sad500ID: -1,
-        tariffID: this.form.tariff.value,
-        cooID: this.countryID,
-        unitOfMeasureID: this.form.unitOfMeasureID.value,
-        quantity: this.form.quantity.value,
-        customsValue: this.form.customsValue.value,
-        lineNo: this.form.lineNo.value,
-        previousDeclaration: this.form.previousDeclaration.value,
-        supplyUnit: this.form.supplyUnit.value,
-        replacedByLineID: -1,
-        originalLineID: -1,
+          userID: this.currentUser.userID,
+          sad500LineID: this.updateSAD500Line.sad500LineID,
+          sad500ID: -1,
+          tariffID: this.form.tariff.value,
+          cooID: this.countryID,
+          unitOfMeasureID: this.form.unitOfMeasureID.value,
+          quantity: this.form.quantity.value,
+          customsValue: this.form.customsValue.value,
+          lineNo: this.form.lineNo.value,
+          previousDeclaration: this.form.previousDeclaration.value,
+          supplyUnit: this.form.supplyUnit.value,
+          replacedByLineID: -1,
+          originalLineID: -1,
 
-        lineNoOBit: this.form.lineNo.OBit,
-        lineNoOUserID: this.form.lineNo.OUserID,
-        lineNoODate: this.form.lineNo.OUserID,
-        lineNoOReason: this.form.lineNo.OUserID,
+          lineNoOBit: this.form.lineNo.OBit,
+          lineNoOUserID: this.form.lineNo.OUserID,
+          lineNoODate: this.form.lineNo.OUserID,
+          lineNoOReason: this.form.lineNo.OUserID,
 
-        customsValueOBit: this.form.customsValue.OBit,
-        customsValueOUserID: this.form.customsValue.OUserID,
-        customsValueODate: this.form.customsValue.OUserID,
-        customsValueOReason: this.form.customsValue.OUserID,
+          customsValueOBit: this.form.customsValue.OBit,
+          customsValueOUserID: this.form.customsValue.OUserID,
+          customsValueODate: this.form.customsValue.OUserID,
+          customsValueOReason: this.form.customsValue.OUserID,
 
-        quantityOBit: this.form.quantity.OBit,
-        quantityOUserID: this.form.quantity.OUserID,
-        quantityODate: this.form.quantity.OUserID,
-        quantityOReason: this.form.quantity.OUserID,
+          quantityOBit: this.form.quantity.OBit,
+          quantityOUserID: this.form.quantity.OUserID,
+          quantityODate: this.form.quantity.OUserID,
+          quantityOReason: this.form.quantity.OUserID,
 
-        previousDeclarationOBit: this.form.previousDeclaration.OBit,
-        previousDeclarationOUserID: this.form.previousDeclaration.OUserID,
-        previousDeclarationODate: this.form.previousDeclaration.OUserID,
-        previousDeclarationOReason: this.form.previousDeclaration.OUserID,
+          previousDeclarationOBit: this.form.previousDeclaration.OBit,
+          previousDeclarationOUserID: this.form.previousDeclaration.OUserID,
+          previousDeclarationODate: this.form.previousDeclaration.OUserID,
+          previousDeclarationOReason: this.form.previousDeclaration.OUserID,
 
-        dutyOBit: this.form.duty.OBit,
-        dutyOUserID: this.form.duty.OUserID,
-        dutyODate: this.form.duty.OUserID,
-        dutyOReason: this.form.duty.OUserID,
+          dutyOBit: this.form.duty.OBit,
+          dutyOUserID: this.form.duty.OUserID,
+          dutyODate: this.form.duty.OUserID,
+          dutyOReason: this.form.duty.OUserID,
 
-        vatOBit: this.form.vat.OBit,
-        vatOUserID: this.form.vat.OUserID,
-        vatODate: this.form.vat.OUserID,
-        vatOReason: this.form.vat.OUserID,
+          vatOBit: this.form.vat.OBit,
+          vatOUserID: this.form.vat.OUserID,
+          vatODate: this.form.vat.OUserID,
+          vatOReason: this.form.vat.OUserID,
 
-        supplyUnitOBit: this.form.supplyUnit.OBit,
-        supplyUnitOUserID: this.form.supplyUnit.OUserID,
-        supplyUnitODate: this.form.supplyUnit.OUserID,
-        supllyUnitOReason: this.form.supplyUnit.OUserID,
+          supplyUnitOBit: this.form.supplyUnit.OBit,
+          supplyUnitOUserID: this.form.supplyUnit.OUserID,
+          supplyUnitODate: this.form.supplyUnit.OUserID,
+          supllyUnitOReason: this.form.supplyUnit.OUserID,
+        });
 
-      });
+        this.dutiesToBeSaved = [];
+        this.loadDuties();
+      }
 
-      this.dutiesToBeSaved = [];
-      this.loadDuties();
-    }
   }
 
   loadTarrifs() {
@@ -517,7 +530,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
-        console.log(this.countriesList);
       }
     );
   }
@@ -537,7 +549,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
     this.dutyList.duties = this.dutyList.duties.filter(x => x.dutyTaxTypeID !== duty.dutyTaxTypeID);
     if (this.isUpdate) {
-      console.log(duty);
       this.assignedDuties.push(duty);
       this.captureService.sad500LineDutyAdd({
         userID: 3,
@@ -637,7 +648,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       data: item
     });
     dutyAssignDialog.afterClosed().subscribe((result: Duty) => {
-      console.log(result);
       if (result !== undefined) {
         item.duty = result.duty;
         this.assignDuty(item);
@@ -654,7 +664,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       orderDirection: 'Name'
     }).then(
       (res: DutyListResponse) => {
-        console.log(res);
         this.dutyList = res;
         this.dutyListTemp = res.duties;
 
@@ -679,7 +688,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         orderDirection: 'Name',
       }).then(
         (res: DutyListResponse) => {
-          console.log(res);
 
           this.assignedDuties = res.duties;
           this.assignedDutiesTemp = res.duties;

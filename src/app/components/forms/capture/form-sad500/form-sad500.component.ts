@@ -613,7 +613,7 @@ dialogOpen = false;
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
 
-        this.lines = this.sad500CreatedLines.length;
+       // this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
