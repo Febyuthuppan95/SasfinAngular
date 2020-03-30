@@ -23,22 +23,20 @@ export class UserService {
   public observeLogin = this.isAuth.asObservable();
 
   public setAuth = (isAuth: boolean) => {
-    console.log(isAuth);
     this.isAuth.next(isAuth);
   }
   /**
    * IsLoggedIn
    */
   public isLoggedIn(): boolean {
-    console.log(this.cookieService.check('currentUser'));
-    return this.cookieService.check('currentUser');
+    return localStorage.getItem('currentUser') === null ? false : true;
   }
 
   /**
    * Logout
    */
-  public logout() {
-    this.cookieService.delete('currentUser', '/');
+  public logout(): void {
+    localStorage.removeItem('currentUser');
     this.setAuth(false);
     this.router.navigateByUrl('/account/login');
   }
@@ -46,26 +44,16 @@ export class UserService {
   /**
    * persistLogin
    */
-  public persistLogin(currentUser: string) {
-    this.cookieService.set(
-      'currentUser',
-      currentUser,
-      1000 * 60 * 60 * 24,
-      '/',
-      null,
-      false,
-      'Lax'
-    );
-
+  public persistLogin(currentUser: string): void {
+    localStorage.setItem('currentUser', currentUser);
   }
-
 
   /**
    * getCurrentUser
    */
   public getCurrentUser(): User {
-    const jsonString: string = this.cookieService.get('currentUser');
-    if (jsonString !== '') {
+    const jsonString: string = localStorage.getItem('currentUser');
+    if (jsonString !== null) {
       const currentUser: User = JSON.parse(jsonString);
 
       if (currentUser.profileImage === null) {
