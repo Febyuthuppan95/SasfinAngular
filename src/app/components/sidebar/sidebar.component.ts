@@ -126,105 +126,167 @@ export class SidebarComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        // Process Success
+                // Process Success
         res.userRightsList.forEach(uRight => {
-
-          if (uRight.name === 'Users') {
+          console.log('***');
+          console.log(uRight.designationID);
+          if (uRight.name === 'Users' && uRight.designationID !== 3) {
             this.showusers = true;
+          } else {
+            this.showusers = false;
           }
-          if (uRight.name === 'Rights') {
+          if (uRight.name === 'Rights' && uRight.designationID !== 3) {
             this.showrights = true;
+          } else {
+            this.showrights = false;
           }
-          if (uRight.name === 'Backgrounds') {
+          if (uRight.name === 'Backgrounds' && uRight.designationID !== 3) {
             this.showbackgrounds = true;
-
+          } else {
+            this.showbackgrounds = false;
           }
-          if (uRight.name === 'Designations') {
+          if (uRight.name === 'Designations' && uRight.designationID !== 3) {
             this.showdesignation = true;
+          } else {
+            this.showdesignation = false;
           }
-          if (uRight.name === 'BackgroundUser') {
+          if (uRight.name === 'BackgroundUser' && uRight.designationID !== 3) {
             this.showbackgroundUser = true;
+          } else {
+            this.showbackgroundUser = false;
           }
-          if (uRight.name === 'BackgroundColorUser') {
+          if (uRight.name === 'BackgroundColorUser' && uRight.designationID !== 3) {
             this.showbackgroundColorUser = true;
+          } else {
+            this.showbackgroundColorUser = false;
           }
-          if (uRight.name === 'ObjectHelp') {
+          if (uRight.name === 'ObjectHelp' && uRight.designationID !== 3) {
             this.showobjectHelp = true;
+          } else {
+            this.showobjectHelp = false;
           }
-          if (uRight.name === 'HelpGlossary') {
+          if (uRight.name === 'HelpGlossary' && uRight.designationID !== 3) {
             this.showhelpglossary = true;
+          } else {
+            this.showhelpglossary = false;
           }
-          if (uRight.name === 'UnitOfMeasures') {
+          if (uRight.name === 'UnitOfMeasures' && uRight.designationID !== 3) {
             this.showunitofmeasures = true;
+          } else {
+            this.showunitofmeasures = false;
           }
-          if (uRight.name === 'Countries') {
+          if (uRight.name === 'Countries' && uRight.designationID !== 3) {
             this.showcountries = true;
+          } else {
+            this.showcountries = false;
           }
-          if (uRight.name === 'Regions') {
+          if (uRight.name === 'Regions' && uRight.designationID !== 3) {
             this.showregions = true;
+          } else {
+            this.showregions = false;
           }
-          if (uRight.name === 'Cities') {
+          if (uRight.name === 'Cities' && uRight.designationID !== 3) {
             this.showcities = true;
+          } else {
+            this.showcities = false;
           }
-          if (uRight.name === 'ContactTypes') {
+          if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
             this.showcontactTypes = true;
+          } else {
+            this.showcontactTypes = false;
           }
-          if (uRight.name === 'Currencies') {
+          if (uRight.name === 'Currencies' && uRight.designationID !== 3) {
             this.showcurrencies = true;
+          } else {
+            this.showcurrencies = false;
           }
-          if (uRight.name === 'Companies') {
+          if (uRight.name === 'Companies' && uRight.designationID !== 3) {
             this.showcompanies = true;
+          } else {
+            this.showcompanies = false;
           }
-          if (uRight.name === 'CompanyAddInfoTypes') {
+          if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;
+          } else {
+            this.showcompanyAddInfoTypes = false;
           }
-          if (uRight.name === 'CompanyAddInfoList') {
+          if (uRight.name === 'CompanyAddInfoList' && uRight.designationID !== 3) {
             this.showcompanyAddInfoList = true;
+          } else {
+            this.showcompanyAddInfoList = false;
           }
-          if (uRight.name === 'AddressTypes') {
+          if (uRight.name === 'AddressTypes' && uRight.designationID !== 3) {
             this.showaddressTypes = true;
+          } else {
+            this.showaddressTypes = false;
           }
-          if (uRight.name === 'Places') {
+          if (uRight.name === 'Places' && uRight.designationID !== 3) {
             this.showplaces = true;
+          } else {
+            this.showplaces = false;
           }
-          if (uRight.name === 'Transactions') {
+          if (uRight.name === 'Transactions' && uRight.designationID !== 3) {
             this.showtransactions = true;
+          } else {
+            this.showtransactions = false;
           }
-          if (uRight.name === 'Attachments') {
+          if (uRight.name === 'Attachments' && uRight.designationID !== 3) {
             this.showattachments = true;
+          } else {
+            this.showattachments = false;
           }
-          if (uRight.name === 'CompanyContactsList') {
+          if (uRight.name === 'CompanyContactsList' && uRight.designationID !== 3) {
             this.showcompanyContactsList = true;
+          } else {
+            this.showcompanyContactsList = false;
           }
-          if (uRight.name === 'CompanyAddressList') {
+          if (uRight.name === 'CompanyAddressList' && uRight.designationID !== 3) {
             this.showcompanyAddressList = true;
+          } else {
+            this.showcompanyAddressList = false;
           }
-          if (uRight.name === 'Services') {
+          if (uRight.name === 'Services' && uRight.designationID !== 3) {
             this.showservices = true;
+          } else {
+            this.showservices = false;
           }
-          if (uRight.name === 'Tariffs') {
+          if (uRight.name === 'Tariffs' && uRight.designationID !== 3) {
             this.showtariffs = true;
+          } else {
+            this.showtariffs = false;
           }
-          if (uRight.name === 'Items') {
+          if (uRight.name === 'Items' && uRight.designationID !== 3) {
             this.showitems = true;
+          } else {
+            this.showitems = false;
           }
-          if (uRight.name === 'ReportQueues') {
+          if (uRight.name === 'ReportQueues' && uRight.designationID !== 3) {
             this.showreportqueues = true;
+          } else {
+            this.showreportqueues = false;
           }
-          if (uRight.name === 'ContactTypes') {
+          if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
             this.showcontactTypes = true;
+          } else {
+            this.showcontactTypes = false;
           }
-          if (uRight.name === 'CompanyAddInfoTypes') {
+          if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;
+          } else {
+            this.showcompanyAddInfoTypes = false;
           }
-          if (uRight.name === 'Places') {
+          if (uRight.name === 'Places' && uRight.designationID !== 3) {
             this.showlocations = true;
+          } else {
+            this.showlocations = false;
           }
-          if (uRight.name === 'AttchmentCapture') {
+          if (uRight.name === 'AttchmentCapture' && uRight.designationID !== 3) {
             this.showCapturer = true;
           }
           if (uRight.name === 'CompanyTransactionsCaptureList') {
             this.showcapturequeue = true;
+          } else {
+            this.showcapturequeue = false;
           }
         });
       },

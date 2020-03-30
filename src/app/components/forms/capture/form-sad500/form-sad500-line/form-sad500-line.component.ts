@@ -586,7 +586,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     });
     dutyAssignDialog.afterClosed().subscribe((result: Duty) => {
       console.log(result);
-      if (result !== undefined){
+      if (result !== undefined) {
         item.duty = result.duty;
         this.assignDuty(item);
       }
