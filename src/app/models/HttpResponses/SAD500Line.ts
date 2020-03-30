@@ -9,15 +9,14 @@ export class SPSAD500LineList {
 }
 
 export class SAD500Line {
+    userID?: number;
     rowNum?: number;
     sad500LineID?: number;
     sad500ID: number;
     tariffID: number;
-    // tariff: string;
     customsValue: number;
     lineNo: string;
     unitOfMeasureID: number;
-    // unitOfMeasure: string;
     tariffError?: string;
     customsValueError?: number;
     lineNoError?: string;
@@ -27,11 +26,45 @@ export class SAD500Line {
     quantityError?: string;
     previousDeclaration: string;
     previousDeclarationError?: string;
-    // vat: number;
     supplyUnit: string;
     cooID: number;
-    originalLineID: number;
-    replacedByLineID: number;
+    originalLineID?: number;
+    replacedByLineID?: number;
+
+    lineNoOBit: boolean;
+    lineNoOUserID: number;
+    lineNoODate: Date;
+    lineNoOReason: string;
+
+    customsValueOBit: boolean;
+    customsValueOUserID: number;
+    customsValueODate: Date;
+    customsValueOReason: string;
+
+    quantityOBit: boolean;
+    quantityOUserID: number;
+    quantityODate: Date;
+    quantityOReason: string;
+
+    previousDeclarationOBit: boolean;
+    previousDeclarationOUserID: number;
+    previousDeclarationODate: Date;
+    previousDeclarationOReason: string;
+
+    dutyOBit: boolean;
+    dutyOUserID: number;
+    dutyODate: Date;
+    dutyOReason: string;
+
+    vatOBit: boolean;
+    vatOUserID: number;
+    vatODate: Date;
+    vatOReason: string;
+
+    supplyUnitOBit: boolean;
+    supplyUnitOUserID: number;
+    supplyUnitODate: Date;
+    supllyUnitOReason: string;
 }
 export class SAD500LineDutyList {
 }

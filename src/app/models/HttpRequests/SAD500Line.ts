@@ -16,14 +16,9 @@ export class SAD500LineCreateRequest {
   userID: number;
   sad500ID: number;
   tariffID: number;
-  // tariff: string;
   customsValue: number;
-  // cpc: string;
-  // productCode: string;
-  // value: number;
   lineNo: string;
   unitOfMeasureID: number;
-  // unitOfMeasure: string;
   saved?: boolean;
   failed?: boolean;
   updateSubmit?: boolean;
@@ -33,11 +28,51 @@ export class SAD500LineCreateRequest {
   isPersist?: boolean;
   quantity: number;
   previousDeclaration: string;
-  // vat: number;
   supplyUnit: string;
   cooID: number;
-  originalLineID: number;
-  replacedByLineID: number;
+  tariffError?: string;
+  customsValueError?: number;
+  lineNoError?: string;
+  unitOfMeasureError?: string;
+  quantityError?: string;
+  previousDeclarationError?: string;
+  originalLineID?: number;
+  replacedByLineID?: number;
+
+  lineNoOBit: boolean;
+  lineNoOUserID: number;
+  lineNoODate: Date;
+  lineNoOReason: string;
+
+  customsValueOBit: boolean;
+  customsValueOUserID: number;
+  customsValueODate: Date;
+  customsValueOReason: string;
+
+  quantityOBit: boolean;
+  quantityOUserID: number;
+  quantityODate: Date;
+  quantityOReason: string;
+
+  previousDeclarationOBit: boolean;
+  previousDeclarationOUserID: number;
+  previousDeclarationODate: Date;
+  previousDeclarationOReason: string;
+
+  dutyOBit: boolean;
+  dutyOUserID: number;
+  dutyODate: Date;
+  dutyOReason: string;
+
+  vatOBit: boolean;
+  vatOUserID: number;
+  vatODate: Date;
+  vatOReason: string;
+
+  supplyUnitOBit: boolean;
+  supplyUnitOUserID: number;
+  supplyUnitODate: Date;
+  supllyUnitOReason: string;
 }
 
 export class SAD500LineUpdateModel {

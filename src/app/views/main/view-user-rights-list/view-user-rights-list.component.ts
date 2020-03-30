@@ -93,7 +93,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
   prevPageState: boolean;
   specificUser = -1;
   rowStart: number;
-  rowEnd: number = 15;
+  rowEnd = 15;
   rowCountPerPage: number;
   showingRecords: number;
   filter: string;

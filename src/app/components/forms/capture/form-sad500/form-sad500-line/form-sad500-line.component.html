@@ -158,7 +158,7 @@
 
         <mat-autocomplete #tariffAuto="matAutocomplete" >
           <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
-          (onSelectionChange)="selectedTariff(tariff.tariffID)">
+          (onSelectionChange)="selectedTariff(tariff.id)">
             {{tariff.description}}
           </mat-option>
         </mat-autocomplete>
