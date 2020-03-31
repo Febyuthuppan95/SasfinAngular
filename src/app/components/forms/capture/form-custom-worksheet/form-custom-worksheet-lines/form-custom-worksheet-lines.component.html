@@ -181,9 +181,9 @@
       (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
 
       <mat-autocomplete #tariffAuto="matAutocomplete" >
-        <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description"
+        <mat-option *ngFor="let tariff of tariffs" [value]="tariff.name"
         (onSelectionChange)="selectedTariff(tariff.id)">
-          {{tariff.description}}
+          {{tariff.name}}
         </mat-option>
       </mat-autocomplete>
   </div>

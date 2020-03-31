@@ -54,8 +54,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   showTariffHint = false;
   showUnitOfMeasureHint = true;
-  tariffs: { id: number, amount: number; description: string; duty: number; unit: string }[];
-  tariffsTemp: {  id: number, amount: number; description: string; duty: number; unit: string }[];
+  // tslint:disable-next-line: max-line-length
+  tariffs: { id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
+  // tslint:disable-next-line: max-line-length
+  tariffsTemp: { id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
   myControl = new FormControl();
   unitOfMeasure = new FormControl();
   selectedTariffVal: string;
@@ -231,9 +233,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-    console.log('aaa');
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
-      console.log('bbb');
       this.isUpdate = true;
 
       this.form.customsValue.error = this.updateSAD500Line.customsValue;
@@ -248,7 +248,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.quantity.error = this.updateSAD500Line.quantityError ? this.updateSAD500Line.quantityError : null;
       this.loadDuties();
     } else {
-      console.log('ccc');
       this.isUpdate = false;
       this.dutiesToBeSaved = [];
       this.form = {
@@ -485,9 +484,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   loadTarrifs() {
-    this.tariffService.list().then(
+    this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', rowStart: 1, rowEnd: 100 }).then(
       // tslint:disable-next-line: max-line-length
-      (res: { tariffList: {id: number, amount: number; description: string; duty: number; unit: string }[], outcome: Outcome, rowCount: number }) => {
+      (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
         this.tariffs = res.tariffList;
         this.tariffsTemp = res.tariffList;
       },
@@ -515,7 +514,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
   filterCountries() {
     this.countriesList = this.countriesListTemp;
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery}*`));
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`) || this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
   }
   selectedCountry(country: number) {
     this.countryID = country;
@@ -597,25 +596,25 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   filterTariff() {
     this.tariffs = this.tariffsTemp;
-    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tarrifQuery}*`));
+    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tarrifQuery.toUpperCase()}*`));
   }
 
   filterUnit() {
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
-    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitOfMeasureQuery}*`));
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.unitOfMeasureQuery.toUpperCase()}*`));
   }
 
   filterDuties() {
     this.dutyList.duties = this.dutyListTemp;
-    this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.name, `*${this.dutiesQuery}*`));
+    this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutiesQuery.toUpperCase()}*`));
   }
 
   filterAssignedDuties() {
     this.assignedDuties = this.assignedDutiesTemp;
-    this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
+    this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
 
     this.dutiesToBeSaved = this.dutyListTemp;
-    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name, `*${this.dutieAssignedQuery}*`));
+    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
   }
 
   matchRuleShort(str, rule) {

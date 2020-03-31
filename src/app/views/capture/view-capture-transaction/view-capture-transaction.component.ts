@@ -54,7 +54,6 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   }
 
   loadComponent() {
-    console.log(this.currentDoctype);
     switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD500': {
         this.componentService.renderComponent(FormSAD500Component);
