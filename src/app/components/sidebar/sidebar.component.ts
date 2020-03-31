@@ -203,7 +203,7 @@ export class SidebarComponent implements OnInit {
           if (uRight.name === 'Companies' && uRight.designationID !== 3) {
             this.showcompanies = true;
           } else {
-            this.showcompanies = false;
+            this.showcompanies = true;
           }
           if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;

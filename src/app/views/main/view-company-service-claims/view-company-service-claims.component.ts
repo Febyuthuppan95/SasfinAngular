@@ -54,6 +54,21 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.subscription = this.IMenuService.subSidebarEmit$.subscribe(result => {
       this.sidebarCollapsed = result;
     });
+    this.lookBackDays.push(
+      {value: 180},
+      {value: 270},
+      {value: 360},
+      {value: 540},
+      {value: 730}
+      );
+    this.extensionDays.push(
+      {value: 10},
+      {value: 11},
+      {value: 12},
+      {value: 13},
+      {value: 14},
+      {value: 15}
+      );
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -120,7 +135,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   ];
 
   selectedRow = -1;
-
+  lookBackDays = [];
+  extensionDays = [];
   permitsByDate = new FormControl();
   CompanyServiceClaims: CompanyServiceClaim[] = [];
   Permits: PermitByDate[] = [];
@@ -295,6 +311,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   populatecompanyService($event) {
      this.myInputVariable.nativeElement.value = null;
      this.openPopulateModal.nativeElement.click();
+     // this.router.navigate()
   }
 
   reportscompanyService(id: number) {

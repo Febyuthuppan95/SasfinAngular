@@ -44,32 +44,100 @@
 <div class="modal-dialog modal-size modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" id="modalContent">Populate Report</h5>
+      <h5 class="modal-title" id="modalContent">Populate Claim Data</h5>
       <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <form>
         <div class="modal-body">
-          <div class="form-group">
-            <div class="col-6">
-              <label class="control-label">Submission Date:</label>
-              <input #myInput [(ngModel)]="this.submissiondate" [ngModelOptions]="{standalone: true}"
-              type="date" class="form-control" (change)="enddateselected($event.target.value)" required/>
-            </div>
+          <div class="row"> <!--Export Data-->
+            <mat-form-field class="col-md-4">
+              <mat-label>Export Date Range:</mat-label>
+              <input matInput [matDatepicker]="exportStartDate">
+              <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
+              <mat-datepicker #exportStartDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+              <mat-label>To:</mat-label>
+              <input matInput [matDatepicker]="exportEndDate">
+              <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
+              <mat-datepicker #exportEndDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="offset-md-1 col-md-2">
+              <mat-label>Extension Days</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
+                  {{day.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
-          <mat-form-field class="width">
-            <mat-label>Permits</mat-label>
-            <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.value)">
-              <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit.permitCode}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div class="row"><!--Import Data-->
+            <mat-form-field class="col-md-4">
+              <mat-label>Lookback Days</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let day of lookBackDays" [value]="day.value">
+                  {{day.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md-4">
+              <mat-label>Claim Date:</mat-label>
+              <input matInput [matDatepicker]="claimDate">
+              <mat-datepicker-toggle matSuffix [for]="claimDate"></mat-datepicker-toggle>
+              <mat-datepicker #claimDate></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+              <mat-label>Permits</mat-label>
+              <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.value)">
+                <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit.permitCode}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-group text-right">
+            <input hidden #myInput [(ngModel)]="this.submissiondate" [ngModelOptions]="{standalone: true}">
+            <button mat-raised-button color="primary">Generate</button>
+          </div>
           <br>
+          <hr/>
           <br>
-          <mat-label>SAD500 List:</mat-label><mat-slide-toggle  [(ngModel)]="this.complete" [ngModelOptions]="{standalone: true}" class="margin20">Completed</mat-slide-toggle>
-          <mat-selection-list class="border" #SAD500s (selectionChange)="sad500selected(SAD500s.selectedOptions.selected)">
-              <mat-list-option *ngFor="let sad of SAD500Lines" [value]="sad.SAD500LineID">{{sad.SAD500Line}}</mat-list-option>
-          </mat-selection-list>
+          <div class="data">
+            <mat-accordion>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Personal data
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Type your name and age
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+            
+                <mat-form-field>
+                  <mat-label>First name</mat-label>
+                  <input matInput>
+                </mat-form-field>
+            
+                <mat-form-field>
+                  <mat-label>Age</mat-label>
+                  <input matInput type="number" min="1">
+                </mat-form-field>
+              </mat-expansion-panel>
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Self aware panel
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <p>I'm visible because I am open</p>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
       </div>
     <div class="modal-footer bg-dark">
       <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePopulateModal>Close</button>

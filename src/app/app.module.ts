@@ -213,6 +213,7 @@ import { DutyAssignDialogComponent } from './components/forms/capture/form-sad50
 import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
 import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
+import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -355,7 +356,8 @@ import { ContextMenuCaptureQueueComponent } from './components/menus/context-men
     DutyAssignDialogComponent,
     FormVocLineComponent,
     ViewCaptureQueueOverviewComponent,
-    ContextMenuCaptureQueueComponent
+    ContextMenuCaptureQueueComponent,
+    ViewCompanyServiceClaimDataComponent
   ],
   imports: [
     BrowserModule,
