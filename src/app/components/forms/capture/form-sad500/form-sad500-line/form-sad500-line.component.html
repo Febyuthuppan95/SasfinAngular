@@ -8,7 +8,7 @@
       placeholder="Line No"
       [ngClass]="{'form-control-invalid': this.form.lineNo.error !== null && this.form.lineNo.error !== undefined}"/>
       <div *ngIf="this.form.lineNo.error !== null" class="input-group mb-3 invalid-control-label">
-        <p *ngIf="this.form.lineNo.OBit == false || this.form.lineNo.OBit == null" style="width: inherit" >
+        <p *ngIf="!this.form.lineNo.OBit" style="width: inherit" >
           {{this.form.lineNo.error}}
           <button (click)="OverridelineNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>

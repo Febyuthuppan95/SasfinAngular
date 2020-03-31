@@ -64,36 +64,37 @@ export class SidebarComponent implements OnInit {
   @Input() collapse = true;
   @Input() offcanvas = true;
   @Input() helpContext = false;
-  @Input() showusers = false;
-  @Input() showrights = false;
-  @Input() showbackgrounds = false;
-  @Input() showdesignation = false;
-  @Input() showbackgroundUser = false;
-  @Input() showbackgroundColorUser = false;
-  @Input() showobjectHelp = false;
-  @Input() showhelpglossary = false;
-  @Input() showunitofmeasures = false;
-  @Input() showcountries = false;
-  @Input() showregions = false;
-  @Input() showcities = false;
-  @Input() showcontactTypes = false;
-  @Input() showcurrencies = false;
-  @Input() showcompanies = false;
-  @Input() showcompanyAddInfoTypes = false;
-  @Input() showcompanyAddInfoList = false;
-  @Input() showaddressTypes = false;
-  @Input() showplaces = false;
-  @Input() showtransactions = false;
-  @Input() showattachments = false;
-  @Input() showcompanyContactsList = false;
-  @Input() showcompanyAddressList = false;
-  @Input() showservices = false;
-  @Input() showtariffs = false;
-  @Input() showitems = false;
-  @Input() showreportqueues = false;
-  @Input() showlocations = false;
-  @Input() showCapturer = true;
-  @Input() showcapturequeue = true;
+
+  showusers = false;
+  showrights = false;
+  showbackgrounds = false;
+  showdesignation = false;
+  showbackgroundUser = false;
+  showbackgroundColorUser = false;
+  showobjectHelp = false;
+  showhelpglossary = false;
+  showunitofmeasures = false;
+  showcountries = false;
+  showregions = false;
+  showcities = false;
+  showcontactTypes = false;
+  showcurrencies = false;
+  showcompanies = false;
+  showcompanyAddInfoTypes = false;
+  showcompanyAddInfoList = false;
+  showaddressTypes = false;
+  showplaces = false;
+  showtransactions = false;
+  showattachments = false;
+  showcompanyContactsList = false;
+  showcompanyAddressList = false;
+  showservices = false;
+  showtariffs = false;
+  showitems = false;
+  showreportqueues = false;
+  showlocations = false;
+  showCapturer = true;
+  showcapturequeue = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -128,87 +129,54 @@ export class SidebarComponent implements OnInit {
       (res: UserRightsListResponse) => {
                 // Process Success
         res.userRightsList.forEach(uRight => {
-          console.log('***');
-          console.log(uRight.designationID);
+
           if (uRight.name === 'Users' && uRight.designationID !== 3) {
             this.showusers = true;
-          } else {
-            this.showusers = false;
           }
           if (uRight.name === 'Rights' && uRight.designationID !== 3) {
             this.showrights = true;
-          } else {
-            this.showrights = false;
           }
           if (uRight.name === 'Backgrounds' && uRight.designationID !== 3) {
             this.showbackgrounds = true;
-          } else {
-            this.showbackgrounds = false;
           }
           if (uRight.name === 'Designations' && uRight.designationID !== 3) {
             this.showdesignation = true;
-          } else {
-            this.showdesignation = false;
           }
           if (uRight.name === 'BackgroundUser' && uRight.designationID !== 3) {
             this.showbackgroundUser = true;
-          } else {
-            this.showbackgroundUser = false;
           }
           if (uRight.name === 'BackgroundColorUser' && uRight.designationID !== 3) {
             this.showbackgroundColorUser = true;
-          } else {
-            this.showbackgroundColorUser = false;
           }
           if (uRight.name === 'ObjectHelp' && uRight.designationID !== 3) {
             this.showobjectHelp = true;
-          } else {
-            this.showobjectHelp = false;
           }
           if (uRight.name === 'HelpGlossary' && uRight.designationID !== 3) {
             this.showhelpglossary = true;
-          } else {
-            this.showhelpglossary = false;
           }
           if (uRight.name === 'UnitOfMeasures' && uRight.designationID !== 3) {
             this.showunitofmeasures = true;
-          } else {
-            this.showunitofmeasures = false;
           }
           if (uRight.name === 'Countries' && uRight.designationID !== 3) {
             this.showcountries = true;
-          } else {
-            this.showcountries = false;
           }
           if (uRight.name === 'Regions' && uRight.designationID !== 3) {
             this.showregions = true;
-          } else {
-            this.showregions = false;
           }
           if (uRight.name === 'Cities' && uRight.designationID !== 3) {
             this.showcities = true;
-          } else {
-            this.showcities = false;
           }
           if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
             this.showcontactTypes = true;
-          } else {
-            this.showcontactTypes = false;
           }
           if (uRight.name === 'Currencies' && uRight.designationID !== 3) {
             this.showcurrencies = true;
-          } else {
-            this.showcurrencies = false;
           }
           if (uRight.name === 'Companies' && uRight.designationID !== 3) {
-            this.showcompanies = true;
-          } else {
             this.showcompanies = true;
           }
           if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;
-          } else {
-            this.showcompanyAddInfoTypes = false;
           }
           if (uRight.name === 'CompanyAddInfoList' && uRight.designationID !== 3) {
             this.showcompanyAddInfoList = true;
@@ -227,67 +195,44 @@ export class SidebarComponent implements OnInit {
           }
           if (uRight.name === 'Transactions' && uRight.designationID !== 3) {
             this.showtransactions = true;
-          } else {
-            this.showtransactions = false;
           }
           if (uRight.name === 'Attachments' && uRight.designationID !== 3) {
             this.showattachments = true;
-          } else {
-            this.showattachments = false;
           }
           if (uRight.name === 'CompanyContactsList' && uRight.designationID !== 3) {
             this.showcompanyContactsList = true;
-          } else {
-            this.showcompanyContactsList = false;
-          }
-          if (uRight.name === 'CompanyAddressList' && uRight.designationID !== 3) {
-            this.showcompanyAddressList = true;
-          } else {
-            this.showcompanyAddressList = false;
           }
           if (uRight.name === 'Services' && uRight.designationID !== 3) {
             this.showservices = true;
-          } else {
-            this.showservices = false;
           }
           if (uRight.name === 'Tariffs' && uRight.designationID !== 3) {
             this.showtariffs = true;
-          } else {
-            this.showtariffs = false;
           }
           if (uRight.name === 'Items' && uRight.designationID !== 3) {
             this.showitems = true;
-          } else {
-            this.showitems = false;
           }
           if (uRight.name === 'ReportQueues' && uRight.designationID !== 3) {
             this.showreportqueues = true;
-          } else {
-            this.showreportqueues = false;
           }
           if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
             this.showcontactTypes = true;
-          } else {
-            this.showcontactTypes = false;
           }
           if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;
-          } else {
-            this.showcompanyAddInfoTypes = false;
           }
+
           if (uRight.name === 'Places' && uRight.designationID !== 3) {
             this.showlocations = true;
-          } else {
-            this.showlocations = false;
           }
+
           if (uRight.name === 'AttchmentCapture' && uRight.designationID !== 3) {
             this.showCapturer = true;
           }
+
           if (uRight.name === 'CompanyTransactionsCaptureList') {
             this.showcapturequeue = true;
-          } else {
-            this.showcapturequeue = false;
           }
+
         });
       },
       msg => {
@@ -303,7 +248,6 @@ export class SidebarComponent implements OnInit {
   }
 
   loadCaptureScreen() {
-
     // this.companyService.setCapture({ capturestate: true, token: UUID.UUID()}); // Generated token to prevent duplicate events
     this.router.navigateByUrl('transaction/capturerlanding');
   }
