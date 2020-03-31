@@ -25,6 +25,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
 import { ItemType } from 'src/app/models/HttpResponses/ItemType';
+import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 
 @Component({
   selector: 'app-view-items-list',
@@ -351,8 +352,16 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   loadTariffs(displayGrowl: boolean) {
 
+    const model: GetTariffList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificTariffID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd
+    };
+
     this.companyService
-    .getTariffList()// model
+    .getTariffList(model)// model
     .then(
       (res: TariffListResponse) => {
 

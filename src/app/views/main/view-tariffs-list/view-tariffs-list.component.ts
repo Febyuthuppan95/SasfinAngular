@@ -14,6 +14,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { TariffService } from 'src/app/services/Tariff.service';
 
 @Component({
   selector: 'app-view-tariffs-list',
@@ -55,7 +56,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
   tableHeader: TableHeader = {
     title: 'Tariffs',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
@@ -75,23 +76,55 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Amount',
-      propertyName: 'amount',
+      title: 'Item Number',
+      propertyName: 'itemNumber',
       order: {
         enable: true,
-        tag: 'Amount'
+        tag: 'ItemNumber'
+      }
+    },
+    {
+      title: 'Heading',
+      propertyName: 'heading',
+      order: {
+        enable: true,
+        tag: 'Heading'
+      }
+    },
+    {
+      title: 'Code',
+      propertyName: 'tariffCode',
+      order: {
+        enable: true,
+        tag: 'TariffCode'
+      }
+    },
+    {
+      title: 'Sub-Heading',
+      propertyName: 'subHeading',
+      order: {
+        enable: true,
+        tag: 'SubHeading'
+      }
+    },
+    {
+      title: 'Check Digit',
+      propertyName: 'checkDigit',
+      order: {
+        enable: true,
+        tag: 'CheckDigit'
       }
     },
     {
       title: 'Description',
-      propertyName: 'description',
+      propertyName: 'name',
       order: {
         enable: true,
-        tag: 'Description'
+        tag: 'Name'
       }
     },
     {
-      title: 'Duty %',
+      title: 'Duty',
       propertyName: 'duty',
       order: {
         enable: true,
@@ -103,19 +136,12 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
       propertyName: 'hsUnit',
       order: {
         enable: true,
-        tag: 'Unit'
+        tag: 'HsUnit'
       }
     }
   ];
 
   selectedRow = -1;
-  // TariffCode = '';
-  // TariffName = '';
-  Amount = 0;
-  Description = '';
-  Duty = 0;
-  Unit = '';
-  // Quality538 = '';
   tarifflist: Tariff[] = [];
 
   private unsubscribe$ = new Subject<void>();
@@ -166,8 +192,16 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
+    const model: GetTariffList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificTariffID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd
+    };
+
     this.companyService
-    .getTariffList()// model
+    .getTariffList(model)// model
     .then(
       (res: TariffListResponse) => {
 
@@ -217,13 +251,13 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  orderChange($event: Order) {
-    this.orderBy = $event.orderBy;
-    this.orderDirection = $event.orderByDirection;
-    this.rowStart = 1;
-    this.rowEnd = this.rowCountPerPage;
-    this.loadTariffs(false);
-  }
+  // orderChange($event: Order) {
+  //   this.orderBy = $event.orderBy;
+  //   this.orderDirection = $event.orderByDirection;
+  //   this.rowStart = 1;
+  //   this.rowEnd = this.rowCountPerPage;
+  //   this.loadTariffs(false);
+  // }
 
   popClick(event, user) {
       this.contextMenuX = event.clientX + 3;
