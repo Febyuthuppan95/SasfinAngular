@@ -4,7 +4,7 @@
   <div class="form-group" *ngIf="this.form.commonFactor != undefined">
     <label for="custVal">Common Factor</label>
       <input type="text"  id="commonFactor"
-        [(ngModel)]="this.form.commonFactor" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="this.form.commonFactor.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')"
         placeholder="Common Factor" />
@@ -24,7 +24,7 @@
   <div class="form-group">
     <label for="custVal">Customs Value</label>
     <input type="number" id="custVal"
-      [(ngModel)]="this.form.custVal" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.custVal.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')"
       placeholder="Customs Value"
@@ -45,7 +45,7 @@
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
       <label for="hsQuantity">HS Quantity</label>
     <input type="text"  id="hsQuantity"
-      [(ngModel)]="this.form.hsQuantity" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.hsQuantity.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')"
       placeholder="HS Quantity"
@@ -66,7 +66,7 @@
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
       <label for="foreignInv">Foreign Inv</label>
     <input type="text" id="foreignInv"
-      [(ngModel)]="this.form.foreignInv" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.foreignInv.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')"
       placeholder="Foreign Invoice"
@@ -87,7 +87,7 @@
   <div class="form-group" *ngIf="this.form.duty != undefined">
       <label for="duty">Duty</label>
     <input type="text" id="duty"
-      [(ngModel)]="this.form.duty" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.duty.value" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')"
       placeholder="Duty"
@@ -109,7 +109,7 @@
     <div class="col-sm-3 " style="float: left; padding-left:0px;">
       <label for="supplyUnit">Supply Unit</label>
       <input type="text" id="supplyUnit"
-        [(ngModel)]="this.form.supplyUnit" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="this.form.supplyUnit.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')"
         placeholder="Supply Unit"/>
@@ -190,14 +190,14 @@
   <div class="form-group">
   <label for="currencyID">Invoice No</label>
   <input type="text"
-    [(ngModel)]="this.form.invoiceNo" type="text" [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="this.form.invoiceNo.value" type="text" [ngModelOptions]="{standalone: true}"
     class="form-control form-control-sm shadow-sm form-control-light"
     (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Invoice No"/>
   </div>
   <div class="form-group">
     <label for="currencyID">Prduct Code</label>
     <input type="text"
-      [(ngModel)]="this.form.prodCode" type="text" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.prodCode.value" type="text" [ngModelOptions]="{standalone: true}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Product Code"/>
   </div>

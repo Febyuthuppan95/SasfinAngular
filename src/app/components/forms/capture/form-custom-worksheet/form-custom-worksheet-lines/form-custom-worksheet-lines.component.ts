@@ -575,7 +575,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
                 this.tariffs = res.tariffList;
                 this.tariffsTemp = res.tariffList;
                 this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID.value).description;
-                // console.log(this.tariffQuery);
             },
             (msg) => {
             }
@@ -612,7 +611,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     selectedTariff(tariff: number) {
-        // console.log(tariff);
         this.form.tariffID.value = tariff;
     }
 
@@ -686,7 +684,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     OverridecommonFactorExcept() {
       // this.form.importersCode.OReason = reason;
       this.disabledcommonFactor = true;
-      console.log(this.form.commonFactor);
     }
 
     UndoOverridecommonFactor() {

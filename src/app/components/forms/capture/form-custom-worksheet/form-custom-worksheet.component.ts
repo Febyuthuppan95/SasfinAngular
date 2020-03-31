@@ -55,7 +55,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     currentTheme: string;
     loader: boolean;
 
-    lineQueue: CustomWorksheetLine[] = []; // Here
+    lineQueue: CustomWorksheetLine[] = [];
     linesCreated: CustomWorksheetLine[] = [];
     lineState: string;
     lineErrors: CustomWorksheetLine[] = [];
