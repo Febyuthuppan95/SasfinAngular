@@ -194,7 +194,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     tariff = new FormControl();
     currency = new FormControl();
     currencyQuery = '';
+    // tslint:disable-next-line: max-line-length
     tariffs: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
+    // tslint:disable-next-line: max-line-length
     tariffsTemp: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
     tariffQuery = '';
 
@@ -559,21 +561,36 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.placeService.getCountriesCall(request).then(
             (res: CountriesListResponse) => {
                 this.countriesList = res.countriesList;
+                console.log( 'countriesList');
+                console.log( res.countriesList);
                 this.countriesListTemp = res.countriesList;
-                this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
-                // console.log(this.countryQuery);
+                const currentCountry = this.countriesList.find(x => x.countryID === this.form.cooID.value);
+                this.countryQuery = currentCountry ? currentCountry.code : null;
+
             }
         );
     }
 
     loadTarrifs() {
-      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', rowStart: 1, rowEnd: 100 }).then(
+      const request = {
+        userID: this.currentUser.userID,
+        specificTariffID: -1,
+        filter: '',
+        orderBy: '',
+        orderByDirection: '',
+        rowStart: 1,
+        rowEnd: 100
+      };
+      this.tariffService.list(request).then(
         // tslint:disable-next-line: max-line-length
         (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
+          console.log( 'tariffList');
+          console.log( res.tariffList);
           this.tariffsTemp = res.tariffList;
         },
         (msg) => {
+          console.log(JSON.stringify(msg));
         }
       );
     }
@@ -647,7 +664,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
                 if (res.outcome.outcome === 'SUCCESS') {
                     this.currenciesList = res.currenciesList;
                     this.currenciesListTemp = res.currenciesList;
-                    this.currencyQuery = this.currenciesList.find(x => x.currencyID === this.form.currencyID.value).code;
+                    const currentCurrency = this.currenciesList.find(x => x.currencyID === this.form.currencyID.value);
+                    this.currencyQuery = currentCurrency ? currentCurrency.code : null;
                 } else {
                     // nothing
                 }
