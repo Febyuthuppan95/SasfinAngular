@@ -560,8 +560,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             (res: CountriesListResponse) => {
                 this.countriesList = res.countriesList;
                 this.countriesListTemp = res.countriesList;
-                this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
-                // console.log(this.countryQuery);
+
+                const currentCountry = this.countriesList.find(x => x.countryID === this.form.cooID.value);
+                this.countryQuery = currentCountry ? currentCountry.code : null;
             }
         );
     }
