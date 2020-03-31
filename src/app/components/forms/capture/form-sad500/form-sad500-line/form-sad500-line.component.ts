@@ -216,15 +216,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             if (this.showLines) {
-              if (this.updateSAD500Line !== null || this.updateSAD500Line !== undefined) {
                 this.submit();
-              } else {
-                console.log('SAD500 not found.');
-                this.notify.errorsmsg(
-                  'Error',
-                  'SAD500 not found.'
-                );
-              }
 
             }
           }
@@ -245,15 +237,15 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.isUpdate = true;
 
       this.form.customsValue.error = this.updateSAD500Line.customsValue;
-      this.form.lineNo.error = this.updateSAD500Line.lineNo;
-      this.form.tariff.value = '';
-      this.form.unitOfMeasure.value = '';
+      this.form.lineNo.value = this.updateSAD500Line.lineNo;
+      this.form.tariff.value = this.updateSAD500Line.tariffID;
+      this.form.unitOfMeasure.value = this.updateSAD500Line.unitOfMeasureID;
       this.form.tariff.error = this.updateSAD500Line.tariffError;
-      this.form.customsValue.error = this.updateSAD500Line.customsValueError;
+      this.form.customsValue.error = this.updateSAD500Line.customsValueError ? this.updateSAD500Line.customsValueError : null;
       this.form.unitOfMeasure.error = this.updateSAD500Line.unitOfMeasureError;
-      this.form.lineNo.error = this.updateSAD500Line.lineNoError;
+      this.form.lineNo.error = this.updateSAD500Line.lineNoError ? this.updateSAD500Line.lineNoError : null;
       this.form.quantity.value = this.updateSAD500Line.quantity;
-      this.form.quantity.error = this.updateSAD500Line.quantityError;
+      this.form.quantity.error = this.updateSAD500Line.quantityError ? this.updateSAD500Line.quantityError : null;
       this.loadDuties();
     } else {
       console.log('ccc');
@@ -449,7 +441,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           // originalLineID: -1
 
           userID: this.currentUser.userID,
-          sad500LineID: this.updateSAD500Line.sad500LineID,
+          // sad500LineID: this.updateSAD500Line ? this.updateSAD500Line.sad500LineID : null,
           sad500ID: -1,
           tariffID: this.form.tariff.value,
           cooID: this.countryID,

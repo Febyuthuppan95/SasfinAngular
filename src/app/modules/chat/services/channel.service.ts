@@ -49,30 +49,30 @@ export class ChannelService implements OnDestroy {
   }
 
   startConnection() {
-    if (this.hubUserConnection.state === 0) {
-      this.hubUserConnection
-      .start()
-      .then(() => {
-        // Set hub variables
-        this.setUserConnection(this.hubUserConnection);
-        this.setConnectionStatus(true);
-      })
-      .catch(err => {
-        console.log(err);
-        this.setConnectionStatus(false);
-        this.setUserConnection(null);
-        this.disconnectCount++;
+    // if (this.hubUserConnection.state === 0) {
+    //   this.hubUserConnection
+    //   .start()
+    //   .then(() => {
+    //     // Set hub variables
+    //     this.setUserConnection(this.hubUserConnection);
+    //     this.setConnectionStatus(true);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //     this.setConnectionStatus(false);
+    //     this.setUserConnection(null);
+    //     this.disconnectCount++;
 
-        setTimeout(() => {
-          this.startConnection();
-        }, 5000);
-      });
-    }
+    //     setTimeout(() => {
+    //       this.startConnection();
+    //     }, 5000);
+    //   });
+    // }
   }
 
   stopConnection() {
-    this.setUserConnection(null);
-    this.hubUserConnection.stop();
+    // this.setUserConnection(null);
+    // this.hubUserConnection.stop();
   }
 
   public observeUserConnection = () => this.userHub.asObservable();
