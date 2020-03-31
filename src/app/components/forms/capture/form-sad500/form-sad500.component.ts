@@ -356,7 +356,7 @@ dialogOpen = false;
   submit() {
     const requestModel = {
       userID: this.currentUser.userID,
-      specificSAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+      SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       rebateCode: this.form.rebateCode.value,
@@ -451,6 +451,7 @@ dialogOpen = false;
           }
         },
         (msg) => {
+          console.log(JSON.stringify(msg));
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
@@ -458,14 +459,11 @@ dialogOpen = false;
   }
 
   updateLine(obj: SAD500Line) {
-    this.lineState = 'Saving';
     const requestModel = {
       userID: this.currentUser.userID,
       sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       specificSAD500LineID: obj.sad500LineID,
-      // unitOfMeasure: obj.unitOfMeasure,
       unitOfMeasureID: obj.unitOfMeasureID,
-      // tariff: obj.tariff,
       tariffID: obj.tariffID,
       quantity: obj.quantity,
       customsValue: obj.customsValue,
@@ -481,17 +479,13 @@ dialogOpen = false;
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.loadLines();
-          this.lineState = 'Updated successfully';
           this.lines = -1;
           this.focusLineData = null;
-          setTimeout(() => this.lineState = '', 3000);
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
-        this.lineState = 'Update failed';
-
-        setTimeout(() => this.lineState = '', 3000);
       }
     );
   }
@@ -654,12 +648,17 @@ dialogOpen = false;
       this.captureService.sad500LineAdd(perfect).then(
         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
           if (res.outcome === 'SUCCESS') {
-            console.log('Line saved');
+
             const currentLine = this.lineQueue[this.lineIndex];
-            currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-            this.dutyIndex = 0;
-            if (currentLine.duties.length > 0) {
-              this.saveLineDuty(currentLine.duties[0]);
+
+            if (currentLine.duties) {
+              if (currentLine.duties.length > 0) {
+                currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+                this.dutyIndex = 0;
+                this.saveLineDuty(currentLine.duties[0]);
+              } else {
+                this.nextLineAsync();
+              }
             } else {
               this.nextLineAsync();
             }
