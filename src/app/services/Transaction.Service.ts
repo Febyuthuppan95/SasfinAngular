@@ -21,13 +21,11 @@ export class TransactionService {
 // tslint:disable-next-line: max-line-length
   currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>;
   public observerCurrentAttachment() {
-    console.log(this.currentAttachment);
     return this.currentAttachment.asObservable(); }
   // tslint:disable-next-line: max-line-length
   public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string}) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
-    console.log(next);
   }
 
   /**

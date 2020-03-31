@@ -58,14 +58,11 @@ export class ViewLoginComponent implements OnInit {
       this.pendingRequest = true;
       this.userService.authenticate(this.txtEmail, this.txtPassword).then(
         (res: LoginResponse) => {
-          console.log(res);
           const expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 1);
           this.userService.setAuth(res.authenticated);
 
           if (res.authenticated) {
-            console.log(res.authenticated);
-
             this.userService.persistLogin(JSON.stringify(res));
             this.userService.setAuth(res.authenticated);
             if (res.designation !== 'Capturer') {

@@ -8,5 +8,5 @@ import { environment } from 'src/environments/environment';
 export class TariffService {
   constructor(private apiService: ApiService) {}
 
-  list = () => this.apiService.get(`${environment.ApiEndpoint}/tariffs/list`);
+  list = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/tariffs/list`, requestModel);
 }

@@ -615,39 +615,28 @@ dialogOpen = false;
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
 
-       // this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
       }
     );
   }
-  // loadLineDuty() {
-  //   this.captureService.sad500LineDutyList({}).then(
-  //     (res: SAD500LineDutyList) => {
 
-  //     },
-  //     (msg) => {
-
-  //     }
-  //   )
-  // }
   addToQueue(obj: SAD500LineCreateRequest) {
-    console.log('obj');
-    console.log(obj);
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID;
     obj.isPersist = false;
 
     this.lineQueue.push(obj);
     this.sad500CreatedLines.push(obj);
-    // this.lineState = 'Line added to queue';
+
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
     this.lines = -1;
-    // setTimeout(() => this.lineState = '', 3000);
+
     this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
       duration: 3000,
       panelClass: ['capture-snackbar'],
@@ -657,13 +646,11 @@ dialogOpen = false;
 
   saveLines() {
     if (this.lineIndex < this.lineQueue.length) {
-      console.log('here');
-      console.log(this.lineQueue[this.lineIndex]);
+
       const lineCreate: any = this.lineQueue[this.lineIndex];
       delete lineCreate.isPersist;
-
       const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-      console.log(perfect);
+
       this.captureService.sad500LineAdd(perfect).then(
         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
           if (res.outcome === 'SUCCESS') {

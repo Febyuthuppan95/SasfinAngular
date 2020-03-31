@@ -88,8 +88,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       if (result !== undefined) {
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
-
-      console.log(this.currentBackground);
     });
 
     toggleHelpObserver

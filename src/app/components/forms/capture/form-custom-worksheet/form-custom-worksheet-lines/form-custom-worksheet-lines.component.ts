@@ -194,8 +194,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     tariff = new FormControl();
     currency = new FormControl();
     currencyQuery = '';
-    tariffs: { amount: number; description: string; duty: number; unit: string; id: number }[];
-    tariffsTemp: { amount: number; description: string; duty: number; unit: string; id: number }[];
+    tariffs: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
+    tariffsTemp: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
     tariffQuery = '';
 
     unitOfMeasureList: UnitsOfMeasure[];
@@ -567,18 +567,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     loadTarrifs() {
-        this.tariffService.list().then(
-            (res: {
-                tariffList: { amount: number; description: string; duty: number; unit: string; id: number }[],
-                outcome: Outcome, rowCount: number
-            }) => {
-                this.tariffs = res.tariffList;
-                this.tariffsTemp = res.tariffList;
-                this.tariffQuery = this.tariffs.find(x => x.id === this.form.tariffID.value).description;
-            },
-            (msg) => {
-            }
-        );
+      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', rowStart: 1, rowEnd: 100 }).then(
+        // tslint:disable-next-line: max-line-length
+        (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
+          this.tariffs = res.tariffList;
+          this.tariffsTemp = res.tariffList;
+        },
+        (msg) => {
+        }
+      );
     }
 
     filterCountries() {
@@ -616,7 +613,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     filterTariff() {
         this.tariffs = this.tariffsTemp;
-        this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.description, `*${this.tariffQuery.toUpperCase}*`));
+        this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery.toUpperCase()}*`));
     }
 
     loadUnits(): void {
