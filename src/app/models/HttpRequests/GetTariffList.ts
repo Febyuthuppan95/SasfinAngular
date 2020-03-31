@@ -4,6 +4,4 @@ export class GetTariffList {
   filter: string;
   userID: number;
   specificTariffID: number;
-  orderByDirection: string;
-  orderBy: string;
 }

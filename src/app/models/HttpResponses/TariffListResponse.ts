@@ -9,12 +9,12 @@ export class TariffListResponse {
 export class Tariff {
   rowNum: number;
   id: number;
-  tariffName: string;
-  // tariffCode: string;
-  tariff: string;
-  Amount: number;
-  Description: string;
-  Duty: number;
+  itemNumber: string;
+  heading: string;
+  tariffCode: string;
+  subHeading: string;
+  checkDigit: string;
+  name: string;
+  duty: string;
   hsUnit: string;
-  // quality538: string;
 }
