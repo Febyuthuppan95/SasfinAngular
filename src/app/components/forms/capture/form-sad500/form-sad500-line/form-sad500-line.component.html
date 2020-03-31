@@ -32,7 +32,7 @@
     <div class="row">
       <div class="col-md-3">
         <label for="customsValue">Supply Unit</label>
-        <input type="text" [(ngModel)]="this.form.supplyUnit.value" [ngModelOptions]="{standalone: true}"
+        <input type="number" [(ngModel)]="this.form.supplyUnit.value" [ngModelOptions]="{standalone: true}"
           class="form-control form-control-sm shadow-sm form-control-light"
           (mouseover)="updateHelpContext('form-sad500-line-supply-unit')" placeholder="Supply Unit" style="margin-top:0"/>
           <div *ngIf="this.form.supplyUnit.error !== null" class="input-group mb-3 invalid-control-label">

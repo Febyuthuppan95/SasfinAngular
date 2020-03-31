@@ -422,24 +422,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
         });
       } else {
-        this.submitSADLine.emit({
-          // userID: -1,
-          // sad500ID: -1,
-          // tariffID: 1,
-          // // tariff: '',
-          // customsValue: this.form.customsValue.value,
-          // lineNo: this.form.lineNo.value,
-          // unitOfMeasureID: 1,
-          // // unitOfMeasure: this.form.unitOfMeasure,
-          // quantity: this.form.quantity.value,
-          // duties: this.dutiesToBeSaved,
-          // previousDeclaration: this.form.previousDeclaration.value,
-          // // vat: this.form.vat,
-          // supplyUnit: this.form.supplyUnit.value,
-          // cooID: this.countryID,
-          // replacedByLineID: -1,
-          // originalLineID: -1
-
+        const sumbitRequest = {
           userID: this.currentUser.userID,
           // sad500LineID: this.updateSAD500Line ? this.updateSAD500Line.sad500LineID : null,
           sad500ID: -1,
@@ -453,6 +436,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnit: this.form.supplyUnit.value,
           replacedByLineID: -1,
           originalLineID: -1,
+          duty: this.form.duty.value,
 
           lineNoOBit: this.form.lineNo.OBit,
           lineNoOUserID: this.form.lineNo.OUserID,
@@ -488,7 +472,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnitOUserID: this.form.supplyUnit.OUserID,
           supplyUnitODate: this.form.supplyUnit.OUserID,
           supllyUnitOReason: this.form.supplyUnit.OUserID,
-        });
+        };
+        console.log('sumbitRequest');
+        console.log(sumbitRequest);
+
+        this.submitSADLine.emit(sumbitRequest);
 
         this.dutiesToBeSaved = [];
         this.loadDuties();

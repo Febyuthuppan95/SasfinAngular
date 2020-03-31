@@ -10,7 +10,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
-import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { SPSAD500LineList, SAD500Line, SADLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -301,7 +301,7 @@ dialogOpen = false;
                   this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
                     this.dialogOpen = false;
                     if (status) {
-                      this.submit();
+                      this.saveLines();
                     }
                   });
                 }
@@ -437,6 +437,8 @@ dialogOpen = false;
         }
       );
     } else {
+      console.log('SAD Submit requestModel');
+      console.log(requestModel);
       this.captureService.sad500Update(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -633,6 +635,8 @@ dialogOpen = false;
   //   )
   // }
   addToQueue(obj: SAD500LineCreateRequest) {
+    console.log('obj');
+    console.log(obj);
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID;
     obj.isPersist = false;
@@ -653,7 +657,14 @@ dialogOpen = false;
 
   saveLines() {
     if (this.lineIndex < this.lineQueue.length) {
-      this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
+      console.log('here');
+      console.log(this.lineQueue[this.lineIndex]);
+      const lineCreate: any = this.lineQueue[this.lineIndex];
+      delete lineCreate.isPersist;
+
+      const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
+      console.log(perfect);
+      this.captureService.sad500LineAdd(perfect).then(
         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
           if (res.outcome === 'SUCCESS') {
             console.log('Line saved');
@@ -670,7 +681,7 @@ dialogOpen = false;
           }
         },
         (msg) => {
-          console.log('Client Error');
+          console.log(JSON.stringify(msg));
         }
       );
     } else {
@@ -704,6 +715,7 @@ dialogOpen = false;
     this.lineIndex++;
 
     if (this.lineIndex < this.lineQueue.length) {
+      alert('over here');
       this.saveLines();
     } else {
       this.loader = false;

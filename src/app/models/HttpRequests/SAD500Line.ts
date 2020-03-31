@@ -12,13 +12,101 @@ export class SAD500LineListRequest {
   transactionID?: number;
 }
 
+export class SadTest {
+  UserID: number;
+  SAD500ID: number;
+  TariffID: number;
+  UnitOfMeasureID: number;
+  OriginalLineID: number;
+  COOID: number;
+  ReplacedByLineID: number;
+  LineNo: string;
+  CustomsValue: string;
+  PreviousDeclaration: string;
+  Quantity: number;
+  Duty: number;
+  SupplyUnit: number;
+  LineNoOBit: boolean;
+  LineNoOUserID: number;
+  LineNoODate: string;
+  LineNoOReason: string;
+  CustomsValueOBit: boolean;
+  CustomsValueOUserID: number;
+  CustomsValueODate: string;
+  CustomsValueOReason: string;
+  QuantityOBit: boolean;
+  QuantityOUserID: number;
+  QuantityODate: string;
+  QuantityOReason: string;
+  PreviousDeclarationOBit: boolean;
+  PreviousDeclarationOUserID: number;
+  PreviousDeclarationODate: string;
+  PreviousDeclarationOReason: string;
+  DutyOBit: boolean;
+  DutyOUserID: number;
+  DutyODate: string;
+  DutyOReason: string;
+  VATOBit: boolean;
+  VATOUserID: number;
+  VATODate: string;
+  VATOReason: string;
+  SupplyUnitOBit: boolean;
+  SupplyUnitOUserID: number;
+  SupplyUnitODate: string;
+  SupllyUnitOReason: string;
+}
+
 export class SAD500LineCreateRequest {
   userID: number;
   sad500ID: number;
   tariffID: number;
-  customsValue: number;
-  lineNo: string;
   unitOfMeasureID: number;
+  originalLineID?: number;
+  cooID: number;
+  replacedByLineID?: number;
+  lineNo: string;
+  customsValue: string;
+  previousDeclaration: string;
+  quantity: number;
+  duty?: number;
+  supplyUnit: number;
+
+  lineNoOBit?: boolean;
+  lineNoOUserID?: number;
+  lineNoODate: string;
+  lineNoOReason: string;
+
+  customsValueOBit?: boolean;
+  customsValueOUserID?: number;
+  customsValueODate: string;
+  customsValueOReason: string;
+
+  quantityOBit?: boolean;
+  quantityOUserID?: number;
+  quantityODate: string;
+  quantityOReason: string;
+
+  previousDeclarationOBit?: boolean;
+  previousDeclarationOUserID?: number;
+  previousDeclarationODate: string;
+  previousDeclarationOReason: string;
+
+  dutyOBit?: boolean;
+  dutyOUserID?: number;
+  dutyODate: string;
+  dutyOReason: string;
+
+  vatOBit?: boolean;
+  vatOUserID?: number;
+  vatODate: string;
+  vatOReason: string;
+
+  supplyUnitOBit?: boolean;
+  supplyUnitOUserID?: number;
+  supplyUnitODate: string;
+  supllyUnitOReason: string;
+
+
   saved?: boolean;
   failed?: boolean;
   updateSubmit?: boolean;
@@ -26,53 +114,14 @@ export class SAD500LineCreateRequest {
   sad500LineID?: number;
   rowNum?: number;
   isPersist?: boolean;
-  quantity: number;
-  previousDeclaration: string;
-  supplyUnit: string;
-  cooID: number;
-  tariffError?: string;
-  customsValueError?: number;
-  lineNoError?: string;
-  unitOfMeasureError?: string;
-  quantityError?: string;
-  previousDeclarationError?: string;
-  originalLineID?: number;
-  replacedByLineID?: number;
+  // tariffError?: string;
+  // customsValueError?: number;
+  // lineNoError?: string;
+  // unitOfMeasureError?: string;
+  // quantityError?: string;
+  // previousDeclarationError?: string;
 
-  lineNoOBit: boolean;
-  lineNoOUserID: number;
-  lineNoODate: Date;
-  lineNoOReason: string;
 
-  customsValueOBit: boolean;
-  customsValueOUserID: number;
-  customsValueODate: Date;
-  customsValueOReason: string;
-
-  quantityOBit: boolean;
-  quantityOUserID: number;
-  quantityODate: Date;
-  quantityOReason: string;
-
-  previousDeclarationOBit: boolean;
-  previousDeclarationOUserID: number;
-  previousDeclarationODate: Date;
-  previousDeclarationOReason: string;
-
-  dutyOBit: boolean;
-  dutyOUserID: number;
-  dutyODate: Date;
-  dutyOReason: string;
-
-  vatOBit: boolean;
-  vatOUserID: number;
-  vatODate: Date;
-  vatOReason: string;
-
-  supplyUnitOBit: boolean;
-  supplyUnitOUserID: number;
-  supplyUnitODate: Date;
-  supllyUnitOReason: string;
 }
 
 export class SAD500LineUpdateModel {
@@ -83,12 +132,12 @@ export class SAD500LineUpdateModel {
     tariffID: number;
     // unitOfMeasure: string;
     unitOfMeasureID: number;
-    customsValue: number;
+    customsValue: string;
     lineNo: string;
     isDeleted: number;
     quantity: number;
     cooID: number;
-    supplyUnit: string;
+    supplyUnit: number;
 }
 
 export class DutyListResponse {
