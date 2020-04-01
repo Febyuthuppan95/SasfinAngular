@@ -6,10 +6,8 @@ import { ChatConversationIssue } from './../../models/requests';
 import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
-import { Transaction } from './../../../../models/HttpResponses/TransactionListResponse';
 import { Component, OnInit, Output, EventEmitter, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
-import { UserList } from 'src/app/models/HttpResponses/UserList';
 
 @Component({
   selector: 'app-chat-conversation-list',
@@ -66,7 +64,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
         if (res.services.length > 0) {
-          console.log(res.services);
           if ((this.currentUser.userID === res.services[0].resCapturerID) &&
           (this.currentUser.userID !== res.services[0].resConsultantID)) {
             // if capturer lead
@@ -77,7 +74,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
         }
       },
       (msg) => {
-        
+
       }
     );
   }
@@ -88,7 +85,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
       rowEnd: 10,
       filter: this.search.toString()
     };
-    console.log(this.search);
     this.transactionService.observerCurrentAttachment().subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null) {
         this.transactionID = curr.transactionID;
@@ -98,7 +94,6 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
       (res: ChatConversationListResponse) => {
         if (res !== null) {
           this.conversations = res.conversations;
-          console.log(this.conversations);
         } else {
         }
       }, (msg) => {
@@ -124,7 +119,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
            documentID: request.documentID, fileType: request.fileType});
       },
       (msg) => {
-      } 
+      }
     );
   }
   dismissEvent() {

@@ -83,13 +83,15 @@ private notify: NotificationComponent;
     this.companyService.observeCapture()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCapture) => {
-      this.start = obj.capturestate;
-      // console.log(this.start + ', ' + obj.capturestate);
-      if (this.start) {
-        // if (obj.token !== this.tmpCompanyToken) {
-          this.loadNextAttachment();
-        //   this.tmpCompanyToken = obj.token;
-        // }
+      if (obj !== null) {
+        this.start = obj.capturestate;
+        // console.log(this.start + ', ' + obj.capturestate);
+        if (this.start) {
+          // if (obj.token !== this.tmpCompanyToken) {
+            this.loadNextAttachment();
+          //   this.tmpCompanyToken = obj.token;
+          // }
+        }
       }
     });
 
