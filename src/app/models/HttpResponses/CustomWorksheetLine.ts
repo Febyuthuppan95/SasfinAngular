@@ -105,4 +105,59 @@ export class CWSLineCaptureThatSHOULDWorks {
   duty: number;
   prodCode: string;
   supplyUnit: number;
+
+  cooOBit?: boolean;
+  cooOUserID?: number;
+  cooODate?: string;
+  cooOReason?: string;
+
+  tariffHeadingOBit?: boolean;
+  tariffHeadingOUserID?: number;
+  tariffHeadingODate?: string;
+  tariffHeadingOReason?: string;
+
+  hsQuantityOBit?: boolean;
+  hsQuantityOUserID?: number;
+  hsQuantityODate?: string;
+  hsQuantityOReason?: string;
+
+  foreignInvOBit?: boolean;
+  foreignInvOUserID?: number;
+  foreignInvODate?: string;
+  foreignInvOReason?: string;
+
+  custValOBit?: boolean;
+  custValOUserID?: number;
+  custValODate?: string;
+  custValOReason?: string;
+
+  dutyOBit?: boolean;
+  dutyOUserID?: number;
+  dutyODate?: string;
+  dutyOReason?: string;
+
+  commonFactorOBit?: boolean;
+  commonFactorOUserID?: number;
+  commonFactorODate?: string;
+  commonFactorOReason?: string;
+
+  invoiceNoOBit?: boolean;
+  invoiceNoOUserID?: number;
+  invooiceNoODate?: string;
+  invoiceNoOReason?: string;
+
+  prodCodeOBit?: boolean;
+  prodCodeOUserID?: number;
+  prodCodeODate?: string;
+  prodCodeOReason?: string;
+
+  vatOBit?: boolean;
+  vatOUserID?: number;
+  vatODate?: string;
+  vatOReason?: string;
+
+  supplyUnitOBit?: boolean;
+  supplyUnitOUserID?: number;
+  supplyUnitODate?: string;
+  supplyUnitOReason?: string;
 }

@@ -393,7 +393,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             delete lineCreate.isPersist;
             const perfect: CWSLineCaptureThatSHOULDWorks = lineCreate;
 
-
+            console.log('yes');
+            console.log(perfect);
             this.captureService.customWorksheetLineAdd(perfect).then(
                 (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                     if (res.outcome === 'SUCCESS') {

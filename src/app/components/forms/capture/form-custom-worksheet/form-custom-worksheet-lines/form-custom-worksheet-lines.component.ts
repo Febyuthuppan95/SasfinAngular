@@ -193,7 +193,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     unitOfMeasure = new FormControl();
     tariff = new FormControl();
     currency = new FormControl();
-    currencyQuery = '';
+    currencyQuery: string = '';
     // tslint:disable-next-line: max-line-length
     tariffs: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
     // tslint:disable-next-line: max-line-length
@@ -548,6 +548,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if ( this.isUpdate) {
           this.updateCWSLine.emit(model);
         } else {
+          console.log('model');
+          console.log(model);
           this.submitSADLine.emit(model);
       }
     }
@@ -671,6 +673,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     filterCurrency() {
+        console.log('currencyQuery');
+        console.log(this.currencyQuery);
         this.currenciesList = this.currenciesListTemp;
         this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery.toUpperCase()}*`));
     }
