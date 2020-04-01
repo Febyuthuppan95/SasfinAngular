@@ -329,7 +329,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   toggelEscalate() {
     // Modal toggle
-    const escalateDialog = this.dialog.open(EscalateDialogComponent);
+    const escalateDialog = this.dialog.open(EscalateDialogComponent, { width: '512px' });
     escalateDialog.afterClosed().subscribe(result => {
       this.escalate(result);
     });
