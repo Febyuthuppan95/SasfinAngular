@@ -102,16 +102,23 @@
           <br>
           <hr/>
           <br>
-          <div class="data">
-            <mat-accordion>
-              <mat-expansion-panel>
+          <div class="data" *ngIf="importComponents">
+            <div class="row">
+              <label class="col-md-3 text-center">Component Code</label>
+              <label class="col-md-3 text-center">Total Import Quantity</label>
+              <label class="col-md-3 text-center">Total Export Quantity</label>
+              <label class="col-md-3 text-center">Total Duty</label>
+            </div>
+            <mat-accordion >
+              <mat-expansion-panel *ngFor="let component of importComponents">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    Personal data
+                    <label class="col-md-3 text-center">{{component.data.code}}</label>
+                    <label class="col-md-3 text-center">{{component.data.importQuantity}}</label>
+                    <label class="col-md-3 text-center">{{component.data.exportQuantity}}</label>
+                    <label class="col-md-3 text-center">{{component.data.totalDuty}}</label>
                   </mat-panel-title>
-                  <mat-panel-description>
-                    Type your name and age
-                  </mat-panel-description>
+                  
                 </mat-expansion-panel-header>
             
                 <mat-form-field>
