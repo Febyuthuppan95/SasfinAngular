@@ -131,7 +131,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         isDeleted: 0,
         lineNo: obj.lineNo,
         cooID: -1,
-        supplyUnit: ''
+        supplyUnit: 0
       };
 
       this.captureService.sad500LineUpdate(requestModel).then(
@@ -163,7 +163,7 @@ export class Sad500LinesComponent implements OnInit, OnDestroy {
         isDeleted: 1,
         lineNo: obj.lineNo,
         cooID: -1,
-        supplyUnit: ''
+        supplyUnit: 0
       };
 
       this.captureService.sad500LineUpdate(requestModel).then(

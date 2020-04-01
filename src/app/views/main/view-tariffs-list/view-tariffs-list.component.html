@@ -16,11 +16,11 @@
         [orderBy]="this.orderBy"
         [orderByDirection]="this.orderDirection"
         [tableHeader]="this.tableHeader"
-        (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
         (searchEvent)="searchEvent($event)"
-        (selectedRecord)="selectedRecord($event)">
+        (selectedRecord)="selectedRecord($event)"
+        (addButtonEvent)="add();">
       </app-table>
     </div>
   </div>

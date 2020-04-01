@@ -143,7 +143,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
-      console.log(obj.issueID);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
@@ -155,33 +154,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
     // get the help value
     // this.helpValue  = this.themeService.observeHelpValue();
-
-    // Start watching for user inactivity.
-    this.userIdle.startWatching();
-
-    // Start watching when user idle is starting.
-    this.userIdle.onTimerStart()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(count => {
-      this.TriggerSessionTimeout(count);
-    });
-
-    // Start watch when time is up.
-    this.userIdle.onTimeout()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {
-      this.closetimeoutModal.nativeElement.click();
-      this.userIdle.resetTimer();
-      this.userIdle.stopTimer();
-      this.userIdle.stopWatching();
-      this.closeHelpContext();
-      this.userService.logout();
-    });
-
-    this.userIdle.ping$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {});
-
   }
   toggleReason(): void {
     this.escalationReason.open(EscalateBottomSheetComponent, {
@@ -289,7 +261,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
-        console.log(this.companyInfoList);
         if (this.companyInfoList.captureInfo.length > 0) {
           this.noCaptureInformation = false;
         }
@@ -358,7 +329,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   toggelEscalate() {
     // Modal toggle
-    const escalateDialog = this.dialog.open(EscalateDialogComponent);
+    const escalateDialog = this.dialog.open(EscalateDialogComponent, { width: '512px' });
     escalateDialog.afterClosed().subscribe(result => {
       this.escalate(result);
     });
@@ -372,10 +343,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       fileType: this.attachmentType,
       documentID: this.attachmentID
     };
-    console.log(model);
+
     this.chatService.createIssue(model).then(
       (res: ChatIssueCreateReponse) => {
-        console.log(res);
         if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
           this.companyService.setCapture({ capturestate: false});
           this.router.navigate(['transaction/capturerlanding']);
@@ -386,7 +356,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         }
       },
       (msg: Outcome) => {
-        console.log(msg.outcomeMessage);
         this.snackBarMat.open('An Error occurred while escalating', '', {
           duration: 2000
          });

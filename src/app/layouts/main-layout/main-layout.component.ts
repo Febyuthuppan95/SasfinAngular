@@ -81,15 +81,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
       this.updateChildrenComponents();
     });
-    this.cookieService.set('sidebar', 'true');
+    localStorage.setItem('sidebar', 'true');
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((result: string) => {
       if (result !== undefined) {
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
-
-      console.log(this.currentBackground);
     });
 
     toggleHelpObserver
@@ -173,7 +171,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.sidebar.collapse = !this.sidebar.collapse;
     this.sidebarCollapse = this.sidebar.collapse;
     this.IMenuService.setSidebar(this.sidebarCollapse);
-    this.cookieService.set('sidebar', this.sidebarCollapse ? 'true' : 'false');
+    localStorage.setItem('sidebar', this.sidebarCollapse ? 'true' : 'false');
   }
 
   offCanvasSidebar(event: string) {

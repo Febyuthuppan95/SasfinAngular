@@ -90,12 +90,12 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   submit() {
-          const requestModel = {
+          const requestModel: WaybillUpdate = {
             userID: this.currentUser.userID,
             waybillID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             isDeleted: 0,
-            attachmentStatus: 3,
+            attachmentStatusID: 3,
           };
 
           this.captureService.waybillUpdate(requestModel).then(
@@ -142,4 +142,16 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+}
+
+export class WaybillUpdate {
+  userID: number;
+  waybillID: number;
+  waybillNo: string;
+  attachmentStatusID: number;
+  isDeleted?: number;
+  waybillNoOBit?: boolean;
+  waybillNoOUserID?: number;
+  waybillNoODate?: string;
+  waybillNoOReason?: string;
 }

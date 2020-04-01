@@ -34,6 +34,7 @@ export class ViewChangePasswordComponent implements OnInit {
         this.notify.errorsmsg('Invalid Input', 'Passwords do not match');
       } else {
         this.requestPending = true;
+
         this.userService.changePassword(this.txtEmail, this.txtOTP, this.txtNewPass)
           .then(
             (res: ChangePassword) => {

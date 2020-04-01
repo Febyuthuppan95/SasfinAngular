@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
@@ -17,7 +17,9 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { MatDialog } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-custom-release',
   templateUrl: './form-custom-release.component.html',
@@ -58,12 +60,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  private unsubscribe$ = new Subject<void>();
-
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   shortcuts: ShortcutInput[] = [];
-
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -175,15 +174,12 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit() {
     this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
 
     this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(() => this.submit());
 
     this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
     .subscribe((curr: { transactionID: number, attachmentID: number }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
@@ -312,7 +308,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   submit() {
           const requestModel = {
             userID: this.currentUser.userID,
-            specificCustomsReleaseID: this.attachmentID,
+            customsReleaseID: this.attachmentID,
             serialNo: this.form.serialNo.value,
             lrn: this.form.LRN.value,
             importersCode: this.form.importersCode.value,
@@ -392,6 +388,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               }
             },
             (msg) => {
+              console.log(JSON.stringify(msg));
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
@@ -743,8 +740,5 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   }
 
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  ngOnDestroy(): void {}
 }

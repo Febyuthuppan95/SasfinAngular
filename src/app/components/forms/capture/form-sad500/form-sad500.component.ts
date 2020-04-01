@@ -10,7 +10,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
-import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
+import { SPSAD500LineList, SAD500Line, SADLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -301,7 +301,7 @@ dialogOpen = false;
                   this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
                     this.dialogOpen = false;
                     if (status) {
-                      this.submit();
+                      this.saveLines();
                     }
                   });
                 }
@@ -356,7 +356,7 @@ dialogOpen = false;
   submit() {
     const requestModel = {
       userID: this.currentUser.userID,
-      specificSAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+      SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       serialNo: this.form.serialNo.value,
       lrn: this.form.LRN.value,
       rebateCode: this.form.rebateCode.value,
@@ -437,6 +437,8 @@ dialogOpen = false;
         }
       );
     } else {
+      console.log('SAD Submit requestModel');
+      console.log(requestModel);
       this.captureService.sad500Update(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -449,6 +451,7 @@ dialogOpen = false;
           }
         },
         (msg) => {
+          console.log(JSON.stringify(msg));
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
@@ -456,14 +459,11 @@ dialogOpen = false;
   }
 
   updateLine(obj: SAD500Line) {
-    this.lineState = 'Saving';
     const requestModel = {
       userID: this.currentUser.userID,
       sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
       specificSAD500LineID: obj.sad500LineID,
-      // unitOfMeasure: obj.unitOfMeasure,
       unitOfMeasureID: obj.unitOfMeasureID,
-      // tariff: obj.tariff,
       tariffID: obj.tariffID,
       quantity: obj.quantity,
       customsValue: obj.customsValue,
@@ -478,18 +478,21 @@ dialogOpen = false;
     this.captureService.sad500LineUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+
+          this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar'],
+            horizontalPosition: 'center',
+          });
+
           this.loadLines();
-          this.lineState = 'Updated successfully';
           this.lines = -1;
           this.focusLineData = null;
-          setTimeout(() => this.lineState = '', 3000);
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
-        this.lineState = 'Update failed';
-
-        setTimeout(() => this.lineState = '', 3000);
       }
     );
   }
@@ -613,25 +616,16 @@ dialogOpen = false;
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
 
-       // this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
       }
     );
   }
-  // loadLineDuty() {
-  //   this.captureService.sad500LineDutyList({}).then(
-  //     (res: SAD500LineDutyList) => {
 
-  //     },
-  //     (msg) => {
-
-  //     }
-  //   )
-  // }
   addToQueue(obj: SAD500LineCreateRequest) {
     obj.userID = this.currentUser.userID;
     obj.sad500ID = this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID;
@@ -639,11 +633,11 @@ dialogOpen = false;
 
     this.lineQueue.push(obj);
     this.sad500CreatedLines.push(obj);
-    // this.lineState = 'Line added to queue';
+
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
     this.lines = -1;
-    // setTimeout(() => this.lineState = '', 3000);
+
     this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
       duration: 3000,
       panelClass: ['capture-snackbar'],
@@ -653,15 +647,25 @@ dialogOpen = false;
 
   saveLines() {
     if (this.lineIndex < this.lineQueue.length) {
-      this.captureService.sad500LineAdd(this.lineQueue[this.lineIndex]).then(
+
+      const lineCreate: any = this.lineQueue[this.lineIndex];
+      delete lineCreate.isPersist;
+      const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
+
+      this.captureService.sad500LineAdd(perfect).then(
         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
           if (res.outcome === 'SUCCESS') {
-            console.log('Line saved');
+
             const currentLine = this.lineQueue[this.lineIndex];
-            currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-            this.dutyIndex = 0;
-            if (currentLine.duties.length > 0) {
-              this.saveLineDuty(currentLine.duties[0]);
+
+            if (currentLine.duties) {
+              if (currentLine.duties.length > 0) {
+                currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+                this.dutyIndex = 0;
+                this.saveLineDuty(currentLine.duties[0]);
+              } else {
+                this.nextLineAsync();
+              }
             } else {
               this.nextLineAsync();
             }
@@ -670,7 +674,7 @@ dialogOpen = false;
           }
         },
         (msg) => {
-          console.log('Client Error');
+          console.log(JSON.stringify(msg));
         }
       );
     } else {
@@ -704,6 +708,7 @@ dialogOpen = false;
     this.lineIndex++;
 
     if (this.lineIndex < this.lineQueue.length) {
+      alert('over here');
       this.saveLines();
     } else {
       this.loader = false;

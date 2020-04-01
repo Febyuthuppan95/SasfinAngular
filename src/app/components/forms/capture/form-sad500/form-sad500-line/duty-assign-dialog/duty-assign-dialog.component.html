@@ -5,10 +5,10 @@
             <mat-form-field class="example-full-width">
                 <input matInput placeholder="Duty Value" [(ngModel)]="this.data.duty" [ngModelOptions]="{standalone: true}"/>
             </mat-form-field>
-            <mat-form-field mat-dialog-actions>
-                <button mat-raised-button  (click)="onNoClick()">Cancel</button>
-                <button mat-raised-button color="primary" [mat-dialog-close]="this.data">Assign</button>
-            </mat-form-field>
+            <div mat-dialog-actions>
+              <button mat-raised-button  (click)="onNoClick()">Cancel</button>
+              <button mat-raised-button color="primary" [mat-dialog-close]="this.data">Assign</button>
+          </div >
         </form>
     </div>
 </div>
