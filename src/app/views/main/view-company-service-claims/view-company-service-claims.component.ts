@@ -23,6 +23,7 @@ import { isEmpty } from 'rxjs/operators';
 import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
+import { R3ComponentMetadata } from '@angular/compiler';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -69,6 +70,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       {value: 14},
       {value: 15}
       );
+      /* Claims Modal Data*/
+      // Init with dummy 1
+      
+
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -176,7 +181,44 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   permitslist = [];
   submissiondate: Date;
   complete = false;
-
+  /* Claims Modal*/
+  importComponents: ImportComponent[] = [
+    {
+      data: {
+        code: 'IMP8008',
+        importQuantity: 1,
+        exportQuantity: 30,
+        totalDuty: 340,
+        totalShortfallQuantity: 10
+      },
+      shortfallImports: [] = [
+        {
+          itemID: 1,
+          captureJoinLineID: 1,
+          code: '999PLKJ',
+          hsQuantity: 20,
+          customsValue: 1,
+          duty: 345,
+          isImport: true,
+          status: 'string',
+          statusID: 1
+        }
+      ],
+      exports: [] = [
+        {
+          itemID: 1,
+          captureJoinLineID: 1,
+          code: 'ABC1001',
+          hsQuantity: 30,
+          customsValue: 1,
+          duty: 100,
+          isImport: false,
+          status: 'string',
+          statusID: 1
+        }
+      ]
+    }
+  ];
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -451,6 +493,31 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   }
+}
+
+export class ImportComponent {
+  data: ComponentData;
+  exports: Product[];
+  shortfallImports: Product[];
+}
+
+export class ComponentData {
+  code: string;
+  importQuantity: number;
+  exportQuantity: number;
+  totalDuty: number;
+  totalShortfallQuantity: number;
+}
+export class Product {
+  itemID: number;
+  captureJoinLineID: number;
+  code: string;
+  hsQuantity: number;
+  customsValue: number;
+  duty: number;
+  isImport: boolean;
+  status?: string;
+  statusID?: number;
 }
 
 

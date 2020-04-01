@@ -102,18 +102,29 @@
           <br>
           <hr/>
           <br>
-          <div class="data">
-            <mat-accordion>
-              <mat-expansion-panel>
+          <div class="data" *ngIf="importComponents">
+            <div class="row">
+              <label class="col-md-3 text-center">Component Code</label>
+              <label class="col-md-3 text-center">Total Import Quantity</label>
+              <label class="col-md-3 text-center">Total Export Quantity</label>
+              <label class="col-md-3 text-center">Total Duty</label>
+            </div>
+            <mat-accordion >
+              <mat-expansion-panel *ngFor="let component of importComponents">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    Personal data
+                    <label class="col-md-3 text-center">{{component.data.code}}</label>
+                    <label class="col-md-3 text-center">{{component.data.importQuantity}}</label>
+                    <label class="col-md-3 text-center">{{component.data.exportQuantity}}</label>
+                    <label class="col-md-3 text-center">{{component.data.totalDuty}}</label>
                   </mat-panel-title>
-                  <mat-panel-description>
-                    Type your name and age
-                  </mat-panel-description>
+                  
                 </mat-expansion-panel-header>
-            
+                <div #exports>
+                  <div class="row" *ngFor="">
+
+                  </div>
+                </div>
                 <mat-form-field>
                   <mat-label>First name</mat-label>
                   <input matInput>
@@ -123,19 +134,7 @@
                   <mat-label>Age</mat-label>
                   <input matInput type="number" min="1">
                 </mat-form-field>
-              </mat-expansion-panel>
-              <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Self aware panel
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Currently I am {{panelOpenState ? 'open' : 'closed'}}
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-              </mat-expansion-panel>
+              </mat-expansion-panel>  
             </mat-accordion>
           </div>
       </div>
