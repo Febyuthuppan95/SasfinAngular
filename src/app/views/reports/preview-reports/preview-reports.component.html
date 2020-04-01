@@ -1,1 +1,50 @@
-<p>preview-reports works!</p>
+<div style="padding: 24px;">
+  <mat-card>
+    <mat-card-content>
+      <h3>Reports</h3>
+      <br>
+      <div class="row">
+        <div class="col-4">
+          <p>Available Reports</p>
+          <ng-container *ngIf="reports.length > 0">
+            <small>
+              <button mat-raised-button color="primary">{{ getSelected().length > 0 ? 'Download Selected' : 'Download All' }}</button>&nbsp;
+              {{getSelected().length}} Selected
+            </small>
+            <br>
+          </ng-container>
+          <br>
+          <div class="row">
+            <div class="col-6" *ngFor="let item of reports">
+              <mat-card class="report-tile">
+                <mat-card-content>
+                  <h5>{{item.reportName}}</h5>
+                  <mat-checkbox #checkBox color="primary" class="report-select" (change)="item.selected = $event.checked"></mat-checkbox>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div style="margin-left: 24px;">
+          <p>Preview</p>
+          <br>
+
+          <ng-container *ngFor="let item of getSelected()">
+            <table>
+              <tbody>
+                <!-- <tr *ngFor="let row of data">
+                  <td *ngFor="let val of row">
+                    {{val}}
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </ng-container>
+
+        </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

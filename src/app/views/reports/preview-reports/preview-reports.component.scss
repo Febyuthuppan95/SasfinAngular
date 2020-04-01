@@ -1,0 +1,23 @@
+.report-tile {
+  height: 256px;
+  position: relative;
+  margin-bottom: 24px;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.report-tile:hover {
+  cursor: pointer;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.report-tile-selected {
+  background: #365bff !important;
+  color: #f2f2f2 !important;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+
+.report-select {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
