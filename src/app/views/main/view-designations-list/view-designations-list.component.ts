@@ -256,7 +256,7 @@ export class ViewDesignationsListComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, id, name) {
-    // this.sidebarCollapsed = this.cookieService.get('sidebar') === 'false' ? false : true;
+    // this.sidebarCollapsed = localStorage.getItem('sidebar') === 'false' ? false : true;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
 

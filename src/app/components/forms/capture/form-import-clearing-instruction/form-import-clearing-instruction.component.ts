@@ -128,33 +128,28 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   }
 
   submit() {
-          const requestModel = {
+          const requestModel: ICIUpdate = {
             userID: this.currentUser.userID,
-            specificICIID: this.attachmentID,
+            iciID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             importersCode: this.form.importersCode.value,
             supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
-            attachmentStatus: 3,
-
+            attachmentStatusID: 3,
             supplierRefOBit: this.form.supplierRef.OBit,
             supplierRefOUserID: this.form.supplierRef.OUserID,
             supplierRefODate: this.form.supplierRef.ODate,
             supplierRefOReason: this.form.supplierRef.OReason,
-
             importersCodeOBit: this.form.importersCode.OBit,
             importersCodeOUserID: this.form.importersCode.OUserID,
             importersCodeODate: this.form.importersCode.ODate,
             importersCodeOReason: this.form.importersCode.OReason,
-
             waybillNoOBit: this.form.waybillNo.OBit,
             waybillNoOUserID: this.form.waybillNo.OUserID,
             waybillNoODate: this.form.waybillNo.ODate,
             waybillNoOReason: this.form.waybillNo.OReason,
           };
-          console.log('this one');
-          console.log(requestModel);
-          console.log('end');
+
           this.captureService.iciUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -167,7 +162,8 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
               }
             },
               (msg) => {
-              this.notify.errorsmsg('Failure', 'Cannot reach server');
+                console.log(JSON.stringify(msg));
+                this.notify.errorsmsg('Failure', 'Cannot reach server');
               }
             );
         }
@@ -185,8 +181,6 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
     };
     this.captureService.iciList(requestModel).then(
       (res: ICIListResponse) => {
-        console.log('check from here');
-        console.log(res.attachmentErrors);
         if (res.clearingInstructions.length > 0) {
           this.form.waybillNo.value = res.clearingInstructions[0].waybillNo;
           this.form.supplierRef.value = res.clearingInstructions[0].supplierRef;
@@ -296,4 +290,26 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
     this.unsubscribe$.complete();
   }
 
+}
+
+export class ICIUpdate {
+  userID: number;
+  iciID: number;
+  waybillNo: string;
+  supplierRef: string;
+  importersCode: string;
+  attachmentStatusID: number;
+  isDeleted?: number;
+  supplierRefOBit?: boolean;
+  supplierRefOUserID?: number;
+  supplierRefODate?: string;
+  supplierRefOReason?: string;
+  importersCodeOBit?: boolean;
+  importersCodeOUserID?: number;
+  importersCodeODate?: string;
+  importersCodeOReason?: string;
+  waybillNoOBit?: boolean;
+  waybillNoOUserID?: number;
+  waybillNoODate?: string;
+  waybillNoOReason?: string;
 }

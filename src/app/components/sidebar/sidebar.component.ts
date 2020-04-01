@@ -127,105 +127,114 @@ export class SidebarComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-                // Process Success
+        //Process Success
         res.userRightsList.forEach(uRight => {
-
-          if (uRight.name === 'Users' && uRight.designationID !== 3) {
+          if (uRight.name === 'Users' && +uRight.designationID !== 3) {
             this.showusers = true;
           }
-          if (uRight.name === 'Rights' && uRight.designationID !== 3) {
+          if (uRight.name === 'Rights' && +uRight.designationID !== 3) {
             this.showrights = true;
           }
-          if (uRight.name === 'Backgrounds' && uRight.designationID !== 3) {
+          if (uRight.name === 'Backgrounds' && +uRight.designationID !== 3) {
             this.showbackgrounds = true;
           }
-          if (uRight.name === 'Designations' && uRight.designationID !== 3) {
+          if (uRight.name === 'Designations' && +uRight.designationID !== 3) {
             this.showdesignation = true;
           }
-          if (uRight.name === 'BackgroundUser' && uRight.designationID !== 3) {
+          if (uRight.name === 'BackgroundUser' && +uRight.designationID !== 3) {
             this.showbackgroundUser = true;
           }
-          if (uRight.name === 'BackgroundColorUser' && uRight.designationID !== 3) {
+          if (uRight.name === 'BackgroundColorUser' && +uRight.designationID !== 3) {
             this.showbackgroundColorUser = true;
           }
-          if (uRight.name === 'ObjectHelp' && uRight.designationID !== 3) {
+          if (uRight.name === 'ObjectHelp' && +uRight.designationID !== 3) {
             this.showobjectHelp = true;
           }
-          if (uRight.name === 'HelpGlossary' && uRight.designationID !== 3) {
+          if (uRight.name === 'HelpGlossary' && +uRight.designationID !== 3) {
             this.showhelpglossary = true;
           }
-          if (uRight.name === 'UnitOfMeasures' && uRight.designationID !== 3) {
+          if (uRight.name === 'UnitOfMeasures' && +uRight.designationID !== 3) {
             this.showunitofmeasures = true;
           }
-          if (uRight.name === 'Countries' && uRight.designationID !== 3) {
+          if (uRight.name === 'Countries' && +uRight.designationID !== 3) {
             this.showcountries = true;
           }
-          if (uRight.name === 'Regions' && uRight.designationID !== 3) {
+          if (uRight.name === 'Regions' && +uRight.designationID !== 3) {
             this.showregions = true;
           }
-          if (uRight.name === 'Cities' && uRight.designationID !== 3) {
+          if (uRight.name === 'Cities' && +uRight.designationID !== 3) {
             this.showcities = true;
           }
-          if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
+
+          if (uRight.name === 'ContactTypes' && +uRight.designationID !== 3) {
             this.showcontactTypes = true;
           }
-          if (uRight.name === 'Currencies' && uRight.designationID !== 3) {
+
+          if (uRight.name === 'Currencies' && +uRight.designationID !== 3) {
             this.showcurrencies = true;
           }
-          if (uRight.name === 'Companies' && uRight.designationID !== 3) {
+
+          if (uRight.name === 'Companies' && +uRight.designationID !== 3) {
             this.showcompanies = true;
           }
-          if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
-            this.showcompanyAddInfoTypes = true;
-          }
-          if (uRight.name === 'CompanyAddInfoList' && uRight.designationID !== 3) {
-            this.showcompanyAddInfoList = true;
-          } else {
-            this.showcompanyAddInfoList = false;
-          }
-          if (uRight.name === 'AddressTypes' && uRight.designationID !== 3) {
-            this.showaddressTypes = true;
-          } else {
-            this.showaddressTypes = false;
-          }
-          if (uRight.name === 'Places' && uRight.designationID !== 3) {
-            this.showplaces = true;
-          } else {
-            this.showplaces = false;
-          }
-          if (uRight.name === 'Transactions' && uRight.designationID !== 3) {
-            this.showtransactions = true;
-          }
-          if (uRight.name === 'Attachments' && uRight.designationID !== 3) {
-            this.showattachments = true;
-          }
-          if (uRight.name === 'CompanyContactsList' && uRight.designationID !== 3) {
-            this.showcompanyContactsList = true;
-          }
-          if (uRight.name === 'Services' && uRight.designationID !== 3) {
-            this.showservices = true;
-          }
-          if (uRight.name === 'Tariffs' && uRight.designationID !== 3) {
-            this.showtariffs = true;
-          }
-          if (uRight.name === 'Items' && uRight.designationID !== 3) {
-            this.showitems = true;
-          }
-          if (uRight.name === 'ReportQueues' && uRight.designationID !== 3) {
-            this.showreportqueues = true;
-          }
-          if (uRight.name === 'ContactTypes' && uRight.designationID !== 3) {
-            this.showcontactTypes = true;
-          }
-          if (uRight.name === 'CompanyAddInfoTypes' && uRight.designationID !== 3) {
+
+          if (uRight.name === 'CompanyAddInfoTypes' && +uRight.designationID !== 3) {
             this.showcompanyAddInfoTypes = true;
           }
 
-          if (uRight.name === 'Places' && uRight.designationID !== 3) {
+          if (uRight.name === 'CompanyAddInfoList' && +uRight.designationID !== 3) {
+            this.showcompanyAddInfoList = true;
+          }
+
+          if (uRight.name === 'AddressTypes' && +uRight.designationID !== 3) {
+            this.showaddressTypes = true;
+          }
+
+          if (uRight.name === 'Places' && +uRight.designationID !== 3) {
+            this.showplaces = true;
+          }
+
+          if (uRight.name === 'Transactions' && +uRight.designationID !== 3) {
+            this.showtransactions = true;
+          }
+
+          if (uRight.name === 'Attachments' && +uRight.designationID !== 3) {
+            this.showattachments = true;
+          }
+
+          if (uRight.name === 'CompanyContactsList' && +uRight.designationID !== 3) {
+            this.showcompanyContactsList = true;
+          }
+
+          if (uRight.name === 'Services' && +uRight.designationID !== 3) {
+            this.showservices = true;
+          }
+
+          if (uRight.name === 'Tariffs' && +uRight.designationID !== 3) {
+            this.showtariffs = true;
+          }
+
+          if (uRight.name === 'Items' && +uRight.designationID !== 3) {
+            this.showitems = true;
+          }
+
+          if (uRight.name === 'ReportQueues' && +uRight.designationID !== 3) {
+            this.showreportqueues = true;
+          }
+
+          if (uRight.name === 'ContactTypes' && +uRight.designationID !== 3) {
+            this.showcontactTypes = true;
+          }
+
+          if (uRight.name === 'CompanyAddInfoTypes' && +uRight.designationID !== 3) {
+            this.showcompanyAddInfoTypes = true;
+          }
+
+          if (uRight.name === 'Places' && +uRight.designationID !== 3) {
             this.showlocations = true;
           }
 
-          if (uRight.name === 'AttchmentCapture' && uRight.designationID !== 3) {
+          if (uRight.name === 'AttchmentCapture' && +uRight.designationID !== 3) {
             this.showCapturer = true;
           }
 
@@ -235,7 +244,7 @@ export class SidebarComponent implements OnInit {
 
         });
       },
-      msg => {
+      (msg) => {
         // Process Failure
         this.showLoader = false;
         this.notify.errorsmsg(
