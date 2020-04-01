@@ -243,9 +243,38 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     }
 
     updateLine(obj: CustomWorksheetLineReq) {
-        this.captureService.customWorksheetLineAdd(obj).then(
+        const updateModel = {
+          userID: this.currentUser.userID,
+          customsWorksheetID: this.attachmentID,
+          currencyID: obj.currencyID,
+          unitOfMeasureID: obj.unitOfMeasureID,
+          cooID: obj.cooID,
+          tariffID: obj.tariffID,
+          invoiceNo: obj.invoiceNo,
+          commonFactor: obj.commonFactor,
+          hsQuantity: obj.hsQuantity,
+          foreignInv: obj.foreignInv,
+          custVal: obj.custVal,
+          duty: obj.duty,
+          prodCode: obj.prodCode,
+          supplyUnit: obj.supplyUnit
+        };
+
+        console.log('updateModel');
+        console.log(updateModel);
+
+
+        this.captureService.customWorksheetLineAdd(updateModel).then(
             (res: Outcome) => {
+
                 if (res.outcome === 'SUCCESS') {
+
+                    this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+                      duration: 3000,
+                      panelClass: ['capture-snackbar'],
+                      horizontalPosition: 'center',
+                    });
+
                     this.loadLines();
                     this.lines = -1;
                     this.focusLineData = null;
@@ -321,6 +350,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             transactionID: this.transactionID,
         }).then((res: CustomWorksheetLinesResponse) => {
             this.linesCreated = res.lines;
+            console.log('CWSlines');
+            console.log(this.linesCreated);
             this.lines = this.linesCreated.length;
             if (this.lines > -1) {
                 this.focusLineData = this.linesCreated[this.lines - 1];
@@ -335,6 +366,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     }
 
     addToQueue(obj: CustomWorksheetLine) {
+        console.log('yes');
+        console.log(obj);
         obj.customWorksheetID = this.attachmentID;
         obj.isPersistant = false;
         obj.userID = this.currentUser.userID;

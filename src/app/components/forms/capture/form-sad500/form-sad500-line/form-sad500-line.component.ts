@@ -380,6 +380,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnit: this.form.supplyUnit.value,
           replacedByLineID: -1,
           originalLineID: -1,
+          duty: this.form.duty.value,
 
           lineNoOBit: this.form.lineNo.OBit,
           lineNoOUserID: this.form.lineNo.OUserID,

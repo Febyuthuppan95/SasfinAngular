@@ -95,6 +95,6 @@
         </div>
       </div>
       <br>
-      <app-form-custom-worksheet-lines [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" [focusSADLine]="focusLineForm" [(updateLine)]="focusLineData"></app-form-custom-worksheet-lines>
+      <app-form-custom-worksheet-lines [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" (updateCWSLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateLine)]="focusLineData"></app-form-custom-worksheet-lines>
   </span>
   <app-notification></app-notification>

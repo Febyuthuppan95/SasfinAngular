@@ -53,7 +53,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     @Input() focusSADLine: boolean;
     @Input() showLines: boolean;
     @Output() submitSADLine = new EventEmitter<CustomWorksheetLine>();
-    @Output() updateSADLine = new EventEmitter<CustomWorksheetLine>();
+    @Output() updateCWSLine = new EventEmitter<CustomWorksheetLine>();
 
     shortcuts: ShortcutInput[] = [];
     @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -467,11 +467,11 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     submit() {
-        // console.log(this.updateLine);
+
         const model: CustomWorksheetLine = {
             userID: this.currentUser.userID,
             customWorksheetLineID: this.isUpdate ? this.updateLine.customWorksheetLineID : -1,
-            customWorksheetID: this.updateLine.customWorksheetID,
+            customWorksheetID: -1,
             hsQuantity: this.form.hsQuantity.value,
             foreignInv: this.form.foreignInv.value,
             custVal: this.form.custVal.value,
@@ -541,11 +541,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             supplyUnitODate: this.form.supplyUnit.ODate,
             supplyUnitOReason: this.form.supplyUnit.OReason,
         };
+
         // const valid: { errors: object[], count: number } = this.validate.model(model);
         // console.log(valid);
         // if (valid.count > 0) {
-        this.updateSADLine.emit(model);
-        // }
+        if ( this.isUpdate) {
+          this.updateCWSLine.emit(model);
+        } else {
+          this.submitSADLine.emit(model);
+      }
     }
 
     loadCountries() {
@@ -675,8 +679,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery.toUpperCase()}*`));
     }
 
-    selectedUnit(unit) {
-        this.form.unitOfMeasureID = unit.unitOfMeasureID;
+    selectedUnit(id: number) {
+        this.form.unitOfMeasureID.value = id;
     }
 
     OverridecommonFactorClick() {
