@@ -472,8 +472,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnitODate: this.form.supplyUnit.OUserID,
           supllyUnitOReason: this.form.supplyUnit.OUserID,
         };
-        console.log('sumbitRequest');
-        console.log(sumbitRequest);
 
         this.submitSADLine.emit(sumbitRequest);
 
@@ -514,6 +512,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
   filterCountries() {
     this.countriesList = this.countriesListTemp;
+    // tslint:disable-next-line: max-line-length
     this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`) || this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
   }
   selectedCountry(country: number) {
@@ -601,19 +600,23 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   filterUnit() {
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
+    // tslint:disable-next-line: max-line-length
     this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.unitOfMeasureQuery.toUpperCase()}*`));
   }
 
   filterDuties() {
     this.dutyList.duties = this.dutyListTemp;
+    // tslint:disable-next-line: max-line-length
     this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutiesQuery.toUpperCase()}*`));
   }
 
   filterAssignedDuties() {
     this.assignedDuties = this.assignedDutiesTemp;
+    // tslint:disable-next-line: max-line-length
     this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
 
     this.dutiesToBeSaved = this.dutyListTemp;
+    // tslint:disable-next-line: max-line-length
     this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
   }
 

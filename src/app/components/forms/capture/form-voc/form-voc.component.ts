@@ -315,7 +315,8 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     loadTarrifs() {
-      this.tariffService.list().then(
+      // tslint:disable-next-line: max-line-length
+      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', orderBy: '', orderByDirection: '', rowStart: 1, rowEnd: 100 }).then(
         // tslint:disable-next-line: max-line-length
         (res: { tariffList: { amount: number; description: string; duty: number; unit: string }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
