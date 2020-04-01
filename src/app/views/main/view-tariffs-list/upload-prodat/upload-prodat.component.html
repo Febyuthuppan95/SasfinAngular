@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>Upload PRODAT Tariff File</h3>
+<form mat-dialog-content (ngSubmit)="submit();">
+  <button type="button" class="btn btn-info btn-sm" (click)="prodatLabel.click();">Upload</button>&nbsp;{{fileName}}
+  <label for="prodat" #prodatLabel hidden></label>
+  <input id="prodat" (change)="fileChange($event.target.files)" type="file" hidden>
+  <br>
+  <div class="text-right">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>

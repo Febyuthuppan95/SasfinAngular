@@ -9,4 +9,5 @@ export class TariffService {
   constructor(private apiService: ApiService) {}
 
   list = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/tariffs/list`, requestModel);
+  upload = (body) => this.apiService.post(`${environment.ApiEndpoint}/tariffs/prodat`, body);
 }

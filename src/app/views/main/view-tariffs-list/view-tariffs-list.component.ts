@@ -15,6 +15,8 @@ import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffL
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TariffService } from 'src/app/services/Tariff.service';
+import { MatDialog } from '@angular/material';
+import { UploadProdatComponent } from './upload-prodat/upload-prodat.component';
 
 @Component({
   selector: 'app-view-tariffs-list',
@@ -29,7 +31,8 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private snackbarService: HelpSnackbar,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) {
     this.rowStart = 1;
     this.recordsPerPage = 15;
@@ -56,7 +59,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
   tableHeader: TableHeader = {
     title: 'Tariffs',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: false
@@ -308,6 +311,12 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
   searchEvent(query: string) {
     this.filter = query;
     this.loadTariffs(false);
+  }
+
+  add() {
+    this.dialog.open(UploadProdatComponent, {
+      width: '512px'
+    });
   }
 
   ngOnDestroy(): void {

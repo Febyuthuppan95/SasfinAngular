@@ -215,6 +215,7 @@ import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-que
 import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ErrorInterceptor } from './helpers/error.helper';
+import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -358,7 +359,8 @@ import { ErrorInterceptor } from './helpers/error.helper';
     FormVocLineComponent,
     ViewCaptureQueueOverviewComponent,
     ContextMenuCaptureQueueComponent,
-    ViewCompanyServiceClaimDataComponent
+    ViewCompanyServiceClaimDataComponent,
+    UploadProdatComponent
   ],
   imports: [
     BrowserModule,
@@ -448,7 +450,8 @@ import { ErrorInterceptor } from './helpers/error.helper';
     SplitDocumentComponent,
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
-    DutyAssignDialogComponent
+    DutyAssignDialogComponent,
+    UploadProdatComponent
   ]
 })
 export class AppModule { }
