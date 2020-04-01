@@ -319,8 +319,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
 
     selectedUnit(unit) {
-      this.form.unitOfMeasure = unit.name;
-      this.form.unitOfMeasureID = unit.unitOfMeasureID;
+      this.form.unitOfMeasure.value = unit.unitOfMeasureID;
     }
     updateHelpContext(slug: string) {
       const newContext: SnackbarModel = {
@@ -488,7 +487,6 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.totalLineValueOReason = '';
       this.disabledinvoiceNo = false;
     }
-
 
     ngOnDestroy(): void {
       this.unsubscribe$.next();
