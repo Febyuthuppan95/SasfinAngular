@@ -594,7 +594,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     filterCountries() {
         this.countriesList = this.countriesListTemp;
-        this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
+        this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !== null ? this.countryQuery.toUpperCase() : ''}*`));
     }
 
     selectedCountry(country: number) {
@@ -627,7 +627,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     filterTariff() {
         this.tariffs = this.tariffsTemp;
-        this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery.toUpperCase()}*`));
+        this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery !== null ? this.tariffQuery.toUpperCase() : ''}*`));
     }
 
     loadUnits(): void {
@@ -676,11 +676,11 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         console.log('currencyQuery');
         console.log(this.currencyQuery);
         this.currenciesList = this.currenciesListTemp;
-        this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery.toUpperCase()}*`));
+        this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery !== null? this.currencyQuery.toUpperCase() : ''}*`));
     }
     filterUnit() {
         this.unitOfMeasureList = this.unitOfMeasureListTemp;
-        this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery.toUpperCase()}*`));
+        this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery !== null ? this.unitQuery.toUpperCase() : ''}*`));
     }
 
     selectedUnit(id: number) {
