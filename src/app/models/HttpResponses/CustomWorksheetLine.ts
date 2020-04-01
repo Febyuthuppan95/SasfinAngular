@@ -89,3 +89,20 @@ export class CustomWorksheetLine {
     isPersistant?: boolean;
     userID: number;
 }
+
+export class CWSLineCaptureThatSHOULDWorks {
+  userID: number;
+  customsWorksheetID: number;
+  currencyID: number;
+  unitOfMeasureID: number;
+  cooID: number;
+  tariffID: number;
+  invoiceNo: string;
+  commonFactor: number;
+  hsQuantity: number;
+  foreignInv: number;
+  custVal: number;
+  duty: number;
+  prodCode: string;
+  supplyUnit: number;
+}

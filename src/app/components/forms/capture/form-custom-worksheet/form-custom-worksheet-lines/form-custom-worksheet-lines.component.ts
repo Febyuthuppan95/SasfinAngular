@@ -53,7 +53,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     @Input() focusSADLine: boolean;
     @Input() showLines: boolean;
     @Output() submitSADLine = new EventEmitter<CustomWorksheetLine>();
-    @Output() updateSADLine = new EventEmitter<CustomWorksheetLine>();
+    @Output() updateCWSLine = new EventEmitter<CustomWorksheetLine>();
 
     shortcuts: ShortcutInput[] = [];
     @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -299,7 +299,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
             this.form.prodCode.OBit = this.updateLine.prodCodeOBit;
             this.form.prodCode.OUserID = this.updateLine.prodCodeOUserID;
-            this.form.prodCode.ODate.ODate = this.updateLine.prodCodeODate;
+            this.form.prodCode.ODate = this.updateLine.prodCodeODate;
             this.form.prodCode.OReason = this.updateLine.prodCodeOReason;
 
             this.form.vat.OBit = this.updateLine.vatOBit;
@@ -312,7 +312,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             this.form.supplyUnit.ODate = this.updateLine.supplyUnitODate;
             this.form.supplyUnit.OReason = this.updateLine.supplyUnitOReason;
 
-            if (this.updateLine.errors.attachmentErrors.length > 0) {
+            if (this.updateLine.errors !== undefined && this.updateLine.errors.attachmentErrors.length > 0) {
                 this.updateLine.errors.attachmentErrors.forEach(error => {
                     if (error.fieldName === 'Country Of Orgin') {
                         this.form.cooID.error = error.errorDescription;
@@ -467,11 +467,11 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     submit() {
-        // console.log(this.updateLine);
+
         const model: CustomWorksheetLine = {
             userID: this.currentUser.userID,
             customWorksheetLineID: this.isUpdate ? this.updateLine.customWorksheetLineID : -1,
-            customWorksheetID: this.updateLine.customWorksheetID,
+            customWorksheetID: -1,
             hsQuantity: this.form.hsQuantity.value,
             foreignInv: this.form.foreignInv.value,
             custVal: this.form.custVal.value,
@@ -528,7 +528,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
             prodCodeOBit: this.form.prodCode.OBit,
             prodCodeOUserID: this.form.prodCode.OUserID,
-            prodCodeODate: this.form.prodCode.ODate.ODate,
+            prodCodeODate: this.form.prodCode.ODate,
             prodCodeOReason: this.form.prodCode.OReason,
 
             vatOBit: this.form.vat.OBit,
@@ -541,11 +541,15 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             supplyUnitODate: this.form.supplyUnit.ODate,
             supplyUnitOReason: this.form.supplyUnit.OReason,
         };
-        const valid: { errors: object[], count: number } = this.validate.model(model);
+
+        // const valid: { errors: object[], count: number } = this.validate.model(model);
         // console.log(valid);
-        if (valid.count > 0) {
-            this.updateSADLine.emit(model);
-        }
+        // if (valid.count > 0) {
+        if ( this.isUpdate) {
+          this.updateCWSLine.emit(model);
+        } else {
+          this.submitSADLine.emit(model);
+      }
     }
 
     loadCountries() {
@@ -572,21 +576,11 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     loadTarrifs() {
-      const request = {
-        userID: this.currentUser.userID,
-        specificTariffID: -1,
-        filter: '',
-        orderBy: '',
-        orderByDirection: '',
-        rowStart: 1,
-        rowEnd: 100
-      };
-      this.tariffService.list(request).then(
+      // tslint:disable-next-line: max-line-length
+      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', orderBy: '', orderByDirection: '', rowStart: 1, rowEnd: 100 }).then(
         // tslint:disable-next-line: max-line-length
         (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
-          console.log( 'tariffList');
-          console.log( res.tariffList);
           this.tariffsTemp = res.tariffList;
         },
         (msg) => {
@@ -594,6 +588,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         }
       );
     }
+
 
     filterCountries() {
         this.countriesList = this.countriesListTemp;
@@ -684,8 +679,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery.toUpperCase()}*`));
     }
 
-    selectedUnit(unit) {
-        this.form.unitOfMeasureID = unit.unitOfMeasureID;
+    selectedUnit(id: number) {
+        this.form.unitOfMeasureID.value = id;
     }
 
     OverridecommonFactorClick() {

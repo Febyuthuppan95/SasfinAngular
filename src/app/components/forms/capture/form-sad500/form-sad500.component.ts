@@ -478,6 +478,13 @@ dialogOpen = false;
     this.captureService.sad500LineUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+
+          this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar'],
+            horizontalPosition: 'center',
+          });
+
           this.loadLines();
           this.lines = -1;
           this.focusLineData = null;

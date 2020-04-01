@@ -30,6 +30,7 @@ export class SAD500Line {
     cooID: number;
     originalLineID?: number;
     replacedByLineID?: number;
+    duty?: number;
 
     lineNoOBit?: boolean;
     lineNoOUserID?: number;
