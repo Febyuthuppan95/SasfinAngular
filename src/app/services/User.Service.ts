@@ -156,9 +156,9 @@ export class UserService {
    */
   public changePassword(email: string, otp: string, newPass: string) {
     const requestModel = {
-      _email: email,
-      _otp: otp,
-      _newPass: newPass
+      email,
+      otp,
+      newPass
     };
 
     const promise = new Promise((resolve, reject) => {
