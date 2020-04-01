@@ -193,6 +193,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     unitOfMeasure = new FormControl();
     tariff = new FormControl();
     currency = new FormControl();
+    // tslint:disable-next-line: no-inferrable-types
     currencyQuery: string = '';
     // tslint:disable-next-line: max-line-length
     tariffs: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[];
@@ -594,6 +595,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     filterCountries() {
         this.countriesList = this.countriesListTemp;
+        // tslint:disable-next-line: max-line-length
         this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !== null ? this.countryQuery.toUpperCase() : ''}*`));
     }
 
@@ -627,6 +629,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     filterTariff() {
         this.tariffs = this.tariffsTemp;
+        // tslint:disable-next-line: max-line-length
         this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery !== null ? this.tariffQuery.toUpperCase() : ''}*`));
     }
 
@@ -676,10 +679,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         console.log('currencyQuery');
         console.log(this.currencyQuery);
         this.currenciesList = this.currenciesListTemp;
-        this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery !== null? this.currencyQuery.toUpperCase() : ''}*`));
+        // tslint:disable-next-line: max-line-length
+        this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery !== null ? this.currencyQuery.toUpperCase() : ''}*`));
     }
     filterUnit() {
         this.unitOfMeasureList = this.unitOfMeasureListTemp;
+        // tslint:disable-next-line: max-line-length
         this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery !== null ? this.unitQuery.toUpperCase() : ''}*`));
     }
 

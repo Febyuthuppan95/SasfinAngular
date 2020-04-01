@@ -17,6 +17,7 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
+// tslint:disable-next-line: max-line-length
 import { CustomWorksheetLinesResponse, CustomWorksheetLine, CWSLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 @Component({
     selector: 'app-form-custom-worksheet',
