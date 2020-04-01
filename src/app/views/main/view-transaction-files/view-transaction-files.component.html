@@ -156,13 +156,15 @@
         <hr/>
         <div class="attachment-queue" *ngIf="this.attachmentQueueDisplay !== null">
           <div class="attachment shadow-sm" *ngFor="let attach of this.attachmentQueueDisplay">
+            <ng-container *ngIf="attach">
               <span class="float-right">{{attach.status}}</span>
-              <p>{{attach.name}}</p>
-              <small>{{attach.type}}</small><br/>
-              <small>{{attach.file.name}}</small>
-              <br/>
-              <br/>
-              <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>
+                <p>{{attach.name}}</p>
+                <small>{{attach.type}}</small><br/>
+                <small>{{attach.file.name}}</small>
+                <br/>
+                <br/>
+                <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>
+              </ng-container>
           </div>
         </div>
       </div>

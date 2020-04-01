@@ -498,6 +498,9 @@ dialogOpen = false;
   }
 
   loadCapture() {
+    console.log('VOC');
+    console.log(this.attachmentType === 'VOC' ? 'VOC' : 'SAD');
+
     this.captureService.sad500Get({
       userID: this.currentUser.userID,
       specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
