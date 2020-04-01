@@ -17,7 +17,7 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
-import { CustomWorksheetLinesResponse, CustomWorksheetLine } from 'src/app/models/HttpResponses/CustomWorksheetLine';
+import { CustomWorksheetLinesResponse, CustomWorksheetLine, CWSLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 @Component({
     selector: 'app-form-custom-worksheet',
     templateUrl: './form-custom-worksheet.component.html',
@@ -388,7 +388,13 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
     saveLines() {
         if (this.lineIndex < this.lineQueue.length) {
-            this.captureService.customWorksheetLineAdd(this.lineQueue[this.lineIndex]).then(
+
+            const lineCreate: any = this.lineQueue[this.lineIndex];
+            delete lineCreate.isPersist;
+            const perfect: CWSLineCaptureThatSHOULDWorks = lineCreate;
+
+
+            this.captureService.customWorksheetLineAdd(perfect).then(
                 (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                     if (res.outcome === 'SUCCESS') {
                         this.nextLineAsync();
@@ -398,7 +404,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
                     }
                 },
                 (msg) => {
-                    console.log(`Client Error: ${JSON.stringify(msg)}`);
+                    console.log(`Client Error: ${JSON.stringify(JSON.stringify(msg))}`);
                 }
             );
         } else {
