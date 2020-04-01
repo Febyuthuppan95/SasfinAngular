@@ -214,6 +214,7 @@ import { FormVocLineComponent } from './components/forms/capture/form-voc/form-v
 import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
+import { ErrorInterceptor } from './helpers/error.helper';
 @NgModule({
   declarations: [
     AppComponent,
@@ -410,6 +411,11 @@ import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
     ChatService,
