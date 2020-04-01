@@ -18,8 +18,8 @@
   <div class="form-group" *ngIf="this.form.tariff != undefined">
         <input [(ngModel)]="this.form.tariff" type="text" [ngClass]="{'form-control-invalid': this.form.tariff.error !== null && this.form.tariff.error !== undefined}" class="form-control form-control-sm shadow-sm form-control-light" (keyup)="filterTariff()" placeholder="Tariff" aria-label="Tariff" [formControl]="myControl" [matAutocomplete]="tariffAuto">
         <mat-autocomplete #tariffAuto="matAutocomplete" >
-          <mat-option *ngFor="let tariff of tariffs" [value]="tariff.description" (onSelectionChange)="selectedTariff(tariff.description)">
-            {{tariff.description}}
+          <mat-option *ngFor="let tariff of tariffs" [value]="tariff.name" (onSelectionChange)="selectedTariff(tariff.id)">
+            {{tariff.name}}
           </mat-option>
         </mat-autocomplete>
         <p class="invalid-control-label" *ngIf="this.form.tariff.error !== null && this.form.tariff.error !== undefined">{{this.form.tariff.error}}</p>
