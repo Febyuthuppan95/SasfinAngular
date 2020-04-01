@@ -19,7 +19,7 @@ export class ThemeService {
     ) {
       const currentUser = this.userService.getCurrentUser();
 
-      this.themeColor = new BehaviorSubject<string>(this.cookieService.get('theme') !== '' ? this.cookieService.get('theme') : 'light');
+      this.themeColor = new BehaviorSubject<string>(localStorage.getItem('theme') !== '' ? localStorage.getItem('theme') : 'light');
       this.backgroundImage = currentUser == null
       ? new BehaviorSubject<string>(`${environment.ApiBackgroundImages}/background1.jpg`)
       : new BehaviorSubject<string>(currentUser.backgroundImage);
@@ -54,7 +54,7 @@ export class ThemeService {
    * setTheme
    */
   public setTheme(theme: string) {
-    this.cookieService.set('theme', theme, 1000 * 60 * 60 * 24, '/');
+    localStorage.setItem('theme', theme);
     this.themeColor.next(theme);
   }
 

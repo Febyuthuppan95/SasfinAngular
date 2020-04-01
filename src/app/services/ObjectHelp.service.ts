@@ -13,7 +13,7 @@ import {GetObjectHelpResponse} from '../models/HttpResponses/GetObjectHelpRespon
 export class ObjectHelpService {
   constructor(private httpClient: HttpClient, private cookieService: CookieService) {
 
-    const helpObjectCookie = this.cookieService.get('helpContext');
+    const helpObjectCookie = localStorage.getItem('helpContext');
 
     if (helpObjectCookie === '') {
       this.helpEnabled = true;
@@ -22,7 +22,8 @@ export class ObjectHelpService {
         help: this.helpEnabled ,
       };
 
-      this.cookieService.set('helpContext', JSON.stringify(helpContext), (1000 * 60 * 60 * 24 * 31), '/', '/');    }
+      localStorage.setItem('helpContext', JSON.stringify(helpContext));
+    }
   }
 
   helpEnabled: boolean;
@@ -81,7 +82,7 @@ export class ObjectHelpService {
       help: this.helpEnabled ,
     };
 
-    this.cookieService.set('helpContext', JSON.stringify(helpContext), (1000 * 60 * 60 * 24 * 31), '/', '/');
+    localStorage.setItem('helpContext', JSON.stringify(helpContext));
     this.setAllow(toggleState);
   }
 

@@ -19,7 +19,7 @@ export class UserService {
     private router: Router
   ) {}
 
-  private isAuth = new BehaviorSubject<boolean>(this.cookieService.check('currentUser'));
+  private isAuth = new BehaviorSubject<boolean>(localStorage.getItem('currentUser') !== null);
   public observeLogin = this.isAuth.asObservable();
 
   public setAuth = (isAuth: boolean) => {
