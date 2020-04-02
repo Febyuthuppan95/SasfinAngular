@@ -166,6 +166,14 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       OUserID: null,
       ODate: null,
       OReason: null,
+    },
+    ediStatusID: {
+      value: null,
+      error: null,
+      OBit: null,
+      OUserID: null,
+      ODate: null,
+      OReason: null,
     }
   };
 
@@ -295,6 +303,14 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         OReason: null,
       },
       boe: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      ediStatusID: {
         value: null,
         error: null,
         OBit: null,
