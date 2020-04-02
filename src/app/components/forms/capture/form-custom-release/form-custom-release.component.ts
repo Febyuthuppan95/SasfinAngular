@@ -309,6 +309,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
           const requestModel = {
             userID: this.currentUser.userID,
             customsReleaseID: this.attachmentID,
+            fileRef: this.form.fileRef.value,
+            totalCustomsValue: this.form.totalCustomsValue.value,
+            totalDuty: this.form.totalDuty.value,
             serialNo: this.form.serialNo.value,
             lrn: this.form.LRN.value,
             importersCode: this.form.importersCode.value,
@@ -316,14 +319,10 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
-            boe: this.form.boe.value,
-            fileRef: this.form.fileRef.value,
-            totalCustomsValue: this.form.totalCustomsValue.value,
-            totalDuty: this.form.totalDuty.value,
-            supplierRef: this.form.supplierRef.value,
             ediStatusID: 1,
-            isDeleted: 0,
+            supplierRef: this.form.supplierRef.value,
             attachmentStatusID: 3,
+            isDeleted: 0,
 
             serialNoOBit: this.form.serialNo.OBit,
             serialNoOUserID: this.form.serialNo.OUserID,
@@ -376,6 +375,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             mrnOReason: this.form.MRN.OReason
           };
 
+          console.log('requestModel');
+          console.log(requestModel);
+
           this.transactionService.customsReleaseUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -396,12 +398,12 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
   loadCapture() {
     const requst = {
-      crnID: this.attachmentID,
       userID: this.currentUser.userID,
+      crnID: this.attachmentID,
       transactionID: this.transactionID,
+      filter: '',
       rowStart: 1,
       rowEnd: 15,
-      filter: '',
       orderBy: '',
       orderByDirection: '',
     };
