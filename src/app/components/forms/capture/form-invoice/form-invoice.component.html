@@ -76,7 +76,7 @@
     (mouseover)="updateHelpContext('form-invoice-from-company')"
     [matAutocomplete]="fromCompanyIDAuto">
     <mat-autocomplete #fromCompanyIDAuto="matAutocomplete">
-      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit)">
+      <mat-option *ngFor="let unit of this.fromCompanyList" [value]="unit.name" (onSelectionChange)="selectedFromCompany(unit.companyID)">
         {{unit.name}}
       </mat-option>
     </mat-autocomplete>

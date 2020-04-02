@@ -173,6 +173,7 @@ loader = false;
   ngOnInit() {
     this.loadCurrency();
     this.loadCompanies();
+    this.loadCountries();
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -303,9 +304,10 @@ loader = false;
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
             invoiceNo: this.form.invoiceNo.value,
-            companyID: this.form.fromCompany.value,
-            currencyID: -1,
+            companyID: this.form.fromCompanyID.value,
+            currencyID: this.form.currencyID.value,
             attachmentStatusID: 3,
+            cooID: this.form.cooID.value,
             invoiceDate: this.form.invoiceDate.value,
             incoTermTypeID: this.form.incoType.value,
             isDeleted: 0,
@@ -315,7 +317,8 @@ loader = false;
             invoiceNoODate: this.form.invoiceNo.ODate,
             invoiceNoOReason: this.form.invoiceNo.OReason,
           };
-
+          console.log('requestModel');
+          console.log(requestModel);
 
           // if (this.form.fromCompanyID.value === null) {
           //   const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
@@ -659,6 +662,8 @@ loader = false;
     };
     this.placeService.getCountriesCall(request).then(
       (res: CountriesListResponse) => {
+        console.log('countries');
+        console.log(res);
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
