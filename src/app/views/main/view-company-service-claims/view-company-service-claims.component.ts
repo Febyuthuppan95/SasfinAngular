@@ -24,6 +24,8 @@ import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 import { R3ComponentMetadata } from '@angular/compiler';
+import { MatTableDataSource } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -187,38 +189,82 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       data: {
         code: 'IMP8008',
         importQuantity: 1,
-        exportQuantity: 30,
+        exportQuantity: 0,
         totalDuty: 340,
         totalShortfallQuantity: 10
       },
       shortfallImports: [] = [
-        {
-          itemID: 1,
-          captureJoinLineID: 1,
-          code: '999PLKJ',
-          hsQuantity: 20,
-          customsValue: 1,
-          duty: 345,
-          isImport: true,
-          status: 'string',
-          statusID: 1
-        }
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: '999PLKJ',
+        //   hsQuantity: 20,
+        //   customsValue: 1,
+        //   duty: 345,
+        //   isImport: true,
+        //   status: 'string',
+        //   statusID: 1
+        // }
       ],
       exports: [] = [
-        {
-          itemID: 1,
-          captureJoinLineID: 1,
-          code: 'ABC1001',
-          hsQuantity: 30,
-          customsValue: 1,
-          duty: 100,
-          isImport: false,
-          status: 'string',
-          statusID: 1
-        }
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: 'ABC1001',
+        //   hsQuantity: 30,
+        //   customsValue: 1,
+        //   duty: 100,
+        //   isImport: false,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ]
+    },
+    {
+      data: {
+        code: 'IMP8009',
+        importQuantity: 200,
+        exportQuantity: 0,
+        totalDuty: 5640,
+        totalShortfallQuantity: 0
+      },
+      shortfallImports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: '999PLKJ',
+        //   hsQuantity: 20,
+        //   customsValue: 1,
+        //   duty: 345,
+        //   isImport: true,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ],
+      exports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: 'ABC1001',
+        //   hsQuantity: 30,
+        //   customsValue: 1,
+        //   duty: 100,
+        //   isImport: false,
+        //   status: 'string',
+        //   statusID: 1
+        // }
       ]
     }
   ];
+  selectProducts: Product[] = [
+    {rowNum: 1, itemID: -1, captureJoinLineID: -1, code: 'ProdCode001', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
+    {rowNum: 2, itemID: -1, captureJoinLineID: -1, code: 'ProdCode002', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
+    {rowNum: 3, itemID: -1, captureJoinLineID: -1, code: 'ProdCode003', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
+    {rowNum: 4, itemID: -1, captureJoinLineID: -1, code: 'ProdCode004', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
+  ] 
+  displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
+  dataSource = new MatTableDataSource<Product>(this.selectProducts);
+  selection = new SelectionModel<Product>(true, []);
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -233,6 +279,34 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     });
 
     this.loadServiceClaims(true);
+
+  }
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+  checkboxLabel(row?: Product): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.rowNum + 1}`;
+  }
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  toggleSelectedRow(rowNum: number) {
+    //When opening or closing or canceling an accordion row
+    // have row num
+    // If closed: open
+    // If opened and !saved: deselect
+  }
+  cancelRow() {
+
+  }
+  saveRow() {
 
   }
 
@@ -493,6 +567,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   }
+
+
 }
 
 export class ImportComponent {
@@ -508,17 +584,22 @@ export class ComponentData {
   totalDuty: number;
   totalShortfallQuantity: number;
 }
+// (ComponentCode, ProductCode, QuarterID, Period, TEQuantity, QuantityExported, QuantityPer)
 export class Product {
-  itemID: number;
-  captureJoinLineID: number;
+  rowNum: number;
+  itemID?: number;
+  captureJoinLineID?: number;
   code: string;
-  hsQuantity: number;
-  customsValue: number;
-  duty: number;
+  totalExportQuantity: number;
+  quantityExported: number;
+  quantityPer: number;
+  customsValue?: number;
+  duty?: number;
   isImport: boolean;
   status?: string;
   statusID?: number;
 }
+
 
 
 
