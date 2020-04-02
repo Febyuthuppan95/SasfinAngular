@@ -52,6 +52,25 @@
         </div>
       </div>
   </div>
+  <div class="form-group" *ngIf="this.form.importersCode != undefined">
+    <input type="text"
+      [(ngModel)]="this.form.importersCode.value" [ngModelOptions]="{standalone: true}"
+      class="form-control form-control-sm shadow-sm form-control-light"
+      [ngClass]="{'form-control-invalid': this.form.importersCode.error !== null}"
+      (mouseover)="updateHelpContext('form-sad500-importersCode')"
+      placeholder="importersCode" />
+      <div *ngIf="this.form.importersCode.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.importersCode.OBit == false || this.form.importersCode.OBit == null" style="width: inherit" >
+          {{this.form.importersCode.error}}
+          <button (click)="OverrideimportersCodeClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input [(ngModel)]="this.form.importersCode.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.importersCode.OBit == true" [disabled]="disabledimportersCode" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.importersCode.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideimportersCodeExcept()" [disabled]="disabledimportersCode"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideimportersCode()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+  </div>
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
       <input [focus]="this.focusMainForm" type="text"
         [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
@@ -127,7 +146,7 @@
     </div>
     <div class="form-group">
       <label>Total Customs Value</label>
-      <input type="text"
+      <input type="number"
         [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
         class="form-control form-control-sm shadow-sm form-control-light"
         [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
