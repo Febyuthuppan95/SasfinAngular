@@ -216,6 +216,7 @@ import { ContextMenuCaptureQueueComponent } from './components/menus/context-men
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ErrorInterceptor } from './helpers/error.helper';
 import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
+import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -360,7 +361,8 @@ import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-pro
     ViewCaptureQueueOverviewComponent,
     ContextMenuCaptureQueueComponent,
     ViewCompanyServiceClaimDataComponent,
-    UploadProdatComponent
+    UploadProdatComponent,
+    PreviewReportsComponent
   ],
   imports: [
     BrowserModule,

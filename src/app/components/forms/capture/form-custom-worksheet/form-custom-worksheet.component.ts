@@ -17,6 +17,7 @@ import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
+// tslint:disable-next-line: max-line-length
 import { CustomWorksheetLinesResponse, CustomWorksheetLine, CWSLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 @Component({
     selector: 'app-form-custom-worksheet',
@@ -201,29 +202,29 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
     submit() {
         const requestModel = {
-            userID: this.currentUser.userID,
-            customworksheetID: this.attachmentID,
-            transactionID: this.transactionID,
-            fileRef: this.form.fileRef.value,
-            lrn: this.form.LRN.value,
-            isDeleted: 0,
-            attachmentStatusID: 3,
-            waybillNo: this.form.waybillNo.value,
+          userID: this.currentUser.userID,
+          customworksheetID: this.attachmentID,
+          transactionID: this.transactionID,
+          fileRef: this.form.fileRef.value,
+          lrn: this.form.LRN.value,
+          isDeleted: 0,
+          attachmentStatusID: 3,
+          waybillNo: this.form.waybillNo.value,
 
-            waybillNoOBit: this.form.waybillNo.OBit,
-            waybillNoOUserID: this.form.waybillNo.OUserID,
-            waybillNoODate: this.form.waybillNo.ODate,
-            waybillNoOReason: this.form.waybillNo.OReason,
+          waybillNoOBit: this.form.waybillNo.OBit,
+          waybillNoOUserID: this.form.waybillNo.OUserID,
+          waybillNoODate: this.form.waybillNo.ODate,
+          waybillNoOReason: this.form.waybillNo.OReason,
 
-            lrnOBit: this.form.LRN.OBit,
-            lrnOUserID: this.form.LRN.OUserID,
-            lrnODate: this.form.LRN.ODate,
-            lrnOReason: this.form.LRN.OReason,
+          lrnOBit: this.form.LRN.OBit,
+          lrnOUserID: this.form.LRN.OUserID,
+          lrnODate: this.form.LRN.ODate,
+          lrnOReason: this.form.LRN.OReason,
 
-            fileRefOBit: this.form.fileRef.OBit,
-            fileRefOUserID: this.form.fileRef.OUserID,
-            fileRefODate: this.form.fileRef.ODate,
-            fileRefOReason: this.form.fileRef.OReason,
+          fileRefOBit: this.form.fileRef.OBit,
+          fileRefOUserID: this.form.fileRef.OUserID,
+          fileRefODate: this.form.fileRef.ODate,
+          fileRefOReason: this.form.fileRef.OReason,
         };
 
         this.captureService.customWorksheetUpdate(requestModel).then(

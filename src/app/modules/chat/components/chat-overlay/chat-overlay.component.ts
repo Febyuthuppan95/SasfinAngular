@@ -3,11 +3,6 @@ import { Subscription } from 'rxjs';
 import { SelectedConversation } from './../../services/chat.service';
 import { CompanyService } from './../../../../services/Company.Service';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
-import { UserService } from 'src/app/services/user.Service';
-import { UserList } from 'src/app/models/HttpResponses/UserList';
-import { UserListResponse } from 'src/app/models/HttpResponses/UserListResponse';
-import { GetUserList } from 'src/app/models/HttpRequests/Users';
-import { environment } from 'src/environments/environment';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 
 @Component({
@@ -49,11 +44,9 @@ export class ChatOverlayComponent implements OnInit, OnDestroy {
     });
     this.chatSubscription = this.chatService.observeConversation()
     .subscribe((conversation: SelectedConversation) => {
-      console.log(conversation);
       this.selectedConversation = conversation === null ? -1 : conversation.conversationID;
       this.displaySelectedConversation = this.selectedConversation === -1 ? false : true;
       this.displayConversations = !this.displaySelectedConversation;
-      console.log(this.selectedConversation);
     });
   }
   ngOnDestroy(): void {
@@ -63,7 +56,6 @@ export class ChatOverlayComponent implements OnInit, OnDestroy {
   }
 
   dismissEvent() {
-    console.log('dismissed');
     this.dismiss.emit();
   }
   setCurrentSupervisor() {

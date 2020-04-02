@@ -238,7 +238,7 @@ export class SidebarComponent implements OnInit {
             this.showCapturer = true;
           }
 
-          if (uRight.name === 'CompanyTransactionsCaptureList') {
+          if (uRight.name === 'CompanyTransactionsCaptureList' && +uRight.designationID !== 3) {
             this.showcapturequeue = true;
           }
 

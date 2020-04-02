@@ -64,6 +64,7 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
 
 
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
+import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -130,7 +131,8 @@ const routes: Routes = [
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
           { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
-          { path: 'refreshComponent', component: ChatRedirectComponent}
+          { path: 'refreshComponent', component: ChatRedirectComponent},
+          { path: 'claim/reports', component: PreviewReportsComponent},
           // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
         ]
       },

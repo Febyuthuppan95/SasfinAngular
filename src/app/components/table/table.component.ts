@@ -55,7 +55,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       this.recordsPerPage = 15;
     }
 
-    console.log(this.recordsPerPage);
     this.loadTable();
   }
 

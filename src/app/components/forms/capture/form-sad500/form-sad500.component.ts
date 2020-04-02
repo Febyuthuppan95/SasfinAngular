@@ -78,6 +78,9 @@ private unsubscribe$ = new Subject<void>();
 currentTheme: string;
 loader: boolean;
 
+reson: string;
+referenceNo: string;
+
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
 lineState: string;
@@ -354,6 +357,50 @@ dialogOpen = false;
     })
 
   submit() {
+
+    if (this.attachmentType === 'VOC') { // Save VOC Header
+      // First Create new SAD500 record
+
+      // this.captureService.sad500Create(requestModel).then(
+      //   (res: Outcome) => {
+      //     if (res.outcome === 'SUCCESS') {
+      //       this.notify.successmsg(res.outcome, res.outcomeMessage);
+
+      //       this.companyService.setCapture({ capturestate: true });
+      //       this.router.navigateByUrl('transaction/capturerlanding');
+      //     } else {
+      //       this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+      //     }
+      //   },
+      //   (msg) => {
+      //     this.notify.errorsmsg('Failure', 'Cannot reach server');
+      //   }
+      // );
+      const VOCrequestModel = {
+        userID: this.currentUser.userID,
+        vocID: this.attachmentID,
+        referenceNo: this.referenceNo,
+        reason: this.reson,
+        mrn: this.form.MRN.value,
+        isDeleted: 0,
+
+
+      };
+      this.captureService.vocUpdate(VOCrequestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+        }
+      );
+    }
     const requestModel = {
       userID: this.currentUser.userID,
       SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -404,58 +451,25 @@ dialogOpen = false;
       totalDutyODate: this.form.totalCustomsDuty.ODate,
       totalDutyOReason: this.form.totalCustomsDuty.OReason,
     };
-    if (this.attachmentType === 'VOC') { // Save VOC Header
-      // First Create new SAD500 record
+    console.log('SAD Submit requestModel');
+    console.log(requestModel);
+    this.captureService.sad500Update(requestModel).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
 
-      // this.captureService.sad500Create(requestModel).then(
-      //   (res: Outcome) => {
-      //     if (res.outcome === 'SUCCESS') {
-      //       this.notify.successmsg(res.outcome, res.outcomeMessage);
-
-      //       this.companyService.setCapture({ capturestate: true });
-      //       this.router.navigateByUrl('transaction/capturerlanding');
-      //     } else {
-      //       this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-      //     }
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', 'Cannot reach server');
-      //   }
-      // );
-      this.captureService.vocUpdate({userID: this.currentUser.userID}).then(
-        (res: Outcome) => {
-          if (res.outcome === 'SUCCESS') {
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.companyService.setCapture({ capturestate: true });
-            this.router.navigateByUrl('transaction/capturerlanding');
-          } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-          }
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'Cannot reach server');
+          this.companyService.setCapture({ capturestate: true });
+          this.router.navigateByUrl('transaction/capturerlanding');
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
-      );
-    } else {
-      console.log('SAD Submit requestModel');
-      console.log(requestModel);
-      this.captureService.sad500Update(requestModel).then(
-        (res: Outcome) => {
-          if (res.outcome === 'SUCCESS') {
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
+      },
+      (msg) => {
+        console.log(JSON.stringify(msg));
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+      }
+    );
 
-            this.companyService.setCapture({ capturestate: true });
-            this.router.navigateByUrl('transaction/capturerlanding');
-          } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-          }
-        },
-        (msg) => {
-          console.log(JSON.stringify(msg));
-          this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
-      );
-    }
   }
 
   updateLine(obj: SAD500Line) {

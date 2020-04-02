@@ -518,7 +518,7 @@ loader = false;
           if (this.lineIndex < this.lineQueue.length) {
             const currentLine = this.lineQueue[this.lineIndex];
 
-            const requestObject = {
+            const requestObject: LineAddModel = {
               userID: this.currentUser.userID,
               invoiceID: this.attachmentID,
               prodCode: currentLine.prodCode,
@@ -526,8 +526,8 @@ loader = false;
               itemValue: currentLine.itemValue,
               unitPrice: currentLine.unitPrice,
               totalLineValue: currentLine.totalLineValue,
-              // unitOfMeasure: currentLine.unitOfMeasure,
-              unitOfMeasureID: currentLine.unitOfMeasureID
+              unitOfMeasureID: currentLine.unitOfMeasureID,
+              invoiceNo: currentLine.invoiceNo,
             };
 
             this.captureService.invoiceLineAdd(requestObject).then(
@@ -605,7 +605,6 @@ loader = false;
     return  regexTest.test(str);
     // return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
-
 
   revisitSAD500Line(item: SAD500LineCreateRequest, i?: number) {
     this.lines = i;
@@ -716,3 +715,33 @@ export class IncoTerm {
   description: string;
 }
 
+export class LineAddModel {
+  userID: number;
+  invoiceID: number;
+  invoiceNo: string;
+  itemID?: number;
+  unitOfMeasureID: number;
+  cooID?: number;
+  prodCode: string;
+  quantity: number;
+  itemValue: number;
+  unitPrice: number;
+  totalLineValue: number;
+}
+
+export class InvoiceUpdateModel {
+  userID: number;
+  invoiceID: number;
+  invoiceNo: string;
+  companyID: number;
+  currencyID: number;
+  attachmentStatusID: number;
+  invoiceDate: string;
+  cooID: number;
+  iNCOTermTypeID: number;
+  isDeleted: number;
+  invoiceNoOBit: boolean;
+  invoiceNoOUserID: number;
+  invoiceNoODate: string;
+  invoiceNoOReason: string;
+}
