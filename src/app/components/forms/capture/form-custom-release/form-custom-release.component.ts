@@ -195,6 +195,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.loadCapture();
       }
     });
+
+    this.loadEDIStatuses();
   }
 
   ngAfterViewInit(): void {
@@ -335,7 +337,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
-            ediStatusID: 1,
+            ediStatusID: this.form.ediStatusID.value,
             supplierRef: this.form.supplierRef.value,
             attachmentStatusID: 3,
             isDeleted: 0,
@@ -757,6 +759,37 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.disabledMRN = false;
   }
 
+  editStatusList: any[] = [];
+  editStatusListTemp: any[] = [];
+  ediStatusQuery: string = '';
+  ediStatusControl = new FormControl();
+
+  loadEDIStatuses() {
+    this.captureService.ediStatusList({ pageIndex: 0, pageSize: 100 }).then(
+      // tslint:disable-next-line: max-line-length
+      (res: any) => {
+        this.editStatusList = res.data;
+        this.editStatusListTemp = res.data;
+      },
+      (msg) => { }
+    );
+  }
+
+  selectedEDIStatus(id: number) {
+    this.form.ediStatusID.value = id;
+  }
+
+  filterEDI() {
+    this.editStatusList = this.editStatusListTemp;
+    // tslint:disable-next-line: max-line-length
+    this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.ediStatusQuery !== null ? this.ediStatusQuery.toUpperCase() : ''}*`));
+  }
+
+  matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
+    const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
 
   ngOnDestroy(): void {}
 }

@@ -207,5 +207,24 @@
         </div>
       </div>
     </div>
+    <div class="form-group">
+      <label for="tariff">EDI Status</label>
+        <input [(ngModel)]="this.ediStatusQuery" type="text"
+        [ngClass]="{'form-control-invalid': this.form.ediStatusID.error !== null && this.form.ediStatusID.error !== undefined}"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        (keyup)="filterEDI()"
+        placeholder="EDI Status" aria-label="EDI Status"
+        [formControl]="ediStatusControl"
+        [matAutocomplete]="ediAuto"
+        (mouseover)="updateHelpContext('form-crn-edi-status')">
+
+        <mat-autocomplete #ediAuto="matAutocomplete" >
+          <mat-option *ngFor="let item of editStatusList" [value]="item.Name"
+          (onSelectionChange)="selectedEDIStatus(item.EDIStatusID)">
+            {{item.Name}}
+          </mat-option>
+        </mat-autocomplete>
+        <p class="invalid-control-label" *ngIf="this.form.ediStatusID.error !== null && this.form.ediStatusID.error !== undefined">{{this.form.ediStatusID.error}}</p>
+    </div>
 </form>
 <app-notification></app-notification>
