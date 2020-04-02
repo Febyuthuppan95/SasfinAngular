@@ -97,7 +97,7 @@
           </div>
           <div class="form-group text-right">
             <input hidden #myInput [(ngModel)]="this.submissiondate" [ngModelOptions]="{standalone: true}">
-            <button mat-raised-button color="primary">Generate</button>
+            <button mat-raised-button color="primary" (click)="generateClaimRequest()">Generate</button>
           </div>
           <br>
           <hr/>
@@ -128,7 +128,7 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div #exports width="100%">
-                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                  <table mat-table [dataSource]="exportSource" class="mat-elevation-z8">
                     <ng-container matColumnDef="rowNum">
                       <th mat-header-cell *matHeaderCellDef> No. </th>
                       <td mat-cell *matCellDef="let element"> {{element.rowNum}} </td>
@@ -176,12 +176,11 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
                   <mat-divider style="margin:10px;"></mat-divider>
-                  <mat-card class="mat-title-card offset-md-3 col-md-6 text-center ls-text-"><label style="
-                    font-size: 14px;
-                    font-weight: 600;
-                ">Suggested Shortfall Items</label></mat-card>
+                  <mat-card class="mat-title-card offset-md-3 col-md-6 text-center ls-text-">
+                    <label style="font-size: 14px;font-weight: 600;">Suggested Shortfall Items</label>
+                  </mat-card>
                   <mat-divider style="margin:10px;"></mat-divider>
-                  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                  <table mat-table [dataSource]="shortfallSource" class="mat-elevation-z8">
                     <ng-container matColumnDef="rowNum">
                       <th mat-header-cell *matHeaderCellDef> No. </th>
                       <td mat-cell *matCellDef="let element"> {{element.rowNum}} </td>
@@ -189,7 +188,7 @@
                   
                     <!-- Name Column -->
                     <ng-container matColumnDef="prodCode">
-                      <th mat-header-cell *matHeaderCellDef> Product Code </th>
+                      <th mat-header-cell *matHeaderCellDef> Component Code </th>
                       <td mat-cell *matCellDef="let element"> {{element.code}} </td>
                     </ng-container>
                   
@@ -227,6 +226,12 @@
                 </mat-action-row>
               </mat-expansion-panel> 
             </mat-accordion>
+            <mat-paginator [length]="length"
+                        [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions"
+                        (page)="pageEvent = $event"
+                        color="primary">
+            </mat-paginator>
           </div>
       </div>
     <div class="modal-footer bg-dark">

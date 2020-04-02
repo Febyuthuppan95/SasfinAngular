@@ -11,7 +11,7 @@ import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
-import { ServicesService } from 'src/app/services/Services.Service';
+import { ServicesService, ServiceClaimReadRequest } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
 import { GetCompanyServiceClaims } from 'src/app/models/HttpRequests/GetCompanyServiceClaims';
 import { CompanyServiceClaimsListResponse, CompanyServiceClaim } from 'src/app/models/HttpResponses/CompanyServiceClaimsListResponse';
@@ -24,7 +24,7 @@ import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 import { R3ComponentMetadata } from '@angular/compiler';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
@@ -265,6 +265,24 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
   dataSource = new MatTableDataSource<Product>(this.selectProducts);
   selection = new SelectionModel<Product>(true, []);
+
+  length = 100;
+  pageSize = 5;
+  pageSizeOptions: number[] = [5];
+  pageEvent: PageEvent;
+
+  /*Claims Params*/
+  claimRequestParams: {
+    lookbackDays: number;
+    extensionsDays: number;
+    exportStartDate: Date | string;
+    exportEndDate: Date | string;
+    selectedPermits: number[];
+    claimDate: Date | string;
+  };
+ selectedCompanyServiceClaimID: number;
+
+ 
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -280,6 +298,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
     this.loadServiceClaims(true);
 
+  }
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
   }
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -308,6 +331,48 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
   saveRow() {
 
+  }
+  addServiceClaim() {
+
+  }
+
+  generateClaimRequest(serviceType: number, requestType: string, model: object) {
+    switch (serviceType)
+    {
+      case 1: //521
+      if (requestType === 'read') {
+
+      }
+
+      break;
+    }
+    
+  }
+  loadClaimRequestData($model: object) {
+    const reqP: ServiceClaimReadRequest = {
+      lookbackDays: this.claimRequestParams.lookbackDays,
+      exportStartDate: this.claimRequestParams.exportStartDate,
+      exportEndDate: this.claimRequestParams.exportEndDate,
+      claimDate: this.claimRequestParams.claimDate,
+      extensionDays: this.claimRequestParams.extensionsDays,
+      companyServiceClaimID: this.selectedCompanyServiceClaimID,
+      rowStart: this.pageEvent.pageIndex * this.pageSize + 1,
+      rowEnd: this.rowStart + this.pageSize - 1,
+      filter: '',
+      orderBy: '',
+      rowCount: -1,
+      orderByDirection: '',
+      permits: this.claimRequestParams.selectedPermits 
+    };
+    const model = {
+      requestParams: reqP,
+      requestProcedure: 'ImportsList'
+    };
+    this.ServiceService.readServiceClaim(model).then(
+      (res: object) => {
+        console.log(res);
+      }
+    );
   }
 
   loadServiceClaims(displayGrowl: boolean) {
