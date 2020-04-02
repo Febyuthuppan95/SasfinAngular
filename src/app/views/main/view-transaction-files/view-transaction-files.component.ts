@@ -380,48 +380,60 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   uploadAttachments() {
-    this.uploading = true;
-    console.log(this.attachmentQueue);
-    this.attachmentQueue.forEach((attach, index) => {
-      attach.status = 'Uploading';
-      attach.uploading = false;
-
-      this.transationService.uploadAttachment(
-        attach.name,
-        attach.file,
-        attach.type,
-        this.transactionID,
-        this.currentUser.userID,
-        this.companyName,
-        attach.sad500ID
-      ).then(
-        (res) => {
-            attach.uploading = false;
-            attach.status = 'Complete';
-            this.loadAttachments();
-            this.attachmentQueue.splice(index, 1);
-            this.attachmentQueueDisplay.splice(index, 1);
-            this.preview = null;
-            this.attachmentName = null;
-            this.selectAttachmentType.reset(-1);
-            this.attachmentQueue = [];
-            this.closeModal.nativeElement.click();
-
-        },
-        (msg) => {
-          attach.uploading = false;
-          attach.status = 'Failed to upload';
-      }
-      );
-    });
+    if (this.attachmentQueue.length !== 0) {
+      this.iterateAttachments(0);
+    }
   }
 
-  upload() {
+  iterateAttachments(index) {
+    if (index < this.attachmentQueue.length) {
+      this.uploading = true;
+      this.uploadAttach(index, this.attachmentQueue[index]);
+    } else {
+      this.uploading = false;
+      this.resetUpload();
+    }
+  }
+
+  uploadAttach(index, attach) {
+    attach.status = 'Uploading';
+    attach.uploading = false;
+
+    this.transationService.uploadAttachment(
+      attach.name,
+      attach.file,
+      attach.type,
+      this.transactionID,
+      this.currentUser.userID,
+      this.companyName,
+      attach.sad500ID
+    ).then(
+      (res) => {
+          attach.uploading = false;
+          attach.status = 'Complete';
+          // this.loadAttachments();
+          // this.attachmentQueue.splice(index, 1);
+          // this.attachmentQueueDisplay.splice(index, 1);
+          // this.preview = null;
+          // this.attachmentName = null;
+          // this.selectAttachmentType.reset(-1);
+          // this.attachmentQueue = [];
+
+          index++;
+          this.iterateAttachments(index);
+      },
+      (msg) => {
+        attach.uploading = false;
+        attach.status = 'Failed to upload';
+    }
+    );
+  }
+
+  resetUpload() {
     this.attachmentQueue = [];
     this.attachmentQueueDisplay = [];
     this.attachmentName = '';
     this.selectedTransactionType = - 1;
-    // this.currentAttachment++;
     this.disableAttachmentType = false;
     this.disableSAD500 = false;
     this.disableSAD500Lines = false;
@@ -433,6 +445,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.selectSAD500Control.reset(-1);
     this.selectSAD500LinesControl.reset(-1);
     this.inputFile.nativeElement.value = '';
+    this.currentAttachment = 0;
+    this.loadAttachments();
+  }
+
+  upload() {
+    this.resetUpload();
     this.openModal.nativeElement.click();
   }
 
@@ -543,7 +561,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       sad500ID: this.selectedSAD500,
     }).then(
       (res: SPSAD500LineList) => {
-        
+
         this.selectedSAD500Line = -1;
         this.sad500Line = res.lines;
       },
