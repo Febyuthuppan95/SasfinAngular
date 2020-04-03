@@ -347,8 +347,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.chatService.createIssue(model).then(
       (res: ChatIssueCreateReponse) => {
         if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
-          this.companyService.setCapture({ capturestate: false});
-          this.router.navigate(['transaction/capturerlanding']);
+          // this.companyService.setCapture({ capturestate: false});
+          this.submitCapture();
         } else {
           this.snackBarMat.open(res.outcome.outcomeMessage, '', {
             duration: 2000

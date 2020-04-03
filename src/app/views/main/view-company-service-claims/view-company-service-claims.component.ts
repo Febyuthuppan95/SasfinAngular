@@ -144,6 +144,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   selectedRow = -1;
   lookBackDays = [];
   extensionDays = [];
+  selectedExtensionDays = 15;
   permitsByDate = new FormControl();
   CompanyServiceClaims: CompanyServiceClaim[] = [];
   Permits: PermitByDate[] = [];
@@ -335,8 +336,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   addServiceClaim() {
 
   }
-
-  generateClaimRequest(serviceType: number, requestType: string, model: object) {
+  // 
+  generateClaimRequest(serviceType?: number, requestType?: string, model?: object) {
     switch (serviceType)
     {
       case 1: //521
