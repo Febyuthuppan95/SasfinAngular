@@ -309,7 +309,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     filterUnit() {
       this.unitOfMeasureList = this.unitOfMeasureListTemp;
-      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure}*`));
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure.value}*`));
     }
 
     matchRuleShort(str, rule) {
@@ -343,7 +343,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         (res: CountriesListResponse) => {
           this.countriesList = res.countriesList;
           this.countriesListTemp = res.countriesList;
-          this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
+          // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
         }
       );
     }
