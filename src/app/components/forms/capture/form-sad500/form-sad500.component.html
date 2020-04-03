@@ -270,6 +270,6 @@
         </div>
       </div>
       <br>
-      <app-form-sad500-line [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
+      <app-form-sad500-line [attachmentType] ="this.attachmentType" [(showLines)]="this.toggleLines" (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
   </span>
   <app-notification></app-notification>

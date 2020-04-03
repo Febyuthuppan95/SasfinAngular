@@ -22,7 +22,7 @@
     </div>
   <div class="form-group">
     <div class="form-group">
-        <input [(ngModel)]="this.form.unitOfMeasure.value" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined}"
+        <input [(ngModel)]="this.unitOfMeasureQuery" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined}"
         type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"

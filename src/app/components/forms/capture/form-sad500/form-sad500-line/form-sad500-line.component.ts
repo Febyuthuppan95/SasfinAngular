@@ -87,11 +87,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @Input() updateSAD500Line: SAD500Line;
   @Input() focusSADLine: boolean;
   @Input() showLines: boolean;
+  @Input() attachmentType: string;
   @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
   @Output() updateSADLine = new EventEmitter<SAD500Line>();
 
   shortcuts: ShortcutInput[] = [];
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+
 
   form = {
     tariff: {
@@ -194,7 +196,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     .subscribe(theme => this.currentTheme = theme);
 
     this.currentUser = this.userService.getCurrentUser();
-
+    console.log('attachmentType');
+    console.log(this.attachmentType);
     this.loadUnits();
     this.loadTarrifs();
     this.loadDuties();

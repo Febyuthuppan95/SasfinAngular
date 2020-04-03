@@ -55,6 +55,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     unitOfMeasureListTemp: UnitsOfMeasure[];
     unitOfMeasure = new FormControl();
     private unsubscribe$ = new Subject<void>();
+    unitOfMeasureQuery = '';
 
     @Input() lineData: InvoiceLine;
     @Input() updateSAD500Line: InvoiceLine;
@@ -309,7 +310,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     filterUnit() {
       this.unitOfMeasureList = this.unitOfMeasureListTemp;
-      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.form.unitOfMeasure.value}*`));
+      // tslint:disable-next-line: max-line-length
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.unitOfMeasureQuery.toUpperCase()}*`));
     }
 
     matchRuleShort(str, rule) {

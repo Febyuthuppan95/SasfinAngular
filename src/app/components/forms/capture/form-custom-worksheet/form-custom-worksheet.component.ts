@@ -392,7 +392,23 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
             const lineCreate: any = this.lineQueue[this.lineIndex];
             delete lineCreate.isPersist;
-            const perfect: CWSLineCaptureThatSHOULDWorks = lineCreate;
+            const perfect: CWSLineCaptureThatSHOULDWorks = {
+              userID: this.currentUser.userID,
+              customsWorksheetID: this.attachmentID,
+              currencyID: lineCreate.currencyID,
+              unitOfMeasureID: lineCreate.unitOfMeasureID,
+              cooID: lineCreate.cooID,
+              tariffID: lineCreate.tariffID,
+              invoiceNo: lineCreate.invoiceNo,
+              commonFactor: lineCreate.commonFactor,
+              hsQuantity: lineCreate.hsQuantity,
+              foreignInv: lineCreate.foreignInv,
+              custVal: lineCreate.custVal,
+              duty: lineCreate.duty,
+              prodCode: lineCreate.prodCode,
+              supplyUnit: lineCreate.supplyUnit,
+            };
+
 
             console.log('yes');
             console.log(perfect);
