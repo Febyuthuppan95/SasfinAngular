@@ -28,7 +28,7 @@
         (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')"
         [formControl]="unitOfMeasure" [matAutocomplete]="unitOfMeasureAuto">
         <mat-autocomplete #unitOfMeasureAuto="matAutocomplete">
-          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit)">
+          <mat-option *ngFor="let unit of unitOfMeasureList" [value]="unit.name" (onSelectionChange)="selectedUnit(unit.unitOfMeasureID)">
             {{unit.name}}, {{unit.description}}
           </mat-option>
         </mat-autocomplete>

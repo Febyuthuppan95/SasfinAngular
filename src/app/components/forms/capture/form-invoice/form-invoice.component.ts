@@ -666,7 +666,7 @@ loader = false;
         console.log(res);
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
-        this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
+        // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
       }
     );
   }
