@@ -24,6 +24,7 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { MatDialog } from '@angular/material';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { DEFAULT_TEMPLATE } from 'ngx-pagination/dist/template';
 
 @Component({
   selector: 'app-form-sad500-line',
@@ -88,8 +89,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @Input() focusSADLine: boolean;
   @Input() showLines: boolean;
   @Input() attachmentType: string;
+  @Input() attachmentID: number;
   @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
   @Output() updateSADLine = new EventEmitter<SAD500Line>();
+  @Output() submitVOCLine = new EventEmitter<SAD500LineCreateRequest>();
 
   shortcuts: ShortcutInput[] = [];
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -237,7 +240,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
-      this.isUpdate = true;
+
+      if (this.attachmentType !== 'VOC') {
+        console.log('yes update is true');
+        this.isUpdate = true;
+      }
 
       this.form.customsValue.error = this.updateSAD500Line.customsValue;
       this.form.lineNo.value = this.updateSAD500Line.lineNo;
@@ -365,7 +372,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   submit() {
-
+      console.log();
       if (this.isUpdate) {
         this.updateSADLine.emit({
           // rowNum: -1,
@@ -427,7 +434,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       } else {
         const sumbitRequest = {
           userID: this.currentUser.userID,
-          // sad500LineID: this.updateSAD500Line ? this.updateSAD500Line.sad500LineID : null,
+          sad500LineID: -1,
           sad500ID: -1,
           tariffID: this.form.tariff.value,
           cooID: this.countryID,
@@ -476,9 +483,17 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnitODate: this.form.supplyUnit.OUserID,
           supllyUnitOReason: this.form.supplyUnit.OUserID,
         };
-
-        this.submitSADLine.emit(sumbitRequest);
-
+        if (this.attachmentType === 'VOC') {
+          console.log('This is VOC');
+          sumbitRequest.sad500LineID = this.updateSAD500Line != null ? this.updateSAD500Line.sad500LineID : -1;
+          console.log(sumbitRequest);
+          this.submitVOCLine.emit(sumbitRequest);
+        } else {
+          delete sumbitRequest.sad500LineID;
+          console.log('pre lines sumbitRequest');
+          console.log(sumbitRequest);
+          this.submitSADLine.emit(sumbitRequest);
+        }
         this.dutiesToBeSaved = [];
         this.loadDuties();
       }

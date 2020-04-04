@@ -128,22 +128,25 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   }
 
   submit() {
-          const requestModel: ICIUpdate = {
+          const requestModel = {
             userID: this.currentUser.userID,
-            iciID: this.attachmentID,
+            specificICIID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             importersCode: this.form.importersCode.value,
             supplierRef: this.form.supplierRef.value,
             isDeleted: 0,
             attachmentStatusID: 3,
+
             supplierRefOBit: this.form.supplierRef.OBit,
             supplierRefOUserID: this.form.supplierRef.OUserID,
             supplierRefODate: this.form.supplierRef.ODate,
             supplierRefOReason: this.form.supplierRef.OReason,
+
             importersCodeOBit: this.form.importersCode.OBit,
             importersCodeOUserID: this.form.importersCode.OUserID,
             importersCodeODate: this.form.importersCode.ODate,
             importersCodeOReason: this.form.importersCode.OReason,
+
             waybillNoOBit: this.form.waybillNo.OBit,
             waybillNoOUserID: this.form.waybillNo.OUserID,
             waybillNoODate: this.form.waybillNo.ODate,

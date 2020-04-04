@@ -47,6 +47,7 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
   fileRefOReason: string;
   totalCustomsDutyOReason: string;
   disabledtotalCustomsDuty: boolean;
+  SADOriginalID: number;
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
@@ -234,8 +235,10 @@ dialogOpen = false;
         this.transactionID = curr.transactionID;
         this.attachmentType = curr.docType;
         if (curr.docType === 'VOC') {
+          console.log('yes it is a VOC');
           this.vocGet();
         } else {
+          console.log('it is a SAD');
           this.loadCapture();
           this.loadLines();
         }
@@ -345,7 +348,10 @@ dialogOpen = false;
   }).then(
     (res: VOCListResponse) => {
       if (res.rowCount !== 0) {
+        console.log('VOC data');
+        console.log(res);
         this.vocSAD500ID = res.vocs[0].sad500ID;
+        this.SADOriginalID = res.vocs[0].originalID;
         this.loadCapture();
         this.loadLines();
       } else {
@@ -512,6 +518,8 @@ dialogOpen = false;
   }
 
   loadCapture() {
+    console.log(this.attachmentType);
+    console.log(this.attachmentID);
     this.captureService.sad500Get({
       userID: this.currentUser.userID,
       specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -620,13 +628,20 @@ dialogOpen = false;
   }
 
   loadLines() {
-    // tslint:disable-next-line: max-line-length
-    this.captureService.sad500LineList({
+    const requestModel = {
       userID: this.currentUser.userID,
-      sad500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
-      specificSAD500LineID: -1,
       transactionID: this.transactionID,
-    }).then(
+      sad500ID: this.attachmentType === 'VOC' ? this.SADOriginalID : this.attachmentID,
+      specificSAD500LineID: -1,
+      filter:  '',
+      orderBy: '',
+      orderByDirection: '',
+      rowStart: 1,
+      rowEnd: 1000000,
+    };
+    console.log('line requestModel');
+    console.log(requestModel);
+    this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
 
@@ -659,29 +674,86 @@ dialogOpen = false;
     });
   }
 
-  saveLines() {
-    if (this.lineIndex < this.lineQueue.length) {
+  saveLines(obj?: SAD500LineCreateRequest) {
+    console.log('obj');
+    console.log(obj);
+    if (obj !== null && obj !== undefined) {
 
-      const lineCreate: any = this.lineQueue[this.lineIndex];
-      delete lineCreate.isPersist;
-      const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
+      delete obj.isPersist;
+      delete obj.rowNum;
+      delete obj.saved;
+      delete obj.failed;
+      delete obj.updateSubmit;
+
+
+      const perfect = {
+        userID: this.currentUser.userID,
+        sad500ID: this.vocSAD500ID,
+        tariffID: obj.tariffID = -1 ? null : obj.tariffID,
+        unitOfMeasureID: obj.unitOfMeasureID,
+        originalLineID: obj.sad500LineID,
+        cooID: obj.cooID,
+        replacedByLineID: -1,
+        lineNo: obj.lineNo,
+        customsValue: obj.customsValue,
+        previousDeclaration: obj.previousDeclaration,
+        quantity: obj.quantity,
+        duty: obj.duty,
+        supplyUnit: obj.supplyUnit,
+
+        lineNoOBit: obj.lineNoOBit,
+        lineNoOUserID: obj.lineNoOUserID,
+        lineNoODate: obj.lineNoODate,
+        lineNoOReason: obj.lineNoOReason,
+
+        customsValueOBit: obj.customsValueOBit,
+        customsValueOUserID: obj.customsValueOUserID,
+        customsValueODate: obj.customsValueODate,
+        customsValueOReason: obj.customsValueOReason,
+
+        quantityOBit: obj.quantityOBit,
+        quantityOUserID: obj.quantityOUserID,
+        quantityODate: obj.quantityODate,
+        quantityOReason: obj.quantityOReason,
+
+        previousDeclarationOBit: obj.previousDeclarationOBit,
+        previousDeclarationOUserID: obj.previousDeclarationOUserID,
+        previousDeclarationODate: obj.previousDeclarationODate,
+        previousDeclarationOReason: obj.previousDeclarationOReason,
+
+        dutyOBit: obj.dutyOBit,
+        dutyOUserID: obj.dutyOUserID,
+        dutyODate: obj.dutyODate,
+        dutyOReason: obj.dutyOReason,
+
+        vatOBit: obj.vatOBit,
+        vatOUserID: obj.vatOUserID,
+        vatODate: obj.vatODate,
+        vatOReason: obj.vatOReason,
+
+        supplyUnitOBit: obj.supplyUnitOBit,
+        supplyUnitOUserID: obj.supplyUnitOUserID,
+        supplyUnitODate: obj.supplyUnitODate,
+        supllyUnitOReason: obj.supllyUnitOReason,
+      };
+      console.log(perfect);
 
       this.captureService.sad500LineAdd(perfect).then(
         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
           if (res.outcome === 'SUCCESS') {
-
-            const currentLine = this.lineQueue[this.lineIndex];
+            this.snackbar.open(`Line added successfully`, '', {
+              duration: 3000,
+              panelClass: ['capture-snackbar'],
+              horizontalPosition: 'center',
+          });
+            const currentLine = obj;
 
             if (currentLine.duties) {
               if (currentLine.duties.length > 0) {
                 currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
                 this.dutyIndex = 0;
                 this.saveLineDuty(currentLine.duties[0]);
-              } else {
-                this.nextLineAsync();
               }
-            } else {
-              this.nextLineAsync();
             }
           } else {
             console.log('Line not saved');
@@ -692,7 +764,44 @@ dialogOpen = false;
         }
       );
     } else {
-      this.submit();
+      console.log('SAD500');
+      if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
+
+        const lineCreate: any = this.lineQueue[this.lineIndex];
+        delete lineCreate.isPersist;
+        console.log('lineCreate');
+        console.log(lineCreate);
+        const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
+        console.log('perfect');
+        console.log(perfect);
+        this.captureService.sad500LineAdd(perfect).then(
+          (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+            if (res.outcome === 'SUCCESS') {
+
+              const currentLine = this.lineQueue[this.lineIndex];
+
+              if (currentLine.duties) {
+                if (currentLine.duties.length > 0) {
+                  currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+                  this.dutyIndex = 0;
+                  this.saveLineDuty(currentLine.duties[0]);
+                } else {
+                  this.nextLineAsync();
+                }
+              } else {
+                this.nextLineAsync();
+              }
+            } else {
+              console.log('Line not saved');
+            }
+          },
+          (msg) => {
+            console.log(JSON.stringify(msg));
+          }
+        );
+      } else {
+        this.submit();
+      }
     }
   }
 
@@ -722,7 +831,6 @@ dialogOpen = false;
     this.lineIndex++;
 
     if (this.lineIndex < this.lineQueue.length) {
-      alert('over here');
       this.saveLines();
     } else {
       this.loader = false;
