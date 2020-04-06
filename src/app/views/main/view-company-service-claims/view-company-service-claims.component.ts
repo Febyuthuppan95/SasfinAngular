@@ -26,6 +26,8 @@ import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 import { R3ComponentMetadata } from '@angular/compiler';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
+import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
+import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -140,14 +142,24 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   ];
-
+  claimForm = {
+    exportStartDate: {
+      valid: true,
+      error: ''
+    },
+    exportEndDate: {
+      valid: true,
+      error: ''
+    },
+    
+  }
   selectedRow = -1;
   lookBackDays = [];
   extensionDays = [];
   selectedExtensionDays = 15;
   permitsByDate = new FormControl();
   CompanyServiceClaims: CompanyServiceClaim[] = [];
-  Permits: PermitByDate[] = [];
+  Permits: Permit[] = [];
   SAD500Lines: SAD500LinesByPermit[] = [];
   SAD500SelectedLines = [];
   isChecked: boolean;
@@ -298,6 +310,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     });
 
     this.loadServiceClaims(true);
+    this.loadCompanyPermits();
 
   }
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -335,6 +348,32 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
   addServiceClaim() {
 
+  }
+  loadCompanyPermits() {
+    const model: GetCompanyPermits = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      permitID: -1,
+      companyID: 1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getCompanyPermits(model).then(
+      (res: CompanyPermitsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+         this.Permits = res.permits
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
   // 
   generateClaimRequest(serviceType?: number, requestType?: string, model?: object) {
@@ -542,34 +581,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   permitselected(permitIDs) {
+    console.log(permitIDs);
     this.permitslist = permitIDs;
-
-    const model: GetSAD500LinesByPermits = {
-      userID: this.currentUser.userID,
-      filter: this.filter,
-      SAD500LineID: -1,
-      permitID: permitIDs,
-      companyID: this.companyID,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-    };
-    this.companyService.getSAD500LinesByPermits(model).then(
-      (res: SAD500LinesByPermitResponse) => {
-
-        this.SAD500Lines = res.permits;
-
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-
   }
 
   sad500selected(checked) {

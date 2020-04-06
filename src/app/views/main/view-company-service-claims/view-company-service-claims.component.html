@@ -54,19 +54,21 @@
           <div class="row"> <!--Export Data-->
             <mat-form-field class="col-md-4">
               <mat-label>Export Date Range:</mat-label>
-              <input matInput [matDatepicker]="exportStartDate">
+              <input required matInput [matDatepicker]="exportStartDate">
               <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
               <mat-datepicker #exportStartDate></mat-datepicker>
+              <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error>
             </mat-form-field>
             <mat-form-field class="col-md-4">
               <mat-label>To:</mat-label>
-              <input matInput [matDatepicker]="exportEndDate">
+              <input required matInput [matDatepicker]="exportEndDate">
               <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
               <mat-datepicker #exportEndDate></mat-datepicker>
+              <mat-hint>Warning: </mat-hint>
             </mat-form-field>
             <mat-form-field class="offset-md-1 col-md-2">
               <mat-label>Extension Days</mat-label>
-              <mat-select [(value)]="this.selectedExtensionDays">
+              <mat-select required [(value)]="this.selectedExtensionDays">
                 <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
                   {{day.value}}
                 </mat-option>
