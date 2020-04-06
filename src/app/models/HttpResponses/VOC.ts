@@ -15,4 +15,5 @@ export class VOC {
   mrn: string;
   status: string;
   sad500ID: number;
+  originalID: number;
 }
