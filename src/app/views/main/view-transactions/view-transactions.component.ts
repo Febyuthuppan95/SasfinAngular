@@ -319,14 +319,14 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
       );
   }
 
-  statusResult(status: TransactionUpdateResponse) {
+  handleStatus(event: Outcome) {
     console.log('yes it reaches here');
-    if (status.outcome === 'SUCCESS') {
+    if (event.outcome === 'SUCCESS') {
       console.log('yes');
-      this.notify.successmsg(status.outcome, status.outcomeMessage);
+      this.notify.successmsg(event.outcome, event.outcomeMessage);
     } else {
       console.log('no');
-      this.notify.errorsmsg(status.outcome, status.outcomeMessage);
+      this.notify.errorsmsg(event.outcome, event.outcomeMessage);
     }
     window.location.reload();
   }

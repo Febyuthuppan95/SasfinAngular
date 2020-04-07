@@ -27,7 +27,7 @@ export class ContextMenuTransactionComponent implements OnInit {
 
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
-  @Output() statusResults = new EventEmitter<TransactionUpdateResponse>();
+  @Output() statusResults = new EventEmitter<Outcome>();
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -76,8 +76,15 @@ export class ContextMenuTransactionComponent implements OnInit {
   readyForAssessment() {
     this.transactionService.sendForAssessment({userID: this.currentUser.userID, transactionID: this.transactionID, statusID: 5}).then(
       (res: Outcome) => {
-        console.log('this was successfull');
-        this.statusResults.emit(res);
+        console.log('yes it reaches here');
+        if (res.outcome === 'SUCCESS') {
+          console.log('yes');
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          setTimeout(() => { window.location.reload(); }, 2000 );
+        } else {
+          console.log('no');
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
       },
       (msg) => this.statusResults.emit(msg)
     );
