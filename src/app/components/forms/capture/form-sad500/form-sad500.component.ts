@@ -19,6 +19,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -81,6 +82,28 @@ loader: boolean;
 
 reson: string;
 referenceNo: string;
+
+SADForm = new FormGroup({
+  voccontrol1: new FormControl(null, [Validators.required]),
+  voccontrol2: new FormControl(null, [Validators.required]),
+  voccontrol3: new FormControl(null, [Validators.required])
+});
+
+VOCForm = new FormGroup({
+  sadcontrol1: new FormControl(null, [Validators.required]),
+  sadcontrol2: new FormControl(null, [Validators.required]),
+  sadcontrol3: new FormControl(null, [Validators.required]),
+  sadcontrol4: new FormControl(null, [Validators.required]),
+  sadcontrol5: new FormControl(null, [Validators.required]),
+  sadcontrol6: new FormControl(null, [Validators.required]),
+  sadcontrol7: new FormControl(null, [Validators.required]),
+  sadcontrol8: new FormControl(null, [Validators.required]),
+  sadcontrol9: new FormControl(null, [Validators.required]),
+  sadcontrol10: new FormControl(null, [Validators.required]),
+  sadcontrol11: new FormControl(null, [Validators.required]),
+  sadcontrol12: new FormControl(null, [Validators.required])
+});
+
 
 sad500LineQueue: SAD500LineCreateRequest[] = [];
 sad500CreatedLines: SAD500Line[] = [];
@@ -382,20 +405,96 @@ dialogOpen = false;
       //     this.notify.errorsmsg('Failure', 'Cannot reach server');
       //   }
       // );
-      const VOCrequestModel = {
+      if(this.VOCForm.valid) {
+        const VOCrequestModel = {
+          userID: this.currentUser.userID,
+          vocID: this.attachmentID,
+          referenceNo: this.referenceNo,
+          reason: this.reson,
+          mrn: this.form.MRN.value,
+          isDeleted: 0,
+
+
+        };
+        this.captureService.vocUpdate(VOCrequestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            }
+          },
+          (msg) => {
+            this.notify.errorsmsg('Failure', 'Cannot reach server');
+          }
+        );
+      } else {
+        this.snackbar.open(`Please fill in the all the fields`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+    }
+    if (this.SADForm.valid) {
+      const requestModel = {
         userID: this.currentUser.userID,
-        vocID: this.attachmentID,
-        referenceNo: this.referenceNo,
-        reason: this.reson,
+        SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
+        serialNo: this.form.serialNo.value,
+        lrn: this.form.LRN.value,
+        rebateCode: this.form.rebateCode.value,
+        totalCustomsValue: this.form.totalCustomsValue.value,
+        pcc: this.form.PCC.value,
+        cpc: this.form.CPC.value,
+        waybillNo: this.form.waybillNo.value,
+        supplierRef: this.form.supplierRef.value,
         mrn: this.form.MRN.value,
+        attachmentStatusID: 3,
+        // originalID: -1,
+        // replacedByID: -1,
+        importCode: this.form.importersCode.value,
+        fileRef: this.form.fileRef.value,
+        totalDuty: this.form.totalCustomsDuty.value,
         isDeleted: 0,
 
+        lrnOBit: this.form.LRN.OBit,
+        lrnOUserID: this.form.LRN.OUserID,
+        lrnODate: this.form.LRN.ODate,
+        lrnOReason: this.form.LRN.OReason,
 
+        mrnOBit: this.form.MRN.OBit,
+        mrnOUserID: this.form.MRN.OUserID,
+        mrnODate: this.form.MRN.ODate,
+        mrnOReason: this.form.MRN.OReason,
+
+        cpcOBit: this.form.CPC.OBit,
+        cpcOUserID: this.form.CPC.OUserID,
+        cpcODate: this.form.CPC.ODate,
+        cpcOReason: this.form.CPC.OReason,
+
+        importersCodeOBit: this.form.importersCode.OBit,
+        importersCodeOUserID: this.form.importersCode.OUserID,
+        importersCodeODate: this.form.importersCode.ODate,
+        importersCodeOReason: this.form.importersCode.OReason,
+
+        fileRefOBit: this.form.fileRef.OBit,
+        fileRefOUserID: this.form.fileRef.OUserID,
+        fileRefODate: this.form.fileRef.ODate,
+        fileRefOReason: this.form.fileRef.OReason,
+
+        totalDutyOBit: this.form.totalCustomsDuty.OBit,
+        totalDutyOUserID: this.form.totalCustomsDuty.OUserID,
+        totalDutyODate: this.form.totalCustomsDuty.ODate,
+        totalDutyOReason: this.form.totalCustomsDuty.OReason,
       };
-      this.captureService.vocUpdate(VOCrequestModel).then(
+
+      this.captureService.sad500Update(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
+
             this.companyService.setCapture({ capturestate: true });
             this.router.navigateByUrl('transaction/capturerlanding');
           } else {
@@ -403,78 +502,17 @@ dialogOpen = false;
           }
         },
         (msg) => {
+          console.log(JSON.stringify(msg));
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
+    } else {
+      this.snackbar.open(`Please fill in the all the fields`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
     }
-    const requestModel = {
-      userID: this.currentUser.userID,
-      SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
-      serialNo: this.form.serialNo.value,
-      lrn: this.form.LRN.value,
-      rebateCode: this.form.rebateCode.value,
-      totalCustomsValue: this.form.totalCustomsValue.value,
-      pcc: this.form.PCC.value,
-      cpc: this.form.CPC.value,
-      waybillNo: this.form.waybillNo.value,
-      supplierRef: this.form.supplierRef.value,
-      mrn: this.form.MRN.value,
-      attachmentStatusID: 3,
-      // originalID: -1,
-      // replacedByID: -1,
-      importCode: this.form.importersCode.value,
-      fileRef: this.form.fileRef.value,
-      totalDuty: this.form.totalCustomsDuty.value,
-      isDeleted: 0,
-
-      lrnOBit: this.form.LRN.OBit,
-      lrnOUserID: this.form.LRN.OUserID,
-      lrnODate: this.form.LRN.ODate,
-      lrnOReason: this.form.LRN.OReason,
-
-      mrnOBit: this.form.MRN.OBit,
-      mrnOUserID: this.form.MRN.OUserID,
-      mrnODate: this.form.MRN.ODate,
-      mrnOReason: this.form.MRN.OReason,
-
-      cpcOBit: this.form.CPC.OBit,
-      cpcOUserID: this.form.CPC.OUserID,
-      cpcODate: this.form.CPC.ODate,
-      cpcOReason: this.form.CPC.OReason,
-
-      importersCodeOBit: this.form.importersCode.OBit,
-      importersCodeOUserID: this.form.importersCode.OUserID,
-      importersCodeODate: this.form.importersCode.ODate,
-      importersCodeOReason: this.form.importersCode.OReason,
-
-      fileRefOBit: this.form.fileRef.OBit,
-      fileRefOUserID: this.form.fileRef.OUserID,
-      fileRefODate: this.form.fileRef.ODate,
-      fileRefOReason: this.form.fileRef.OReason,
-
-      totalDutyOBit: this.form.totalCustomsDuty.OBit,
-      totalDutyOUserID: this.form.totalCustomsDuty.OUserID,
-      totalDutyODate: this.form.totalCustomsDuty.ODate,
-      totalDutyOReason: this.form.totalCustomsDuty.OReason,
-    };
-    console.log('SAD Submit requestModel');
-    console.log(requestModel);
-    this.captureService.sad500Update(requestModel).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-
-          this.companyService.setCapture({ capturestate: true });
-          this.router.navigateByUrl('transaction/capturerlanding');
-        } else {
-          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-        }
-      },
-      (msg) => {
-        console.log(JSON.stringify(msg));
-        this.notify.errorsmsg('Failure', 'Cannot reach server');
-      }
-    );
 
   }
 

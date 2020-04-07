@@ -11,10 +11,12 @@ import { Subject } from 'rxjs';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { EventService } from 'src/app/services/event.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-form-waybill',
@@ -24,7 +26,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private userService: UserService,
-              private transactionService: TransactionService,
+              private transactionService: TransactionService, private snackbar: MatSnackBar,
               private router: Router, private captureService: CaptureService,
               private eventService: EventService, private dialog: MatDialog,
               private companyService: CompanyService) { }
@@ -34,6 +36,8 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
   shortcuts: ShortcutInput[] = [];
+
+  waybillNo = new FormControl(null, [Validators.required]);
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
@@ -90,6 +94,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   submit() {
+    if (this.waybillNo.valid) {
           const requestModel: WaybillUpdate = {
             userID: this.currentUser.userID,
             waybillID: this.attachmentID,
@@ -111,7 +116,14 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             },
               (msg) => {
               this.notify.errorsmsg('Failure', 'Cannot reach server');
-              });
+          });
+      } else {
+        this.snackbar.open(`Please fill in the Waybill number`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
   }
 
   loadData() {

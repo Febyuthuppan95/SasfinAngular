@@ -11,11 +11,12 @@ import { Subject } from 'rxjs';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { EventService } from 'src/app/services/event.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -26,7 +27,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService,
-              private eventService: EventService, private dialog: MatDialog,
+              private eventService: EventService, private dialog: MatDialog, private snackbar: MatSnackBar,
               private snackbarService: HelpSnackbar, private companyService: CompanyService) { }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -44,6 +45,12 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   disabledIC: boolean;
   disabledWay: boolean;
   disabledSupp: boolean;
+
+  ICIForm = new FormGroup({
+    control1: new FormControl(null, [Validators.required]),
+    control2: new FormControl(null, [Validators.required]),
+    control3: new FormControl(null, [Validators.required])
+    });
 
   currentTheme: string;
     form = {
@@ -128,48 +135,56 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   }
 
   submit() {
-          const requestModel = {
-            userID: this.currentUser.userID,
-            specificICIID: this.attachmentID,
-            waybillNo: this.form.waybillNo.value,
-            importersCode: this.form.importersCode.value,
-            supplierRef: this.form.supplierRef.value,
-            isDeleted: 0,
-            attachmentStatusID: 3,
+    if (this.ICIForm.valid) {
+      const requestModel = {
+        userID: this.currentUser.userID,
+        specificICIID: this.attachmentID,
+        waybillNo: this.form.waybillNo.value,
+        importersCode: this.form.importersCode.value,
+        supplierRef: this.form.supplierRef.value,
+        isDeleted: 0,
+        attachmentStatusID: 3,
 
-            supplierRefOBit: this.form.supplierRef.OBit,
-            supplierRefOUserID: this.form.supplierRef.OUserID,
-            supplierRefODate: this.form.supplierRef.ODate,
-            supplierRefOReason: this.form.supplierRef.OReason,
+        supplierRefOBit: this.form.supplierRef.OBit,
+        supplierRefOUserID: this.form.supplierRef.OUserID,
+        supplierRefODate: this.form.supplierRef.ODate,
+        supplierRefOReason: this.form.supplierRef.OReason,
 
-            importersCodeOBit: this.form.importersCode.OBit,
-            importersCodeOUserID: this.form.importersCode.OUserID,
-            importersCodeODate: this.form.importersCode.ODate,
-            importersCodeOReason: this.form.importersCode.OReason,
+        importersCodeOBit: this.form.importersCode.OBit,
+        importersCodeOUserID: this.form.importersCode.OUserID,
+        importersCodeODate: this.form.importersCode.ODate,
+        importersCodeOReason: this.form.importersCode.OReason,
 
-            waybillNoOBit: this.form.waybillNo.OBit,
-            waybillNoOUserID: this.form.waybillNo.OUserID,
-            waybillNoODate: this.form.waybillNo.ODate,
-            waybillNoOReason: this.form.waybillNo.OReason,
-          };
+        waybillNoOBit: this.form.waybillNo.OBit,
+        waybillNoOUserID: this.form.waybillNo.OUserID,
+        waybillNoODate: this.form.waybillNo.ODate,
+        waybillNoOReason: this.form.waybillNo.OReason,
+      };
 
-          this.captureService.iciUpdate(requestModel).then(
-            (res: Outcome) => {
-              if (res.outcome === 'SUCCESS') {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
-
-              this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
-              } else {
-              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-              }
-            },
-              (msg) => {
-                console.log(JSON.stringify(msg));
-                this.notify.errorsmsg('Failure', 'Cannot reach server');
-              }
-            );
+      this.captureService.iciUpdate(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.companyService.setCapture({ capturestate: true });
+          this.router.navigateByUrl('transaction/capturerlanding');
+        } else {
+        this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
+      },
+        (msg) => {
+          console.log(JSON.stringify(msg));
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+        }
+      );
+    } else {
+      this.snackbar.open(`Please fill in the all the fields`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    }
+
+  }
 
   loadICI() {
     const requestModel = {

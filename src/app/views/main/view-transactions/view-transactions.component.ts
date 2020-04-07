@@ -17,6 +17,7 @@ import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/H
 import { FormGroup, FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TransactionUpdateResponse } from 'src/app/models/HttpResponses/TransactionUpdateResponse';
 
 @Component({
   selector: 'app-view-transactions',
@@ -318,6 +319,18 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
       );
   }
 
+  statusResult(status: TransactionUpdateResponse) {
+    console.log('yes it reaches here');
+    if (status.outcome === 'SUCCESS') {
+      console.log('yes');
+      this.notify.successmsg(status.outcome, status.outcomeMessage);
+    } else {
+      console.log('no');
+      this.notify.errorsmsg(status.outcome, status.outcomeMessage);
+    }
+    window.location.reload();
+  }
+
   updateSort(orderBy: string) {
     if (this.orderBy === orderBy) {
       if (this.orderDirection === 'ASC') {
@@ -458,3 +471,4 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 }
+

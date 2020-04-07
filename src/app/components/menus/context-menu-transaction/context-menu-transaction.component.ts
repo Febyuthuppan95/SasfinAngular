@@ -1,6 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { UserService } from 'src/app/services/user.Service';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { TransactionUpdateResponse } from 'src/app/models/HttpResponses/TransactionUpdateResponse';
 
 @Component({
   selector: 'app-context-menu-transaction',
@@ -9,7 +14,10 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 })
 export class ContextMenuTransactionComponent implements OnInit {
 
-  constructor(private router: Router, private transactionService: TransactionService) { }
+  // tslint:disable-next-line: max-line-length
+  constructor(private router: Router, private userService: UserService, private transactionService: TransactionService, private companyService: CompanyService) { }
+
+  currentUser = this.userService.getCurrentUser();
 
   @Input() x: number;
   @Input() y: number;
@@ -17,7 +25,12 @@ export class ContextMenuTransactionComponent implements OnInit {
   @Input() transactionName: string;
   @Input() currentTheme: string;
 
+
   @Output() viewTransactionsEmit = new EventEmitter<string>();
+  @Output() statusResults = new EventEmitter<TransactionUpdateResponse>();
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   ngOnInit() {
   }
@@ -57,7 +70,17 @@ export class ContextMenuTransactionComponent implements OnInit {
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '', transactionName: this.transactionName });
     this.router.navigate(['transaction', 'checklist', this.transactionID]);
 
-    //transaction/checklist
+    // transaction/checklist
+  }
+
+  readyForAssessment() {
+    this.transactionService.sendForAssessment({userID: this.currentUser.userID, transactionID: this.transactionID, statusID: 5}).then(
+      (res: Outcome) => {
+        console.log('this was successfull');
+        this.statusResults.emit(res);
+      },
+      (msg) => this.statusResults.emit(msg)
+    );
   }
 
 }

@@ -217,6 +217,7 @@ import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-
 import { ErrorInterceptor } from './helpers/error.helper';
 import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -368,7 +369,6 @@ import { PreviewReportsComponent } from './views/reports/preview-reports/preview
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
     NgxCurrencyModule,
@@ -386,6 +386,7 @@ import { PreviewReportsComponent } from './views/reports/preview-reports/preview
     MaterialModule,
     AngularDraggableModule,
     KeyboardShortcutsModule,
+    FormsModule,
   ],
   providers: [
     CookieService,
