@@ -15,14 +15,14 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 import { ValidateService } from 'src/app/services/Validation.Service';
 import { TariffService } from 'src/app/services/Tariff.service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { DEFAULT_TEMPLATE } from 'ngx-pagination/dist/template';
 
@@ -44,7 +44,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
               private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService) { }
+              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService,
+              private snackbar: MatSnackBar) { }
 
   currentUser: User;
 
@@ -81,6 +82,18 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   focusDutiesQuery = false;
   focusAssignedQuery = false;
 
+  LinesForm = new FormGroup({
+    control1: new FormControl(null, [Validators.required]),
+    control2: new FormControl(null, [Validators.required]),
+    control3: new FormControl(null, [Validators.required]),
+    control4: new FormControl(null, [Validators.required]),
+    control5: new FormControl(null, [Validators.required]),
+    control6: new FormControl(null, [Validators.required]),
+    control7: new FormControl(null, [Validators.required]),
+    control8: new FormControl(null, [Validators.required]),
+    control9: new FormControl(null)
+  });
+
   @ViewChild('dutiesAssignedEl', { static: false })
   dutiesAssignedEl: ElementRef;
   private notify: NotificationComponent;
@@ -93,6 +106,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   @Output() submitSADLine = new EventEmitter<SAD500LineCreateRequest>();
   @Output() updateSADLine = new EventEmitter<SAD500Line>();
   @Output() submitVOCLine = new EventEmitter<SAD500LineCreateRequest>();
+  @Output() linesValid = new EventEmitter<boolean>();
 
   shortcuts: ShortcutInput[] = [];
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -372,7 +386,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   submit() {
-      console.log();
+    if (this.LinesForm.valid) {
       if (this.isUpdate) {
         this.updateSADLine.emit({
           // rowNum: -1,
@@ -498,6 +512,14 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         this.loadDuties();
       }
 
+    } else {
+      this.snackbar.open(`Please fill in the all lines data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    }
+    this.linesValid.emit(this.LinesForm.valid);
   }
 
   loadTarrifs() {

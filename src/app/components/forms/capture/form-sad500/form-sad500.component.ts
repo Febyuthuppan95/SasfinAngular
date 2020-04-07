@@ -49,6 +49,8 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
   totalCustomsDutyOReason: string;
   disabledtotalCustomsDuty: boolean;
   SADOriginalID: number;
+  LinesValid = false;
+  vocStatus = false;
 
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
@@ -83,13 +85,13 @@ loader: boolean;
 reson: string;
 referenceNo: string;
 
-SADForm = new FormGroup({
-  voccontrol1: new FormControl(null, [Validators.required]),
-  voccontrol2: new FormControl(null, [Validators.required]),
-  voccontrol3: new FormControl(null, [Validators.required])
-});
 
-VOCForm = new FormGroup({
+voccontrol1 = new FormControl(null, [Validators.required]);
+voccontrol2 = new FormControl(null, [Validators.required]);
+voccontrol3 = new FormControl(null, [Validators.required]);
+
+
+SADForm = new FormGroup({
   sadcontrol1: new FormControl(null, [Validators.required]),
   sadcontrol2: new FormControl(null, [Validators.required]),
   sadcontrol3: new FormControl(null, [Validators.required]),
@@ -405,7 +407,10 @@ dialogOpen = false;
       //     this.notify.errorsmsg('Failure', 'Cannot reach server');
       //   }
       // );
-      if(this.VOCForm.valid) {
+      if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
+
+
+
         const VOCrequestModel = {
           userID: this.currentUser.userID,
           vocID: this.attachmentID,
@@ -431,14 +436,14 @@ dialogOpen = false;
           }
         );
       } else {
-        this.snackbar.open(`Please fill in the all the fields`, '', {
+        this.snackbar.open(`Please fill in the all VOC header data`, '', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
           horizontalPosition: 'center',
         });
       }
     }
-    if (this.SADForm.valid) {
+    if (this.SADForm.valid && this.LinesValid && this.vocStatus) {
       const requestModel = {
         userID: this.currentUser.userID,
         SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -507,12 +512,16 @@ dialogOpen = false;
         }
       );
     } else {
-      this.snackbar.open(`Please fill in the all the fields`, '', {
-        duration: 3000,
-        panelClass: ['capture-snackbar-error'],
-        horizontalPosition: 'center',
-      });
+      if (this.LinesValid && !this.SADForm.valid) {
+        this.snackbar.open(`Please fill in the all header data`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
     }
+
+    this.vocStatus = false;
 
   }
 
@@ -677,12 +686,13 @@ dialogOpen = false;
       rowStart: 1,
       rowEnd: 1000000,
     };
-    console.log('line requestModel');
-    console.log(requestModel);
+
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
         this.sad500CreatedLines = res.lines;
-
+        if (this.sad500CreatedLines.length > 0) {
+          this.LinesValid = true;
+        }
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
@@ -713,121 +723,88 @@ dialogOpen = false;
   }
 
   saveLines(obj?: SAD500LineCreateRequest) {
-    console.log('obj');
-    console.log(obj);
-    if (obj !== null && obj !== undefined) {
+    console.log('lines and heraders');
+    console.log(this.LinesValid + ', ' + this.SADForm.valid);
+    if (this.LinesValid) {
+      console.log('obj');
+      console.log(obj);
+      if (obj !== null && obj !== undefined) {
 
-      delete obj.isPersist;
-      delete obj.rowNum;
-      delete obj.saved;
-      delete obj.failed;
-      delete obj.updateSubmit;
+        delete obj.isPersist;
+        delete obj.rowNum;
+        delete obj.saved;
+        delete obj.failed;
+        delete obj.updateSubmit;
 
 
-      const perfect = {
-        userID: this.currentUser.userID,
-        sad500ID: this.vocSAD500ID,
-        tariffID: obj.tariffID = -1 ? null : obj.tariffID,
-        unitOfMeasureID: obj.unitOfMeasureID,
-        originalLineID: obj.sad500LineID,
-        cooID: obj.cooID,
-        replacedByLineID: -1,
-        lineNo: obj.lineNo,
-        customsValue: obj.customsValue,
-        previousDeclaration: obj.previousDeclaration,
-        quantity: obj.quantity,
-        duty: obj.duty,
-        supplyUnit: obj.supplyUnit,
+        const perfect = {
+          userID: this.currentUser.userID,
+          sad500ID: this.vocSAD500ID,
+          tariffID: obj.tariffID = -1 ? null : obj.tariffID,
+          unitOfMeasureID: obj.unitOfMeasureID,
+          originalLineID: obj.sad500LineID,
+          cooID: obj.cooID,
+          replacedByLineID: -1,
+          lineNo: obj.lineNo,
+          customsValue: obj.customsValue,
+          previousDeclaration: obj.previousDeclaration,
+          quantity: obj.quantity,
+          duty: obj.duty,
+          supplyUnit: obj.supplyUnit,
 
-        lineNoOBit: obj.lineNoOBit,
-        lineNoOUserID: obj.lineNoOUserID,
-        lineNoODate: obj.lineNoODate,
-        lineNoOReason: obj.lineNoOReason,
+          lineNoOBit: obj.lineNoOBit,
+          lineNoOUserID: obj.lineNoOUserID,
+          lineNoODate: obj.lineNoODate,
+          lineNoOReason: obj.lineNoOReason,
 
-        customsValueOBit: obj.customsValueOBit,
-        customsValueOUserID: obj.customsValueOUserID,
-        customsValueODate: obj.customsValueODate,
-        customsValueOReason: obj.customsValueOReason,
+          customsValueOBit: obj.customsValueOBit,
+          customsValueOUserID: obj.customsValueOUserID,
+          customsValueODate: obj.customsValueODate,
+          customsValueOReason: obj.customsValueOReason,
 
-        quantityOBit: obj.quantityOBit,
-        quantityOUserID: obj.quantityOUserID,
-        quantityODate: obj.quantityODate,
-        quantityOReason: obj.quantityOReason,
+          quantityOBit: obj.quantityOBit,
+          quantityOUserID: obj.quantityOUserID,
+          quantityODate: obj.quantityODate,
+          quantityOReason: obj.quantityOReason,
 
-        previousDeclarationOBit: obj.previousDeclarationOBit,
-        previousDeclarationOUserID: obj.previousDeclarationOUserID,
-        previousDeclarationODate: obj.previousDeclarationODate,
-        previousDeclarationOReason: obj.previousDeclarationOReason,
+          previousDeclarationOBit: obj.previousDeclarationOBit,
+          previousDeclarationOUserID: obj.previousDeclarationOUserID,
+          previousDeclarationODate: obj.previousDeclarationODate,
+          previousDeclarationOReason: obj.previousDeclarationOReason,
 
-        dutyOBit: obj.dutyOBit,
-        dutyOUserID: obj.dutyOUserID,
-        dutyODate: obj.dutyODate,
-        dutyOReason: obj.dutyOReason,
+          dutyOBit: obj.dutyOBit,
+          dutyOUserID: obj.dutyOUserID,
+          dutyODate: obj.dutyODate,
+          dutyOReason: obj.dutyOReason,
 
-        vatOBit: obj.vatOBit,
-        vatOUserID: obj.vatOUserID,
-        vatODate: obj.vatODate,
-        vatOReason: obj.vatOReason,
+          vatOBit: obj.vatOBit,
+          vatOUserID: obj.vatOUserID,
+          vatODate: obj.vatODate,
+          vatOReason: obj.vatOReason,
 
-        supplyUnitOBit: obj.supplyUnitOBit,
-        supplyUnitOUserID: obj.supplyUnitOUserID,
-        supplyUnitODate: obj.supplyUnitODate,
-        supllyUnitOReason: obj.supllyUnitOReason,
-      };
-      console.log(perfect);
-
-      this.captureService.sad500LineAdd(perfect).then(
-        (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-          if (res.outcome === 'SUCCESS') {
-            this.snackbar.open(`Line added successfully`, '', {
-              duration: 3000,
-              panelClass: ['capture-snackbar'],
-              horizontalPosition: 'center',
-          });
-            const currentLine = obj;
-
-            if (currentLine.duties) {
-              if (currentLine.duties.length > 0) {
-                currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-                this.dutyIndex = 0;
-                this.saveLineDuty(currentLine.duties[0]);
-              }
-            }
-          } else {
-            console.log('Line not saved');
-          }
-        },
-        (msg) => {
-          console.log(JSON.stringify(msg));
-        }
-      );
-    } else {
-      console.log('SAD500');
-      if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
-
-        const lineCreate: any = this.lineQueue[this.lineIndex];
-        delete lineCreate.isPersist;
-        console.log('lineCreate');
-        console.log(lineCreate);
-        const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-        console.log('perfect');
+          supplyUnitOBit: obj.supplyUnitOBit,
+          supplyUnitOUserID: obj.supplyUnitOUserID,
+          supplyUnitODate: obj.supplyUnitODate,
+          supllyUnitOReason: obj.supllyUnitOReason,
+        };
         console.log(perfect);
+
         this.captureService.sad500LineAdd(perfect).then(
           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
             if (res.outcome === 'SUCCESS') {
-
-              const currentLine = this.lineQueue[this.lineIndex];
+              this.snackbar.open(`Line added successfully`, '', {
+                duration: 3000,
+                panelClass: ['capture-snackbar'],
+                horizontalPosition: 'center',
+            });
+              const currentLine = obj;
 
               if (currentLine.duties) {
                 if (currentLine.duties.length > 0) {
                   currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
                   this.dutyIndex = 0;
                   this.saveLineDuty(currentLine.duties[0]);
-                } else {
-                  this.nextLineAsync();
                 }
-              } else {
-                this.nextLineAsync();
               }
             } else {
               console.log('Line not saved');
@@ -838,11 +815,63 @@ dialogOpen = false;
           }
         );
       } else {
-        this.submit();
+        console.log('SAD500');
+        if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
+
+          const lineCreate: any = this.lineQueue[this.lineIndex];
+          delete lineCreate.isPersist;
+          console.log('lineCreate');
+          console.log(lineCreate);
+          const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
+          console.log('perfect');
+          console.log(perfect);
+          this.captureService.sad500LineAdd(perfect).then(
+            (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+              if (res.outcome === 'SUCCESS') {
+
+                const currentLine = this.lineQueue[this.lineIndex];
+
+                if (currentLine.duties) {
+                  if (currentLine.duties.length > 0) {
+                    currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
+                    this.dutyIndex = 0;
+                    this.saveLineDuty(currentLine.duties[0]);
+                  } else {
+                    this.nextLineAsync();
+                  }
+                } else {
+                  this.nextLineAsync();
+                }
+              } else {
+                console.log('Line not saved');
+              }
+            },
+            (msg) => {
+              console.log(JSON.stringify(msg));
+            }
+          );
+        } else {
+          this.submit();
+        }
       }
+    } else if (!this.LinesValid && this.SADForm.valid) {
+      this.snackbar.open(`Please fill in the all line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    } else if (!this.LinesValid && !this.SADForm.valid) {
+      this.snackbar.open(`Please fill in the all header and line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
     }
   }
 
+  CathLinesValid(lineststus: boolean) {
+    this.LinesValid = lineststus;
+  }
 
   saveLineDuty(line: Duty) {
     this.captureService.sad500LineDutyAdd({

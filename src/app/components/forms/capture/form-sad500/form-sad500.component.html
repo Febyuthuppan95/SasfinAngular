@@ -18,23 +18,23 @@
 </div>
 <span [ngClass]="{'hide': this.toggleLines}">
   <br>
-<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+<form (submit)="submit(); $event.preventDefault()" [formGroup]="SADForm" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
   <!--  -->
   <div class="form-group" *ngIf="this.attachmentType == 'VOC'">
-    <input type="text" formControlName="voccontrol1"
+    <input type="text" [formControl]="voccontrol1"
       [(ngModel)]="this.Reason"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Reason for VOC" />
   </div>
   <div class="form-group" *ngIf="this.attachmentType == 'VOC'">
-    <input type="text" formControlName="voccontrol2"
+    <input type="text" [formControl]="voccontrol2"
       [(ngModel)]="this.referenceNo"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Reference Number" />
   </div>
   <!--  -->
   <div class="form-group" *ngIf="this.form.MRN != undefined">
-    <input type="text" formControlName="sadcontrol1" formControlName="voccontrol3"
+    <input type="text" formControlName="sadcontrol1" [formControl]="voccontrol3"
       [(ngModel)]="this.form.MRN.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
@@ -274,6 +274,6 @@
         </div>
       </div>
       <br>
-      <app-form-sad500-line  [attachmentType] ="this.attachmentType" [(showLines)]="this.toggleLines" (submitVOCLine)="saveLines($event)" (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-sad500-line>
+      <app-form-sad500-line  [attachmentType] ="this.attachmentType" [(showLines)]="this.toggleLines" (submitVOCLine)="saveLines($event)" (submitSADLine)="addToQueue($event)" (updateSADLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData" (linesValid) ="CathLinesValid($event)"></app-form-sad500-line>
   </span>
   <app-notification></app-notification>
