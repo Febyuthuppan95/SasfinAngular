@@ -44,10 +44,11 @@ export class InvoiceLine {
   prodCode: string;
   quantity: number;
   itemValue: number;
+  cooID?: number;
+  itemID?: number;
   userID?: number;
   isPersist?: boolean;
   unitOfMeasureID: number;
-  // unitOfMeasure: string;
   totalLineValue: number;
   unitPrice: number;
   guid?: string;

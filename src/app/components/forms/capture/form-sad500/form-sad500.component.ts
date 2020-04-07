@@ -417,6 +417,7 @@ dialogOpen = false;
           referenceNo: this.referenceNo,
           reason: this.reson,
           mrn: this.form.MRN.value,
+          attachmentStatusID: 3,
           isDeleted: 0,
 
 
@@ -723,11 +724,9 @@ dialogOpen = false;
   }
 
   saveLines(obj?: SAD500LineCreateRequest) {
-    console.log('lines and heraders');
-    console.log(this.LinesValid + ', ' + this.SADForm.valid);
+
     if (this.LinesValid) {
-      console.log('obj');
-      console.log(obj);
+
       if (obj !== null && obj !== undefined) {
 
         delete obj.isPersist;
@@ -869,8 +868,8 @@ dialogOpen = false;
     }
   }
 
-  CathLinesValid(lineststus: boolean) {
-    this.LinesValid = lineststus;
+  CathLinesValid(linestatus: boolean) {
+    this.LinesValid = linestatus;
   }
 
   saveLineDuty(line: Duty) {

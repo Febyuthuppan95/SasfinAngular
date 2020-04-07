@@ -1,6 +1,6 @@
 import { PlaceService } from './../../../../services/Place.Service';
 import { ListCountriesRequest, CountriesListResponse, CountryItem } from './../../../../models/HttpRequests/Locations';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Outcome } from './../../../../models/HttpResponses/DoctypeResponse';
 import { HelpSnackbar } from './../../../../services/HelpSnackbar.service';
 import { SnackbarModel } from './../../../../models/StateModels/SnackbarModel';
@@ -24,6 +24,7 @@ import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
 import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 
 @Component({
   selector: 'app-form-invoice',
@@ -31,8 +32,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
   styleUrls: ['./form-invoice.component.scss']
 })
 export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
-  disabledinvoiceNo: boolean;
-  invoiceNoOReason: string;
+
 
 constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
@@ -53,7 +53,18 @@ invoiceLinesTooltip: MatTooltip;
 @ViewChild('invoiceTooltip', {static : false})
 invoiceTooltip: MatTooltip;
 
+InvForm = new FormGroup({
+  control1: new FormControl(null, [Validators.required]),
+  control2: new FormControl(null, [Validators.required]),
+  control3: new FormControl(null, [Validators.required]),
+  control4: new FormControl(null, [Validators.required]),
+  control5: new FormControl(null, [Validators.required]),
+  control6: new FormControl(null, [Validators.required])
+});
+
+
 currentUser = this.userService.getCurrentUser();
+itemQuery = '';
 attachmentID: number;
 linePreview = -1;
 lines = -1;
@@ -61,7 +72,9 @@ focusMainForm: boolean;
 focusLineForm: boolean;
 focusLineData: InvoiceLine = null;
 private unsubscribe$ = new Subject<void>();
-
+disabledinvoiceNo: boolean;
+invoiceNoOReason: string;
+LinesValid = false;
 currentTheme: string;
 currencies: Currency[] = [];
 currenciesTemp: Currency[] = [];
@@ -174,6 +187,7 @@ loader = false;
     this.loadCurrency();
     this.loadCompanies();
     this.loadCountries();
+    this.loadIncoTypes();
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -193,8 +207,9 @@ loader = false;
         this.loadLines();
       }
     });
-    this.loadIncoTypes();
+
   }
+
   loadIncoTypes() {
     // Load
     const model = {
@@ -202,10 +217,11 @@ loader = false;
     };
     this.captureService.incoTermTypeList(model).then(
       (res: IncoTermTypesReponse) => {
-        console.log(res);
-        if (res.termTypes.length > 0) {
-          this.incoTermsList = res.termTypes;
-        }
+        this.incoTermsList = res.termTypes;
+        this.incoTermsListTemp = this.incoTermsList;
+
+
+
       },
       (msg) => {
         // Snackbar
@@ -300,6 +316,9 @@ loader = false;
   }
 
   submit() {
+    console.log('Isvvalid');
+    console.log(this.InvForm.valid);
+    if (this.InvForm.valid && this.LinesValid) {
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
@@ -317,22 +336,6 @@ loader = false;
             invoiceNoODate: this.form.invoiceNo.ODate,
             invoiceNoOReason: this.form.invoiceNo.OReason,
           };
-          console.log('requestModel');
-          console.log(requestModel);
-
-          // if (this.form.fromCompanyID.value === null) {
-          //   const fromCompany = this.fromCompanyList.find(x => x.name === this.fromCompanyQuery);
-          //   if (fromCompany !== undefined) {
-          //     this.form.fromCompanyID.value = fromCompany.companyID;
-          //   }
-          // }
-
-          // if (this.form.toCompanyID.value === null) {
-          //   const toCompany = this.toCompanyList.find(x => x.name === this.toCompanyQuery);
-          //   if (toCompany !== undefined) {
-          //     this.form.toCompanyID.value = toCompany.companyID;
-          //   }
-          // }
 
           this.captureService.invoiceUpdate(requestModel).then(
             (res: Outcome) => {
@@ -350,6 +353,13 @@ loader = false;
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
+      } else {
+        this.snackbar.open(`Please fill in the all header data`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
   }
 
   updateLine(obj: InvoiceLine) {
@@ -460,6 +470,11 @@ loader = false;
     }).then(
       (res: InvoiceLinesResponse) => {
         this.sad500CreatedLines = res.lines;
+
+        if (this.sad500CreatedLines.length > 0) {
+          this.LinesValid = true;
+        }
+
         if (this.lines > -1) {
           this.focusLineData = this.sad500CreatedLines[this.lines];
         }
@@ -469,34 +484,8 @@ loader = false;
     );
   }
 
-  // addToQueue(obj: InvoiceLine) {
-  //   this.lineState = 'Saving new line';
 
-  //   obj.userID = 3;
-  //   obj.invoiceID = this.attachmentID;
 
-  //   this.captureService.invoiceLineAdd(obj).then(
-  //     (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-  //       if (res.outcome === 'SUCCESS') {
-  //         this.loadLines();
-  //         this.lineState = 'Saved successfully';
-  //         this.focusLineForm = !this.focusLineForm;
-  //         this.focusLineData = null;
-  //         this.lines = -1;
-
-  //         setTimeout(() => this.lineState = '', 3000);
-  //       } else {
-  //         this.lineState = 'Failed to save';
-  //         setTimeout(() => this.lineState = '', 3000);
-  //       }
-
-  //     },
-  //     (msg) => {
-  //       this.lineState = 'Failed to save';
-  //       setTimeout(() => this.lineState = '', 3000);
-  //     }
-  //   );
-  // }
 
   addToQueue(obj: InvoiceLine) {
     obj.userID = this.currentUser.userID;
@@ -518,36 +507,55 @@ loader = false;
   }
 
   saveLines() {
-          if (this.lineIndex < this.lineQueue.length) {
-            const currentLine = this.lineQueue[this.lineIndex];
 
-            const requestObject: LineAddModel = {
-              userID: this.currentUser.userID,
-              invoiceID: this.attachmentID,
-              prodCode: currentLine.prodCode,
-              quantity: currentLine.quantity,
-              itemValue: currentLine.itemValue,
-              unitPrice: currentLine.unitPrice,
-              totalLineValue: currentLine.totalLineValue,
-              unitOfMeasureID: currentLine.unitOfMeasureID,
-              invoiceNo: currentLine.invoiceNo,
-            };
+    if (this.LinesValid) {
+      if (this.lineIndex < this.lineQueue.length) {
+        const currentLine = this.lineQueue[this.lineIndex];
 
-            this.captureService.invoiceLineAdd(requestObject).then(
-              (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-                if (res.outcome === 'SUCCESS') {
-                    this.nextLineAsync();
-                } else {
-                  console.log('Line not saved');
-                }
-              },
-              (msg) => {
-                console.log('Client Error');
-              }
-            );
-          } else {
-            this.submit();
+        const requestObject: LineAddModel = {
+          userID: this.currentUser.userID,
+          invoiceID: this.attachmentID,
+          invoiceNo: currentLine.invoiceNo,
+          itemID: currentLine.itemID,
+          unitOfMeasureID: currentLine.unitOfMeasureID,
+          cooID: currentLine.cooID,
+          prodCode: currentLine.prodCode,
+          quantity: currentLine.quantity,
+          itemValue: currentLine.itemValue,
+          unitPrice: currentLine.unitPrice,
+          totalLineValue: currentLine.totalLineValue,
+
+
+        };
+
+        this.captureService.invoiceLineAdd(requestObject).then(
+          (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
+            if (res.outcome === 'SUCCESS') {
+                this.nextLineAsync();
+            } else {
+              console.log('Line not saved');
+            }
+          },
+          (msg) => {
+            console.log('Client Error');
           }
+        );
+      } else {
+        this.submit();
+      }
+    } else if (!this.LinesValid && this.InvForm.valid) {
+      this.snackbar.open(`Please fill in the all line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    } else if (!this.LinesValid && !this.InvForm.valid) {
+      this.snackbar.open(`Please fill in the all header and line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    }
   }
 
   nextLineAsync() {
@@ -574,8 +582,8 @@ loader = false;
       (res: CompaniesListResponse) => {
         this.toCompanyList = res.companies;
         this.fromCompanyList = res.companies;
-        this.toCompanyListTemp = res.companies;
-        this.fromCompanyListTemp = res.companies;
+        this.toCompanyListTemp = this.toCompanyList;
+        this.fromCompanyListTemp = this.fromCompanyList;
       },
       (msg) => {
         console.log(msg);
@@ -583,10 +591,15 @@ loader = false;
     );
   }
 
+  CathLinesValid(linestatus: boolean) {
+    this.LinesValid = linestatus;
+  }
+
   filterCurrency() {
     this.currencies = this.currenciesTemp;
     this.currencies = this.currencies.filter(x => this.matchRuleShort(x.name, `*${this.currencyQuery}*`));
   }
+
 
   filterFromCompany() {
     this.fromCompanyList = this.fromCompanyListTemp;

@@ -17,8 +17,11 @@ import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
+import { MatSnackBar } from '@angular/material';
+import { Items, ItemsListResponse } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 @Component({
   selector: 'app-form-invoice-lines',
@@ -38,6 +41,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
   unitPriceOReason: string;
   totalLineValueOReason: string;
   disabledtotalLineValue: boolean;
+  itemQuery = '';
 
 
     constructor(
@@ -46,7 +50,20 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private captureService: CaptureService,
       private unitService: UnitMeasureService,
       private snackbarService: HelpSnackbar,
-      private placeService: PlaceService) { }
+      private placeService: PlaceService,
+      private companyService: CompanyService,
+      private snackbar: MatSnackBar) { }
+
+    LinesForm = new FormGroup({
+      control1: new FormControl(null, [Validators.required]),
+      control2: new FormControl(null, [Validators.required]),
+      control3: new FormControl(null, [Validators.required]),
+      control4: new FormControl(null, [Validators.required]),
+      control5: new FormControl(null, [Validators.required]),
+      control6: new FormControl(null, [Validators.required]),
+      control7: new FormControl(null, [Validators.required]),
+      control8: new FormControl(null, [Validators.required]),
+    });
 
     currentUser: User;
     currentTheme: string;
@@ -56,6 +73,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     unitOfMeasure = new FormControl();
     private unsubscribe$ = new Subject<void>();
     unitOfMeasureQuery = '';
+    items: Items[] = [];
+    itemsTemp: Items[] = [];
 
     @Input() lineData: InvoiceLine;
     @Input() updateSAD500Line: InvoiceLine;
@@ -63,6 +82,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     @Input() showLines: boolean;
     @Output() submitLine = new EventEmitter<InvoiceLine>();
     @Output() updateLine = new EventEmitter<InvoiceLine>();
+    @Output() linesValid = new EventEmitter<boolean>();
 
     shortcuts: ShortcutInput[] = [];
     @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -93,6 +113,14 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         OReason: null,
       },
       itemValue: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      itemID: {
         value: null,
         error: null,
         OBit: null,
@@ -153,6 +181,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
       this.currentUser = this.userService.getCurrentUser();
       this.loadUnits();
+      this.loadItems();
     }
 
     ngAfterViewInit(): void {
@@ -216,6 +245,14 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
             ODate: null,
             OReason: null,
           },
+          itemID: {
+            value: null,
+            error: null,
+            OBit: null,
+            OUserID: null,
+            ODate: null,
+            OReason: null,
+          },
           unitPrice: {
             value: null,
             error: null,
@@ -262,35 +299,46 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
 
     submit() {
-      if (this.isUpdate) {
-        const request: InvoiceLine = {
-          prodCode: this.form.prodCode.value,
-          invoiceID: this.updateSAD500Line.invoiceID,
-          quantity: this.form.quantity.value,
-          itemValue: this.form.itemValue.value,
-          invoiceLineID: this.updateSAD500Line.invoiceLineID,
-          unitPrice: this.form.unitPrice.value,
-          totalLineValue: this.form.totalLineValue.value,
-          // unitOfMeasure: this.form.unitOfMeasure,
-          unitOfMeasureID: this.form.unitOfMeasureID.value,
-          guid: UUID.UUID(),
-        };
+      if (this.LinesForm.valid) {
+        if (this.isUpdate) {
+          const request: InvoiceLine = {
+            prodCode: this.form.prodCode.value,
+            invoiceID: this.updateSAD500Line.invoiceID,
+            quantity: this.form.quantity.value,
+            itemValue: this.form.itemValue.value,
+            invoiceLineID: this.updateSAD500Line.invoiceLineID,
+            unitPrice: this.form.unitPrice.value,
+            totalLineValue: this.form.totalLineValue.value,
+            // unitOfMeasure: this.form.unitOfMeasure,
+            cooID: this.form.cooID.value,
+            unitOfMeasureID: this.form.unitOfMeasureID.value,
+            guid: UUID.UUID(),
+          };
 
-        this.updateLine.emit(request);
-      } else {
+          this.updateLine.emit(request);
+        } else {
 
-        const request: InvoiceLine = {
-          prodCode: this.form.prodCode.value,
-          quantity: this.form.quantity.value,
-          itemValue: this.form.itemValue.value,
-          unitPrice: this.form.unitPrice.value,
-          totalLineValue: this.form.totalLineValue.value,
-          // unitOfMeasure: this.form.unitOfMeasure,
-          unitOfMeasureID: this.form.unitOfMeasureID.value,
-          guid: UUID.UUID(),
-        };
-        this.submitLine.emit(request);
-      }
+          const request: InvoiceLine = {
+            prodCode: this.form.prodCode.value,
+            quantity: this.form.quantity.value,
+            itemValue: this.form.itemValue.value,
+            unitPrice: this.form.unitPrice.value,
+            totalLineValue: this.form.totalLineValue.value,
+            // unitOfMeasure: this.form.unitOfMeasure,
+            unitOfMeasureID: this.form.unitOfMeasureID.value,
+            guid: UUID.UUID(),
+          };
+          this.submitLine.emit(request);
+        }
+    } else {
+      this.snackbar.open(`Please fill in the all lines data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    }
+
+      this.linesValid.emit(this.LinesForm.valid);
     }
 
     loadUnits(): void {
@@ -312,6 +360,38 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.unitOfMeasureList = this.unitOfMeasureListTemp;
       // tslint:disable-next-line: max-line-length
       this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.unitOfMeasureQuery.toUpperCase()}*`));
+    }
+
+    loadItems() {
+      const model = {
+        userID: this.currentUser.userID,
+        filter: '',
+        specificItemID: -1,
+        rowStart: 1,
+        rowEnd: 100000000,
+        orderBy: '',
+        orderByDirection: ''
+      };
+      this.companyService.getItemList(model).then(
+        (res: ItemsListResponse) => {
+          this.items = res.itemsLists;
+          this.itemsTemp = this.items;
+          console.log('items');
+          console.log(this.items);
+        },
+        msg => {
+          console.log(msg);
+        }
+      );
+    }
+
+    filterItems() {
+      this.items = this.itemsTemp;
+      this.items = this.items.filter(x => this.matchRuleShort(x.item.toUpperCase(), `*${this.itemQuery.toUpperCase()}*`));
+      // this.items = this.items.filter(x => this.matchRuleShort(x.item, `*${this.itemQuery}*`));
+    }
+    selectedItem(item) {
+      this.form.itemID.value = item.itemID;
     }
 
     matchRuleShort(str, rule) {

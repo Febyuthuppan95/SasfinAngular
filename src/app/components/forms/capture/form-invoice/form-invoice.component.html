@@ -18,12 +18,13 @@
 </div>
 <span [ngClass]="{'hide': this.toggleLines}">
   <br>
-<form (submit)="submit(); $event.preventDefault()" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+<form (submit)="submit(); $event.preventDefault()" [formGroup]="InvForm" *ngIf="this.form !== undefined" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
   <div class="form-group" *ngIf="this.form.invoiceNo != undefined">
     <div class="row">
       <div class="col-md-12">
-        <input type="text"[focus]="this.focusMainForm"
-        [(ngModel)]="this.form.invoiceNo.value" [ngModelOptions]="{standalone: true}"
+        <input type="text" formControlName="control1"
+        [focus]="this.focusMainForm"
+        [(ngModel)]="this.form.invoiceNo.value"
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-invoice-invoiceno')"
         [ngClass]="{'form-control-invalid': this.form.invoiceNo.error}"
@@ -33,7 +34,7 @@
             {{this.form.invoiceNo.error}}
             <button (click)="OverrideinvoiceNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.invoiceNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.invoiceNo.OBit == true" [disabled]="disabledinvoiceNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input [(ngModel)]="this.form.invoiceNo.OReason"  *ngIf="this.form.invoiceNo.OBit == true" [disabled]="disabledinvoiceNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.invoiceNo.OBit == true"  class="input-group-append ">
             <button (click)="OverrideinvoiceNoExcept()" [disabled]="disabledinvoiceNo"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverrideinvoiceNo()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -42,8 +43,9 @@
       </div>
       <div class="col-md-12">
         <mat-form-field class="datepicker" appearance="outline">
-          <input matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
-          [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
+          <input formControlName="control2"
+          matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
+          [(ngModel)]="this.form.invoiceDate.value"
           (mouseover)="updateHelpContext('form-invoice-invoicedate')"
           [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
           placeholder="Invoice Date" />
@@ -59,7 +61,7 @@
   <div class="form-group" *ngIf="this.form.invoiceDate != undefined">
     <mat-form-field class="datepicker">
       <input matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
-      [(ngModel)]="this.form.invoiceDate.value" [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="this.form.invoiceDate.value"
       (mouseover)="updateHelpContext('form-invoice-invoicedate')"
       [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
       placeholder="Invoice Date" />
@@ -70,7 +72,8 @@
     </mat-form-field>
   </div> -->
   <div class="form-group" *ngIf="this.form.fromCompany != undefined">
-    <input (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value" [ngModelOptions]="{standalone: true}"
+    <input formControlName="control3"
+    (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value"
     [ngClass]="{'form-control-invalid': this.form.fromCompany.error}" type="text" placeholder="From Company" aria-label="From Company"
     class="form-control form-control-sm shadow-sm form-control-light"
     (mouseover)="updateHelpContext('form-invoice-from-company')"
@@ -83,7 +86,8 @@
     <p class="invalid-control-label" *ngIf="this.form.fromCompany.error">{{this.form.fromCompany.error}}</p>
     </div>
   <div class="form-group" *ngIf="this.form.currencyID != undefined">
-    <input (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery" [ngModelOptions]="{standalone: true}"
+    <input formControlName="control4"
+    (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery"
     [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure"
     class="form-control form-control-sm shadow-sm form-control-light"
     (mouseover)="updateHelpContext('form-invoice-unit-of-measure')"
@@ -97,7 +101,8 @@
     </div>
 
   <div class="form-group" *ngIf="this.form.cooID">
-    <input [(ngModel)]="this.countryQuery" type="text"
+    <input formControlName="control5"
+    [(ngModel)]="this.countryQuery" type="text"
     class="form-control form-control-sm shadow-sm form-control-light"
     (keyup)="filterCountries()"
     placeholder="COO" aria-label="COOID"
@@ -114,7 +119,8 @@
   </div>
   <div class="form-group" *ngIf="this.form.incoType != undefined">
     <label for="quantityValue">Inco Type</label>
-      <input [(ngModel)]="this.incoTypeQuery" type="text"
+      <input formControlName="control6"
+      [(ngModel)]="this.incoTypeQuery" type="text"
       [ngClass]="{'form-control-invalid': this.form.incoType.error !== null && this.form.incoType.error !== undefined}"
       class="form-control form-control-sm shadow-sm form-control-light"
       (keyup)="filterIncoType()"
@@ -151,6 +157,6 @@
         </div>
       </div>
       <br>
-      <app-form-invoice-lines [(showLines)]="this.toggleLines" (submitLine)="addToQueue($event)" (updateLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData"></app-form-invoice-lines>
+      <app-form-invoice-lines [(showLines)]="this.toggleLines" (submitLine)="addToQueue($event)" (updateLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData" (linesValid) ="CathLinesValid($event)"></app-form-invoice-lines>
   </span>
   <app-notification></app-notification>
