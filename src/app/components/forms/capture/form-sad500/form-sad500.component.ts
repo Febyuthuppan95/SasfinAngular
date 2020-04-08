@@ -390,23 +390,7 @@ dialogOpen = false;
   submit() {
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
-      // First Create new SAD500 record
 
-      // this.captureService.sad500Create(requestModel).then(
-      //   (res: Outcome) => {
-      //     if (res.outcome === 'SUCCESS') {
-      //       this.notify.successmsg(res.outcome, res.outcomeMessage);
-
-      //       this.companyService.setCapture({ capturestate: true });
-      //       this.router.navigateByUrl('transaction/capturerlanding');
-      //     } else {
-      //       this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-      //     }
-      //   },
-      //   (msg) => {
-      //     this.notify.errorsmsg('Failure', 'Cannot reach server');
-      //   }
-      // );
       if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
 
 
@@ -458,8 +442,6 @@ dialogOpen = false;
         supplierRef: this.form.supplierRef.value,
         mrn: this.form.MRN.value,
         attachmentStatusID: 3,
-        // originalID: -1,
-        // replacedByID: -1,
         importCode: this.form.importersCode.value,
         fileRef: this.form.fileRef.value,
         totalDuty: this.form.totalCustomsDuty.value,
@@ -725,7 +707,7 @@ dialogOpen = false;
 
   saveLines(obj?: SAD500LineCreateRequest) {
 
-    if (this.LinesValid) {
+    if (this.LinesValid && this.SADForm.valid) {
 
       if (obj !== null && obj !== undefined) {
 
@@ -861,6 +843,12 @@ dialogOpen = false;
       });
     } else if (!this.LinesValid && !this.SADForm.valid) {
       this.snackbar.open(`Please fill in the all header and line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    } else if (this.LinesValid && !this.SADForm.valid) {
+      this.snackbar.open(`Please fill in the all header data`, '', {
         duration: 3000,
         panelClass: ['capture-snackbar-error'],
         horizontalPosition: 'center',

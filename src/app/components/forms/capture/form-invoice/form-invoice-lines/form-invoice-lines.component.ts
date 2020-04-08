@@ -182,6 +182,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.currentUser = this.userService.getCurrentUser();
       this.loadUnits();
       this.loadItems();
+      this.loadCountries();
     }
 
     ngAfterViewInit(): void {
@@ -319,13 +320,15 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         } else {
 
           const request: InvoiceLine = {
+            invoiceNo: this.form.invoiceNo.value,
+            itemID: this.form.itemID.value,
+            unitOfMeasureID: this.form.unitOfMeasureID.value,
+            cooID: this.form.cooID.value,
             prodCode: this.form.prodCode.value,
             quantity: this.form.quantity.value,
             itemValue: this.form.itemValue.value,
             unitPrice: this.form.unitPrice.value,
             totalLineValue: this.form.totalLineValue.value,
-            // unitOfMeasure: this.form.unitOfMeasure,
-            unitOfMeasureID: this.form.unitOfMeasureID.value,
             guid: UUID.UUID(),
           };
           this.submitLine.emit(request);
@@ -388,10 +391,9 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     filterItems() {
       this.items = this.itemsTemp;
       this.items = this.items.filter(x => this.matchRuleShort(x.item.toUpperCase(), `*${this.itemQuery.toUpperCase()}*`));
-      // this.items = this.items.filter(x => this.matchRuleShort(x.item, `*${this.itemQuery}*`));
     }
-    selectedItem(item) {
-      this.form.itemID.value = item.itemID;
+    selectedItem(item: number) {
+      this.form.itemID.value = item;
     }
 
     matchRuleShort(str, rule) {
@@ -401,7 +403,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
 
     selectedUnit(unit) {
-      this.form.unitOfMeasure.value = unit.unitOfMeasureID;
+      this.form.unitOfMeasureID.value = unit;
     }
     updateHelpContext(slug: string) {
       const newContext: SnackbarModel = {
@@ -423,6 +425,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       };
       this.placeService.getCountriesCall(request).then(
         (res: CountriesListResponse) => {
+          console.log('countries');
+          console.log(res);
           this.countriesList = res.countriesList;
           this.countriesListTemp = res.countriesList;
           // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
@@ -435,7 +439,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
     filterCountries() {
       this.countriesList = this.countriesListTemp;
-      this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
+      // tslint:disable-next-line: max-line-length
+      this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
     }
 
     OverrideinvoiceNoClick() {

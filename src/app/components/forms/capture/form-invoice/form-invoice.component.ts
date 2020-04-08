@@ -317,7 +317,7 @@ loader = false;
 
   submit() {
     console.log('Isvvalid');
-    console.log(this.InvForm.valid);
+    console.log(this.InvForm.valid && this.LinesValid);
     if (this.InvForm.valid && this.LinesValid) {
           const requestModel = {
             userID: this.currentUser.userID,
@@ -488,6 +488,8 @@ loader = false;
 
 
   addToQueue(obj: InvoiceLine) {
+    console.log('obj');
+    console.log(obj);
     obj.userID = this.currentUser.userID;
     obj.invoiceID = this.attachmentID;
     obj.isPersist = false;
@@ -508,14 +510,14 @@ loader = false;
 
   saveLines() {
 
-    if (this.LinesValid) {
+    if (this.LinesValid && this.InvForm.valid) {
       if (this.lineIndex < this.lineQueue.length) {
         const currentLine = this.lineQueue[this.lineIndex];
 
         const requestObject: LineAddModel = {
           userID: this.currentUser.userID,
           invoiceID: this.attachmentID,
-          invoiceNo: currentLine.invoiceNo,
+          invoiceNo: this. form.invoiceNo.value,
           itemID: currentLine.itemID,
           unitOfMeasureID: currentLine.unitOfMeasureID,
           cooID: currentLine.cooID,
@@ -524,8 +526,6 @@ loader = false;
           itemValue: currentLine.itemValue,
           unitPrice: currentLine.unitPrice,
           totalLineValue: currentLine.totalLineValue,
-
-
         };
 
         this.captureService.invoiceLineAdd(requestObject).then(
@@ -551,6 +551,12 @@ loader = false;
       });
     } else if (!this.LinesValid && !this.InvForm.valid) {
       this.snackbar.open(`Please fill in the all header and line data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    } else if (this.LinesValid && !this.InvForm.valid) {
+      this.snackbar.open(`Please fill in the all header data`, '', {
         duration: 3000,
         panelClass: ['capture-snackbar-error'],
         horizontalPosition: 'center',
@@ -675,8 +681,6 @@ loader = false;
     };
     this.placeService.getCountriesCall(request).then(
       (res: CountriesListResponse) => {
-        console.log('countries');
-        console.log(res);
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
