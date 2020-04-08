@@ -46,6 +46,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   totalDutyOReason: string;
   disabledMRN: boolean;
   MRNOReason: string;
+
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private transactionService: TransactionService,
@@ -63,6 +64,12 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
   shortcuts: ShortcutInput[] = [];
+
+  CRNForm = new FormGroup({
+    control1: new FormControl(null, [Validators.required]),
+    control2: new FormControl(null, [Validators.required]),
+    control3: new FormControl(null, [Validators.required])
+  });
 
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
