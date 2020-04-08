@@ -791,7 +791,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       // tslint:disable-next-line: max-line-length
       (res: any) => {
         this.editStatusList = res.data;
-        this.editStatusListTemp = res.data;
+        this.editStatusListTemp = this.editStatusList;
       },
       (msg) => { }
     );
@@ -804,7 +804,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   filterEDI() {
     this.editStatusList = this.editStatusListTemp;
     // tslint:disable-next-line: max-line-length
-    this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.ediStatusQuery !== null ? this.ediStatusQuery.toUpperCase() : ''}*`));
+    this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.ediStatusQuery.toUpperCase()}*`));
   }
 
   matchRuleShort(str, rule) {
