@@ -6,13 +6,12 @@ import { UUID } from 'angular2-uuid';
 
 export const environment = {
   production: false,
-  AssetRoute: 'http://localhost:4200/assets/dist',
-  ImageRoute: 'http://localhost:4200/assets/dist/images',
-  ApiEndpoint: 'https://localhost:44397/api/v1.0',
-  ApiBackgroundImages: 'https://localhost:44397/api/v1.0/public/images/background',
-  ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
-  WebSocketConnection: 'https://localhost:44397/api/v1.0/chat',
+  AssetRoute: 'http://197.189.218.50:8888/assets/dist',
+  ImageRoute: 'http://197.189.218.50:8888/assets/dist/images',
+  ApiEndpoint: 'http://197.189.218.50:7777/api/v1.0',
+  ApiBackgroundImages: 'http://197.189.218.50:7777/api/v1.0/public/images/background',
+  ApiProfileImages: 'http://197.189.218.50:7777/api/v1.0/public/images/profile',
+  ApiDocuments: 'http://197.189.218.50:7777/api/v1.0/public/document',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -23,18 +22,18 @@ export const environment = {
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
     attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5'
   },
-
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'https://localhost:44397/api/v1.0/users/list',
-      create: 'https://localhost:44397/api/v1.0/users/add',
-      update: 'https://localhost:44397/api/v1.0/users/update',
-      upload: 'https://localhost:44397/api/v1.0/users/upload',
-      hub: 'https://localhost:44397/Communication/Hub'
+      list: 'http://197.189.218.50:7777/api/v1.0/users/list',
+      create: 'http://197.189.218.50:7777/api/v1.0/users/add',
+      update: 'http://197.189.218.50:7777/api/v1.0/users/update',
+      upload: 'http://197.189.218.50:7777/api/v1.0/users/upload',
+      hub: 'http://197.189.218.50:7777/Communication/Hub'
     }
   }
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

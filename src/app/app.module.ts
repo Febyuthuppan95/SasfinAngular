@@ -417,6 +417,7 @@ import { PreviewReportsComponent } from './views/reports/preview-reports/preview
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
+
     },
     {
       provide: HTTP_INTERCEPTORS,

@@ -28,11 +28,19 @@ import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
 import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-view-company-service-claims',
   templateUrl: './view-company-service-claims.component.html',
-  styleUrls: ['./view-company-service-claims.component.scss']
+  styleUrls: ['./view-company-service-claims.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ViewCompanyServiceClaimsComponent implements OnInit {
 
@@ -151,7 +159,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       valid: true,
       error: ''
     },
-    
+
   }
   selectedRow = -1;
   lookBackDays = [];
@@ -200,11 +208,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   importComponents: ImportComponent[] = [
     {
       data: {
-        code: 'IMP8008',
-        importQuantity: 1,
-        exportQuantity: 0,
-        totalDuty: 340,
-        totalShortfallQuantity: 10
+        code: 'Wheel-MRN-01',
+        importQuantity: 300,
+        exportQuantity: 300,
+        totalDuty: 140,
+        totalShortfallQuantity: 100,
       },
       shortfallImports: [] = [
         // {
@@ -235,7 +243,112 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     },
     {
       data: {
-        code: 'IMP8009',
+        code: 'Wheel-MRN-02',
+        importQuantity: 200,
+        exportQuantity: 0,
+        totalDuty: 5640,
+        totalShortfallQuantity: 0
+      },
+      shortfallImports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: '999PLKJ',
+        //   hsQuantity: 20,
+        //   customsValue: 1,
+        //   duty: 345,
+        //   isImport: true,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ],
+      exports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: 'ABC1001',
+        //   hsQuantity: 30,
+        //   customsValue: 1,
+        //   duty: 100,
+        //   isImport: false,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ]
+    },
+    {
+      data: {
+        code: 'Wheel-MRN-03',
+        importQuantity: 200,
+        exportQuantity: 0,
+        totalDuty: 5640,
+        totalShortfallQuantity: 0
+      },
+      shortfallImports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: '999PLKJ',
+        //   hsQuantity: 20,
+        //   customsValue: 1,
+        //   duty: 345,
+        //   isImport: true,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ],
+      exports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: 'ABC1001',
+        //   hsQuantity: 30,
+        //   customsValue: 1,
+        //   duty: 100,
+        //   isImport: false,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ]
+    },
+    {
+      data: {
+        code: 'Screw-MRN-01',
+        importQuantity: 200,
+        exportQuantity: 0,
+        totalDuty: 5640,
+        totalShortfallQuantity: 0
+      },
+      shortfallImports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: '999PLKJ',
+        //   hsQuantity: 20,
+        //   customsValue: 1,
+        //   duty: 345,
+        //   isImport: true,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ],
+      exports: [] = [
+        // {
+        //   itemID: 1,
+        //   captureJoinLineID: 1,
+        //   code: 'ABC1001',
+        //   hsQuantity: 30,
+        //   customsValue: 1,
+        //   duty: 100,
+        //   isImport: false,
+        //   status: 'string',
+        //   statusID: 1
+        // }
+      ]
+    },
+    {
+      data: {
+        code: 'Screw-MRN-02',
         importQuantity: 200,
         exportQuantity: 0,
         totalDuty: 5640,
@@ -662,6 +775,11 @@ export class ComponentData {
   exportQuantity: number;
   totalDuty: number;
   totalShortfallQuantity: number;
+  // componentElements: ComponentImportElement[];
+
+}
+export class ComponentImportElement {
+
 }
 // (ComponentCode, ProductCode, QuarterID, Period, TEQuantity, QuantityExported, QuantityPer)
 export class Product {
@@ -678,6 +796,26 @@ export class Product {
   status?: string;
   statusID?: number;
 }
+
+
+// New Classes
+ export class newComponentItem {
+    itemID: number;
+    componentCode: string;
+    importQuantity: number;
+    exportQuantity: number;
+    totalDuty: number;
+    totalShortfallQuantity: number;
+    
+ }
+
+ export class newImportComponent {
+   captureJoinID: number;
+   mrn: string;
+   hsQuantity: number;
+   supplyUnit: number;
+   duty: number;
+ }
 
 
 

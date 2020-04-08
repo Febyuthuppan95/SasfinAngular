@@ -20,6 +20,7 @@ export class UserService {
   ) {}
 
   private isAuth = new BehaviorSubject<boolean>(localStorage.getItem('currentUser') !== null);
+  //private isAuth = new BehaviorSubject<boolean>(this.cookieService.check('currentUser') !== null);
   public observeLogin = this.isAuth.asObservable();
 
   public setAuth = (isAuth: boolean) => {
@@ -30,6 +31,7 @@ export class UserService {
    */
   public isLoggedIn(): boolean {
     return localStorage.getItem('currentUser') === null ? false : true;
+    //return this.cookieService.check('currentUser');
   }
 
   /**
@@ -37,6 +39,7 @@ export class UserService {
    */
   public logout(): void {
     localStorage.removeItem('currentUser');
+    // this.cookieService.delete('currentUser', '/');
     this.setAuth(false);
     this.router.navigateByUrl('/account/login');
   }
@@ -46,6 +49,17 @@ export class UserService {
    */
   public persistLogin(currentUser: string): void {
     localStorage.setItem('currentUser', currentUser);
+    console.log(currentUser);
+    // this.cookieService.set(
+    //   'currentUser',
+    //   currentUser,
+    //   1000 * 60 * 60 * 24,
+    //   '/',
+    //   null,
+    //   true,
+    //   'None'
+    // );
+    // console.log(this.cookieService.get('currentUser'));
   }
 
   /**
@@ -53,6 +67,7 @@ export class UserService {
    */
   public getCurrentUser(): User {
     const jsonString: string = localStorage.getItem('currentUser');
+    //const jsonString: string = this.cookieService.get('currentUser');
     if (jsonString !== null) {
       const currentUser: User = JSON.parse(jsonString);
 

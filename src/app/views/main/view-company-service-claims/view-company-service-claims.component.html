@@ -57,7 +57,7 @@
               <input required matInput [matDatepicker]="exportStartDate">
               <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
               <mat-datepicker #exportStartDate></mat-datepicker>
-              <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error>
+              <!-- <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error> -->
             </mat-form-field>
             <mat-form-field class="col-md-4">
               <mat-label>To:</mat-label>
@@ -111,10 +111,11 @@
           <div class="data" *ngIf="importComponents">
             <div class="row" >
               <!-- <label class="col-md-2 text-center">Component Code</label> -->
-              <button mat-button color="primary" class="col-md-3 text-center" >Component Code</button>
-              <button mat-button color="primary" class="col-md-3 text-center">Total Import Quantity</button>
-              <button mat-button color="primary" class="col-md-3 text-center">Total Export Quantity</button>
+              <button mat-button color="primary" class="col-md-2 text-center" >Component Code</button>
+              <button mat-button color="primary" class="col-md-2 text-center">Total Import Quantity</button>
+              <button mat-button color="primary" class="col-md-2 text-center">Total Export Quantity</button>
               <button mat-button color="primary" class="col-md-2 text-center">Total Duty</button>
+              <button mat-button color="primary" class="col-md-2 text-center">Total Shortfall</button>
               <!-- <label class="col-md-2 text-center">Total Import Quantity</label>
               <label class="col-md-2 text-center">Total Export Quantity</label>
               <label class="col-md-2 text-center">Total Duty</label> -->
@@ -123,14 +124,15 @@
               <mat-expansion-panel *ngFor="let component of importComponents">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    <label class="col-md-3 text-center">{{component.data.code}}</label>
-                    <label class="col-md-3 text-center">{{component.data.importQuantity}}</label>
-                    <label class="col-md-3 text-center">{{component.data.exportQuantity}}</label>
-                    <label class="col-md-3 text-center">{{component.data.totalDuty}}</label>
+                    <label class="col-md-2 text-center">{{component.data.code}}</label>
+                    <label class="col-md-2 text-center">{{component.data.importQuantity}}</label>
+                    <label class="col-md-2 text-center">{{component.data.exportQuantity}}</label>
+                    <label class="col-md-2 text-center">{{component.data.totalDuty}}</label>
+                    <label class="col-md-2 text-center">{{component.data.totalShortfallQuantity}}</label>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div #exports width="100%">
-                  <table mat-table [dataSource]="exportSource" class="mat-elevation-z8">
+                  <table mat-table [dataSource]="selectProducts" class="mat-elevation-z8" multiTemplateDataRows>
                     <ng-container matColumnDef="rowNum">
                       <th mat-header-cell *matHeaderCellDef> No. </th>
                       <td mat-cell *matCellDef="let element"> {{element.rowNum}} </td>
@@ -174,7 +176,9 @@
                       </td>
                     </ng-container>
                   
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" 
+                    class="example-element-row"
+                    [class.example-expanded-row]="expandedElement === element"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
                   <mat-divider style="margin:10px;"></mat-divider>
