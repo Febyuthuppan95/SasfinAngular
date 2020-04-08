@@ -15,7 +15,7 @@ import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { EventService } from 'src/app/services/event.service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
@@ -26,6 +26,18 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./form-custom-release.component.scss']
 })
 export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  constructor(private themeService: ThemeService,
+              private userService: UserService,
+              private transactionService: TransactionService,
+              private router: Router,
+              private captureService: CaptureService,
+              private eventService: EventService,
+              private dialog: MatDialog,
+              private companyService: CompanyService,
+              private snackbarService: HelpSnackbar,
+              private snackbar: MatSnackBar,
+              private formBuilder: FormBuilder) { }
   disabledserialNo: boolean;
   serialNoOReason: string;
   disabledLRN: boolean;
@@ -47,17 +59,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   disabledMRN: boolean;
   MRNOReason: string;
 
-  constructor(private themeService: ThemeService,
-              private userService: UserService,
-              private transactionService: TransactionService,
-              private router: Router,
-              private captureService: CaptureService,
-              private eventService: EventService,
-              private dialog: MatDialog,
-              private companyService: CompanyService,
-              private snackbarService: HelpSnackbar,
-              private formBuilder: FormBuilder) { }
-
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
@@ -68,7 +69,16 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   CRNForm = new FormGroup({
     control1: new FormControl(null, [Validators.required]),
     control2: new FormControl(null, [Validators.required]),
-    control3: new FormControl(null, [Validators.required])
+    control3: new FormControl(null, [Validators.required]),
+    control4: new FormControl(null, [Validators.required]),
+    control5: new FormControl(null, [Validators.required]),
+    control6: new FormControl(null, [Validators.required]),
+    control7: new FormControl(null, [Validators.required]),
+    control8: new FormControl(null, [Validators.required]),
+    control9: new FormControl(null, [Validators.required]),
+    control10: new FormControl(null, [Validators.required]),
+    control11: new FormControl(null, [Validators.required]),
+    control12: new FormControl(null, [Validators.required]),
   });
 
   currentUser = this.userService.getCurrentUser();
@@ -186,6 +196,11 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
   attachmentSubscription: Subscription;
   dialogOpen = false;
+
+  editStatusList: any[] = [];
+  editStatusListTemp: any[] = [];
+  ediStatusQuery: string = '';
+  ediStatusControl = new FormControl();
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -331,6 +346,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   }
 
   submit() {
+      if (this.CRNForm.valid) {
           const requestModel = {
             userID: this.currentUser.userID,
             customsReleaseID: this.attachmentID,
@@ -400,9 +416,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             mrnOReason: this.form.MRN.OReason
           };
 
-          console.log('requestModel');
-          console.log(requestModel);
-
           this.transactionService.customsReleaseUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -419,7 +432,14 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
-        }
+      } else {
+        this.snackbar.open(`Please fill in the all header data`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+  }
 
   loadCapture() {
     const requst = {
@@ -765,11 +785,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this. MRNOReason = '';
     this.disabledMRN = false;
   }
-
-  editStatusList: any[] = [];
-  editStatusListTemp: any[] = [];
-  ediStatusQuery: string = '';
-  ediStatusControl = new FormControl();
 
   loadEDIStatuses() {
     this.captureService.ediStatusList({ pageIndex: 0, pageSize: 100 }).then(

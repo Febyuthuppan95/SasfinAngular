@@ -210,6 +210,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     }
 
     submit() {
+      if (this.LinesValid && this.CWSForm.valid) {
         const requestModel = {
           userID: this.currentUser.userID,
           customworksheetID: this.attachmentID,
@@ -250,6 +251,13 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
                 this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
         );
+      } else {
+        this.snackbar.open(`Please fill in the all header data`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
     }
 
     updateLine(obj: CustomWorksheetLineReq) {

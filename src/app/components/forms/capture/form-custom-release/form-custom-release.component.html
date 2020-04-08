@@ -7,10 +7,10 @@
 </div>
 <br>
 
-<form (submit)="submit(); $event.preventDefault()" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
+<form (submit)="submit(); $event.preventDefault()" [formGroup]="CRNForm" style="padding: 24px; border-radius: 10px; background: #f2f2f2;overflow-y: auto;">
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.MRN.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control1"
+      [(ngModel)]="this.form.MRN.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-mrn')"
       [ngClass]="{'form-control-invalid': this.form.MRN.error !== null}"
@@ -20,7 +20,7 @@
           {{this.form.MRN.error}}
           <button (click)="OverrideMRNClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.MRN.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.MRN.OBit == true"  [disabled]="disabledMRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.MRN.OReason"  *ngIf="this.form.MRN.OBit == true"  [disabled]="disabledMRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.MRN.OBit == true"  class="input-group-append ">
           <button (click)="OverrideMRNExcept()" [disabled]="disabledMRN" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideMRN()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -28,8 +28,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.LRN.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control2"
+      [(ngModel)]="this.form.LRN.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-lrn')"
       [ngClass]="{'form-control-invalid': this.form.LRN.error !== null}"
@@ -39,7 +39,7 @@
           {{this.form.LRN.error}}
           <button (click)="OverrideLRNClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.LRN.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.LRN.OBit == true"  [disabled]="disabledLRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.LRN.OReason"  *ngIf="this.form.LRN.OBit == true"  [disabled]="disabledLRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.LRN.OBit == true"  class="input-group-append ">
           <button (click)="OverrideLRNExcept()" [disabled]="disabledLRN" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideLRN()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -47,8 +47,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.serialNo.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control3"
+      [(ngModel)]="this.form.serialNo.value"
       class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
       (mouseover)="updateHelpContext('form-cusrelease-serialno')"
       [ngClass]="{'form-control-invalid': this.form.serialNo.error !== null}"
@@ -58,7 +58,7 @@
           {{this.form.serialNo.error}}
           <button (click)="OverrideSerialNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.serialNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.serialNo.OBit == true"  [disabled]="disabledserialNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.serialNo.OReason"  *ngIf="this.form.serialNo.OBit == true"  [disabled]="disabledserialNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.serialNo.OBit == true"  class="input-group-append ">
           <button (click)="OverrideSerialNoExcept()" [disabled]="disabledserialNo" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideSerialNo()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -66,8 +66,8 @@
       </div>
     </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.importersCode.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control4"
+      [(ngModel)]="this.form.importersCode.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-importerscode')"
       [ngClass]="{'form-control-invalid': this.form.importersCode.error !== null}"
@@ -77,7 +77,7 @@
           {{this.form.importersCode.error}}
           <button (click)="OverrideImportersCodeClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.importersCode.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.importersCode.OBit == true"  [disabled]="disabledimportersCode" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.importersCode.OReason"  *ngIf="this.form.importersCode.OBit == true"  [disabled]="disabledimportersCode" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.importersCode.OBit == true"  class="input-group-append ">
           <button (click)="OverrideImportersCodeExcept()" [disabled]="disabledimportersCode" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideImportersCode()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -85,8 +85,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.waybillNo.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control5"
+      [(ngModel)]="this.form.waybillNo.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-waybillno')"
       [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null}"
@@ -96,7 +96,7 @@
           {{this.form.waybillNo.error}}
           <button (click)="OverrideWaybillNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.waybillNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.waybillNo.OBit == true"  [disabled]="disabledwaybillNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.waybillNo.OReason"  *ngIf="this.form.waybillNo.OBit == true"  [disabled]="disabledwaybillNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.waybillNo.OBit == true"  class="input-group-append ">
           <button (click)="OverrideWaybillNoExcept()" [disabled]="disabledwaybillNo" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideWaybillNo()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -104,8 +104,8 @@
       </div>
     </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.PCC.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control6"
+      [(ngModel)]="this.form.PCC.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-pcc')"
       [ngClass]="{'form-control-invalid': this.form.PCC.error !== null}"
@@ -115,7 +115,7 @@
           {{this.form.PCC.error}}
           <button (click)="OverridePCCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.PCC.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.PCC.OBit == true"  [disabled]="disabledpcc" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.PCC.OReason"  *ngIf="this.form.PCC.OBit == true"  [disabled]="disabledpcc" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.PCC.OBit == true"  class="input-group-append ">
           <button (click)="OverridePCCExcept()" [disabled]="disabledpcc" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridePCC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -123,8 +123,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.FOB.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control7"
+      [(ngModel)]="this.form.FOB.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-fob')"
       [ngClass]="{'form-control-invalid': this.form.FOB.error !== null}"
@@ -134,7 +134,7 @@
           {{this.form.FOB.error}}
           <button (click)="OverrideFOBClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.FOB.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.FOB.OBit == true"  [disabled]="disabledFOB" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.FOB.OReason"  *ngIf="this.form.FOB.OBit == true"  [disabled]="disabledFOB" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.FOB.OBit == true"  class="input-group-append ">
           <button (click)="OverrideFOBExcept()" [disabled]="disabledFOB" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideFOB()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -142,8 +142,8 @@
       </div>
     </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.supplierRef.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control8"
+      [(ngModel)]="this.form.supplierRef.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-supplier-ref')"
       [ngClass]="{'form-control-invalid': this.form.supplierRef.error !== null}"
@@ -151,8 +151,8 @@
       <!-- <p class="invalid-control-label" *ngIf="this.form.supplierRef.error !== null">{{this.form.supplierRef.error}}</p> -->
   </div>
   <div class="form-group">
-    <input type="number"
-      [(ngModel)]="this.form.totalCustomsValue.value" [ngModelOptions]="{standalone: true}"
+    <input type="number" formControlName="control9"
+      [(ngModel)]="this.form.totalCustomsValue.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-total-customs-value')"
       [ngClass]="{'form-control-invalid': this.form.totalCustomsValue.error !== null}"
@@ -162,7 +162,7 @@
           {{this.form.totalCustomsValue.error}}
           <button (click)="OverridetotalCustomsValueClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.totalCustomsValue.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.totalCustomsValue.OBit == true"  [disabled]="disabledtotalCustomsValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.totalCustomsValue.OReason"  *ngIf="this.form.totalCustomsValue.OBit == true"  [disabled]="disabledtotalCustomsValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.totalCustomsValue.OBit == true"  class="input-group-append ">
           <button (click)="OverridetotalCustomsValueExcept()" [disabled]="disabledtotalCustomsValue" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridetotalCustomsValue()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -170,8 +170,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="number"
-      [(ngModel)]="this.form.totalDuty.value" [ngModelOptions]="{standalone: true}"
+    <input type="number" formControlName="control10"
+      [(ngModel)]="this.form.totalDuty.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-total-duty')"
       [ngClass]="{'form-control-invalid': this.form.totalDuty.error !== null}"
@@ -181,7 +181,7 @@
           {{this.form.totalDuty.error}}
           <button (click)="OverridetotalDutyClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.totalDuty.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.totalDuty.OBit == true"  [disabled]="disabledtotalDuty" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.totalDuty.OReason"  *ngIf="this.form.totalDuty.OBit == true"  [disabled]="disabledtotalDuty" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.totalDuty.OBit == true"  class="input-group-append ">
           <button (click)="OverridetotalDutyExcept()" [disabled]="disabledtotalDuty" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridetotalDuty()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -189,8 +189,8 @@
       </div>
   </div>
   <div class="form-group">
-    <input type="text"
-      [(ngModel)]="this.form.fileRef.value" [ngModelOptions]="{standalone: true}"
+    <input type="text" formControlName="control11"
+      [(ngModel)]="this.form.fileRef.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-file-ref')"
       [ngClass]="{'form-control-invalid': this.form.fileRef.error !== null}"
@@ -200,7 +200,7 @@
           {{this.form.fileRef.error}}
           <button (click)="OverridefileRefClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.fileRef.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.fileRef.OBit == true"  [disabled]="disabledfileRef" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input [(ngModel)]="this.form.fileRef.OReason"  *ngIf="this.form.fileRef.OBit == true"  [disabled]="disabledfileRef" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.fileRef.OBit == true"  class="input-group-append ">
           <button (click)="OverridefileRefExcept()" [disabled]="disabledfileRef" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridefileRef()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -209,7 +209,8 @@
     </div>
     <div class="form-group">
       <label for="tariff">EDI Status</label>
-        <input [(ngModel)]="this.ediStatusQuery" type="text"
+        <input formControlName="control12"
+        [(ngModel)]="this.ediStatusQuery" type="text"
         [ngClass]="{'form-control-invalid': this.form.ediStatusID.error !== null && this.form.ediStatusID.error !== undefined}"
         class="form-control form-control-sm shadow-sm form-control-light"
         (keyup)="filterEDI()"
