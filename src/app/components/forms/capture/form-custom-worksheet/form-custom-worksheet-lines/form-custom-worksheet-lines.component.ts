@@ -10,7 +10,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { ValidateService } from 'src/app/services/Validation.Service';
 import { TariffService } from 'src/app/services/Tariff.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,6 +22,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { CurrenciesListRequest } from 'src/app/models/HttpRequests/CurrenciesList';
 import { CustomWorksheetLine } from 'src/app/models/HttpResponses/CustomWorksheetLine';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'app-form-custom-worksheet-lines',
@@ -41,12 +42,28 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
   dutyOReason: string;
     constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
                 private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-                private snackbarService: HelpSnackbar, private placeService: PlaceService, private currencyService: CurrenciesService) { }
+                private snackbarService: HelpSnackbar, private snackbar: MatSnackBar,  private placeService: PlaceService,
+                private currencyService: CurrenciesService) { }
 
     currentUser: User;
     currentTheme: string;
     focusLineForm: boolean;
     private unsubscribe$ = new Subject<void>();
+
+    LinesForm = new FormGroup({
+      control1: new FormControl(null, [Validators.required]),
+      control2: new FormControl(null, [Validators.required]),
+      control3: new FormControl(null, [Validators.required]),
+      control4: new FormControl(null, [Validators.required]),
+      control5: new FormControl(null, [Validators.required]),
+      control6: new FormControl(null, [Validators.required]),
+      control7: new FormControl(null, [Validators.required]),
+      control8: new FormControl(null, [Validators.required]),
+      control9: new FormControl(null, [Validators.required]),
+      control10: new FormControl(null, [Validators.required]),
+      control11: new FormControl(null, [Validators.required]),
+      control12: new FormControl(null, [Validators.required])
+    });
 
     @Input() lineData: CustomWorksheetLine;
     @Input() updateLine: CustomWorksheetLine;
@@ -54,6 +71,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     @Input() showLines: boolean;
     @Output() submitSADLine = new EventEmitter<CustomWorksheetLine>();
     @Output() updateCWSLine = new EventEmitter<CustomWorksheetLine>();
+    @Output() linesValid = new EventEmitter<boolean>();
 
     shortcuts: ShortcutInput[] = [];
     @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
@@ -468,7 +486,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     submit() {
-
+      if (this.LinesForm.valid) {
         const model: CustomWorksheetLine = {
             userID: this.currentUser.userID,
             customWorksheetLineID: this.isUpdate ? this.updateLine.customWorksheetLineID : -1,
@@ -552,7 +570,16 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
           console.log('model');
           console.log(model);
           this.submitSADLine.emit(model);
+        }
+      } else {
+         this.snackbar.open(`Please fill in the all lines data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+       });
       }
+
+      this.linesValid.emit(this.LinesForm.valid);
     }
 
     loadCountries() {

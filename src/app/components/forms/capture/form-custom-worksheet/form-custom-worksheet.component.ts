@@ -19,12 +19,14 @@ import { CustomsWorksheetListResponse, CustomsWorksheet } from 'src/app/models/H
 import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksheetLine';
 // tslint:disable-next-line: max-line-length
 import { CustomWorksheetLinesResponse, CustomWorksheetLine, CWSLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/CustomWorksheetLine';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 @Component({
     selector: 'app-form-custom-worksheet',
     templateUrl: './form-custom-worksheet.component.html',
     styleUrls: ['./form-custom-worksheet.component.scss']
 })
 export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDestroy {
+
     constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
                 private router: Router, private captureService: CaptureService, private dialog: MatDialog,
                 private eventService: EventService, private snackbar: MatSnackBar,
@@ -43,6 +45,13 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     @ViewChild('sad500Tooltip', { static: false })
     sad500Tooltip: MatTooltip;
 
+    CWSForm = new FormGroup({
+      control1: new FormControl(null, [Validators.required]),
+      control2: new FormControl(null, [Validators.required]),
+      control3: new FormControl(null, [Validators.required])
+    });
+
+    LinesValid: boolean;
     currentUser = this.userService.getCurrentUser();
     attachmentID: number;
     transactionID: number;
@@ -357,9 +366,6 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             if (this.lines > -1) {
                 this.focusLineData = this.linesCreated[this.lines - 1];
             }
-            // this.lineErrors = res.lines.filter(x => x.commonFactor !== null
-            //   || x.quantityError !== null
-            //   || x.unitOfMeasureError !== null || x.tariffError !== null);
         },
             (msg) => {
             }
@@ -367,19 +373,19 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     }
 
     addToQueue(obj: CustomWorksheetLine) {
-        console.log('yes');
-        console.log(obj);
         obj.customWorksheetID = this.attachmentID;
         obj.isPersistant = false;
         obj.userID = this.currentUser.userID;
 
+        console.log('obj');
+
         this.lineQueue.push(obj);
         this.linesCreated.push(obj);
-        // this.lineState = 'Line added to queue';
+        console.log(this.lineQueue);
         this.focusLineForm = !this.focusLineForm;
         this.focusLineData = null;
         this.lines = -1;
-        // setTimeout(() => this.lineState = '', 3000);
+
         this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
             duration: 3000,
             panelClass: ['capture-snackbar'],
@@ -388,6 +394,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     }
 
     saveLines() {
+      if (this.LinesValid && this.CWSForm.valid) {
         if (this.lineIndex < this.lineQueue.length) {
 
             const lineCreate: any = this.lineQueue[this.lineIndex];
@@ -409,9 +416,6 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
               supplyUnit: lineCreate.supplyUnit,
             };
 
-
-            console.log('yes');
-            console.log(perfect);
             this.captureService.customWorksheetLineAdd(perfect).then(
                 (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
                     if (res.outcome === 'SUCCESS') {
@@ -427,6 +431,25 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             );
         } else {
             this.submit();
+        }
+      } else if (!this.LinesValid && this.CWSForm.valid) {
+          this.snackbar.open(`Please fill in the all line data`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar-error'],
+            horizontalPosition: 'center',
+          });
+        } else if (!this.LinesValid && !this.CWSForm.valid) {
+          this.snackbar.open(`Please fill in the all header and line data`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar-error'],
+            horizontalPosition: 'center',
+          });
+        } else if (this.LinesValid && !this.CWSForm.valid) {
+          this.snackbar.open(`Please fill in the all header data`, '', {
+            duration: 3000,
+            panelClass: ['capture-snackbar-error'],
+            horizontalPosition: 'center',
+          });
         }
     }
 
@@ -480,6 +503,10 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
         };
 
         this.snackbarService.setHelpContext(newContext);
+    }
+
+    CathLinesValid(linestatus: boolean) {
+      this.LinesValid = linestatus;
     }
 
     OverridefileRefClick() {
