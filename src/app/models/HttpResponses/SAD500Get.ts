@@ -4,6 +4,7 @@ import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 export class SAD500Get {
   attachmentErrors: AttachmentErrorResponse;
 
+  importersCode: string;
   customReleaseID: number;
   serialNo: string;
   lrn: string;

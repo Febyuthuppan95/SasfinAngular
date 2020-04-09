@@ -363,6 +363,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         this.handleChanges();
         this.tempUpdateLine = this.updateSAD500Line;
         this.tempLineData = this.lineData;
+
+        this.initfilterUnits();
+        this.initfilterCountries();
       }
     } else {
       this.tempUpdateLine = this.updateSAD500Line;
@@ -413,12 +416,16 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     );
   }
 
+  initfilterUnits() {
+    this.unitOfMeasureList = this.unitOfMeasureListTemp;
+    this.unitOfMeasureList = this.unitOfMeasureList.filter(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value);
+    this.unitOfMeasureQuery = this.unitOfMeasureList[0].name;
+  }
+
   submit() {
     if (this.LinesForm.valid) {
       if (this.isUpdate) {
         this.updateSADLine.emit({
-          // rowNum: -1,
-
           userID: this.currentUser.userID,
           sad500LineID: this.updateSAD500Line.sad500LineID,
           sad500ID: -1,
@@ -468,10 +475,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
           supplyUnitOUserID: this.form.supplyUnit.OUserID,
           supplyUnitODate: this.form.supplyUnit.OUserID,
           supllyUnitOReason: this.form.supplyUnit.OUserID,
-
-
-
-
         });
       } else {
         const sumbitRequest = {
@@ -590,6 +593,12 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   selectedTariff(id: number) {
     this.form.tariff.value = id;
+  }
+
+  initfilterCountries() {
+    this.tariffs = this.tariffsTemp;
+    this.tariffs = this.tariffs.filter(x => x.name === this.form.tariff.value);
+    this.tarrifQuery = this.tariffs[0].name;
   }
 
   assignDuty(duty: Duty) {

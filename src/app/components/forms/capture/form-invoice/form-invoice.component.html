@@ -76,7 +76,7 @@
   <div class="form-group" *ngIf="this.form.currencyID != undefined">
     <input formControlName="control4"
     (keyup)="filterCurrency()" [(ngModel)]="this.currencyQuery"
-    [ngClass]="{'form-control-invalid': this.form.currencyID.error !== undefined}" type="text" placeholder="Currency" aria-label="Unit of Measure"
+    [ngClass]="{'form-control-invalid': this.form.currencyID.error}" type="text" placeholder="Currency" aria-label="Currency"
     class="form-control form-control-sm shadow-sm form-control-light"
     (mouseover)="updateHelpContext('form-invoice-unit-of-measure')"
     [matAutocomplete]="unitOfMeasureAuto">
@@ -85,7 +85,7 @@
         {{unit.name}}, {{unit.code}}
       </mat-option>
     </mat-autocomplete>
-    <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined"></p>
+    <p class="invalid-control-label" *ngIf="this.form.currencyID.error"></p>
     </div>
 
   <div class="form-group" *ngIf="this.form.cooID">

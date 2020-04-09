@@ -81,7 +81,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     control6a: new FormControl(null),
     control7: new FormControl(null, [Validators.required]),
     control7a: new FormControl(null),
-    control8: new FormControl(null, [Validators.required]),
+    // control8: new FormControl(null, [Validators.required]),
     control9: new FormControl(null, [Validators.required]),
     control9a: new FormControl(null),
     control10: new FormControl(null, [Validators.required]),
@@ -465,6 +465,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
     this.captureService.customsReleaseGet(requst).then(
       (res: CRNList) => {
+        console.log(res.customs);
         this.form.FOB.value = res.customs[0].fob;
         this.form.MRN.value = res.customs[0].mrn;
         this.form.serialNo.value = res.customs[0].serialNo;
@@ -472,10 +473,11 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.waybillNo.value = res.customs[0].waybillNo;
         this.form.LRN.value = res.customs[0].lrn;
         this.form.PCC.value = res.customs[0].pcc;
-        this.form.supplierRef.value = res.customs[0].supplierRef;
+        // this.form.supplierRef.value = res.customs[0].supplierRef;
         this.form.totalDuty.value = res.customs[0].totalDuty;
         this.form.totalCustomsValue.value = res.customs[0].totalCustomsValue;
         this.form.fileRef.value = res.customs[0].fileRef;
+        this.form.ediStatusID.value = res.customs[0].ediStatusID;
 
         this.form.serialNo.OBit  = res.customs[0].serialNoOBit;
         this.form.serialNo.OUserID  = res.customs[0].serialNoOUserID;
@@ -800,8 +802,13 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.captureService.ediStatusList({ pageIndex: 0, pageSize: 100 }).then(
       // tslint:disable-next-line: max-line-length
       (res: any) => {
+        console.log(res);
         this.editStatusList = res.data;
         this.editStatusListTemp = this.editStatusList;
+
+        if (this.form.ediStatusID.value !== 0 || this.form.ediStatusID.value !== null) {
+          this.inifilterEDI();
+        }
       },
       (msg) => { }
     );
@@ -815,6 +822,12 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.editStatusList = this.editStatusListTemp;
     // tslint:disable-next-line: max-line-length
     this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.ediStatusQuery.toUpperCase()}*`));
+  }
+
+  inifilterEDI() {
+    this.editStatusList = this.editStatusListTemp;
+    this.editStatusList = this.editStatusList.filter(x => x.EDIStatusID === this.form.ediStatusID.value);
+    this.ediStatusQuery = this.editStatusList[0].Name;
   }
 
   matchRuleShort(str, rule) {

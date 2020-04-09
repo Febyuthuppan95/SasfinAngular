@@ -82,7 +82,7 @@ private unsubscribe$ = new Subject<void>();
 currentTheme: string;
 loader: boolean;
 
-reson: string;
+reason: string;
 referenceNo: string;
 
 
@@ -388,6 +388,8 @@ dialogOpen = false;
         console.log(res);
         this.vocSAD500ID = res.vocs[0].sad500ID;
         this.SADOriginalID = res.vocs[0].originalID;
+        this.reason = res.vocs[0].reason;
+        this.referenceNo = res.vocs[0].referenceNo;
         this.loadCapture();
         this.loadLines();
       } else {
@@ -401,13 +403,13 @@ dialogOpen = false;
   submit() {
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
-
+      this.vocStatus = true;
       if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
         const VOCrequestModel = {
           userID: this.currentUser.userID,
           vocID: this.attachmentID,
           referenceNo: this.referenceNo,
-          reason: this.reson,
+          reason: this.reason,
           mrn: this.form.MRN.value,
           attachmentStatusID: 3,
           isDeleted: 0,
@@ -417,8 +419,6 @@ dialogOpen = false;
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
-              this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
             } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
@@ -451,7 +451,7 @@ dialogOpen = false;
         supplierRef: this.form.supplierRef.value,
         mrn: this.form.MRN.value,
         attachmentStatusID: 3,
-        importCode: this.form.importersCode.value,
+        importersCode: this.form.importersCode.value,
         fileRef: this.form.fileRef.value,
         totalDuty: this.form.totalCustomsDuty.value,
         isDeleted: 0,
@@ -486,7 +486,6 @@ dialogOpen = false;
         totalDutyODate: this.form.totalCustomsDuty.ODate,
         totalDutyOReason: this.form.totalCustomsDuty.OReason,
       };
-
       this.captureService.sad500Update(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -577,6 +576,7 @@ dialogOpen = false;
         this.form.fileRef.value = res.fileRef;
         this.form.rebateCode.value = res.rebateCode;
         this.form.totalCustomsDuty.value = res.totalDuty;
+        this.form.importersCode.value = res.importersCode;
 
         this.form.waybillNo.OBit = res.waybillNoOBit;
         this.form.waybillNo.OUserID = res.waybillNoOUserID;
