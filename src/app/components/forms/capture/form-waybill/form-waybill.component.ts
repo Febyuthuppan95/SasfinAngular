@@ -24,6 +24,8 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./form-waybill.component.scss']
 })
 export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
+  disabledwaybillNo: boolean;
+  waybillNoOReason: string;
 
   constructor(private themeService: ThemeService, private userService: UserService,
               private transactionService: TransactionService, private snackbar: MatSnackBar,
@@ -47,7 +49,11 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
     form = {
       waybillNo: {
         value: null,
-        error: null
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
       },
   };
   dialogOpen = false;
@@ -141,12 +147,47 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
       }).then(
       (res: WaybillListResponse) => {
         this.form.waybillNo.value = res.waybills[0].waybillNo;
-        this.form.waybillNo.error = res.waybills[0].waybillError;
+
+        this.form.waybillNo.OBit = res.waybills[0].waybillNoOBit;
+        this.form.waybillNo.OUserID = res.waybills[0].waybillNoOUserID;
+        this.form.waybillNo.ODate = res.waybills[0].waybillNoODate;
+        this.form.waybillNo.OReason = res.waybills[0].waybillNoOReason;
+
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          res.attachmentErrors.attachmentErrors.forEach(error => {
+            if (error.fieldName === 'WaybillNo') {
+              this.form.waybillNo.error = error.errorDescription;
+            }
+          });
+        }
       },
       (msg) => {
         console.log(msg);
       }
     );
+  }
+
+  OverridewaybillNoClick() {
+    this.form.waybillNo.OUserID = this.currentUser.userID;
+    this.form.waybillNo.OBit = true;
+    this.form.waybillNo.ODate = new Date();
+    this.disabledwaybillNo = false;
+    this.waybillNoOReason = '';
+  }
+
+  OverridewaybillNoExcept() {
+    // this.form.importersCode.OReason = reason;
+    this.disabledwaybillNo = true;
+    console.log(this.form.waybillNo);
+  }
+
+  UndoOverridewaybillNo() {
+    this.form.waybillNo.OUserID = null;
+    this.form.waybillNo.OBit = null;
+    this.form.waybillNo.ODate = null;
+    this.form.waybillNo.OReason = null;
+    this.waybillNoOReason = '';
+    this.disabledwaybillNo = false;
   }
 
   ngOnDestroy(): void {

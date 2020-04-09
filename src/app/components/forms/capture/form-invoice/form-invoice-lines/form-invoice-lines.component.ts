@@ -56,13 +56,18 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     LinesForm = new FormGroup({
       control1: new FormControl(null, [Validators.required]),
+      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
       control3: new FormControl(null, [Validators.required]),
       control4: new FormControl(null, [Validators.required]),
       control5: new FormControl(null, [Validators.required]),
+      control5a: new FormControl(null),
       control6: new FormControl(null, [Validators.required]),
+      control6a: new FormControl(null),
       control7: new FormControl(null, [Validators.required]),
+      control7a: new FormControl(null),
       control8: new FormControl(null, [Validators.required]),
+      control8a: new FormControl(null),
     });
 
     currentUser: User;

@@ -93,16 +93,27 @@ voccontrol3 = new FormControl(null, [Validators.required]);
 
 SADForm = new FormGroup({
   sadcontrol1: new FormControl(null, [Validators.required]),
+  sadcontrol1a: new FormControl(null),
   sadcontrol2: new FormControl(null, [Validators.required]),
+  sadcontrol2a: new FormControl(null),
   sadcontrol3: new FormControl(null, [Validators.required]),
+  sadcontrol3a: new FormControl(null),
   sadcontrol4: new FormControl(null, [Validators.required]),
+  sadcontrol4a: new FormControl(null),
   sadcontrol5: new FormControl(null, [Validators.required]),
+  sadcontrol5a: new FormControl(null),
   sadcontrol6: new FormControl(null, [Validators.required]),
+  sadcontrol6a: new FormControl(null),
   sadcontrol7: new FormControl(null, [Validators.required]),
+  sadcontrol7a: new FormControl(null),
   sadcontrol8: new FormControl(null, [Validators.required]),
+  sadcontrol8a: new FormControl(null),
   sadcontrol9: new FormControl(null, [Validators.required]),
+  sadcontrol9a: new FormControl(null),
   sadcontrol10: new FormControl(null, [Validators.required]),
+  sadcontrol10a: new FormControl(null),
   sadcontrol11: new FormControl(null, [Validators.required]),
+  sadcontrol11a: new FormControl(null),
   sadcontrol12: new FormControl(null, [Validators.required])
 });
 
@@ -392,9 +403,6 @@ dialogOpen = false;
     if (this.attachmentType === 'VOC') { // Save VOC Header
 
       if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
-
-
-
         const VOCrequestModel = {
           userID: this.currentUser.userID,
           vocID: this.attachmentID,
@@ -403,9 +411,8 @@ dialogOpen = false;
           mrn: this.form.MRN.value,
           attachmentStatusID: 3,
           isDeleted: 0,
-
-
         };
+
         this.captureService.vocUpdate(VOCrequestModel).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
@@ -427,6 +434,8 @@ dialogOpen = false;
           horizontalPosition: 'center',
         });
       }
+    } else {
+      this.vocStatus = true;
     }
     if (this.SADForm.valid && this.LinesValid && this.vocStatus) {
       const requestModel = {

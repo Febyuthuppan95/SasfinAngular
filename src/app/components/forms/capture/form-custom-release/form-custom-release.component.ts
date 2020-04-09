@@ -68,16 +68,26 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
 
   CRNForm = new FormGroup({
     control1: new FormControl(null, [Validators.required]),
+    control1a: new FormControl(null),
     control2: new FormControl(null, [Validators.required]),
+    control2a: new FormControl(null),
     control3: new FormControl(null, [Validators.required]),
+    control3a: new FormControl(null),
     control4: new FormControl(null, [Validators.required]),
+    control4a: new FormControl(null),
     control5: new FormControl(null, [Validators.required]),
+    control5a: new FormControl(null),
     control6: new FormControl(null, [Validators.required]),
+    control6a: new FormControl(null),
     control7: new FormControl(null, [Validators.required]),
+    control7a: new FormControl(null),
     control8: new FormControl(null, [Validators.required]),
     control9: new FormControl(null, [Validators.required]),
+    control9a: new FormControl(null),
     control10: new FormControl(null, [Validators.required]),
+    control10a: new FormControl(null),
     control11: new FormControl(null, [Validators.required]),
+    control11a: new FormControl(null),
     control12: new FormControl(null, [Validators.required]),
   });
 

@@ -32,6 +32,12 @@ import { DEFAULT_TEMPLATE } from 'ngx-pagination/dist/template';
   styleUrls: ['./form-sad500-line.component.scss']
 })
 export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+
+
+  constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
+              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
+              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService,
+              private snackbar: MatSnackBar) { }
   disabledlineNo: boolean;
   lineNoOReason: string;
   disabledsupplyUnit: boolean;
@@ -40,12 +46,6 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   customsValueOReason: string;
   disabledquantity: boolean;
   quantityOReason: string;
-
-
-  constructor(private themeService: ThemeService, private unitService: UnitMeasureService, private userService: UserService,
-              private validate: ValidateService, private tariffService: TariffService, private captureService: CaptureService,
-              private snackbarService: HelpSnackbar, private dialog: MatDialog, private placeService: PlaceService,
-              private snackbar: MatSnackBar) { }
 
   currentUser: User;
 
@@ -84,14 +84,20 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
 
   LinesForm = new FormGroup({
     control1: new FormControl(null, [Validators.required]),
+    control1a: new FormControl(null),
     control2: new FormControl(null, [Validators.required]),
+    control2a: new FormControl(null),
     control3: new FormControl(null, [Validators.required]),
     control4: new FormControl(null, [Validators.required]),
+    control4a: new FormControl(null),
     control5: new FormControl(null, [Validators.required]),
+    control5a: new FormControl(null),
     control6: new FormControl(null, [Validators.required]),
     control7: new FormControl(null, [Validators.required]),
     control8: new FormControl(null, [Validators.required]),
-    control9: new FormControl(null)
+    control9: new FormControl(null),
+    control9a: new FormControl(null),
+    control9b: new FormControl(null)
   });
 
   @ViewChild('dutiesAssignedEl', { static: false })
@@ -111,6 +117,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   shortcuts: ShortcutInput[] = [];
   @ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
 
+  tempUpdateLine: SAD500Line;
+  tempLineData: SAD500Line;
 
   form = {
     tariff: {
@@ -207,6 +215,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   unitOfMeasureQuery = '';
   tarrifQuery = '';
 
+  lineForm = new FormGroup({
+    tariff: new FormControl(),
+  });
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -252,9 +264,119 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     );
   }
 
-  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
-    if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
+  resetValues() {
+    this.form = {
+      tariff: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      customsValue: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      lineNo: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      unitOfMeasureID: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      unitOfMeasure: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      quantity: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      previousDeclaration: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      duty: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      vat: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      supplyUnit: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      },
+      cooID: {
+        value: null,
+        error: null,
+        OBit: null,
+        OUserID: null,
+        ODate: null,
+        OReason: null,
+      }
+    };
+  }
 
+  ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    if (this.tempUpdateLine || this.tempLineData) {
+      if ((this.tempUpdateLine !== this.updateSAD500Line) || (this.tempLineData !== this.lineData)) {
+        this.handleChanges();
+        this.tempUpdateLine = this.updateSAD500Line;
+        this.tempLineData = this.lineData;
+      }
+    } else {
+      this.tempUpdateLine = this.updateSAD500Line;
+      this.tempLineData = this.lineData;
+      this.handleChanges();
+    }
+  }
+
+  handleChanges() {
+    this.resetValues();
+    this.loadDuties();
+    this.isUpdate = false;
+
+    if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
       if (this.attachmentType !== 'VOC') {
         console.log('yes update is true');
         this.isUpdate = true;
@@ -270,104 +392,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.form.lineNo.error = this.updateSAD500Line.lineNoError ? this.updateSAD500Line.lineNoError : null;
       this.form.quantity.value = this.updateSAD500Line.quantity;
       this.form.quantity.error = this.updateSAD500Line.quantityError ? this.updateSAD500Line.quantityError : null;
-      this.loadDuties();
     } else {
-      this.isUpdate = false;
       this.dutiesToBeSaved = [];
-      this.form = {
-        tariff: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        customsValue: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        lineNo: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        unitOfMeasureID: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        unitOfMeasure: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        quantity: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        previousDeclaration: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        duty: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        vat: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        supplyUnit: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        },
-        cooID: {
-          value: null,
-          error: null,
-          OBit: null,
-          OUserID: null,
-          ODate: null,
-          OReason: null,
-        }
-      };
       this.updateSAD500Line = null;
-      this.loadDuties();
     }
-
   }
 
   loadUnits(): void {
@@ -648,17 +676,17 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   filterDuties() {
     this.dutyList.duties = this.dutyListTemp;
     // tslint:disable-next-line: max-line-length
-    this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutiesQuery.toUpperCase()}*`));
+    this.dutyList.duties = this.dutyList.duties.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${this.dutiesQuery.toUpperCase()}*`));
   }
 
   filterAssignedDuties() {
     this.assignedDuties = this.assignedDutiesTemp;
     // tslint:disable-next-line: max-line-length
-    this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
+    this.assignedDuties = this.assignedDuties.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
 
     this.dutiesToBeSaved = this.dutyListTemp;
     // tslint:disable-next-line: max-line-length
-    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
+    this.dutiesToBeSaved = this.dutiesToBeSaved.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${this.dutieAssignedQuery.toUpperCase()}*`));
   }
 
   matchRuleShort(str, rule) {
@@ -688,7 +716,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     }).then(
       (res: DutyListResponse) => {
         this.dutyList = res;
-        this.dutyListTemp = res.duties;
+        this.dutyListTemp = this.dutyList.duties;
 
         if (this.isUpdate) {
           this.loadAssignedDuties();
@@ -819,4 +847,13 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+}
+
+export class FormValue {
+  value: any = null;
+  error?: string;
+  OBit?: boolean;
+  OUserID?: number;
+  ODate?: Date | string;
+  OReason?: string;
 }

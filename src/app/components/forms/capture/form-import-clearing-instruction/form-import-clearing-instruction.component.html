@@ -18,7 +18,8 @@
           {{this.form.importersCode.error}}
           <button (click)="OverrideImportersCodeClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.importersCode.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.importersCode.OBit == true" [disabled]="disabledIC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control1a"
+        [(ngModel)]="this.form.importersCode.OReason"  *ngIf="this.form.importersCode.OBit == true" [disabled]="disabledIC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.importersCode.OBit == true"  class="input-group-append ">
           <button (click)="OverrideImportersExcept()" [disabled]="disabledIC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideImporters()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -37,7 +38,8 @@
           {{this.form.waybillNo.error}}
           <button (click)="OverrideWaybillClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.waybillNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledWay" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control2a"
+        [(ngModel)]="this.form.waybillNo.OReason"  *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledWay" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.waybillNo.OBit == true"  class="input-group-append ">
           <button (click)="OverrideWaybillExcept()" [disabled]="disabledWay" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideWaybill()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -56,7 +58,8 @@
           {{this.form.supplierRef.error}}
           <button (click)="OverrideSupplyRefClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.supplierRef.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.supplierRef.OBit == true"  [disabled]="disabledSupp" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control3a"
+        [(ngModel)]="this.form.supplierRef.OReason"  *ngIf="this.form.supplierRef.OBit == true"  [disabled]="disabledSupp" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.supplierRef.OBit == true"  class="input-group-append ">
           <button (click)="OverrideSupplyRefExcept()" [disabled]="disabledSupp" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideSupplyRef()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>

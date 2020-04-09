@@ -15,4 +15,9 @@ export class Waybill {
   waybillError: string;
   status: string;
   statusID: number;
+
+  waybillNoOBit: boolean;
+  waybillNoOUserID: number;
+  waybillNoODate: string;
+  waybillNoOReason: string;
 }

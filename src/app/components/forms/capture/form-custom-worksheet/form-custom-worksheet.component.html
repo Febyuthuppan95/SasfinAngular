@@ -31,7 +31,8 @@
           {{this.form.LRN.error}}
           <button (click)="OverrideLRNClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.LRN.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.LRN.OBit == true" [disabled]="disabledLRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input formControlName="control1a"
+          [(ngModel)]="this.form.LRN.OReason"  *ngIf="this.form.LRN.OBit == true" [disabled]="disabledLRN" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.LRN.OBit == true"  class="input-group-append ">
             <button (click)="OverrideLRNExcept()" [disabled]="disabledLRN" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverrideLRN()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -50,7 +51,8 @@
           {{this.form.fileRef.error}}
           <button (click)="OverridefileRefClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.fileRef.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.fileRef.OBit == true" [disabled]="disabledfileRef" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input formControlName="control2a"
+          [(ngModel)]="this.form.fileRef.OReason"  *ngIf="this.form.fileRef.OBit == true" [disabled]="disabledfileRef" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.fileRef.OBit == true"  class="input-group-append ">
             <button (click)="OverridefileRefExcept()" [disabled]="disabledfileRef" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverridefileRef()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -69,7 +71,8 @@
           {{this.form.waybillNo.error}}
           <button (click)="OverrideWaybillClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.waybillNo.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledWay" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input formControlName="control3a"
+          [(ngModel)]="this.form.waybillNo.OReason"  *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledWay" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.waybillNo.OBit == true"  class="input-group-append ">
             <button (click)="OverrideWaybillExcept()" [disabled]="disabledWay" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverrideWaybill()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>

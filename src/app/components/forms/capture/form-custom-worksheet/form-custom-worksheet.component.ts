@@ -47,8 +47,11 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
     CWSForm = new FormGroup({
       control1: new FormControl(null, [Validators.required]),
+      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
-      control3: new FormControl(null, [Validators.required])
+      ontrol2a: new FormControl(null),
+      control3: new FormControl(null, [Validators.required]),
+      ontrol3a: new FormControl(null),
     });
 
     LinesValid: boolean;

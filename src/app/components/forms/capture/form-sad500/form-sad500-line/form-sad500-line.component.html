@@ -13,22 +13,14 @@
           {{this.form.lineNo.error}}
           <button (click)="OverridelineNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.lineNo.OReason"  *ngIf="this.form.lineNo.OBit == true" [disabled]="disabledlineNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control1a"
+        [(ngModel)]="this.form.lineNo.OReason"  *ngIf="this.form.lineNo.OBit == true" [disabled]="disabledlineNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.lineNo.OBit == true"  class="input-group-append ">
           <button (click)="OverridelineNoExcept()" [disabled]="disabledlineNo"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridelineNo()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
         </div>
       </div>
     </div>
-  <!-- <div class="form-group" *ngIf="this.form.vat != undefined">
-    <label for="customsValue">VAT</label>
-    <input type="text"
-      [(ngModel)]="this.form.vat"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-sad500-line-vat')"
-      placeholder="VAT" style="margin-top:0"/>
-      <p class="invalid-control-label" *ngIf="this.form.vatError !== null && this.form.vatError !== undefined">{{this.form.vatError}}</p>
-  </div> -->
   <div class="form-group">
     <div class="row">
       <div class="col-md-3">
@@ -42,7 +34,8 @@
               {{this.form.supplyUnit.error}}
               <button (click)="OverridesupplyUnitClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
             </p>
-            <input [(ngModel)]="this.form.supplyUnit.OReason"  *ngIf="this.form.supplyUnit.OBit == true" [disabled]="disabledsupplyUnit" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+            <input formControlName="control2a"
+            [(ngModel)]="this.form.supplyUnit.OReason"  *ngIf="this.form.supplyUnit.OBit == true" [disabled]="disabledsupplyUnit" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
             <div *ngIf="this.form.supplyUnit.OBit == true"  class="input-group-append ">
               <button (click)="OverridesupplyUnitExcept()" [disabled]="disabledsupplyUnit"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
               <button (click)="UndoOverridesupplyUnit()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -68,20 +61,7 @@
         <p class="invalid-control-label" *ngIf="this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined">{{this.form.unitOfMeasure.error}}</p>
       </div>
     </div>
-
   </div>
-  <!-- <div class="form-group" *ngIf="this.form.unitOfMeasure != undefined">
-
-  </div> -->
-  <!-- <div class="form-group" *ngIf="this.form.value != undefined">
-    <input type="text"
-      [(ngModel)]="this.form.value"
-      class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-sad500-line-value')"
-      placeholder="Value" />
-      <p class="invalid-control-label" *ngIf="this.form.valueError !== null && this.form.lineNoError !== undefined">{{this.form.valueError}}</p>
-  </div> -->
-
 <br>
   <div class="form-group">
   <label for="customsValue">Customs Value</label>
@@ -96,7 +76,8 @@
         {{this.form.customsValue.error}}
         <button (click)="OverridecustomsValueClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
       </p>
-      <input [(ngModel)]="this.form.customsValue.OReason"  *ngIf="this.form.customsValue.OBit == true" [disabled]="disabledcustomsValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+      <input formControlName="control4a"
+      [(ngModel)]="this.form.customsValue.OReason"  *ngIf="this.form.customsValue.OBit == true" [disabled]="disabledcustomsValue" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
       <div *ngIf="this.form.customsValue.OBit == true"  class="input-group-append ">
         <button (click)="OverridecustomsValueExcept()" [disabled]="disabledcustomsValue"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
         <button (click)="UndoOverridecustomsValue()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -116,7 +97,8 @@
             {{this.form.quantity.error}}
             <button (click)="OverridequantityClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.quantity.OReason"  *ngIf="this.form.quantity.OBit == true" [disabled]="disabledquantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input formControlName="control5a"
+          [(ngModel)]="this.form.quantity.OReason"  *ngIf="this.form.quantity.OBit == true" [disabled]="disabledquantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.quantity.OBit == true"  class="input-group-append ">
             <button (click)="OverridequantityExcept()" [disabled]="disabledquantity"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverridequantity()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -182,7 +164,6 @@
               <div class="form-group">
                 <input type="search" formControlName="control9"
                 [(ngModel)]="this.dutiesQuery"
-
                 (keyup)="filterDuties()"
                 class="form-control form-control-sm"
                 (mouseover)="updateHelpContext('form-sad500-line-duty-tax-search')"
@@ -203,7 +184,8 @@
           <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.assignedDuties !== undefined">
               <li>
                 <div class="form-group">
-                  <input tabindex="-1" [focus]="focusDutiesQuery"
+                  <input formControlName="control9a"
+                  tabindex="-1" [focus]="focusDutiesQuery"
                   type="search" [(ngModel)]="this.dutieAssignedQuery"
 
                   (keyup)="filterAssignedDuties()"
@@ -225,7 +207,8 @@
             <ul class="tile-list list-unstyled shadow-sm" *ngIf="this.dutiesToBeSaved.length > 0">
                 <li>
                   <div class="form-group">
-                    <input [focus]="focusAssignedQuery" type="search" [(ngModel)]="this.dutieAssignedQuery"
+                    <input formControlName="control9b"
+                    [focus]="focusAssignedQuery" type="search" [(ngModel)]="this.dutieAssignedQuery"
                      (keyup)="filterAssignedDuties()" class="form-control form-control-sm"
                     (mouseover)="updateHelpContext('form-sad500-line-search')"
                     placeholder="Search">

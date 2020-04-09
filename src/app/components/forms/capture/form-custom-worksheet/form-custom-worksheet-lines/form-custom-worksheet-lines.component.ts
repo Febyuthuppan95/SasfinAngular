@@ -52,17 +52,22 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     LinesForm = new FormGroup({
       control1: new FormControl(null, [Validators.required]),
+      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
+      control2a: new FormControl(null),
       control3: new FormControl(null, [Validators.required]),
+      control3a: new FormControl(null),
       control4: new FormControl(null, [Validators.required]),
+      control4a: new FormControl(null),
       control5: new FormControl(null, [Validators.required]),
+      control5a: new FormControl(null),
       control6: new FormControl(null, [Validators.required]),
       control7: new FormControl(null, [Validators.required]),
       control8: new FormControl(null, [Validators.required]),
       control9: new FormControl(null, [Validators.required]),
       control10: new FormControl(null, [Validators.required]),
       control11: new FormControl(null, [Validators.required]),
-      control12: new FormControl(null, [Validators.required])
+      control12: new FormControl(null, [Validators.required]),
     });
 
     @Input() lineData: CustomWorksheetLine;
