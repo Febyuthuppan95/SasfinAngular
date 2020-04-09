@@ -43,6 +43,7 @@
         </div>
       </div>
       <div class="col-md-12">
+        <br/>
         <mat-form-field class="datepicker" appearance="outline">
           <input formControlName="control2"
           matInput [matDatepicker]="invoiceDate" [focus]="this.focusMainForm"
@@ -50,8 +51,7 @@
           (mouseover)="updateHelpContext('form-invoice-invoicedate')"
           [ngClass]="{'form-control-invalid': this.form.invoiceDate.error !== null}"
           placeholder="Invoice Date" />
-         <!-- <mat-label>Invoice Date</mat-label>
-          <input matInput [matDatepicker]="invoiceDate" > -->
+
           <mat-datepicker-toggle matPrefix [for]="invoiceDate"></mat-datepicker-toggle>
           <mat-datepicker #invoiceDate></mat-datepicker>
         </mat-form-field>
@@ -85,7 +85,7 @@
         {{unit.name}}, {{unit.code}}
       </mat-option>
     </mat-autocomplete>
-    <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined">{{this.form.currencyID.error}}</p>
+    <p class="invalid-control-label" *ngIf="this.form.currencyID.error !== undefined"></p>
     </div>
 
   <div class="form-group" *ngIf="this.form.cooID">

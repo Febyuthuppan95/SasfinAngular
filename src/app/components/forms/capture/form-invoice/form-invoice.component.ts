@@ -121,7 +121,7 @@ form = {
     ODate: null,
     OReason: null,
   },
-  toCompanyID: {
+  CompanyID: {
     value: null,
     error: null,
     OBit: null,
@@ -185,11 +185,6 @@ lineIndex = 0;
 loader = false;
 
   ngOnInit() {
-    this.loadCurrency();
-    this.loadCompanies();
-    this.loadCountries();
-    this.loadIncoTypes();
-
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
@@ -221,8 +216,7 @@ loader = false;
         this.incoTermsList = res.termTypes;
         this.incoTermsListTemp = this.incoTermsList;
 
-
-
+        this.initfilterCountfries();
       },
       (msg) => {
         // Snackbar
@@ -324,7 +318,7 @@ loader = false;
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
             invoiceNo: this.form.invoiceNo.value,
-            companyID: this.form.fromCompanyID.value,
+            companyID: this.form.CompanyID.value,
             currencyID: this.form.currencyID.value,
             attachmentStatusID: 3,
             cooID: this.form.cooID.value,
@@ -407,6 +401,7 @@ loader = false;
       (res: ListCurrencies) => {
         this.currencies = res.currenciesList;
         this.currenciesTemp = this.currencies;
+        this.initfilterCurrency();
       },
       (msg) => {
         console.log(msg);
@@ -428,14 +423,15 @@ loader = false;
       (res: InvoiceGetResponse) => {
         console.log(res);
         if (res.invoices !== undefined) {
-          this.form.fromCompany.value = res.invoices[0].fromCompany;
-          this.form.fromCompany.error = res.invoices[0].fromCompanyError;
-          this.form.toCompany.value = res.invoices[0].toCompany;
-          this.form.toCompany.error = res.invoices[0].toCompanyError;
+          console.log('invoices');
+          console.log(res.invoices);
+          this.form.cooID.value = res.invoices[0].cooID;
+          this.form.fromCompanyID.value = res.invoices[0].companyID;
+          this.form.invoiceDate.value = new Date(res.invoices[0].invoiceDate);
           this.form.invoiceNo.value = res.invoices[0].invoiceNo;
-          this.form.invoiceNo.error = res.invoices[0].invoiceNoError;
           this.form.currencyID.value = res.invoices[0].currencyID;
-          this.form.currencyID.error = res.invoices[0].currencyError;
+          this.form.incoType.value = res.invoices[0].incoID;
+          this.countryQuery = this.form.cooID.value;
 
           this.form.invoiceNo.OBit = res.invoices[0].invoiceNoOBit;
           this.form.invoiceNo.OUserID = res.invoices[0].invoiceNoOUserID;
@@ -449,6 +445,11 @@ loader = false;
               }
             });
           }
+
+          this.loadCurrency();
+          this.loadCompanies();
+          this.loadCountries();
+          this.loadIncoTypes();
         }
       },
       (msg) => {
@@ -591,6 +592,8 @@ loader = false;
         this.fromCompanyList = res.companies;
         this.toCompanyListTemp = this.toCompanyList;
         this.fromCompanyListTemp = this.fromCompanyList;
+
+        this.initfilterCompanies();
       },
       (msg) => {
         console.log(msg);
@@ -610,6 +613,7 @@ loader = false;
 
   filterFromCompany() {
     this.fromCompanyList = this.fromCompanyListTemp;
+    // tslint:disable-next-line: max-line-length
     this.fromCompanyList = this.fromCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.fromCompany.value}*`));
   }
 
@@ -618,7 +622,7 @@ loader = false;
   }
 
   selectedFromCompany(fromCompanyID: Company) {
-    this.form.fromCompanyID.value = fromCompanyID.companyID;
+    this.form.CompanyID.value = fromCompanyID.companyID;
   }
 
   matchRuleShort(str, rule) {
@@ -685,6 +689,7 @@ loader = false;
         this.countriesList = res.countriesList;
         this.countriesListTemp = res.countriesList;
         // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
+        this.initfilterCountries();
       }
     );
   }
@@ -694,8 +699,38 @@ loader = false;
   }
   filterCountries() {
     this.countriesList = this.countriesListTemp;
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
+    // tslint:disable-next-line: max-line-length
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !==  null && typeof this.countryQuery === 'string' ? this.countryQuery.toUpperCase() : null}*`));
+
   }
+  initfilterCountries() {
+      this.countriesList = this.countriesListTemp;
+      this.countriesList = this.countriesList.filter(x => x.countryID === this.form.cooID.value);
+      this.countryQuery = this.countriesList[0].code;
+  }
+
+  initfilterCurrency() {
+    this.currencies = this.currenciesTemp;
+    this.currencies = this.currencies.filter(x => x.currencyID === this.form.currencyID.value.toString());
+    this.currencyQuery = this.currencies[0].code;
+  }
+
+initfilterCompanies() {
+  this.fromCompanyList = this.fromCompanyListTemp;
+  this.fromCompanyList = this.fromCompanyList.filter(x => x.companyID === this.form.fromCompanyID.value);
+  this.form.fromCompany.value = this.fromCompanyList[0].name;
+}
+
+initfilterCountfries() {
+  this.incoTermsList = this.incoTermsListTemp;
+  console.log('inco');
+  console.log(this.form.incoType.value);
+  console.log(this.incoTermsList);
+  this.incoTermsList = this.incoTermsList.filter(x => x.incoTermTypeID === this.form.incoType.value);
+  console.log('inco');
+  console.log(this.incoTermsList);
+  this.incoTypeQuery = this.incoTermsList[0].description;
+}
 
   OverrideinvoiceNoClick() {
     this.form.invoiceNo.OUserID = this.currentUser.userID;
