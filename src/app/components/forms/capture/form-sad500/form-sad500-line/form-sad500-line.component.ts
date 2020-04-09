@@ -363,9 +363,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
         this.handleChanges();
         this.tempUpdateLine = this.updateSAD500Line;
         this.tempLineData = this.lineData;
-
-        this.initfilterUnits();
-        this.initfilterCountries();
+        this.linesValid.emit(true);
       }
     } else {
       this.tempUpdateLine = this.updateSAD500Line;
@@ -378,23 +376,35 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.resetValues();
     this.loadDuties();
     this.isUpdate = false;
-
     if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
       if (this.attachmentType !== 'VOC') {
-        console.log('yes update is true');
         this.isUpdate = true;
       }
-
-      this.form.customsValue.error = this.updateSAD500Line.customsValue;
+      console.log(this.updateSAD500Line);
+      this.form.customsValue.value = this.updateSAD500Line.customsValue;
       this.form.lineNo.value = this.updateSAD500Line.lineNo;
       this.form.tariff.value = this.updateSAD500Line.tariffID;
-      this.form.unitOfMeasure.value = this.updateSAD500Line.unitOfMeasureID;
-      this.form.tariff.error = this.updateSAD500Line.tariffError;
-      this.form.customsValue.error = this.updateSAD500Line.customsValueError ? this.updateSAD500Line.customsValueError : null;
-      this.form.unitOfMeasure.error = this.updateSAD500Line.unitOfMeasureError;
-      this.form.lineNo.error = this.updateSAD500Line.lineNoError ? this.updateSAD500Line.lineNoError : null;
+      this.form.unitOfMeasureID.value = this.updateSAD500Line.unitOfMeasureID;
       this.form.quantity.value = this.updateSAD500Line.quantity;
-      this.form.quantity.error = this.updateSAD500Line.quantityError ? this.updateSAD500Line.quantityError : null;
+      this.form.previousDeclaration.value = this.updateSAD500Line.previousDeclaration;
+      this.form.supplyUnit.value = this.updateSAD500Line.supplyUnit;
+      this.form.cooID.value = this.updateSAD500Line.cooID;
+
+      console.log(this.form.tariff.value);
+
+
+      if (this.form.cooID.value !== null || this.form.cooID.value !== 0) {
+        this.initfilterCountries();
+      }
+
+      if (this.form.tariff.value !== null || this.form.tariff.value !== 0) {
+        this.initfilterTariffs();
+      }
+
+      if (this.form.unitOfMeasureID.value !== null || this.form.unitOfMeasureID.value !== 0) {
+        this.initfilterUnits();
+      }
+
     } else {
       this.dutiesToBeSaved = [];
       this.updateSAD500Line = null;
@@ -420,6 +430,12 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.unitOfMeasureList = this.unitOfMeasureListTemp;
     this.unitOfMeasureList = this.unitOfMeasureList.filter(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value);
     this.unitOfMeasureQuery = this.unitOfMeasureList[0].name;
+  }
+
+  initfilterTariffs() {
+    this.tariffs = this.tariffsTemp;
+    this.tariffs = this.tariffs.filter(x => x.id === this.form.tariff.value);
+    this.tarrifQuery = this.tariffs[0].name;
   }
 
   submit() {
@@ -596,9 +612,9 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   initfilterCountries() {
-    this.tariffs = this.tariffsTemp;
-    this.tariffs = this.tariffs.filter(x => x.name === this.form.tariff.value);
-    this.tarrifQuery = this.tariffs[0].name;
+    this.countriesList = this.countriesListTemp;
+    this.countriesList = this.countriesList.filter(x => x.countryID === this.form.cooID.value);
+    this.countryQuery = this.countriesList[0].code;
   }
 
   assignDuty(duty: Duty) {

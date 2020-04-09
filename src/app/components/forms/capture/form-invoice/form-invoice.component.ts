@@ -741,7 +741,6 @@ initfilterCompanies() {
 initfilterCountfries() {
   this.incoTermsList = this.incoTermsListTemp;
   this.incoTermsList = this.incoTermsList.filter(x => x.incoTermTypeID === this.form.incoType.value);
-
   this.incoTypeQuery = this.incoTermsList[0].description;
 }
 

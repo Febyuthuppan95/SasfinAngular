@@ -363,6 +363,24 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
                     }
                 });
             }
+            if (this.form.cooID.value !== null || this.form.cooID.value !== 0) {
+              this.initfilterCountries();
+            }
+
+            if (this.form.currencyID.value !== null || this.form.currencyID.value !== 0) {
+              this.initfilterCurrency();
+            }
+
+            if (this.form.unitOfMeasureID.value !== null || this.form.unitOfMeasureID.value !== 0) {
+              this.initfilterUnit();
+            }
+
+            if (this.form.tariffID.value !== null || this.form.tariffID.value !== 0) {
+              this.initfilterTariffs();
+            }
+
+            this.linesValid.emit(true);
+
         } else {
             this.isUpdate = false;
             this.form = {
@@ -491,6 +509,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     submit() {
+      console.log('logvalid');
+      console.log(this.LinesForm);
       if (this.LinesForm.valid) {
         const model: CustomWorksheetLine = {
             userID: this.currentUser.userID,
@@ -631,6 +651,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !== null ? this.countryQuery.toUpperCase() : ''}*`));
     }
 
+    initfilterCountries() {
+      this.countriesList = this.countriesListTemp;
+      this.countriesList = this.countriesList.filter(x => x.countryID === this.form.cooID.value);
+      this.countryQuery = this.countriesList[0].code;
+  }
+
     selectedCountry(country: number) {
         this.countryID = country;
         this.form.cooID.value = this.countryID;
@@ -708,16 +734,36 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     filterCurrency() {
-        console.log('currencyQuery');
-        console.log(this.currencyQuery);
         this.currenciesList = this.currenciesListTemp;
         // tslint:disable-next-line: max-line-length
         this.currenciesList = this.currenciesList.filter(x => this.matchRuleShort(x.code, `*${this.currencyQuery !== null ? this.currencyQuery.toUpperCase() : ''}*`));
     }
+
+    initfilterCurrency() {
+      this.currenciesList = this.currenciesListTemp;
+      console.log(this.currenciesList);
+      console.log(this.form.currencyID.value);
+      this.currenciesList = this.currenciesList.filter(x => x.currencyID === this.form.currencyID.value.toString());
+      console.log(this.currenciesList);
+      this.currencyQuery = this.currenciesList[0].code;
+    }
+
     filterUnit() {
         this.unitOfMeasureList = this.unitOfMeasureListTemp;
         // tslint:disable-next-line: max-line-length
         this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name, `*${this.unitQuery !== null ? this.unitQuery.toUpperCase() : ''}*`));
+    }
+
+    initfilterUnit() {
+      this.unitOfMeasureList = this.unitOfMeasureListTemp;
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value);
+      this.unitQuery = this.unitOfMeasureList[0].name;
+    }
+
+    initfilterTariffs() {
+      this.tariffs = this.tariffsTemp;
+      this.tariffs = this.tariffs.filter(x => x.id === this.form.tariffID.value);
+      this.tariffQuery = this.tariffs[0].name;
     }
 
     selectedUnit(id: number) {

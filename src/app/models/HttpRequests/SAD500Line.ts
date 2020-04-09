@@ -25,7 +25,7 @@ export class SadTest {
   PreviousDeclaration: string;
   Quantity: number;
   Duty: number;
-  SupplyUnit: number;
+  supplyUnit: number;
   LineNoOBit: boolean;
   LineNoOUserID: number;
   LineNoODate: string;
@@ -50,9 +50,9 @@ export class SadTest {
   VATOUserID: number;
   VATODate: string;
   VATOReason: string;
-  SupplyUnitOBit: boolean;
-  SupplyUnitOUserID: number;
-  SupplyUnitODate: string;
+  supplyUnitOBit: boolean;
+  supplyUnitOUserID: number;
+  supplyUnitODate: string;
   SupllyUnitOReason: string;
 }
 
@@ -114,12 +114,6 @@ export class SAD500LineCreateRequest {
   sad500LineID?: number;
   rowNum?: number;
   isPersist?: boolean;
-  // tariffError?: string;
-  // customsValueError?: number;
-  // lineNoError?: string;
-  // unitOfMeasureError?: string;
-  // quantityError?: string;
-  // previousDeclarationError?: string;
 
 
 }

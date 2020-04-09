@@ -220,6 +220,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         this.initfilterUnit();
         this.initfilteritems();
         this.initfiltercounties();
+
+        this.linesValid.emit(true);
       } else {
         this.isUpdate = false;
 

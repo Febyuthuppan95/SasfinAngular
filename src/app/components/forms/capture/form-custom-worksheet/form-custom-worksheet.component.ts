@@ -370,9 +370,10 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             filter: '',
             transactionID: this.transactionID,
         }).then((res: CustomWorksheetLinesResponse) => {
+            if (res.lines.length > 0) {
+              this.LinesValid = true;
+            }
             this.linesCreated = res.lines;
-            console.log('CWSlines');
-            console.log(this.linesCreated);
             this.lines = this.linesCreated.length;
             if (this.lines > -1) {
                 this.focusLineData = this.linesCreated[this.lines - 1];

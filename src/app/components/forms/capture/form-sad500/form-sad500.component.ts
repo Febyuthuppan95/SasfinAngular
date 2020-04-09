@@ -271,10 +271,8 @@ dialogOpen = false;
         this.transactionID = curr.transactionID;
         this.attachmentType = curr.docType;
         if (curr.docType === 'VOC') {
-          console.log('yes it is a VOC');
           this.vocGet();
         } else {
-          console.log('it is a SAD');
           this.loadCapture();
           this.loadLines();
         }
@@ -384,8 +382,6 @@ dialogOpen = false;
   }).then(
     (res: VOCListResponse) => {
       if (res.rowCount !== 0) {
-        console.log('VOC data');
-        console.log(res);
         this.vocSAD500ID = res.vocs[0].sad500ID;
         this.SADOriginalID = res.vocs[0].originalID;
         this.reason = res.vocs[0].reason;
@@ -556,8 +552,6 @@ dialogOpen = false;
   }
 
   loadCapture() {
-    console.log(this.attachmentType);
-    console.log(this.attachmentID);
     this.captureService.sad500Get({
       userID: this.currentUser.userID,
       specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -681,12 +675,16 @@ dialogOpen = false;
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        console.log('res');
+        console.log(res.lines);
         this.sad500CreatedLines = res.lines;
         if (this.sad500CreatedLines.length > 0) {
           this.LinesValid = true;
         }
+
+        this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
-          this.focusLineData = this.sad500CreatedLines[this.lines];
+            this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }
       },
       (msg) => {
@@ -777,7 +775,6 @@ dialogOpen = false;
           supplyUnitODate: obj.supplyUnitODate,
           supllyUnitOReason: obj.supllyUnitOReason,
         };
-        console.log(perfect);
 
         this.captureService.sad500LineAdd(perfect).then(
           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -805,16 +802,11 @@ dialogOpen = false;
           }
         );
       } else {
-        console.log('SAD500');
         if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
 
           const lineCreate: any = this.lineQueue[this.lineIndex];
           delete lineCreate.isPersist;
-          console.log('lineCreate');
-          console.log(lineCreate);
           const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-          console.log('perfect');
-          console.log(perfect);
           this.captureService.sad500LineAdd(perfect).then(
             (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
               if (res.outcome === 'SUCCESS') {
