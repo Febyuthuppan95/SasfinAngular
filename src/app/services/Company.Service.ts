@@ -31,6 +31,7 @@ import { NumberValueAccessor } from '@angular/forms';
 import { GetServiceClaimReports } from '../models/HttpRequests/GetServiceClaimReports';
 import { AddContact } from '../models/HttpRequests/AddContact';
 import { GetTariffList } from '../models/HttpRequests/GetTariffList';
+import { Outcome } from '../models/HttpResponses/DoctypeResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -869,6 +870,22 @@ export class CompanyService {
         );
     });
   }
+  public addCompanyServiceClaim(model: AddComanyServiceClaim) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/AddCompanyServiceClaim`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 
   public alternatItemsUpdate(model) {
     const json = JSON.parse(JSON.stringify(model));
@@ -1108,4 +1125,13 @@ export class SelectedClaimReport {
 export class SelectedCapture {
   capturestate = false;
   token?: string;
+}
+export class AddComanyServiceClaim {
+userID: number;
+companyServiceID: number;
+claimDate: Date | string;
+}
+export class AddComanyServiceClaimResponse {
+  outcome: Outcome;
+  companyServiceClaimID: number;
 }

@@ -190,25 +190,37 @@ tr.active {
 .modal-list-rights .right-list {
   padding-right: 0px;
 }
-.modal-size {
-  max-width:  1000px !important;
-}
-.modal-dialog {
-  height:600px !important;
-}
-.modal-content {
-  height: 100%;
-}
+#populate {
 
+  .modal-size {
+    max-width:  1000px !important;
+  }
+  .modal-dialog {
+    height:600px !important;
+  }
+  .modal-content {
+    height: 100%;
+  }
+  
+  
+  
+  .modal-body {
+    margin-bottom: 64px;
+  }
+}
 .modal-footer {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
 }
-
-.modal-body {
-  margin-bottom: 64px;
+#create {
+  .modal-dialog {
+    height:200px !important;
+  }
+  .modal-content {
+    height: 25%;
+  }
 }
 
 .right-list li a {
