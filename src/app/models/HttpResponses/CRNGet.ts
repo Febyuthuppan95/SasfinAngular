@@ -24,6 +24,7 @@ export class CRNGet {
    fileRef: string;
    totalDuty: number;
    totalCustomsValue: number;
+   ediStatusID?: number;
 
    serialNoOBit: boolean;
    serialNoOUserID: number;

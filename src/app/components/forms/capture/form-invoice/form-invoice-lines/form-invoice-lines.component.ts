@@ -56,13 +56,18 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     LinesForm = new FormGroup({
       control1: new FormControl(null, [Validators.required]),
+      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
       control3: new FormControl(null, [Validators.required]),
       control4: new FormControl(null, [Validators.required]),
       control5: new FormControl(null, [Validators.required]),
+      control5a: new FormControl(null),
       control6: new FormControl(null, [Validators.required]),
+      control6a: new FormControl(null),
       control7: new FormControl(null, [Validators.required]),
+      control7a: new FormControl(null),
       control8: new FormControl(null, [Validators.required]),
+      control8a: new FormControl(null),
     });
 
     currentUser: User;
@@ -208,8 +213,15 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         this.form.prodCode.value = this.updateSAD500Line.prodCode;
         this.form.unitPrice.value = this.updateSAD500Line.unitPrice;
         this.form.totalLineValue.value = this.updateSAD500Line.totalLineValue;
-        // this.form.unitOfMeasure = this.updateSAD500Line.unitOfMeasure;
+        this.form.itemID.value = this.updateSAD500Line.itemID;
         this.form.unitOfMeasureID.value = this.updateSAD500Line.unitOfMeasureID;
+        this.form.cooID.value = this.updateSAD500Line.cooID;
+
+        this.initfilterUnit();
+        this.initfilteritems();
+        this.initfiltercounties();
+
+        this.linesValid.emit(true);
       } else {
         this.isUpdate = false;
 
@@ -352,6 +364,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
             this.unitOfMeasureList = res.unitOfMeasureList;
             this.unitOfMeasureListTemp = res.unitOfMeasureList;
           }
+
+
         },
         (msg) => {
 
@@ -363,6 +377,12 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.unitOfMeasureList = this.unitOfMeasureListTemp;
       // tslint:disable-next-line: max-line-length
       this.unitOfMeasureList = this.unitOfMeasureList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.unitOfMeasureQuery.toUpperCase()}*`));
+    }
+
+    initfilterUnit() {
+      this.unitOfMeasureList = this.unitOfMeasureListTemp;
+      this.unitOfMeasureList = this.unitOfMeasureList.filter(x => x.unitOfMeasureID === this.form.unitOfMeasureID.value);
+      this.unitOfMeasureQuery = this.unitOfMeasureList[0].name;
     }
 
     loadItems() {
@@ -379,8 +399,6 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         (res: ItemsListResponse) => {
           this.items = res.itemsLists;
           this.itemsTemp = this.items;
-          console.log('items');
-          console.log(this.items);
         },
         msg => {
           console.log(msg);
@@ -394,6 +412,12 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
     selectedItem(item: number) {
       this.form.itemID.value = item;
+    }
+
+    initfilteritems() {
+      this.items = this.itemsTemp;
+      this.items = this.items.filter(x => x.itemID === this.form.itemID.value);
+      this.itemQuery = this.items[0].item;
     }
 
     matchRuleShort(str, rule) {
@@ -425,8 +449,6 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       };
       this.placeService.getCountriesCall(request).then(
         (res: CountriesListResponse) => {
-          console.log('countries');
-          console.log(res);
           this.countriesList = res.countriesList;
           this.countriesListTemp = res.countriesList;
           // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
@@ -443,6 +465,12 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
     }
 
+    initfiltercounties() {
+      this.countriesList = this.countriesListTemp;
+      this.countriesList = this.countriesList.filter(x => x.countryID === this.form.cooID.value);
+      this.countryQuery = this.countriesList[0].code;
+    }
+
     OverrideinvoiceNoClick() {
       this.form.invoiceNo.OUserID = this.currentUser.userID;
       this.form.invoiceNo.OBit = true;
@@ -453,7 +481,6 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverrideinvoiceNoExcept() {
       this.disabledinvoiceNo = true;
-      console.log(this.form.invoiceNo);
     }
 
     UndoOverrideinvoiceNo() {

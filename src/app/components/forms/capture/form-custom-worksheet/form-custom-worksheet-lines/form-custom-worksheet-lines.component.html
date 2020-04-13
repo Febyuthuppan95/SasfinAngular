@@ -14,7 +14,8 @@
           {{this.form.commonFactor.error}}
           <button (click)="OverridecommonFactorClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
-          <input [(ngModel)]="this.form.commonFactor.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.commonFactor.OBit == true" [disabled]="disabledcommonFactor" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+          <input formControlName="control1a"
+          [(ngModel)]="this.form.commonFactor.OReason"  *ngIf="this.form.commonFactor.OBit == true" [disabled]="disabledcommonFactor" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.commonFactor.OBit == true"  class="input-group-append ">
             <button (click)="OverridecommonFactorExcept()" [disabled]="disabledcommonFactor" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverridecommonFactor()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -35,7 +36,8 @@
       {{this.form.custVal.error}}
       <button (click)="OverridecustValClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
       </p>
-      <input [(ngModel)]="this.form.custVal.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.custVal.OBit == true" [disabled]="disabledcustVal" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+      <input formControlName="control2a"
+      [(ngModel)]="this.form.custVal.OReason"  *ngIf="this.form.custVal.OBit == true" [disabled]="disabledcustVal" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
       <div *ngIf="this.form.custVal.OBit == true"  class="input-group-append ">
         <button (click)="OverridecustValExcept()" [disabled]="disabledcustVal" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
         <button (click)="UndoOverridecustVal()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -56,7 +58,8 @@
         {{this.form.hsQuantity.error}}
         <button (click)="OverridehsQuantityClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.hsQuantity.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.hsQuantity.OBit == true" [disabled]="disabledhsQuantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control3a"
+        [(ngModel)]="this.form.hsQuantity.OReason"  *ngIf="this.form.hsQuantity.OBit == true" [disabled]="disabledhsQuantity" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.hsQuantity.OBit == true"  class="input-group-append ">
           <button (click)="OverridehsQuantityExcept()" [disabled]="disabledhsQuantity" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridehsQuantity()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -77,7 +80,8 @@
         {{this.form.foreignInv.error}}
         <button (click)="OverrideforeignInvClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.foreignInv.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.foreignInv.OBit == true" [disabled]="disabledforeignInv" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control4a"
+        [(ngModel)]="this.form.foreignInv.OReason"  *ngIf="this.form.foreignInv.OBit == true" [disabled]="disabledforeignInv" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.foreignInv.OBit == true"  class="input-group-append ">
           <button (click)="OverrideforeignInvExcept()" [disabled]="disabledforeignInv" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideforeignInv()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
@@ -98,7 +102,8 @@
         {{this.form.duty.error}}
         <button (click)="OverridedutyClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input [(ngModel)]="this.form.duty.OReason" [ngModelOptions]="{standalone: true}" *ngIf="this.form.duty.OBit == true" [disabled]="disabledduty" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <input formControlName="control5a"
+        [(ngModel)]="this.form.duty.OReason"  *ngIf="this.form.duty.OBit == true" [disabled]="disabledduty" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.duty.OBit == true"  class="input-group-append ">
           <button (click)="OverridedutyExcept()" [disabled]="disabledduty" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverrideduty()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>

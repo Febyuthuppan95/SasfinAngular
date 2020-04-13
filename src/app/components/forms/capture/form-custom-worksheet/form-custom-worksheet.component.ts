@@ -47,8 +47,11 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
     CWSForm = new FormGroup({
       control1: new FormControl(null, [Validators.required]),
+      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
-      control3: new FormControl(null, [Validators.required])
+      ontrol2a: new FormControl(null),
+      control3: new FormControl(null, [Validators.required]),
+      ontrol3a: new FormControl(null),
     });
 
     LinesValid: boolean;
@@ -367,9 +370,10 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             filter: '',
             transactionID: this.transactionID,
         }).then((res: CustomWorksheetLinesResponse) => {
+            if (res.lines.length > 0) {
+              this.LinesValid = true;
+            }
             this.linesCreated = res.lines;
-            console.log('CWSlines');
-            console.log(this.linesCreated);
             this.lines = this.linesCreated.length;
             if (this.lines > -1) {
                 this.focusLineData = this.linesCreated[this.lines - 1];

@@ -55,6 +55,7 @@ invoiceTooltip: MatTooltip;
 
 InvForm = new FormGroup({
   control1: new FormControl(null, [Validators.required]),
+  control1a: new FormControl(null),
   control2: new FormControl(null, [Validators.required]),
   control3: new FormControl(null, [Validators.required]),
   control4: new FormControl(null, [Validators.required]),
@@ -120,7 +121,7 @@ form = {
     ODate: null,
     OReason: null,
   },
-  toCompanyID: {
+  CompanyID: {
     value: null,
     error: null,
     OBit: null,
@@ -184,11 +185,6 @@ lineIndex = 0;
 loader = false;
 
   ngOnInit() {
-    this.loadCurrency();
-    this.loadCompanies();
-    this.loadCountries();
-    this.loadIncoTypes();
-
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
@@ -217,11 +213,14 @@ loader = false;
     };
     this.captureService.incoTermTypeList(model).then(
       (res: IncoTermTypesReponse) => {
-        this.incoTermsList = res.termTypes;
-        this.incoTermsListTemp = this.incoTermsList;
+        if (res.termTypes.length > 0) {
+          this.incoTermsList = res.termTypes;
+          this.incoTermsListTemp = this.incoTermsList;
 
-
-
+          if (this.form.incoType.value !== 0 && this.form.incoType.value !== null) {
+            this.initfilterCountfries();
+          }
+        }
       },
       (msg) => {
         // Snackbar
@@ -233,7 +232,7 @@ loader = false;
     this.incoTermsList = this.incoTermsList.filter(x => this.matchRuleShort(x.name, `*${this.incoTypeQuery}*`));
   }
   selectedIncoType(id: number) {
-    this.incoTypeID = id;
+    this.form.incoType.value = id;
   }
 
   ngAfterViewInit(): void {
@@ -337,6 +336,8 @@ loader = false;
             invoiceNoOReason: this.form.invoiceNo.OReason,
           };
 
+          console.log('submit');
+          console.log(requestModel);
           this.captureService.invoiceUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -404,8 +405,14 @@ loader = false;
   loadCurrency(): void {
     this.currencyService.list({userID: this.currentUser.userID, specificCurrencyID: -1, filter: '', rowStart: 1, rowEnd: 1000}).then(
       (res: ListCurrencies) => {
-        this.currencies = res.currenciesList;
-        this.currenciesTemp = this.currencies;
+        if (res.currenciesList.length > 0) {
+          this.currencies = res.currenciesList;
+          this.currenciesTemp = this.currencies;
+
+          if (this.form.currencyID.value !== 0 && this.form.currencyID.value !== null) {
+          this.initfilterCurrency();
+          }
+        }
       },
       (msg) => {
         console.log(msg);
@@ -414,7 +421,7 @@ loader = false;
   }
 
   loadCapture() {
-    this.captureService.invoiceList({
+    const requestModel = {
       invoiceID: this.attachmentID,
       userID: this.currentUser.userID,
       rowStart: 1,
@@ -423,18 +430,19 @@ loader = false;
       orderBy: '',
       orderByDirection: '',
       transactionID: this.transactionID
-    }).then(
+    };
+    console.log('requestModel');
+    console.log(requestModel);
+    this.captureService.invoiceList(requestModel).then(
       (res: InvoiceGetResponse) => {
-        console.log(res);
+        console.log(res.invoices);
         if (res.invoices !== undefined) {
-          this.form.fromCompany.value = res.invoices[0].fromCompany;
-          this.form.fromCompany.error = res.invoices[0].fromCompanyError;
-          this.form.toCompany.value = res.invoices[0].toCompany;
-          this.form.toCompany.error = res.invoices[0].toCompanyError;
+          this.form.cooID.value = res.invoices[0].cooID;
+          this.form.fromCompanyID.value = res.invoices[0].companyID;
+          this.form.invoiceDate.value = res.invoices[0].invoiceDate ?  new Date(res.invoices[0].invoiceDate) : null;
           this.form.invoiceNo.value = res.invoices[0].invoiceNo;
-          this.form.invoiceNo.error = res.invoices[0].invoiceNoError;
           this.form.currencyID.value = res.invoices[0].currencyID;
-          this.form.currencyID.error = res.invoices[0].currencyError;
+          this.form.incoType.value = res.invoices[0].incoID;
 
           this.form.invoiceNo.OBit = res.invoices[0].invoiceNoOBit;
           this.form.invoiceNo.OUserID = res.invoices[0].invoiceNoOUserID;
@@ -448,6 +456,11 @@ loader = false;
               }
             });
           }
+
+          this.loadCurrency();
+          this.loadCompanies();
+          this.loadCountries();
+          this.loadIncoTypes();
         }
       },
       (msg) => {
@@ -488,8 +501,6 @@ loader = false;
 
 
   addToQueue(obj: InvoiceLine) {
-    console.log('obj');
-    console.log(obj);
     obj.userID = this.currentUser.userID;
     obj.invoiceID = this.attachmentID;
     obj.isPersist = false;
@@ -586,10 +597,16 @@ loader = false;
       orderByDirection: '',
     }).then(
       (res: CompaniesListResponse) => {
-        this.toCompanyList = res.companies;
-        this.fromCompanyList = res.companies;
-        this.toCompanyListTemp = this.toCompanyList;
-        this.fromCompanyListTemp = this.fromCompanyList;
+        if (res.companies.length > 0) {
+          this.toCompanyList = res.companies;
+          this.fromCompanyList = res.companies;
+          this.toCompanyListTemp = this.toCompanyList;
+          this.fromCompanyListTemp = this.fromCompanyList;
+
+          if (this.form.fromCompanyID.value !== 0 && this.form.fromCompanyID.value !== null) {
+            this.initfilterCompanies();
+          }
+        }
       },
       (msg) => {
         console.log(msg);
@@ -609,6 +626,7 @@ loader = false;
 
   filterFromCompany() {
     this.fromCompanyList = this.fromCompanyListTemp;
+    // tslint:disable-next-line: max-line-length
     this.fromCompanyList = this.fromCompanyList.filter(x => this.matchRuleShort(x.name, `*${this.form.fromCompany.value}*`));
   }
 
@@ -617,7 +635,7 @@ loader = false;
   }
 
   selectedFromCompany(fromCompanyID: Company) {
-    this.form.fromCompanyID.value = fromCompanyID.companyID;
+    this.form.CompanyID.value = fromCompanyID.companyID;
   }
 
   matchRuleShort(str, rule) {
@@ -681,9 +699,14 @@ loader = false;
     };
     this.placeService.getCountriesCall(request).then(
       (res: CountriesListResponse) => {
-        this.countriesList = res.countriesList;
-        this.countriesListTemp = res.countriesList;
-        // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
+        if (res.countriesList.length > 0) {
+          this.countriesList = res.countriesList;
+          this.countriesListTemp = res.countriesList;
+
+          if (this.form.cooID.value !== 0 && this.form.cooID.value !== null) {
+            this.initfilterCountries();
+          }
+        }
       }
     );
   }
@@ -693,8 +716,33 @@ loader = false;
   }
   filterCountries() {
     this.countriesList = this.countriesListTemp;
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery.toUpperCase()}*`));
+    // tslint:disable-next-line: max-line-length
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !==  null && typeof this.countryQuery === 'string' ? this.countryQuery.toUpperCase() : null}*`));
+
   }
+  initfilterCountries() {
+      this.countriesList = this.countriesListTemp;
+      this.countriesList = this.countriesList.filter(x => x.countryID === this.form.cooID.value);
+      this.countryQuery = this.countriesList[0].code;
+  }
+
+  initfilterCurrency() {
+    this.currencies = this.currenciesTemp;
+    this.currencies = this.currencies.filter(x => x.currencyID === this.form.currencyID.value.toString());
+    this.currencyQuery = this.currencies[0].code;
+  }
+
+initfilterCompanies() {
+  this.fromCompanyList = this.fromCompanyListTemp;
+  this.fromCompanyList = this.fromCompanyList.filter(x => x.companyID === this.form.fromCompanyID.value);
+  this.form.fromCompany.value = this.fromCompanyList[0].name;
+}
+
+initfilterCountfries() {
+  this.incoTermsList = this.incoTermsListTemp;
+  this.incoTermsList = this.incoTermsList.filter(x => x.incoTermTypeID === this.form.incoType.value);
+  this.incoTypeQuery = this.incoTermsList[0].description;
+}
 
   OverrideinvoiceNoClick() {
     this.form.invoiceNo.OUserID = this.currentUser.userID;

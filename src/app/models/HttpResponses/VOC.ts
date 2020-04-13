@@ -10,7 +10,7 @@ export class VOC {
   rowNum: number;
   vocID: number;
   fileName: string;
-  referenceNO: string;
+  referenceNo: string;
   reason: string;
   mrn: string;
   status: string;

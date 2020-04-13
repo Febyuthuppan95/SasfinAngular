@@ -82,7 +82,7 @@ private unsubscribe$ = new Subject<void>();
 currentTheme: string;
 loader: boolean;
 
-reson: string;
+reason: string;
 referenceNo: string;
 
 
@@ -93,16 +93,27 @@ voccontrol3 = new FormControl(null, [Validators.required]);
 
 SADForm = new FormGroup({
   sadcontrol1: new FormControl(null, [Validators.required]),
+  sadcontrol1a: new FormControl(null),
   sadcontrol2: new FormControl(null, [Validators.required]),
+  sadcontrol2a: new FormControl(null),
   sadcontrol3: new FormControl(null, [Validators.required]),
+  sadcontrol3a: new FormControl(null),
   sadcontrol4: new FormControl(null, [Validators.required]),
+  sadcontrol4a: new FormControl(null),
   sadcontrol5: new FormControl(null, [Validators.required]),
+  sadcontrol5a: new FormControl(null),
   sadcontrol6: new FormControl(null, [Validators.required]),
+  sadcontrol6a: new FormControl(null),
   sadcontrol7: new FormControl(null, [Validators.required]),
+  sadcontrol7a: new FormControl(null),
   sadcontrol8: new FormControl(null, [Validators.required]),
+  sadcontrol8a: new FormControl(null),
   sadcontrol9: new FormControl(null, [Validators.required]),
+  sadcontrol9a: new FormControl(null),
   sadcontrol10: new FormControl(null, [Validators.required]),
+  sadcontrol10a: new FormControl(null),
   sadcontrol11: new FormControl(null, [Validators.required]),
+  sadcontrol11a: new FormControl(null),
   sadcontrol12: new FormControl(null, [Validators.required])
 });
 
@@ -260,10 +271,8 @@ dialogOpen = false;
         this.transactionID = curr.transactionID;
         this.attachmentType = curr.docType;
         if (curr.docType === 'VOC') {
-          console.log('yes it is a VOC');
           this.vocGet();
         } else {
-          console.log('it is a SAD');
           this.loadCapture();
           this.loadLines();
         }
@@ -373,10 +382,10 @@ dialogOpen = false;
   }).then(
     (res: VOCListResponse) => {
       if (res.rowCount !== 0) {
-        console.log('VOC data');
-        console.log(res);
         this.vocSAD500ID = res.vocs[0].sad500ID;
         this.SADOriginalID = res.vocs[0].originalID;
+        this.reason = res.vocs[0].reason;
+        this.referenceNo = res.vocs[0].referenceNo;
         this.loadCapture();
         this.loadLines();
       } else {
@@ -390,28 +399,22 @@ dialogOpen = false;
   submit() {
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
-
+      this.vocStatus = true;
       if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
-
-
-
         const VOCrequestModel = {
           userID: this.currentUser.userID,
           vocID: this.attachmentID,
           referenceNo: this.referenceNo,
-          reason: this.reson,
+          reason: this.reason,
           mrn: this.form.MRN.value,
           attachmentStatusID: 3,
           isDeleted: 0,
-
-
         };
+
         this.captureService.vocUpdate(VOCrequestModel).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
-              this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
             } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
@@ -427,6 +430,8 @@ dialogOpen = false;
           horizontalPosition: 'center',
         });
       }
+    } else {
+      this.vocStatus = true;
     }
     if (this.SADForm.valid && this.LinesValid && this.vocStatus) {
       const requestModel = {
@@ -442,7 +447,7 @@ dialogOpen = false;
         supplierRef: this.form.supplierRef.value,
         mrn: this.form.MRN.value,
         attachmentStatusID: 3,
-        importCode: this.form.importersCode.value,
+        importersCode: this.form.importersCode.value,
         fileRef: this.form.fileRef.value,
         totalDuty: this.form.totalCustomsDuty.value,
         isDeleted: 0,
@@ -477,7 +482,6 @@ dialogOpen = false;
         totalDutyODate: this.form.totalCustomsDuty.ODate,
         totalDutyOReason: this.form.totalCustomsDuty.OReason,
       };
-
       this.captureService.sad500Update(requestModel).then(
         (res: Outcome) => {
           if (res.outcome === 'SUCCESS') {
@@ -548,8 +552,6 @@ dialogOpen = false;
   }
 
   loadCapture() {
-    console.log(this.attachmentType);
-    console.log(this.attachmentID);
     this.captureService.sad500Get({
       userID: this.currentUser.userID,
       specificID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -568,6 +570,7 @@ dialogOpen = false;
         this.form.fileRef.value = res.fileRef;
         this.form.rebateCode.value = res.rebateCode;
         this.form.totalCustomsDuty.value = res.totalDuty;
+        this.form.importersCode.value = res.importersCode;
 
         this.form.waybillNo.OBit = res.waybillNoOBit;
         this.form.waybillNo.OUserID = res.waybillNoOUserID;
@@ -672,12 +675,16 @@ dialogOpen = false;
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        console.log('res');
+        console.log(res.lines);
         this.sad500CreatedLines = res.lines;
         if (this.sad500CreatedLines.length > 0) {
           this.LinesValid = true;
         }
+
+        this.lines = this.sad500CreatedLines.length;
         if (this.lines > -1) {
-          this.focusLineData = this.sad500CreatedLines[this.lines];
+            this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }
       },
       (msg) => {
@@ -768,7 +775,6 @@ dialogOpen = false;
           supplyUnitODate: obj.supplyUnitODate,
           supllyUnitOReason: obj.supllyUnitOReason,
         };
-        console.log(perfect);
 
         this.captureService.sad500LineAdd(perfect).then(
           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
@@ -796,16 +802,11 @@ dialogOpen = false;
           }
         );
       } else {
-        console.log('SAD500');
         if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
 
           const lineCreate: any = this.lineQueue[this.lineIndex];
           delete lineCreate.isPersist;
-          console.log('lineCreate');
-          console.log(lineCreate);
           const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-          console.log('perfect');
-          console.log(perfect);
           this.captureService.sad500LineAdd(perfect).then(
             (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
               if (res.outcome === 'SUCCESS') {

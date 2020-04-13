@@ -48,8 +48,11 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
   ICIForm = new FormGroup({
     control1: new FormControl(null, [Validators.required]),
+    control1a: new FormControl(null),
     control2: new FormControl(null, [Validators.required]),
-    control3: new FormControl(null, [Validators.required])
+    control2a: new FormControl(null),
+    control3: new FormControl(null, [Validators.required]),
+    control3a: new FormControl(null),
     });
 
   currentTheme: string;

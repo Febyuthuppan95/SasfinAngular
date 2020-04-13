@@ -13,7 +13,19 @@
       [ngClass]="{'form-control-invalid': this.form.waybillNo.error !== null && this.form.waybillNo.error !== undefined}"
       class="form-control form-control-sm shadow-sm form-control-light"
       placeholder="Waybill No" />
-      <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null && this.form.waybillNo.error !== undefined">{{this.form.waybillNo.error}}</p>
+      <div *ngIf="this.form.waybillNo.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.waybillNo.OBit == false || this.form.waybillNo.OBit == null" style="width: inherit" >
+        {{this.form.waybillNo.error}}
+        <button (click)="OverridewaybillNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        </p>
+        <input formControlName="control1a"
+        [(ngModel)]="this.form.waybillNo.OReason"  *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledwaybillNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.waybillNo.OBit == true"  class="input-group-append ">
+          <button (click)="OverridewaybillNoExcept()" [disabled]="disabledwaybillNo" class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverridewaybillNo()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        </div>
+      </div>
+      <!-- <p class="invalid-control-label" *ngIf="this.form.waybillNo.error !== null && this.form.waybillNo.error !== undefined">{{this.form.waybillNo.error}}</p> -->
   </div>
 </form>
 
