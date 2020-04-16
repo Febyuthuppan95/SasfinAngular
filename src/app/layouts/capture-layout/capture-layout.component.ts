@@ -30,6 +30,7 @@ import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
+import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -64,6 +65,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
+  @ViewChild(SnackBarComponent, { static: true })
+  private snackBar: SnackBarComponent;
   @ViewChild('closetimeoutModal', {static: true })
   closetimeoutModal: ElementRef;
 
@@ -139,7 +142,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         name: data.companyName
       };
     });
-
+    this.themeService.setToggleValue(true);
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {

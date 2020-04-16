@@ -26,7 +26,7 @@ export class ThemeService {
     }
 
   // private theme = 'light';
-  private toggleHelpValue = false;
+  private toggleHelpValue = true;
   private contMenu = false;
   // private contMenuX = 0;
   // private contMenuY = 0;

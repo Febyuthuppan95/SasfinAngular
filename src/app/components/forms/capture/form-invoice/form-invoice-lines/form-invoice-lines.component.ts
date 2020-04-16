@@ -462,7 +462,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     filterCountries() {
       this.countriesList = this.countriesListTemp;
       // tslint:disable-next-line: max-line-length
-      this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
+      this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
     }
 
     initfiltercounties() {

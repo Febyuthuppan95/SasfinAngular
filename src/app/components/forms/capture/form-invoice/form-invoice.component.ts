@@ -635,7 +635,8 @@ loader = false;
   }
 
   selectedFromCompany(fromCompanyID: Company) {
-    this.form.CompanyID.value = fromCompanyID.companyID;
+    console.log(fromCompanyID);
+    this.form.fromCompanyID.value = fromCompanyID;
   }
 
   matchRuleShort(str, rule) {

@@ -92,7 +92,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     control4a: new FormControl(null),
     control5: new FormControl(null, [Validators.required]),
     control5a: new FormControl(null),
-    control6: new FormControl(null, [Validators.required]),
+    control6: new FormControl(null),
     control7: new FormControl(null, [Validators.required]),
     control8: new FormControl(null, [Validators.required]),
     control9: new FormControl(null),
