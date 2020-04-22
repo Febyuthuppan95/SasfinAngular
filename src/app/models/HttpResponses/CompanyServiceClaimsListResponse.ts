@@ -11,5 +11,12 @@ export class CompanyServiceClaim {
   companyServiceClaimNumber: number;
   companyServiceID: number;
   serviceName: string;
+  exportStartDate: Date | string;
+  exportEndDate: Date | string;
+  claimDate: Date | string;
+  extensionDays:number;
+  lookBackDays:number;
   serviceID: number;
+  permitCount: number;
+  status: string
 }

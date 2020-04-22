@@ -19,7 +19,7 @@ export class PreviewReportComponent implements OnInit {
 
   ngOnInit() {
     this.isReady = false;
-
+    
     this.docService.get(this.data.src).then(
       (res: string) => {
         this.src = res;

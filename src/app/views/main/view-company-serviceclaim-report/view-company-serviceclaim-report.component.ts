@@ -227,6 +227,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
 
     const model: GetServiceClaimReports = {
       userID: this.currentUser.userID,
+      companyServiceClaimID: this.companyServiceClaimID,
       filter: this.filter,
       companyID: this.companyID,
       rowStart: this.rowStart,
@@ -236,7 +237,9 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     };
     this.companyService.getServiceClaimReports(model).then(
       (res: ServiceClaimReportsListResponse) => {
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
+          
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -244,6 +247,9 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
           }
         }
         this.ServiceClaimReports = res.companyServiceClaimReports;
+        this.ServiceClaimReports.forEach((x:ServiceClaimReport) => {
+          x.companyServiceClaimID = this.companyServiceClaimID;
+        });
         console.log(this.ServiceClaimReports);
         if (res.rowCount === 0) {
           this.noData = true;

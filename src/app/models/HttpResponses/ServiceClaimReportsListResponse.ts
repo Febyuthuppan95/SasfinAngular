@@ -10,10 +10,10 @@ export class ServiceClaimReport {
   rowNum: number;
   reportQueueID: number;
   reportID: number;
+  companyServiceClaimID: number;
   reportName: string;
   serviceID: number;
   serviceName: string;
-  compnayServiceClaimNumber: number;
   reportQueueStatusID: number;
   reportQueueStatus: string;
   startDate: string;

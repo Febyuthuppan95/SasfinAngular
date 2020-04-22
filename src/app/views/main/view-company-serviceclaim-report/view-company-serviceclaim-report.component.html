@@ -30,10 +30,10 @@
   <app-modal-component></app-modal-component>
 
   <app-menu
-  *ngIf="this.contextMenu"
-  [contextShow]="this.contextMenu"
-  [x]="this.contextMenuX"
-  [y]="this.contextMenuY"
-  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-  <app-context-menu-company-serviceclaim-report (previewService)="previewreport($event)" (regenerateService)="regenerate($event)" (downloadService)="exceldownload($event)"></app-context-menu-company-serviceclaim-report>
+    *ngIf="this.contextMenu"
+    [contextShow]="this.contextMenu"
+    [x]="this.contextMenuX"
+    [y]="this.contextMenuY"
+    (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+    <app-context-menu-company-serviceclaim-report (previewService)="previewreport($event)" (regenerateService)="regenerate($event)" (downloadService)="exceldownload($event)"></app-context-menu-company-serviceclaim-report>
   </app-menu>

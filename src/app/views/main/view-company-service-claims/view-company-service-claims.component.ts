@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
@@ -30,6 +30,8 @@ import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits
 import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { CompanyServiceResponse, CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -49,6 +51,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     private companyService: CompanyService,
     private ServiceService: ServicesService,
     private userService: UserService,
+    private apiService: ApiService,
+    private formBuilder: FormBuilder,
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
@@ -105,6 +109,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   openCreateModal: ElementRef;
   @ViewChild('closeCreateModal', {static: true})
   closeCreateModal: ElementRef;
+  @ViewChild('openPermitModal', {static: true})
+  openPermitModal: ElementRef;
+  @ViewChild('closePermitModal', {static: true})
+  closePermitModal: ElementRef;
 
   @ViewChild('openReportsModal', {static: true})
   openReportsModal: ElementRef;
@@ -190,6 +198,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   submissiondate: Date;
   complete = false;
   companyServiceList: CompService[] =[];
+  loadingData = false;
+  loadingImportData = false;
+  focusImport: Import;
   /* Claims Modal*/
 
  
@@ -210,6 +221,20 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadCompanyPermits();
     this.loadCompanyServices();
 
+
+  }
+  initClaimForm() {
+    console.log(this.ServiceClaim);
+    this.exportStartDate = new Date('1 JAN 2019');
+    console.log(this.exportStartDate);
+    this.claimRequestParams = this.formBuilder.group({
+      lookbackDays: [this.ServiceClaim.lookBackDays, { validators: [Validators.required] , updateOn: 'blur'}],
+      extensionDays: [this.ServiceClaim.extensionDays, { validators: [Validators.required] , updateOn: 'blur'}],
+      exportStartDate: [this.ServiceClaim.exportStartDate, { validators: [Validators.required] , updateOn: 'blur'}],
+      exportEndDate: [this.ServiceClaim.exportEndDate, { validators: [Validators.required] , updateOn: 'blur'}],
+      selectedPermits: [this.claimPermits, { validators: [Validators.required] , updateOn: 'blur'}],
+      claimDate: [this.selectedClaimDate, { validators: [Validators.required] , updateOn: 'blur'}]
+    })
   }
   loadCompanyServices() {
     const model = {
@@ -239,9 +264,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     );
   }
-  companyServiceClaimModal = {
-
-  }
   loadServiceClaims(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
@@ -257,6 +279,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.getCompanyServiceClaims(model).then(
       (res: CompanyServiceClaimsListResponse) => {
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -287,7 +310,121 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     );
   }
-
+  loadImportData(component: Import) {
+    this.loadingImportData = true;
+    console.log(component);
+    this.focusImport = component;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        itemID: this.focusImport.itemID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        rowStart: 1,
+        rowEnd: 100
+      },
+      requestProcedure: "ExportList"
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/exports`, model).then(
+      (res: ExportListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.availableExports = res.exports;
+          console.log(this.availableExports);
+          this.loadAssignedData(component);
+        }
+      }
+    );
+  }
+  removeExportline(component: Import, element:ExportLine) {
+    const model = {
+      requestParams: { 
+        userID: this.currentUser.userID,
+          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+          captureJoinImportID: element.captureJoinImportID,
+          captureJoinExportID: element.captureJoinExportID,
+          isDeleted: 1
+      },
+      requestProcedure: "CompanyServiceClaimLineUpdate"
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/line`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadImportData(component);
+        }
+      }
+    );
+    }
+    updateClaimStatus() {
+      const model ={
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+          statusID: 2
+        },
+        requestProcedure: "UpdateCompanyServiceClaimStatus"
+      };
+      this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.closePopulateModal.nativeElement.click();
+          }
+        }
+      );
+    }
+  addExportline(component: Import, element:Export) {
+    const model = {
+      requestParams: { 
+        userID: this.currentUser.userID,
+          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+          captureJoinImportID: component.cjid,
+          captureJoinExportID: element.cjid
+      },
+      requestProcedure: "CompanyServiceClaimLineAdd"
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimLine`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadImportData(component);
+        }
+      }
+    );
+  }
+  loadAssignedData(component: Import) {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        captureJoinImportID: component.cjid,
+        rowStart: 1,
+        rowEnd: 100,
+        filter: "",
+        orderBy: "TransactionID",
+        orderByDirection: "DESC"
+      },
+      requestProcedure: "CompanyServiceClaimLineList"
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/lines`, model).then(
+      (res: ExportLinesResponse) => {
+        console.log(res);
+        this.loadingImportData = false
+        this.assignedExports = res.lines;
+        // remove asssinged from available
+        component.exportQuantity =0;
+        component.totalShortfallQuantity =0;
+        this.assignedExports.forEach((y:ExportLine) => {
+          component.exportQuantity += y.totalExportUnits;
+        
+          this.availableExports = this.availableExports.filter(x => x.cjid !== y.captureJoinExportID);
+        });
+        component.totalShortfallQuantity = component.totHSQuantity - component.exportQuantity;
+        // Update Import Totals
+        this.importComponents.forEach((x: Import) => {
+          if (x.cjid === component.cjid) {
+            x = component;
+          }
+        })
+      }
+    );
+  }
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
@@ -358,7 +495,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   populatecompanyService($event) {
      this.myInputVariable.nativeElement.value = null;
+     this.initClaimForm();
      this.openPopulateModal.nativeElement.click();
+     
      // this.router.navigate()
   }
 
@@ -426,6 +565,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     });
 
   }
+  
 
    polulateLines() {
       const requestModel = {
@@ -437,6 +577,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       this.companyService.addSAD500Linesclaim(requestModel).then(
         (res: {outcome: Outcome}) => {
           if (res.outcome.outcome === 'SUCCESS') {
+            this.loadingData = false;
               this.notify.successmsg('Success', 'SAD500 lines has been Added');
               this.closePopulateModal.nativeElement.click();
               this.loadServiceClaims(false);
@@ -484,6 +625,13 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     companyServiceClaimNumber: number,
     serviceID: number,
     serviceName: string,
+    permitCount: number,
+    exportStartDate: Date | string,
+    exportEndDate: Date | string,
+    claimDate: Date | string,
+    name: string,
+    extensionDays: number,
+    lookBackDays: number
   };
   claimForm = {
     exportStartDate: {
@@ -500,215 +648,31 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   lookBackDays = [];
   extensionDays = [];
   selectedExtensionDays = 15;
+  exportStartDate = new Date();
+  exportEndDate = new Date();
+  claimPermits: [];
   permitsByDate = new FormControl();
   CompanyServiceClaims: CompanyServiceClaim[] = [];
   Permits: Permit[] = [];
+
   SAD500Lines: SAD500LinesByPermit[] = [];
   SAD500SelectedLines = [];
   isChecked: boolean;
 
-  
-  importComponents: ImportComponent[] = [
-    {
-      data: {
-        code: 'Wheel-MRN-01',
-        importQuantity: 300,
-        exportQuantity: 300,
-        totalDuty: 140,
-        totalShortfallQuantity: 100,
-      },
-      shortfallImports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: '999PLKJ',
-        //   hsQuantity: 20,
-        //   customsValue: 1,
-        //   duty: 345,
-        //   isImport: true,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ],
-      exports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: 'ABC1001',
-        //   hsQuantity: 30,
-        //   customsValue: 1,
-        //   duty: 100,
-        //   isImport: false,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ]
-    },
-    {
-      data: {
-        code: 'Wheel-MRN-02',
-        importQuantity: 200,
-        exportQuantity: 0,
-        totalDuty: 5640,
-        totalShortfallQuantity: 0
-      },
-      shortfallImports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: '999PLKJ',
-        //   hsQuantity: 20,
-        //   customsValue: 1,
-        //   duty: 345,
-        //   isImport: true,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ],
-      exports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: 'ABC1001',
-        //   hsQuantity: 30,
-        //   customsValue: 1,
-        //   duty: 100,
-        //   isImport: false,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ]
-    },
-    {
-      data: {
-        code: 'Wheel-MRN-03',
-        importQuantity: 200,
-        exportQuantity: 0,
-        totalDuty: 5640,
-        totalShortfallQuantity: 0
-      },
-      shortfallImports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: '999PLKJ',
-        //   hsQuantity: 20,
-        //   customsValue: 1,
-        //   duty: 345,
-        //   isImport: true,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ],
-      exports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: 'ABC1001',
-        //   hsQuantity: 30,
-        //   customsValue: 1,
-        //   duty: 100,
-        //   isImport: false,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ]
-    },
-    {
-      data: {
-        code: 'Screw-MRN-01',
-        importQuantity: 200,
-        exportQuantity: 0,
-        totalDuty: 5640,
-        totalShortfallQuantity: 0
-      },
-      shortfallImports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: '999PLKJ',
-        //   hsQuantity: 20,
-        //   customsValue: 1,
-        //   duty: 345,
-        //   isImport: true,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ],
-      exports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: 'ABC1001',
-        //   hsQuantity: 30,
-        //   customsValue: 1,
-        //   duty: 100,
-        //   isImport: false,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ]
-    },
-    {
-      data: {
-        code: 'Screw-MRN-02',
-        importQuantity: 200,
-        exportQuantity: 0,
-        totalDuty: 5640,
-        totalShortfallQuantity: 0
-      },
-      shortfallImports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: '999PLKJ',
-        //   hsQuantity: 20,
-        //   customsValue: 1,
-        //   duty: 345,
-        //   isImport: true,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ],
-      exports: [] = [
-        // {
-        //   itemID: 1,
-        //   captureJoinLineID: 1,
-        //   code: 'ABC1001',
-        //   hsQuantity: 30,
-        //   customsValue: 1,
-        //   duty: 100,
-        //   isImport: false,
-        //   status: 'string',
-        //   statusID: 1
-        // }
-      ]
-    }
-  ];
-  selectProducts: Product[] = [
-    {rowNum: 1, itemID: -1, captureJoinLineID: -1, code: 'ProdCode001', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
-    {rowNum: 2, itemID: -1, captureJoinLineID: -1, code: 'ProdCode002', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
-    {rowNum: 3, itemID: -1, captureJoinLineID: -1, code: 'ProdCode003', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
-    {rowNum: 4, itemID: -1, captureJoinLineID: -1, code: 'ProdCode004', totalExportQuantity: 100, quantityExported: 100, quantityPer: 1, isImport: false},
-  ] 
+  importComponents: Import[];
+  selectProducts: Export[];
+  availableExports: Export[];
+  assignedExports: ExportLine[];
   displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
-  dataSource = new MatTableDataSource<Product>(this.selectProducts);
-  selection = new SelectionModel<Product>(true, []);
+  dataSource = new MatTableDataSource<Export>(this.availableExports);
+  eDataSource = new MatTableDataSource<ExportLine>(this.assignedExports);
+  selection = new SelectionModel<Export>(true, []);
 
   length = 100;
   pageSize = 5;
   pageSizeOptions: number[] = [5];
   pageEvent: PageEvent;
-
-  /*Claims Params*/
-  claimRequestParams: {
-    lookbackDays: number;
-    extensionsDays: number;
-    exportStartDate: Date | string;
-    exportEndDate: Date | string;
-    selectedPermits: number[];
-    claimDate: Date | string;
-  };
+claimRequestParams: FormGroup;
  selectedCompanyServiceClaimID: number;
  
  minClaimDate = new Date()
@@ -724,7 +688,7 @@ isAllSelected() {
   const numRows = this.dataSource.data.length;
   return numSelected === numRows;
 }
-checkboxLabel(row?: Product): string {
+checkboxLabel(row?: Export): string {
   if (!row) {
     return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
   }
@@ -751,7 +715,6 @@ addServiceClaim() {
   this.openCreateModal.nativeElement.click();
 }
 createCompanyServiceClaim() {
-
   const model = {
     userID: this.currentUser.userID,
     companyServiceID: this.selectedCompanyServiceID,
@@ -774,6 +737,49 @@ createCompanyServiceClaim() {
     }
   );
 }
+addCompanyServiceClaimPermits() {
+  console.log(this.permitslist.length);
+if (this.permitslist.length === 0) {
+  // error
+}
+  let successCount = 0;
+  this.permitslist.forEach(x => {
+    // Save each permit
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        permitID: x
+      },
+      requestProcedure: "CompanyServiceClaimPermitAdd"
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimPermit`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          successCount++;
+        }
+        if (successCount === this.permitslist.length) {
+          this.closePermitModal.nativeElement.click();
+          this.loadServiceClaims(false);
+          this.notify.successmsg(
+            'Success',
+            `Added ${successCount} permits to claim`
+          );
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  })
+}
+openAddClaimPermits($event) {
+  this.openPermitModal.nativeElement.click();
+}
 loadCompanyPermits() {
   const model: GetCompanyPermits = {
     userID: this.currentUser.userID,
@@ -787,8 +793,10 @@ loadCompanyPermits() {
   };
   this.companyService.getCompanyPermits(model).then(
     (res: CompanyPermitsListResponse) => {
+      
       if (res.outcome.outcome === 'SUCCESS') {
        this.Permits = res.permits
+       console.log(this.Permits);
       }
     },
     msg => {
@@ -801,51 +809,89 @@ loadCompanyPermits() {
   );
 }
 // 
-generateClaimRequest(serviceType?: number, requestType?: string, model?: object) {
-  switch (serviceType)
-  {
-    case 1: //521
-    if (requestType === 'read') {
-
-    }
-
-    break;
-  }
+generateClaimRequest() {
+ this.updateCompanyServiceClaim();
   
 }
-loadClaimRequestData($model: object) {
-  const reqP: ServiceClaimReadRequest = {
-    lookbackDays: this.claimRequestParams.lookbackDays,
-    exportStartDate: this.claimRequestParams.exportStartDate,
-    exportEndDate: this.claimRequestParams.exportEndDate,
-    claimDate: this.claimRequestParams.claimDate,
-    extensionDays: this.claimRequestParams.extensionsDays,
-    companyServiceClaimID: this.selectedCompanyServiceClaimID,
-    rowStart: this.pageEvent.pageIndex * this.pageSize + 1,
-    rowEnd: this.rowStart + this.pageSize - 1,
-    filter: '',
-    orderBy: '',
-    rowCount: -1,
-    orderByDirection: '',
-    permits: this.claimRequestParams.selectedPermits 
+updateCompanyServiceClaim() {
+  const model = {
+    requestParams: {
+      userID: this.currentUser.userID,
+      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+      lookbackDays: this.claimRequestParams.get('lookbackDays').value,
+      exportStartDate: this.claimRequestParams.get('exportStartDate').value,
+      exportEndDate: this.claimRequestParams.get('exportEndDate').value,
+      extensionDays: this.claimRequestParams.get('extensionDays').value,
+      claimDate: this.claimRequestParams.get('claimDate').value
+    },
+    requestProcedure: 'CompanyServiceClaimsUpdate'
+  };
+  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update`, model).then(
+    (res: Outcome) => {
+      if(res.outcome === 'SUCCESS') {
+        this.loadingData = true;
+        this.loadClaimRequestData();
+      }
+    });
+  console.log(model);
+}
+loadClaimRequestData() {
+  const reqP = {
+    userID: this.currentUser.userID,
+      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: "",
+      orderByDirection: ""
   };
   const model = {
     requestParams: reqP,
     requestProcedure: 'ImportsList'
   };
-  this.ServiceService.readServiceClaim(model).then(
-    (res: object) => {
-      console.log(res);
+  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/imports`, model).then(
+    (res: ClaimImportComponents) => {
+      if (res.outcome.outcome === 'SUCCESS') {
+        this.loadingData = false;
+        this.importComponents = res.imports; 
+        this.importComponents.forEach((x: Import) => {
+          x.exportQuantity = 0;
+          x.totalShortfallQuantity = x.totHSQuantity
+        });
+      } else {
+        this.loadingData = false;
+        // error
+      }
+    },
+    (msg) => {
+
     }
   );
 }
+
+}
+export class Import {
+  rowNum: number;
+  itemID: number;
+  itemName: number;
+  cjid: number;
+  totDuty: number;
+  exportQuantity?: number;
+  totalShortfallQuantity?: number;
+  totHSQuantity: number;
+  availDuty: number;
+  importDate: Date | string
 }
 
-export class ImportComponent {
-  data: ComponentData;
-  exports: Product[];
-  shortfallImports: Product[];
+export class ClaimImportComponents {
+  imports: Import[];
+  rowCount: number;
+  outcome: Outcome;
 }
+// export class ImportComponent {
+//   data: ComponentData;
+//   exports: Product[];
+//   shortfallImports: Product[];
+// }
 
 export class ComponentData {
   code: string;
@@ -860,21 +906,38 @@ export class ComponentImportElement {
 
 }
 // (ComponentCode, ProductCode, QuarterID, Period, TEQuantity, QuantityExported, QuantityPer)
-export class Product {
+export class ExportListResponse {
+  exports: Export[];
+  rowCount: number;
+  outcome: Outcome;
+}
+export class ExportLinesResponse {
+  lines: ExportLine[];
+  rowCount: number;
+  outcome: Outcome;
+}
+export class Export {
   rowNum: number;
   itemID?: number;
-  captureJoinLineID?: number;
-  code: string;
-  totalExportQuantity: number;
-  quantityExported: number;
+  prodName: string;
+  expQuantity: number;
+  totQuantity: number;
   quantityPer: number;
-  customsValue?: number;
-  duty?: number;
-  isImport: boolean;
-  status?: string;
-  statusID?: number;
+  cjid?: number;
+  availExportQuantity: number;
+  exportDate: Date | string;
 }
 
+export class ExportLine {
+  rowNum: number;
+  itemID?: number;
+  prodName: string;
+  totalExportUnits: number;
+  supplyUnit: number;
+  quantity: number;
+  captureJoinExportID?: number;
+  captureJoinImportID: number;
+}
 
 // New Classes
  export class newComponentItem {

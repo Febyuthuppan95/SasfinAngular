@@ -214,7 +214,18 @@ tr.active {
   right: 0;
   bottom: 0;
 }
+#submitButton {
+  background-color: #4DCA37;
+}
 #create {
+  .modal-dialog {
+    height:200px !important;
+  }
+  .modal-content {
+    height: 25%;
+  }
+}
+#permits {
   .modal-dialog {
     height:200px !important;
   }

@@ -1,3 +1,5 @@
-<a (click)="Populate()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Populate</span></a>
-<a (click)="Reports()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Reports</span></a>
+<a (click)="ClaimPermits()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Assign Permits</span></a>
+<a *ngIf="this.permitCount > 0 && this.status === 'Created' "(click)="Populate()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Populate</span></a>
+<a *ngIf="this.status === 'Staging'" (click)="Reports()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Reports</span></a>
+
 

@@ -16,11 +16,14 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   @Input() companyID: number;
   @Input() companyName: string;
   @Input() serviceID: number;
+  @Input() permitCount: number;
   @Input() serviceName: string;
+  @Input() status: string;
   @Input() currentTheme: string;
 
   @Output() populatecompanyService = new EventEmitter<number>();
   @Output() reportscompanyService = new EventEmitter<number>();
+  @Output() addClaimPermits = new EventEmitter<number>();
 
   ngOnInit() {}
 
@@ -32,6 +35,9 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.companyService.setClaimReport({companyID: this.companyID, companyName: this.companyName, companyServiceID: this.companyServiceID, claimNumber: this.companyServiceClaimID, serviceId: this.serviceID, serviceName: this.serviceName});
     this.router.navigate(['companies', 'serviceclaims', 'reports']);
+  }
+  ClaimPermits() {
+    this.addClaimPermits.emit(+1);
   }
 }
 
