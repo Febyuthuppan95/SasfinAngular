@@ -358,13 +358,16 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
       userID: this.currentUser.userID,
       filter: this.filter,
       reportID: reportid,
+      companyID: this.companyID,
+      companyServiceClaimD: this.companyServiceClaimID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
     this.companyService.prieviewReport(model).then(
-      (res: ServiceClaimReportsListResponse) => {
+      (res: any) => {
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.dialog.open(PreviewReportComponent, {
             width: '80%',
