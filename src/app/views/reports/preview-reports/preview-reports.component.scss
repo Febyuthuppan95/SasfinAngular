@@ -3,6 +3,9 @@
   position: relative;
   margin-bottom: 24px;
   transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+  // :focus {
+
+  // }
 }
 
 .report-tile:hover {
@@ -21,3 +24,4 @@
   top: 12px;
   right: 12px;
 }
+

@@ -1,5 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import * as XLSX from 'xlsx';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import * as XLSX from 'xlsx'
+import { CompanyService, SelectedCompany, SelectedClaimReport } from 'src/app/services/Company.Service';
+import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
+import { UserService } from 'src/app/services/user.Service';
+import { User } from 'src/app/models/HttpResponses/User';
+import { ServiceClaimReportsListResponse, ServiceClaimReport } from 'src/app/models/HttpResponses/ServiceClaimReportsListResponse';
+import { ReportsService } from 'src/app/services/Reports.Service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 
 type AOA = any[][];
 
@@ -10,24 +19,96 @@ type AOA = any[][];
 })
 export class PreviewReportsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private companyService: CompanyService,
+    private userService: UserService,
+    private reportService: ReportsService,
+    private sanitizer: DomSanitizer
+  ) { }
 
-  reports: Report[] = [];
-
+  reports: ServiceClaimReport[] = [];
+  rep: Report[] = [];
+  selectedReport = '';
+  currentUser: User = this.userService.getCurrentUser();
   data: AOA = [[1, 2], [3, 4]];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName = 'SheetJS.xlsx';
+  @ViewChild('fileDownload', { static: false })
+  fileDownload: ElementRef;
 
+
+claimReport: SelectedClaimReport;
   ngOnInit() {
-    this.reports = [
-      { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-      { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-      { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-      { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-    ];
-  }
+    this.companyService.observeClaimReport().subscribe((obj: SelectedClaimReport) => {
+      this.claimReport = obj;
+    })
+    // Get list of reports we want to view
 
+    // this.reports = [
+    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
+    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
+    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
+    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
+    // ];
+    this.getClaimReports();
+  }
+// C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx
+
+getClaimReports() {
+  const model: GetServiceClaimReports = {
+    userID: this.currentUser.userID,
+    companyServiceClaimID: this.claimReport.claimNumber,
+    filter: '',
+    rowStart: 1,
+    rowEnd: 15,
+    orderBy: '',
+    orderByDirection: ''
+  };
+  this.companyService.getServiceClaimReports(model).then(
+    (res: ServiceClaimReportsListResponse) => {
+      console.log(res);
+      if (res.outcome.outcome === 'SUCCESS') {
+        this.reports = res.companyServiceClaimReports;
+      } else { 
+
+      }
+    },
+    (msg) => {
+
+    }
+  );
+}
+getSingleReport(rep: ServiceClaimReport) {
+  console.log(this.claimReport);
+ // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
+ console.log(rep);
+   const model = {
+     reportID: rep.reportID,
+     //claimID: this.claimReport.claimNumber,
+     claimID: 10001,
+     companyID: this.claimReport.companyID,
+     reportService: this.claimReport.serviceName
+   };
+  this.reportService.getReport(model).then(
+    (res: Blob) => {
+      
+      const fileBlob = new Blob([res] , {type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(fileBlob);
+      this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      this.fileDownload.nativeElement.download = `Report_1.xlsx`;
+      this.fileDownload.nativeElement.href = url;
+      this.selectedReport = url;
+      console.log(url);
+      this.fileDownload.nativeElement.click();
+      
+      
+      // this.fileDownload.nativeElement.click();
+    });
+}
   onFileChange(evt: any) {
+    console.log(evt);
+
+
     /* wire up file reader */
     const target: DataTransfer = (evt.target) as DataTransfer;
     if (target.files.length !== 1) { throw new Error('Cannot use multiple files'); }
@@ -59,7 +140,10 @@ export class PreviewReportsComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
   }
-
+  selectReport(rep: ServiceClaimReport) {
+    // this.selectedReport = rep.re
+    this.onFileChange(rep);
+  }
   getSelected() {
     return this.reports.filter(x => x.selected);
   }
@@ -80,4 +164,10 @@ export class Report {
 
   // UI
   selected?: boolean;
+}
+export class ReportRequest {
+  companyID: number;
+  claimID: number;
+  reportService: string;
+  reportID: number;
 }

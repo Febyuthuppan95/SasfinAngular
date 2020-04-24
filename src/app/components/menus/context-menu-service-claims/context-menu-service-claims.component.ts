@@ -34,7 +34,7 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   Reports() {
     // tslint:disable-next-line: max-line-length
     this.companyService.setClaimReport({companyID: this.companyID, companyName: this.companyName, companyServiceID: this.companyServiceID, claimNumber: this.companyServiceClaimID, serviceId: this.serviceID, serviceName: this.serviceName});
-    this.router.navigate(['companies', 'serviceclaims', 'reports']);
+    this.router.navigate(['claim', 'reports']);
   }
   ClaimPermits() {
     this.addClaimPermits.emit(+1);

@@ -217,7 +217,8 @@ import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-
 import { ErrorInterceptor } from './helpers/error.helper';
 import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
-
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -387,6 +388,7 @@ import { PreviewReportsComponent } from './views/reports/preview-reports/preview
     AngularDraggableModule,
     KeyboardShortcutsModule,
     FormsModule,
+    NgxDocViewerModule
   ],
   providers: [
     CookieService,

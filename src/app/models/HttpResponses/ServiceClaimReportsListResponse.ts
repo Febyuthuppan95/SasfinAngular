@@ -8,6 +8,7 @@ export class ServiceClaimReportsListResponse {
 
 export class ServiceClaimReport {
   rowNum: number;
+  file: File;
   reportQueueID: number;
   reportID: number;
   companyServiceClaimID: number;
@@ -18,4 +19,5 @@ export class ServiceClaimReport {
   reportQueueStatus: string;
   startDate: string;
   endDate: string;
+  selected?: boolean;
 }

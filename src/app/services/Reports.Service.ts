@@ -9,6 +9,7 @@ import { ThemeService } from './theme.Service';
 import { GetServiceLList } from '../models/HttpRequests/GetServiceLList';
 import { GetItemTypeList } from '../models/HttpRequests/GetItemTypeList';
 import { GetReportsList } from '../models/HttpRequests/GetReportsList';
+import { ReportRequest } from '../views/reports/preview-reports/preview-reports.component';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,21 @@ export class ReportsService {
           }
         );
     });
-
-  }
-
+   }
+   public getReport(model:ReportRequest) {
+     const json = JSON.parse(JSON.stringify(model));
+     return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/reports/generate`;
+      this.httpClient.post(apiURL, json, { responseType: 'arraybuffer'})
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+   }
 }

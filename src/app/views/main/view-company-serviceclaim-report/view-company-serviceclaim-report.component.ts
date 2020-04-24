@@ -229,7 +229,6 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
       userID: this.currentUser.userID,
       companyServiceClaimID: this.companyServiceClaimID,
       filter: this.filter,
-      companyID: this.companyID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
