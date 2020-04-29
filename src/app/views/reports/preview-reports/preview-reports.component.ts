@@ -8,6 +8,7 @@ import { ServiceClaimReportsListResponse, ServiceClaimReport } from 'src/app/mod
 import { ReportsService } from 'src/app/services/Reports.Service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { environment } from 'src/environments/environment';
 
 
 type AOA = any[][];
@@ -35,6 +36,10 @@ export class PreviewReportsComponent implements OnInit {
   fileName = 'SheetJS.xlsx';
   @ViewChild('fileDownload', { static: false })
   fileDownload: ElementRef;
+  @ViewChild('ngxDoc', {static: false})
+  ngxDoc: ElementRef;
+  @ViewChild('iframe', {static: false})
+  iframe: ElementRef;
 
 
 claimReport: SelectedClaimReport;
@@ -81,6 +86,9 @@ getClaimReports() {
 getSingleReport(rep: ServiceClaimReport) {
   console.log(this.claimReport);
  // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
+
+ // GET .. ?reportID=12&claimID=23&
+ // selectedReport = URL
  console.log(rep);
    const model = {
      reportID: rep.reportID,
@@ -91,20 +99,24 @@ getSingleReport(rep: ServiceClaimReport) {
    };
   this.reportService.getReport(model).then(
     (res: Blob) => {
-      
       const fileBlob = new Blob([res] , {type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(fileBlob);
       this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      this.fileDownload.nativeElement.download = `Report_1.xlsx`;
+      this.fileDownload.nativeElement.download = `Report_${rep.reportID}.xlsx`;
       this.fileDownload.nativeElement.href = url;
+      // let iframe = this.ngxDoc.nativeElement;
       this.selectedReport = url;
-      console.log(url);
+      //this.iframe.nativeElement.src = `Report_${rep.reportID}.xlsx`;
       this.fileDownload.nativeElement.click();
-      
-      
-      // this.fileDownload.nativeElement.click();
+      console.log(url);
     });
 }
+
+buildGetLink(rep: ServiceClaimReport) {
+  this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/1/10001/${this.claimReport.companyID}/${this.claimReport.serviceName}`;
+  //this.selectedReport = `http://197.189.218.50:7777/api/v1.0/reports/preview/1/10001/${this.claimReport.companyID}/${this.claimReport.serviceName}`;
+}
+
   onFileChange(evt: any) {
     console.log(evt);
 
@@ -146,6 +158,11 @@ getSingleReport(rep: ServiceClaimReport) {
   }
   getSelected() {
     return this.reports.filter(x => x.selected);
+  }
+  downloadFiles() {
+    this.reports.forEach((x:ServiceClaimReport) => {
+      this.getSingleReport(x);
+    })
   }
 
 }
