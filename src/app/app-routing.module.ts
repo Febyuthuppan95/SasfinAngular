@@ -65,6 +65,9 @@ import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/v
 
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
+import { ViewCompanyOemListComponent } from './views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+import { ViewOemQuarterListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-oem-quarter-list.component';
+import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -118,6 +121,9 @@ const routes: Routes = [
           { path: 'companies/items/itemparents', component: ViewItemParentsComponent },
           { path: 'companies/contacts', component: ViewCompanyContactsComponent },
           { path: 'companies/transactions', component: ViewTransactionsComponent },
+          { path: 'companies/oems', component: ViewCompanyOemListComponent },
+          { path: 'companies/oem/quarters', component: ViewOemQuarterListComponent },
+          { path: 'companies/oem/quarter/supply', component: ViewQuarterSupplyListComponent },
           { path: 'transaction/attachments', component: ViewTransactionFilesComponent },
           { path: 'transaction/capturerlanding', component: ViewCaptureLandingComponent },
           { path: 'transactions/', component: ViewTransactionsComponent },

@@ -1,0 +1,112 @@
+
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <app-table
+        *ngIf="this.dataList"
+        [(dataset)]="this.dataList"
+        [headings]="this.tableHeadings"
+        [(recordsPerPage)]="this.showingRecords"
+        [(rowStart)]="this.rowStart"
+        [(rowEnd)]="this.rowEnd"
+        [(rowCount)]="this.rowCount"
+        [orderBy]="this.orderBy"
+        [orderByDirection]="this.orderDirection"
+        [tableHeader]="this.tableHeader"
+        (selectedRecord)="setClickedRow($event)"
+        (orderChange)="orderChange($event)"
+        (pageChange)="pageChange($event)"
+        (showingRecordsEvent)="recordsPerPageChange($event)"
+        (addButtonEvent)="Add()"
+        (searchEvent)="searchBar($event)">
+      </app-table>
+    </div>
+  </div>
+  
+  <!--Edit Modal-->
+  <button class="hide" data-toggle="modal" data-target="#editOEMQuarter" #openeditModal></button>
+  <div class="modal fade" id="editOEMQuarter" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalContent">Edit {{this.focusOEMName}} - {{this.focusPeriodYear}} - {{this.focusQuarter}}</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+        <div class="modal-body">
+            <div class="modal-body">
+                <div class="form-group">
+                    <mat-form-field>
+                        <mat-label>Quarter</mat-label>
+                        <mat-select>
+                          <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
+                            {{quarter.Name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                  </div>
+              <div class="form-group">
+                <mat-form-field>
+                    <mat-label>Year</mat-label>
+                    <mat-select>
+                      <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
+                        {{year}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+          <button type="button" (click)="UpdateQuarter(this.focusOEMID)" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+  <!--Add Modal-->
+  <button class="hide" data-toggle="modal" data-target="#addOEM" #openaddModal></button>
+  <div class="modal fade" id="addOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalContent">Add</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form >
+          <div class="modal-body">
+              <div class="form-group">
+                  <label class="control-label">OEM Name:</label>
+                  <input type="text" placeholder="OEM Name" class="form-control"
+                  [(ngModel)]="this.OEM.oemName" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Reference No:</label>
+                <input type="text" placeholder="Registration No" class="form-control"
+                [(ngModel)]="this.OEM.oemRefNum" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
+          <button type="button" (click)="addOEM()"  class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+  <app-notification></app-notification>
+  <app-modal-component></app-modal-component>
+  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-company-oem-context-menu (EditOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [oemID]="this.focusOEMID" [oemName]="this.focusOEMName"></app-companies-context-menu>
+  </div>
+  

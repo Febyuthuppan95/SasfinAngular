@@ -32,6 +32,7 @@ import { GetServiceClaimReports } from '../models/HttpRequests/GetServiceClaimRe
 import { AddContact } from '../models/HttpRequests/AddContact';
 import { GetTariffList } from '../models/HttpRequests/GetTariffList';
 import { Outcome } from '../models/HttpResponses/DoctypeResponse';
+import { CompanyOEM, SelectedCompanyOEM } from '../views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 
 @Injectable({
   providedIn: 'root'
@@ -95,6 +96,7 @@ export class CompanyService {
   }
   // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
+  selectedCompanyOEM: BehaviorSubject<CompanyOEM>;
   // item
   selectedItem: BehaviorSubject<SelectedItem>;
   // BOM
@@ -120,6 +122,10 @@ export class CompanyService {
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
     sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
+  }
+  setCompanyOEM(companyOEM: SelectedCompanyOEM) {
+    this.selectedCompanyOEM.next(companyOEM);
+
   }
   // item
   setItem(item: SelectedItem) {
@@ -151,6 +157,9 @@ export class CompanyService {
   // company
   observeCompany() {
     return this.selectedCompany.asObservable();
+  }
+  observeCompanyOEM() {
+    return this.selectedCompanyOEM.asObservable();
   }
 
 
@@ -1088,6 +1097,151 @@ export class CompanyService {
         );
       });
     }
+  }
+
+  public companyOEMList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/read`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMAdd(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/add`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMUpdate(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/update`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/read`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterAdd(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/add`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterUpdate(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/update`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterSupplyList(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/read`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterSupplyAdd(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/add`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+  public companyOEMQuarterSupplyUpdate(model) {
+    const json = JSON.parse(JSON.stringify(model));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/update`;
+      this.httpClient.post(apiURL, json)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
   }
 }
 

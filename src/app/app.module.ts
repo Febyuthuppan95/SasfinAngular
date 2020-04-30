@@ -218,6 +218,13 @@ import { ErrorInterceptor } from './helpers/error.helper';
 import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { ViewCompanyOemListComponent } from './views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+import { ViewOemQuarterListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-oem-quarter-list.component';
+import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
+import { FormOemQuarterSupplyComponent } from './components/forms/company-oem/form-oem-quarter-supply/form-oem-quarter-supply.component';
+import { CompanyOemContextMenuComponent } from './components/menus/company-oem-context-menu/company-oem-context-menu.component';
+import { OemQuartersContextMenuComponent } from './components/menus/oem-quarters-context-menu/oem-quarters-context-menu.component';
+import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-supply-context-menu/quarters-supply-context-menu.component';
  
 @NgModule({
   declarations: [
@@ -364,7 +371,14 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     ContextMenuCaptureQueueComponent,
     ViewCompanyServiceClaimDataComponent,
     UploadProdatComponent,
-    PreviewReportsComponent
+    PreviewReportsComponent,
+    ViewCompanyOemListComponent,
+    ViewOemQuarterListComponent,
+    ViewQuarterSupplyListComponent,
+    FormOemQuarterSupplyComponent,
+    CompanyOemContextMenuComponent,
+    OemQuartersContextMenuComponent,
+    QuartersSupplyContextMenuComponent
   ],
   imports: [
     BrowserModule,
