@@ -115,7 +115,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     headings: [
       {
         title: '',
-        propertyName: 'RowNum',
+        propertyName: 'rowNum',
         order: {
           enable: false,
         }
@@ -152,14 +152,14 @@ export class ViewCompanyOemListComponent implements OnInit {
     },
     {
       title: 'OEM Name',
-      propertyName: 'oemName',
+      propertyName: 'OEMName',
       order: {
         enable: true,
       },
     },
     {
       title: 'Reference Number',
-      propertyName: 'oemRefNum',
+      propertyName: 'OEMRefNum',
       order: {
         enable: true,
       },
@@ -208,31 +208,29 @@ export class ViewCompanyOemListComponent implements OnInit {
         companyOEMID: -1,
         rowStart: this.rowStart,
         filter: this.filter,
-        rowEnd: this.rowEnd,
+        rowEnd: 15,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection
       },
       requestProcedure: 'CompanyOEMList'
     };
+    console.log(model);
     // company service api call
     this.companyService.companyOEMList(model).then(
-      (res:any) => {
-        // this.dataset = res;
-        // this.dataList = res.data;
-        console.log(this.dataset);
-        console.log(JSON.parse(res));
-        // if (res.rowCount === 0) {
-        //   this.noData = true;
-        //   this.showLoader = false;
-        // } else {
-        //   this.noData = false;
-        //   this.dataset = res;
-        //   this.dataList = res.data;
-        //   this.rowCount = res.rowCount;
-        //   this.showLoader = false;
-        //   this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
-        //   // this.paginateData();
-        // }
+      (res:CompanyOEMList) => {
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.dataset = res;
+          this.dataList = res.data;
+          console.log(this.dataList);
+          this.rowCount = res.rowCount;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
+          // this.paginateData();
+        }
       },
       msg => {
         this.showLoader = false;
@@ -284,6 +282,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       oemName: this.focusOEMName,
       oemRefNum: this.focusOEMRefNum
     };
+
     // company service api call
     this.companyService.companyOEMUpdate(model).then(
       (res:Outcome) => {
@@ -360,8 +359,10 @@ export class ViewCompanyOemListComponent implements OnInit {
   popClick(event, oem) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
-    this.focusOEMID = oem.companyOEMID;
-    this.focusOEMName = oem.oemName;
+    this.focusOEMID = oem.record.companyOEMID;
+    this.focusOEMName = oem.record.OEMName;
+    this.focusOEMRefNum = oem.record.OEMRefNum;
+    console.log(this.focusOEMRefNum);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -375,11 +376,13 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
+    console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
-    this.focusOEMID = obj.record.companyID;
-    this.focusOEMName = obj.record.name;
+    this.focusOEMID = obj.record.companyOEMID;
+    this.focusOEMName = obj.record.OEMName;
+    this.focusOEMRefNum = obj.record.OEMRefNum;
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -413,7 +416,7 @@ export class CompanyOEM {
 }
 export class CompanyOEMList{
   rowCount: number;
-  data?: any;
+  data?: CompanyOEM[];
   outcome: Outcome;
 }
 export class SelectedCompanyOEM {

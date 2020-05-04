@@ -98,6 +98,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="this.focusOEMID" [companyOEMName]="this.focusOEMName" [companyOEMRefNum]="this.focusOEMRefNum"></app-company-oem-context-menu>
+  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="focusOEMID" [companyOEMName]="focusOEMName" [companyOEMRefNum]="focusOEMRefNum"></app-company-oem-context-menu>
   </div>
   
