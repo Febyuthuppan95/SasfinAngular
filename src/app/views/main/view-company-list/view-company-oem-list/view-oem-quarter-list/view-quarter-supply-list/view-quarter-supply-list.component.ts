@@ -88,6 +88,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
   ngOnInit() {
+    
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {

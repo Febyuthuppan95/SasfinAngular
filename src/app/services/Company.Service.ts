@@ -96,7 +96,7 @@ export class CompanyService {
   }
   // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
-  selectedCompanyOEM: BehaviorSubject<CompanyOEM>;
+  selectedCompanyOEM: BehaviorSubject<SelectedCompanyOEM>;
   // item
   selectedItem: BehaviorSubject<SelectedItem>;
   // BOM
@@ -1102,7 +1102,7 @@ export class CompanyService {
   public companyOEMList(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/read`;
+      const apiURL = `${environment.ApiEndpoint}/oems/read`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1118,7 +1118,7 @@ export class CompanyService {
   public companyOEMAdd(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/add`;
+      const apiURL = `${environment.ApiEndpoint}/oems/create`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1134,7 +1134,7 @@ export class CompanyService {
   public companyOEMUpdate(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/update`;
+      const apiURL = `${environment.ApiEndpoint}/oems/update`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1166,7 +1166,7 @@ export class CompanyService {
   public companyOEMQuarterAdd(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/add`;
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/create`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1214,7 +1214,7 @@ export class CompanyService {
   public companyOEMQuarterSupplyAdd(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/add`;
+      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/create`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(

@@ -12,6 +12,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Subject } from 'rxjs';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-company-oem-list',
@@ -78,10 +79,10 @@ export class ViewCompanyOemListComponent implements OnInit {
   focusOEMName: string;
   focusOEMRefNum:string;
   OEM: CompanyOEM = {
-    rowNum: -1,
-    companyOEMID: -1,
-    oemName: '',
-    oemRefNum: ''
+    RowNum: -1,
+    CompanyOEMID: -1,
+    OEMName: '',
+    OEMRefNum: ''
   };
 
   tableHeader: TableHeader = {
@@ -114,21 +115,21 @@ export class ViewCompanyOemListComponent implements OnInit {
     headings: [
       {
         title: '',
-        propertyName: 'rowNum',
+        propertyName: 'RowNum',
         order: {
           enable: false,
         }
       },
       {
         title: 'OEM Name',
-        propertyName: 'oemName',
+        propertyName: 'OEMName',
         order: {
           enable: true,
         },
       },
       {
         title: 'Reference Number',
-        propertyName: 'oemRefNum',
+        propertyName: 'OEMRefNum',
         order: {
           enable: true,
         },
@@ -201,29 +202,37 @@ export class ViewCompanyOemListComponent implements OnInit {
 
   loadCompanyOEMs() {
     const model = {
-      userID: this.currentUser.userID,
-      companyID: this.companyID,
-      rowStart: this.rowStart,
-      filter: this.filter,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        companyOEMID: -1,
+        rowStart: this.rowStart,
+        filter: this.filter,
+        rowEnd: this.rowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection
+      },
+      requestProcedure: 'CompanyOEMList'
     };
     // company service api call
     this.companyService.companyOEMList(model).then(
-      (res:CompanyOEMList) => {
-        if (res.rowCount === 0) {
-          this.noData = true;
-          this.showLoader = false;
-        } else {
-          this.noData = false;
-          this.dataset = res;
-          this.dataList = res.list;
-          this.rowCount = res.rowCount;
-          this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.dataset.list.length - 1;
-          // this.paginateData();
-        }
+      (res:any) => {
+        // this.dataset = res;
+        // this.dataList = res.data;
+        console.log(this.dataset);
+        console.log(JSON.parse(res));
+        // if (res.rowCount === 0) {
+        //   this.noData = true;
+        //   this.showLoader = false;
+        // } else {
+        //   this.noData = false;
+        //   this.dataset = res;
+        //   this.dataList = res.data;
+        //   this.rowCount = res.rowCount;
+        //   this.showLoader = false;
+        //   this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
+        //   // this.paginateData();
+        // }
       },
       msg => {
         this.showLoader = false;
@@ -239,8 +248,8 @@ export class ViewCompanyOemListComponent implements OnInit {
     const model = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
-      oemName: this.OEM.oemName,
-      oemRefNum: this.OEM.oemRefNum
+      oemName: this.OEM.OEMName,
+      oemRefNum: this.OEM.OEMRefNum
     };
     // company service api call
     this.companyService.companyOEMAdd(model).then(
@@ -271,7 +280,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   EditCompanyOEM() {
     const model = {
       userID: this.currentUser.userID,
-      companyOEMID: this.OEM.companyOEMID,
+      companyOEMID: this.OEM.CompanyOEMID,
       oemName: this.focusOEMName,
       oemRefNum: this.focusOEMRefNum
     };
@@ -387,9 +396,9 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.openeditModal.nativeElement.click();
   }
   Add() {
-    this.OEM.companyOEMID = null;
-    this.OEM.oemName = null;
-    this.OEM.oemRefNum = null;
+    this.OEM.CompanyOEMID = null;
+    this.OEM.OEMName = null;
+    this.OEM.OEMRefNum = null;
     this.openaddModal.nativeElement.click();
   }
 
@@ -397,14 +406,14 @@ export class ViewCompanyOemListComponent implements OnInit {
 }
 
 export class CompanyOEM {
-  rowNum: number;
-  companyOEMID: number;
-  oemName: string;
-  oemRefNum: string;
+  RowNum: number;
+  CompanyOEMID: number;
+  OEMName: string;
+  OEMRefNum: string;
 }
 export class CompanyOEMList{
   rowCount: number;
-  list: CompanyOEM[];
+  data?: any;
   outcome: Outcome;
 }
 export class SelectedCompanyOEM {

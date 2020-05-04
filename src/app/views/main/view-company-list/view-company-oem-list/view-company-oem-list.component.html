@@ -41,17 +41,17 @@
         <form>
         <div class="modal-body">
             <div class="modal-body">
-                <div class="form-group">
-                    <label class="control-label">OEM Name:</label>
-                    <input type="text" placeholder="Name" class="form-control"
-                    [(ngModel)]="this.focusOEMName" [ngModelOptions]="{standalone: true}"  required/>
-                  </div>
+              <div class="form-group">
+                <label class="control-label">OEM Name:</label>
+                <input type="text" placeholder="Name" class="form-control"
+                [(ngModel)]="this.focusOEMName" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
               <div class="form-group">
                 <label class="control-label">Reference No:</label>
                 <input type="text" placeholder="Registration No" class="form-control"
                 [(ngModel)]="this.focusOEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
               </div>
-              </div>
+            </div>
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
@@ -98,6 +98,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="this.focusOEMID" [companyOEMName]="this.focusOEMName" [companyOEMRefNum]="this.focusOEMRefNum"></app-companies-context-menu>
+  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="this.focusOEMID" [companyOEMName]="this.focusOEMName" [companyOEMRefNum]="this.focusOEMRefNum"></app-company-oem-context-menu>
   </div>
   
