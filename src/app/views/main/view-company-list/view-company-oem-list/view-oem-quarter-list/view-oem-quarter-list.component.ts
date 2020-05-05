@@ -117,21 +117,21 @@ tableConfig: TableConfig = {
   headings: [
     {
       title: '',
-      propertyName: 'rowNum',
+      propertyName: 'RowNum',
       order: {
         enable: false,
       }
     },
     {
       title: 'Quarter',
-      propertyName: 'quarterID',
+      propertyName: 'QuarterID',
       order: {
         enable: true,
       },
     },
     {
       title: 'Year',
-      propertyName: 'periodYear',
+      propertyName: 'PeriodYear',
       order: {
         enable: true,
       },
@@ -147,21 +147,21 @@ tableConfig: TableConfig = {
 tableHeadings: TableHeading[] = [
   {
     title: '',
-    propertyName: 'rowNum',
+    propertyName: 'RowNum',
     order: {
       enable: false,
     }
   },
   {
     title: 'Quarter',
-    propertyName: 'quarterID',
+    propertyName: 'QuarterID',
     order: {
       enable: true,
     },
   },
   {
     title: 'Year',
-    propertyName: 'periodYear',
+    propertyName: 'PeriodYear',
     order: {
       enable: true,
     },
@@ -204,23 +204,27 @@ private unsubscribe$ = new Subject<void>();
   }
   loadOEMQuarters() {
     const model = {
+      requestParams: {
       userID: this.currentUser.userID,
+      companyOEMQuarterID: -1,
       companyOEMID: this.selectedOEM.companyOEMID,
       rowStart: this.rowStart,
       filter: this.filter,
-      rowEnd: this.rowEnd,
+      rowEnd: this.tableConfig.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
+      }, requestProcedure: 'CompanyOEMQuartersList'
     };
     this.companyService.companyOEMQuarterList(model).then(
       (res: CompanyOEMQuartersList) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.noData = false;
           this.dataset = res;
-          this.dataList = res.list;
+          this.dataList = res.data;
+          console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.dataset.list.length - 1;
+          this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         } else {
           this.noData = true;
@@ -250,7 +254,7 @@ private unsubscribe$ = new Subject<void>();
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.dataset.list.length - 1;
+          this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadOEMQuarters();
         } else {
@@ -280,7 +284,7 @@ private unsubscribe$ = new Subject<void>();
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.dataset.list.length - 1;
+          this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadOEMQuarters();
         } else {
@@ -316,10 +320,12 @@ private unsubscribe$ = new Subject<void>();
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
+    console.log(obj.record);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
-    this.focusOEMQuarterID = obj.record.companyOEMQuarterID;
+    this.focusOEMQuarterID = obj.record.CompanyOEMQuarterID;
+    
     
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -357,12 +363,13 @@ periodQuarter(quarterID: number) {
 
 export class CompanyOEMQuarter {
   rowNum: number;
+  companyOEMID: number;
   companyOEMQuarterID: number;
   quarterID: number;
   periodYear: number;
 }
 export class CompanyOEMQuartersList {
-  list: CompanyOEMQuarter[];
+  data?: CompanyOEMQuarter[];
   rowCount: number;
   outcome: Outcome;
 }

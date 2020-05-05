@@ -67,7 +67,13 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   sidebarCollapsed = true;
   selectedRow = -1;
   selectedCompanyOEM: SelectedCompanyOEM;
-  selectedQuarterSupply: SelectedOEMQuarterSupply;
+  selectedQuarterSupply: SelectedOEMQuarterSupply = {
+    rowNum: -1,
+    companyOEMQuarterSupplyID:-1,
+    productCode: '',
+    productDescription: '',
+    quantity: 0
+  };
 
   private unsubscribe$ = new Subject<void>();
 
@@ -110,7 +116,7 @@ export class OEMQuarterSupply {
   companyOEMQuarterSupplyID: number;
   productCode: string;
   productDescription: string;
-  quantity: string;
+  quantity: number;
 }
 
 export class OEMQuarterSupplyList {
@@ -123,5 +129,5 @@ export class SelectedOEMQuarterSupply {
   companyOEMQuarterSupplyID: number;
   productCode: string;
   productDescription: string;
-  quantity: string;
+  quantity: number;
 }

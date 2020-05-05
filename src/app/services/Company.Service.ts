@@ -55,9 +55,14 @@ export class CompanyService {
     // Capture
     let sessionData6: SelectedCapture = null;
 
+    let sessionData7: SelectedCompanyOEM = null;
+
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
+    }
+    if(sessionStorage.getItem(`${environment.Sessions.companyOEMData}`)!== undefined || null) {
+      sessionData7 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyOEMData}`));
     }
     // item
     if (sessionStorage.getItem(`${environment.Sessions.itemData}`) !== undefined || null) {
@@ -82,6 +87,8 @@ export class CompanyService {
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
+    // OEM
+    this.selectedCompanyOEM = new BehaviorSubject<SelectedCompanyOEM>(sessionData7);
     // item
     this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
     // BOM
@@ -96,6 +103,7 @@ export class CompanyService {
   }
   // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
+  // OEM
   selectedCompanyOEM: BehaviorSubject<SelectedCompanyOEM>;
   // item
   selectedItem: BehaviorSubject<SelectedItem>;
@@ -118,14 +126,15 @@ export class CompanyService {
   // subService.testObservaton.pipe(...).subscribe(...);
   // subService.close();
 
-  // company
+  // Company
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
     sessionStorage.setItem(`${environment.Sessions.companyData}`, JSON.stringify(company));
   }
+  // OEM
   setCompanyOEM(companyOEM: SelectedCompanyOEM) {
     this.selectedCompanyOEM.next(companyOEM);
-
+    sessionStorage.setItem(`${environment.Sessions.companyOEMData}`, JSON.stringify(companyOEM));
   }
   // item
   setItem(item: SelectedItem) {
@@ -187,6 +196,10 @@ export class CompanyService {
   // company
   flushCompanySession() {
     sessionStorage.removeItem(`${environment.Sessions.companyData}`);
+  }
+   // companyOEM
+   flushCompanyOEMSession() {
+    sessionStorage.removeItem(`${environment.Sessions.companyOEMData}`);
   }
   // item
   flushItemSession() {
@@ -1150,7 +1163,7 @@ export class CompanyService {
   public companyOEMQuarterList(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/read`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/read`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1166,7 +1179,7 @@ export class CompanyService {
   public companyOEMQuarterAdd(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/create`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/create`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1182,7 +1195,7 @@ export class CompanyService {
   public companyOEMQuarterUpdate(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/update`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/update`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1198,7 +1211,7 @@ export class CompanyService {
   public companyOEMQuarterSupplyList(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/read`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/supply/read`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1214,7 +1227,7 @@ export class CompanyService {
   public companyOEMQuarterSupplyAdd(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/create`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/supply/create`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(
@@ -1230,7 +1243,7 @@ export class CompanyService {
   public companyOEMQuarterSupplyUpdate(model) {
     const json = JSON.parse(JSON.stringify(model));
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/oem/quarter/supply/update`;
+      const apiURL = `${environment.ApiEndpoint}/oems/quarters/supply/update`;
       this.httpClient.post(apiURL, json)
         .toPromise()
         .then(

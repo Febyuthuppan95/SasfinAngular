@@ -380,9 +380,10 @@ export class ViewCompanyOemListComponent implements OnInit {
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
-    this.focusOEMID = obj.record.companyOEMID;
+    this.focusOEMID = obj.record.CompanyOEMID;
     this.focusOEMName = obj.record.OEMName;
     this.focusOEMRefNum = obj.record.OEMRefNum;
+    console.log(this.focusOEMID);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
