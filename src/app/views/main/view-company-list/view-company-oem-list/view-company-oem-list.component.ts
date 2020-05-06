@@ -114,8 +114,8 @@ export class ViewCompanyOemListComponent implements OnInit {
     },
     headings: [
       {
-        title: '',
-        propertyName: 'rowNum',
+        title: '#',
+        propertyName: 'RowNum',
         order: {
           enable: false,
         }
@@ -144,8 +144,8 @@ export class ViewCompanyOemListComponent implements OnInit {
   };
   tableHeadings: TableHeading[] = [
     {
-      title: '',
-      propertyName: 'rowNum',
+      title: '#',
+      propertyName: 'RowNum',
       order: {
         enable: false,
       }
@@ -197,7 +197,12 @@ export class ViewCompanyOemListComponent implements OnInit {
         this.companyName = obj.companyName;
       }
     });
-    this.loadCompanyOEMs();
+    // this.loadCompanyOEMs();
+    const obj: PaginationChange = {
+      rowStart: 1,
+      rowEnd: 15
+    };
+    this.pageChange(obj);
   }
 
   loadCompanyOEMs() {
@@ -208,7 +213,7 @@ export class ViewCompanyOemListComponent implements OnInit {
         companyOEMID: -1,
         rowStart: this.rowStart,
         filter: this.filter,
-        rowEnd: 15,
+        rowEnd: this.rowEnd,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection
       },
@@ -243,11 +248,15 @@ export class ViewCompanyOemListComponent implements OnInit {
     );
   }
   AddCompanyOEM() {
+    console.log(this.OEM);
     const model = {
+      requestParams: {
       userID: this.currentUser.userID,
-      companyID: this.companyID,
-      oemName: this.OEM.OEMName,
-      oemRefNum: this.OEM.OEMRefNum
+      OEMCompanyID: this.companyID,
+      OEMName: this.OEM.OEMName,
+      OEMRefNum: this.OEM.OEMRefNum
+      },
+      requestProcedure: "CompanyOEMCreate"
     };
     // company service api call
     this.companyService.companyOEMAdd(model).then(
@@ -255,8 +264,11 @@ export class ViewCompanyOemListComponent implements OnInit {
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
-          this.loadCompanyOEMs();
+          this.closeaddModal.nativeElement.click();
+          this.notify.successmsg('SUCCESS', 'OEM successfully added');
+          this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
         } else {
+          this.closeaddModal.nativeElement.click();
           this.noData = false;
           // this.dataset = res;
           // this.dataList = res.companyOEMs;
@@ -267,6 +279,7 @@ export class ViewCompanyOemListComponent implements OnInit {
         }
       },
       msg => {
+        this.closeaddModal.nativeElement.click();
         this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
@@ -275,12 +288,16 @@ export class ViewCompanyOemListComponent implements OnInit {
       }
     );
   }
-  EditCompanyOEM() {
+  EditCompanyOEM(deleted?: boolean) {
     const model = {
+      requestParams: {
       userID: this.currentUser.userID,
-      companyOEMID: this.OEM.CompanyOEMID,
-      oemName: this.focusOEMName,
-      oemRefNum: this.focusOEMRefNum
+      CompanyOEMID: this.focusOEMID,
+      OEMName: this.focusOEMName,
+      OEMRefNum: this.focusOEMRefNum,
+      isDeleted: deleted
+      },
+      requestProcedure: "CompanyOEMUpdate"
     };
 
     // company service api call
@@ -289,9 +306,11 @@ export class ViewCompanyOemListComponent implements OnInit {
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
+          this.closeeditModal.nativeElement.click();
           this.notify.successmsg('SUCCESS', 'OEM Information successfully updated')
-          this.loadCompanyOEMs();
+          this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
         } else {
+          this.closeeditModal.nativeElement.click();
           this.noData = false;
           // this.dataset = res;
           // this.dataList = res.companyOEMs;
@@ -302,6 +321,7 @@ export class ViewCompanyOemListComponent implements OnInit {
         }
       },
       msg => {
+        this.closeeditModal.nativeElement.click();
         this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
@@ -311,6 +331,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     );
   }
   pageChange(obj: PaginationChange) {
+    console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 

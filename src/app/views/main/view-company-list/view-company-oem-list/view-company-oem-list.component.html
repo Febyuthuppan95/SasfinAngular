@@ -55,7 +55,8 @@
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-          <button type="button" (click)="UpdateOEM(this.focusOEMID)" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="EditCompanyOEM()" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="EditCompanyOEM(true)" class="btn btn-danger btn-sm">Delete</button>
         </div>
       </form>
       </div>
@@ -78,17 +79,17 @@
               <div class="form-group">
                   <label class="control-label">OEM Name:</label>
                   <input type="text" placeholder="OEM Name" class="form-control"
-                  [(ngModel)]="this.OEM.oemName" [ngModelOptions]="{standalone: true}"  required/>
+                  [(ngModel)]="this.OEM.OEMName" [ngModelOptions]="{standalone: true}"  required/>
               </div>
               <div class="form-group">
                 <label class="control-label">Reference No:</label>
                 <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="this.OEM.oemRefNum" [ngModelOptions]="{standalone: true}"  required/>
+                [(ngModel)]="this.OEM.OEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
               </div>
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
-          <button type="button" (click)="addOEM()"  class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="AddCompanyOEM()"  class="btn btn-primary btn-sm">Save</button>
         </div>
       </form>
       </div>
