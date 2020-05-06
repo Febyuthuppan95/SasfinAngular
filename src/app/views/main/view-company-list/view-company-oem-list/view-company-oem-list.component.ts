@@ -336,7 +336,35 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.rowEnd = obj.rowEnd;
 
     this.loadCompanyOEMs();
-    
+    // const page = this.pages[+pageNumber - 1];
+    // this.rowStart = page.rowStart;
+    // this.rowEnd = page.rowEnd;
+    // this.activePage = +pageNumber;
+    // this.prevPage = +this.activePage - 1;
+    // this.nextPage = +this.activePage + 1;
+
+    // if (this.prevPage < 1) {
+    //   this.prevPageState = true;
+    // } else {
+    //   this.prevPageState = false;
+    // }
+
+    // let pagenumber = +this.rowCount / +this.rowCountPerPage;
+    // const mod = +this.rowCount % +this.rowCountPerPage;
+
+    // if (mod > 0) {
+    //   pagenumber++;
+    // }
+
+    // if (this.nextPage > pagenumber) {
+    //   this.nextPageState = true;
+    // } else {
+    //   this.nextPageState = false;
+    // }
+
+    // this.updatePagination();
+
+    // this.loadCompanies();
   }
   searchBar(filter: string) {
     this.rowStart = 1;

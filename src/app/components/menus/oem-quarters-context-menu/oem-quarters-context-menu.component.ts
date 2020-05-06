@@ -38,7 +38,6 @@ export class OemQuartersContextMenuComponent implements OnInit {
   Edit() {
 
     this.selectedOEM.companyOEMQuarterID = this.quarterID
-    this.unsubscribe$.unsubscribe();
     console.log(this.selectedOEM);
     this.EditQuarter.emit(JSON.stringify({
       companyOEMID: this.selectedOEM.companyOEMID,

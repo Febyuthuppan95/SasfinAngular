@@ -176,7 +176,7 @@ private unsubscribe$ = new Subject<void>();
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-  
+
   @ViewChild('openEditModal', {static: true})
   openeditModal: ElementRef;
 
@@ -256,12 +256,15 @@ private unsubscribe$ = new Subject<void>();
       },
       requestProcedure: "CompanyOEMQuartersUpdate"
     };
+    console.log(model);
     this.companyService.companyOEMQuarterUpdate(model).then(
       (res: Outcome) => {
+        console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
+          this.closeeditModal.nativeElement.click();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadOEMQuarters();
         } else {

@@ -44,7 +44,7 @@
               <div class="form-group">
                   <mat-form-field>
                       <mat-label>Quarter</mat-label>
-                      <mat-select>
+                      <mat-select [(ngModel)]="this.focusPeriodQuarter" name="quarter"> 
                         <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
                           {{quarter.Name}}
                         </mat-option>
@@ -54,7 +54,7 @@
               <div class="form-group">
                 <mat-form-field>
                     <mat-label>Year</mat-label>
-                    <mat-select>
+                    <mat-select [(ngModel)]="this.focusPeriodYear" name="year">
                       <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
                         {{year}}
                       </mat-option>
@@ -119,6 +119,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-oem-quarters-context-menu (Edit)="EditQuarter($event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [quarterID]="this.focusOEMQuarterID"></app-oem-quarters-context-menu>
+    <app-oem-quarters-context-menu (EditQuarter)="EditQuarter($event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [quarterID]="this.focusOEMQuarterID"></app-oem-quarters-context-menu>
   </div>
   
