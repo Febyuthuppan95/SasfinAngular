@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { SelectedCompanyOEM } from 'src/app/views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 
 @Component({
   selector: 'app-oem-quarters-context-menu',
@@ -11,34 +14,42 @@ export class OemQuartersContextMenuComponent implements OnInit {
 
   constructor(private router: Router, private companyService: CompanyService) { }
   @Input() currentTheme: string;
-  @Input() companyOEMID: number;
-  @Input() companyOEMName: string;
-  @Input() companyOEMRefNum: string;
+  // @Input() companyOEMID: number;
+  // @Input() companyOEMName: string;
+  // @Input() companyOEMRefNum: string;
   @Input() quarterID: number;
 
   @Input() x: number;
   @Input() y: number;
+  selectedOEM: SelectedCompanyOEM;
 
-  @Output() EditOEMQuarter = new EventEmitter<string>();
-
+  @Output() EditQuarter = new EventEmitter<string>();
+  private unsubscribe$ = new Subject<void>();
   ngOnInit() {
-    console.log({companyOEM:this.companyOEMID, quarter: this.quarterID});
+    this.companyService.observeCompanyOEM()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedCompanyOEM) => {
+      if (obj !== null || obj !== undefined) {
+        this.selectedOEM = obj;
+      }
+    });
   }
 
   Edit() {
-    this.EditOEMQuarter.emit(JSON.stringify({
-      companyOEMID: this.companyOEMID,
-      companyOEMName: this.companyOEMName,
-      quarterID: this.quarterID
+
+    this.selectedOEM.companyOEMQuarterID = this.quarterID
+    this.unsubscribe$.unsubscribe();
+    console.log(this.selectedOEM);
+    this.EditQuarter.emit(JSON.stringify({
+      companyOEMID: this.selectedOEM.companyOEMID,
+      oemName: this.selectedOEM.oemName,
+      oemRefNum: this.selectedOEM.oemRefNum,
+      companyOEMQuarterID: this.selectedOEM.companyOEMQuarterID
     }));
   }
 
   Supply() {
-    this.companyService.setCompanyOEM({ 
-      companyOEMID: this.companyOEMID, 
-      oemName: this.companyOEMName,
-      oemRefNum: this.companyOEMRefNum,
-      companyOEMQuarterID: this.quarterID });
+    this.companyService.setCompanyOEM(this.selectedOEM);
       this.router.navigate(['companies', 'oem', 'quarter', 'supply']);
   }
 }

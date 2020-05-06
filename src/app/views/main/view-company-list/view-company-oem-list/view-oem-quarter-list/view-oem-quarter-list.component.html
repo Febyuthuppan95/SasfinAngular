@@ -28,8 +28,8 @@
   </div>
   
   <!--Edit Modal-->
-  <button class="hide" data-toggle="modal" data-target="#editOEMQuarter" #openeditModal></button>
-  <div class="modal fade" id="editOEMQuarter" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <button class="hide" data-toggle="modal" data-target="#editOEMQ" #openEditModal></button>
+  <div class="modal fade" id="editOEMQ" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -65,7 +65,8 @@
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-          <button type="button" (click)="UpdateQuarter(this.focusOEMID)" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="editOEMQuarter(false)" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="editOEMQuarter(true)" class="btn btn-danger btn-sm">Delete</button>
         </div>
       </form>
       </div>
@@ -118,6 +119,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-oem-quarters-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="this.selectedOEM.companyOEMID" [companyOEMName]="this.selectedOEM.companyOEMName" [companyOEMRefNum]="this.selectedOEM.companyOEMRefNum" [quarterID]="this.focusOEMQuarterID"></app-oem-quarters-context-menu>
+    <app-oem-quarters-context-menu (Edit)="EditQuarter($event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [quarterID]="this.focusOEMQuarterID"></app-oem-quarters-context-menu>
   </div>
   

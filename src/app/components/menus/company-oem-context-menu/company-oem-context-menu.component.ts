@@ -34,6 +34,7 @@ export class CompanyOemContextMenuComponent implements OnInit {
     }));
   }
   Quarters() {
+    console.log(this.companyOEMID);
     this.companyService.setCompanyOEM({ 
       companyOEMID: this.companyOEMID, 
       oemName: this.companyOEMName,

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { OemQuartersContextMenuComponent } from 'src/app/components/menus/oem-quarters-context-menu/oem-quarters-context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
+import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-view-oem-quarter-list',
@@ -107,7 +108,7 @@ tableConfig: TableConfig = {
     enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -116,7 +117,7 @@ tableConfig: TableConfig = {
   },
   headings: [
     {
-      title: '',
+      title: '#',
       propertyName: 'RowNum',
       order: {
         enable: false,
@@ -146,7 +147,7 @@ tableConfig: TableConfig = {
 };
 tableHeadings: TableHeading[] = [
   {
-    title: '',
+    title: '#',
     propertyName: 'RowNum',
     order: {
       enable: false,
@@ -175,7 +176,8 @@ private unsubscribe$ = new Subject<void>();
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-  @ViewChild('openeditModal', {static: true})
+  
+  @ViewChild('openEditModal', {static: true})
   openeditModal: ElementRef;
 
   @ViewChild('closeeditModal', {static: true})
@@ -197,10 +199,11 @@ private unsubscribe$ = new Subject<void>();
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCompanyOEM) => {
       if (obj !== null || obj !== undefined) {
+        console.log(obj);
         this.selectedOEM = obj;
       }
     });
-    this.loadOEMQuarters();
+    this.pageChange({rowStart: 1, rowEnd: 15});
   }
   loadOEMQuarters() {
     const model = {
@@ -241,13 +244,17 @@ private unsubscribe$ = new Subject<void>();
       }
     );
   }
-  editOEMQuarter() {
+  editOEMQuarter(deleted?: boolean) {
     const model = {
-      userID: this.currentUser.userID,
-      companyOEMQuarterID: this.focusOEMQuarterID,
-      quarterID: this.focusPeriodQuarter,
-      periodYear: this.focusPeriodYear,
-      isDeleted: 0
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyOEMID: this.selectedOEM.companyOEMID,
+        companyOEMQuarterID: this.focusOEMQuarterID,
+        quarterID: this.focusPeriodQuarter,
+        periodYear: this.focusPeriodYear,
+        isDeleted: deleted
+      },
+      requestProcedure: "CompanyOEMQuartersUpdate"
     };
     this.companyService.companyOEMQuarterUpdate(model).then(
       (res: Outcome) => {
@@ -274,10 +281,13 @@ private unsubscribe$ = new Subject<void>();
   }
   addQuarter() {
     const model = {
-      userID: this.currentUser.userID,
-      companyOEMID: this.selectedOEM.companyOEMID,
-      quarterID: this.focusPeriodQuarter,
-      periodYear: this.focusPeriodYear
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyOEMID: this.selectedOEM.companyOEMID,
+        quarterID: this.focusPeriodQuarter,
+        periodYear: this.focusPeriodYear
+      },
+      requestProcedure: "CompanyOEMQuartersCreate"
     };
     this.companyService.companyOEMQuarterAdd(model).then(
       (res: Outcome) => {
@@ -302,7 +312,14 @@ private unsubscribe$ = new Subject<void>();
       }
     );
   }
+  pageChange(obj: PaginationChange) {
+    console.log(obj);
+    this.rowStart = obj.rowStart;
+    this.rowEnd = obj.rowEnd;
 
+    this.loadOEMQuarters();
+    
+  }
   searchBar(filter: string) {
     this.rowStart = 1;
     this.loadOEMQuarters();
@@ -325,8 +342,8 @@ private unsubscribe$ = new Subject<void>();
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
     this.focusOEMQuarterID = obj.record.CompanyOEMQuarterID;
-    
-    
+    this.focusPeriodQuarter = obj.record.QuarterID;
+    this.focusPeriodYear = obj.record.PeriodYear;
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -336,11 +353,13 @@ private unsubscribe$ = new Subject<void>();
     }
   }
   EditQuarter($event) {
+    console.log($event);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
 
     this.openeditModal.nativeElement.click();
   }
+  
   Add() {
     this.focusOEMQuarterID = null;
     this.focusPeriodQuarter = null;
