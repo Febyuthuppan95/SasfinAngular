@@ -134,6 +134,7 @@
                       <label class="col-md-2 text-center">{{component.exportQuantity}}</label>
                       <label class="col-md-2 text-center">{{component.totDuty}}</label>
                       <label class="col-md-2 text-center">{{component.totalShortfallQuantity}}</label>
+                      <label class="col-md-2 text-center">{{component.mrn}}</label>
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div #exports width="100%">
@@ -165,6 +166,10 @@
                       <ng-container matColumnDef="totalExportedQuantity">
                         <th mat-header-cell *matHeaderCellDef> Total Exported Quantity </th>
                         <td mat-cell *matCellDef="let element"> {{element.totalExportUnits}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="totalExportedQuantity">
+                        <th mat-header-cell *matHeaderCellDef> MRN </th>
+                        <td mat-cell *matCellDef="let element"> {{element.mrn}} </td>
                       </ng-container>
                       <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
@@ -220,6 +225,10 @@
                       <ng-container matColumnDef="totalExportedQuantity">
                         <th mat-header-cell *matHeaderCellDef> Total Exported Quantity </th>
                         <td mat-cell *matCellDef="let element"> {{element.totQuantity}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="totalExportedQuantity">
+                        <th mat-header-cell *matHeaderCellDef> MRN </th>
+                        <td mat-cell *matCellDef="let element"> {{element.mrn}} </td>
                       </ng-container>
                       <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>

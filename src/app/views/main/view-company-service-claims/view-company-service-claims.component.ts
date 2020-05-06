@@ -926,6 +926,7 @@ export class Export {
   cjid?: number;
   availExportQuantity: number;
   exportDate: Date | string;
+  mrn?: string;
 }
 
 export class ExportLine {
@@ -937,6 +938,7 @@ export class ExportLine {
   quantity: number;
   captureJoinExportID?: number;
   captureJoinImportID: number;
+  mrn?: string;
 }
 
 // New Classes
@@ -947,7 +949,7 @@ export class ExportLine {
     exportQuantity: number;
     totalDuty: number;
     totalShortfallQuantity: number;
-    
+    mrn?: string;
  }
 
  export class newImportComponent {

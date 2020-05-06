@@ -33,7 +33,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalContent">Edit {{this.selectedOEM}} - {{this.focusPeriodYear}} - {{this.focusQuarter}}</h5>
+          <h5 class="modal-title" id="modalContent">Edit </h5>
           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -63,7 +63,8 @@
           </div>
           <div class="modal-footer bg-dark">
             <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-            <button type="button" (click)="UpdateSupply()" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" (click)="EditQuarterSupply(false)" class="btn btn-primary btn-sm">Save</button>
+            <button type="button" (click)="EditQuarterSupply(true)" class="btn btn-danger btn-sm">Delete</button>
           </div>
       </form>
       </div>
@@ -114,6 +115,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="this.focusOEMID" [companyOEMName]="this.focusOEMName" [companyOEMRefNum]="this.focusOEMRefNum"></app-company-oem-context-menu>
+    <app-quarters-supply-context-menu (EditQuarterSupply)="EditSupply($event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [supplyID]="this.selectedQuarterSupply.supplyID"></app-quarters-supply-context-menu>
   </div>
   

@@ -255,6 +255,74 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       }
     )
   }
+  addSupply() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyOEMID: this.selectedCompanyOEM.companyOEMID,
+        companyOEMQuarterID: this.selectedCompanyOEM.companyOEMQuarterID,
+        productCode: this.selectedQuarterSupply.productCode,
+        productDescription: this.selectedQuarterSupply.productDescription,
+        quantity: this.selectedQuarterSupply.quantity
+      },
+      requestProcedure: "CompanyOEMQuarterSupplyCreate"
+    };
+    this.companyService.companyOEMQuarterSupplyAdd(model).then(
+      (res: Outcome) => {
+        if(res.outcome === 'SUCCESS') {
+          this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+        this.showLoader = false;
+        this.closeaddModal.nativeElement.click();
+      },
+      msg => {
+        this.closeaddModal.nativeElement.click();
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+
+      }
+    );
+  }
+  EditQuarterSupply(deleted?: boolean) {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyOEMQuarterSupplyID: this.selectedQuarterSupply.companyOEMQuarterSupplyID,
+        productCode: this.selectedQuarterSupply.productCode,
+        productDescription: this.selectedQuarterSupply.productDescription,
+        quantity: this.selectedQuarterSupply.quantity,
+        isDeleted: deleted
+      },
+      requestProcedure: "CompanyOEMQuarterSupplyUpdate"
+    };
+    this.companyService.companyOEMQuarterSupplyUpdate(model).then(
+      (res: Outcome) => {
+        if(res.outcome === 'SUCCESS') {
+          this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+        this.showLoader = false;
+        this.closeeditModal.nativeElement.click();
+      },
+      msg => {
+        this.closeeditModal.nativeElement.click();
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+
+      }
+    );
+  }
   Add() {
     // this.focusOEMQuarterID = null;
     // this.focusPeriodQuarter = null;
@@ -281,6 +349,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
+    this.selectedQuarterSupply.companyOEMQuarterSupplyID = obj.record.companyOEMQuarterSupplyID;
     // this.focusOEMQuarterID = obj.record.CompanyOEMQuarterID;
     // this.focusPeriodQuarter = obj.record.QuarterID;
     // this.focusPeriodYear = obj.record.PeriodYear;
@@ -291,6 +360,13 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
+  }
+  EditSupply($event) {
+    console.log($event);
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+
+    this.openeditModal.nativeElement.click();
   }
 }
 
