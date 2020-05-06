@@ -31,14 +31,15 @@ export class OemQuartersContextMenuComponent implements OnInit {
     .subscribe((obj: SelectedCompanyOEM) => {
       if (obj !== null || obj !== undefined) {
         this.selectedOEM = obj;
+        this.selectedOEM.companyOEMQuarterID = this.quarterID
       }
     });
   }
 
   Edit() {
 
-    this.selectedOEM.companyOEMQuarterID = this.quarterID
-    console.log(this.selectedOEM);
+   
+    
     this.EditQuarter.emit(JSON.stringify({
       companyOEMID: this.selectedOEM.companyOEMID,
       oemName: this.selectedOEM.oemName,
@@ -48,6 +49,7 @@ export class OemQuartersContextMenuComponent implements OnInit {
   }
 
   Supply() {
+    
     this.companyService.setCompanyOEM(this.selectedOEM);
       this.router.navigate(['companies', 'oem', 'quarter', 'supply']);
   }

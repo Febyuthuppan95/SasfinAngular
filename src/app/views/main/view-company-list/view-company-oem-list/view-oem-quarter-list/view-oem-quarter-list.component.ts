@@ -335,26 +335,26 @@ private unsubscribe$ = new Subject<void>();
     this.loadOEMQuarters();
   }
 
-  popOff() {
-    this.contextMenu = false;
-    this.selectedRow = -1;
-  }
-  setClickedRow(obj: SelectedRecord) {
-    console.log(obj.record);
-    // this.selectedRow = index;
-    this.contextMenuX = obj.event.clientX + 3;
-    this.contextMenuY = obj.event.clientY + 5;
-    this.focusOEMQuarterID = obj.record.CompanyOEMQuarterID;
-    this.focusPeriodQuarter = obj.record.QuarterID;
-    this.focusPeriodYear = obj.record.PeriodYear;
-    if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true);
-      this.contextMenu = true;
-    } else {
-      this.themeService.toggleContextMenu(false);
+    popOff() {
       this.contextMenu = false;
+      this.selectedRow = -1;
     }
-  }
+    setClickedRow(obj: SelectedRecord) {
+      console.log(obj.record);
+      // this.selectedRow = index;
+      this.contextMenuX = obj.event.clientX + 3;
+      this.contextMenuY = obj.event.clientY + 5;
+      this.focusOEMQuarterID = obj.record.CompanyOEMQuarterID;
+      this.focusPeriodQuarter = obj.record.QuarterID;
+      this.focusPeriodYear = obj.record.PeriodYear;
+      if (!this.contextMenu) {
+        this.themeService.toggleContextMenu(true);
+        this.contextMenu = true;
+      } else {
+        this.themeService.toggleContextMenu(false);
+        this.contextMenu = false;
+      }
+    }
   EditQuarter($event) {
     console.log($event);
     this.themeService.toggleContextMenu(false);
@@ -370,17 +370,17 @@ private unsubscribe$ = new Subject<void>();
     this.openaddModal.nativeElement.click();
   }
   
-createYears() {
-  for (var x =0; x < 10; x++) {
-    this.years.push(this.now - x);
+  createYears() {
+    for (var x =0; x < 10; x++) {
+      this.years.push(this.now - x);
+    }
   }
-}
-periodYear(year: number) {
-  this.focusPeriodYear = year;
-}
-periodQuarter(quarterID: number) {
-  this.focusPeriodQuarter = quarterID;
-}
+  periodYear(year: number) {
+    this.focusPeriodYear = year;
+  }
+  periodQuarter(quarterID: number) {
+    this.focusPeriodQuarter = quarterID;
+  }
 }
 
 export class CompanyOEMQuarter {
