@@ -65,8 +65,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       control7: new FormControl(null, [Validators.required]),
       control8: new FormControl(null, [Validators.required]),
       control9: new FormControl(null, [Validators.required]),
-      control10: new FormControl(null, [Validators.required]),
-      control11: new FormControl(null, [Validators.required]),
+      control10: new FormControl(null),
+      control11: new FormControl(null),
       control12: new FormControl(null, [Validators.required]),
     });
 

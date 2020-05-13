@@ -374,7 +374,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
               this.LinesValid = true;
             }
             this.linesCreated = res.lines;
-            this.lines = this.linesCreated.length;
+            this.lines = this.linesCreated.length -1;
             if (this.lines > -1) {
                 this.focusLineData = this.linesCreated[this.lines - 1];
             }
@@ -475,7 +475,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
             this.submit();
         }
     }
-
+   
     revisitSAD500Line(item: CustomWorksheetLineReq, i?: number) {
         this.lines = i;
     }
@@ -507,6 +507,12 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
         this.focusLineForm = !this.focusLineForm;
         this.focusLineData = null;
         this.lines = -1;
+    }
+    cancelLine() {
+        this.focusLineData = null;
+        console.log(this.linesCreated.length);
+        this.lines = this.linesCreated.length - 1;
+        this.focusLineData = this.linesCreated[this.lines];
     }
     updateHelpContext(slug: string) {
         const newContext: SnackbarModel = {
