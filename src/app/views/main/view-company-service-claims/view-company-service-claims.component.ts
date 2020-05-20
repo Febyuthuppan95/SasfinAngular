@@ -672,7 +672,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   pageSize = 5;
   pageSizeOptions: number[] = [5];
   pageEvent: PageEvent;
-claimRequestParams: FormGroup;
+  claimRequestParams: FormGroup;
  selectedCompanyServiceClaimID: number;
  
  minClaimDate = new Date()

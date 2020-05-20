@@ -33,6 +33,7 @@ export class TableHeading {
     neg: string,
     pos: string
   };
+  position?: number
 }
 
 export class SelectedRecord {

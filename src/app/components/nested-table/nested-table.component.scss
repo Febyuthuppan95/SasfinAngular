@@ -1,0 +1,15 @@
+.table {
+    margin: 15px;
+    thead {
+        margin-bottom:10px !important;
+        font-size: 1.1rem !important;
+    }
+}
+.matDataTable {
+    width: 100%;
+}
+mat-paginator {
+    width: 100%;
+    right:10px;
+    bottom: 5px;
+}

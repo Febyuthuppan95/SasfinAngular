@@ -225,6 +225,8 @@ import { FormOemQuarterSupplyComponent } from './components/forms/company-oem/fo
 import { CompanyOemContextMenuComponent } from './components/menus/company-oem-context-menu/company-oem-context-menu.component';
 import { OemQuartersContextMenuComponent } from './components/menus/oem-quarters-context-menu/oem-quarters-context-menu.component';
 import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-supply-context-menu/quarters-supply-context-menu.component';
+import { NestedTableComponent } from './components/nested-table/nested-table.component';
+import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
  
 @NgModule({
   declarations: [
@@ -378,7 +380,9 @@ import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-
     FormOemQuarterSupplyComponent,
     CompanyOemContextMenuComponent,
     OemQuartersContextMenuComponent,
-    QuartersSupplyContextMenuComponent
+    QuartersSupplyContextMenuComponent,
+    NestedTableComponent,
+    ClaimLayoutComponent
   ],
   imports: [
     BrowserModule,

@@ -682,7 +682,7 @@ dialogOpen = false;
           this.LinesValid = true;
         }
 
-        this.lines = this.sad500CreatedLines.length;
+        this.lines = this.sad500CreatedLines.length -1;
         if (this.lines > -1) {
             this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }
@@ -940,6 +940,12 @@ dialogOpen = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  cancelLine() {
+    this.focusLineData = null;
+    console.log(this.sad500CreatedLines.length);
+    this.lines = this.sad500CreatedLines.length - 1;
+    this.focusLineData = this.sad500CreatedLines[this.lines];
+}
 
   OverridewaybillNoClick() {
     this.form.waybillNo.OUserID = this.currentUser.userID;

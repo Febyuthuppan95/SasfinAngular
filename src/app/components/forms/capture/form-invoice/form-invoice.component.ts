@@ -679,6 +679,12 @@ loader = false;
     this.focusLineData = null;
     this.lines = -1;
   }
+  cancelLine() {
+    this.focusLineData = null;
+    console.log(this.sad500CreatedLines.length);
+    this.lines = this.sad500CreatedLines.length - 1;
+    this.focusLineData = this.sad500CreatedLines[this.lines];
+  }
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,

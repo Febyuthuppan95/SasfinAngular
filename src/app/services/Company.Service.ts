@@ -57,6 +57,8 @@ export class CompanyService {
 
     let sessionData7: SelectedCompanyOEM = null;
 
+    
+
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));

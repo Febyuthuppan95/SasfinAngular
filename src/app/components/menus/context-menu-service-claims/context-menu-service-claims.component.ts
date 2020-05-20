@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { ServicesService } from 'src/app/services/Services.Service';
 
 @Component({
   selector: 'app-context-menu-service-claims',
@@ -9,7 +10,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 })
 export class ContextMenuServiceClaimsComponent implements OnInit {
 
-  constructor(private router: Router, private companyService: CompanyService) { }
+  constructor(private router: Router, private companyService: CompanyService, private claimService: ServicesService) { }
 
   @Input() companyServiceClaimID: number;
   @Input() companyServiceID: number;
@@ -28,7 +29,16 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   ngOnInit() {}
 
   Populate() {
-    this.populatecompanyService.emit(+this.companyServiceClaimID);
+    // this.populatecompanyService.emit(+this.companyServiceClaimID);
+    this.claimService.setCompanyClaim({
+      companyID: this.companyID,
+      companyName: this.companyName,
+      serviceID: this.serviceID,
+      serviceName: this.serviceName,
+      companyServiceClaimID: this.companyServiceClaimID,
+      claimStatus: 'Active'
+    });
+    this.router.navigate(['claim','capture']);
   }
 
   Reports() {

@@ -1,0 +1,155 @@
+
+<div class="main">
+    <mat-toolbar class="mat-elevation-z2">
+        <mat-toolbar-row class="">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2">
+                <span style="color: #3f51b5;">SERVICE CLAIM: </span>
+                <button mat-stroked-button color="primary" 
+                style="
+                font-size: 1.3rem;
+                border-color: #ff4081;"><span style="color: #ff4081;">{{this.currentClaim.serviceName}}</span></button>
+            </div>
+            <div class="col-sm-2" color="accent">
+                <span style="color: #3f51b5;">COMPANY: </span>
+                <button mat-stroked-button color="accent" 
+                style="color: #ff4081;
+                font-size: 1.1rem;
+                border-color: #ff4081;">{{this.currentClaim.companyName}}</button>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <span style="color: #3f51b5;">CLAIM NO: </span>
+                <button mat-stroked-button color="primary" 
+                style="color: #ff4081;
+                font-size: 1.1rem;
+                border-color: #ff4081;">{{this.currentClaim.companyServiceClaimID}}</button>
+            </div>
+            <div class="col-sm-2">
+                <span style="color: #3f51b5;">STATUS: </span>
+                <button mat-stroked-button color="accent" 
+                style="color: #ff4081;
+                font-size: 1.1rem;
+                border-color: #ff4081;">{{this.currentClaim.claimStatus}}</button>
+            </div>
+            <div class="action-top col-sm-1 text-center">
+                <button matTooltip="Save and Exit" class="mat-elevation-z4" mat-mini-fab color="accent" aria-label="Save Progress">
+                    <mat-icon>exit_to_app</mat-icon>
+                </button>
+                <button matTooltip="Reset Claim" class="mat-elevation-z4" mat-mini-fab color="warn" aria-label="Save Progress">
+                    <mat-icon>undo</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar-row>
+        
+    </mat-toolbar>  
+    <mat-progress-bar mode="indeterminate"  *ngIf="loading" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="top-section row">
+                <mat-card class="offset-sm-1 col-sm-11">
+                    <mat-card-content>
+                        <button class="col-sm-12" mat-button color="primary"  disabled style="font-size: 1.2rem;">Claim Parameters</button>
+                        <form [formGroup]="claimRequestParams">
+                            <div class="row">
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Export Date Range:</mat-label>
+                                    <input required matInput [matDatepicker]="exportStartDate" formControlName="ExportStartDate">
+                                    <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #exportStartDate></mat-datepicker>
+                                    <!-- <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error> -->
+                                </mat-form-field>
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>To:</mat-label>
+                                    <input required matInput [matDatepicker]="exportEndDate" formControlName="ExportEndDate">
+                                    <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #exportEndDate></mat-datepicker>
+                                    <mat-hint>Warning: </mat-hint>
+                                </mat-form-field>
+                                <mat-form-field class="offset-md-1 col-md-2">
+                                    <mat-label>Extension Days</mat-label>
+                                    <mat-select required formControlName="ExtensionDays">
+                                    <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
+                                        {{day.value}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="row">
+                                <mat-form-field class="col-md-4">
+                                    <mat-label>Lookback Days</mat-label>
+                                    <mat-select required formControlName="LookBackDays" >
+                                      <mat-option *ngFor="let day of lookBackDays" [value]="day.value">
+                                        {{day.value}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  <mat-form-field class="col-md-4">
+                                    <mat-label>Claim Date:</mat-label>
+                                    <input matInput [matDatepicker]="ClaimDate" formControlName="ClaimDate">
+                                    <mat-datepicker-toggle matSuffix [for]="ClaimDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #ClaimDate></mat-datepicker>
+                                  </mat-form-field>
+                                  
+                            </div>
+                            <div class="row">
+                                <!-- <div class="col-sm-10 text-right"> <button id="submitButton" *ngIf="this.importComponents"  mat-raised-button color="primary" (click)="updateClaimStatus()">Submit Claim</button></div> -->
+                                <div class="col-sm-1 "><button mat-raised-button color="primary" (click)="updateClaimParams()">Generate</button></div>
+                                <input hidden #myInput >
+                            </div>
+                        </form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="bottom-section row">
+                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                   
+                    <button class="col-sm-12" mat-button color="primary"  disabled style="font-size: 1.2rem;">Available Imports</button>
+                    <app-nested-table *ngIf="!this.loading"
+                    [action_icon]="'visibility'"
+                    [parents] = "this.data" 
+                    [headings]="this.headings"
+                    [filter]="this.filterA"
+                    [paginator]="this.pageA"
+                    [pageSizeOptions]="[5, 10]"
+                    (rowEvent)="rowEventA($event)"
+                    [noDataError] ="'No Available Imports'"
+                    (pageEvent)="paginateA($event)"
+                    ></app-nested-table>
+                </mat-card>
+            </div>
+        </div>
+        <div class="data-lines col-sm-6">
+            <div class="top-section-right row">
+                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                <button class="col-sm-12" mat-button color="accent"  disabled style="font-size: 1.2rem;">Assigned Exports</button>
+                <app-nested-table *ngIf="!this.loading"
+                [action_icon]="'playlist_add'"
+                [(parents)] = "this.dataLinesAssigned" 
+                [headings]="this.headingsB"
+                [filter]="this.filterB"
+                [paginator]="this.pageB"
+                [pageSizeOptions]="[5]"
+                [noDataError] ="'No Assigned Data'"
+                (pageEvent)="paginateB($event)"
+                ></app-nested-table>
+            </mat-card>
+            </div>
+            <div class="bottom-section-right row">
+                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                    <button class="col-sm-12" mat-button color="warn"  disabled style="font-size: 1.2rem;">Available Exports</button>
+                    <app-nested-table *ngIf="!this.loading"
+                    [action_icon]="'playlist_add'"
+                    [(parents)] = "this.dataLinesAvailable" 
+                    [headings]="this.headingsC"
+                    [filter]="this.filterB"
+                    [paginator]="this.pageC"
+                    [pageSizeOptions]="[5]"
+                    [noDataError] ="'No Available Data'"
+                    (pageEvent)="paginateB($event)"
+                    ></app-nested-table>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

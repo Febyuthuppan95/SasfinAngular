@@ -68,6 +68,8 @@ import { PreviewReportsComponent } from './views/reports/preview-reports/preview
 import { ViewCompanyOemListComponent } from './views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 import { ViewOemQuarterListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-oem-quarter-list.component';
 import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
+import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
+import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -112,6 +114,7 @@ const routes: Routes = [
           { path: 'companies/items', component: ContextCompanyItemsListComponent },
           { path: 'companies/boms', component: ViewCompanyBOMsComponent },
           { path: 'companies/serviceclaims', component: ViewCompanyServiceClaimsComponent },
+          // { path: 'companies/serviceclaims/data', component: ViewCompanyServiceClaimDataComponent },
           { path: 'companies/serviceclaims/reports', component: ViewCompanyServiceclaimReportComponent },
           { path: 'companies/permits', component: ViewPermitsListComponent },
           { path: 'companies/permits/permitimporttariffs', component: ViewPermitIMportTariffsListComponent },
@@ -146,6 +149,9 @@ const routes: Routes = [
         { path: 'transaction/attachment', component: ViewCaptureTransactionComponent },
         { path: 'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
          component: ViewCaptureTransactionComponent }
+      ]},
+      { path: 'claim', component: ClaimLayoutComponent, children: [
+        {path: 'capture', component: ViewCompanyServiceClaimDataComponent}
       ]},
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
     ]

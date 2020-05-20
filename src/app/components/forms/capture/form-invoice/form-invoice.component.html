@@ -131,6 +131,7 @@
     <br>
       <div style="padding: 0 24px; background: #f2f2f2;border-radius: 10px;" class="line-list">
           <button mat-raised-button class="float-right bg-primary text-light" *ngIf="this.lines !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+          <button mat-raised-button class="float-right bg-danger text-light" *ngIf="this.lines === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
           <p *ngIf="!this.sad500CreatedLines" style="font-size: 16px;">No Invoice Lines Added</p>
           <p *ngIf="this.sad500CreatedLines">
             <button (click)="prevLine()"  style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="this.sad500LineQueue.length !== 0 || this.sad500CreatedLines.length !== 0" [disabled]="this.sad500LineQueue.length === 1 && this.lines <= 0 || this.linePreview === 0"><span class="mdi mdi-chevron-left"></span></button>
