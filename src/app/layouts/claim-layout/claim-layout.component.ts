@@ -10,11 +10,12 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { environment } from 'src/environments/environment';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { SelectedCompany } from 'src/app/services/Cities.Service';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatSnackBar } from '@angular/material';
 import { ServicesService, SelectedCompanyClaim } from 'src/app/services/Services.Service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-claim-layout',
@@ -36,13 +37,31 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       position: 0
     },
     {
+      title: 'IDfirst',
+      propertyName: 'cjid',
+      order: {
+        enable: true,
+        tag: 'cjid'
+      },
+      position: 1
+    },
+    {
+      title: 'IDsecond',
+      propertyName: 'itemID',
+      order: {
+        enable: true,
+        tag: 'cjid'
+      },
+      position: 2
+    },
+    {
       title: 'Component Code',
       propertyName: 'itemName',
       order: {
         enable: true,
         tag: 'ItemName'
       },
-      position: 1
+      position: 3
     },
     {
       title: 'Available Duty',
@@ -51,7 +70,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'availDuty'
       },
-      position: 2
+      position: 4
     },
     {
       title: 'Total Duty',
@@ -60,7 +79,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'totDuty'
       },
-      position: 3
+      position: 5
     },
     {
       title: 'Total HS Quantity',
@@ -69,7 +88,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'totHSQuantity'
       },
-      position: 4
+      position: 6
     },
     {
       title: 'Import Date',
@@ -77,24 +96,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       order: {
         enable: true,
         tag: 'importDate'
-      },
-      position: 5
-    },
-    {
-      title: 'IDtop',
-      propertyName: 'cjid',
-      order: {
-        enable: true,
-        tag: 'cjid'
-      },
-      position: 6
-    },
-    {
-      title: 'IDbottom',
-      propertyName: 'itemID',
-      order: {
-        enable: true,
-        tag: 'cjid'
       },
       position: 7
     }
@@ -110,13 +111,31 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       position: 0
     },
     {
+      title: 'IDfirst',
+      propertyName: 'capturejoinexportid',
+      order: {
+        enable: true,
+        tag: 'capturejoinexportid'
+      },
+      position: 1
+    },
+    {
+      title: 'IDsecond',
+      propertyName: 'capturejoinimportid',
+      order: {
+        enable: true,
+        tag: 'capturejoinimportid'
+      },
+      position: 2
+    },
+    {
       title: 'Product Code',
       propertyName: 'prodname',
       order: {
         enable: true,
         tag: 'prodname'
       },
-      position: 1
+      position: 3
     },
     {
       title: 'Quantity',
@@ -125,7 +144,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'quantity'
       },
-      position: 2
+      position: 4
     },
     {
       title: 'Supply Unit',
@@ -134,7 +153,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'supplyunit'
       },
-      position: 3
+      position: 5
     },
     {
       title: 'Total Export Units',
@@ -143,7 +162,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'totalexportunits'
       },
-      position: 4
+      position: 6
     }
   ];
   dataLinesAssigned: Export[] = [];
@@ -157,13 +176,31 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       position: 0
     },
     {
+      title: 'IDfirst',
+      propertyName: 'cjid',
+      order: {
+        enable: true,
+        tag: 'cjid'
+      },
+      position: 1
+    },
+    {
+      title: 'IDsecond',
+      propertyName: 'itemid',
+      order: {
+        enable: true,
+        tag: 'itemid'
+      },
+      position: 2
+    },
+    {
       title: 'Product Code',
       propertyName: 'prodname',
       order: {
         enable: true,
         tag: 'prodname'
       },
-      position: 1
+      position: 3
     },
     {
       title: 'Quantity Per',
@@ -172,7 +209,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'quantityper'
       },
-      position: 2
+      position: 4
     },
     {
       title: 'Export Quantity',
@@ -181,7 +218,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'expquantity'
       },
-      position: 3
+      position: 5
     },
     {
       title: 'Total Quantity',
@@ -190,7 +227,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'totquantity'
       },
-      position: 4
+      position: 6
     },
     {
       title: 'Available Export Quantity',
@@ -199,7 +236,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         enable: true,
         tag: 'availexpquantity'
       },
-      position: 5
+      position: 7
     }
   ];
   docPreview = false;
@@ -285,7 +322,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private userService: UserService,
     private companyService: CompanyService,
-    private claimService: ServicesService) {
+    private claimService: ServicesService,
+    private snackbar: MatSnackBar,
+    private router: Router) {
       this.lookBackDays.push(
         {value: 180},
         {value: 270},
@@ -309,19 +348,57 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.claimService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$)).subscribe((res)=> {
-      console.log('loading claim..');
       this.currentClaim = res;
-      console.log(this.currentClaim);
     });
     this.currentUser = this.userService.getCurrentUser();
     // INIT FORM DATA
     this.initClaimForm();
 
     // INIT data
-    this.loadDataSets();
+    this.loadMainDataSet();
   }
   ngOnDestroy(): void {
     this.unsubscribe$.unsubscribe();
+  }
+  back() {
+    this.router.navigate(['companies','serviceclaims']);
+  }
+  reset() {
+    this.loading = true;
+    const model ={
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID
+      },
+      requestProcedure: `CompanyServiceClaimLineReset${this.currentClaim.serviceName}`
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+      (res: Outcome) => {
+        if(res.outcome === 'SUCCESS') {
+          this.snackbar.open('Successfully Reset Claim', res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+          
+          this.loadDataSets();
+        } else {
+          this.snackbar.open(res.outcomeMessage, res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+        }
+        this.loading = false;
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+    );
   }
 
   // initServiceType() {
@@ -336,8 +413,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   loadDataSets() {
     this.loading = true;
     this.loadMainDataSet();
+    this.loadTopChild();
+    this.loadBottomChild();
     this.loading = false;
   }
+  
   /****** PARAMS *******/
   initClaimForm() {
    
@@ -382,7 +462,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             if (this.claimRequestParams.get(element) !== null 
             && this.claimRequestParams.get(element) !== undefined) {
                 if (element === 'ClaimDate') {
-                  console.log(new Date(objectValues[i]));
                   this.claimRequestParams.get(element).setValue(new Date(objectValues[i]));
                 } else {
                   this.claimRequestParams.get(element).setValue(objectValues[i]);
@@ -417,7 +496,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `CompanyServiceClaimsUpdate`
     };
-    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`,model).then(
       (res:UpdateResponse ) => {
         console.log(res);
@@ -442,47 +520,56 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
-        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
+          if(this.selectedA === null || this.selectedA === undefined) {
+            this.snackbar.open('Successfully Retrieved Imports', res.outcome.outcome, {
+              duration: 3000,
+              panelClass: 'claim-snackbar-success',
+              horizontalPosition: 'center',
+            });
+          }
+          
          this.pageA.length = res.rowCount;
           this.data = res.data; 
-          console.log(this.data);
         } else {
          
           // error
         }
       },
-      (msg) => {
-  
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
       }
     );
   }
 
   rowEventA($event) {
-    console.log($event);
-    this.selectedA = $event.lineA;
-    this.selectedB = $event.lineB;
-    console.log($event);
-    this.loadTopChild($event);
-    this.loadBottomChild($event);
+    const lineData = JSON.parse($event)
+    this.selectedA = lineData.lineA;
+    this.selectedB = lineData.lineB;
+
+    this.loadTopChild();
+    this.loadBottomChild();
   }
 
   rowEventB($event) {
-    console.log($event);
-    this.selectedB = $event;
-    this.actionTopChild($event);
-    this.loadBottomChild($event);
-    this.loadTopChild($event);
+    const lineData = JSON.parse($event);
+    this.selectedA = lineData.lineA;
+    this.selectedB = lineData.lineB;
+    this.updateTopChild();
   }
 
   rowEventC($event) {
-    console.log($event);
-    this.selectedC = $event;
+    const lineData = JSON.parse($event)
+    this.selectedC = lineData.lineB;
+    this.updateBottomChild();
   }
   /****** END IMPORTS *******/
   // Top Right Table
-  loadTopChild(id: number) {
-    console.log(id);
+  loadTopChild() {
     this.loading = true;
     const model = {
       requestParams: {
@@ -501,17 +588,53 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
-
         }
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
       }
     );
   }
-  actionTopChild(id: number) {
+  updateTopChild() {
+    this.loading = true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        captureJoinImportID: this.selectedB,
+        captureJoinExportID: this.selectedA,
+        isDeleted: 1
+      },
+      requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
 
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+      (res: Outcome) => {
+        if(res.outcome === 'SUCCESS') {
+          this.snackbar.open('Successfully Unassigned', res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+          this.loading = false;
+          this.loadDataSets();
+        }
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+    );
   }
   // Bottom Right Table
-  loadBottomChild(id: number) {
-    console.log(id);
+  loadBottomChild() {
     this.loading = true;
     const model = {
       requestParams: {
@@ -522,34 +645,108 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
       },
       requestProcedure: `ExportsList${this.currentClaim.serviceName}`
-
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
         if(res.outcome.outcome === 'SUCCESS') {
           this.loading = false;
           this.dataLinesAvailable = res.data;
-          this.pageB.length = res.rowCount;
+          this.pageC.length = res.rowCount;
 
         }
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
       }
     );
   }
-  actionBottomChild() {
+  updateBottomChild() {
+    this.loading = true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        captureJoinImportID: this.selectedA,
+        captureJoinExportID: this.selectedC
+      },
+      requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
 
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+      (res: Outcome) => {
+        if(res.outcome === 'SUCCESS') {
+          this.snackbar.open('Successfully Assigned', res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+          this.loading = false;
+          this.loadDataSets();
+        }
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+    );
   }
+  updateClaimStatus() {
+    this.loading = true;
+    const model ={
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        statusID: 2
+      },
+      requestProcedure: "UpdateCompanyServiceClaimStatus"
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.snackbar.open('Claim Submitted and sent for reporting. Please wait to be redirected.', res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          }).afterDismissed().subscribe( () =>{
+            this.router.navigate(['claim','reports']);
+          });
+        } else {
+          this.snackbar.open(res.outcomeMessage, res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+        }
+        this.loading = false;
+      },
+      msg => {
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
 
+    );
+  }
   paginateA($event) {
     this.pageA = $event;
     this.loadMainDataSet();
   }
   paginateB($event) {
     this.pageB = $event;
-    this.loadTopChild($event);
+    this.loadTopChild();
   }
   paginateC($event) {
     this.pageC = $event;
-    this.loadBottomChild($event);
+    this.loadBottomChild();
   }
 }
 
@@ -561,4 +758,8 @@ export class ReadResponse {
   data: any[];
   outcome: Outcome;
   rowCount: number;
+}
+export class LineData {
+  lineA: number;
+  lineB: number;
 }

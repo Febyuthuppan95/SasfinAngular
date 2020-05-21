@@ -16,6 +16,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
   noData: boolean = false;
   @Input() parents: Object[] = [];
   @Input() action_icon: string;
+  @Input() action_toolip: string;
   @Input() filter?: boolean;
   @Input() paginator: PageEvent;
   @Input() pageSizeOptions: string[] = [];
@@ -64,7 +65,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
     if ( this.parents.length > 0) {
       this.headings.forEach(x => {
-        if (x.title !== 'IDtop' && x.title !== 'IDbottom'){
+        if (x.title !== 'IDfirst' && x.title !== 'IDsecond') {
           x.propertyName = x.propertyName.toLowerCase();
           this.columnsToDisplay.push(x.propertyName);
         }
@@ -87,7 +88,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
         let record: any[] = [];
         // Determine what values need to be displayed
         this.headings.forEach((heading) => { // 7 : 8x7 = 56
-          console.log(heading);
+      
           if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== null
           && objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
             // Create object for new record array
@@ -109,7 +110,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
     } else {
       this.noData = true;
     }
-   
+   console.log(this.displayData);
     this.loading = false;
     
   }
@@ -117,17 +118,15 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
   }
   what($event, $event2) {
-    console.log($event);
-    console.log($event2);
+  
   }
   rowAction($event) {
-    console.log($event[6].value);
-    this.rowEvent.emit(JSON.stringify({lineA: $event[6].value, lineB: $event[7].value}));
+
+    this.rowEvent.emit(JSON.stringify({lineA: $event[1].value, lineB: $event[2].value}));
   }
   paginate($event: PageEvent) {
     this.pageEvent.emit($event);
-    // this.loadDocuments();
-    console.log($event);
+
   }
 
 

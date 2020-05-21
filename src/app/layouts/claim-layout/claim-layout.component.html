@@ -2,7 +2,11 @@
 <div class="main">
     <mat-toolbar class="mat-elevation-z2">
         <mat-toolbar-row class="">
-            <div class="col-sm-1"></div>
+            <div class="col-sm-1">
+                <button matTooltip="Save and Exit" class="mat-elevation-z4" mat-mini-fab color="accent" aria-label="Save Progress" (click)="back()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
             <div class="col-sm-2">
                 <span style="color: #3f51b5;">SERVICE CLAIM: </span>
                 <button mat-stroked-button color="primary" 
@@ -33,11 +37,12 @@
                 border-color: #ff4081;">{{this.currentClaim.claimStatus}}</button>
             </div>
             <div class="action-top col-sm-1 text-center">
-                <button matTooltip="Save and Exit" class="mat-elevation-z4" mat-mini-fab color="accent" aria-label="Save Progress">
-                    <mat-icon>exit_to_app</mat-icon>
-                </button>
-                <button matTooltip="Reset Claim" class="mat-elevation-z4" mat-mini-fab color="warn" aria-label="Save Progress">
+                <button matTooltip="Reset Claim" class="mat-elevation-z4" mat-mini-fab color="warn" aria-label="Reset Claim" (click)="reset()">
                     <mat-icon>undo</mat-icon>
+                </button>
+                <button matTooltip="Submit Claim " class="mat-elevation-z4" style="margin-left: 20px; background-color: #4BB543;" 
+                mat-mini-fab color="primary" aria-label="Queue Report" (click)="updateClaimStatus()">
+                    <mat-icon>playlist_add_check</mat-icon>
                 </button>
             </div>
         </mat-toolbar-row>
@@ -49,7 +54,7 @@
             <div class="top-section row">
                 <mat-card class="offset-sm-1 col-sm-11">
                     <mat-card-content>
-                        <button class="col-sm-12" mat-button color="primary"  disabled style="font-size: 1.2rem;">Claim Parameters</button>
+                        <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Claim Parameters</button>
                         <form [formGroup]="claimRequestParams">
                             <div class="row">
                                 <mat-form-field class="col-md-4">
@@ -104,17 +109,18 @@
             <div class="bottom-section row">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                    
-                    <button class="col-sm-12" mat-button color="primary"  disabled style="font-size: 1.2rem;">Available Imports</button>
+                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Imports</button>
                     <app-nested-table *ngIf="!this.loading"
-                    [action_icon]="'visibility'"
+                    [action_icon]="'view_headline'"
                     [parents] = "this.data" 
                     [headings]="this.headings"
                     [filter]="this.filterA"
-                    [paginator]="this.pageA"
+                    [(paginator)]="this.pageA"
                     [pageSizeOptions]="[5, 10]"
                     (rowEvent)="rowEventA($event)"
                     [noDataError] ="'No Available Imports'"
                     (pageEvent)="paginateA($event)"
+                    [action_toolip]="'View Data'"
                     ></app-nested-table>
                 </mat-card>
             </div>
@@ -122,31 +128,35 @@
         <div class="data-lines col-sm-6">
             <div class="top-section-right row">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
-                <button class="col-sm-12" mat-button color="accent"  disabled style="font-size: 1.2rem;">Assigned Exports</button>
+                <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Assigned Exports</button>
                 <app-nested-table *ngIf="!this.loading"
-                [action_icon]="'playlist_add'"
+                [action_icon]="'arrow_downward'"
                 [(parents)] = "this.dataLinesAssigned" 
                 [headings]="this.headingsB"
                 [filter]="this.filterB"
-                [paginator]="this.pageB"
+                [(paginator)]="this.pageB"
                 [pageSizeOptions]="[5]"
                 [noDataError] ="'No Assigned Data'"
                 (pageEvent)="paginateB($event)"
+                (rowEvent)="rowEventB($event)"
+                [action_toolip]="'Unassign Export'"
                 ></app-nested-table>
             </mat-card>
             </div>
             <div class="bottom-section-right row">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
-                    <button class="col-sm-12" mat-button color="warn"  disabled style="font-size: 1.2rem;">Available Exports</button>
+                    <button class="col-sm-12" mat-button color="warn"  style="font-size: 1.2rem;">Available Exports</button>
                     <app-nested-table *ngIf="!this.loading"
-                    [action_icon]="'playlist_add'"
+                    [action_icon]="'arrow_upward'"
                     [(parents)] = "this.dataLinesAvailable" 
                     [headings]="this.headingsC"
                     [filter]="this.filterB"
-                    [paginator]="this.pageC"
+                    [(paginator)]="this.pageC"
                     [pageSizeOptions]="[5]"
                     [noDataError] ="'No Available Data'"
-                    (pageEvent)="paginateB($event)"
+                    (pageEvent)="paginateC($event)"
+                    (rowEvent)="rowEventC($event)"
+                    [action_toolip]="'Assign Export'"
                     ></app-nested-table>
                 </mat-card>
             </div>
