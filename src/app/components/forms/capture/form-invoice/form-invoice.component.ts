@@ -724,7 +724,7 @@ loader = false;
   filterCountries() {
     this.countriesList = this.countriesListTemp;
     // tslint:disable-next-line: max-line-length
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !==  null && typeof this.countryQuery === 'string' ? this.countryQuery.toUpperCase() : null}*`));
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.code, `*${this.countryQuery !==  null && typeof this.countryQuery === 'string' ? this.countryQuery.toUpperCase() : null}*`));
 
   }
   initfilterCountries() {

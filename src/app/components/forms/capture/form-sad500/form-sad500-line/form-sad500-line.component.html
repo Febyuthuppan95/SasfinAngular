@@ -150,7 +150,7 @@
         <mat-autocomplete #tariffAuto="matAutocomplete" >
           <mat-option *ngFor="let tariff of tariffs" [value]="tariff.name"
           (onSelectionChange)="selectedTariff(tariff.id)">
-            {{tariff.name}}
+            {{tariff.subHeading}} - {{tariff.name}}
           </mat-option>
         </mat-autocomplete>
         <p class="invalid-control-label" *ngIf="this.form.tariff.error !== null && this.form.tariff.error !== undefined">{{this.form.tariff.error}}</p>

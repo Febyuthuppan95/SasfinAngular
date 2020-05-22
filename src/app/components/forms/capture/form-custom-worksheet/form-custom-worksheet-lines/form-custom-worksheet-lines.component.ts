@@ -630,9 +630,9 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         );
     }
 
-    loadTarrifs() {
+    loadTarrifs(query?: string) {
       // tslint:disable-next-line: max-line-length
-      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', orderBy: '', orderByDirection: '', rowStart: 1, rowEnd: 100 }).then(
+      this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: query, orderBy: '', orderByDirection: '', rowStart: 1, rowEnd: 100 }).then(
         // tslint:disable-next-line: max-line-length
         (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
@@ -648,7 +648,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     filterCountries() {
         this.countriesList = this.countriesListTemp;
         // tslint:disable-next-line: max-line-length
-        this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name, `*${this.countryQuery !== null ? this.countryQuery.toUpperCase() : ''}*`));
+        this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.code, `*${this.countryQuery !== null ? this.countryQuery.toUpperCase() : ''}*`));
     }
 
     initfilterCountries() {
@@ -686,9 +686,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     }
 
     filterTariff() {
-        this.tariffs = this.tariffsTemp;
-        // tslint:disable-next-line: max-line-length
-        this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery !== null ? this.tariffQuery.toUpperCase() : ''}*`));
+        // this.tariffs = this.tariffsTemp;
+        // // tslint:disable-next-line: max-line-length
+        // this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery !== null ? this.tariffQuery.toUpperCase() : ''}*`));
+        this.loadTarrifs(this.tariffQuery);
     }
 
     loadUnits(): void {

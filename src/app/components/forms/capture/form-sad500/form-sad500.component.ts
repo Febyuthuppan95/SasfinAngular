@@ -334,7 +334,6 @@ dialogOpen = false;
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-            if (!this.toggleLines) {
               {
                 if (!this.dialogOpen) {
                   this.dialogOpen = true;
@@ -346,7 +345,6 @@ dialogOpen = false;
                   });
                 }
               }
-            }
           }
         },
         {

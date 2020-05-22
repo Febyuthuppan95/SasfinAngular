@@ -14,10 +14,12 @@ export class SubmitDialogComponent implements OnInit {
   }
 
   confirm() {
+    console.log('submitting..');
     this.matDialogRef.close(true);
   }
 
   cancel() {
+    console.log('cancelling..');
     this.matDialogRef.close(false);
   }
 

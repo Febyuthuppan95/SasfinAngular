@@ -384,6 +384,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   previewCapture(src: string, id: number) {
+    
     if (id !== this.attachmentID && this.openPreview) {
       this.inspectingPreview = false;
       this.openPreview = false;

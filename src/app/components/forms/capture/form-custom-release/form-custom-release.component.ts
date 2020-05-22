@@ -821,7 +821,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   filterEDI() {
     this.editStatusList = this.editStatusListTemp;
     // tslint:disable-next-line: max-line-length
-    this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.ediStatusQuery.toUpperCase()}*`));
+    this.editStatusList = this.editStatusList.filter(x => this.matchRuleShort(x.Name.toUpperCase(), `*${this.ediStatusQuery.toUpperCase()}*`));
   }
 
   inifilterEDI() {

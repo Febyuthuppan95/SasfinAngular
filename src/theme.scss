@@ -40,6 +40,14 @@ $peachThemeText: #121212;
   border-color: rgba($color: $darkTheme, $alpha: 0.8) !important;
   color: $darkThemeText
 }
+.form-group.required .control-label:after {
+  content:" *";
+  color:red;
+}
+.form-group .control-label.required::after {
+  content:" *";
+  color:red;
+}
 
 .ls-tile-light {
   background: rgba($color: $lightTheme, $alpha: 0.8) !important;

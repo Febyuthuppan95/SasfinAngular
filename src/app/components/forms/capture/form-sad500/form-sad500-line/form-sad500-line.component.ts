@@ -569,8 +569,8 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
     this.linesValid.emit(this.LinesForm.valid);
   }
 
-  loadTarrifs() {
-    this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: '', rowStart: 1, rowEnd: 100 }).then(
+  loadTarrifs(query?: string) {
+    this.tariffService.list({ userID: this.currentUser.userID, specificTariffID: -1, filter: query, rowStart: 1, rowEnd: 10 }).then(
       // tslint:disable-next-line: max-line-length
       (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
         this.tariffs = res.tariffList;
@@ -601,7 +601,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   filterCountries() {
     this.countriesList = this.countriesListTemp;
     // tslint:disable-next-line: max-line-length
-    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`) || this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
+    this.countriesList = this.countriesList.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`) || this.matchRuleShort(x.code.toUpperCase(), `*${this.countryQuery.toUpperCase()}*`));
   }
   selectedCountry(country: number) {
     this.countryID = country;
@@ -688,8 +688,10 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   filterTariff() {
-    this.tariffs = this.tariffsTemp;
-    this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tarrifQuery.toUpperCase()}*`));
+    console.log(this.tariffs);
+    // this.tariffs = this.tariffsTemp;
+    // this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.tariffCode.toString(), `*${this.tarrifQuery.toUpperCase()}*`));
+    this.loadTarrifs(this.tarrifQuery);
   }
 
   filterUnit() {

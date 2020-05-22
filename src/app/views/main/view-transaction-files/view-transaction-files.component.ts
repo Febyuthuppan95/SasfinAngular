@@ -271,6 +271,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           }
 
           this.dataList = res.attachments;
+          console.log(this.dataList);
           this.sad500DataList = this.dataList.filter(x => x.fileType === 'SAD500');
 
           if (res.rowCount === 0) {

@@ -312,6 +312,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
 
     submit() {
+      console.log('alt + s');
       if (this.LinesForm.valid) {
         if (this.isUpdate) {
           const request: InvoiceLine = {

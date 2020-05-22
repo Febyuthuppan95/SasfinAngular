@@ -2,7 +2,8 @@
 
 <form (submit)="submit(); $event.preventDefault()" [formGroup]="LinesForm" *ngIf="this.form !== undefined" style="padding: 24px;border-radius: 10px; background: #f2f2f2;">
   <div class="form-group" *ngIf="this.form.commonFactor != undefined">
-    <label for="custVal">Common Factor</label>
+   
+    <label class="control-label required" for="custVal">Common Factor</label>
       <input type="text"  id="commonFactor" formControlName="control1"
         [(ngModel)]="this.form.commonFactor.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -23,7 +24,7 @@
         </div>
       </div>
   <div class="form-group">
-    <label for="custVal">Customs Value</label>
+    <label class="control-label required" for="custVal">Customs Value</label>
     <input type="number" id="custVal" formControlName="control2"
       [(ngModel)]="this.form.custVal.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -45,7 +46,7 @@
     </div>
   </div>
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
-      <label for="hsQuantity">HS Quantity</label>
+      <label class="control-label required" for="hsQuantity">HS Quantity</label>
     <input type="text"  id="hsQuantity" formControlName="control3"
       [(ngModel)]="this.form.hsQuantity.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -67,7 +68,7 @@
       </div>
     </div>
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
-      <label for="foreignInv">Foreign Inv</label>
+      <label class="control-label required" for="foreignInv">Foreign Inv</label>
     <input type="text" id="foreignInv" formControlName="control4"
       [(ngModel)]="this.form.foreignInv.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -89,7 +90,7 @@
       </div>
     </div>
   <div class="form-group" *ngIf="this.form.duty != undefined">
-      <label for="duty">Duty</label>
+      <label class="control-label required" for="duty">Duty</label>
     <input type="text" id="duty" formControlName="control5"
       [(ngModel)]="this.form.duty.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -112,7 +113,7 @@
     </div>
   <div class="form-group">
     <div class="col-sm-3 " style="float: left; padding-left:0px;">
-      <label for="supplyUnit">Supply Unit</label>
+      <label class="control-label required" for="supplyUnit">Supply Unit</label>
       <input type="text" id="supplyUnit" formControlName="control6"
         [(ngModel)]="this.form.supplyUnit.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -120,7 +121,7 @@
         placeholder="Supply Unit"/>
     </div>
     <div class="col-sm-9" style="float:left;">
-      <label for="currencyID">Unit of Measure</label>
+      <label class="control-label required" for="currencyID">Unit of Measure</label>
           <input formControlName="control7"
           [(ngModel)]="this.unitQuery" (keyup)="filterUnit()"
           type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
@@ -135,7 +136,7 @@
       </div>
   </div>
   <div class="form-group">
-    <label for="currencyID">Currency</label>
+    <label class="control-label required" for="currencyID">Currency</label>
     <input type="text" formControlName="control8"
       [(ngModel)]="this.currencyQuery"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -152,7 +153,7 @@
       </mat-autocomplete>
   </div>
   <div class="form-group">
-    <label for="tariff">Tariff</label>
+    <label class="control-label required" for="tariff">Tariff</label>
       <input type="text" formControlName="control9"
       [(ngModel)]="this.tariffQuery"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -165,7 +166,7 @@
       <mat-autocomplete #tariffAuto="matAutocomplete" >
         <mat-option *ngFor="let tariff of tariffs" [value]="tariff.name"
         (onSelectionChange)="selectedTariff(tariff.id)">
-          {{tariff.name}}
+        {{tariff.subHeading}} - {{tariff.name}}
         </mat-option>
       </mat-autocomplete>
   </div>
@@ -184,7 +185,7 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Product Code"/>
   </div>
   <div class="form-group">
-    <label for="currencyID">Country of Origin</label>
+    <label class="control-label required" for="currencyID">Country of Origin</label>
     <input formControlName="control12"
     [(ngModel)]="this.countryQuery" type="text"
       class="form-control form-control-sm shadow-sm form-control-light"

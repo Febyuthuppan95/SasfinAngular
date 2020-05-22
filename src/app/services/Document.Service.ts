@@ -37,6 +37,7 @@ export class DocumentService {
    * get
    */
   public get(docName: string) {
+    console.log(docName);
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiDocuments}/${docName}`;
       this.httpClient
