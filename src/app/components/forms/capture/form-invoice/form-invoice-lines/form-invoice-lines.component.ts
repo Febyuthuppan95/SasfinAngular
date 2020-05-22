@@ -9,7 +9,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Subject } from 'rxjs';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { InvoiceLine } from 'src/app/models/HttpResponses/Invoices';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
@@ -22,6 +22,9 @@ import { UUID } from 'angular2-uuid';
 import { MatSnackBar } from '@angular/material';
 import { Items, ItemsListResponse } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-form-invoice-lines',
@@ -48,6 +51,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private themeService: ThemeService,
       private userService: UserService,
       private captureService: CaptureService,
+      private apiService: ApiService,
       private unitService: UnitMeasureService,
       private snackbarService: HelpSnackbar,
       private placeService: PlaceService,
@@ -55,15 +59,13 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private snackbar: MatSnackBar) { }
 
     LinesForm = new FormGroup({
-      control1: new FormControl(null, [Validators.required]),
-      control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
       control3: new FormControl(null, [Validators.required]),
       control4: new FormControl(null, [Validators.required]),
       control5: new FormControl(null, [Validators.required]),
       control5a: new FormControl(null),
-      control6: new FormControl(null, [Validators.required]),
-      control6a: new FormControl(null),
+      // control6: new FormControl(null, [Validators.required]),
+      // control6a: new FormControl(null),
       control7: new FormControl(null, [Validators.required]),
       control7a: new FormControl(null),
       control8: new FormControl(null, [Validators.required]),
@@ -78,8 +80,9 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     unitOfMeasure = new FormControl();
     private unsubscribe$ = new Subject<void>();
     unitOfMeasureQuery = '';
-    items: Items[] = [];
-    itemsTemp: Items[] = [];
+    // items: Items[] = [];
+    // itemsTemp: Items[] = [];
+    items: ItemGroupItem[] = [];
 
     @Input() lineData: InvoiceLine;
     @Input() updateSAD500Line: InvoiceLine;
@@ -177,16 +180,21 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     countriesList: CountryItem[] = [];
     countriesListTemp: {rowNum: number, countryID: number, name: string, code: string}[];
     countryQuery = '';
+    
     isUpdate: boolean;
-
+    currentCompany : {companyID: number, companyName: string};
     ngOnInit() {
+      this.companyService.observeCompany()
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.currentCompany = res;   
+      });
       this.themeService.observeTheme()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(theme => this.currentTheme = theme);
 
       this.currentUser = this.userService.getCurrentUser();
       this.loadUnits();
-      this.loadItems();
+      // this.loadItems();
       this.loadCountries();
     }
 
@@ -386,39 +394,39 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.unitOfMeasureQuery = this.unitOfMeasureList[0].name;
     }
 
-    loadItems() {
-      const model = {
-        userID: this.currentUser.userID,
-        filter: '',
-        specificItemID: -1,
-        rowStart: 1,
-        rowEnd: 100000000,
-        orderBy: '',
-        orderByDirection: ''
-      };
-      this.companyService.getItemList(model).then(
-        (res: ItemsListResponse) => {
-          this.items = res.itemsLists;
-          this.itemsTemp = this.items;
-        },
-        msg => {
-          console.log(msg);
-        }
-      );
-    }
+    // loadItems() {
+    //   const model = {
+    //     userID: this.currentUser.userID,
+    //     filter: '',
+    //     specificItemID: -1,
+    //     rowStart: 1,
+    //     rowEnd: 100000000,
+    //     orderBy: '',
+    //     orderByDirection: ''
+    //   };
+    //   this.companyService.getItemList(model).then(
+    //     (res: ItemsListResponse) => {
+    //       this.items = res.itemsLists;
+    //       this.itemsTemp = this.items;
+    //     },
+    //     msg => {
+    //       console.log(msg);
+    //     }
+    //   );
+    // }
 
-    filterItems() {
-      this.items = this.itemsTemp;
-      this.items = this.items.filter(x => this.matchRuleShort(x.item.toUpperCase(), `*${this.itemQuery.toUpperCase()}*`));
-    }
+    // filterItems() {
+    //   this.items = this.itemsTemp;
+    //   this.items = this.items.filter(x => this.matchRuleShort(x.item.toUpperCase(), `*${this.itemQuery.toUpperCase()}*`));
+    // }
     selectedItem(item: number) {
+      console.log(item);
       this.form.itemID.value = item;
     }
 
     initfilteritems() {
-      this.items = this.itemsTemp;
-      this.items = this.items.filter(x => x.itemID === this.form.itemID.value);
-      this.itemQuery = this.items[0].item;
+      
+      this.filterItemGroups(this.form.itemID.value);
     }
 
     matchRuleShort(str, rule) {
@@ -455,6 +463,23 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           // this.countryQuery = this.countriesList.find(x => x.countryID === this.form.cooID.value).code;
         }
       );
+    }
+    filterItemGroups(itemID?: number) {
+      const model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyID: this.currentCompany.companyID,
+          filter: this.itemQuery,
+          itemID: itemID
+        },
+        requestProcedure: 'ItemGroupsList'
+      };
+      this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+        (res: ListReadResponse) => {
+          this.items = res.data;
+        }
+      )
+
     }
     selectedCountry(country: number) {
       // this.countryID = country;
@@ -607,4 +632,18 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     }
+}
+export class ListReadResponse {
+  data: any[];
+  rowCount: number;
+  outcome: Outcome;
+}
+export class ItemGroupItem {
+  rowNum: number;
+  itemID: number;
+  item: string;
+  description: string;
+  tariff: string;
+  vulnerable: string;
+
 }

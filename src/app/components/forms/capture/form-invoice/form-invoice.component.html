@@ -152,6 +152,7 @@
         </div>
       </div>
       <br>
-      <app-form-invoice-lines [(showLines)]="this.toggleLines" (submitLine)="addToQueue($event)" (updateLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData" (linesValid) ="CathLinesValid($event)"></app-form-invoice-lines>
+    
+    <app-form-invoice-lines [(showLines)]="this.toggleLines" (submitLine)="addToQueue($event)" (updateLine)="updateLine($event)" [focusSADLine]="focusLineForm" [(updateSAD500Line)]="focusLineData" (linesValid) ="CathLinesValid($event)" ></app-form-invoice-lines>
   </span>
   <app-notification></app-notification>
