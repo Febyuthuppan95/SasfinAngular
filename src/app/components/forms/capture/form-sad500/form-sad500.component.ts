@@ -114,7 +114,7 @@ SADForm = new FormGroup({
   sadcontrol10a: new FormControl(null),
   sadcontrol11: new FormControl(null, [Validators.required]),
   sadcontrol11a: new FormControl(null),
-  sadcontrol12: new FormControl(null, [Validators.required])
+  sadcontrol12: new FormControl(null)
 });
 
 
@@ -252,6 +252,8 @@ lineIndex = 0;
 dutyIndex = 0;
 transactionID = 0;
 attachmentType = '';
+transactionType = '';
+transactionTypeDisplay = '';
 dialogOpen = false;
 
   ngOnInit() {
@@ -265,11 +267,13 @@ dialogOpen = false;
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number, docType: string }) => {
+    .subscribe((curr: { transactionID: number, attachmentID: number, docType: string, transactionType: string }) => {
       if (curr !== null || curr !== undefined) {
         this.attachmentID = curr.attachmentID;
         this.transactionID = curr.transactionID;
         this.attachmentType = curr.docType;
+        this.transactionType = curr.transactionType;
+        this.transactionTypeDisplay = curr.transactionType.toUpperCase();
         if (curr.docType === 'VOC') {
           this.vocGet();
         } else {

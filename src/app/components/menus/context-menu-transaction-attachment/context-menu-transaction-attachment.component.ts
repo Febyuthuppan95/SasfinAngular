@@ -20,6 +20,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() statusID: number;
   @Input() docPath: string;
   @Input() fileType: string;
+  @Input() transactionType: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
 
@@ -29,14 +30,14 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
     if (this.statusID !== 5 && this.statusID !== 2 && this.statusID !== 4) {
       this.docService.loadDocumentToViewer(this.docPath);
       // tslint:disable-next-line: max-line-length
-      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType });
+      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType });
       this.router.navigate(['capture', 'transaction', 'attachment']);
     }
   }
 
   lines() {
     // tslint:disable-next-line: max-line-length
-    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType});
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType});
     this.router.navigate(['sad500/lines']);
   }
 

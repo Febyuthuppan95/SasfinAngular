@@ -18,7 +18,7 @@
       statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4, statusYellow: attach.attachmentID === this.attachmentID}"
       [matTooltip]="attach.name + ' (' + attach.fileType + ')' + ' - ' + attach.tooltip"
       matTooltipPosition="after"
-    (click)="previewCapture(attach.file, attach.attachmentID)">{{ attach.fileType[0] }}
+      (click)="previewCapture(attach.file, attach.attachmentID)">{{ attach.fileType[0] }}
     </button>
     <br>
   </span>

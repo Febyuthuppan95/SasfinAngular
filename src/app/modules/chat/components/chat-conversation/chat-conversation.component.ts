@@ -145,7 +145,7 @@ export class ChatConversationComponent implements OnInit, AfterContentChecked {
     console.log('going to link');
     // Redirect to dummy route
     // tslint:disable-next-line: max-line-length
-    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.conversation.documentID, docType: this.conversation.fileType });
+    // this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.conversation.documentID, docType: this.conversation.fileType });
     // this.router.navigate(['capture', 'transaction', 'attachment']);
     this.router.navigateByUrl('/refreshComponent');
   }

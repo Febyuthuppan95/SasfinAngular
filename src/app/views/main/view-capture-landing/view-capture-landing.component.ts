@@ -55,6 +55,7 @@ private notify: NotificationComponent;
   companyName: string;
   transactionID: number;
   attachmentID: number;
+  transactionType: string;
   ACT: number;
   TACT: number;
   ATBC: number;
@@ -110,7 +111,7 @@ private notify: NotificationComponent;
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        console.log(res.captureattachment.attachmentID);
+        
         if (res.captureattachment.attachmentID !== 0 || res.captureattachment.transactionID !== 0) {
           this.CaptureInfo = res.captureattachment;
           this.docPath = res.captureattachment.filepath;
@@ -120,11 +121,11 @@ private notify: NotificationComponent;
           this.fileTypeID = res.captureattachment.fileTypeID;
           this.companyID = res.captureattachment.companyID;
           this.companyName = res.captureattachment.companyName;
-          console.log(res);
+          this.transactionType = res.captureattachment.transactionType;
           this.docService.loadDocumentToViewer(this.docPath);
           // tslint:disable-next-line: max-line-length
           this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID,
-            docType: this.fileType, issueID: res.captureattachment.issueID, reason: res.captureattachment.reason});
+            docType: this.fileType, transactionType: this.transactionType, issueID: res.captureattachment.issueID, reason: res.captureattachment.reason});
           this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
           this.router.navigate(['capture', 'transaction', 'attachment']);
           this.loading = false;

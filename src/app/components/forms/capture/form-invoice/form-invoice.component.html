@@ -63,7 +63,7 @@
   </div>
 
   <div class="form-group" *ngIf="this.form.fromCompany != undefined">
-    <label class="control-label required"> From Company</label>
+    <label class="control-label"> From Company</label>
     <input formControlName="control3"
     (keyup)="filterFromCompany()" [(ngModel)]="this.form.fromCompany.value"
     [ngClass]="{'form-control-invalid': this.form.fromCompany.error}" type="text" placeholder="From Company" aria-label="From Company"
@@ -112,7 +112,7 @@
       <p class="invalid-control-label" *ngIf="this.form.cooID.error !== null">{{this.form.cooID.error}}</p>
   </div>
   <div class="form-group" *ngIf="this.form.incoType != undefined">
-    <label class="control-label required" for="quantityValue">Inco Type</label>
+    <label class="control-label" for="quantityValue">Inco Type</label>
       <input formControlName="control6"
       [(ngModel)]="this.incoTypeQuery" type="text"
       [ngClass]="{'form-control-invalid': this.form.incoType.error !== null && this.form.incoType.error !== undefined}"

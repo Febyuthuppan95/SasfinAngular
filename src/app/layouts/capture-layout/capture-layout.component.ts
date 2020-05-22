@@ -98,6 +98,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentListShowing: TransactionFile[] = [];
   transactionID: number;
   attachmentID: number;
+  transactionType: string;
   showHelp = false;
   focusPDF = false;
   attachmentType: string;
@@ -149,6 +150,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
+      this.transactionType = obj.transactionType;
       this.reason = obj.reason;
       this.escalated = obj.issueID > 0 ? true : false;
       this.loadCaptureInfo();

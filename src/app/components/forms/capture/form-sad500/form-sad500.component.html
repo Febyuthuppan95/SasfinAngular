@@ -13,7 +13,7 @@
   </div>
   <h1 class="capture-form-title text-dark">
     <span *ngIf="this.toggleLines">{{this.attachmentType}} Lines</span>
-    <span *ngIf="!this.toggleLines">{{this.attachmentType}}</span>
+    <span *ngIf="!this.toggleLines">{{this.attachmentType}} - <span style="color: #3f51b5;">{{this.transactionTypeDisplay}}</span></span>
   </h1>
 </div>
 <span [ngClass]="{'hide': this.toggleLines}">
@@ -34,6 +34,7 @@
   </div>
   <!--  -->
   <div class="form-group" *ngIf="this.form.MRN != undefined">
+    <label class="control-label required">MRN</label>
     <input type="text" formControlName="sadcontrol1" [formControl]="voccontrol3"
       [(ngModel)]="this.form.MRN.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -54,6 +55,7 @@
       </div>
   </div>
   <div class="form-group" *ngIf="this.form.importersCode != undefined">
+    <label class="control-label required">Importers Code</label>
     <input type="text" formControlName="sadcontrol2"
       [(ngModel)]="this.form.importersCode.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -74,6 +76,7 @@
       </div>
   </div>
     <div class="form-group" *ngIf="this.form.serialNo != undefined">
+      <label class="control-label required">Serial No</label>
       <input [focus]="this.focusMainForm" type="text" formControlName="sadcontrol3"
         [(ngModel)]="this.form.serialNo.value"
         class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
@@ -94,6 +97,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.LRN != undefined">
+      <label class="control-label required">LRN</label>
       <input type="text" formControlName="sadcontrol4"
         [(ngModel)]="this.form.LRN.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -114,6 +118,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.CPC != undefined">
+      <label class="control-label required">CPC</label>
       <input type="text" formControlName="sadcontrol5"
         [(ngModel)]="this.form.CPC.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -134,6 +139,7 @@
         </div>
       </div>
     <div class="form-group" *ngIf="this.form.PCC != undefined">
+      <label class="control-label required">PCC</label>
       <input type="text" formControlName="sadcontrol6"
         [(ngModel)]="this.form.PCC.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -153,7 +159,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label>Total Customs Value</label>
+      <label class="control-label required">Total Customs Value</label>
       <input type="number" formControlName="sadcontrol7"
         [(ngModel)]="this.form.totalCustomsValue.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -174,7 +180,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.totalCustomsDuty != undefined">
-      <label>Total Customs Duty</label>
+      <label class="control-label required">Total Customs Duty</label>
       <input type="text" formControlName="sadcontrol8"
         [(ngModel)]="this.form.totalCustomsDuty.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -195,6 +201,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.waybillNo != undefined">
+      <label class="control-label required">Waybill No</label>
       <input type="text" formControlName="sadcontrol9"
         [(ngModel)]="this.form.waybillNo.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -215,6 +222,7 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.supplierRef != undefined">
+      <label class="control-label required">Supplier Reference</label>
       <input type="text" formControlName="sadcontrol10"
         [(ngModel)]="this.form.supplierRef.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -236,6 +244,7 @@
 
     </div>
     <div class="form-group" *ngIf="this.form.fileRef != undefined">
+      <label class="control-label required">File Reference</label>
       <input type="text" formControlName="sadcontrol11"
         [(ngModel)]="this.form.fileRef.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -255,7 +264,8 @@
           </div>
         </div>
     </div>
-    <div class="form-group" *ngIf="this.form.rebateCode != undefined">
+    <div *ngIf="this.form.rebateCode != undefined && this.transactionType == 'export'">
+      <label class="control-label required">Rebate Code</label>
       <input type="text" formControlName="sadcontrol12"
         [(ngModel)]="this.form.rebateCode.value"
         class="form-control form-control-sm shadow-sm form-control-light"

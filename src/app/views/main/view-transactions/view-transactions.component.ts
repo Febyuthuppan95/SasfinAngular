@@ -90,6 +90,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   focusHelp: number;
   focusHelpName: string;
   focusDescription: string;
+  transactionType: string;
 
   noData = false;
   showLoader = true;
@@ -283,6 +284,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
       .list(model)
       .then(
         (res: TransactionListResponse) => {
+          console.log(res);
           if (res.transactions.length === 0) {
             this.notify.toastrwarning(
               res.outcome.outcome,
@@ -379,7 +381,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name) {
+  popClick(event, id, name, type) {
     console.log('ok');
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
@@ -391,6 +393,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
     this.focusHelp = id;
     this.transName = name;
+    this.transactionType = type;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

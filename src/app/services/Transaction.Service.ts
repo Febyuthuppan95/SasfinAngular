@@ -16,14 +16,14 @@ export class TransactionService {
     }
 
     // tslint:disable-next-line: max-line-length
-    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>(sessionData);
+    this.currentAttachment = new BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionType: string, transactionName?: string, issueID?: number, reason?: string }>(sessionData);
   }
 // tslint:disable-next-line: max-line-length
-  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string }>;
+  currentAttachment: BehaviorSubject<{ transactionID: number, attachmentID: number, docType: string, transactionType: string, transactionName?: string, issueID?: number, reason?: string }>;
   public observerCurrentAttachment() {
     return this.currentAttachment.asObservable(); }
   // tslint:disable-next-line: max-line-length
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionName?: string, issueID?: number, reason?: string}) {
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionType:string, transactionName?: string, issueID?: number, reason?: string}) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
   }

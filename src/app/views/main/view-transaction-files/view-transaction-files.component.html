@@ -180,5 +180,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID" [statusID]="this.focusStatusID" [fileType]="this.focusType"></app-context-menu-transaction-attachment>
+<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID" [transactionType]="this.transactionType" [statusID]="this.focusStatusID" [fileType]="this.focusType"></app-context-menu-transaction-attachment>
 </div>

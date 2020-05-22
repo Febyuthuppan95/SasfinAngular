@@ -8,6 +8,7 @@ export class CaptureAttachmentResponse {
 export class CaptureAttachment {
   transactionID: number;
   transactiondate: string;
+  transactionType: string;
   attachmentID: number;
   attachmentdate: string;
   companyID: number;

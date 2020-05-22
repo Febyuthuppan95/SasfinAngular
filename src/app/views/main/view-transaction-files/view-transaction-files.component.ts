@@ -129,11 +129,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   transactionTypes = [
     { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
     { name: 'SAD500', value: 2, description: 'SAD500' },
-    { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
-    { name: 'VOC', value: 5, description: 'VOC' },
-    { name: 'INVOICE', value: 6, description: 'Invoice' },
-    { name: 'WAYBILL', value: 7, description: 'Waybill' },
-    { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' },
+    { name: 'CUSRELEASE', value: 3, description: 'Customs Release Notification' },
+    { name: 'VOC', value: 4, description: 'VOC' },
+    { name: 'INVOICE', value: 5, description: 'Invoice' },
+    { name: 'WAYBILL', value: 6, description: 'Waybill' },
+    { name: 'CUSWORK', value: 7, description: 'Custom Worksheet' },
   ];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number }[] = [];
@@ -142,6 +142,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   selectedSAD500: number;
   selectedSAD500Line: number;
   fileToUpload: File;
+  transactionType: string;
   currentAttachment = 0;
   uploading = false;
   isVOC = false;
@@ -168,6 +169,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     .subscribe((data) => {
       if (data !== null || data !== undefined) {
         this.transactionID = data.transactionID;
+        this.transactionType = data.transactionType;
       }
     });
 
@@ -490,7 +492,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   addToQueue() {
     let errors = 0;
-
+    console.log(this.selectedTransactionType);
     if (this.attachmentName === '' || this.attachmentName === null || this.attachmentName === undefined) {
       errors++;
       this.notify.toastrwarning('Warning', 'Enter attachment name');
