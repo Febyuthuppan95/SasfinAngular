@@ -358,6 +358,7 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
   }
 
   ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+    this.clearQueries();
     if (this.tempUpdateLine || this.tempLineData) {
       if ((this.tempUpdateLine !== this.updateSAD500Line) || (this.tempLineData !== this.lineData)) {
         this.handleChanges();
@@ -371,7 +372,11 @@ export class FormSAD500LineComponent implements OnInit, OnChanges, AfterViewInit
       this.handleChanges();
     }
   }
-
+  clearQueries() {
+    this.countryQuery = '';
+    this.tarrifQuery = '';
+    this.unitOfMeasureQuery = '';
+  }
   handleChanges() {
     this.resetValues();
     this.loadDuties();

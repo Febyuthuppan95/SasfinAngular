@@ -185,6 +185,7 @@ lineIndex = 0;
 loader = false;
 
   ngOnInit() {
+    this.clearQueries();
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);
@@ -206,6 +207,11 @@ loader = false;
 
   }
 
+  clearQueries() {
+    this.itemQuery = '';
+    this.toCompanyQuery = '';
+    this.countryQuery = '';
+  }
   loadIncoTypes() {
     // Load
     const model = {
@@ -677,6 +683,8 @@ loader = false;
   newLine() {
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
+    this.InvForm.reset();
+    console.log(this.InvForm.get('control1').value);
     this.lines = -1;
   }
   cancelLine() {

@@ -214,6 +214,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     }
 
     ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
+      this.clearQueries();
       if (this.updateSAD500Line !== null && this.updateSAD500Line !== undefined) {
         this.isUpdate = true;
         this.form.quantity.value = this.updateSAD500Line.quantity;
@@ -318,7 +319,11 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       }
 
     }
-
+    clearQueries() {
+      this.countryQuery = '';
+      this.itemQuery = '';
+      this.unitOfMeasureQuery = '';
+    }
     submit() {
       console.log('alt + s');
       if (this.LinesForm.valid) {

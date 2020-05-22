@@ -266,6 +266,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     ngOnChanges(changes: import('@angular/core').SimpleChanges): void {
         // console.log(this.updateLine);
+        this.clearQueries();
         if (this.updateLine !== null && this.updateLine !== undefined) {
             this.isUpdate = true;
             this.form.custVal.value = this.updateLine.custVal;
@@ -507,7 +508,12 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
             };
         }
     }
-
+    clearQueries() {
+        this.countryQuery = '';
+        this.tariffQuery = '';
+        this.unitQuery = '';
+        this.currencyQuery = '';
+      }
     submit() {
       console.log('logvalid');
       console.log(this.LinesForm);
