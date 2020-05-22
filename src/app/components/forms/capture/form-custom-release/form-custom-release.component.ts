@@ -79,8 +79,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     control5a: new FormControl(null),
     control6: new FormControl(null, [Validators.required]),
     control6a: new FormControl(null),
-    control7: new FormControl(null, [Validators.required]),
-    control7a: new FormControl(null),
+    // control7: new FormControl(null, [Validators.required]),
+    // control7a: new FormControl(null),
     // control8: new FormControl(null, [Validators.required]),
     control9: new FormControl(null, [Validators.required]),
     control9a: new FormControl(null),
@@ -88,7 +88,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     control10a: new FormControl(null),
     control11: new FormControl(null, [Validators.required]),
     control11a: new FormControl(null),
-    control12: new FormControl(null, [Validators.required]),
+    control12: new FormControl(null, [Validators.required])
   });
 
   currentUser = this.userService.getCurrentUser();
@@ -123,14 +123,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       OReason: null,
     },
     PCC: {
-      value: null,
-      error: null,
-      OBit: null,
-      OUserID: null,
-      ODate: null,
-      OReason: null,
-    },
-    FOB: {
       value: null,
       error: null,
       OBit: null,
@@ -179,14 +171,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       OReason: null,
     },
     fileRef: {
-      value: null,
-      error: null,
-      OBit: null,
-      OUserID: null,
-      ODate: null,
-      OReason: null,
-    },
-    boe: {
       value: null,
       error: null,
       OBit: null,
@@ -280,14 +264,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         ODate: null,
         OReason: null,
       },
-      FOB: {
-        value: null,
-        error: null,
-        OBit: null,
-        OUserID: null,
-        ODate: null,
-        OReason: null,
-      },
       waybillNo: {
         value: null,
         error: null,
@@ -336,14 +312,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         ODate: null,
         OReason: null,
       },
-      boe: {
-        value: null,
-        error: null,
-        OBit: null,
-        OUserID: null,
-        ODate: null,
-        OReason: null,
-      },
       ediStatusID: {
         value: null,
         error: null,
@@ -356,6 +324,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   }
 
   submit() {
+    console.log(this.CRNForm.controls);
       if (this.CRNForm.valid) {
           const requestModel = {
             userID: this.currentUser.userID,
@@ -367,7 +336,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             lrn: this.form.LRN.value,
             importersCode: this.form.importersCode.value,
             pcc: this.form.PCC.value,
-            fob: this.form.FOB.value,
             waybillNo: this.form.waybillNo.value,
             mrn: this.form.MRN.value,
             ediStatusID: this.form.ediStatusID.value,
@@ -394,11 +362,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             pccOUserID: this.form.PCC.OUserID,
             pccCODate: this.form.PCC.ODate,
             pccOReason: this.form.PCC.OReason,
-
-            fobOBit: this.form.FOB.OBit,
-            fobOUserID: this.form.FOB.OUserID,
-            fobODate: this.form.FOB.ODate,
-            fobOReason: this.form.FOB.OReason,
 
             waybillNoOBit: this.form.waybillNo.OBit,
             waybillNoOUserID: this.form.waybillNo.OUserID,
@@ -466,7 +429,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.captureService.customsReleaseGet(requst).then(
       (res: CRNList) => {
         console.log(res.customs);
-        this.form.FOB.value = res.customs[0].fob;
         this.form.MRN.value = res.customs[0].mrn;
         this.form.serialNo.value = res.customs[0].serialNo;
         this.form.importersCode.value = res.customs[0].importersCode;
@@ -498,11 +460,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
         this.form.PCC.OUserID  = res.customs[0].pccOUserID;
         this.form.PCC.ODate  = res.customs[0].pccODate;
         this.form.PCC.OReason  = res.customs[0].pccOReason;
-
-        this.form.FOB.OBit  = res.customs[0].fobOBit;
-        this.form.FOB.OUserID  = res.customs[0].fobOUserID;
-        this.form.FOB.ODate  = res.customs[0].fobODate;
-        this.form.FOB.OReason  = res.customs[0].fobOReason;
 
         this.form.waybillNo.OBit  = res.customs[0].waybillNoOBit;
         this.form.waybillNo.OUserID  = res.customs[0].waybillNoOUserID;
@@ -539,8 +496,6 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
                   this.form.importersCode.error = error.errorDescription;
               } else if (error.fieldName === 'PCC') {
                   this.form.PCC.error = error.errorDescription;
-              } else if (error.fieldName === 'FOB') {
-                  this.form.FOB.error = error.errorDescription;
               } else if (error.fieldName === 'WaybillNo') {
                   this.form.waybillNo.error = error.errorDescription;
               } else if (error.fieldName === 'FileRef') {
@@ -660,28 +615,10 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     this.disabledpcc = false;
   }
 
-  OverrideFOBClick() {
-    this.form.FOB.OUserID = this.currentUser.userID;
-    this.form.FOB.OBit = true;
-    this.form.FOB.ODate = new Date();
-    this.disabledFOB = false;
-    this.FOBOReason = '';
-  }
+ 
 
-  OverrideFOBExcept() {
-    // this.form.LRN .OReason = reason;
-    this.disabledFOB  = true;
-    console.log(this.form.FOB);
-  }
+  
 
-  UndoOverrideFOB() {
-    this.form.FOB.OUserID = null;
-    this.form.FOB.OBit = null;
-    this.form.FOB.ODate = null;
-    this.form.FOB.OReason = null;
-    this. FOBOReason = '';
-    this.disabledFOB = false;
-  }
 
   OverrideWaybillNoClick() {
     this.form.waybillNo.OUserID = this.currentUser.userID;
