@@ -118,46 +118,52 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.CPC != undefined">
-      <label class="control-label required">CPC</label>
-      <input type="text" formControlName="sadcontrol5"
-        [(ngModel)]="this.form.CPC.value"
-        class="form-control form-control-sm shadow-sm form-control-light"
-        [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
-        (mouseover)="updateHelpContext('form-sad500-cpc')"
-        placeholder="CPC" />
+      <div class="row">
+        <div class="col-md-3">
+          <label class="control-label required">CPC</label>
+          <input type="text" formControlName="sadcontrol5"
+                 [(ngModel)]="this.form.CPC.value"
+                 class="form-control form-control-sm shadow-sm form-control-light"
+                 [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
+                 (mouseover)="updateHelpContext('form-sad500-cpc')"
+                 placeholder="CPC" />
         <div *ngIf="this.form.CPC.error !== null" class="input-group mb-3 invalid-control-label">
           <p *ngIf="this.form.CPC.OBit == false || this.form.CPC.OBit == null" style="width: inherit" >
             {{this.form.CPC.error}}
             <button (click)="OverrideCPCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
           </p>
           <input formControlName="sadcontrol5a"
-          [(ngModel)]="this.form.CPC.OReason" *ngIf="this.form.CPC.OBit == true" [disabled]="disabledCPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+                 [(ngModel)]="this.form.CPC.OReason" *ngIf="this.form.CPC.OBit == true" [disabled]="disabledCPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
           <div *ngIf="this.form.CPC.OBit == true"  class="input-group-append ">
             <button (click)="OverrideCPCExcept()" [disabled]="disabledCPC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
             <button (click)="UndoOverrideCPC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
           </div>
         </div>
-      </div>
-    <div class="form-group" *ngIf="this.form.PCC != undefined">
+        </div>
+        <div class="col-md-9">
+          <div class="form-group" *ngIf="this.form.PCC != undefined">
       <label class="control-label required">PCC</label>
       <input type="text" formControlName="sadcontrol6"
-        [(ngModel)]="this.form.PCC.value"
-        class="form-control form-control-sm shadow-sm form-control-light"
-        (mouseover)="updateHelpContext('form-sad500-pcc')"
-        placeholder="PCC" />
+             [(ngModel)]="this.form.PCC.value"
+             class="form-control form-control-sm shadow-sm form-control-light"
+             (mouseover)="updateHelpContext('form-sad500-pcc')"
+             placeholder="PCC" />
         <div *ngIf="this.form.PCC.error !== null" class="input-group mb-3 invalid-control-label">
         <p *ngIf="this.form.PCC.OBit == false || this.form.PCC.OBit == null" style="width: inherit" >
           {{this.form.PCC.error}}
           <button (click)="OverridePCCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
         <input formControlName="sadcontrol6a"
-        [(ngModel)]="this.form.PCC.OReason" *ngIf="this.form.PCC.OBit == true" [disabled]="disabledPCC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+               [(ngModel)]="this.form.PCC.OReason" *ngIf="this.form.PCC.OBit == true" [disabled]="disabledPCC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
         <div *ngIf="this.form.PCC.OBit == true"  class="input-group-append ">
           <button (click)="OverridePCCExcept()" [disabled]="disabledPCC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
           <button (click)="UndoOverridePCC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
         </div>
       </div>
     </div>
+        </div>
+      </div>
+      </div>
     <div class="form-group">
       <label class="control-label required">Total Customs Value</label>
       <input type="number" formControlName="sadcontrol7"
