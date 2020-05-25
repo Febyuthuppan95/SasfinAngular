@@ -23,9 +23,14 @@ export class CapturePreviewComponent implements OnInit {
   pdfSRC: string;
   displayPDF = false;
   failedToLoad = false;
+  page = 1;
+  rotation = 0;
+  zoom = 1;
+  ready: boolean;
   count = 0;
 
   ngOnInit() {
+    console.log('here for doc');
     console.log(this.data.src);
     this.failedToLoad = false;
 
@@ -45,8 +50,33 @@ export class CapturePreviewComponent implements OnInit {
       }
     );
   }
+  pageChange(page: number) {
+    if (page <= 0) {
+      page = 1;
+    }
 
+    this.page = page;
+  }
   close() {
     this.dialogRef.close();
   }
+  
+  rotatePDF(deg: number) {
+    this.rotation = deg;
+  }
+
+  zoomChange(variant: number) {
+    this.zoom = this.zoom + variant;
+  }
+
+  zoom_in() {
+    this.zoom = this.zoom + 0.2;
+  }
+
+  zoom_out() {
+    if (this.zoom >= 0.4) {
+       this.zoom = this.zoom - 0.2;
+    }
+  }
+
 }
