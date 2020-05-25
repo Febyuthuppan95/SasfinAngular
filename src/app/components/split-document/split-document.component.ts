@@ -29,6 +29,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
   transactionTypes = [
     { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
+    { name: 'ECI', value: 1, description: 'Export Clearing Instruction' },
     { name: 'SAD500', value: 2, description: 'SAD500' },
     { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
     { name: 'VOC', value: 5, description: 'VOC' },
