@@ -15,7 +15,7 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet, MatDialogConfig } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
@@ -75,6 +75,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
+ 
+
 
   private unsubscribe$ = new Subject<void>();
 
@@ -113,6 +115,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   companyName: string;
 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
+  
   openMore = true;
   openPreview = true;
   dialogOpen = false;
@@ -430,13 +433,15 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   submitCapture() {
-
+    
     if (!this.dialogOpen) {
+      
       this.dialogOpen = true;
-
+      const dialogConf = new MatDialogConfig();
+      dialogConf.autoFocus = true;
       this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
         this.dialogOpen = false;
-
+      
         if (status) {
           this.eventService.triggerCaptureEvent();
          }

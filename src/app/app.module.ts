@@ -227,6 +227,7 @@ import { OemQuartersContextMenuComponent } from './components/menus/oem-quarters
 import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-supply-context-menu/quarters-supply-context-menu.component';
 import { NestedTableComponent } from './components/nested-table/nested-table.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
+import { ClickStopPropagation } from './directives/event-propagation.directive';
  
 @NgModule({
   declarations: [
@@ -284,6 +285,7 @@ import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.compon
     FormCustomReleaseComponent,
     KeyHandlerDirective,
     ImageDirective,
+    ClickStopPropagation,
     ContextMenuAddressTypesComponent,
     ViewCaptureInfoComponent,
     ContextMenuCaptureInfoComponent,

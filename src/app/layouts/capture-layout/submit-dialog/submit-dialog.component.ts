@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
 @Component({
@@ -6,11 +6,17 @@ import { MatDialogRef } from '@angular/material';
   templateUrl: './submit-dialog.component.html',
   styleUrls: ['./submit-dialog.component.scss']
 })
-export class SubmitDialogComponent implements OnInit {
+export class SubmitDialogComponent implements OnInit, AfterViewInit {
 
   constructor(private matDialogRef: MatDialogRef<SubmitDialogComponent>) { }
-
+  focus = true;
+  @ViewChild('matDialogSubmit', {static: true}) dialogRef: ElementRef;
   ngOnInit() {
+   
+  }
+  ngAfterViewInit():void {
+    console.log(this.dialogRef.nativeElement.innerHTML);
+    this.dialogRef.nativeElement.click();
   }
 
   confirm() {
