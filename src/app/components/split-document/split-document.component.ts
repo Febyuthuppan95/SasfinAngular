@@ -44,7 +44,10 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   }
 
   addSection() {
+    console.log(this.requestData.sections.length);
+    const curLength = this.requestData.sections.length;
     this.requestData.sections.push({
+      position: curLength,
       pages: {
         start: 1,
         end: 2,
@@ -55,6 +58,8 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
       attachmentType: '',
       companyName: this.companyName
     });
+
+    this.requestData.sections.sort((x,y)=> y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   }
 
   inputFileChange(files: File[]) {
@@ -115,6 +120,7 @@ export class Section {
 }
 
 export class SplitPDFRequest {
+    position: number;
     pages: Section;
     userID?: number;
     transactionID?: number;

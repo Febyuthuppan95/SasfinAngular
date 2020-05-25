@@ -121,8 +121,8 @@ export class UserService {
    */
   public authenticate(email: string, pass: string) {
     const requestModel = {
-      email,
-      pass
+      email: email,
+      pass: pass
     };
 
     const promise = new Promise((resolve, reject) => {
