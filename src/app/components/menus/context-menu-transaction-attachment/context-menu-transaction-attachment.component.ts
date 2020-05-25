@@ -23,6 +23,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() transactionType: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
+  @Output() removeAttachment = new EventEmitter<string>();
 
   ngOnInit() {}
 
@@ -39,6 +40,15 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType});
     this.router.navigate(['sad500/lines']);
+  }
+
+  remove() {
+    this.removeAttachment.emit(
+      JSON.stringify({
+      fileID: this.attachmentID,
+      fileTypeID: this.fileType
+      })
+    );
   }
 
 }

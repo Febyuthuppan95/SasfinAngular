@@ -18,6 +18,8 @@ import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD50
 import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
 import { MatDialog } from '@angular/material';
 import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
+import { ApiService } from 'src/app/services/api.service';
+import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -34,7 +36,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     private router: Router,
     private captureService: CaptureService,
     private companyService: CompanyService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private apiService: ApiService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -574,6 +577,31 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     );
   }
 
+  removeAttachment($event) {
+    this.showLoader = true;
+    console.log($event);
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        attachmentID: JSON.parse($event).fileID,
+        fileTypeID: JSON.parse($event).fileTypeID
+      },  
+      requestProcedure: 'AttachmentsUpdate'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
+      (res: UpdateResponse) => {
+        this.loadAttachments();
+        
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
   splitPDF() {
     this.closeModal.nativeElement.click();
 
