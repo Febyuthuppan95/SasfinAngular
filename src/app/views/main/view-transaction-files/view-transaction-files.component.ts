@@ -469,9 +469,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   onTypeSelect(id: number) {
-    this.selectedTransactionType = id;
+    if (id === 2) {
+      this.selectedTransactionType = 1;
+    } else {
+      this.selectedTransactionType = id;
+    }
     this.disableAttachmentType = true;
-
     // tslint:disable-next-line: triple-equals
     if (this.selectedTransactionType == 5) {
       this.isVOC = true;
