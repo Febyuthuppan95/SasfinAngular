@@ -585,13 +585,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         userID: this.currentUser.userID,
         attachmentID: JSON.parse($event).fileID,
         fileTypeID: JSON.parse($event).fileTypeID
-      },  
+      },
       requestProcedure: 'AttachmentsUpdate'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
       (res: UpdateResponse) => {
         this.loadAttachments();
-        
+
       },
       msg => {
         this.showLoader = false;
