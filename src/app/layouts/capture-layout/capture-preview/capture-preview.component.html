@@ -5,7 +5,7 @@
     [minZoom]="0.5">
   </app-pdf-viewer> -->
   <pdf-viewer
- 
+
   class="viewer"
   [(src)]="this.pdfSRC"
   [render-text]="true"
@@ -24,11 +24,11 @@
       <div class="pdf-control shadow">
         <div class="row">
           <div class="col-4 text-left">
-            <button class="btn btn-secondary btn-sm" matTooltip="Zoom out" matTooltipPosition="above" (click)="zoom_out()" [disabled]="this.zoom_to <= 0.4">
+            <button class="btn btn-secondary btn-sm" matTooltip="Zoom out" matTooltipPosition="above" (click)="zoom_out()" [disabled]="this.zoom <= 0.4">
               <span class="mdi mdi-minus"></span>
             </button>
             &nbsp;
-            <button class="btn btn-secondary btn-sm" matTooltip="Zoom in" matTooltipPosition="above" (click)="zoom_in()" [disabled]="this.zoom_to >= 1.6">
+            <button class="btn btn-secondary btn-sm" matTooltip="Zoom in" matTooltipPosition="above" (click)="zoom_in()" [disabled]="this.zoom >= 1.6">
               <span class="mdi mdi-plus"></span>
             </button>
           </div>
@@ -39,7 +39,7 @@
               </button>
               &nbsp;
                 <span style="margin-right: 10px">{{page}}</span>
-    
+
               <button class="btn btn-secondary btn-sm" matTooltip="Next Page" matTooltipPosition="above" (click)="pageChange(page + 1)">
                 <span class="mdi mdi-arrow-right"></span>
               </button>
