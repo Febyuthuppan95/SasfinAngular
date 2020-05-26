@@ -283,6 +283,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   viewDutyTaxTypes() {
     sessionStorage.setItem('tariffID', this.selectedTariff.id.toString());
+    console.log(sessionStorage.getItem('tarriffID'));
     this.router.navigate(['tariff', 'duties']);
   }
 

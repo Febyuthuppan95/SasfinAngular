@@ -142,7 +142,7 @@ const routes: Routes = [
           { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
           { path: 'refreshComponent', component: ChatRedirectComponent},
           { path: 'claim/reports', component: PreviewReportsComponent},
-          // { path: 'tariff/duties', component: ViewDutyTaxTypesComponent },
+          { path: 'tariff/duties', component: ViewDutyTaxTypesComponent }
         ]
       },
       { path: 'capture', component: CaptureLayoutComponent, children: [
