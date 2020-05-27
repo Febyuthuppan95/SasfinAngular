@@ -131,7 +131,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   transactionTypes = [
     { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
-    { name: 'ECI', value: 1, description: 'Export Clearing Instruction' },
+    { name: 'ECI', value: 10, description: 'Export Clearing Instruction' },
     { name: 'SAD500', value: 2, description: 'SAD500' },
     { name: 'CUSRELEASE', value: 3, description: 'Customs Release Notification' },
     { name: 'VOC', value: 4, description: 'VOC' },
@@ -469,14 +469,16 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   onTypeSelect(id: number) {
-    if (id === 2) {
+    if (id === 0) {
       this.selectedTransactionType = 1;
+    } else if (id === 1) {
+      this.selectedTransactionType = 10;
     } else {
       this.selectedTransactionType = id;
     }
     this.disableAttachmentType = true;
     // tslint:disable-next-line: triple-equals
-    if (this.selectedTransactionType == 5) {
+    if (this.selectedTransactionType == 2) {
       this.isVOC = true;
       this.loadSAD500s();
     } else {
