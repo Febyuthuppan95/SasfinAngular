@@ -2,12 +2,14 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { TableHeader, TableHeading, Order, SelectedRecord } from 'src/app/models/Table';
-import { Subject } from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import { User } from 'src/app/models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { takeUntil } from 'rxjs/operators';
 import { Duty, DutyListResponse } from 'src/app/models/HttpRequests/SAD500Line';
 import { CaptureService } from 'src/app/services/capture.service';
+import {Pagination} from '../../../../components/pagination/pagination.component';
+import {MenuService} from '../../../../services/Menu.Service';
 
 @Component({
   selector: 'app-view-duty-tax-types',
@@ -16,7 +18,29 @@ import { CaptureService } from 'src/app/services/capture.service';
 })
 export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
 
-  constructor(private userService: UserService, private themeService: ThemeService, private captureService: CaptureService) { }
+  constructor(private userService: UserService,
+              private themeService: ThemeService,
+              private captureService: CaptureService,
+              private IMenuService: MenuService) {
+    this.rowStart = 1;
+    this.rowEnd = 15;
+    this.recordsPerPage = 15;
+    this.rowCountPerPage = 15;
+    this.activePage = +1;
+    this.prevPageState = true;
+    this.nextPageState = false;
+    this.prevPage = +this.activePage - 1;
+    this.nextPage = +this.activePage + 1;
+    this.filter = '';
+    this.orderBy = 'Name';
+    this.orderDirection = 'ASC';
+    this.totalShowing = 0;
+    this.subscription = this.IMenuService.subSidebarEmit$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(result => {
+        this.sidebarCollapsed = result;
+      });
+  }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -65,7 +89,7 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
-  recordsPerPage = 15;
+  recordsPerPage: number;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
@@ -77,7 +101,20 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
   orderDirection: string;
   selectedRow: number;
   dataset: Duty[];
-  showLoader = false;
+  showLoader = true;
+  noData = false;
+  showingRecords: number;
+  totalShowing: number;
+  pages: Pagination[];
+  showingPages: Pagination[];
+  rowCountPerPage: number;
+  activePage: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  subscription: Subscription;
+  sidebarCollapsed = true;
 
   ngOnInit() {
 
@@ -93,16 +130,40 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
   loadDataset(displayGrowl: boolean) {
     this.captureService.dutyList({
       dutyTaxTypeID: -1,
-      filter: '',
-      rowStart: 1,
-      rowEnd: 100,
-      orderBy: 'ASC',
-      orderDirection: 'Name'
+      filter: this.filter,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderDirection: this.orderDirection
     }).then(
       (res: DutyListResponse) => {
-        this.dataset = res.duties;
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.duties.length;
+          this.dataset = res.duties;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.dataset.length - 1;
+        }
+
+        if (res.outcome.outcome === 'SUCCESS') {
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
+
       },
-      (msg) => {}
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg('Server Error',
+          'Something went wrong while trying to access the server.');
+      }
     );
   }
 
@@ -117,13 +178,13 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
     this.loadDataset(false);
   }
 
-  orderChange($event: Order) {
-    this.orderBy = $event.orderBy;
-    this.orderDirection = $event.orderByDirection;
-    this.rowStart = 1;
-    this.rowEnd = this.recordsPerPage;
-    this.loadDataset(false);
-  }
+  // orderChange($event: Order) {
+  //   this.orderBy = $event.orderBy;
+  //   this.orderDirection = $event.orderByDirection;
+  //   this.rowStart = 1;
+  //   this.rowEnd = $event.rowCountPerPage;
+  //   this.loadDataset(false);
+  // }
 
   popClick(event, user) {
       this.contextMenuX = event.clientX + 3;
