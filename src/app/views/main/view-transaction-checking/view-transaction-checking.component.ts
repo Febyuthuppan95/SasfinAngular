@@ -138,8 +138,11 @@ private unsubscribe = new Subject<void>();
       }
     );
   }
-
-  getAssignedInvoiceLines() {
+  getAssignedLines($event) {
+    console.log($event);
+    
+  }
+  getInvoiceLineInfo() {
     this.loading = true;
     const model = {
       requestParams: {
@@ -160,7 +163,7 @@ private unsubscribe = new Subject<void>();
       }
     );
   }
-  getAssignedSADLines() {
+  getSADLineInfo() {
     this.loading = true;
     const model = {
       requestParams: {
