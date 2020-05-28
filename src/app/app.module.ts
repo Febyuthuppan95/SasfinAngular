@@ -228,6 +228,7 @@ import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-
 import { NestedTableComponent } from './components/nested-table/nested-table.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { ClickStopPropagation } from './directives/event-propagation.directive';
+import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
  
 @NgModule({
   declarations: [
@@ -384,7 +385,8 @@ import { ClickStopPropagation } from './directives/event-propagation.directive';
     OemQuartersContextMenuComponent,
     QuartersSupplyContextMenuComponent,
     NestedTableComponent,
-    ClaimLayoutComponent
+    ClaimLayoutComponent,
+    ViewTransactionCheckingComponent
   ],
   imports: [
     BrowserModule,

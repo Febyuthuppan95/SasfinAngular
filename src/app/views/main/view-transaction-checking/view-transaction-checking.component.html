@@ -1,0 +1,45 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="this.loading">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+          <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List <i
+              class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
+        </div>
+  
+        <div class="col md 9"></div>
+      </div>
+      <br />
+      <div class="row" *ngIf="this.CaptureJoins !== null">
+        <div class="col-md12">
+          <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID :
+            {{this.observedTransaction.transactionID}}
+          </h5>
+        </div>
+      </div>
+  
+      <br /> <br />
+  
+      <h4 *ngIf="!this.CaptureJoins">No Customs Workshet Lines found for this transaction</h4>
+      <div *ngIf="this.CaptureJoins !== null">
+        <mat-accordion *ngFor="let Cust of CaptureJoins">
+            <mat-expansion-panel id="expansion-panel-0" [expanded]="true"
+            style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
+            <mat-expansion-panel-header>
+                <h4> <i class="mdi mdi-file-document"></i> Customs Worksheet Line: {{Cust.CustomsWorkSheetID}} - {{Cust.CustomsWorkSheetLineID}} </h4>
+            </mat-expansion-panel-header>
+            <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
+                <div class="col-md-12">
+                  <hr style="border-top: 2px solid #0099ff;" />
+                </div>
+              </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+        </div>
+    </div>
+</div>

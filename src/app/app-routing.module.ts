@@ -70,6 +70,7 @@ import { ViewOemQuarterListComponent } from './views/main/view-company-list/view
 import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
+import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -140,6 +141,7 @@ const routes: Routes = [
           { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent },
           { path: 'transaction/invoices', component: ViewInvoicesComponent },
           { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent},
+          { path: 'transaction/checking', component: ViewTransactionCheckingComponent},
           { path: 'refreshComponent', component: ChatRedirectComponent},
           { path: 'claim/reports', component: PreviewReportsComponent},
           { path: 'tariff/duties', component: ViewDutyTaxTypesComponent }
