@@ -31,6 +31,8 @@ import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
+import { ApiService } from 'src/app/services/api.service';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-capture-layout',
@@ -41,6 +43,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   constructor(private themeService: ThemeService,
               private userService: UserService,
+              private apiService: ApiService,
               private router: Router,
               private docService: DocumentService,
               private userIdle: UserIdleService,
@@ -106,6 +109,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentType: string;
   helpValue = false;
   escalated = false;
+  transactionTypes: AttachmentType[] = [];
 
   CaptureInfo: CaptureAttachment;
   docPath: string;
@@ -150,14 +154,17 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
+      console.log(obj);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
       this.transactionType = obj.transactionType;
       this.reason = obj.reason;
       this.escalated = obj.issueID > 0 ? true : false;
-      this.loadCaptureInfo();
+      this.initTypes();
+      
       this.loadAttachments();
+
     });
 
     // get the help value
@@ -235,25 +242,32 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   goBack() {
     this.router.navigate(['transaction/attachments']);
   }
-
+  initTypes() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID
+      },
+      requestProcedure: 'DoctypesList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: ListReadResponse) => {
+        console.log(res);
+          res.data.forEach(x => {
+            this.transactionTypes.push({
+              name: x.ShortName,
+              description:x.Name,
+              value: x.FileTypeID
+            })
+          });
+          console.log(this.transactionTypes);
+          this.loadCaptureInfo();
+       
+      }
+    );
+  }
   loadCaptureInfo() {
-    let docTypeID = 1;
-
-    switch (this.attachmentType) {
-      case 'SAD500': {
-        docTypeID = 3;
-        break;
-      }
-      case 'Customs Release Notification': {
-        docTypeID = 2;
-        break;
-      }
-      case 'Import Clearing Instruction': {
-        docTypeID = 4;
-        break;
-      }
-    }
-
+    let docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
       companyID: this.company.id,
@@ -265,7 +279,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       rowEnd: 15,
       specificCaptureInfoID: -1
     };
-
     this.transactionService.captureInfo(requestModel).then(
       (res: CaptureInfoResponse) => {
         this.companyInfoList = res;
@@ -471,4 +484,9 @@ export class HttpError {
   status: string;
   ok: boolean;
   error: object;
+}
+export class AttachmentType {
+  name: string;
+  description: string;
+  value: number;
 }

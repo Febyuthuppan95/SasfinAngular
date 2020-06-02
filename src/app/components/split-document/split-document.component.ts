@@ -43,22 +43,6 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   }
 
   initTypes() {
-    // this.transactionTypes = 
-    // (this.data.transactionType.toLocaleLowerCase() === 'import') 
-    // ?  [{ name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
-    // { name: 'SAD500', value: 2, description: 'SAD500' },
-    // { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
-    // { name: 'VOC', value: 5, description: 'VOC' },
-    // { name: 'INVOICE', value: 6, description: 'Invoice' },
-    // { name: 'WAYBILL', value: 7, description: 'Waybill' },
-    // { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' }]
-    // :  [{ name: 'ECI', value: 1, description: 'Import Clearing Instruction' },
-    // { name: 'SAD500', value: 2, description: 'SAD500' },
-    // { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
-    // { name: 'VOC', value: 5, description: 'VOC' },
-    // { name: 'INVOICE', value: 6, description: 'Invoice' },
-    // { name: 'WAYBILL', value: 7, description: 'Waybill' },
-    // { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' }] 
 
     const model = {
       requestParams: {

@@ -45,6 +45,7 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
+      console.log(this.currentDoctype);
     });
   }
 
@@ -54,28 +55,33 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   }
 
   loadComponent() {
+    console.log(this.currentDoctype);
     switch (this.currentDoctype.toLocaleUpperCase()) {
-      case 'SAD500': {
+      case 'SAD': {
         this.componentService.renderComponent(FormSAD500Component);
         break;
       }
-      case 'CUSRELEASE' : {
+      case 'CRN' : {
         this.componentService.renderComponent(FormCustomReleaseComponent);
         break;
       }
-      case 'CUSTOMS RELEASE NOTIFICATION' : {
-        this.componentService.renderComponent(FormCustomReleaseComponent);
+      case 'CWS' : {
+        this.componentService.renderComponent(FormCustomWorksheetComponent);
         break;
       }
       case 'ICI': {
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
-      case 'IMPORT CLEARING INSTRUCTION': {
+      case 'ECI': {
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
-      case 'INVOICE': {
+      // case 'IMPORT CLEARING INSTRUCTION': {
+      //   this.componentService.renderComponent(FormImportClearingInstructionComponent);
+      //   break;
+      // }
+      case 'INV': {
         this.componentService.renderComponent(FormInvoiceComponent);
         break;
       }
@@ -83,18 +89,18 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormSAD500Component);
         break;
       }
-      case 'WAYBILL': {
+      case 'WAY': {
         this.componentService.renderComponent(FormWaybillComponent);
         break;
       }
-      case 'CUSWORK': {
-        this.componentService.renderComponent(FormCustomWorksheetComponent);
-        break;
-      }
-      case 'CUSTOMS WORKSHEET': {
-        this.componentService.renderComponent(FormCustomWorksheetComponent);
-        break;
-      }
+      // case 'CUSWORK': {
+      //   this.componentService.renderComponent(FormCustomWorksheetComponent);
+      //   break;
+      // }
+      // case 'CUSTOMS WORKSHEET': {
+      //   this.componentService.renderComponent(FormCustomWorksheetComponent);
+      //   break;
+      // }
     }
   }
 

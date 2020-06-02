@@ -111,13 +111,14 @@ private notify: NotificationComponent;
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        
+        console.log(res);
         if (res.captureattachment.attachmentID !== 0 || res.captureattachment.transactionID !== 0) {
           this.CaptureInfo = res.captureattachment;
           this.docPath = res.captureattachment.filepath;
           this.transactionID = res.captureattachment.transactionID;
           this.attachmentID = res.captureattachment.attachmentID;
           this.fileType = res.captureattachment.filetype;
+          console.log(this.fileType);
           this.fileTypeID = res.captureattachment.fileTypeID;
           this.companyID = res.captureattachment.companyID;
           this.companyName = res.captureattachment.companyName;
