@@ -106,7 +106,7 @@
   </div>
 </div>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-context-menu-userrights (editUserRight)="removeRight( currentRightID,'')" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userRightId]="currentRightID"></app-context-menu-userrights>
+  <app-context-menu-userrights (editUserRight)="removeRightByID(currentRightID)" [ngStyle]="(contextMenu) ? '': 'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [userRightId]="currentRightID"></app-context-menu-userrights>
 </div>
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
