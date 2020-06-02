@@ -33,7 +33,7 @@
               <div class="form-group">
                 <select class="form-control form-control-sm" (change)="typeChange(i, $event.target.value)">
                   <option disabled selected>Please select a type</option>
-                  <option *ngFor="let type of this.transactionTypes" [value]="type.value">{{type.name}}</option>
+                  <option *ngFor="let type of this.transactionTypes; let x = index;"  [value]="x">{{type.description}}</option>
                 </select>
               </div>
               </div>

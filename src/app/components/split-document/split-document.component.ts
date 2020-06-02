@@ -3,6 +3,10 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
+import { ListReadResponse } from '../forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 
 @AutoUnsubscribe()
 @Component({
@@ -14,7 +18,8 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
   constructor(private captureService: CaptureService, private companyService: CompanyService,
               private dialogRef: MatDialogRef<SplitDocumentComponent>,
-              @Inject(MAT_DIALOG_DATA) private data: { userID: number, transactionID: number}) { }
+              @Inject(MAT_DIALOG_DATA) private data: { userID: number, transactionID: number, transactionType: string },
+              private apiService: ApiService) { }
 
   sections: SplitPDFRequest[] = [];
   requestData = {
@@ -27,23 +32,56 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   companyName: string;
   private fileReader = new FileReader();
 
-  transactionTypes = [
-    { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
-    { name: 'ECI', value: 1, description: 'Export Clearing Instruction' },
-    { name: 'SAD500', value: 2, description: 'SAD500' },
-    { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
-    { name: 'VOC', value: 5, description: 'VOC' },
-    { name: 'INVOICE', value: 6, description: 'Invoice' },
-    { name: 'WAYBILL', value: 7, description: 'Waybill' },
-    { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' },
-  ];
+  transactionTypes = [];
 
   ngOnInit() {
     this.companyService.observeCompany().subscribe((data) => {
         this.companyName = data.companyName;
     });
+
+    this.initTypes();
   }
 
+  initTypes() {
+    // this.transactionTypes = 
+    // (this.data.transactionType.toLocaleLowerCase() === 'import') 
+    // ?  [{ name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
+    // { name: 'SAD500', value: 2, description: 'SAD500' },
+    // { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
+    // { name: 'VOC', value: 5, description: 'VOC' },
+    // { name: 'INVOICE', value: 6, description: 'Invoice' },
+    // { name: 'WAYBILL', value: 7, description: 'Waybill' },
+    // { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' }]
+    // :  [{ name: 'ECI', value: 1, description: 'Import Clearing Instruction' },
+    // { name: 'SAD500', value: 2, description: 'SAD500' },
+    // { name: 'CUSRELEASE', value: 4, description: 'Customs Release Notification' },
+    // { name: 'VOC', value: 5, description: 'VOC' },
+    // { name: 'INVOICE', value: 6, description: 'Invoice' },
+    // { name: 'WAYBILL', value: 7, description: 'Waybill' },
+    // { name: 'CUSWORK', value: 8, description: 'Custom Worksheet' }] 
+
+    const model = {
+      requestParams: {
+        userID: this.data.userID,
+        transactionID: this.data.transactionID
+      },
+      requestProcedure: 'DoctypesList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: ListReadResponse) => {
+        console.log(res);
+          res.data.forEach(x => {
+            this.transactionTypes.push({
+              name: x.ShortName,
+              description:x.Name,
+              value: x.FileTypeID
+            })
+          });
+          console.log(this.transactionTypes);
+       
+      }
+    );
+  }
   addSection() {
     console.log(this.requestData.sections.length);
     const curLength = this.requestData.sections.length;
@@ -76,7 +114,9 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   }
 
   typeChange(index: number, value: number) {
-    this.requestData.sections[index].attachmentType = this.transactionTypes[value - 1].name;
+    console.log(value);
+    this.requestData.sections[index].attachmentType = this.transactionTypes[value].name;
+    
   }
 
   formSubmit() {

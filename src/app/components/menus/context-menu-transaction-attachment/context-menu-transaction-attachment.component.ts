@@ -20,6 +20,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Input() statusID: number;
   @Input() docPath: string;
   @Input() fileType: string;
+  @Input() fileTypeID: number;
   @Input() transactionType: string;
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
@@ -46,7 +47,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
     this.removeAttachment.emit(
       JSON.stringify({
       fileID: this.attachmentID,
-      fileTypeID: this.fileType
+      fileTypeID: this.fileTypeID,
       })
     );
   }

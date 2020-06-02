@@ -20,6 +20,7 @@ import { MatDialog } from '@angular/material';
 import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
 import { ApiService } from 'src/app/services/api.service';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -85,6 +86,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   prevPage: number;
   prevPageState: boolean;
   focusPath: string;
+  focusFileType: number;
   disableAttachmentType: boolean;
   disableSAD500: boolean;
   disableSAD500Lines: boolean;
@@ -129,16 +131,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   transactionID: number;
 
-  transactionTypes = [
-    { name: 'ICI', value: 1, description: 'Import Clearing Instruction' },
-    { name: 'ECI', value: 10, description: 'Export Clearing Instruction' },
-    { name: 'SAD500', value: 2, description: 'SAD500' },
-    { name: 'CUSRELEASE', value: 3, description: 'Customs Release Notification' },
-    { name: 'VOC', value: 4, description: 'VOC' },
-    { name: 'INVOICE', value: 5, description: 'Invoice' },
-    { name: 'WAYBILL', value: 6, description: 'Waybill' },
-    { name: 'CUSWORK', value: 7, description: 'Custom Worksheet' },
-  ];
+  transactionTypes = [];
   attachmentName: string;
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number }[] = [];
   attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
@@ -186,9 +179,33 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     });
 
     this.loadAttachments();
+    this.initTypes();
   }
 
-
+  initTypes() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID
+      },
+      requestProcedure: 'DoctypesList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: ListReadResponse) => {
+        console.log(res);
+          res.data.forEach(x => {
+            this.transactionTypes.push({
+              name: x.ShortName,
+              description:x.Name,
+              value: x.FileTypeID
+            })
+          });
+          console.log(this.transactionTypes);
+       
+      }
+    );
+    
+  }
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
@@ -264,6 +281,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
+          console.log(res);
           if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
@@ -350,7 +368,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, fileName, statusID, doctype?) {
+  popClick(event, id, fileName, statusID, doctype?, fileTypeID?) {
+    console.log(doctype);
+
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -362,7 +382,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.focusHelp = id;
     this.focusPath = fileName;
     this.focusStatusID = statusID;
-    this.focusType = this.transactionTypes.find(x => x.description === doctype).name;
+    this.focusFileType = fileTypeID;
+    this.focusType = this.transactionTypes.find(x => x.value === fileTypeID).name;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -583,13 +604,15 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   removeAttachment($event) {
+    console.log(this.transactionTypes.filter(x => x.description === JSON.parse($event).fileTypeID));
     this.showLoader = true;
     console.log($event);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
         attachmentID: JSON.parse($event).fileID,
-        fileTypeID: JSON.parse($event).fileTypeID
+        fileTypeID: JSON.parse($event).fileTypeID,
+        isDeleted: 1
       },
       requestProcedure: 'AttachmentsUpdate'
     };
@@ -613,7 +636,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.dialog.open(SplitDocumentComponent, {
       data: {
         userID: this.currentUser.userID,
-        transactionID: this.transactionID
+        transactionID: this.transactionID,
+        transactionType: this.transactionType
       },
       panelClass: 'splitter',
       height: '80vh',
