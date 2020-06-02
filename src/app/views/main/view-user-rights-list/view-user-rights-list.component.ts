@@ -191,6 +191,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       rowStart: this.rowStart,
       rowEnd: 100000000
     };
+    console.log(uRModel);
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
@@ -327,6 +328,40 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
 
   confirmAdd() {
     this.openAddModal.nativeElement.click();
+  }
+
+  removeRightByID(rightID: number) {
+    const requestModel: UpdateUserRight = {
+      userID: this.currentUser.userID,
+      userRightID: rightID,
+    };
+
+    console.log(requestModel);
+    this.userService
+      .updateUserRight(requestModel).then(
+        (res: UserRightReponse) => {
+          if (res.outcome.outcome === 'FAILURE') {
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+          } else {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage
+            );
+
+          }
+          this.loadUserRights();
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+        }
+      );
+
   }
 
   removeRight(right: UserRightsList) {
