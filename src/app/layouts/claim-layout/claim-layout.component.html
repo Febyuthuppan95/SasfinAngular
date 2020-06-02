@@ -112,6 +112,7 @@
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Imports</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
+                    [isPageable]="'true'"
                     [parents] = "this.data" 
                     [headings]="this.headings"
                     [filter]="this.filterA"
@@ -132,6 +133,7 @@
                 <app-nested-table *ngIf="!this.loading"
                 [action_icon]="'arrow_downward'"
                 [(parents)] = "this.dataLinesAssigned" 
+                [isPageable]="'true'"
                 [headings]="this.headingsB"
                 [filter]="this.filterB"
                 [(paginator)]="this.pageB"
@@ -149,6 +151,7 @@
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'arrow_upward'"
                     [(parents)] = "this.dataLinesAvailable" 
+                    [isPageable]="'true'"
                     [headings]="this.headingsC"
                     [filter]="this.filterB"
                     [(paginator)]="this.pageC"

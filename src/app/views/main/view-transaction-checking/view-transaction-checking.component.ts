@@ -13,6 +13,10 @@ import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Page } from 'ngx-pagination/dist/pagination-controls.directive';
 import { PageEvent } from '@angular/material';
+import { ConstantPool } from '@angular/compiler';
+import { Pagination } from 'src/app/models/Pagination';
+import { TableHeading } from 'src/app/models/Table';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-transaction-checking',
@@ -27,14 +31,34 @@ export class ViewTransactionCheckingComponent implements OnInit {
   currentTheme: string;
   observedTransaction: Transaction;
   loading: boolean;
+  childrenLoaded: boolean;
   /**Data Events */
  rowStart =1;
  rowEnd = 15;
  filter = '';
  orderBy = '';
  orderByDirection = '';
+  displayFilter = '';
+ pages: Pagination[];
+  showingPages: Pagination[];
+  rowCount: number;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+
+  
+  orderDirection: string;
+
+  totalShowing: number;
+  orderIndicator = 'Name_ASC';
+  rowCountPerPage: number;
+  showingRecords: number;
+  activePage: number;
 
 
+  /**Panel Numbers */
+  step: number;
   
   /**Data Lists */
   customWorksheetID: number;
@@ -42,6 +66,83 @@ export class ViewTransactionCheckingComponent implements OnInit {
   CustomWorksheetLines: CustomWorksheetLine[];
   AvailableInvoiceLines: InvoiceLine[] = [];
   AvailableSAD500Lines: SAD500Line[] = [];
+
+  /**Data Table Config
+   */
+  invoiceHeadings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      },
+      position: 0
+    },
+    {
+      title: 'IDfirst',
+      propertyName: 'invoiceLineID',
+      order: {
+        enable: true,
+        tag: 'invoiceLineID'
+      },
+      position: 1
+    },
+    {
+      title: 'Invoice No',
+      propertyName: 'invoiceNo',
+      order: {
+        enable: true,
+        tag: 'invoiceNo'
+      },
+      position: 2
+    },
+    {
+      title: 'Product Code',
+      propertyName: 'name',
+      order: {
+        enable: true,
+        tag: 'name'
+      },
+      position: 3
+    },
+    {
+      title: 'Quantity',
+      propertyName: 'quantity',
+      order: {
+        enable: true,
+        tag: 'quantity'
+      },
+      position: 4
+    },
+    {
+      title: 'Item Value',
+      propertyName: 'itemValue',
+      order: {
+        enable: true,
+        tag: 'itemValue'
+      },
+      position: 5
+    },
+    {
+      title: 'Unit Price',
+      propertyName: 'unitPrices',
+      order: {
+        enable: true,
+        tag: 'unitPrices'
+      },
+      position: 6
+    },
+    {
+      title: 'Total Line Value',
+      propertyName: 'totalLineValue',
+      order: {
+        enable: true,
+        tag: 'totalLineValue'
+      },
+      position: 7
+    }
+  ];
+  AssignedInvoiceLines: InvoiceLine[] = [];
 
 
 
@@ -61,6 +162,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
     }
 private unsubscribe = new Subject<void>();
   ngOnInit() {
+    this.step = 0;
+    console.log(this.observedTransaction);
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe)).subscribe(res => {
       this.currentTheme = res;
@@ -68,11 +171,21 @@ private unsubscribe = new Subject<void>();
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe))
     .subscribe (obj => {
-      this.observedTransaction.transactionID = obj.transactionID,
-      this.observedTransaction.name = obj.transactionName;
+      console.log(obj);
+      if(obj !== null && obj !== undefined) {
+        this.observedTransaction = {
+          rowNum: 1,
+          transactionID: obj.transactionID,
+          name: obj.transactionName,
+          type: obj.transactionType,
+          status: ''
+        }
+        this.getCaptureList();
+      }
+      
     });
 
-    this.getCaptureList();
+    
 
   }
 
@@ -88,30 +201,38 @@ private unsubscribe = new Subject<void>();
       },
       requestProcedure: 'CaptureJoinsList'
     };
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
+        console.log(res);
         if (res.rowCount > 0) {
+          
           // Populate Key List List
           this.CaptureJoins = res.data;
+          this.showingRecords = this.CaptureJoins.length;
+          this.rowCount = res.rowCount;
           // Track the current Custom Worksheet
-          this.customWorksheetID = this.CaptureJoins[0].customWorksheetID;
+          this.customWorksheetID = this.CaptureJoins[0].CustomWorksheetID;
+          console.log(this.customWorksheetID);
           // Get
+          this.loading = false;
+          // this.notify.successmsg(
+          //   res.outcome.outcome,
+          //   res.outcome.outcomeMessage
+          // );
           this.getCustomWorksheetLines();
         } else {
 
         }
-        this.notify.successmsg(
-          res.outcome.outcome,
-          res.outcome.outcomeMessage
-        );
-        this.loading = false;
+       
+        
       },
       msg => {
         this.loading = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
+        // this.notify.errorsmsg(
+        //   'Server Error',
+        //   'Something went wrong while trying to access the server.'
+        // );
       }
     );
   }
@@ -123,52 +244,79 @@ private unsubscribe = new Subject<void>();
         customWorksheetID: this.customWorksheetID,
         filter: this.filter,
         rowStart: this.rowStart,
-        rowEnd: this.rowEnd
+        rowEnd: this.rowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderByDirection
       },
       requestProcedure: 'CustomWorksheetLinesList'
     };
-    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       (res: ListReadResponse) => {
         console.log(res.data);
         this.CustomWorksheetLines = res.data;
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
-  getAssignedLines($event) {
-    console.log($event);
+
+  joinLines() {
     
   }
-  getInvoiceLineInfo() {
-    this.loading = true;
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        invoiceLineID: ,
-        rowStart: this.rowStart,
-        rowEnd: this.rowEnd
-      },
-      requestProcedure: 'InvoiceLinesList'
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res:ListReadResponse) => {
-        this.AvailableInvoiceLines = res.data;
-        this.loading = false;
-      },
-      msg => {
-
+  async getAssignedInvoiceLines(custID: number) {
+    if(custID > 0) {
+      this.AssignedInvoiceLines = [];
+      console.log(custID);
+      let arr: CaptureJoin[] = [];
+      arr = this.CaptureJoins.filter(x => x.CustomWorksheetLineID.toLocaleString().localeCompare(custID.toLocaleString()));
+      if(arr.length > 0 ) {
+       this.AssignedInvoiceLines = await this.getInvoiceLineInfo(arr);
+       this.childrenLoaded = true;
       }
-    );
+    }
   }
+  getInvoiceLineInfo(lines: CaptureJoin[]): InvoiceLine[] {
+    let invoices: InvoiceLine[] = [];
+
+      this.loading = true;
+      lines.forEach(x => {
+        const model = {
+          userID: this.currentUser.userID,
+          invoiceLineID: x.InvoiceLineID,
+          invoiceID: x.InvoiceID,
+          transactionID: this.observedTransaction.transactionID,
+          rowStart: this.rowStart,
+          rowEnd: this.rowEnd,
+          orderBy: '',
+          orderByDirection: ''
+        };
+        this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
+          (res:InvoiceLineRead) => {
+            console.log(res);
+            if(res.lines.length > 0) {
+              invoices.push(res.lines[0]);
+              console.log(this.AssignedInvoiceLines);
+            } 
+          }
+        );
+      });
+     console.log(invoices);
+
+     return invoices;
+      
+
+    
+    
+  }
+    
   getSADLineInfo() {
     this.loading = true;
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        sadLineID: ,
+        sadLineID: 1,
         rowStart: this.rowStart,
         rowEnd: this.rowEnd
       },
@@ -227,17 +375,61 @@ private unsubscribe = new Subject<void>();
       }
     );
   }
+  searchBar() {
+    
+  }
+  /**Pagination and Filtering */
+ 
+  updatePagination() {
+    if (this.CaptureJoins.length <= this.totalShowing) {
+      this.prevPageState = false;
+      this.nextPageState = false;
+    } else {
+      this.showingPages = Array<Pagination>();
+      this.showingPages[0] = this.pages[this.activePage - 1];
+      const pagenumber = +this.rowCount / +this.rowCountPerPage;
 
+      if (this.activePage < pagenumber) {
+        this.showingPages[1] = this.pages[+this.activePage];
+
+        if (this.showingPages[1] === undefined) {
+          const page = new Pagination();
+          page.page = 1;
+          page.rowStart = 1;
+          page.rowEnd = this.rowEnd;
+          this.showingPages[1] = page;
+        }
+      }
+
+      if (+this.activePage + 1 <= pagenumber) {
+        this.showingPages[2] = this.pages[+this.activePage + 1];
+      }
+    }
+  }
+
+  /**Expansion Events */
+  focusWorksheet(cust: CustomWorksheetLine) {
+    console.log(cust);
+    this.step= cust.RowNum;
+    console.log(this.step);
+    this.getAssignedInvoiceLines(cust.CustomWorksheetID);
+  }
+  /**Datatable Events */
+  InvoiceEvent($event) {
+    console.log($event);
+  }
 }
 
 export class CaptureJoin {
-  rowNum: number;
-  captureJoinID: number;
-  invoiceLineID: number;
-  sad500LineID: number;
-  customWorksheetLineID: number;
-  customWorksheetID: number;
-  transactionID: number;
+  RowNum: number;
+  CaptureJoinID: number;
+  InvoiceLineID: number;
+  InvoiceID: number;
+  SAD500LineID: number;
+  SADID: number;
+  CustomWorksheetLineID: number;
+  CustomWorksheetID: number;
+  TransactionID: number;
 }
 
 export class InvoiceLine {
@@ -248,6 +440,11 @@ export class InvoiceLine {
   quantity: number;
   unitPrices: number;
   itemValue: number;
+  totalLineValue: number;
+}
+export class InvoiceLineRead {
+ outcome: Outcome;
+ lines: InvoiceLine[];
 }
 export class SAD500Line {
   rowNum: number;
@@ -260,16 +457,16 @@ export class SAD500Line {
   supplyUnit: number;
 }
 export class CustomWorksheetLine {
-  rowNum: number;
-  customWorksheetID: number;
-  customWorksheetLineID: number;
-  captureJoinID: number;
-  hsQuantity: number;
-  foreignInv: number;
-  custVal: number;
-  duty: number;
-  supplyUnit: number;
-  prodCode: string;
+  RowNum: number;
+  CustomWorksheetID: number;
+  CustomWorksheetLineID: number;
+  CaptureJoinID: number;
+  HSQuantity: number;
+  ForeignInv: number;
+  CustVal: number;
+  Duty: number;
+  SupplyUnit: number;
+  ProdCode: string;
 
   invoiceLines: InvoiceLine[];
   sadLines: SAD500Line[];
