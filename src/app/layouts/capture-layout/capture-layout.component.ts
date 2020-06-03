@@ -255,8 +255,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         console.log(res);
           res.data.forEach(x => {
             this.transactionTypes.push({
-              name: x.ShortName,
-              description:x.Name,
+              name: x.Name,
+              description:x.Description,
               value: x.FileTypeID
             })
           });

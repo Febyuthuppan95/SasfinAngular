@@ -195,8 +195,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         console.log(res);
           res.data.forEach(x => {
             this.transactionTypes.push({
-              name: x.ShortName,
-              description:x.Name,
+              name: x.Name,
+              description:x.Description,
               value: x.FileTypeID
             })
           });
@@ -204,7 +204,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
        
       }
     );
-    
   }
   paginateData() {
     let rowStart = 1;
@@ -369,7 +368,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, id, fileName, statusID, doctype?, fileTypeID?) {
+
     console.log(doctype);
+    console.log(fileTypeID);
 
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;

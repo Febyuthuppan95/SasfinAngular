@@ -38,6 +38,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
     this.companyService.observeCompany().subscribe((data) => {
         this.companyName = data.companyName;
     });
+    console.log(this.data.transactionType);
 
     this.initTypes();
   }
@@ -56,8 +57,8 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
         console.log(res);
           res.data.forEach(x => {
             this.transactionTypes.push({
-              name: x.ShortName,
-              description:x.Name,
+              name: x.Name,
+              description:x.Description,
               value: x.FileTypeID
             })
           });
@@ -100,7 +101,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   typeChange(index: number, value: number) {
     console.log(value);
     this.requestData.sections[index].attachmentType = this.transactionTypes[value].name;
-    
+    console.log(this.requestData.sections[index]);
   }
 
   formSubmit() {
