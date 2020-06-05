@@ -508,6 +508,10 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
         this.focusLineData = null;
         this.lines = -1;
     }
+    deleteLine() {
+        this.focusLineForm = !this.focusLineForm;
+        
+    }
     cancelLine() {
         this.focusLineData = null;
         console.log(this.linesCreated.length);

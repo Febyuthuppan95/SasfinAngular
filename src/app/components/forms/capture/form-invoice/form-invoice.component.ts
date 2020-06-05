@@ -370,20 +370,32 @@ loader = false;
   }
 
   updateLine(obj: InvoiceLine) {
+    console.log(obj);
     if (obj.isPersist) {
-      this.lineState = 'Saving';
-      const requestModel = {
-        userID: this.currentUser.userID,
-        invoiceLineID: obj.invoiceLineID,
-        prodCode: obj.prodCode,
-        quantity: obj.quantity,
-        itemValue: obj. itemValue,
-        isDeleted: 0,
-        unitPrice: obj.unitPrice,
-        totalLineValue: obj.totalLineValue,
-        // unitOfMeasure: obj.unitOfMeasure,
-        unitOfMeasureID: obj.unitOfMeasureID
-      };
+      const requestModel = {};
+      if(obj.isDeleted) {
+        this.lineState = 'Saving';
+        const requestModel = {
+          userID: this.currentUser.userID,
+          invoiceLineID: obj.invoiceLineID,
+          isDeleted: 1
+        };
+      } else {
+        this.lineState = 'Saving';
+        const requestModel = {
+          userID: this.currentUser.userID,
+          invoiceLineID: obj.invoiceLineID,
+          prodCode: obj.prodCode,
+          quantity: obj.quantity,
+          itemValue: obj. itemValue,
+          isDeleted: 0,
+          unitPrice: obj.unitPrice,
+          totalLineValue: obj.totalLineValue,
+          // unitOfMeasure: obj.unitOfMeasure,
+          unitOfMeasureID: obj.unitOfMeasureID
+        };
+      }
+     
 
       this.captureService.invoiceLineUpdate(requestModel).then(
         (res: Outcome) => {
@@ -686,6 +698,9 @@ loader = false;
     this.InvForm.reset();
     console.log(this.InvForm.get('control1').value);
     this.lines = -1;
+  }
+  deleteLine() {
+
   }
   cancelLine() {
     this.focusLineData = null;

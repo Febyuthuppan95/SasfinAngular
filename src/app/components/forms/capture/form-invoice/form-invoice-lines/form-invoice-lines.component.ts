@@ -324,9 +324,9 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.itemQuery = '';
       this.unitOfMeasureQuery = '';
     }
-    submit() {
+    submit(isDeleted?: boolean) {
       console.log('alt + s');
-      if (this.LinesForm.valid) {
+      if (this.LinesForm.valid && !isDeleted) {
         if (this.isUpdate) {
           const request: InvoiceLine = {
             prodCode: this.form.prodCode.value,
@@ -340,11 +340,11 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
             cooID: this.form.cooID.value,
             unitOfMeasureID: this.form.unitOfMeasureID.value,
             guid: UUID.UUID(),
+            isDeleted: isDeleted
           };
 
           this.updateLine.emit(request);
         } else {
-
           const request: InvoiceLine = {
             invoiceNo: this.form.invoiceNo.value,
             itemID: this.form.itemID.value,
@@ -359,7 +359,36 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           };
           this.submitLine.emit(request);
         }
-    } else {
+    } 
+    else if(!this.LinesForm.valid && isDeleted) {
+      if(this.isUpdate) {
+        const request: InvoiceLine = {
+          prodCode: this.form.prodCode.value,
+          invoiceID: this.updateSAD500Line.invoiceID,
+          quantity: this.form.quantity.value,
+          itemValue: this.form.itemValue.value,
+          invoiceLineID: this.updateSAD500Line.invoiceLineID,
+          unitPrice: this.form.unitPrice.value,
+          totalLineValue: this.form.totalLineValue.value,
+          isPersist: true,
+          // unitOfMeasure: this.form.unitOfMeasure,
+          cooID: this.form.cooID.value,
+          unitOfMeasureID: this.form.unitOfMeasureID.value,
+          guid: UUID.UUID(),
+          isDeleted: isDeleted
+        };
+        console.log(request);
+        this.updateLine.emit(request);
+      } else {
+        this.snackbar.open(`Cannot delete an unsaved line`, '', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+      
+    }
+    else {
       this.snackbar.open(`Please fill in the all lines data`, '', {
         duration: 3000,
         panelClass: ['capture-snackbar-error'],

@@ -1,5 +1,5 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
-
+<div *ngIf="this.isUpdate" class="text-right" style="float:right; margin:10px;"><button mat-icon-button style="color:#ff4747;" (click)="submit(true)"><mat-icon>delete</mat-icon></button></div>
 <form (submit)="submit(); $event.preventDefault()" [formGroup]="LinesForm" *ngIf="this.form !== undefined" style="padding: 24px;border-radius: 10px; background: #f2f2f2;">
   <!-- <div class="form-group" *ngIf="this.form.prodCode != undefined">
     <label class="control-label required"> Product Code</label>

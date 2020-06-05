@@ -49,4 +49,5 @@ export class InvoiceLine {
   totalLineValue: number;
   unitPrice: number;
   guid?: string;
+  isDeleted?: boolean;
 }
