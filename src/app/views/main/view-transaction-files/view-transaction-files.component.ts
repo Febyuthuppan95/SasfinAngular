@@ -491,6 +491,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   onTypeSelect(id: number) {
+    console.log(id);
     if (id === 0) {
       this.selectedTransactionType = 1;
     } else if (id === 1) {
@@ -500,12 +501,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     }
     this.disableAttachmentType = true;
     // tslint:disable-next-line: triple-equals
-    if (this.selectedTransactionType == 2) {
-      this.isVOC = true;
-      this.loadSAD500s();
-    } else {
-      this.isVOC = false;
-    }
+    console.log(this.disableAttachmentType);
+    // if (this.selectedTransactionType == 2) {
+    //   this.isVOC = true;
+    //   this.loadSAD500s();
+    // } else {
+    //   this.isVOC = false;
+    // }
   }
 
   onSAD500Select(id: number) {
@@ -523,18 +525,19 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   addToQueue() {
     let errors = 0;
+    console.log(this.transactionTypes);
     console.log(this.selectedTransactionType);
     if (this.attachmentName === '' || this.attachmentName === null || this.attachmentName === undefined) {
       errors++;
       this.notify.toastrwarning('Warning', 'Enter attachment name');
-    } else if (this.transactionTypes[this.selectedTransactionType - 1] === undefined) {
+    } else if (this.transactionTypes[this.selectedTransactionType] === undefined) {
       errors++;
       this.notify.toastrwarning('Warning', 'Please select an attachment type');
     }
 
     if (errors === 0) {
       this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
-      this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType - 1].name;
+      this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType].name;
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
       this.attachmentQueue[this.currentAttachment].sad500ID = this.selectedSAD500Line;

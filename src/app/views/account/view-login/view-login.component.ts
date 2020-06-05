@@ -1,4 +1,4 @@
-import { environment } from './../../../../environments/environment.prod';
+
 import { Invoice } from './../../../models/HttpResponses/Invoices';
 import { User } from './../../../models/HttpResponses/User';
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
+import { environment } from 'src/environments/environment';
 
 
 

@@ -101,6 +101,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   typeChange(index: number, value: number) {
     console.log(value);
     this.requestData.sections[index].attachmentType = this.transactionTypes[value].name;
+    this.requestData.sections[index].name = this.transactionTypes[value].description;
     console.log(this.requestData.sections[index]);
   }
 
@@ -118,6 +119,8 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
     if (err === 0) {
     const formData = new FormData();
+    this.requestData.sections.sort((x,y)=> x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
+    console.log(this.requestData);
     formData.append('requestModel', JSON.stringify(this.requestData));
     formData.append('file', this.file);
 

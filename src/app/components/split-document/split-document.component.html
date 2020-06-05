@@ -28,7 +28,7 @@
                   <input type="number" placeholder="End"  class="form-control form-control-sm" [value]="section.pages.end" [(ngModel)]="section.pages.end" [ngModelOptions]="{standalone: true}">
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Name"  class="form-control form-control-sm" [value]="section.name" [(ngModel)]="section.name" [ngModelOptions]="{standalone: true}">
+                    <input type="text" placeholder="Name" disabled="disabled"  class="form-control form-control-sm" [value]="section.name" [(ngModel)]="section.name" [ngModelOptions]="{standalone: true}">
                 </div>
               <div class="form-group">
                 <select class="form-control form-control-sm" (change)="typeChange(i, $event.target.value)">
