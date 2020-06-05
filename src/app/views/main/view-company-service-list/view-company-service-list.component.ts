@@ -493,9 +493,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.EndDate === null || this.EndDate.toString() === '') {
       error++;
     }
-    if (new Date(this.StartDate) > new Date(this.EndDate)) {
+    if (new Date(this.StartDate) > new Date(this.EndDate) && this.EndDate != null ) {
       error++;
-      this.notify.toastrwarning('Error', 'End date cannot be before start date')
+      this.notify.toastrwarning('Error', 'End date cannot be before start date');
     }
 
     if (error === 0) {
