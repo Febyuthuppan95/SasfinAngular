@@ -209,6 +209,19 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
       errors++;
     }
 
+    // checking filetypes
+    if (!this.fileName.includes('.png')) {
+      errors++;
+    }
+
+    if (!this.fileName.includes('.jpg')) {
+      errors++;
+    }
+
+    if (!this.fileName.includes('.jpeg')) {
+      errors++;
+    }
+
     if (errors === 0) {
       this.backgroundService.addBackgrounds(
         this.fileName,
@@ -227,7 +240,7 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
             }
           },
           (msg) => {
-            this.notify.errorsmsg('Failure', 'Something went wrong...');
+            this.notify.errorsmsg('Failure', 'File type not supported');
           }
         );
     } else {
