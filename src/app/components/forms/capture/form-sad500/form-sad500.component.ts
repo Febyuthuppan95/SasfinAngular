@@ -257,6 +257,7 @@ transactionTypeDisplay = '';
 dialogOpen = false;
 
   ngOnInit() {
+    console.log(this.themeService.observeHelpValue());
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(value => this.currentTheme = value);

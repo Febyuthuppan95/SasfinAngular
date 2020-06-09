@@ -144,7 +144,7 @@
       placeholder="Currency" aria-label="Currency"
       [formControl]="currency"
       [matAutocomplete]="currencyAuto"
-      (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-currency')">
       <mat-autocomplete #currencyAuto="matAutocomplete" >
         <mat-option *ngFor="let currency of currenciesList" [value]="currency.code"
         (onSelectionChange)="selectedCurrency(currency.currencyID)">
@@ -161,7 +161,7 @@
       placeholder="Tariff" aria-label="Tariff"
       [formControl]="tariff"
       [matAutocomplete]="tariffAuto"
-      (mouseover)="updateHelpContext('form-sad500-line-tariff-description')">
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-tariff-description')">
 
       <mat-autocomplete #tariffAuto="matAutocomplete" >
         <mat-option *ngFor="let tariff of tariffs" [value]="tariff.name"
@@ -175,14 +175,14 @@
   <input type="text" formControlName="control10"
     [(ngModel)]="this.form.invoiceNo.value" type="text"
     class="form-control form-control-sm shadow-sm form-control-light"
-    (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Invoice No"/>
+    (mouseover)="updateHelpContext('form-customs-worksheet-line-invoiceno')" placeholder="Invoice No"/>
   </div>
   <div class="form-group">
     <label for="currencyID">Product Code</label>
     <input type="text" formControlName="control11"
       [(ngModel)]="this.form.prodCode.value" type="text"
       class="form-control form-control-sm shadow-sm form-control-light"
-      (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')" placeholder="Product Code"/>
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-prodcode')" placeholder="Product Code"/>
   </div>
   <div class="form-group">
     <label class="control-label required" for="currencyID">Country of Origin</label>

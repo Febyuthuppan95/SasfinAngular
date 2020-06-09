@@ -17,7 +17,7 @@
       <div *ngIf="this.form.waybillNo.error !== null" class="input-group mb-3 invalid-control-label">
         <p *ngIf="this.form.waybillNo.OBit == false || this.form.waybillNo.OBit == null" style="width: inherit" >
         {{this.form.waybillNo.error}}
-        <button (click)="OverridewaybillNoClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+        <button (click)="OverridewaybillNoClick()" class="btn btn-outline-secondary Obutton" type="button">Override</button>
         </p>
         <input formControlName="control1a"
         [(ngModel)]="this.form.waybillNo.OReason"  *ngIf="this.form.waybillNo.OBit == true" [disabled]="disabledwaybillNo" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">

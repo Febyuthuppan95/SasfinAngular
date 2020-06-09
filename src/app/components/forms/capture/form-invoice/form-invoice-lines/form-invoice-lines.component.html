@@ -71,7 +71,7 @@
       placeholder="Item" aria-label="itemID"
 
       [matAutocomplete]="itemAuto"
-      (mouseover)="updateHelpContext('form-customs-worksheet-line-coo')">
+      (mouseover)="updateHelpContext('form-customs-worksheet-line-item-code')">
       <mat-autocomplete #itemAuto="matAutocomplete" >
         <mat-option *ngFor="let item of items" [value]="item.Item"
         (onSelectionChange)="selectedItem(item.ItemID)">

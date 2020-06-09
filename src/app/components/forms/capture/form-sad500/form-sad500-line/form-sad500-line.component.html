@@ -32,7 +32,7 @@
           <div *ngIf="this.form.supplyUnit.error !== null" class="input-group mb-3 invalid-control-label">
             <p *ngIf="this.form.supplyUnit.OBit == false || this.form.supplyUnit.OBit == null" style="width: inherit" >
               {{this.form.supplyUnit.error}}
-              <button (click)="OverridesupplyUnitClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+              <button (click)="OverridesupplyUnitClick()" class="btn btn-outline-secondary Obutton" type="button">Override</button>
             </p>
             <input formControlName="control2a"
             [(ngModel)]="this.form.supplyUnit.OReason"  *ngIf="this.form.supplyUnit.OBit == true" [disabled]="disabledsupplyUnit" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
@@ -109,7 +109,6 @@
       <label for="quantityValue">Previous Declaration</label>
       <input type="text" formControlName="control6"
       [(ngModel)]="this.form.previousDeclaration.value"
-
         class="form-control form-control-sm shadow-sm form-control-light"
         (mouseover)="updateHelpContext('form-sad500-line-previous-declaration')"
         placeholder="Previous Declaration" style="margin-top:0"/>
@@ -126,7 +125,6 @@
         [formControl]="myControl"
         [matAutocomplete]="cooAuto"
         (mouseover)="updateHelpContext('form-sad500-line-coo')">
-
         <mat-autocomplete #cooAuto="matAutocomplete" >
           <mat-option *ngFor="let country of countriesList" [value]="country.code"
           (onSelectionChange)="selectedCountry(country.countryID)">

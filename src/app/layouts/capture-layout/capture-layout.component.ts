@@ -33,6 +33,7 @@ import { DocumentService } from 'src/app/services/Document.Service';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 
 @Component({
   selector: 'app-capture-layout',
@@ -55,7 +56,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private channelService: ChannelService,
               private chatService: ChatService,
               private snackBarMat: MatSnackBar,
-              private escalationReason: MatBottomSheet) {}
+              private escalationReason: MatBottomSheet,
+              private objectHelpService: ObjectHelpService) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -127,6 +129,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   reason = '';
 
   ngOnInit() {
+    this.objectHelpService.toggleHelp(true);
     // this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
@@ -184,6 +187,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
+    
+
     this.shortcuts.push(
         {
             key: 'alt + i',
@@ -443,6 +448,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.themeService.toggleHelp();
   }
 
   submitCapture() {
