@@ -25,6 +25,7 @@ import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/Com
 import { CompanyService } from 'src/app/services/Company.Service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 
 @Component({
   selector: 'app-form-invoice',
@@ -38,7 +39,7 @@ constructor(private themeService: ThemeService, private userService: UserService
             private router: Router, private captureService: CaptureService, private dialog: MatDialog,
             private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
             private snackbar: MatSnackBar, private snackbarService: HelpSnackbar,
-            private placeService: PlaceService) { }
+            private placeService: PlaceService, private objectHelpService: ObjectHelpService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -52,7 +53,7 @@ invoiceLinesTooltip: MatTooltip;
 
 @ViewChild('invoiceTooltip', {static : false})
 invoiceTooltip: MatTooltip;
-
+help = true;
 InvForm = new FormGroup({
   control1: new FormControl(null, [Validators.required]),
   control1a: new FormControl(null),
@@ -192,7 +193,7 @@ loader = false;
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.submit());
+    .subscribe((escalation?: boolean) => this.submit(escalation));
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -317,20 +318,33 @@ loader = false;
             }
           }
         },
+        {
+            key: 'ctrl + alt + h',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+               this.toggelHelpBar();
+            }
+        }
     );
   }
+  toggelHelpBar() {
+    this.help = !this.help;
+    this.objectHelpService.toggleHelp(this.help);
+  }
 
-  submit() {
+
+  submit(escalation?: boolean) {
     console.log('Isvvalid');
-    console.log(this.InvForm.valid && this.LinesValid);
-    if (this.InvForm.valid && this.LinesValid) {
+    console.log(this.InvForm.valid && this.LinesValid );
+    if (this.InvForm.valid && this.LinesValid|| escalation) {
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
             invoiceNo: this.form.invoiceNo.value,
             companyID: this.form.fromCompanyID.value,
             currencyID: this.form.currencyID.value,
-            attachmentStatusID: 3,
+            attachmentStatusID: escalation ? 7: 3,
             cooID: this.form.cooID.value,
             invoiceDate: this.form.invoiceDate.value,
             incoTermTypeID: this.form.incoType.value,
@@ -537,9 +551,9 @@ loader = false;
     });
   }
 
-  saveLines() {
+  saveLines(escalation?:boolean) {
 
-    if (this.LinesValid && this.InvForm.valid) {
+    if (this.LinesValid && this.InvForm.valid || escalation) {
       if (this.lineIndex < this.lineQueue.length) {
         const currentLine = this.lineQueue[this.lineIndex];
 

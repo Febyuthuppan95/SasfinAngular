@@ -374,7 +374,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       (res: ChatIssueCreateReponse) => {
         if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
           // this.companyService.setCapture({ capturestate: false});
-          this.submitCapture();
+          this.submitCapture(true);
         } else {
           this.snackBarMat.open(res.outcome.outcomeMessage, '', {
             duration: 2000
@@ -451,7 +451,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.themeService.toggleHelp();
   }
 
-  submitCapture() {
+  submitCapture(isEscalation?: boolean) {
     
     if (!this.dialogOpen) {
       
@@ -462,7 +462,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         this.dialogOpen = false;
       
         if (status) {
-          this.eventService.triggerCaptureEvent();
+          this.eventService.triggerCaptureEvent(isEscalation);
          }
       });
     }

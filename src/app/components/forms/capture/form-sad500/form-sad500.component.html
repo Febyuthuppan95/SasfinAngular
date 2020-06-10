@@ -118,52 +118,111 @@
         </div>
     </div>
     <div class="form-group" *ngIf="this.form.CPC != undefined">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-3">
-          <label class="control-label required">CPC</label>
+          <label class="control-label required">PCC</label>
           <input type="text" formControlName="sadcontrol5"
-                 [(ngModel)]="this.form.CPC.value"
-                 class="form-control form-control-sm shadow-sm form-control-light"
-                 [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
-                 (mouseover)="updateHelpContext('form-sad500-cpc')"
-                 placeholder="CPC" />
-        <div *ngIf="this.form.CPC.error !== null" class="input-group mb-3 invalid-control-label">
-          <p *ngIf="this.form.CPC.OBit == false || this.form.CPC.OBit == null" style="width: inherit" >
-            {{this.form.CPC.error}}
-            <button (click)="OverrideCPCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
-          </p>
-          <input formControlName="sadcontrol5a"
-                 [(ngModel)]="this.form.CPC.OReason" *ngIf="this.form.CPC.OBit == true" [disabled]="disabledCPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
-          <div *ngIf="this.form.CPC.OBit == true"  class="input-group-append ">
-            <button (click)="OverrideCPCExcept()" [disabled]="disabledCPC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
-            <button (click)="UndoOverrideCPC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+            [(ngModel)]="this.form.CPC.value"
+            class="form-control form-control-sm shadow-sm form-control-light"
+            [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
+            (mouseover)="updateHelpContext('form-sad500-cpc')"
+            [matAutocomplete]="cpcAuto"
+            (keyup)="filterCPC()"
+            placeholder="CPC" />
+            <mat-autocomplete #cpcAuto="matAutocomplete" >
+            <mat-option *ngFor="let cpc of cpcList" [value]="cpc.CPC"
+            (onSelectionChange)="selectedPCC(cpc.CPCID)">
+              {{cpc.CPC}}
+            </mat-option>
+          </mat-autocomplete>
+          <div *ngIf="this.form.CPC.error !== null" class="input-group mb-3 invalid-control-label">
+            <p *ngIf="this.form.CPC.OBit == false || this.form.CPC.OBit == null" style="width: inherit" >
+              {{this.form.CPC.error}}
+              <button (click)="OverrideCPCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+            </p>
+            <input formControlName="sadcontrol5a"
+                  [(ngModel)]="this.form.CPC.OReason" *ngIf="this.form.CPC.OBit == true" [disabled]="disabledCPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+            <div *ngIf="this.form.CPC.OBit == true"  class="input-group-append ">
+              <button (click)="OverrideCPCExcept()" [disabled]="disabledCPC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+              <button (click)="UndoOverrideCPC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+            </div>
           </div>
         </div>
-        </div>
-        <div class="col-md-9">
+        <div class="col-md-3">
           <div class="form-group" *ngIf="this.form.PCC != undefined">
+            <label class="control-label required">RPC</label>
+            <input type="text" formControlName="sadcontrol6"
+                  [(ngModel)]="this.form.PCC.value"
+                  class="form-control form-control-sm shadow-sm form-control-light"
+                  (mouseover)="updateHelpContext('form-sad500-pcc')"
+                  (keyup)="filterCPC()"
+                  placeholder="PCC" />
+              <div *ngIf="this.form.PCC.error !== null" class="input-group mb-3 invalid-control-label">
+              <p *ngIf="this.form.PCC.OBit == false || this.form.PCC.OBit == null" style="width: inherit" >
+                {{this.form.PCC.error}}
+                <button (click)="OverridePCCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+              </p>
+              <input formControlName="sadcontrol6a"
+                    [(ngModel)]="this.form.PCC.OReason" *ngIf="this.form.PCC.OBit == true" [disabled]="disabledPCC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+              <div *ngIf="this.form.PCC.OBit == true"  class="input-group-append ">
+                <button (click)="OverridePCCExcept()" [disabled]="disabledPCC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+                <button (click)="UndoOverridePCC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group" *ngIf="this.form.PPC != undefined">
+            <label class="control-label required">PPC</label>
+            <input type="text" formControlName="sadcontrol6b"
+                  [(ngModel)]="this.form.PPC.value"
+                  class="form-control form-control-sm shadow-sm form-control-light"
+                  (mouseover)="updateHelpContext('form-sad500-pcc')"
+                  (keyup)="filterCPC()"
+                  placeholder="PCC" />
+              <div *ngIf="this.form.PPC.error !== null" class="input-group mb-3 invalid-control-label">
+              <p *ngIf="this.form.PPC.OBit == false || this.form.PPC.OBit == null" style="width: inherit" >
+                {{this.form.PPC.error}}
+                <button (click)="OverridePPCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+              </p>
+              <input formControlName="sadcontrol16c"
+                    [(ngModel)]="this.form.PPC.OReason" *ngIf="this.form.PPC.OBit == true" [disabled]="disabledPPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+              <div *ngIf="this.form.PPC.OBit == true"  class="input-group-append ">
+                <button (click)="OverridePPCExcept()" [disabled]="disabledPPC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+                <button (click)="UndoOverridePPC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
       <label class="control-label required">PCC</label>
-      <input type="text" formControlName="sadcontrol6"
-             [(ngModel)]="this.form.PCC.value"
-             class="form-control form-control-sm shadow-sm form-control-light"
-             (mouseover)="updateHelpContext('form-sad500-pcc')"
-             placeholder="PCC" />
-        <div *ngIf="this.form.PCC.error !== null" class="input-group mb-3 invalid-control-label">
-        <p *ngIf="this.form.PCC.OBit == false || this.form.PCC.OBit == null" style="width: inherit" >
-          {{this.form.PCC.error}}
-          <button (click)="OverridePCCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
+      <input type="text" formControlName="sadcontrol5"
+        [(ngModel)]="this.form.CPC.value"
+        class="form-control form-control-sm shadow-sm form-control-light"
+        [ngClass]="{'form-control-invalid': this.form.CPC.error !== null}"
+        (mouseover)="updateHelpContext('form-sad500-cpc')"
+        [matAutocomplete]="cpcAuto"
+        (keyup)="selectFilteredCPC()"
+        placeholder="CPC" />
+        <mat-autocomplete #cpcAuto="matAutocomplete" >
+        <mat-option *ngFor="let cpc of cpcList" [value]="cpc.CPC"
+        (onSelectionChange)="selectedPCC(cpc.CPCID)">
+          {{cpc.CPC}}
+        </mat-option>
+      </mat-autocomplete>
+      <div *ngIf="this.form.CPC.error !== null" class="input-group mb-3 invalid-control-label">
+        <p *ngIf="this.form.CPC.OBit == false || this.form.CPC.OBit == null" style="width: inherit" >
+          {{this.form.CPC.error}}
+          <button (click)="OverrideCPCClick()" class="btn btn-outline-secondary Obutton" type="button">Overide</button>
         </p>
-        <input formControlName="sadcontrol6a"
-               [(ngModel)]="this.form.PCC.OReason" *ngIf="this.form.PCC.OBit == true" [disabled]="disabledPCC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
-        <div *ngIf="this.form.PCC.OBit == true"  class="input-group-append ">
-          <button (click)="OverridePCCExcept()" [disabled]="disabledPCC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
-          <button (click)="UndoOverridePCC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
+        <input formControlName="sadcontrol5a"
+              [(ngModel)]="this.form.CPC.OReason" *ngIf="this.form.CPC.OBit == true" [disabled]="disabledCPC" type="text" class="form-control" placeholder="Override Reason" aria-label="Override Reason" aria-describedby="basic-addon2">
+        <div *ngIf="this.form.CPC.OBit == true"  class="input-group-append ">
+          <button (click)="OverrideCPCExcept()" [disabled]="disabledCPC"  class="btn btn-outline-secondary" type="button" style="font-size: 18px;">&#10004;</button>
+          <button (click)="UndoOverrideCPC()" class="btn btn-outline-secondary" type="button" style="font-size: 22px;">&times;</button>
         </div>
       </div>
     </div>
-        </div>
-      </div>
-      </div>
     <div class="form-group">
       <label class="control-label required">Total Customs Value</label>
       <input type="number" formControlName="sadcontrol7"

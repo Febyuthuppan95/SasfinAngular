@@ -17,6 +17,7 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 
 @Component({
   selector: 'app-form-import-clearing-instruction',
@@ -28,7 +29,8 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService,
               private eventService: EventService, private dialog: MatDialog, private snackbar: MatSnackBar,
-              private snackbarService: HelpSnackbar, private companyService: CompanyService) { }
+              private snackbarService: HelpSnackbar, private companyService: CompanyService,
+              private objectHelpService: ObjectHelpService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -82,7 +84,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
       OReason: null,
     },
   };
-
+  help = true;
   dialogOpen = false;
 
   ngOnInit() {
@@ -92,7 +94,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.submit());
+    .subscribe((escalation?: boolean) => this.submit(escalation));
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -134,11 +136,23 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
               }
             }
         },
+        {
+            key: 'ctrl + alt + h',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+               this.toggelHelpBar();
+            }
+        }
     );
   }
+  toggelHelpBar() {
+    this.help = !this.help;
+    this.objectHelpService.toggleHelp(this.help);
+  }
 
-  submit() {
-    if (this.ICIForm.valid) {
+  submit(escalation?:boolean) {
+    if (this.ICIForm.valid || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
         specificICIID: this.attachmentID,
@@ -146,7 +160,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         importersCode: this.form.importersCode.value,
         supplierRef: this.form.supplierRef.value,
         isDeleted: 0,
-        attachmentStatusID: 3,
+        attachmentStatusID: escalation ? 7: 3,
 
         supplierRefOBit: this.form.supplierRef.OBit,
         supplierRefOUserID: this.form.supplierRef.OUserID,

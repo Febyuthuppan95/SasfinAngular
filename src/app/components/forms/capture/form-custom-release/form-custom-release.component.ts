@@ -18,6 +18,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -37,7 +38,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private companyService: CompanyService,
               private snackbarService: HelpSnackbar,
               private snackbar: MatSnackBar,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private objectHelpService: ObjectHelpService) { }
   disabledserialNo: boolean;
   serialNoOReason: string;
   disabledLRN: boolean;
@@ -187,7 +189,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
       OReason: null,
     }
   };
-
+  help = true;
   attachmentSubscription: Subscription;
   dialogOpen = false;
 
@@ -233,10 +235,22 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               }
             }
         },
+        {
+            key: 'ctrl + alt + h',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+               this.toggelHelpBar();
+            }
+        }
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
   }
+  toggelHelpBar() {
+    this.help = !this.help;
+    this.objectHelpService.toggleHelp(this.help);
+}
   buildForm() {
     this.formValid = this.formBuilder.group({
       serialNo: [this.form.serialNo, { validators: [Validators.required], updateOn: 'blur'}],
@@ -323,9 +337,9 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     });
   }
 
-  submit() {
+  submit(escalation?: boolean) {
     console.log(this.CRNForm.controls);
-      if (this.CRNForm.valid) {
+      if (this.CRNForm.valid || escalation) {
           const requestModel = {
             userID: this.currentUser.userID,
             customsReleaseID: this.attachmentID,
@@ -340,7 +354,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
             mrn: this.form.MRN.value,
             ediStatusID: this.form.ediStatusID.value,
             supplierRef: this.form.supplierRef.value,
-            attachmentStatusID: 3,
+            attachmentStatusID: escalation ? 7: 3,
             isDeleted: 0,
 
             serialNoOBit: this.form.serialNo.OBit,

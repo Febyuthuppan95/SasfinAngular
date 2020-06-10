@@ -20,6 +20,10 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
+import { ListReadResponse } from '../form-invoice/form-invoice-lines/form-invoice-lines.component';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',
@@ -55,7 +59,8 @@ export class FormSAD500Component implements OnInit, AfterViewInit, OnDestroy {
   constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
               private router: Router, private captureService: CaptureService, private dialog: MatDialog,
               private eventService: EventService, private snackbar: MatSnackBar, private snackbarService: HelpSnackbar,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService, private objectHelpService: ObjectHelpService,
+              private apiService: ApiService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -78,7 +83,7 @@ focusMainForm: boolean;
 focusLineForm: boolean;
 focusLineData: SAD500Line = null;
 private unsubscribe$ = new Subject<void>();
-
+help = true;
 currentTheme: string;
 loader: boolean;
 
@@ -104,6 +109,8 @@ SADForm = new FormGroup({
   sadcontrol5a: new FormControl(null),
   sadcontrol6: new FormControl(null, [Validators.required]),
   sadcontrol6a: new FormControl(null),
+  sadcontrol6b: new FormControl(null, [Validators.required]),
+  sadcontrol6c: new FormControl(null),
   sadcontrol7: new FormControl(null, [Validators.required]),
   sadcontrol7a: new FormControl(null),
   sadcontrol8: new FormControl(null, [Validators.required]),
@@ -158,6 +165,22 @@ form = {
     OReason: null,
   },
   PCC: {
+    value: null,
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
+  },
+  PPC: {
+    value: null,
+    error: null,
+    OBit: null,
+    OUserID: null,
+    ODate: null,
+    OReason: null,
+  },
+  CPCID: {
     value: null,
     error: null,
     OBit: null,
@@ -264,7 +287,10 @@ dialogOpen = false;
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.saveLines());
+    .subscribe((escalation?: boolean) => 
+      //console.log(escalation)
+      this.saveLines(null, escalation)
+    );
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -280,6 +306,7 @@ dialogOpen = false;
         } else {
           this.loadCapture();
           this.loadLines();
+          this.loadCPC();
         }
       }
     });
@@ -370,7 +397,72 @@ dialogOpen = false;
             }
           }
         },
+        {
+            key: 'ctrl + alt + h',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+               this.toggelHelpBar();
+            }
+        }
     );
+  }
+  cpcList: CPCItem[] = [];
+  cpcListTemp :CPCItem [] = [];
+
+  loadCPC() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        rowStart: 1,
+        rowEnd: 300
+      },
+      requestProcedure: 'CPCList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: ListReadResponse) => {
+        if (res.rowCount > 0 )  {
+          this.cpcList = res.data;
+          this.cpcListTemp = res.data;
+          
+        };
+        console.log(res);
+      }
+    );
+  }
+  // filterCPC() {
+  //   let cpc = '';
+  //   console.log(this.form);
+  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined)) {
+  //     cpc = `${this.form.CPC.value}`;
+  //   } 
+  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined) 
+  //   && (this.form.PCC.value !== null && this.form.PCC.value !== undefined) ) {
+  //     cpc = `${this.form.CPC.value}.${this.form.PCC.value}`;
+  //   } 
+  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined) 
+  //   && (this.form.PCC.value !== null && this.form.PCC.value !== undefined) 
+  //   && (this.form.PPC.value !== null && this.form.PPC.value !== undefined )) {
+  //     cpc = `${this.form.CPC.value}.${this.form.PCC.value}.${this.form.PPC.value}`;
+  //   }
+  //   console.log(cpc);
+  //   this.selectFilteredCPC(cpc);
+  // }
+  selectFilteredCPC() {
+    this.cpcList = this.cpcListTemp;
+    this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${this.form.CPC.value.toUpperCase()}*`));
+  }
+  matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
+    const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
+  }
+  selectedPCC(cpc: number) {
+    this.form.CPCID.value = cpc;
+  }
+  toggelHelpBar() {
+    this.help = !this.help;
+    this.objectHelpService.toggleHelp(this.help);
   }
 
   vocGet = () => this.captureService.vocList({
@@ -399,11 +491,11 @@ dialogOpen = false;
       this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
     })
 
-  submit() {
+  submit(escalation?: boolean) {
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
       this.vocStatus = true;
-      if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid) {
+      if (this.voccontrol1.valid && this.voccontrol2.valid && this.voccontrol3.valid && this.LinesValid || escalation) {
         const VOCrequestModel = {
           userID: this.currentUser.userID,
           vocID: this.attachmentID,
@@ -436,7 +528,7 @@ dialogOpen = false;
     } else {
       this.vocStatus = true;
     }
-    if (this.SADForm.valid && this.LinesValid && this.vocStatus) {
+    if (this.SADForm.valid && this.LinesValid && this.vocStatus || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
         SAD500ID: this.attachmentType === 'VOC' ? this.vocSAD500ID : this.attachmentID,
@@ -444,8 +536,7 @@ dialogOpen = false;
         lrn: this.form.LRN.value,
         rebateCode: this.form.rebateCode.value,
         totalCustomsValue: this.form.totalCustomsValue.value,
-        pcc: this.form.PCC.value,
-        cpc: this.form.CPC.value,
+        cpcID: this.form.CPCC.value,
         waybillNo: this.form.waybillNo.value,
         supplierRef: this.form.supplierRef.value,
         mrn: this.form.MRN.value,
@@ -715,9 +806,10 @@ dialogOpen = false;
     });
   }
 
-  saveLines(obj?: SAD500LineCreateRequest) {
-
-    if (this.LinesValid && this.SADForm.valid) {
+  saveLines(obj?: SAD500LineCreateRequest,escalation?:boolean) {
+    console.log(escalation);
+    
+    if (this.LinesValid && this.SADForm.valid || escalation) {
 
       if (obj !== null && obj !== undefined) {
 
@@ -836,7 +928,7 @@ dialogOpen = false;
             }
           );
         } else {
-          this.submit();
+          this.submit(escalation);
         }
       }
     } else if (!this.LinesValid && this.SADForm.valid) {
@@ -1203,4 +1295,9 @@ dialogOpen = false;
     this.unsubscribe$.complete();
   }
 
+}
+export class CPCItem {
+  RowNum: number;
+  CPCID: number;
+  CPC: string;
 }

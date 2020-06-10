@@ -16,6 +16,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { FormControl, Validators } from '@angular/forms';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
               private transactionService: TransactionService, private snackbar: MatSnackBar,
               private router: Router, private captureService: CaptureService,
               private eventService: EventService, private dialog: MatDialog,
-              private companyService: CompanyService) { }
+              private companyService: CompanyService, private objectHelpService: ObjectHelpService) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -44,7 +45,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUser = this.userService.getCurrentUser();
   attachmentID: number;
   transactionID: number;
-
+  help = true;
   currentTheme: string;
     form = {
       waybillNo: {
@@ -96,11 +97,23 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             }
         },
+        {
+            key: 'ctrl + alt + h',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+               this.toggelHelpBar();
+            }
+        }
     );
   }
+  toggelHelpBar() {
+    this.help = !this.help;
+    this.objectHelpService.toggleHelp(this.help);
+  }
 
-  submit() {
-    if (this.waybillNo.valid) {
+  submit(escalation?: boolean) {
+    if (this.waybillNo.valid || escalation) {
           const requestModel: WaybillUpdate = {
             userID: this.currentUser.userID,
             waybillID: this.attachmentID,

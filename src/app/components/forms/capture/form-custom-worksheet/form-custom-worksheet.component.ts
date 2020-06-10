@@ -20,6 +20,7 @@ import { CustomWorksheetLineReq } from 'src/app/models/HttpRequests/CustomWorksh
 // tslint:disable-next-line: max-line-length
 import { CustomWorksheetLinesResponse, CustomWorksheetLine, CWSLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 @Component({
     selector: 'app-form-custom-worksheet',
     templateUrl: './form-custom-worksheet.component.html',
@@ -30,7 +31,8 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
                 private router: Router, private captureService: CaptureService, private dialog: MatDialog,
                 private eventService: EventService, private snackbar: MatSnackBar,
-                private snackbarService: HelpSnackbar, validateService: ValidateService) { }
+                private snackbarService: HelpSnackbar, validateService: ValidateService,
+                private objectHelpService: ObjectHelpService) { }
 
     shortcuts: ShortcutInput[] = [];
 
@@ -67,7 +69,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
     currentTheme: string;
     loader: boolean;
-
+    help = true;
     lineQueue: CustomWorksheetLine[] = [];
     linesCreated: CustomWorksheetLine[] = [];
     lineState: string;
@@ -119,7 +121,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
 
         this.eventService.observeCaptureEvent()
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(() => this.saveLines());
+            .subscribe((escalation?: boolean) => this.saveLines(escalation));
 
         this.transactionService.observerCurrentAttachment()
             .pipe(takeUntil(this.unsubscribe$))
@@ -209,11 +211,24 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
                     }
                 }
             },
+            {
+                key: 'ctrl + alt + h',
+                preventDefault: true,
+                allowIn: [AllowIn.Textarea, AllowIn.Input],
+                command: e => {
+                   this.toggelHelpBar();
+                }
+            }
         );
     }
+    toggelHelpBar() {
+        this.help = !this.help;
+        this.objectHelpService.toggleHelp(this.help);
+    }
 
-    submit() {
-      if (this.LinesValid && this.CWSForm.valid) {
+    submit(escalation?: boolean) {
+      console.log(escalation);
+      if (this.LinesValid && this.CWSForm.valid || escalation) {
         const requestModel = {
           userID: this.currentUser.userID,
           customworksheetID: this.attachmentID,
@@ -221,7 +236,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
           fileRef: this.form.fileRef.value,
           lrn: this.form.LRN.value,
           isDeleted: 0,
-          attachmentStatusID: 3,
+          attachmentStatusID: escalation ? 7: 3,
           waybillNo: this.form.waybillNo.value,
 
           waybillNoOBit: this.form.waybillNo.OBit,
@@ -405,8 +420,9 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
         });
     }
 
-    saveLines() {
-      if (this.LinesValid && this.CWSForm.valid) {
+    saveLines(escalation?:boolean) {
+      if (this.LinesValid && this.CWSForm.valid || escalation) {
+
         if (this.lineIndex < this.lineQueue.length) {
 
             const lineCreate: any = this.lineQueue[this.lineIndex];
@@ -442,7 +458,7 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
                 }
             );
         } else {
-            this.submit();
+            this.submit(escalation);
         }
       } else if (!this.LinesValid && this.CWSForm.valid) {
           this.snackbar.open(`Please fill in the all line data`, '', {
