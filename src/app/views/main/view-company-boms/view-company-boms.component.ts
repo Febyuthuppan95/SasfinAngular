@@ -16,6 +16,10 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { GetCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
 import { CompanyBOMsListResponse, CompanyBOM } from 'src/app/models/HttpResponses/CompanyBOMsListResponse';
 import { Router } from '@angular/router';
+import {BOM, BOMStatus} from '../../../models/BOM';
+import {ApiService} from '../../../services/api.service';
+import {environment} from '../../../../environments/environment';
+import {Outcome} from '../../../models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-company-boms',
@@ -32,7 +36,8 @@ export class ViewCompanyBOMsComponent implements OnInit {
     private IMenuService: MenuService,
     private IDocumentService: DocumentService,
     private router: Router,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private APIService: ApiService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -152,6 +157,21 @@ export class ViewCompanyBOMsComponent implements OnInit {
   BomFile: File;
   filePreview: string;
 
+  BOMs: BOM[];
+  BOMStatuses: BOMStatus[] = [];
+  focusBOMStatus: number;
+
+  quarters = [
+    {value: 1 , Name: 'Q1'},
+    {value: 2 , Name: 'Q2'},
+    {value: 3 , Name: 'Q3'},
+    {value: 4 , Name: 'Q4'}
+  ];
+  years = [];
+  now = new Date().getFullYear();
+
+  focusPeriodYear: number;
+  focusPeriodQuarter: number;
 
   ngOnInit() {
     this.themeService.observeTheme().subscribe((theme) => {
@@ -164,7 +184,8 @@ export class ViewCompanyBOMsComponent implements OnInit {
     });
 
     this.loadCompanyBOMs(true);
-
+    this.getBomStatuses();
+    this.createYears();
   }
 
   loadCompanyBOMs(displayGrowl: boolean) {
@@ -282,6 +303,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   add() {
     // Render modal
     this.filePreview = null;
+    console.log(this.bomFile);
     this.bomFile.nativeElement.value = '';
     this.BomFile = null;
     this.openAddModal.nativeElement.click();
@@ -306,8 +328,71 @@ export class ViewCompanyBOMsComponent implements OnInit {
       }
     );
   }
+
+  saveBOM(companyID: number, statusID: number) {
+
+    const BOMIn = 'Q' + this.focusPeriodQuarter + ' ' + this.focusPeriodYear;
+
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        CompanyID: this.companyID,
+        StatusID : statusID,
+        BOMInput: BOMIn
+      },
+      requestProcedure: `BOMAdd`
+    };
+
+    this.APIService.post(`${environment.ApiEndpoint}/boms/add`, model).then((res: Outcome) => {
+      console.log(res);
+
+      if (res.outcome === 'SUCCESS') {
+        this.closeAddModal.nativeElement.click();
+        this.loadCompanyBOMs(true);
+      }
+
+    },
+      (msg) => {
+      // message
+        console.log(msg);
+      });
+  }
+
+  getBomStatuses() {
+
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        bomStatusID: -1
+      },
+      requestProcedure: `BOMStatusList`
+    };
+
+    // get the BOM statuses
+    console.log(model);
+    this.APIService.post(`${environment.ApiEndpoint}/boms/statuses`, model).then((res: any) => {
+      // set the local arrays with the data from api
+      console.log(res);
+      this.BOMStatuses = res.data as BOMStatus[];
+    },
+      msg => {
+      console.log(msg);
+      });
+  }
+
+  setBomStatusFocus(status: number) {
+    this.focusBOMStatus = status;
+  }
+
+  createYears() {
+    for (let x = 0; x < 10; x++) {
+      this.years.push(this.now - x);
+    }
+  }
+  periodYear(year: number) {
+    this.focusPeriodYear = year;
+  }
+  periodQuarter(quarterID: number) {
+    this.focusPeriodQuarter = quarterID;
+  }
 }
-
-
-
-

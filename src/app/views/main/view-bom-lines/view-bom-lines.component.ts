@@ -16,6 +16,8 @@ import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
 import { BOMsLinesResponse, BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
+import {ApiService} from '../../../services/api.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-view-bom-lines',
@@ -31,7 +33,8 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private ApiService: ApiService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -203,46 +206,72 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   loadBOMLines(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetBOMLines = {
-      userID: this.currentUser.userID,
-      filter: this.filter,
-      bomID: this.bomid,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
-    };
-    this.companyService.getBOMLines(model).then(
-      (res: BOMsLinesResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          if (displayGrowl) {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage);
-          }
-        }
-        this.BOMLines = res.bomLines;
-
-        if (res.rowCount === 0) {
-          this.noData = true;
-          this.showLoader = false;
-        } else {
-          this.noData = false;
-          this.rowCount = res.rowCount;
-          this.showingRecords = res.bomLines.length;
-          this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
-        }
-
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        bomLineID: this.bomid,
+        filter: this.filter,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+        rowCount: this.rowCount,
       },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
+      requestProcedure: `BOMLineList`
+    };
+    // this.companyService.getBOMLines(model).then(
+    //   (res: BOMsLinesResponse) => {
+    //     if (res.outcome.outcome === 'SUCCESS') {
+    //       if (displayGrowl) {
+    //         this.notify.successmsg(
+    //           res.outcome.outcome,
+    //           res.outcome.outcomeMessage);
+    //       }
+    //     }
+    this.ApiService.post(`${environment.ApiEndpoint}/companies/BomLines`, model).then((res: any) => {
+      if (res.outcome.outcome === 'SUCCESS') {
+        if (displayGrowl) {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }
+        this.BOMLines = res.data;
+        //
+        if (res.rowCount === 0) {
+                this.noData = true;
+                this.showLoader = false;
+              } else {
+                this.noData = false;
+                this.rowCount = res.rowCount;
+                this.showingRecords = res.bomLines.length;
+                this.showLoader = false;
+                this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
+              }
       }
-    );
+    });
+  //       this.BOMLines = res.bomLines;
+  //
+  //       if (res.rowCount === 0) {
+  //         this.noData = true;
+  //         this.showLoader = false;
+  //       } else {
+  //         this.noData = false;
+  //         this.rowCount = res.rowCount;
+  //         this.showingRecords = res.bomLines.length;
+  //         this.showLoader = false;
+  //         this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
+  //       }
+  //
+  //     },
+  //     msg => {
+  //       this.showLoader = false;
+  //       this.notify.errorsmsg(
+  //         'Server Error',
+  //         'Something went wrong while trying to access the server.'
+  //       );
+  //     }
+  //   );
   }
 
   back() {

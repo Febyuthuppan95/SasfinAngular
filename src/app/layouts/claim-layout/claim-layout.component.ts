@@ -24,7 +24,7 @@ import { Router } from '@angular/router';
 })
 export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
- 
+
   pageEvent: PageEvent;
   data: Import[] = [];
   headings: TableHeading[] = [
@@ -342,7 +342,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         {value: 15}
         );
      }
-    
+
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
@@ -380,7 +380,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             panelClass: ['claim-snackbar-success'],
             horizontalPosition: 'center',
           });
-          
+
           this.loadDataSets();
         } else {
           this.snackbar.open(res.outcomeMessage, res.outcome, {
@@ -407,8 +407,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   //       break;
   //     case 2: // 536
   //     break;
-  //     case 3: 
-  //   } 
+  //     case 3:
+  //   }
   // }
   loadDataSets() {
     this.loading = true;
@@ -417,10 +417,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.loadBottomChild();
     this.loading = false;
   }
-  
+
   /****** PARAMS *******/
   initClaimForm() {
-   
+
     this.claimRequestParams = this.formBuilder.group({
       LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}],
       ExtensionDays: ['', { validators: [Validators.required] , updateOn: 'blur'}],
@@ -457,19 +457,19 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
           objectKeys = Object.keys(obj);
           objectValues = Object.values(obj);
-          
+
           objectKeys.forEach((element: string, i:number) => {
-            if (this.claimRequestParams.get(element) !== null 
+            if (this.claimRequestParams.get(element) !== null
             && this.claimRequestParams.get(element) !== undefined) {
                 if (element === 'ClaimDate') {
                   this.claimRequestParams.get(element).setValue(new Date(objectValues[i]));
                 } else {
                   this.claimRequestParams.get(element).setValue(objectValues[i]);
                 }
-                
+
 
             }
-            
+
           });
         });
         // Get objects and values from res
@@ -528,11 +528,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             });
           }
-          
+
          this.pageA.length = res.rowCount;
-          this.data = res.data; 
+          this.data = res.data;
         } else {
-         
+
           // error
         }
       },
@@ -751,7 +751,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 }
 
 export class UpdateResponse {
-  outcome: Outcome
+  outcome: Outcome;
   createdID?: number;
 }
 export class ReadResponse {
