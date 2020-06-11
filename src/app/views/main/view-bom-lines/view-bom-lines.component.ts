@@ -13,12 +13,13 @@ import { CompanyService, SelectedBOM } from 'src/app/services/Company.Service';
 import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
-import { BOMsLinesResponse, BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
+import {BOMsLinesResponse, BOMLine, BOMUpload} from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import {ApiService} from '../../../services/api.service';
 import {environment} from '../../../../environments/environment';
 import {Outcome} from '../../../models/HttpResponses/Outcome';
+import {DocumentService} from '../../../services/Document.Service';
 
 @Component({
   selector: 'app-view-bom-lines',
@@ -35,6 +36,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     private IMenuService: MenuService,
     private router: Router,
     private snackbarService: HelpSnackbar,
+    private IDocumentService: DocumentService,
     private ApiService: ApiService
   ) {
     this.rowStart = 1;
@@ -55,6 +57,15 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+
+  @ViewChild('bomFile', { static: false })
+  bomFile: ElementRef;
+
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
 
   // @ViewChild('openeditModal', {static: true})
   // openeditModal: ElementRef;
@@ -185,9 +196,12 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   bomid = -1;
   bomstatus = '';
 
+  BomFile: File;
+  filePreview: string;
 
   ngOnInit() {
 
+    console.log(this.openAddModal);
     this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -304,9 +318,35 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     this.loadBOMLines(true);
   }
 
+  add() {
+    // Render modal
+    this.filePreview = null;
+    console.log(this.bomFile);
+    this.bomFile.nativeElement.value = '';
+    this.BomFile = null;
+    this.openAddModal.nativeElement.click();
+  }
+
   searchEvent(query: string) {
     this.filter = query;
     this.loadBOMLines(false);
+  }
+
+  onFileChange(files: FileList) {
+    this.BomFile = files.item(0);
+    this.filePreview = this.BomFile.name;
+  }
+
+  saveBOMUpload() {
+    // Save
+    this.IDocumentService.upload(this.BomFile).then(
+      (res: BOMUpload) => {
+        console.log(res);
+      },
+      (msg) => {
+        // nothing yet
+      }
+    );
   }
 
   // editItem(id: number) {

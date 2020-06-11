@@ -21,7 +21,8 @@
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
-        (searchEvent)="searchEvent($event)">
+        (searchEvent)="searchEvent($event)"
+        (addButtonEvent)="add()">
       </app-table>
     </div>
   </div>
@@ -36,6 +37,39 @@
   (resetContext)="this.selectedRow = -1; this.contextMenu = false">
   <app-context-menu-items (editItem)="editItem($event)" (removeItem)="removeItem($event)"></app-context-menu-items>
 </app-menu> -->
+
+<!--Add Modal - Which is actually for bom lines-->
+<button class="hide" data-toggle="modal" data-target="#addBOM" #openAddModal></button>
+<div class="modal fade" id="addBOM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Upload BOM</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (submit)="saveBOMUpload()">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
+            </div>
+            <div class="form-group">
+              <label for="addBOMFile">
+                <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+              </label>
+              <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+              <input id="addBOMFile" hidden #bomFile type="file" (change)="onFileChange($event.target.files)" required>
+            </div>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+        <button type="submit" (click)="saveBOMUpload()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
 
 <!--Edit Modal-->
 <!-- <button class="hide" data-toggle="modal" data-target="#editCompany" #openeditModal></button>
