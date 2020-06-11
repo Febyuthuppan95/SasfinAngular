@@ -103,42 +103,42 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Item Code',
-      propertyName: 'ItemNameInput',
+      propertyName: 'ItemCode',
       order: {
         enable: true,
-        tag: 'ItemNameInput'
+        tag: 'ItemCode'
       }
     },
     {
       title: 'Tariff Code',
-      propertyName: 'TariffInput',
+      propertyName: 'TariffCode',
       order: {
         enable: true,
-        tag: 'TariffInput'
+        tag: 'TariffCode'
       }
     },
     {
       title: 'Unit Of Measure',
-      propertyName: 'UnitOfMeasureInput',
+      propertyName: 'UnitOfMeasure',
       order: {
         enable: true,
-        tag: 'UnitOfMeasureInput'
+        tag: 'UnitOfMeasure'
       }
     },
     {
       title: 'Quarter',
-      propertyName: 'QuarterInput',
+      propertyName: 'Quarter',
       order: {
         enable: true,
-        tag: 'QuarterInput'
+        tag: 'Quarter'
       }
     },
     {
       title: 'Usage Type',
-      propertyName: 'UsageTypeInput',
+      propertyName: 'UsageType',
       order: {
         enable: true,
-        tag: 'UsageTypeInput'
+        tag: 'UsageType'
       }
     }
   ];
@@ -224,6 +224,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       if (res.outcome.outcome === 'SUCCESS') {
         this.BOMLines = res.data;
         console.log(this.BOMLines);
+        console.log(res.data);
         this.noData = false;
         this.showLoader = false;
         this.showingRecords = res.data.length;
