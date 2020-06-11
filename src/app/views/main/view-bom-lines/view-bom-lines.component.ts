@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import {ApiService} from '../../../services/api.service';
 import {environment} from '../../../../environments/environment';
+import {Outcome} from '../../../models/HttpResponses/Outcome';
 
 @Component({
   selector: 'app-view-bom-lines',
@@ -95,14 +96,14 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   tableHeadings: TableHeading[] = [
     {
       title: '',
-      propertyName: 'rowNum',
+      propertyName: 'RowNum',
       order: {
         enable: false,
       }
     },
     {
       title: 'Item Code',
-      propertyName: 'itemNameInput',
+      propertyName: 'ItemNameInput',
       order: {
         enable: true,
         tag: 'ItemNameInput'
@@ -110,7 +111,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Tariff Code',
-      propertyName: 'tariffInput',
+      propertyName: 'TariffInput',
       order: {
         enable: true,
         tag: 'TariffInput'
@@ -118,7 +119,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Unit Of Measure',
-      propertyName: 'unitOfMeasureInput',
+      propertyName: 'UnitOfMeasureInput',
       order: {
         enable: true,
         tag: 'UnitOfMeasureInput'
@@ -126,7 +127,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Quarter',
-      propertyName: 'quarterInput',
+      propertyName: 'QuarterInput',
       order: {
         enable: true,
         tag: 'QuarterInput'
@@ -134,7 +135,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Usage Type',
-      propertyName: 'usageTypeInput',
+      propertyName: 'UsageTypeInput',
       order: {
         enable: true,
         tag: 'UsageTypeInput'
@@ -214,64 +215,29 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection,
         rowStart: this.rowStart,
-        rowEnd: this.rowEnd,
-        rowCount: this.rowCount,
+        rowEnd: this.rowEnd
       },
       requestProcedure: `BOMLineList`
     };
-    // this.companyService.getBOMLines(model).then(
-    //   (res: BOMsLinesResponse) => {
-    //     if (res.outcome.outcome === 'SUCCESS') {
-    //       if (displayGrowl) {
-    //         this.notify.successmsg(
-    //           res.outcome.outcome,
-    //           res.outcome.outcomeMessage);
-    //       }
-    //     }
     this.ApiService.post(`${environment.ApiEndpoint}/companies/BomLines`, model).then((res: any) => {
+
       if (res.outcome.outcome === 'SUCCESS') {
-        if (displayGrowl) {
-          this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage
-          );
-        }
         this.BOMLines = res.data;
-        //
-        if (res.rowCount === 0) {
-                this.noData = true;
-                this.showLoader = false;
-              } else {
-                this.noData = false;
-                this.rowCount = res.rowCount;
-                this.showingRecords = res.bomLines.length;
-                this.showLoader = false;
-                this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
-              }
+        console.log(this.BOMLines);
+        this.noData = false;
+        this.showLoader = false;
+        this.showingRecords = res.data.length;
+        this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
       }
-    });
-  //       this.BOMLines = res.bomLines;
-  //
-  //       if (res.rowCount === 0) {
-  //         this.noData = true;
-  //         this.showLoader = false;
-  //       } else {
-  //         this.noData = false;
-  //         this.rowCount = res.rowCount;
-  //         this.showingRecords = res.bomLines.length;
-  //         this.showLoader = false;
-  //         this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
-  //       }
-  //
-  //     },
-  //     msg => {
-  //       this.showLoader = false;
-  //       this.notify.errorsmsg(
-  //         'Server Error',
-  //         'Something went wrong while trying to access the server.'
-  //       );
-  //     }
-  //   );
+    },
+      msg => {
+      console.log(msg);
+      this.showLoader = false;
+      this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      });
   }
 
   back() {
