@@ -43,6 +43,9 @@ export class NestedTableComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log(this.headings);
     console.log(this.parents);
+    // console.log(this.isPageable);
+    // console.log(this.displayData);
+    // console.log(this.paginator);
     // console.log(this.config);
     // if (this.config !== null && this.config !== undefined) {
     //   if(this.config.data !== null && this.config.data !== undefined) {
@@ -58,7 +61,6 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges($event: SimpleChanges) {
-    
     this.initTable();
   }
   initTable() {
@@ -75,7 +77,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
       });
    
       this.columnsToDisplay.push('action');
-      
+      console.log(this.columnsToDisplay);
       let field: object = null;
       
       let objectKeys: string[];
@@ -116,6 +118,10 @@ export class NestedTableComponent implements OnInit, OnChanges {
    console.log(this.displayData);
     this.loading = false;
     
+  }
+  what($event, $even) {
+    console.log($even);
+    console.log($event);
   }
   rowAction($event) {
 

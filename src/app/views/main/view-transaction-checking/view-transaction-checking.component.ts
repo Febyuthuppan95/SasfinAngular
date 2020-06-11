@@ -88,22 +88,31 @@ export class ViewTransactionCheckingComponent implements OnInit {
       position: 1
     },
     {
+      title: 'IDsecond',
+      propertyName: 'itemID',
+      order: {
+        enable: true,
+        tag: 'invoiceLineID'
+      },
+      position: 2
+    },
+    {
       title: 'Invoice No',
       propertyName: 'invoiceNo',
       order: {
         enable: true,
         tag: 'invoiceNo'
       },
-      position: 2
+      position: 3
     },
     {
       title: 'Product Code',
-      propertyName: 'name',
+      propertyName: 'prodCode',
       order: {
         enable: true,
-        tag: 'name'
+        tag: 'prodCode'
       },
-      position: 3
+      position: 4
     },
     {
       title: 'Quantity',
@@ -112,7 +121,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
         enable: true,
         tag: 'quantity'
       },
-      position: 4
+      position: 5
     },
     {
       title: 'Item Value',
@@ -121,16 +130,16 @@ export class ViewTransactionCheckingComponent implements OnInit {
         enable: true,
         tag: 'itemValue'
       },
-      position: 5
+      position: 6
     },
     {
       title: 'Unit Price',
-      propertyName: 'unitPrices',
+      propertyName: 'unitPrice',
       order: {
         enable: true,
-        tag: 'unitPrices'
+        tag: 'unitPrice'
       },
-      position: 6
+      position: 7
     },
     {
       title: 'Total Line Value',
@@ -139,9 +148,73 @@ export class ViewTransactionCheckingComponent implements OnInit {
         enable: true,
         tag: 'totalLineValue'
       },
-      position: 7
+      position: 8
     }
   ];
+  sad500Headings: TableHeading[] = [
+    {
+      title: '',
+      propertyName: 'rowNum',
+      order: {
+        enable: false,
+      },
+      position: 0
+    },
+    {
+      title: 'IDfirst',
+      propertyName: 'sad500LineID',
+      order: {
+        enable: true,
+        tag: 'sad500LineID'
+      },
+      position: 1
+    },
+    {
+      title: 'IDsecond',
+      propertyName: 'lineNo',
+      order: {
+        enable: true,
+        tag: 'lineNo'
+      },
+      position: 2
+    },
+    {
+      title: 'Tariff',
+      propertyName: 'tariff',
+      order: {
+        enable: true,
+        tag: 'tariff'
+      },
+      position: 3
+    },
+    {
+      title: 'Customs Value',
+      propertyName: 'customsValue',
+      order: {
+        enable: true,
+        tag: 'customsValue'
+      },
+      position: 4
+    },
+    {
+      title: 'Quantity',
+      propertyName: 'quantity',
+      order: {
+        enable: true,
+        tag: 'quantity'
+      },
+      position: 5
+    },
+    {
+      title: 'Supply Unit',
+      propertyName: 'supplyUnit',
+      order: {
+        enable: true,
+        tag: 'supplyUnit'
+      },
+      position: 6
+    }
+  ]
   AssignedInvoiceLines: InvoiceLine[] = [];
 
 
@@ -436,7 +509,7 @@ export class InvoiceLine {
   rowNum: number;
   invoiceLineID: number;
   invoiceNo: number;
-  name: string;
+  prodCode: string;
   quantity: number;
   unitPrices: number;
   itemValue: number;
