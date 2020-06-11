@@ -31,7 +31,7 @@
     </div> -->
    
     <div class="form-group">
-      <label class="control-label required"> Unit of Measure</label>
+      <label class="control-label"> Unit of Measure</label>
         <input formControlName="control2"
         [(ngModel)]="this.unitOfMeasureQuery" (keyup)="filterUnit()" [ngClass]="{'form-control-invalid': this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined}"
         type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
@@ -46,7 +46,7 @@
         <p class="invalid-control-label" *ngIf="this.form.unitOfMeasure.error !== null && this.form.unitOfMeasure.error !== undefined">{{this.form.unitOfMeasure.error}}</p>
     </div>
     <div class="form-group" *ngIf="this.form.cooID">
-      <label class="control-label required"> Country Code</label>
+      <label class="control-label"> Country Code</label>
       <input formControlName="control3"
       [(ngModel)]="this.countryQuery" type="text"
       class="form-control form-control-sm shadow-sm form-control-light"
