@@ -48,12 +48,12 @@ export class FormCustomWorksheetComponent implements OnInit, AfterViewInit, OnDe
     sad500Tooltip: MatTooltip;
 
     CWSForm = new FormGroup({
-      control1: new FormControl(null, [Validators.required]),
+      control1: new FormControl(null, [Validators.nullValidator]),
       control1a: new FormControl(null),
       control2: new FormControl(null, [Validators.required]),
       ontrol2a: new FormControl(null),
-      control3: new FormControl(null, [Validators.required]),
-      ontrol3a: new FormControl(null),
+      control3: new FormControl(null, [Validators.nullValidator]),
+      control3a: new FormControl(null),
     });
 
     LinesValid: boolean;

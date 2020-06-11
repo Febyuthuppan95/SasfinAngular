@@ -58,9 +58,9 @@ InvForm = new FormGroup({
   control1: new FormControl(null, [Validators.required]),
   control1a: new FormControl(null),
   control2: new FormControl(null, [Validators.required]),
-  control3: new FormControl(null),
+  // control3: new FormControl(null),
   control4: new FormControl(null, [Validators.required]),
-  control5: new FormControl(null, [Validators.required]),
+  control5: new FormControl(null, [Validators.nullValidator]),
   control6: new FormControl(null)
 });
 

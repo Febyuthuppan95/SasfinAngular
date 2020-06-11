@@ -59,8 +59,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       private snackbar: MatSnackBar) { }
 
     LinesForm = new FormGroup({
-      control2: new FormControl(null, [Validators.required]),
-      control3: new FormControl(null, [Validators.required]),
+      control2: new FormControl(null, [Validators.nullValidator]),
+      control3: new FormControl(null, [Validators.nullValidator]),
       control4: new FormControl(null, [Validators.required]),
       control5: new FormControl(null, [Validators.required]),
       control5a: new FormControl(null),

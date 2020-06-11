@@ -46,7 +46,7 @@
     </div>
   </div>
   <div class="form-group" *ngIf="this.form.hsQuantity != undefined">
-      <label class="control-label required" for="hsQuantity">HS Quantity</label>
+      <label class="control-label" for="hsQuantity">HS Quantity</label>
     <input type="text"  id="hsQuantity" formControlName="control3"
       [(ngModel)]="this.form.hsQuantity.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -68,7 +68,7 @@
       </div>
     </div>
   <div class="form-group" *ngIf="this.form.foreignInv != undefined">
-      <label class="control-label required" for="foreignInv">Foreign Inv</label>
+      <label class="control-label required" for="foreignInv">Foreign Inv Value</label>
     <input type="text" id="foreignInv" formControlName="control4"
       [(ngModel)]="this.form.foreignInv.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -113,7 +113,7 @@
     </div>
   <div class="form-group">
     <div class="col-sm-3 " style="float: left; padding-left:0px;">
-      <label class="control-label required" for="supplyUnit">Supply Unit</label>
+      <label class="control-label" for="supplyUnit">Supply Unit</label>
       <input type="text" id="supplyUnit" formControlName="control6"
         [(ngModel)]="this.form.supplyUnit.value"
         class="form-control form-control-sm shadow-sm form-control-light"
@@ -121,7 +121,7 @@
         placeholder="Supply Unit"/>
     </div>
     <div class="col-sm-9" style="float:left;">
-      <label class="control-label required" for="currencyID">Unit of Measure</label>
+      <label class="control-label" for="currencyID">Unit of Measure</label>
           <input formControlName="control7"
           [(ngModel)]="this.unitQuery" (keyup)="filterUnit()"
           type="text" placeholder="Unit Of Measure" aria-label="Unit of Measure"
@@ -153,7 +153,7 @@
       </mat-autocomplete>
   </div>
   <div class="form-group">
-    <label class="control-label required" for="tariff">Tariff</label>
+    <label class="control-label" for="tariff">Tariff</label>
       <input type="text" formControlName="control9"
       [(ngModel)]="this.tariffQuery"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -185,7 +185,7 @@
       (mouseover)="updateHelpContext('form-customs-worksheet-line-prodcode')" placeholder="Product Code"/>
   </div>
   <div class="form-group">
-    <label class="control-label required" for="currencyID">Country of Origin</label>
+    <label class="control-label" for="currencyID">Country of Origin</label>
     <input formControlName="control12"
     [(ngModel)]="this.countryQuery" type="text"
       class="form-control form-control-sm shadow-sm form-control-light"
