@@ -51,7 +51,7 @@
       </div>
   </div>
   <div class="form-group">
-    <label class="control-label required">Serial No</label>
+    <label class="control-label">Serial No</label>
     <input type="text" formControlName="control3"
       [(ngModel)]="this.form.serialNo.value"
       class="form-control form-control-sm shadow-sm form-control-light form-control-invalid"
@@ -72,7 +72,7 @@
       </div>
     </div>
   <div class="form-group">
-    <label class="control-label required">TIN Number</label>
+    <label class="control-label">Importers Code</label>
     <input type="text" formControlName="control4"
       [(ngModel)]="this.form.importersCode.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -114,13 +114,21 @@
       </div>
     </div>
   <div class="form-group">
-    <label class="control-label required">PCC</label>
+    <label class="control-label">PCC</label>
     <input type="text" formControlName="control6"
       [(ngModel)]="this.form.PCC.value"
       class="form-control form-control-sm shadow-sm form-control-light"
       (mouseover)="updateHelpContext('form-cusrelease-pcc')"
       [ngClass]="{'form-control-invalid': this.form.PCC.error !== null}"
+      [matAutocomplete]="cpcAuto"
+      (keyup)="selectFilteredCPC()"
       placeholder="PCC" />
+      <mat-autocomplete #cpcAuto="matAutocomplete" >
+        <mat-option *ngFor="let cpc of cpcList" [value]="cpc.CPC"
+        (onSelectionChange)="selectedPCC(cpc.CPCID)">
+          {{cpc.CPC}}
+        </mat-option>
+      </mat-autocomplete>
       <div *ngIf="this.form.PCC.error !== null" class="input-group mb-3 invalid-control-label">
         <p *ngIf="this.form.PCC.OBit == false || this.form.PCC.OBit == null" style="width: inherit" >
           {{this.form.PCC.error}}
@@ -185,7 +193,7 @@
       </div>
   </div>
   <div class="form-group">
-    <label class="control-label required">Total Duty</label>
+    <label class="control-label">Total Duty</label>
     <input type="number" formControlName="control10"
       [(ngModel)]="this.form.totalDuty.value"
       class="form-control form-control-sm shadow-sm form-control-light"
@@ -206,7 +214,7 @@
       </div>
   </div>
   <div class="form-group">
-    <label class="control-label required"> File Reference</label>
+    <label class="control-label"> File Reference</label>
     <input type="text" formControlName="control11"
       [(ngModel)]="this.form.fileRef.value"
       class="form-control form-control-sm shadow-sm form-control-light"
