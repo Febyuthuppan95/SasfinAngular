@@ -113,13 +113,13 @@ SADForm = new FormGroup({
   sadcontrol6c: new FormControl(null),
   sadcontrol7: new FormControl(null, [Validators.required]),
   sadcontrol7a: new FormControl(null),
-  sadcontrol8: new FormControl(null, [Validators.required]),
+  sadcontrol8: new FormControl(null, [Validators.nullValidator]),
   sadcontrol8a: new FormControl(null),
   sadcontrol9: new FormControl(null, [Validators.required]),
   sadcontrol9a: new FormControl(null),
-  sadcontrol10: new FormControl(null, [Validators.required]),
+  sadcontrol10: new FormControl(null, [Validators.nullValidator]),
   sadcontrol10a: new FormControl(null),
-  sadcontrol11: new FormControl(null, [Validators.required]),
+  sadcontrol11: new FormControl(null, [Validators.nullValidator]),
   sadcontrol11a: new FormControl(null),
   sadcontrol12: new FormControl(null)
 });
