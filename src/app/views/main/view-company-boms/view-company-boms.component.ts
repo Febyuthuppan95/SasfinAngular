@@ -208,6 +208,12 @@ export class ViewCompanyBOMsComponent implements OnInit {
               res.outcome.outcome,
               res.outcome.outcomeMessage);
           }
+        } else {
+          if (displayGrowl) {
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
         }
         this.CompanyBOMs = res.companyBoms;
 
@@ -303,7 +309,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
   add() {
     // Render modal
     this.filePreview = null;
-    console.log(this.bomFile);
+    // console.log(this.bomFile);
     this.bomFile.nativeElement.value = '';
     this.BomFile = null;
     this.openAddModal.nativeElement.click();
@@ -317,17 +323,17 @@ export class ViewCompanyBOMsComponent implements OnInit {
     this.filePreview = this.BomFile.name;
   }
 
-  saveBOMUpload() {
-    // Save
-    this.IDocumentService.upload(this.BomFile).then(
-      (res: BOMUpload) => {
-        console.log(res);
-      },
-      (msg) => {
-        // nothing yet
-      }
-    );
-  }
+  // saveBOMUpload() {
+  //   // Save
+  //   this.IDocumentService.upload(this.BomFile).then(
+  //     (res: BOMUpload) => {
+  //       console.log(res);
+  //     },
+  //     (msg) => {
+  //       // nothing yet
+  //     }
+  //   );
+  // }
 
   saveBOM(companyID: number, statusID: number) {
 
@@ -344,10 +350,13 @@ export class ViewCompanyBOMsComponent implements OnInit {
     };
 
     this.APIService.post(`${environment.ApiEndpoint}/boms/add`, model).then((res: Outcome) => {
-      console.log(res);
+      // console.log(res);
 
       if (res.outcome === 'SUCCESS') {
         this.closeAddModal.nativeElement.click();
+        this.notify.successmsg(
+          res.outcome,
+          res.outcomeMessage);
         this.loadCompanyBOMs(true);
       }
 
@@ -355,6 +364,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
       (msg) => {
       // message
         console.log(msg);
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
       });
   }
 
@@ -376,7 +389,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
       this.BOMStatuses = res.data as BOMStatus[];
     },
       msg => {
-      console.log(msg);
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
       });
   }
 

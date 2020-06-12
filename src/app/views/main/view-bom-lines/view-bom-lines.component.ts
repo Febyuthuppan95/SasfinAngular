@@ -201,7 +201,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    console.log(this.openAddModal);
     this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -236,9 +235,18 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     this.ApiService.post(`${environment.ApiEndpoint}/companies/BomLines`, model).then((res: any) => {
 
       if (res.outcome.outcome === 'SUCCESS') {
+        if (displayGrowl) {
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage);
+        } else {
+          if (displayGrowl) {
+            this.notify.errorsmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
         this.BOMLines = res.data;
-        console.log(this.BOMLines);
-        console.log(res.data);
         this.noData = false;
         this.showLoader = false;
         this.showingRecords = res.data.length;
@@ -246,7 +254,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       }
     },
       msg => {
-      console.log(msg);
+      // console.log(msg);
       this.showLoader = false;
       this.notify.errorsmsg(
           'Server Error',
@@ -315,7 +323,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadBOMLines(true);
+    this.loadBOMLines(false);
   }
 
   add() {
@@ -339,12 +347,37 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   saveBOMUpload() {
     // Save
-    this.IDocumentService.upload(this.BomFile).then(
-      (res: BOMUpload) => {
-        console.log(res);
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        bomID: this.bomid // this needs to get the actual bomID
+      },
+      requestProcedure: `BomLineAdd`
+    };
+    this.IDocumentService.upload(this.BomFile, model).then(
+      (res: Outcome) => {
+        // console.log('BOMUploadRes');
+        console.log('Response: ' + res);
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage);
+          this.loadBOMLines(false);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
       },
       (msg) => {
         // nothing yet
+        console.log('Error: ' + msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
       }
     );
   }
