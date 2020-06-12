@@ -56,12 +56,20 @@ export class DocumentService {
   /**
    *
    * tslint:disable-next-line: no-redundant-jsdoc
-   * @param file
+   * @param fileUpload
+   * @param requestModel
    */
-  public upload(fileUpload: File) {
-    console.log(fileUpload);
+  public upload(fileUpload: File, requestModel: object) {
+    // console.log(fileUpload);
+    // console.log(requestModel);
     const formData = new FormData();
+
+    formData.append('requestModel', JSON.stringify(requestModel));
     formData.append('file', fileUpload);
+
+    // console.log(formData.get('file'));
+    // console.log(formData.get('requestModel'));
+
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/boms/upload`;
       this.httpClient
