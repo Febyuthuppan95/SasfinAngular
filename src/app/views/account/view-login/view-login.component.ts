@@ -10,6 +10,10 @@ import { ThemeService } from 'src/app/services/theme.Service.js';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { environment } from 'src/environments/environment';
+import { UserRightService } from 'src/app/services/UserRight.service';
+import { GetUserRightsList } from 'src/app/models/HttpRequests/UserRights';
+import { UserRightsListResponse } from 'src/app/models/HttpResponses/UserRightsListResponse';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 
@@ -27,7 +31,9 @@ export class ViewLoginComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2,
+    private userRightService: UserRightService,
+    private storageService: StorageService) { }
 
   @ViewChild('login', { static: true })
   elRefs: ElementRef;
@@ -61,11 +67,28 @@ export class ViewLoginComponent implements OnInit {
           if (res.authenticated) {
             this.userService.persistLogin(JSON.stringify(res));
             this.userService.setAuth(res.authenticated);
-            if (res.designation !== 'Capturer') {
-              this.router.navigate(['users']);
-            } else {
-              this.router.navigate(['transaction/capturerlanding']);
-            }
+
+            const uRModel: GetUserRightsList = {
+              userID: 3,
+              specificRightID: -1, // default
+              specificUserID: res.userID,
+              filter: '',
+              orderBy: 'Name',
+              orderByDirection: 'DESC',
+              rowStart: 1,
+              rowEnd: 100000
+            };
+            this.userRightService
+              .getUserRightsList(uRModel).then(
+              (response: UserRightsListResponse) => {
+                this.storageService.save('rights', JSON.stringify(response.userRightsList));
+
+                if (res.designation !== 'Capturer') {
+                  this.router.navigate(['users']);
+                } else {
+                  this.router.navigate(['transaction/capturerlanding']);
+                }
+            });
           } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }

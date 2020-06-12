@@ -71,6 +71,7 @@ import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/v
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { RightGuard } from './guards/right.guard';
+import { RedirectComponent } from './views/main/redirect/redirect.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -92,7 +93,7 @@ const routes: Routes = [
         component: MainLayoutComponent,
         canActivate: [AuthenticationGuard],
         children: [
-          { path: '', redirectTo: 'users', pathMatch: 'full' },
+          { path: '', component: RedirectComponent },
           { path: 'users', component: ViewUserListComponent, data: { right: 'Users' }, canActivate: [RightGuard] },
           { path: 'designations', component: ViewDesignationsListComponent, data: { right: 'Designations' }, canActivate: [RightGuard] },
           { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent, data: { right: 'Designations' }, canActivate: [RightGuard] },
@@ -100,7 +101,7 @@ const routes: Routes = [
           { path: 'backgrounds', component: ViewBackgroundsListComponent, data: { right: 'Backgrounds' }, canActivate: [RightGuard] },
           { path: 'rights', component: ViewRightsListComponent, data: { right: 'Rights' }, canActivate: [RightGuard] },
           { path: 'helpglossary', component: ViewHelpGlossaryComponent, data: { right: 'HelpGlossary' }, canActivate: [RightGuard] },
-          { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent, data: { right: 'UnitOfMeasure' }, canActivate: [RightGuard] },
+          { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent, data: { right: 'UnitOfMeasures' }, canActivate: [RightGuard] },
           { path: 'locations', component: ViewPlacesComponent, data: { right: 'Countries' }, canActivate: [RightGuard] },
           { path: 'companies', component: ViewCompanyListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
           { path: 'services', component: ContextMenuServiceListComponent, data: { right: 'Services' }, canActivate: [RightGuard] },

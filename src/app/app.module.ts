@@ -229,6 +229,8 @@ import { NestedTableComponent } from './components/nested-table/nested-table.com
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { ClickStopPropagation } from './directives/event-propagation.directive';
 import { StorageService } from './services/storage.service';
+import { RightGuard } from './guards/right.guard';
+import { RedirectComponent } from './views/main/redirect/redirect.component';
 
 @NgModule({
   declarations: [
@@ -385,7 +387,8 @@ import { StorageService } from './services/storage.service';
     OemQuartersContextMenuComponent,
     QuartersSupplyContextMenuComponent,
     NestedTableComponent,
-    ClaimLayoutComponent
+    ClaimLayoutComponent,
+    RedirectComponent
   ],
   imports: [
     BrowserModule,
@@ -456,7 +459,8 @@ import { StorageService } from './services/storage.service';
     EventService,
     CheckListService,
     ChannelService,
-    StorageService
+    StorageService,
+    RightGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [
