@@ -67,7 +67,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
       control9: new FormControl(null, [Validators.nullValidator]),
       control10: new FormControl(null, [Validators.nullValidator]),
       control11: new FormControl(null, [Validators.nullValidator]),
-      control12: new FormControl(null, [Validators.required]),
+      control12: new FormControl(null, [Validators.nullValidator]),
     });
 
     @Input() lineData: CustomWorksheetLine;
