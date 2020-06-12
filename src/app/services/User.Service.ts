@@ -39,6 +39,7 @@ export class UserService {
    */
   public logout(): void {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('rights');
     // this.cookieService.delete('currentUser', '/');
     this.setAuth(false);
     this.router.navigateByUrl('/account/login');
