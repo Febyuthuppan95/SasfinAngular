@@ -228,6 +228,7 @@ import { QuartersSupplyContextMenuComponent } from './components/menus/quarters-
 import { NestedTableComponent } from './components/nested-table/nested-table.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { ClickStopPropagation } from './directives/event-propagation.directive';
+import { StorageService } from './services/storage.service';
 
 @NgModule({
   declarations: [
@@ -454,7 +455,8 @@ import { ClickStopPropagation } from './directives/event-propagation.directive';
     ReportsService,
     EventService,
     CheckListService,
-    ChannelService
+    ChannelService,
+    StorageService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

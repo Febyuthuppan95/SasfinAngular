@@ -13,6 +13,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { UUID } from 'angular2-uuid';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +26,7 @@ export class SidebarComponent implements OnInit {
               private userRightService: UserRightService,
               private userService: UserService,
               private router: Router,
+              private storageService: StorageService,
               private docService: DocumentService,
               private companyService: CompanyService,
               private transactionService: TransactionService) {}
@@ -127,7 +129,9 @@ export class SidebarComponent implements OnInit {
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
-        //Process Success
+        this.storageService.save('rights', JSON.stringify(res.userRightsList));
+
+        // Process Success
         res.userRightsList.forEach(uRight => {
           if (uRight.name === 'Users' && +uRight.designationID !== 3) {
             this.showusers = true;

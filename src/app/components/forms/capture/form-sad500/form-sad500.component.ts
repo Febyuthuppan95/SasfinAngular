@@ -90,12 +90,11 @@ loader: boolean;
 reason: string;
 referenceNo: string;
 
-
 voccontrol1 = new FormControl(null, [Validators.required]);
 voccontrol2 = new FormControl(null, [Validators.required]);
 voccontrol3 = new FormControl(null, [Validators.required]);
 
-
+// Removed Requirement Validators
 SADForm = new FormGroup({
   sadcontrol1: new FormControl(null, [Validators.required]),
   sadcontrol1a: new FormControl(null),
@@ -287,8 +286,7 @@ dialogOpen = false;
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((escalation?: boolean) => 
-      //console.log(escalation)
+    .subscribe((escalation?: boolean) =>
       this.saveLines(null, escalation)
     );
 
@@ -424,7 +422,7 @@ dialogOpen = false;
         if (res.rowCount > 0 )  {
           this.cpcList = res.data;
           this.cpcListTemp = res.data;
-          
+
         };
         console.log(res);
       }
@@ -435,13 +433,13 @@ dialogOpen = false;
   //   console.log(this.form);
   //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined)) {
   //     cpc = `${this.form.CPC.value}`;
-  //   } 
-  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined) 
+  //   }
+  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined)
   //   && (this.form.PCC.value !== null && this.form.PCC.value !== undefined) ) {
   //     cpc = `${this.form.CPC.value}.${this.form.PCC.value}`;
-  //   } 
-  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined) 
-  //   && (this.form.PCC.value !== null && this.form.PCC.value !== undefined) 
+  //   }
+  //   if ((this.form.CPC.value !== null && this.form.CPC.value !== undefined)
+  //   && (this.form.PCC.value !== null && this.form.PCC.value !== undefined)
   //   && (this.form.PPC.value !== null && this.form.PPC.value !== undefined )) {
   //     cpc = `${this.form.CPC.value}.${this.form.PCC.value}.${this.form.PPC.value}`;
   //   }
@@ -808,7 +806,7 @@ dialogOpen = false;
 
   saveLines(obj?: SAD500LineCreateRequest,escalation?:boolean) {
     console.log(escalation);
-    
+
     if (this.LinesValid && this.SADForm.valid || escalation) {
 
       if (obj !== null && obj !== undefined) {

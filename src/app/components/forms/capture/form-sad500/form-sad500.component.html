@@ -203,7 +203,7 @@
         (mouseover)="updateHelpContext('form-sad500-cpc')"
         [matAutocomplete]="cpcAuto"
         (keyup)="selectFilteredCPC()"
-        placeholder="CPC" />
+        placeholder="PCC" />
         <mat-autocomplete #cpcAuto="matAutocomplete" >
         <mat-option *ngFor="let cpc of cpcList" [value]="cpc.CPC"
         (onSelectionChange)="selectedPCC(cpc.CPCID)">

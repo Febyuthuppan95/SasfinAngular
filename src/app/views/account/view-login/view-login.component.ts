@@ -27,12 +27,7 @@ export class ViewLoginComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private themeService: ThemeService,
-    private renderer: Renderer2,
-    private elRef: ElementRef,
-    private chatService: ChatService,
-    private channelService: ChannelService
-    ) { }
+    private renderer: Renderer2) { }
 
   @ViewChild('login', { static: true })
   elRefs: ElementRef;
@@ -77,7 +72,6 @@ export class ViewLoginComponent implements OnInit {
           this.pendingRequest = false;
         },
         (msg) => {
-
           this.pendingRequest = false;
           this.notify.errorsmsg('Failure', 'Username or password is incorrect.');
         });
