@@ -19,6 +19,10 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { CPCItem } from '../form-sad500/form-sad500.component';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
+import { ListReadResponse } from '../form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,7 +43,8 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
               private snackbarService: HelpSnackbar,
               private snackbar: MatSnackBar,
               private formBuilder: FormBuilder,
-              private objectHelpService: ObjectHelpService) { }
+              private objectHelpService: ObjectHelpService,
+              private apiService: ApiService) { }
   disabledserialNo: boolean;
   serialNoOReason: string;
   disabledLRN: boolean;
@@ -73,22 +78,22 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     control1a: new FormControl(null),
     control2: new FormControl(null, [Validators.required]),
     control2a: new FormControl(null),
-    control3: new FormControl(null, [Validators.required]),
+    control3: new FormControl(null, [Validators.nullValidator]),
     control3a: new FormControl(null),
-    control4: new FormControl(null, [Validators.required]),
+    control4: new FormControl(null, [Validators.nullValidator]),
     control4a: new FormControl(null),
     control5: new FormControl(null, [Validators.required]),
     control5a: new FormControl(null),
-    control6: new FormControl(null, [Validators.required]),
+    control6: new FormControl(null, [Validators.nullValidator]),
     control6a: new FormControl(null),
     // control7: new FormControl(null, [Validators.required]),
     // control7a: new FormControl(null),
     // control8: new FormControl(null, [Validators.required]),
     control9: new FormControl(null, [Validators.required]),
     control9a: new FormControl(null),
-    control10: new FormControl(null, [Validators.required]),
+    control10: new FormControl(null, [Validators.nullValidator]),
     control10a: new FormControl(null),
-    control11: new FormControl(null, [Validators.required]),
+    control11: new FormControl(null, [Validators.nullValidator]),
     control11a: new FormControl(null),
     control12: new FormControl(null, [Validators.required])
   });
@@ -215,6 +220,7 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
     });
 
     this.loadEDIStatuses();
+    this.loadCPC();
   }
 
   ngAfterViewInit(): void {
@@ -250,6 +256,33 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   toggelHelpBar() {
     this.help = !this.help;
     this.objectHelpService.toggleHelp(this.help);
+}
+cpcList: CPCItem[] = [];
+cpcListTemp :CPCItem [] = [];
+
+loadCPC() {
+  const model = {
+    requestParams: {
+      userID: this.currentUser.userID,
+      rowStart: 1,
+      rowEnd: 300
+    },
+    requestProcedure: 'CPCList'
+  };
+  this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+    (res: ListReadResponse) => {
+      if (res.rowCount > 0 )  {
+        this.cpcList = res.data;
+        this.cpcListTemp = res.data;
+        
+      };
+      console.log(res);
+    }
+  );
+}
+selectFilteredCPC() {
+  this.cpcList = this.cpcListTemp;
+  this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${this.form.PCC.value.toUpperCase()}*`));
 }
   buildForm() {
     this.formValid = this.formBuilder.group({
