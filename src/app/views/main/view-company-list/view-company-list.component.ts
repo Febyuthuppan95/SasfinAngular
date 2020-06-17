@@ -226,63 +226,14 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
   });
 }
 
-
-  // paginateData() {
-  //   let rowStart = 1;
-  //   let rowEnd = +this.rowCountPerPage;
-  //   const pageCount = +this.rowCount / +this.rowCountPerPage;
-  //   this.pages = Array<Pagination>();
-
-  //   for (let i = 0; i < pageCount; i++) {
-  //     const item = new Pagination();
-  //     item.page = i + 1;
-  //     item.rowStart = +rowStart;
-  //     item.rowEnd = +rowEnd;
-  //     this.pages[i] = item;
-  //     rowStart = +rowEnd + 1;
-  //     rowEnd += +this.rowCountPerPage;
-  //   }
-
-  //   this.updatePagination();
-  // }
-
   pageChange(obj: PaginationChange) {
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
     this.loadCompanies();
-    // const page = this.pages[+pageNumber - 1];
-    // this.rowStart = page.rowStart;
-    // this.rowEnd = page.rowEnd;
-    // this.activePage = +pageNumber;
-    // this.prevPage = +this.activePage - 1;
-    // this.nextPage = +this.activePage + 1;
-
-    // if (this.prevPage < 1) {
-    //   this.prevPageState = true;
-    // } else {
-    //   this.prevPageState = false;
-    // }
-
-    // let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    // const mod = +this.rowCount % +this.rowCountPerPage;
-
-    // if (mod > 0) {
-    //   pagenumber++;
-    // }
-
-    // if (this.nextPage > pagenumber) {
-    //   this.nextPageState = true;
-    // } else {
-    //   this.nextPageState = false;
-    // }
-
-    // this.updatePagination();
-
-    // this.loadCompanies();
   }
 
-  recordsPerPageChange () {
+  recordsPerPageChange() {
 
   }
 

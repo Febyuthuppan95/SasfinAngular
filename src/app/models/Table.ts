@@ -1,7 +1,7 @@
 import { ClassMethod } from '@angular/compiler';
 
 export class TableConfig {
-  headings: TableHeading[];
+  headings?: TableHeading[];
   header: TableHeader;
   dataset: object[];
   recordsPerPage: number;

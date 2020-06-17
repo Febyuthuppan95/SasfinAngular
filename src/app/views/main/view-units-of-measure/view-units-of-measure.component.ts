@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { ListUnitsOfMeasureRequest } from 'src/app/models/HttpRequests/ListUnitsOfMeasure';
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { UnitsOfMeasure } from 'src/app/models/HttpResponses/UnitsOfMeasure';
@@ -11,6 +10,8 @@ import { UpdateUnitOfMeasureRequest } from 'src/app/models/HttpRequests/UpdateUn
 import { UpdateUnitsOfMeasureResponse } from 'src/app/models/HttpResponses/UpdateUnitsOfMeasureResponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TableHeader, TableConfig, TableHeading, Order, SelectedRecord } from 'src/app/models/Table';
+import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-view-units-of-measure',
@@ -38,17 +39,9 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   private notify: NotificationComponent;
 
   currentTheme = 'light';
-
-  // unitsOfMeasure: ListUnitsOfMeasureRequest = {
-  //   userID: 3,
-  //   specificUnitOfMeasureID: -1,
-  //   filter: '',
   filter: string;
   orderBy: string;
   orderDirection: string;
-  //   rowStart: 1,
-  //   rowEnd: 15
-  // };
 
   @ViewChild(ContextMenuComponent, {static: true } )
   private contextmenu: ContextMenuComponent;
@@ -93,6 +86,22 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   focusUnitName: string;
   focusUnitDescription: string;
 
+  tableHeader: TableHeader = {
+    title: 'Units of Measure',
+    addButton: { enable: false, },
+    backButton: { enable: false },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
+
+  tableHeadings: TableHeading[] = [
+    { title: '', propertyName: 'rowNum',  order: { enable: false, } },
+    { title: 'Name', propertyName: 'name', order: { enable: true, }, },
+    { title: 'Description', propertyName: 'description', order: { enable: true, }, },
+  ];
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -119,8 +128,8 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
       userID: 3,
       specificUnitOfMeasureID: -1,
       filter: this.filter,
-      orderBy: 'Name',
-      orderByDirection: 'ASC',
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
@@ -149,24 +158,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           this.totalDisplayCount = res.unitOfMeasureList.length;
           this.totalShowing = +this.rowStart + +this.dataset.length - 1;
-         // this.paginateData();
         }
-
-        // if (res.rowCount === 0) {
-        //   this.noData = true;
-        //   this.rowCount = res.rowCount;
-
-          // if (res.rowCount > this.selectRowDisplay) {
-          //   this.totalDisplayCount = res.unitOfMeasureList.length;
-          // } else {
-          //   this.totalDisplayCount = res.rowCount;
-          // }
-
-        // } else {
-        //   this.noData = false;
-        //   this.rowCount = res.rowCount;
-        //   this.totalShowing = +this.rowStart + +this.dataset.length - 1;
-        // }
       },
       (msg) => {
         this.showLoader = false;
@@ -178,63 +170,11 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
     );
   }
 
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
+  pageChange(obj: PaginationChange) {
+    this.rowStart = obj.rowStart;
+    this.rowEnd = obj.rowEnd;
 
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
-
-    let pagenumber = +this.totalRowCount / +this.selectRowDisplay;
-    const mod = +this.totalRowCount % +this.selectRowDisplay;
-
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
     this.loadUnitsOfMeasures();
-  }
-
-  updatePagination() {
-    if (this.dataset.length <= this.totalShowing) {
-      this.prevPageState = false;
-      this.nextPageState = false;
-    } else {
-      this.showingPages = Array<Pagination>();
-      this.showingPages[0] = this.pages[this.activePage - 1];
-      const pagenumber = +this.rowCount / +this.rowCountPerPage;
-
-      if (this.activePage < pagenumber) {
-        this.showingPages[1] = this.pages[+this.activePage];
-
-        if (this.showingPages[1] === undefined) {
-          const page = new Pagination();
-          page.page = 1;
-          page.rowStart = 1;
-          page.rowEnd = this.rowEnd;
-          this.showingPages[1] = page;
-        }
-      }
-
-      if (+this.activePage + 1 <= pagenumber) {
-        this.showingPages[2] = this.pages[+this.activePage + 1];
-      }
-    }
-
   }
 
   updateSort(orderBy: string) {
@@ -259,22 +199,30 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
     this.loadUnitsOfMeasures();
   }
 
-  toggleFilters() {
-    this.displayFilter = !this.displayFilter;
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadUnitsOfMeasures();
   }
 
-  popClick(event, id: number, name: string, description: string) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+  recordsPerPageChange($event) {
+    console.log($event);
+  }
 
-    this.focusUnitId = id;
-    this.focusUnitName = name;
-    this.focusUnitDescription = description;
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+
+  setClickedRow(obj: SelectedRecord) {
+    this.contextMenuX = obj.event.clientX + 3;
+    this.contextMenuY = obj.event.clientY + 5;
+
+    this.focusUnitId = obj.record.unitOfMeasureID;
+    this.focusUnitName = obj.record.name;
+    this.focusUnitDescription = obj.record.description;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -283,14 +231,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
-  }
-
-  popOff() {
-    this.contextMenu = false;
-    this.selectedRow = -1;
-  }
-  setClickedRow(index) {
-    this.selectedRow = index;
   }
 
   editUnitOfMeasure($event) {
@@ -322,17 +262,6 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
       this.unitService.update(requestModel).then(
         (res: UpdateUnitsOfMeasureResponse) => {
           this.closeModal.nativeElement.click();
-
-          // const unitsOfMeasure = {
-          //   userID: 3,
-          //   specificUnitOfMeasureID: -1,
-          //   filter: '',
-          //   orderBy: 'Name',
-          //   orderByDirection: 'ASC',
-          //   rowStart: 1,
-          //   rowEnd: 15
-          // };
-
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           this.loadUnitsOfMeasures();
         },

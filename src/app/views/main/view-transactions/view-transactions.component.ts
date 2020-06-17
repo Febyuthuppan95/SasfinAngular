@@ -91,6 +91,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   focusHelpName: string;
   focusDescription: string;
   transactionType: string;
+  status: string;
 
   noData = false;
   showLoader = true;
@@ -322,12 +323,9 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   }
 
   handleStatus(event: Outcome) {
-    console.log('yes it reaches here');
     if (event.outcome === 'SUCCESS') {
-      console.log('yes');
       this.notify.successmsg(event.outcome, event.outcomeMessage);
     } else {
-      console.log('no');
       this.notify.errorsmsg(event.outcome, event.outcomeMessage);
     }
     window.location.reload();
@@ -381,19 +379,14 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name, type) {
-    console.log('ok');
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+  popClick(event, id, name, type, status) {
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
 
     this.focusHelp = id;
     this.transName = name;
     this.transactionType = type;
+    this.status = status;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

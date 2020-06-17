@@ -47,9 +47,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     headings: [
       { title: '', propertyName: 'rowNum', order: { enable: false } },
       { title: 'Invoice No', propertyName: 'invoiceNo', order: { enable: false } },
-      { title: 'From Company', propertyName: 'fromCompany', order: { enable: false } },
-      { title: 'To Company', propertyName: 'toCompany', order: { enable: false } },
-      { title: 'Status', propertyName: 'status', order: { enable: false } }
+      { title: 'Date', propertyName: 'invoiceDate', order: { enable: false } },
     ],
     rowStart: 1,
     rowEnd: 15,
@@ -57,10 +55,6 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     orderBy: '',
     orderByDirection: '',
     dataset: null,
-   // events: {
-      //backButton: () => this.router.navigate(['companies', 'transactions'])
-     // backButton: () => this.router.navigate(['companies/transactions'])
-   // }
   };
 
   listRequest = {
@@ -105,6 +99,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   loadDataset() {
     this.captureService.invoiceList(this.listRequest).then(
       (res: { outcome: Outcome, invoices: [], rowCount: number }) => {
+        console.log(res.invoices);
         this.tableConfig.dataset = res.invoices;
         this.tableConfig.rowCount = res.rowCount;
 

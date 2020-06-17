@@ -95,7 +95,7 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let transaction of dataList; let i=index" class="userRecord" (click)="popClick($event, transaction.transactionID, transaction.name, transaction.type); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let transaction of dataList; let i=index" class="userRecord" (click)="popClick($event, transaction.transactionID, transaction.name, transaction.type, transaction.status); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{transaction.rowNum}}</td>
             <td>{{transaction.name}}</td>
             <td>{{transaction.type}}</td>
@@ -141,5 +141,16 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-context-menu-transaction [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [transactionID]="focusHelp" [transactionName]="this.transName" [transactionType]="this.transactionType" (statusResults)="handleStatus($event)"></app-context-menu-transaction>
+  <app-context-menu-transaction
+    [ngStyle]="(contextMenu)?'' :'display:none;'"
+    class="contextMenuDiv"
+    *ngIf="(contextMenu)"
+    [x]="contextMenuX"
+    [y]="contextMenuY"
+    [transactionID]="focusHelp"
+    [transactionName]="this.transName"
+    [transactionType]="this.transactionType"
+    [status]="status"
+    (statusResults)="handleStatus($event)">
+  </app-context-menu-transaction>
 </div>

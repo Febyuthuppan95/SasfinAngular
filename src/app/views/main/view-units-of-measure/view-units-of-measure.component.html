@@ -5,7 +5,24 @@
         <app-loader></app-loader>
       </ng-container>
     </div>
-    <br />
+    <app-table
+      *ngIf="dataset"
+      [(dataset)]="dataset"
+      [headings]="tableHeadings"
+      [(recordsPerPage)]="rowCountPerPage"
+      [(rowStart)]="rowStart"
+      [(rowEnd)]="rowEnd"
+      [(rowCount)]="rowCount"
+      [orderBy]="orderBy"
+      [orderByDirection]="orderDirection"
+      [tableHeader]="tableHeader"
+      (selectedRecord)="setClickedRow($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchBar($event)">
+    </app-table>
+    <!-- <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
     <h4 class="card-title ls-text-{{ currentTheme }}">Units of Measure</h4>
@@ -87,14 +104,14 @@
         </li>
       </ul>
     </nav>
-    <br />
+    <br /> -->
     <!-- <p class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ totalDisplayCount }} of
       {{ rowCount }}</p> -->
-
+<!--
       <p *ngIf="(!noData)" class="ls-text-{{ currentTheme }}">Showing {{ rowStart }} to {{ +rowStart + +totalDisplayCount - 1 }} of
         {{ rowCount }}</p>
 
-      <p *ngIf="(noData)" class="ls-text-{{ currentTheme }}">0 to 0 of 0</p>
+      <p *ngIf="(noData)" class="ls-text-{{ currentTheme }}">0 to 0 of 0</p> -->
   </div>
 </div>
 
@@ -112,11 +129,11 @@
       <div class="modal-body">
       <div class="form-group">
           <input type="text" placeholder="Unit Name" class="form-control"
-            [(ngModel)]="this.focusUnitName" [ngModelOptions]="{standalone: true}" required/>
+            [(ngModel)]="focusUnitName" [ngModelOptions]="{standalone: true}" required/>
         </div>
         <div class="form-group">
           <input type="text" placeholder="Unit Description" class="form-control"
-            [(ngModel)]="this.focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
+            [(ngModel)]="focusUnitDescription" [ngModelOptions]="{standalone: true}" required/>
         </div>
       </div>
       <div class="modal-footer bg-dark">

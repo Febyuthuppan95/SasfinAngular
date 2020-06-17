@@ -118,7 +118,6 @@ private notify: NotificationComponent;
           this.transactionID = res.captureattachment.transactionID;
           this.attachmentID = res.captureattachment.attachmentID;
           this.fileType = res.captureattachment.filetype;
-          console.log(this.fileType);
           this.fileTypeID = res.captureattachment.fileTypeID;
           this.companyID = res.captureattachment.companyID;
           this.companyName = res.captureattachment.companyName;
@@ -126,13 +125,13 @@ private notify: NotificationComponent;
           this.docService.loadDocumentToViewer(this.docPath);
           // tslint:disable-next-line: max-line-length
           this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID,
+            // tslint:disable-next-line: max-line-length
             docType: this.fileType, transactionType: this.transactionType, issueID: res.captureattachment.issueID, reason: res.captureattachment.reason});
           this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
           this.router.navigate(['capture', 'transaction', 'attachment']);
           this.loading = false;
         } else {
-          console.log(res);
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.notify.errorsmsg('FAILURE', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
         }
 

@@ -24,8 +24,9 @@ export class ContextMenuTransactionComponent implements OnInit {
   @Input() transactionID: number;
   @Input() transactionName: string;
   @Input() transactionType: string;
+  @Input() status: string;
   @Input() currentTheme: string;
-  
+
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
   @Output() statusResults = new EventEmitter<Outcome>();
