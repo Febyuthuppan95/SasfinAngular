@@ -18,9 +18,10 @@ export class NestedTableComponent implements OnInit, OnChanges {
   @Input() action_icon: string;
   @Input() action_toolip: string;
   @Input() filter?: boolean;
-  @Input() paginator: PageEvent;
-  @Input() pageSizeOptions: string[] = [];
+  @Input() paginator?: PageEvent;
+  @Input() pageSizeOptions?: string[] = [];
   @Input() noDataError: string;
+  @Input() isPageable: boolean;
   //@Input() config: MatTableConfig;
   
   @Input() headings: TableHeading[];
@@ -40,6 +41,11 @@ export class NestedTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log(this.headings);
+    console.log(this.parents);
+    // console.log(this.isPageable);
+    // console.log(this.displayData);
+    // console.log(this.paginator);
     // console.log(this.config);
     // if (this.config !== null && this.config !== undefined) {
     //   if(this.config.data !== null && this.config.data !== undefined) {
@@ -55,7 +61,6 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges($event: SimpleChanges) {
-    
     this.initTable();
   }
   initTable() {
@@ -72,7 +77,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
       });
    
       this.columnsToDisplay.push('action');
-      
+      console.log(this.columnsToDisplay);
       let field: object = null;
       
       let objectKeys: string[];
@@ -114,11 +119,9 @@ export class NestedTableComponent implements OnInit, OnChanges {
     this.loading = false;
     
   }
-  loadDataAsync() {
-
-  }
-  what($event, $event2) {
-  
+  what($event, $even) {
+    console.log($even);
+    console.log($event);
   }
   rowAction($event) {
 

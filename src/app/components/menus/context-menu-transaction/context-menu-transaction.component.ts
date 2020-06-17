@@ -70,7 +70,7 @@ export class ContextMenuTransactionComponent implements OnInit {
   viewCheckList() {
     // tslint:disable-next-line: max-line-length
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '', transactionType: this.transactionType, transactionName: this.transactionName });
-    this.router.navigate(['transaction', 'checklist', this.transactionID]);
+    this.router.navigate(['transaction', 'checking']);
 
     // transaction/checklist
   }
