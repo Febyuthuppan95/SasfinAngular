@@ -50,6 +50,14 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
     });
   }
 
+  @ViewChild('itemGroupFile', { static: false })
+  bomFile: ElementRef;
+
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
@@ -170,6 +178,9 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
   isAdmin: false;
   groupID = '';
   itemName = '';
+
+  ItemGroupFile: File;
+  filePreview: string;
 
   ngOnInit() {
 
@@ -329,6 +340,57 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  onFileChange(files: FileList) {
+    this.ItemGroupFile = files.item(0);
+    this.filePreview = this.ItemGroupFile.name;
+  }
+
+  add() {
+    // Render modal
+    this.filePreview = null;
+    console.log(this.ItemGroupFile);
+    this.bomFile.nativeElement.value = '';
+    this.ItemGroupFile = null;
+    this.openAddModal.nativeElement.click();
+  }
+
+  saveItemGroupUpload() {
+    // Save
+    // const model = {
+    //   requestParams: {
+    //     userID: this.currentUser.userID,
+    //     bomID: this.bomid // this needs to get the actual bomID
+    //   },
+    //   requestProcedure: `BomLineAdd`
+    // };
+    // this.IDocumentService.upload(this.BomFile, model).then(
+    //   (res: Outcome) => {
+    //     // console.log('BOMUploadRes');
+    //     console.log('Response: ' + res);
+    //     if (res.outcome === 'SUCCESS') {
+    //       this.notify.successmsg(
+    //         res.outcome,
+    //         res.outcomeMessage);
+    //       this.loadBOMLines(false);
+    //     } else {
+    //       this.notify.errorsmsg(
+    //         res.outcome,
+    //         res.outcomeMessage
+    //       );
+    //     }
+    //   },
+    //   (msg) => {
+    //     // nothing yet
+    //     console.log('Error: ' + msg);
+    //     this.showLoader = false;
+    //     this.notify.errorsmsg(
+    //       'Server Error',
+    //       'Something went wrong while trying to access the server.'
+    //     );
+    //   }
+    // );
   }
 
 }

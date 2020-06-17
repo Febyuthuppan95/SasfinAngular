@@ -21,13 +21,48 @@
       (pageChange)="pageChange($event)"
       (showingRecordsEvent)="recordsPerPageChange($event)"
       (searchEvent)="searchEvent($event)"
-      (backButtonEvent)="backToItems()">
+      (backButtonEvent)="backToItems()"
+      (addButtonEvent)="add()">
     </app-table>
   </div>
 </div>
 
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
+
+<!--Add Modal - Which is actually for bom lines-->
+<button class="hide" data-toggle="modal" data-target="#addBOM" #openAddModal></button>
+<div class="modal fade" id="addBOM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Upload Item Groups</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
+          </div>
+          <div class="form-group">
+            <label for="addItemGroupFile">
+              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+            </label>
+            <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+            <input id="addItemGroupFile" hidden #itemGroupFile type="file" (change)="onFileChange($event.target.files)" required>
+          </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+          <button type="submit" (click)="saveItemGroupUpload()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <app-menu
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
