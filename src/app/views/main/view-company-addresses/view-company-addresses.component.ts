@@ -154,6 +154,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     });
 
     this.loadCompanyInfoList();
+    this.loadCitiesList();
   }
 
   backToCompanies() {
@@ -426,6 +427,10 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     }
 
     if (this.cityID === undefined) {
+      errors++;
+    }
+
+    if (this.CitySearch === '' || this.CitySearch === null || !this.CitySearch) {
       errors++;
     }
 

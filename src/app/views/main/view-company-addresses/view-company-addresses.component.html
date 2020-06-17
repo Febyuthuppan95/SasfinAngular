@@ -151,7 +151,7 @@
           </div>
           <div class="example-form">
               <mat-form-field class="example-full-width">
-                  <input [(ngModel)]="this.CitySearch" type="text"(keyup)="CityBar()"  placeholder="City" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                  <input [(ngModel)]="this.CitySearch" type="text" (keyup)="CityBar()" placeholder="City" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let City of CitiesList" [value]="City.name" (onSelectionChange)="selectedCity(City.cityID)">
                       {{City.name}}, {{City.region}}, {{City.country}}
