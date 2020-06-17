@@ -1,0 +1,114 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="this.loading">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <div class="row">
+        <div class="col-md-3" style="padding-left:0px;"><span style="float:left; margin-right:5px;"></span>
+          <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List <i
+              class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
+        </div>
+        
+      
+      </div>
+        <br />
+        <div class="filters" [ngClass]="filters-show">
+          <form class="form-inline">
+            <select [value]='15' [(ngModel)]="rowCountPerPage" [ngModelOptions]="{standalone: true}"
+                    class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
+                    (change)="getCaptureList()">
+              <option value='15' selected>Showing 15</option>
+              <option value='25'>Showing 25</option>
+              <option value='50'>Showing 50</option>
+            </select>
+            <input type="text"
+                   class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
+                   placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
+          </form>
+        </div>
+   
+      
+    
+      <br />
+      <div class="row" *ngIf="this.observedTransaction">
+        <div class="col-md-12">
+          <h5 style="float:left; padding-top:7px;" class="ls-text-{{ currentTheme }}">Transaction ID :
+            {{this.observedTransaction.transactionID}}
+          </h5>
+        </div>
+      </div>
+  
+      <br /> <br />
+  
+      <h4 *ngIf="!this.CaptureJoins">No Customs Workshet Lines found for this transaction</h4>
+      <div *ngIf="this.CaptureJoins !== null">
+        <mat-accordion *ngFor="let Cust of CustomWorksheetLines">
+            <mat-expansion-panel id="expansion-panel-0" [expanded]="this.step === Cust.RowNum" (opened)="focusWorksheet(Cust)"
+            style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
+            <mat-expansion-panel-header>
+              <label class="col-md-2 text-center"><i class="mdi mdi-file-document"></i>Custom Worksheet ID: {{Cust.CustomWorksheetID}}</label>
+              <label class="col-md-2 text-center">Custom Worksheet Line ID: {{Cust.CustomWorksheetLineID}}</label>
+              <label class="col-md-2 text-center">Invoice No: {{Cust.InvoiceNo}}</label>
+              <label class="col-md-2 text-center">Product Code: {{Cust.ProdCode}}</label>
+              <label class="col-md-2 text-center"> HS Quantity: {{Cust.HSQuantity}}</label>
+                <!-- <h4> <i class="mdi mdi-file-document"></i> Customs Worksheet Line:  - {{Cust.CustomWorksheetLineID}} </h4> -->
+            </mat-expansion-panel-header>
+            <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
+              <button class="col-sm-12 text-center" mat-button color="primary"  [disabled]="disabled" style="font-size: 0.9rem;">Assigned Invoice Lines</button>
+                <div class="col-md-12">
+                  <hr style="border-top: 2px solid #0099ff;" />
+                  <app-nested-table *ngIf="this.AssignedInvoiceLines.length > 0"
+                  [action_icon]="'edit'"
+                  [parents] = "this.AssignedInvoiceLines" 
+                  [isPageable]="'false'"
+                  [headings]="this.invoiceHeadings"
+                  (rowEvent)="InvoiceEvent($event)"
+                  [noDataError] ="'No Invoices Assigned'"
+                  [action_toolip]="'Edit Relationship'"
+                  ></app-nested-table>
+                  <hr style="border-top: 2px solid #0099ff;" />
+                </div>
+              </div>
+              <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
+                <button class="col-sm-12 text-center" mat-button color="primary"  [disabled]="disabled" style="font-size: 0.9rem;">Assigned SAD500 Lines</button>
+                <div class="col-md-12">
+                  <hr style="border-top: 2px solid #0099ff;" />
+                  <app-nested-table *ngIf="this.AssignedInvoiceLines.length > 0"
+                  [action_icon]="'edit'"
+                  [parents] = "this.AssignedInvoiceLines" 
+                  [isPageable]="'false'"
+                  [headings]="this.invoiceHeadings"
+                  (rowEvent)="InvoiceEvent($event)"
+                  [noDataError] ="'No Invoices Assigned'"
+                  [action_toolip]="'Edit Relationship'"
+                  ></app-nested-table>
+                  <hr style="border-top: 2px solid #0099ff;" />
+                </div>
+              </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+        </div>
+    </div>
+    <nav aria-label="Pagination" class="float-right" style="margin-top:8px;">
+      <ul class="pagination pagination-sm">
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="prevPageState" type="button"
+                  (click)="pageChange(prevPage)">Prev</button>
+        </li>
+        <li *ngFor="let page of showingPages" class="page-item">
+          <button [class.active-page]="activePage == page.page"
+                  class="page-link btn-primary btn page-btn-{{ currentTheme }}" [ngClass]="(activePage)?'page-btn-active':''"
+                  type="button" (click)="pageChange(page.page)">{{page.page}}</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link btn-primary btn page-btn-{{ currentTheme }}" [disabled]="nextPageState" type="button"
+                  (click)="pageChange(nextPage)">Next</button>
+        </li>
+      </ul>
+    </nav>
+    <br />
+    <p class="ls-text-{{ currentTheme }}" *ngIf="this.CaptureJoins !== null">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
+      {{ rowCount }}</p>
+</div>
