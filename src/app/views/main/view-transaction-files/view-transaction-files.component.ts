@@ -130,7 +130,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   transactionTypes = [];
   attachmentName: string;
+  // tslint:disable-next-line: max-line-length
   attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number, ediStatusID?: number }[] = [];
+  // tslint:disable-next-line: max-line-length
   attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number, ediStatusID?: number }[] = [];
   selectedTransactionType: number;
   selectedSAD500: number;
