@@ -239,6 +239,7 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
 
   searchBar(filter: string) {
     this.rowStart = 1;
+    this.filter = filter;
     this.loadCompanies();
   }
 
