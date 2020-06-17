@@ -27,12 +27,6 @@
             <option selected value="0" [disabled]="statusDisable">Select a status type</option>
             <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
           </select>
-      </div>
-        <div class="form-group">
-          <select class="form-control" [selectedIndex]="selectedEDIIndex" [formControl]="selectEDIControl" (change)="onEDIChange()">
-            <option selected value="0" [disabled]="ediDisable">Select an EDI status</option>
-            <option *ngFor="let item of ediStatuses" [value]="item.EDIStatusID">{{item.Name}}</option>
-          </select>
         </div>
       </div>
       <div class="modal-footer bg-dark">
@@ -107,7 +101,7 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let transaction of dataList; let i=index" class="userRecord" (click)="popClick($event, transaction.transactionID, transaction.name, transaction.type, transaction.status); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let transaction of dataList; let i=index" class="userRecord" (click)="popClick($event, transaction.transactionID, transaction.name, transaction.type, transaction.status, transaction.sendAll); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{transaction.rowNum}}</td>
             <td>{{transaction.name}}</td>
             <td>{{transaction.type}}</td>
@@ -163,6 +157,7 @@
     [transactionName]="this.transName"
     [transactionType]="this.transactionType"
     [status]="status"
+    [transactionsSendAll]="transactionsSendAll"
     (statusResults)="handleStatus($event)">
   </app-context-menu-transaction>
 </div>

@@ -171,8 +171,8 @@ export class TransactionService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number) {
-    const requestModel = {
+  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number, ediStatus?: number) {
+    const requestModel: any = {
       name,
       fileName: file.name,
       type,
@@ -181,6 +181,11 @@ export class TransactionService {
       company,
       sad500ID
     };
+
+    if (ediStatus) {
+      requestModel.ediStatusID = ediStatus;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('requestModel', JSON.stringify(requestModel));
@@ -205,14 +210,13 @@ export class TransactionService {
     });
   }
 
-  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string, ediStatus: number) {
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string) {
     const requestModel: CreateTransactionRequest = {
       userID,
       specificCompanyID: companyID,
       specificTransactioTypeID: typeID,
       specificTransactioStatusID: statusID,
-      name,
-      ediStatusID: ediStatus,
+      name
     };
 
     return new Promise(async (resolve, reject) => {

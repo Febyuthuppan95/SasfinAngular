@@ -17,8 +17,8 @@ import { TransactionStatus, TransactionStatusesResponse } from 'src/app/models/H
 import { FormGroup, FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TransactionUpdateResponse } from 'src/app/models/HttpResponses/TransactionUpdateResponse';
 import { CaptureService } from 'src/app/services/capture.service';
+import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
 
 @Component({
   selector: 'app-view-transactions',
@@ -153,6 +153,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   };
 
   ediStatuses: any[] = [];
+  transactionsSendAll = false;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -176,7 +177,30 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.loadStatuses();
     this.loadTypes();
     this.loadEDIStatuses();
-    console.log(this.rowStart + ', ' + this. rowEnd + ', ' + this.rowCount + ', ' + this.showingRecords);
+  }
+
+  async loadAttachments() {
+    this.dataList.forEach(async (item) => {
+      const model = {
+        filter: '',
+        userID: this.currentUser.userID,
+        specificTransactionID: item.transactionID,
+        specificAttachmentID: -1,
+        rowStart: 1,
+        rowEnd: 1000,
+        orderBy: '',
+        orderByDirection: ''
+      };
+
+      this.transationService.listAttatchments(model)
+        .then((res: TransactionFileListResponse) => {
+          if (res.attachments.filter(x => x.statusID === 2).length === res.attachments.length) {
+            item.sendAll = true;
+          } else {
+            item.sendAll = false;
+          }
+        });
+    });
   }
 
   loadStatuses() {
@@ -321,6 +345,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
             this.dataset = res;
             this.totalShowing = +this.rowStart + +this.dataset.transactions.length - 1;
             this.paginateData();
+            this.loadAttachments();
           }
         },
         msg => {
@@ -399,7 +424,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, name, type, status) {
+  popClick(event, id, name, type, status, sendAll) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
 
@@ -407,6 +432,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.transName = name;
     this.transactionType = type;
     this.status = status;
+    this.transactionsSendAll = sendAll;
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -432,6 +458,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   addTransaction() {
     let errors = 0;
     this.selectedStatus = 3;
+
     if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
       errors++;
     }
@@ -443,6 +470,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     if (this.selectedType <= 0 || this.selectedStatus === undefined) {
       errors++;
     }
+
     if (errors === 0) {
       this.transationService.createdTransaction(
           this.currentUser.userID,
@@ -450,7 +478,6 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
           this.selectedType,
           this.selectedStatus,
           this.newTransaction.name,
-          this.selectEDIControl.value
         ).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
@@ -479,6 +506,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.statusDisable = false;
     this.selectStatusControl.reset(0);
     this.selectTypeControl.reset(0);
+    this.selectEDIControl.reset(0);
 
     this.openModal.nativeElement.click();
   }

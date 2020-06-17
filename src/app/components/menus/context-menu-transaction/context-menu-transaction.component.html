@@ -9,7 +9,7 @@
       <a (click)="viewCRN()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Custom Release Notifications</span></a>
       <a (click)="viewInvoices()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Invoices</span></a>
       <hr class="bg-light" style="width: 80%; margin:auto; margin-top: 12px;margin-bottom: 12px;">
-      <a (click)="readyForAssessment()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Send for Assessment</span></a>
+      <a (click)="readyForAssessment()" *ngIf="transactionsSendAll" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Send for Assessment</span></a>
       <a (click)="viewCheckList()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title" *ngIf="status === 'Assess Succeeded'">Check List</span></a>
     </div>
   </div>
