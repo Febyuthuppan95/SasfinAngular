@@ -127,7 +127,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Tariff Name',
+      title: 'Tariff',
       propertyName: 'tariffName',
       order: {
         enable: true,

@@ -12,5 +12,5 @@ export class Transaction {
   name: string;
   type: string;
   status: string;
-  sendAll: boolean;
+  sendAll?: boolean;
 }
