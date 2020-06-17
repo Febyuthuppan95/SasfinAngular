@@ -192,19 +192,17 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        console.log(res);
-          res.data.forEach(x => {
-            this.transactionTypes.push({
-              name: x.Name,
-              description:x.Description,
-              value: x.FileTypeID
-            })
+        res.data.forEach(x => {
+          this.transactionTypes.push({
+            name: x.Name,
+            description: x.Description,
+            value: x.FileTypeID
           });
-          console.log(this.transactionTypes);
-       
+        });
       }
     );
   }
+
   paginateData() {
     let rowStart = 1;
     let rowEnd = +this.rowCountPerPage;
@@ -439,14 +437,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       (res) => {
           attach.uploading = false;
           attach.status = 'Complete';
-          // this.loadAttachments();
-          // this.attachmentQueue.splice(index, 1);
-          // this.attachmentQueueDisplay.splice(index, 1);
-          // this.preview = null;
-          // this.attachmentName = null;
-          // this.selectAttachmentType.reset(-1);
-          // this.attachmentQueue = [];
-
           index++;
           this.iterateAttachments(index);
       },
@@ -500,21 +490,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.selectedTransactionType = id;
     }
     this.disableAttachmentType = true;
-    // tslint:disable-next-line: triple-equals
-    console.log(this.disableAttachmentType);
-    // if (this.selectedTransactionType == 2) {
-    //   this.isVOC = true;
-    //   this.loadSAD500s();
-    // } else {
-    //   this.isVOC = false;
-    // }
   }
 
   onSAD500Select(id: number) {
     this.selectedSAD500 = id;
     this.disableSAD500 = true;
     this.selectedSAD500Line = id;
-    // this.loadSAD500Lines();
   }
 
   onSAD500LineSelect(id: number) {
@@ -541,13 +522,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
       this.attachmentQueue[this.currentAttachment].sad500ID = this.selectedSAD500Line;
-
-      console.log(this.attachmentQueue);
-
       this.attachmentQueueDisplay[this.currentAttachment] = this.attachmentQueue[this.currentAttachment];
-
-      console.log(this.attachmentQueue);
-
       this.attachmentName = '';
       this.selectedTransactionType = - 1;
       this.currentAttachment++;
@@ -608,9 +583,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   removeAttachment($event) {
-    console.log(this.transactionTypes.filter(x => x.description === JSON.parse($event).fileTypeID));
     this.showLoader = true;
-    console.log($event);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -623,7 +596,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
       (res: UpdateResponse) => {
         this.loadAttachments();
-
       },
       msg => {
         this.showLoader = false;

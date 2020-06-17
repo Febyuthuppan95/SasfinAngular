@@ -205,13 +205,14 @@ export class TransactionService {
     });
   }
 
-  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string) {
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string, ediStatus: number) {
     const requestModel: CreateTransactionRequest = {
       userID,
       specificCompanyID: companyID,
       specificTransactioTypeID: typeID,
       specificTransactioStatusID: statusID,
-      name
+      name,
+      ediStatusID: ediStatus,
     };
 
     return new Promise(async (resolve, reject) => {

@@ -4,4 +4,5 @@ export class CreateTransactionRequest {
   specificTransactioTypeID: number;
   specificTransactioStatusID: number;
   name: string;
+  ediStatusID: number;
 }

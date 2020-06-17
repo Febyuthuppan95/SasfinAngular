@@ -18,6 +18,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TransactionUpdateResponse } from 'src/app/models/HttpResponses/TransactionUpdateResponse';
+import { CaptureService } from 'src/app/services/capture.service';
 
 @Component({
   selector: 'app-view-transactions',
@@ -31,6 +32,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
+    private captureService: CaptureService,
     private router: Router,
     private companyService: CompanyService
   ) {
@@ -115,10 +117,13 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   selectedTypeIndex = 0;
   selectedStatusIndex = 0;
+  selectedEDIIndex = 0;
   statusDisable: boolean;
   typesDisable: boolean;
+  ediDisable: boolean;
 
   selectTypeControl = new FormControl(0);
+  selectEDIControl = new FormControl(0);
   selectStatusControl = new FormControl(0);
 
   newTransaction = {
@@ -147,6 +152,8 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     specificTransactionTypesID: -1
   };
 
+  ediStatuses: any[] = [];
+
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
@@ -168,7 +175,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.loadTransactions();
     this.loadStatuses();
     this.loadTypes();
-
+    this.loadEDIStatuses();
     console.log(this.rowStart + ', ' + this. rowEnd + ', ' + this.rowCount + ', ' + this.showingRecords);
   }
 
@@ -208,6 +215,10 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   onTypeChange(id: number) {
     this.selectedType = id;
     this.typesDisable = true;
+  }
+
+  onEDIChange() {
+    this.ediDisable = true;
   }
 
   paginateData() {
@@ -322,6 +333,15 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
       );
   }
 
+  loadEDIStatuses() {
+    this.captureService.ediStatusList({}).then(
+      (res: any) => {
+        this.ediStatuses = res.data;
+        console.log(this.ediStatuses[0]);
+      }
+    );
+  }
+
   handleStatus(event: Outcome) {
     if (event.outcome === 'SUCCESS') {
       this.notify.successmsg(event.outcome, event.outcomeMessage);
@@ -430,6 +450,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
           this.selectedType,
           this.selectedStatus,
           this.newTransaction.name,
+          this.selectEDIControl.value
         ).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
