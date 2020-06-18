@@ -481,29 +481,39 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   }
 
   UpdateCompanyAddress() {
-    const requestModel: UpdateCompanyAddress = {
-      userID: this.currentUser.userID,
-      spesificAddressID: this.focusAddressID,
-      address1: this.Address1,
-      address2: this.Address2,
-      POBox: this.POBox,
-      addressTypeID: this.Type,
-      cityID: this.cityID,
-    };
-    this.companyService.UpdateAddress(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
-            this.closeeditModal.nativeElement.click();
-            this.loadCompanyInfoList();
-        }
-      },
-        msg => {
-          this.notify.errorsmsg(
-          'Server Error', 'Something went wrong while trying to access the server.');
-      });
+    let errors = 0;
+
+    if (this.CitySearch === '' || this.CitySearch === null || !this.CitySearch) {
+      errors++;
+    }
+
+    if (errors === 0) {
+      const requestModel: UpdateCompanyAddress = {
+        userID: this.currentUser.userID,
+        spesificAddressID: this.focusAddressID,
+        address1: this.Address1,
+        address2: this.Address2,
+        POBox: this.POBox,
+        addressTypeID: this.Type,
+        cityID: this.cityID,
+      };
+      this.companyService.UpdateAddress(requestModel).then(
+        (res: {outcome: Outcome}) => {
+            if (res.outcome.outcome !== 'SUCCESS') {
+              this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            } else {
+              this.notify.successmsg('SUCCESS', 'Company address successfully Updated');
+              this.closeeditModal.nativeElement.click();
+              this.loadCompanyInfoList();
+          }
+        },
+          msg => {
+            this.notify.errorsmsg(
+            'Server Error', 'Something went wrong while trying to access the server.');
+        });
+    } else {
+      this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');
+    }
   }
 
   onChange(id: number)   {
