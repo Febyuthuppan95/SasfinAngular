@@ -58,8 +58,9 @@ export class DocumentService {
    * tslint:disable-next-line: no-redundant-jsdoc
    * @param fileUpload
    * @param requestModel
+   * @param endpoint
    */
-  public upload(fileUpload: File, requestModel: object) {
+  public upload(fileUpload: File, requestModel: object, endpoint: string) {
     // console.log(fileUpload);
     // console.log(requestModel);
     const formData = new FormData();
@@ -71,7 +72,7 @@ export class DocumentService {
     // console.log(formData.get('requestModel'));
 
     return new Promise((resolve, reject) => {
-      const apiURL = `${environment.ApiEndpoint}/boms/upload`;
+      const apiURL = `${environment.ApiEndpoint}/${endpoint}`;
       this.httpClient
         .post(apiURL, formData)
         .toPromise()

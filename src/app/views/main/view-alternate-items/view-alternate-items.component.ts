@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { UpdateGrouplist } from 'src/app/models/HttpResponses/UpdateGrouplist';
 import { takeUntil } from 'rxjs/operators';
+import {DocumentService} from '../../../services/Document.Service';
 
 @Component({
   selector: 'app-view-alternate-items',
@@ -30,7 +31,8 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private snackbarService: HelpSnackbar,
-    private router: Router
+    private router: Router,
+    private IDocumentService: DocumentService,
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -358,14 +360,16 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
 
   saveItemGroupUpload() {
     // Save
-    // const model = {
-    //   requestParams: {
-    //     userID: this.currentUser.userID,
-    //     bomID: this.bomid // this needs to get the actual bomID
-    //   },
-    //   requestProcedure: `BomLineAdd`
-    // };
-    // this.IDocumentService.upload(this.BomFile, model).then(
+    console.log('save');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID
+      },
+      requestProcedure: `BOMItemGroupAdd`
+    };
+    console.log(this.ItemGroupFile, model, 'boms/itemGroups/upload');
+    // uncomment once testing is done
+    // this.IDocumentService.upload(this.ItemGroupFile, model, 'boms/itemGroups/upload').then(
     //   (res: Outcome) => {
     //     // console.log('BOMUploadRes');
     //     console.log('Response: ' + res);
@@ -373,7 +377,7 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
     //       this.notify.successmsg(
     //         res.outcome,
     //         res.outcomeMessage);
-    //       this.loadBOMLines(false);
+    //       this.loadAlternateItems(false);
     //     } else {
     //       this.notify.errorsmsg(
     //         res.outcome,

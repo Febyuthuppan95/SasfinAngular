@@ -355,7 +355,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `BomLineAdd`
     };
-    this.IDocumentService.upload(this.BomFile, model).then(
+    this.IDocumentService.upload(this.BomFile, model, 'boms/upload').then(
       (res: Outcome) => {
         // console.log('BOMUploadRes');
         console.log('Response: ' + res);
