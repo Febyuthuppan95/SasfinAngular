@@ -209,16 +209,20 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
       errors++;
     }
 
-    // checking filetypes
-    if (!this.fileName.includes('.png')) {
-      errors++;
-    }
+    // // checking filetypes
+    // if (!this.fileName.includes('.png')) {
+    //   errors++;
+    // }
 
-    if (!this.fileName.includes('.jpg')) {
-      errors++;
-    }
+    // if (!this.fileName.includes('.jpg')) {
+    //   errors++;
+    // }
 
-    if (!this.fileName.includes('.jpeg')) {
+    // if (!this.fileName.includes('.jpeg')) {
+    //   errors++;
+    // }
+
+    if (!this.fileName.match(/.(jpg|jpeg|png)$/i)) {
       errors++;
     }
 
@@ -244,7 +248,11 @@ export class ViewBackgroundsListComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      this.notify.toastrwarning('Warning', 'Please choose an image before saving.');
+      if (!this.fileName.match(/.(jpg|jpeg|png)$/i)) {
+        this.notify.toastrwarning('Warning', 'File type not supported.');
+      } else {
+        this.notify.toastrwarning('Warning', 'Please choose an image before saving.');
+      }
     }
   }
 

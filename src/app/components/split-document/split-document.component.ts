@@ -55,15 +55,15 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
         console.log(res);
-          res.data.forEach(x => {
+        res.data.forEach(x => {
             this.transactionTypes.push({
               name: x.Name,
-              description:x.Description,
+              description: x.Description,
               value: x.FileTypeID
-            })
+            });
           });
-          console.log(this.transactionTypes);
-       
+
+        console.log(this.transactionTypes);
       }
     );
   }
@@ -83,7 +83,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
       companyName: this.companyName
     });
 
-    this.requestData.sections.sort((x,y)=> y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
+    this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   }
 
   inputFileChange(files: File[]) {
@@ -114,13 +114,34 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
       err++;
     }
 
+    this.requestData.sections.forEach((item) => {
+      if (item.name === '' || item.name === null || !item.name) {
+        err++;
+      }
+
+      if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
+        err++;
+      }
+
+      if (item.position === 0 || item.position === null || !item.position) {
+        err++;
+      }
+
+      if (item.pages.start === 0 || item.pages.start === null || !item.pages.start) {
+        err++;
+      }
+
+      if (item.pages.end === 0 || item.pages.end === null || !item.pages.end) {
+        err++;
+      }
+    });
+
 
     console.log(this.requestData);
 
     if (err === 0) {
     const formData = new FormData();
-    this.requestData.sections.sort((x,y)=> x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
-    console.log(this.requestData);
+    this.requestData.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
     formData.append('requestModel', JSON.stringify(this.requestData));
     formData.append('file', this.file);
 

@@ -11,7 +11,6 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Router } from '@angular/router';
 import { DoctypeListResponse } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { TableHeading, SelectedRecord, TableHeader, Order } from 'src/app/models/Table';
-import { stringify } from '@angular/compiler/src/util';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Pagination } from 'src/app/models/Pagination';
@@ -335,17 +334,12 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.router.navigate(['companies']);
   }
 
-
-
   addCaptureInfoModal() {
-
     this.doctypeSelectedIndex = 0;
     this.requestModelAddInfo.info = null;
     this.requestModelAddInfo.doctypeID = -1;
     this.openAddModal.nativeElement.click();
-    (<HTMLInputElement> document.getElementById('mydropdown')).value = '-1';
-
-
+    (document.getElementById('mydropdown') as HTMLInputElement).value = '-1';
   }
 
   addCapture() {
@@ -385,6 +379,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
           console.log(this.doctypeResponse);
       },
       (msg) => {
+        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot Reach Server');
       }
     );

@@ -215,7 +215,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
             }
           },
           (msg) => {
-            alert('Error');
+            this.notify.errorsmsg('FAILURE', 'Could not add Location');
           }
         );
       } else if (this.locationType === 'region') {
@@ -232,11 +232,11 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
               this.addModalClose.nativeElement.click();
               this.loadData();
             } else {
-              alert('Error Adding');
+              this.notify.errorsmsg('FAILURE', 'Could not add Location');
             }
           },
           (msg) => {
-            alert('Error');
+            this.notify.errorsmsg('FAILURE', 'Could not add Location');
           }
         );
       } else {
@@ -253,11 +253,11 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
               this.addModalClose.nativeElement.click();
               this.loadData();
             } else {
-              alert('Error Adding');
+              this.notify.errorsmsg('FAILURE', 'Could not add Location');
             }
           },
           (msg) => {
-            alert('Error');
+            this.notify.errorsmsg('FAILURE', 'Could not add Location');
           }
         );
       }
@@ -335,6 +335,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
   }
 
   editLocation() {
+    if (this.locationName !== '' && this.locationName !== null && this.locationName) {
     if (this.locationType === 'country') {
       const requestModel: UpdateCountryRequest = {
         userID: this.currentUser.userID,
@@ -399,6 +400,9 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
         }
       );
      }
+    } else {
+      this.notify.toastrwarning('Warning', 'Field cannot be blank');
+    }
   }
 
   ngOnDestroy(): void {

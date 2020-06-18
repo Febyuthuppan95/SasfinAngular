@@ -106,9 +106,9 @@ SADForm = new FormGroup({
   sadcontrol4a: new FormControl(null),
   sadcontrol5: new FormControl(null, [Validators.required]),
   sadcontrol5a: new FormControl(null),
-  sadcontrol6: new FormControl(null, [Validators.required]),
+  sadcontrol6: new FormControl(null),
   sadcontrol6a: new FormControl(null),
-  sadcontrol6b: new FormControl(null, [Validators.required]),
+  sadcontrol6b: new FormControl(null),
   sadcontrol6c: new FormControl(null),
   sadcontrol7: new FormControl(null, [Validators.required]),
   sadcontrol7a: new FormControl(null),
@@ -490,6 +490,8 @@ dialogOpen = false;
     })
 
   submit(escalation?: boolean) {
+    console.log(this.SADForm.valid);
+    this.findInvalidControls(this.SADForm);
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
       this.vocStatus = true;
@@ -591,6 +593,9 @@ dialogOpen = false;
         }
       );
     } else {
+      console.log(this.SADForm.valid);
+      this.findInvalidControls(this.SADForm);
+
       if (this.LinesValid && !this.SADForm.valid) {
         this.snackbar.open(`Please fill in the all header data`, '', {
           duration: 3000,
@@ -603,6 +608,18 @@ dialogOpen = false;
     this.vocStatus = false;
 
   }
+
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+
+    console.log(invalid);
+}
 
   updateLine(obj: SAD500Line) {
     const requestModel = {
@@ -804,7 +821,9 @@ dialogOpen = false;
     });
   }
 
-  saveLines(obj?: SAD500LineCreateRequest,escalation?:boolean) {
+  saveLines(obj?: SAD500LineCreateRequest, escalation?: boolean) {
+    console.log(this.SADForm.valid);
+    this.findInvalidControls(this.SADForm);
     console.log(escalation);
 
     if (this.LinesValid && this.SADForm.valid || escalation) {

@@ -37,6 +37,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
+    // tslint:disable-next-line:no-shadowed-variable
     private ApiService: ApiService
   ) {
     this.rowStart = 1;

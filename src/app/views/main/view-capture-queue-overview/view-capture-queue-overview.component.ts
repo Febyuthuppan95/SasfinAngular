@@ -108,6 +108,7 @@ export class ViewCaptureQueueOverviewComponent implements OnInit {
     this.transactionService.captureQueueUpdate(model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          this.popOff();
           this.loadDataset();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
         } else {

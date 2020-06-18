@@ -132,6 +132,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   companyID: number;
 
   myControl = new FormControl();
+  typeControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
 
   ngOnInit() {
@@ -153,6 +154,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     });
 
     this.loadCompanyInfoList();
+    this.loadCitiesList();
   }
 
   backToCompanies() {
@@ -393,11 +395,12 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   }
 
   Add() {
-    this.Address1 = '';
-    this.Address2 = '';
-    this.POBox = '';
-    this.Type = 0;
-    this.cityID = 0;
+    this.Address1 = undefined;
+    this.Address2 = undefined;
+    this.POBox = undefined;
+    this.cityID = undefined;
+    this.myControl.reset();
+    this.typeControl.reset(-1);
     this.disableAddressSelect = false;
     this.selectedAddressIndex = 0;
     this.CitySearch = '';
@@ -407,22 +410,29 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   addCompanyAddress() {
     let errors = 0;
 
-    if (this.Address1 === '' || this.Address1 === null || this.Address1 === undefined) {
-      errors++;
-    }
-    if (this.Address2 === '' || this.Address2 === null || this.Address2 === undefined) {
-      errors++;
-    }
-    if (this.POBox === '' || this.POBox === null || this.POBox === undefined) {
-      errors++;
-    }
-    if (this.Type === 0 || this.Type === null || this.Type === undefined) {
-      errors++;
-    }
-    if (this.cityID === 0 || this.cityID === null || this.cityID === undefined) {
+    if (!this.Address1) {
       errors++;
     }
 
+    if (this.Address2 === undefined) {
+      errors++;
+    }
+
+    if (this.POBox === undefined) {
+      errors++;
+    }
+
+    if (this.Type === undefined) {
+      errors++;
+    }
+
+    if (this.cityID === undefined) {
+      errors++;
+    }
+
+    if (this.CitySearch === '' || this.CitySearch === null || !this.CitySearch) {
+      errors++;
+    }
 
     if (errors === 0) {
       const requestModel: AddCompanyAddress = {

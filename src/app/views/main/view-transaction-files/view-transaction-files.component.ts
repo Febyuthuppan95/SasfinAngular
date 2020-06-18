@@ -19,8 +19,8 @@ import { SelectedCompany, CompanyService } from 'src/app/services/Company.Servic
 import { MatDialog } from '@angular/material';
 import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
 import { ApiService } from 'src/app/services/api.service';
-import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -53,9 +53,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.totalShowing = 0;
     this.rowCount = 0;
   }
-
-  @ViewChild(ContextMenuComponent, {static: true } )
-  private contextmenu: ContextMenuComponent;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -133,8 +130,10 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   transactionTypes = [];
   attachmentName: string;
-  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number }[] = [];
-  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number }[] = [];
+  // tslint:disable-next-line: max-line-length
+  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number, ediStatusID?: number }[] = [];
+  // tslint:disable-next-line: max-line-length
+  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number, ediStatusID?: number }[] = [];
   selectedTransactionType: number;
   selectedSAD500: number;
   selectedSAD500Line: number;
@@ -144,6 +143,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   uploading = false;
   isVOC = false;
   companyName: string;
+
+  selectEDIControl = new FormControl(0);
+  selectedEDIIndex = 0;
+  ediDisable: boolean;
+  ediStatuses: any[] = [];
 
   private unsubscribe$ = new Subject<void>();
 
@@ -180,6 +184,20 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
     this.loadAttachments();
     this.initTypes();
+    this.loadEDIStatuses();
+  }
+
+  onEDIChange() {
+    this.ediDisable = true;
+  }
+
+  loadEDIStatuses() {
+    this.captureService.ediStatusList({}).then(
+      (res: any) => {
+        this.ediStatuses = res.data;
+        console.log(this.ediStatuses[0]);
+      }
+    );
   }
 
   initTypes() {
@@ -432,7 +450,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.transactionID,
       this.currentUser.userID,
       this.companyName,
-      attach.sad500ID
+      attach.sad500ID,
+      attach.ediStatusID
     ).then(
       (res) => {
           attach.uploading = false;
@@ -489,6 +508,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     } else {
       this.selectedTransactionType = id;
     }
+
+    console.log(this.selectedTransactionType);
     this.disableAttachmentType = true;
   }
 
@@ -506,8 +527,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   addToQueue() {
     let errors = 0;
-    console.log(this.transactionTypes);
-    console.log(this.selectedTransactionType);
     if (this.attachmentName === '' || this.attachmentName === null || this.attachmentName === undefined) {
       errors++;
       this.notify.toastrwarning('Warning', 'Enter attachment name');
@@ -518,6 +537,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
     if (errors === 0) {
       this.attachmentQueue[this.currentAttachment].name = this.attachmentName;
+      this.attachmentQueue[this.currentAttachment].ediStatusID = this.selectEDIControl.value;
       this.attachmentQueue[this.currentAttachment].type = this.transactionTypes[this.selectedTransactionType].name;
       this.attachmentQueue[this.currentAttachment].uploading = false;
       this.attachmentQueue[this.currentAttachment].status = 'Pending Upload';
@@ -536,6 +556,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.selectAttachmentType.reset(-1);
       this.selectSAD500Control.reset(-1);
       this.selectSAD500LinesControl.reset(-1);
+      this.selectEDIControl.reset(0);
     }
   }
 

@@ -16,6 +16,8 @@ import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse'
 import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import {Outcome} from '../../../models/HttpResponses/Outcome';
+import {DocumentService} from '../../../services/Document.Service';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -32,6 +34,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private router: Router,
+    private IDocumentService: DocumentService,
   ) {
     this.rowStart = 1;
     this.itemsrowStart = 1;
@@ -54,6 +57,15 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.totalShowing = 0;
     this.itemstotalShowing = 0;
   }
+
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
+
+  @ViewChild('itemFile', { static: false })
+  bomFile: ElementRef;
 
   @ViewChild('openaddGroupModal', {static: true})
   openaddGroupModal: ElementRef;
@@ -152,6 +164,9 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   companyName: string;
   companyID: number;
 
+  ItemFile: File;
+  filePreview: string;
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -168,6 +183,11 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.loadCompanyItemsList(true);
 
     this.loadItems(false);
+  }
+
+  onFileChange(files: FileList) {
+    this.ItemFile = files.item(0);
+    this.filePreview = this.ItemFile.name;
   }
 
   backToCompanies() {
@@ -605,6 +625,47 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  addButton(): void {
+    this.openAddModal.nativeElement.click();
+  }
+
+
+  saveItemUpload() {
+    // Save
+    // const model = {
+    //   requestParams: {
+    //     userID: this.currentUser.userID,
+    //     // bomID: this.bomid // this needs to get the actual bomID
+    //   },
+    //   requestProcedure: `BomLineAdd`
+    // };
+    // this.IDocumentService.upload(this.ItemFile, model).then(
+    //   (res: Outcome) => {
+    //     console.log('Response: ' + res);
+    //     if (res.outcome === 'SUCCESS') {
+    //       this.notify.successmsg(
+    //         res.outcome,
+    //         res.outcomeMessage);
+    //       this.loadCompanyItemsList(true);
+    //     } else {
+    //       this.notify.errorsmsg(
+    //         res.outcome,
+    //         res.outcomeMessage
+    //       );
+    //     }
+    //   },
+    //   (msg) => {
+    //     // nothing yet
+    //     console.log('Error: ' + msg);
+    //     this.showLoader = false;
+    //     this.notify.errorsmsg(
+    //       'Server Error',
+    //       'Something went wrong while trying to access the server.'
+    //     );
+    //   }
+    // );
   }
 
 }
