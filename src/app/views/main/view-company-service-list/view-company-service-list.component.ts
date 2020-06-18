@@ -336,7 +336,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   }
 
   loadServices(displayGrowl: boolean) {
-
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -347,6 +346,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       orderByDirection: this.orderDirection
 
     };
+
     this.ServiceService
     .getServiceList(model)
     .then(
@@ -361,8 +361,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
               }
             });
         });
-      },
-      msg => { }
+      }
     );
   }
 
@@ -487,16 +486,16 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.SerID === -1) {
       error++;
     }
-    if (this.StartDate === null || this.StartDate.toString() === '') {
-      error++;
-    }
-    if (this.EndDate === null || this.EndDate.toString() === '') {
-      error++;
-    }
-    if (new Date(this.StartDate) > new Date(this.EndDate) && this.EndDate != null ) {
-      error++;
-      this.notify.toastrwarning('Error', 'End date cannot be before start date');
-    }
+    // if (this.StartDate === null || this.StartDate.toString() === '') {
+    //   error++;
+    // }
+    // if (this.EndDate === null || this.EndDate.toString() === '') {
+    //   error++;
+    // }
+    // if (new Date(this.StartDate) > new Date(this.EndDate) && this.EndDate != null ) {
+    //   error++;
+    //   this.notify.toastrwarning('Error', 'End date cannot be before start date');
+    // }
 
     if (error === 0) {
       const requestModel: AddCompanyService = {
@@ -555,16 +554,16 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.SerID === -1) {
       error++;
     }
-    if (this.StartDate === null || this.StartDate.toString() === '') {
-      error++;
-    }
-    if (this.EndDate === null || this.EndDate.toString() === '') {
-      error++;
-    }
-    if (new Date(this.StartDate) > new Date(this.EndDate)) {
-      error++;
-      this.notify.toastrwarning('Error', 'End date cannot be before start date')
-    }
+    // if (this.StartDate === null || this.StartDate.toString() === '') {
+    //   error++;
+    // }
+    // if (this.EndDate === null || this.EndDate.toString() === '') {
+    //   error++;
+    // }
+    // if (new Date(this.StartDate) > new Date(this.EndDate)) {
+    //   error++;
+    //   this.notify.toastrwarning('Error', 'End date cannot be before start date')
+    // }
 
 
     if (error === 0) {

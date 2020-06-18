@@ -155,7 +155,7 @@
                     <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id" [selected]="ResCapturer.id === this.CapID">{{ResCapturer.Name}}</option>
                   </select>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">Start Date:</label>
               <input type="date" class="form-control"
               [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
@@ -165,7 +165,7 @@
                   <label class="control-label">End Date:</label>
                   <input type="date" class="form-control"
                   [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
-            </div>
+            </div> -->
         </div>
         <div class="modal-footer bg-dark">
             <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
@@ -210,7 +210,7 @@
                   <option *ngFor="let ResCapturer of this.ResCapturers" [value]="ResCapturer.id">{{ResCapturer.Name}}</option>
                   </select>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                   <label class="control-label">Start Date:</label>
                   <input type="date" class="form-control"
                   [(ngModel)]="this.StartDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
@@ -220,7 +220,7 @@
                   <label class="control-label">End Date:</label>
                   <input type="date" class="form-control"
                   [(ngModel)]="this.EndDate" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required (change)="checkdate()"/>
-            </div>
+            </div> -->
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
