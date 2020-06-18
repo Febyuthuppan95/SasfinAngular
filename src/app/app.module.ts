@@ -231,6 +231,7 @@ import { ClickStopPropagation } from './directives/event-propagation.directive';
 import { StorageService } from './services/storage.service';
 import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
+import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
 
 @NgModule({
   declarations: [
@@ -388,7 +389,8 @@ import { RedirectComponent } from './views/main/redirect/redirect.component';
     QuartersSupplyContextMenuComponent,
     NestedTableComponent,
     ClaimLayoutComponent,
-    RedirectComponent
+    RedirectComponent,
+    ViewTransactionCheckingComponent
   ],
   imports: [
     BrowserModule,
