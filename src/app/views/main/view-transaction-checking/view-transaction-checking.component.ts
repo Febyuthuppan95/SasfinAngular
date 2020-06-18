@@ -479,6 +479,9 @@ private unsubscribe = new Subject<void>();
       }
     }
   }
+  pageChange(page: number) {
+
+  }
 
   /**Expansion Events */
   focusWorksheet(cust: CustomWorksheetLine) {
