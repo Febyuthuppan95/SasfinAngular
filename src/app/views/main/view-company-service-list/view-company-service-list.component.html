@@ -57,7 +57,7 @@
                     </span>
                   </button>
                 </th>
-                <th scope="col">
+                <!-- <th scope="col">
                     <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
                       <p class="headerText">Start Date</p>
                       <span class="headerSpan">
@@ -74,7 +74,7 @@
                         <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'AddressType_DESC')?'order-active':'order-not-active'"></i>
                       </span>
                     </button>
-                  </th>
+                  </th> -->
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
@@ -83,8 +83,8 @@
             <td>{{service.serviceName}}</td>
             <td>{{service.consultantName}}</td>
             <td>{{service.capturerName}}</td>
-            <td>{{service.startDate | date}}</td>
-            <td>{{service.endDate | date}}</td>
+            <!-- <td>{{service.startDate | date}}</td>
+            <td>{{service.endDate | date}}</td> -->
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
