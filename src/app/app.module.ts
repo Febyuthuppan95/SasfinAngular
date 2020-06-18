@@ -232,6 +232,7 @@ import { StorageService } from './services/storage.service';
 import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
+import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
 
 @NgModule({
   declarations: [
@@ -414,7 +415,8 @@ import { ViewTransactionCheckingComponent } from './views/main/view-transaction-
     AngularDraggableModule,
     KeyboardShortcutsModule,
     FormsModule,
-    NgxDocViewerModule
+    NgxDocViewerModule,
+    EcoFabSpeedDialModule
   ],
   providers: [
     CookieService,

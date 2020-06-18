@@ -97,9 +97,9 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   };
 
   tableHeadings: TableHeading[] = [
-    { title: '', propertyName: 'rowNum',  order: { enable: false, } },
-    { title: 'Name', propertyName: 'name', order: { enable: true, }, },
-    { title: 'Description', propertyName: 'description', order: { enable: true, }, },
+    { title: '', propertyName: 'rowNum',  order: { enable: false } },
+    { title: 'Name', propertyName: 'name', order: { enable: true, tag: 'Name' }, },
+    { title: 'Description', propertyName: 'description', order: { enable: true, tag: 'Description' }, },
   ];
 
   ngOnInit() {
@@ -200,6 +200,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   }
 
   orderChange($event: Order) {
+    console.log($event);
     this.orderBy = $event.orderBy;
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
@@ -207,8 +208,9 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
     this.loadUnitsOfMeasures();
   }
 
-  recordsPerPageChange($event) {
-    console.log($event);
+  recordsPerPageChange($event: number) {
+    this.rowCountPerPage = $event;
+    this.loadUnitsOfMeasures();
   }
 
   popOff() {

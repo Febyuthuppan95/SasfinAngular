@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@ecodev/fab-speed-dial": "^5.0.3",
     "@ng-bootstrap/ng-bootstrap": "^4.2.2",
     "angular-user-idle": "^2.2.1",
     "angular2-draggable": "^2.3.2",
