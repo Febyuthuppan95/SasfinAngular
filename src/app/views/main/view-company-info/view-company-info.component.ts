@@ -13,6 +13,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { AddCompanyInfo, UpdateCompanyInfo } from 'src/app/models/HttpRequests/Company';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-company-info',
@@ -72,7 +73,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   showingPages: Pagination[];
   dataset: CompanyInfoResponse;
   dataList: CompanyInfo[] = [];
-  rowCount: number = 0;
+  rowCount = 0;
   nextPage: number;
   nextPageState: boolean;
   prevPage: number;
@@ -83,7 +84,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   disableInfoSelect = false;
   focusCompTypeID = 0;
 
-  rowStart: number = 0;
+  rowStart = 0;
   rowEnd: number;
   filter: string;
   orderBy: string;
@@ -92,7 +93,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   totalShowing: number;
   orderIndicator = 'Name_ASC';
   rowCountPerPage: number;
-  showingRecords: number = 0;
+  showingRecords = 0;
   activePage: number;
 
   focusCompID: number;
@@ -112,6 +113,8 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   companyName: string;
   companyID: number;
   TypesList: any[] = [];
+  typeControl = new FormControl();
+
   private unsubscribe$ = new Subject<void>();
 
 
@@ -220,7 +223,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
 
           if (res.rowCount === 0) {
             this.noData = true;
-          this.showLoader = false;
+            this.showLoader = false;
           } else {
             this.noData = false;
             this.dataset = res;
@@ -333,33 +336,35 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   addCompanyInfo() {
-    const requestModel: AddCompanyInfo = {
-      userID: this.currentUser.userID,
-      companyID: this.companyID,
-      companyInfo: this.Info,
-      infoType: this.Type
-    };
+    if (this.typeControl.valid && this.Info !== '' && !this.Info) {
 
-    this.companyService.AddInfo(requestModel).then(
-      (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome !== 'SUCCESS') {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          } else {
-            this.notify.successmsg('SUCCESS', 'Company info successfully added');
-            this.loadCompanyInfoList();
+      const requestModel: AddCompanyInfo = {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        companyInfo: this.Info,
+        infoType: this.Type
+      };
+
+      this.companyService.AddInfo(requestModel).then(
+        (res: {outcome: Outcome}) => {
+            if (res.outcome.outcome !== 'SUCCESS') {
+            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            } else {
+              this.notify.successmsg('SUCCESS', 'Company info successfully added');
+              this.loadCompanyInfoList();
+              this.closeaddModal.nativeElement.click();
+            }
+          },
+          (msg) => {
+            this.notify.errorsmsg(
+              'Server Error',
+              'Something went wrong while trying to access the server.'
+            );
             this.closeaddModal.nativeElement.click();
-          }
-
-
-        },
-        msg => {
-          this.notify.errorsmsg(
-            'Server Error',
-            'Something went wrong while trying to access the server.'
-          );
-          this.closeaddModal.nativeElement.click();
-        }
-      );
+          });
+    } else {
+      this.notify.errorsmsg('Warning', 'All fields are required');
+    }
   }
 
   editCompanyInfo($event) {
