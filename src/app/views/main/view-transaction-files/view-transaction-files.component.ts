@@ -501,6 +501,14 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   onTypeSelect(id: number) {
     console.log(id);
+
+    if (this.transactionTypes[id].name === 'VOC') {
+      this.isVOC = true;
+      this.loadSAD500s();
+    } else {
+      this.isVOC = false;
+    }
+
     if (id === 0) {
       this.selectedTransactionType = 1;
     } else if (id === 1) {
@@ -509,7 +517,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.selectedTransactionType = id;
     }
 
-    console.log(this.selectedTransactionType);
     this.disableAttachmentType = true;
   }
 
@@ -517,11 +524,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.selectedSAD500 = id;
     this.disableSAD500 = true;
     this.selectedSAD500Line = id;
+    this.loadSAD500Lines();
   }
 
   onSAD500LineSelect(id: number) {
     this.selectedSAD500Line = id;
-    alert(id);
     this.disableSAD500Lines = true;
   }
 
