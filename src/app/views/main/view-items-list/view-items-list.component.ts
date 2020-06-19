@@ -26,6 +26,7 @@ import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffL
 import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
 import { ItemType } from 'src/app/models/HttpResponses/ItemType';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-items-list',
@@ -191,14 +192,14 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   showLoader = true;
   displayFilter = false;
   isAdmin: false;
-  YESNO: string[] = ['Yes', 'No'];
+  YESNO: any[] = [{title: 'True', value: true}, {title: 'False', value: false}];
   itemservicelist: ItemService[] = [];
   servicelist: Service[] = [];
   displayservices: Service[] = [];
   returnedservices: Array<Service>;
   tarifflist: Tariff[] = [];
   itemTypes: ItemType[];
-
+  vulnerableControl = new FormControl();
 
   ngOnInit() {
 
@@ -456,6 +457,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.itemtypeID = this.Item.typeID;
     console.log(this.itemtype);
     console.log(this.itemtypeID);
+    this.vulnerableControl.setValue(this.Item.vulnerable === 'True' ? true : false);
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
   }
