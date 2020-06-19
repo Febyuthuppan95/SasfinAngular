@@ -1,0 +1,124 @@
+<div class="capture-header">
+  <div class="float-right" style="margin-top: -24px !important">
+    <div class="indicator-wrapper" (click)="displayLines = false;">
+      <button #sad500Tooltip="matTooltip" matTooltip="SAD500" matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !displayLines}"></button>
+    </div>
+    <div class="indicator-wrapper" (click)="displayLines = true;">
+      <button #sadLinesTooltip="matTooltip" matTooltip="SAD500 Lines" matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': displayLines}"></button>
+    </div>
+  </div>
+  <h1 class="capture-form-title text-dark">
+    <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
+    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{attachmentLabel}}</span></span>
+  </h1>
+</div>
+<br>
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <div class="row">
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Serial No
+        </mat-label>
+        <input matInput type="text" formControlName="serialNo" />
+        <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          LRN
+        </mat-label>
+        <input matInput type="text" formControlName="lrn" />
+        <mat-error *ngIf="form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Rebate Code
+        </mat-label>
+        <input matInput type="text" formControlName="rebateCode" />
+        <mat-error *ngIf="form.controls.rebateCode.errors?.incorrect">{{getError('rebateCode')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Total Customs Value
+        </mat-label>
+        <input matInput type="number" formControlName="totalCustomsValue" />
+        <mat-error *ngIf="form.controls.totalCustomsValue.errors?.incorrect">{{getError('totalCustomsValue')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-cpc [(control)]="form.controls.cpc"></ls-autocomplete-cpc>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Waybill No
+        </mat-label>
+        <input matInput type="text" formControlName="waybillNo" />
+        <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Supplier Ref
+        </mat-label>
+        <input matInput type="text" formControlName="supplierRef" />
+        <mat-error *ngIf="form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          MRN
+        </mat-label>
+        <input matInput type="text" formControlName="mrn" />
+        <mat-error *ngIf="form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          TIN Number
+        </mat-label>
+        <input matInput type="text" formControlName="importersCode" />
+        <mat-error *ngIf="form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          File Ref
+        </mat-label>
+        <input matInput type="text" formControlName="fileRef" />
+        <mat-error *ngIf="form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Total Duty
+        </mat-label>
+        <input matInput type="number" formControlName="totalDuty" />
+        <mat-error *ngIf="form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+  </div>
+</form>
+<app-form-sad500-line-updated [(data)]="activeLine"></app-form-sad500-line-updated>

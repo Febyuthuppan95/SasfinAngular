@@ -13,6 +13,7 @@ import { FormWaybillComponent } from 'src/app/components/forms/capture/form-wayb
 import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
 import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
 import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
+import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/form-sad500-updated/form-sad500-updated.component';
 
 
 @Component({
@@ -58,7 +59,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     console.log(this.currentDoctype);
     switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD': {
-        this.componentService.renderComponent(FormSAD500Component);
+        // this.componentService.renderComponent(FormSAD500Component);
+        this.componentService.renderComponent(FormSad500UpdatedComponent);
         break;
       }
       case 'CRN' : {
@@ -86,7 +88,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'VOC': {
-        this.componentService.renderComponent(FormSAD500Component);
+        // this.componentService.renderComponent(FormSAD500Component);
+        this.componentService.renderComponent(FormSad500UpdatedComponent);
         break;
       }
       case 'WAY': {

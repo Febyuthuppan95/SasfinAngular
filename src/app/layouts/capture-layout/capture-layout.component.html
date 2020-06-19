@@ -1,12 +1,3 @@
-<!-- loader.component.html -->
-<!-- <div class="progress-loader" [hidden]="!loading">
-
-  <mat-progress-spinner class="loader"  [mode]="'indeterminate'">
-  </mat-progress-spinner>
-
-</div> -->
-
-<!--main code-->
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <div class="dock dock-left d-flex" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
@@ -57,50 +48,7 @@
 
     </div>
 </div>
-
-
-
-
-<!-- <div class="dock dock-bottom" [ngClass]="{'hide-dock': !this.showDocks}">
-    <div class="text-center">
-        <button style="z-index: 99999999999999;" mat-mini-fab matTooltip="Communications" matTooltipPosition="above"><span class="mdi mdi-comment"></span></button>
-    </div>
-</div> -->
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" style="height: 5vh;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" style="padding-top: 2px;cursor: pointer;" *ngFor="let attach of this.attachmentList"
-          [matTooltip]="attach.tooltip"
-          (click)="previewCapture(attach.file, attach.attachmentID)">
-          <span class="attachment-status d-inline">
-            <i class="mdi mdi-checkbox-blank"
-              [ngClass]="{statusYellow: attach.attachmentID === this.attachmentID, statusNone: attach.statusID === 1, statusOrange: attach.statusID === 2,
-              statusRed: attach.statusID === 3, statusGreen: attach.statusID === 4}">
-            </i>&nbsp;{{attach.name}}
-          </span>
-        </li>
-      </ul>
-      <ul class="navbar-nav md-auto">
-        <li class="nav-item">
-          <button (click)="companyInfo()" class="nav-item text-light" mat-button matTooltip="Shortcut (ALT + I)" matTooltipPosition="below">Company Info</button>
-        </li>
-        <li class="nav-item">
-          <button (click)="this.showHelp = !this.showHelp" class="nav-item text-light" mat-button matTooltip="Show Shortcuts (ALT + H)" matTooltipPosition="below">Help</button>
-        </li>
-        <li>
-            <button type="button" mat-buttom class="close text-light" data-dismiss="modal" aria-label="Close" (click)="goBack()"
-            matTooltip="Exit (CTRL + ALT + O)" matTooltipPosition="below" style="margin-top: 5px;margin-left: 12px;">
-                <span aria-hidden="true">&times;</span>
-              </button>
-        </li>
-      </ul>
-    </div>
-  </nav> -->
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
-
 <div class="col-6 bg-light" style="overflow-y: auto;">
   <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
   <app-document-viewer [focus]="this.focusPDF"></app-document-viewer>
@@ -118,7 +66,6 @@
     </div>
   </div>
 </div>
-
 </div>
 
 <div class="shortcutView" *ngIf="this.showHelp">
