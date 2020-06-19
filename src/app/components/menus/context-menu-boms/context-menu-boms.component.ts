@@ -24,4 +24,9 @@ export class ContextMenuBomsComponent implements OnInit {
     this.companyService.setBOM({ bomid: this.BOMID, status: this.Status });
     this.router.navigate(['companies', 'boms', 'bomlines']);
   }
+
+  BomLineErrors() {
+    this.companyService.setBOM({bomid: this.BOMID, status: this.Status});
+    this.router.navigate(['companies', 'boms', 'lineErrors']);
+  }
 }

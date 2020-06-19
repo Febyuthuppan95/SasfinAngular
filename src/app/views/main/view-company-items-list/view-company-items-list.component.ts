@@ -634,21 +634,25 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   saveItemUpload() {
     // Save
-    // const model = {
-    //   requestParams: {
-    //     userID: this.currentUser.userID,
-    //     // bomID: this.bomid // this needs to get the actual bomID
-    //   },
-    //   requestProcedure: `BomLineAdd`
-    // };
-    // this.IDocumentService.upload(this.ItemFile, model).then(
+    console.log('save');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyID: this.companyID
+      },
+      requestProcedure: `BOMItemAdd`
+    };
+    console.log(this.ItemFile, model, 'boms/items/upload');
+    // uncomment once testing is done
+    // this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
     //   (res: Outcome) => {
+    //     // console.log('BOMUploadRes');
     //     console.log('Response: ' + res);
     //     if (res.outcome === 'SUCCESS') {
     //       this.notify.successmsg(
     //         res.outcome,
     //         res.outcomeMessage);
-    //       this.loadCompanyItemsList(true);
+    //       this.loadCompanyItemsList(false);
     //     } else {
     //       this.notify.errorsmsg(
     //         res.outcome,

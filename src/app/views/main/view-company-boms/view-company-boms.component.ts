@@ -350,7 +350,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
     };
 
     this.APIService.post(`${environment.ApiEndpoint}/boms/add`, model).then((res: Outcome) => {
-      // console.log(res);
+      console.log(res);
 
       if (res.outcome === 'SUCCESS') {
         this.closeAddModal.nativeElement.click();

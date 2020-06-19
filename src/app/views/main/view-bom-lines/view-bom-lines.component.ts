@@ -210,7 +210,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       if (obj !== undefined) {
         this.bomid = obj.bomid;
         this.bomstatus = obj.status;
-
         this.loadBOMLines(true);
       }
     });
@@ -234,7 +233,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       requestProcedure: `BOMLineList`
     };
     this.ApiService.post(`${environment.ApiEndpoint}/companies/BomLines`, model).then((res: any) => {
-
       if (res.outcome.outcome === 'SUCCESS') {
         if (displayGrowl) {
           this.notify.successmsg(
@@ -247,12 +245,18 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-        this.BOMLines = res.data;
-        this.noData = false;
-        this.showLoader = false;
-        this.showingRecords = res.data.length;
-        this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
       }
+      this.BOMLines = res.data;
+      if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.data.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
+        }
     },
       msg => {
       // console.log(msg);
@@ -355,7 +359,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `BomLineAdd`
     };
-    this.IDocumentService.upload(this.BomFile, model).then(
+    this.IDocumentService.upload(this.BomFile, model, 'boms/upload').then(
       (res: Outcome) => {
         // console.log('BOMUploadRes');
         console.log('Response: ' + res);

@@ -112,7 +112,7 @@
             <mat-label>Status:</mat-label>
             <mat-select [(ngModel)]="this.focusBOMStatus" [ngModelOptions]="{standalone: true}">
 <!--              <mat-option disabled selected>Please select a status</mat-option>-->
-              <mat-option (change)="setBomStatusFocus(status.BomStatusID)" *ngFor="let status of this.BOMStatuses; let x = index;"  [value]="x">
+              <mat-option (change)="setBomStatusFocus(status.BomStatusID)" *ngFor="let status of this.BOMStatuses; let x = index;"  [value]="(+x + +1)">
                 {{status.Name}}</mat-option>
             </mat-select>
           </mat-form-field>
