@@ -227,6 +227,36 @@ const routes: Routes = [
             canActivate: [RightGuard],
           },
           {
+            path: 'companies/boms/bomline-errors',
+            component: ViewCompanyBomsLinesErrorListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/items',
+            component: ViewCompanyBomsItemsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/item-errors',
+            component: ViewCompanyBomsItemsErrorsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/itemgroups',
+            component: ViewCompanyBomsItemgroupsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/itemgroup-errors',
+            component: ViewCompanyBomsItemgroupsErrorsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
             path: 'companies/serviceclaims',
             component: ViewCompanyServiceClaimsComponent,
             data: { right: 'Services' },
