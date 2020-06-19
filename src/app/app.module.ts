@@ -232,6 +232,7 @@ import { StorageService } from './services/storage.service';
 import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
+import { DialogEscalationReasonComponent } from './views/main/view-transaction-files/dialog-escalation-reason/dialog-escalation-reason.component';
 
 @NgModule({
   declarations: [
@@ -390,7 +391,8 @@ import { ViewTransactionCheckingComponent } from './views/main/view-transaction-
     NestedTableComponent,
     ClaimLayoutComponent,
     RedirectComponent,
-    ViewTransactionCheckingComponent
+    ViewTransactionCheckingComponent,
+    DialogEscalationReasonComponent
   ],
   imports: [
     BrowserModule,
@@ -485,7 +487,8 @@ import { ViewTransactionCheckingComponent } from './views/main/view-transaction-
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
     DutyAssignDialogComponent,
-    UploadProdatComponent
+    UploadProdatComponent,
+    DialogEscalationReasonComponent
   ]
 })
 export class AppModule { }

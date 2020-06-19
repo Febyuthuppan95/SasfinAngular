@@ -80,7 +80,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
- 
+
 
 
   private unsubscribe$ = new Subject<void>();
@@ -121,7 +121,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   companyName: string;
 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
-  
+
   openMore = true;
   openPreview = true;
   dialogOpen = false;
@@ -165,7 +165,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.reason = obj.reason;
       this.escalated = obj.issueID > 0 ? true : false;
       this.initTypes();
-      
+
       this.loadAttachments();
 
     });
@@ -187,7 +187,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-    
+
 
     this.shortcuts.push(
         {
@@ -258,21 +258,20 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
         console.log(res);
-          res.data.forEach(x => {
-            this.transactionTypes.push({
-              name: x.Name,
-              description:x.Description,
-              value: x.FileTypeID
-            })
-          });
-          console.log(this.transactionTypes);
-          this.loadCaptureInfo();
-       
+        res.data.forEach(x => {
+          this.transactionTypes.push({
+            name: x.Name,
+            description:x.Description,
+            value: x.FileTypeID
+          })
+        });
+        console.log(this.transactionTypes);
+        this.loadCaptureInfo();
       }
     );
   }
   loadCaptureInfo() {
-    let docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
+    const docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
       companyID: this.company.id,
@@ -407,7 +406,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   previewCapture(src: string, id: number) {
-    
+
     if (id !== this.attachmentID && this.openPreview) {
       this.inspectingPreview = false;
       this.openPreview = false;
@@ -452,15 +451,15 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   submitCapture(isEscalation?: boolean) {
-    
+
     if (!this.dialogOpen) {
-      
+
       this.dialogOpen = true;
       const dialogConf = new MatDialogConfig();
       dialogConf.autoFocus = true;
       this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
         this.dialogOpen = false;
-      
+
         if (status) {
           this.eventService.triggerCaptureEvent(isEscalation);
          }

@@ -12,6 +12,8 @@ import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
 import { Router } from '@angular/router';
 import { Subscription, Subject, Observable, interval, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
 
 @Component({
   selector: 'app-view-sad500',
@@ -21,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ViewSAD500Component implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
               private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
-              private router: Router) { }
+              private router: Router, private dialog: MatDialog) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -151,13 +153,15 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
   }
 
   selectedRecord($event: SelectedRecord) {
-    this.contextMenuX = $event.event.clientX + 3;
-    this.contextMenuY = $event.event.clientY + 5;
-    this.contextMenuEnable = true;
+    console.log($event.record);
     this.currentRecord = $event.record;
-    alert('row click');
-  }
 
+    if ($event.record.statusID === 7) {
+      this.dialog.open(DialogEscalationReasonComponent, {
+        data: $event.record.escalationReason
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this.unsubscribeTransaction$.next();

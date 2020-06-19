@@ -75,6 +75,8 @@ export class SAD500Get {
   totalDutyOUserID: number;
   totalDutyODate: string;
   totalDutyOReason: string;
+
+  escalationReason: string;
 }
 
 export class SAD500ListResponse {
