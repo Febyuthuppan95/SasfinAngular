@@ -13,7 +13,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { AddCompanyInfo, UpdateCompanyInfo } from 'src/app/models/HttpRequests/Company';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-view-company-info',
@@ -113,7 +113,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   companyName: string;
   companyID: number;
   TypesList: any[] = [];
-  typeControl = new FormControl();
+  typeControl = new FormControl([Validators.required]);
 
   private unsubscribe$ = new Subject<void>();
 
@@ -125,8 +125,8 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
     });
     const temp = {
-      TypeID: 1,
-      TypeName: 'General'
+      TypeID: 8,
+      TypeName: 'Bank Name'
     };
     this.TypesList.push(temp);
 
@@ -138,6 +138,10 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
 
       this.loadCompanyInfoList();
     });
+  }
+
+  loadCompanyInfoTypes() {
+
   }
 
   backToCompanies() {
@@ -336,8 +340,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   addCompanyInfo() {
-    if (this.typeControl.valid && this.Info !== '' && !this.Info) {
-
+    if (this.typeControl.valid && this.Info !== '' && this.Info) {
       const requestModel: AddCompanyInfo = {
         userID: this.currentUser.userID,
         companyID: this.companyID,
@@ -363,7 +366,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
             this.closeaddModal.nativeElement.click();
           });
     } else {
-      this.notify.errorsmsg('Warning', 'All fields are required');
+      this.notify.toastrwarning('Warning', 'All fields are required');
     }
   }
 
@@ -377,13 +380,12 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   UpdateCompany() {
+    if (this.typeControl.valid && this.Info !== '' && this.Info) {
     const requestModel: UpdateCompanyInfo = {
       userID: this.currentUser.userID,
       specificCompanyInfoID: this.focusCompanyInfoID,
       companyInfo: this.Info,
       type: this.Type    };
-
-
 
     this.companyService.UpdateInfo(requestModel).then(
       (res: {outcome: Outcome}) => {
@@ -402,6 +404,9 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
           );
         }
       );
+    } else {
+      this.notify.toastrwarning('Warning', 'All fields are required');
+    }
   }
 
   onChange(id: number)   {

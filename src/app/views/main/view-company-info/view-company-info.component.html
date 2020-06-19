@@ -111,7 +111,7 @@
                   <label class="control-label">Company Information:</label>
                   <textarea type="text" placeholder="Company Information" class="form-control" [(ngModel)]="this.Info" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required></textarea>
                 </div>
-               <select class="form-control" (change)="onChange($event.target.value)" [selectedIndex]="selectedInfoIndex">
+               <select class="form-control" (change)="onChange($event.target.value)" [formControl]="typeControl" [selectedIndex]="selectedInfoIndex">
                   <option *ngFor="let type of this.TypesList" [value]="type.TypeID" [selected]="type.TypeID === this.Type">{{type.TypeName}}</option>
               </select>
           </div>
