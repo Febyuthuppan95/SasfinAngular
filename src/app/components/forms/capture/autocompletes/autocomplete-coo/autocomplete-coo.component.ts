@@ -22,6 +22,7 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy {
 
   public list: CountryItem[] = [];
   public query = new FormControl();
+  public valueKeeper = new FormControl();
 
   ngOnInit() {
     if (!this.control) {

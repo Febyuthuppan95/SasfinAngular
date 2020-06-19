@@ -1,3 +1,6 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<app-notification></app-notification>
+
 <div class="capture-header">
   <div class="float-right" style="margin-top: -24px !important">
     <div class="indicator-wrapper" (click)="displayLines = false;">
@@ -13,112 +16,141 @@
   </h1>
 </div>
 <br>
-<form [formGroup]="form" (ngSubmit)="submit(form)">
-  <div class="row">
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Serial No
-        </mat-label>
-        <input matInput type="text" formControlName="serialNo" />
-        <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
+
+<ng-container *ngIf="displayLines">
+  <mat-card>
+    <mat-card-content>
+      <div style="padding: 0 24px; height: 62px;" class="line-list">
+        <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
+        <p *ngIf="!lines" style="font-size: 16px;">No SAD500 Lines Added</p>
+        <p *ngIf="lines">
+          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
+          <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
+        &nbsp;
+        <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
+        <!-- &nbsp;<span>{{lineState}}</span> -->
+      </p>
+      <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
+          <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
+      </div> -->
     </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          LRN
-        </mat-label>
-        <input matInput type="text" formControlName="lrn" />
-        <mat-error *ngIf="form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="!displayLines">
+  <form [formGroup]="form" (ngSubmit)="submit(form)">
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Serial No
+          </mat-label>
+          <input matInput type="text" formControlName="serialNo" />
+          <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            LRN
+          </mat-label>
+          <input matInput type="text" formControlName="lrn" />
+          <mat-error *ngIf="form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12" *ngIf="isVOC">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Rebate Code
+          </mat-label>
+          <input matInput type="text" formControlName="rebateCode" />
+          <mat-error *ngIf="form.controls.rebateCode.errors?.incorrect">{{getError('rebateCode')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Total Customs Value
+          </mat-label>
+          <input matInput type="number" formControlName="totalCustomsValue" />
+          <mat-error *ngIf="form.controls.totalCustomsValue.errors?.incorrect">{{getError('totalCustomsValue')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <ls-autocomplete-cpc [(control)]="form.controls.cpc"></ls-autocomplete-cpc>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Waybill No
+          </mat-label>
+          <input matInput type="text" formControlName="waybillNo" />
+          <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Supplier Ref
+          </mat-label>
+          <input matInput type="text" formControlName="supplierRef" />
+          <mat-error *ngIf="form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            MRN
+          </mat-label>
+          <input matInput type="text" formControlName="mrn" />
+          <mat-error *ngIf="form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            TIN Number
+          </mat-label>
+          <input matInput type="text" formControlName="importersCode" />
+          <mat-error *ngIf="form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            File Ref
+          </mat-label>
+          <input matInput type="text" formControlName="fileRef" />
+          <mat-error *ngIf="form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-12">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Total Duty
+          </mat-label>
+          <input matInput type="number" formControlName="totalDuty" />
+          <mat-error *ngIf="form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
+        </mat-form-field>
+        <br /><br />
+      </div>
     </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Rebate Code
-        </mat-label>
-        <input matInput type="text" formControlName="rebateCode" />
-        <mat-error *ngIf="form.controls.rebateCode.errors?.incorrect">{{getError('rebateCode')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Total Customs Value
-        </mat-label>
-        <input matInput type="number" formControlName="totalCustomsValue" />
-        <mat-error *ngIf="form.controls.totalCustomsValue.errors?.incorrect">{{getError('totalCustomsValue')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <ls-autocomplete-cpc [(control)]="form.controls.cpc"></ls-autocomplete-cpc>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Waybill No
-        </mat-label>
-        <input matInput type="text" formControlName="waybillNo" />
-        <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Supplier Ref
-        </mat-label>
-        <input matInput type="text" formControlName="supplierRef" />
-        <mat-error *ngIf="form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          MRN
-        </mat-label>
-        <input matInput type="text" formControlName="mrn" />
-        <mat-error *ngIf="form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          TIN Number
-        </mat-label>
-        <input matInput type="text" formControlName="importersCode" />
-        <mat-error *ngIf="form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          File Ref
-        </mat-label>
-        <input matInput type="text" formControlName="fileRef" />
-        <mat-error *ngIf="form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-    <div class="col-12">
-      <mat-form-field appearance="fill">
-        <mat-label>
-          Total Duty
-        </mat-label>
-        <input matInput type="number" formControlName="totalDuty" />
-        <mat-error *ngIf="form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
-      </mat-form-field>
-      <br /><br />
-    </div>
-  </div>
-</form>
-<app-form-sad500-line-updated [(data)]="activeLine"></app-form-sad500-line-updated>
+  </form>
+</ng-container>
+
+<ng-container *ngIf="displayLines">
+  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)"></app-form-sad500-line-updated>
+</ng-container>

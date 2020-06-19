@@ -23,6 +23,7 @@ constructor(private userService: UserService,
 
   public list: UnitsOfMeasure[] = [];
   public query = new FormControl();
+  public valueKeeper = new FormControl();
 
   ngOnInit() {
     if (!this.control) {

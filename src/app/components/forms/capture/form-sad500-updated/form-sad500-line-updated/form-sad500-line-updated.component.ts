@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.Service';
+import { AllowIn } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-form-sad500-line-updated',
   templateUrl: './form-sad500-line-updated.component.html',
   styleUrls: ['./form-sad500-line-updated.component.scss']
 })
-export class FormSad500LineUpdatedComponent implements OnInit {
+export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private userService: UserService) { }
 
@@ -62,19 +63,41 @@ export class FormSad500LineUpdatedComponent implements OnInit {
   public activeIndex: any;
   public displayLines = false;
   public errors: any[] = [];
+  public shortcuts: any[];
 
   private attachmentID: number;
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
+  @Output() submission = new EventEmitter<any>();
 
   ngOnInit() {
-    console.log(this.data);
-
     if (this.data) {
       this.form.patchValue(this.data);
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+      {
+        key: 'alt + a',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => this.submit(this.form),
+      },
+      {
+        key: 'alt + k',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        // command: (e) => (this.focusDutiesQuery = !this.focusDutiesQuery),
+      }
+    );
+  }
+
+  ngOnChanges() {
+    this.form.reset();
+    this.form.patchValue(this.data);
   }
 
   getError(key: string): string {
@@ -82,7 +105,7 @@ export class FormSad500LineUpdatedComponent implements OnInit {
   }
 
   submit(form: FormGroup) {
-
+    this.submission.emit(form.value);
   }
 
 }

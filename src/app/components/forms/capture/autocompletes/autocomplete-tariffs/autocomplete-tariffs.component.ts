@@ -60,6 +60,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnDestroy {
         rowCount: number;
       }) => {
         this.list = res.tariffList;
+        // this.valueKeeper.setValue(this.list.find(x => x.tariffID === this.control.value));
       });
   }
 

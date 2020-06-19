@@ -2,15 +2,15 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-12">
-      <ls-autocomplete-tariffs [control]="form.controls.tariffID"></ls-autocomplete-tariffs>
+      <ls-autocomplete-tariffs [(control)]="form.controls.tariffID"></ls-autocomplete-tariffs>
       <br/>
     </div>
     <div class="col-12">
-      <ls-autocomplete-units-of-measure [control]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
+      <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
       <br/>
     </div>
     <div class="col-12">
-      <ls-autocomplete-coo [control]="form.controls.cooID"></ls-autocomplete-coo>
+      <ls-autocomplete-coo [(control)]="form.controls.cooID"></ls-autocomplete-coo>
       <br/>
     </div>
     <div class="col-12">

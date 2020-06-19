@@ -6,6 +6,6 @@
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" (optionSelected)="control.setValue($event.option.value.countryID)" [displayWith]="displayFn">
   <mat-option *ngFor="let item of list" [value]="item">
-    {{item.name}}
+    {{item.code}}, {{item.name}}
   </mat-option>
 </mat-autocomplete>

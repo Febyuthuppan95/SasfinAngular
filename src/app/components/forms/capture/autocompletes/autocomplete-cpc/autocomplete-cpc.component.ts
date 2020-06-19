@@ -26,6 +26,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
 
   public cpcList: any [] = [];
   public query = new FormControl();
+  public valueKeeper = new FormControl();
 
   ngOnInit() {
     if (!this.control) {
