@@ -1,1 +1,31 @@
-<p>view-company-boms-items-list works!</p>
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.BOMLines"
+      [dataset]="this.BOMLines"
+      [headings]="this.tableHeadings"
+      [recordsPerPage]="this.recordsPerPage"
+      [rowStart]="this.rowStart"
+      [rowEnd]="this.rowEnd"
+      [rowCount]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (backButtonEvent)="back()"
+      (selectedRecord)="selectedRecord($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (searchEvent)="searchEvent($event)"
+      (addButtonEvent)="add()">
+    </app-table>
+  </div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
