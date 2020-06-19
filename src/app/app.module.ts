@@ -233,6 +233,11 @@ import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
 import { DialogEscalationReasonComponent } from './views/main/view-transaction-files/dialog-escalation-reason/dialog-escalation-reason.component';
+import { ViewCompanyBomsItemsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-list.component';
+import { ViewCompanyBomsItemgroupsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-list.component';
+import { ViewCompanyBomsItemsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
+import { ViewCompanyBomsItemgroupsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
+import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-company-boms/view-company-boms-lines-error-list/view-company-boms-lines-error-list.component';
 
 @NgModule({
   declarations: [
@@ -392,7 +397,12 @@ import { DialogEscalationReasonComponent } from './views/main/view-transaction-f
     ClaimLayoutComponent,
     RedirectComponent,
     ViewTransactionCheckingComponent,
-    DialogEscalationReasonComponent
+    DialogEscalationReasonComponent,
+    ViewCompanyBomsItemsListComponent,
+    ViewCompanyBomsItemgroupsListComponent,
+    ViewCompanyBomsItemsErrorsListComponent,
+    ViewCompanyBomsItemgroupsErrorsListComponent,
+    ViewCompanyBomsLinesErrorListComponent
   ],
   imports: [
     BrowserModule,
