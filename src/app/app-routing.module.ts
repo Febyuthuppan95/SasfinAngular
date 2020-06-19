@@ -74,6 +74,11 @@ import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
+import {ViewCompanyBomsLinesErrorListComponent} from './views/main/view-company-boms/view-company-boms-lines-error-list/view-company-boms-lines-error-list.component';
+import {ViewCompanyBomsItemsListComponent} from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-list.component';
+import {ViewCompanyBomsItemsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
+import {ViewCompanyBomsItemgroupsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-list.component';
+import {ViewCompanyBomsItemgroupsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -218,6 +223,36 @@ const routes: Routes = [
           {
             path: 'companies/boms',
             component: ViewCompanyBOMsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/bomline-errors',
+            component: ViewCompanyBomsLinesErrorListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/items',
+            component: ViewCompanyBomsItemsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/item-errors',
+            component: ViewCompanyBomsItemsErrorsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/itemgroups',
+            component: ViewCompanyBomsItemgroupsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/itemgroup-errors',
+            component: ViewCompanyBomsItemgroupsErrorsListComponent,
             data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
