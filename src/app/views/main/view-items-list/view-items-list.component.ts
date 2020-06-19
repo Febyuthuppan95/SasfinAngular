@@ -92,7 +92,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   tableHeader: TableHeader = {
     title: 'Items',
     addButton: {
-     enable: true,
+     enable: false,
     },
     backButton: {
       enable: false
