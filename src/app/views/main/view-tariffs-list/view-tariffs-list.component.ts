@@ -316,7 +316,8 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   add() {
     this.dialog.open(UploadProdatComponent, {
-      width: '512px'
+      width: '512px',
+      closeOnNavigation: true
     });
   }
 
