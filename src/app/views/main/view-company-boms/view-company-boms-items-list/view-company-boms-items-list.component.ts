@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../services/Company.Service';
 import {UserService} from '../../../../services/User.Service';
 import {ThemeService} from '../../../../services/Theme.Service';
@@ -10,6 +10,12 @@ import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {BOMLine} from '../../../../models/HttpResponses/BOMsLinesResponse';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../models/Table';
+import {GetItemList} from '../../../../models/HttpRequests/GetItemList';
+import {Items, ItemsListResponse} from '../../../../models/HttpResponses/ItemsListResponse';
+import {User} from '../../../../models/HttpResponses/User';
+import {NotificationComponent} from '../../../../components/notification/notification.component';
+import {ApiService} from '../../../../services/api.service';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-view-company-boms-items-list',
@@ -26,23 +32,29 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     private router: Router,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
+    // tslint:disable-next-line:no-shadowed-variable
+    private ApiService: ApiService,
   ) { }
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
   bomid = -1;
   bomstatus = '';
   currentTheme: string;
 
-  // Item: {
-  //   itemID: number;
-  //   item: string;
-  //   description: string;
-  //   tariff: number;
-  //   type: string;
-  //   mIDP: string;
-  //   pI: string;
-  //   vulnerable: string;
-  // };
+  Item: {
+    itemID: number,
+    item: string,
+    description: string,
+    tariffID: number,
+    tariff: string,
+    typeID: number,
+    type: string,
+    vulnerable: string,
+  };
+
   tableHeader: TableHeader = {
     title: 'BOM Items',
     addButton: {
@@ -105,7 +117,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
       },
     },
   ];
-  BOMLines: BOMLine[] = [];
+  items: Items[] = [];
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
@@ -121,6 +133,11 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   rowCountPerPage: number;
   filter: string;
 
+  currentUser: User = this.userService.getCurrentUser();
+  noData = false;
+  showingRecords: number;
+  totalShowing: number;
+
   ngOnInit() {
     this.themeService
       .observeTheme()
@@ -129,15 +146,41 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
         this.currentTheme = theme;
       });
 
-    this.companyService
-      .observeBOM()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((obj: SelectedBOM) => {
-        if (obj !== undefined) {
-          this.bomid = obj.bomid;
-          this.bomstatus = obj.status;
-        }
+    this.loadItems(true);
+
+    // this.companyService
+    //   .observeBOM()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((obj: SelectedBOM) => {
+    //     if (obj !== undefined) {
+    //       this.bomid = obj.bomid;
+    //       this.bomstatus = obj.status;
+    //     }
+    //   });
+  }
+
+  loadItems(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        UserID: this.currentUser.userID,
+        ItemID: -1
+      },
+      requestProcedure: `CompanyItemsList`
+    };
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/items`, model).then((res: any) => {
+      console.log(res);
+      this.items = res.data;
+    },
+      msg => {
+      console.log(msg);
+      this.notify.errorsmsg(
+        'Server Error',
+        'Something went wrong while trying to access the server.'
+      );
       });
+    this.showLoader = false;
   }
 
   // table methods
@@ -163,24 +206,24 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    // this.loadBOMLines(false); //reload data
+    this.loadItems(false); // reload data
   }
 
   pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    // this.loadBOMLines(false); //reload data
+    this.loadItems(false); // reload data
   }
 
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    // this.loadBOMLines(false); //reload data
+    this.loadItems(false); // reload data
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    // this.loadBOMLines(false); //reload data
+    this.loadItems(false); // reload data
   }
 
   add() {
