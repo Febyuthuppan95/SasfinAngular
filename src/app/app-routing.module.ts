@@ -62,12 +62,14 @@ import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-d
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 import { ViewCaptureLandingComponent } from './views/main/view-capture-landing/view-capture-landing.component';
 
-
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
 import { ViewCompanyOemListComponent } from './views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewOemQuarterListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-oem-quarter-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ClaimLayoutComponent } from './layouts/claim-layout/claim-layout.component';
 import { RightGuard } from './guards/right.guard';
@@ -85,13 +87,14 @@ const routes: Routes = [
     component: AppComponent,
     children: [
       {
-        path: 'account', component: AccountComponent,
+        path: 'account',
+        component: AccountComponent,
         canActivate: [AnonGuard],
         children: [
           { path: 'login', component: ViewLoginComponent },
           { path: 'forgotpassword', component: ViewForgotPasswordComponent },
-          { path: 'changepassword', component: ViewChangePasswordComponent }
-        ]
+          { path: 'changepassword', component: ViewChangePasswordComponent },
+        ],
       },
       {
         path: '',
@@ -99,79 +102,331 @@ const routes: Routes = [
         canActivate: [AuthenticationGuard],
         children: [
           { path: '', component: RedirectComponent },
-          { path: 'users', component: ViewUserListComponent, data: { right: 'Users' }, canActivate: [RightGuard] },
-          { path: 'designations', component: ViewDesignationsListComponent, data: { right: 'Designations' }, canActivate: [RightGuard] },
-          { path: 'designation-rights/:name/:id', component: ViewDesignationsRightsListComponent, data: { right: 'Designations' }, canActivate: [RightGuard] },
-          { path: 'user-rights/:name/:id', component: ViewUserRightsListComponent, data: { right: 'Rights' }, canActivate: [RightGuard] },
-          { path: 'backgrounds', component: ViewBackgroundsListComponent, data: { right: 'Backgrounds' }, canActivate: [RightGuard] },
-          { path: 'rights', component: ViewRightsListComponent, data: { right: 'Rights' }, canActivate: [RightGuard] },
-          { path: 'helpglossary', component: ViewHelpGlossaryComponent, data: { right: 'HelpGlossary' }, canActivate: [RightGuard] },
-          { path: 'unitsofmeasure', component: ViewUnitsOfMeasureComponent, data: { right: 'UnitOfMeasures' }, canActivate: [RightGuard] },
-          { path: 'locations', component: ViewPlacesComponent, data: { right: 'Countries' }, canActivate: [RightGuard] },
-          { path: 'companies', component: ViewCompanyListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'services', component: ContextMenuServiceListComponent, data: { right: 'Services' }, canActivate: [RightGuard] },
-          { path: 'tariffs', component: ContextTariffsListComponent, data: { right: 'Tariffs' }, canActivate: [RightGuard] },
-          { path: 'items', component: ContextItemsListComponent, data: { right: 'Items' }, canActivate: [RightGuard] },
-          { path: 'capture-queue', component: ViewCaptureQueueOverviewComponent },
-          { path: 'reportsqueues', component: ViewReportQueuesListComponent, data: { right: 'ReportQueues' }, canActivate: [RightGuard] },
-          { path: 'addresstypes', component: ViewAddressTypesListComponent, data: { right: 'AddressTypes' }, canActivate: [RightGuard] },
-          { path: 'companies/info', component: ViewCompanyInfoComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/addresses', component: ViewCompanyAddressesComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/services', component: ContextCompanyServiceListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/items', component: ContextCompanyItemsListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms', component: ViewCompanyBOMsComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/serviceclaims', component: ViewCompanyServiceClaimsComponent, data: { right: 'Services' }, canActivate: [RightGuard] },
+          {
+            path: 'users',
+            component: ViewUserListComponent,
+            data: { right: 'Users' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'designations',
+            component: ViewDesignationsListComponent,
+            data: { right: 'Designations' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'designation-rights/:name/:id',
+            component: ViewDesignationsRightsListComponent,
+            data: { right: 'Designations' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'user-rights/:name/:id',
+            component: ViewUserRightsListComponent,
+            data: { right: 'Rights' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'backgrounds',
+            component: ViewBackgroundsListComponent,
+            data: { right: 'Backgrounds' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'rights',
+            component: ViewRightsListComponent,
+            data: { right: 'Rights' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'helpglossary',
+            component: ViewHelpGlossaryComponent,
+            data: { right: 'HelpGlossary' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'unitsofmeasure',
+            component: ViewUnitsOfMeasureComponent,
+            data: { right: 'UnitOfMeasures' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'locations',
+            component: ViewPlacesComponent,
+            data: { right: 'Countries' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies',
+            component: ViewCompanyListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'services',
+            component: ContextMenuServiceListComponent,
+            data: { right: 'Services' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'tariffs',
+            component: ContextTariffsListComponent,
+            data: { right: 'Tariffs' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'items',
+            component: ContextItemsListComponent,
+            data: { right: 'Items' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'capture-queue',
+            component: ViewCaptureQueueOverviewComponent,
+          },
+          {
+            path: 'reportsqueues',
+            component: ViewReportQueuesListComponent,
+            data: { right: 'ReportQueues' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'addresstypes',
+            component: ViewAddressTypesListComponent,
+            data: { right: 'AddressTypes' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/info',
+            component: ViewCompanyInfoComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/addresses',
+            component: ViewCompanyAddressesComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/services',
+            component: ContextCompanyServiceListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/items',
+            component: ContextCompanyItemsListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms',
+            component: ViewCompanyBOMsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/serviceclaims',
+            component: ViewCompanyServiceClaimsComponent,
+            data: { right: 'Services' },
+            canActivate: [RightGuard],
+          },
           // { path: 'companies/serviceclaims/data', component: ViewCompanyServiceClaimDataComponent },
-          { path: 'companies/serviceclaims/reports', component: ViewCompanyServiceclaimReportComponent, data: { right: 'Services' }, canActivate: [RightGuard] },
-          { path: 'companies/permits', component: ViewPermitsListComponent, data: { right: 'Services' }, canActivate: [RightGuard] },
-          { path: 'companies/permits/permitimporttariffs', component: ViewPermitIMportTariffsListComponent, data: { right: 'Services' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/bomlines', component: ViewBOMLinesComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/bomline-errors', component: ViewCompanyBomsLinesErrorListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/items', component: ViewCompanyBomsItemsListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/item-errors', component: ViewCompanyBomsItemsErrorsListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/itemgroups', component: ViewCompanyBomsItemgroupsListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/boms/itemgroup-errors', component: ViewCompanyBomsItemgroupsErrorsListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/items/alternates', component: ViewAlternateItemsComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/items/itemvalues', component: ViewItemValuesComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/items/itemparents', component: ViewItemParentsComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/contacts', component: ViewCompanyContactsComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/transactions', component: ViewTransactionsComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'companies/oems', component: ViewCompanyOemListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/oem/quarters', component: ViewOemQuarterListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'companies/oem/quarter/supply', component: ViewQuarterSupplyListComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'transaction/attachments', component: ViewTransactionFilesComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/capturerlanding', component: ViewCaptureLandingComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transactions/', component: ViewTransactionsComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'companies/capture/info', component: ViewCaptureInfoComponent, data: { right: 'Companies' }, canActivate: [RightGuard] },
-          { path: 'contacttypes', component: ViewContactTypesListComponent , data: { right: 'Transactions' }, canActivate: [RightGuard]},
-          { path: 'companyaddinfotypes', component: ViewCompanyAddInfoTypesListComponent, data: { right: 'ContactTypes' }, canActivate: [RightGuard]  },
-          { path: 'currencies', component: ViewCurrenciesListComponent, data: { right: 'Currencies' }, canActivate: [RightGuard]},
-          { path: 'sad500/lines', component: Sad500LinesComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/import-clearing-instruction', component: ViewImportClearingInstructionsComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/sad500s', component: ViewSAD500Component, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/custom-release-notification', component: ViewCustomReleaseNotificationsComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/invoices', component: ViewInvoicesComponent, data: { right: 'Transactions' }, canActivate: [RightGuard] },
-          { path: 'transaction/checklist/:id', component: ViewCheckingScreenComponent, data: { right: 'Transactions' }, canActivate: [RightGuard]},
-          { path: 'refreshComponent', component: ChatRedirectComponent},
-          { path: 'claim/reports', component: PreviewReportsComponent, data: { right: 'Transactions' }, canActivate: [RightGuard]},
-          { path: 'tariff/duties', component: ViewDutyTaxTypesComponent, data: { right: 'Tariffs' }, canActivate: [RightGuard] }
-        ]
+          {
+            path: 'companies/serviceclaims/reports',
+            component: ViewCompanyServiceclaimReportComponent,
+            data: { right: 'Services' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/permits',
+            component: ViewPermitsListComponent,
+            data: { right: 'Services' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/permits/permitimporttariffs',
+            component: ViewPermitIMportTariffsListComponent,
+            data: { right: 'Services' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/boms/bomlines',
+            component: ViewBOMLinesComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/items/alternates',
+            component: ViewAlternateItemsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/items/itemvalues',
+            component: ViewItemValuesComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/items/itemparents',
+            component: ViewItemParentsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/contacts',
+            component: ViewCompanyContactsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/transactions',
+            component: ViewTransactionsComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/oems',
+            component: ViewCompanyOemListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/oem/quarters',
+            component: ViewOemQuarterListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/oem/quarter/supply',
+            component: ViewQuarterSupplyListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/attachments',
+            component: ViewTransactionFilesComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/capturerlanding',
+            component: ViewCaptureLandingComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transactions/',
+            component: ViewTransactionsComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/capture/info',
+            component: ViewCaptureInfoComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'contacttypes',
+            component: ViewContactTypesListComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companyaddinfotypes',
+            component: ViewCompanyAddInfoTypesListComponent,
+            data: { right: 'ContactTypes' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'currencies',
+            component: ViewCurrenciesListComponent,
+            data: { right: 'Currencies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'sad500/lines',
+            component: Sad500LinesComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/import-clearing-instruction',
+            component: ViewImportClearingInstructionsComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/sad500s',
+            component: ViewSAD500Component,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/custom-release-notification',
+            component: ViewCustomReleaseNotificationsComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/invoices',
+            component: ViewInvoicesComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/checklist/:id',
+            component: ViewCheckingScreenComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          { path: 'refreshComponent', component: ChatRedirectComponent },
+          {
+            path: 'claim/reports',
+            component: PreviewReportsComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'tariff/duties',
+            component: ViewDutyTaxTypesComponent,
+            data: { right: 'Tariffs' },
+            canActivate: [RightGuard],
+          },
+        ],
       },
-      { path: 'capture', component: CaptureLayoutComponent, children: [
-        { path: 'transaction/attachment', component: ViewCaptureTransactionComponent },
-        { path: 'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
-         component: ViewCaptureTransactionComponent }
-      ]},
-      { path: 'claim', component: ClaimLayoutComponent, children: [
-        {path: 'capture', component: ViewCompanyServiceClaimDataComponent}
-      ]},
+      {
+        path: 'capture',
+        component: CaptureLayoutComponent,
+        children: [
+          {
+            path: 'transaction/attachment',
+            component: ViewCaptureTransactionComponent,
+          },
+          {
+            path:
+              'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+            component: ViewCaptureTransactionComponent,
+          },
+        ],
+      },
+      {
+        path: 'claim',
+        component: ClaimLayoutComponent,
+        children: [
+          { path: 'capture', component: ViewCompanyServiceClaimDataComponent },
+        ],
+      },
       { path: 'unauthorized', component: ViewUnauthorizedComponent },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
