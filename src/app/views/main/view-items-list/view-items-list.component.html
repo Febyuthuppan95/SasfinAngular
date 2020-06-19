@@ -73,8 +73,8 @@
               </div>
             <div class="form-group">
               <label class="control-label">Vulnerable:</label>
-              <select class="form-control" (change)="onVulnerablestateChange($event.target.value)">
-                <option *ngFor="let state of this.YESNO" [value]="state" [selected]="state === this.vulnerable">{{state}}</option>
+              <select class="form-control" (change)="onVulnerablestateChange($event.target.value)" [formControl]="vulnerableControl">
+                <option *ngFor="let state of this.YESNO" [value]="state.value">{{state.title}}</option>
               </select>
             </div>
             <div class="row ">
