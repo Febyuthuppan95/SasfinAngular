@@ -153,7 +153,6 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
   }
 
   selectedRecord($event: SelectedRecord) {
-    console.log($event.record);
     this.currentRecord = $event.record;
 
     if ($event.record.statusID === 7) {

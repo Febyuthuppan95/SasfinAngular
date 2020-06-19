@@ -6,13 +6,15 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ValidateService } from 'src/app/services/Validation.Service';
 import { Router } from '@angular/router';
-import { TableConfig, Order } from 'src/app/models/Table';
+import { TableConfig, Order, SelectedRecord } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
+import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-view-invoices',
@@ -22,8 +24,7 @@ import { Observable, Subscription } from 'rxjs';
 export class ViewInvoicesComponent implements OnInit, OnDestroy {
 
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
-              private router: Router) { }
+              private captureService: CaptureService, private router: Router, private dialog: MatDialog) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -154,6 +155,14 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   searchEvent(query: string) {
     this.listRequest.filter = query;
     this.loadDataset();
+  }
+
+  selectedRecord($event: SelectedRecord) {
+    if ($event.record.statusID === 7) {
+      this.dialog.open(DialogEscalationReasonComponent, {
+        data: $event.record.escalationReason
+      });
+    }
   }
 
   ngOnDestroy(): void {

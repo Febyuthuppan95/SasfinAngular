@@ -4,11 +4,13 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { Router } from '@angular/router';
-import { TableConfig, Order } from 'src/app/models/Table';
+import { TableConfig, Order, SelectedRecord } from 'src/app/models/Table';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-view-custom-release-notifications',
@@ -18,7 +20,7 @@ import { Subject } from 'rxjs';
 export class ViewCustomReleaseNotificationsComponent implements OnInit, OnDestroy {
 
 constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-            private captureService: CaptureService, private router: Router) { }
+            private captureService: CaptureService, private router: Router, private dialog: MatDialog) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -136,6 +138,14 @@ constructor(private themeService: ThemeService, private transactionService: Tran
     this.listRequest.rowStart = $event.rowStart;
     this.listRequest.rowEnd = $event.rowEnd;
     this.loadDataset();
+  }
+
+  selectedRecord($event: SelectedRecord) {
+    if ($event.record.statusID === 7) {
+      this.dialog.open(DialogEscalationReasonComponent, {
+        data: $event.record.escalationReason
+      });
+    }
   }
 
   ngOnDestroy(): void {

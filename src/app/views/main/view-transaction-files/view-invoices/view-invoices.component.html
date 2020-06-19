@@ -20,7 +20,8 @@
       (orderChange)="orderChange($event)"
       (showingRecordsEvent)="recordsPerPageChange($event)"
       (pageChange)="pageChange($event)"
-      (searchEvent)="searchFilter($event)">
+      (searchEvent)="searchFilter($event)"
+      (selectedRecord="selectedRecord($event)")>
       </app-table>
     </div>
   </div>

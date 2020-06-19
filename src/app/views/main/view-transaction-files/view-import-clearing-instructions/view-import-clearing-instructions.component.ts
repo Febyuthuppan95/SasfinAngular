@@ -1,17 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { TableConfig, TableHeader, Order } from 'src/app/models/Table';
+import { TableConfig, TableHeader, Order, SelectedRecord } from 'src/app/models/Table';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { ICIListResponse, ICI } from 'src/app/models/HttpResponses/ICI';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { ValidateService } from 'src/app/services/Validation.Service';
-import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Router } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',
@@ -20,8 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ViewImportClearingInstructionsComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService, private transactionService: TransactionService, private userService: UserService,
-              private captureService: CaptureService, private companyService: CompanyService, private validateService: ValidateService,
-              private router: Router) { }
+              private captureService: CaptureService, private router: Router, private dialog: MatDialog) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();
@@ -145,6 +143,14 @@ export class ViewImportClearingInstructionsComponent implements OnInit, OnDestro
   searchEvent(query: string) {
     this.listRequest.filter = query;
     this.loadDataset();
+  }
+
+  selectedRecord($event: SelectedRecord) {
+    if ($event.record.statusID === 7) {
+      this.dialog.open(DialogEscalationReasonComponent, {
+        data: $event.record.escalationReason
+      });
+    }
   }
 
   ngOnDestroy(): void {
