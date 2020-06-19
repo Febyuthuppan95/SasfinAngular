@@ -44,19 +44,18 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   bomstatus = '';
   currentTheme: string;
 
-  Item: {
-    itemID: number,
-    item: string,
-    description: string,
-    tariffID: number,
-    tariff: string,
-    typeID: number,
-    type: string,
-    vulnerable: string,
-  };
-
+  // Item: {
+  //   itemID: number,
+  //   item: string,
+  //   description: string,
+  //   tariffID: number,
+  //   tariff: string,
+  //   typeID: number,
+  //   type: string,
+  //   vulnerable: string,
+  // };
   tableHeader: TableHeader = {
-    title: 'BOM Items',
+    title: 'BOM ItemGroups',
     addButton: {
       enable: true,
     },
