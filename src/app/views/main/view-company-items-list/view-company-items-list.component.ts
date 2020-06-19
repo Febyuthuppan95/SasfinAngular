@@ -7,7 +7,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { CompanyItemsResponse, Item } from 'src/app/models/HttpResponses/CompanyItemsResponse';
-import { SelectedRecord } from 'src/app/models/Table';
+import { SelectedRecord, TableHeading, TableHeader, Order } from 'src/app/models/Table';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {Outcome} from '../../../models/HttpResponses/Outcome';
 import {DocumentService} from '../../../services/Document.Service';
+import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -167,6 +168,25 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   ItemFile: File;
   filePreview: string;
 
+  tableHeader: TableHeader = {
+    title: 'Items',
+    addButton: { enable: true, },
+    backButton: { enable: true },
+    filters: {
+      search: true,
+      selectRowCount: true,
+    }
+  };
+
+  tableHeadings: TableHeading[] = [
+    { title: '', propertyName: 'rowNum',  order: { enable: false } },
+    { title: 'Item', propertyName: 'item', order: { enable: true, tag: 'Item' }, },
+    { title: 'Description', propertyName: 'description', order: { enable: true, tag: 'Description' }, },
+    { title: 'Tariff', propertyName: 'tariff', order: { enable: true, tag: 'Tariff' }, },
+    { title: 'Type', propertyName: 'type', order: { enable: true, tag: 'Type' }, },
+    { title: 'Vulnerable', propertyName: 'vulnerable', order: { enable: true, tag: 'Vulnerable' }, },
+  ];
+
   ngOnInit() {
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
@@ -179,9 +199,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     .subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
+      this.tableHeader.title = `${obj.companyName} - Items`;
     });
-    this.loadCompanyItemsList(true);
 
+    this.loadCompanyItemsList(true);
     this.loadItems(false);
   }
 
@@ -232,34 +253,24 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.updateitemsPagination();
   }
 
-  pageChange(pageNumber: number) {
-    const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
-    this.activePage = +pageNumber;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
+  recordsPerPageChange($event: number) {
+    this.rowCountPerPage = $event;
+    this.loadCompanyItemsList(false);
+  }
 
-    if (this.prevPage < 1) {
-      this.prevPageState = true;
-    } else {
-      this.prevPageState = false;
-    }
+  pageChange(obj: PaginationChange) {
+    this.rowStart = obj.rowStart;
+    this.rowEnd = obj.rowEnd;
 
-    let pagenumber = +this.rowCount / +this.rowCountPerPage;
-    const mod = +this.rowCount % +this.rowCountPerPage;
+    this.loadCompanyItemsList();
+  }
 
-    if (mod > 0) {
-      pagenumber++;
-    }
-
-    if (this.nextPage > pagenumber) {
-      this.nextPageState = true;
-    } else {
-      this.nextPageState = false;
-    }
-
-    this.updatePagination();
+  orderChange($event: Order) {
+    console.log($event);
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
     this.loadCompanyItemsList(false);
   }
 
@@ -292,12 +303,13 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
     this.updateitemsPagination();
 
-    this.loadItems(false);
+    this.loadCompanyItemsList();
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyItemsList(false);
+    this.rowEnd = this.rowCountPerPage;
+    this.loadCompanyItemsList();
   }
 
   searchitemsBar() {
@@ -305,7 +317,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.loadItems(false);
   }
 
-  loadCompanyItemsList(displayGrowl: boolean) {
+  loadCompanyItemsList(displayGrowl?: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
     const model = {
@@ -479,14 +491,14 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
+  selectedRecord($event: SelectedRecord) {
+    console.log($event.record);
+    this.popClick($event.event, $event.record.groupID, $event.record.itemid, $event.record.itemname, $event.record.itemparentid);
+  }
+
   popClick(event, groupid, itemid, itemname, itemparentid) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
 
     this.focusItemGroupID = groupid;
     this.focusItemID = itemid;
