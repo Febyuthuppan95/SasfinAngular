@@ -88,6 +88,7 @@ export class CustomWorksheetLine {
     // UI Controls
     isPersistant?: boolean;
     userID: number;
+    generatedID?: string;
 }
 
 export class CWSLineCaptureThatSHOULDWorks {

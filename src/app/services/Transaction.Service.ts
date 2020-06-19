@@ -211,6 +211,8 @@ export class TransactionService {
   }
 
   public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string) {
+    console.log(name);
+
     const requestModel: CreateTransactionRequest = {
       userID,
       specificCompanyID: companyID,
@@ -218,6 +220,8 @@ export class TransactionService {
       specificTransactioStatusID: statusID,
       name
     };
+
+    console.log(requestModel);
 
     return new Promise(async (resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/transactions/create`;
