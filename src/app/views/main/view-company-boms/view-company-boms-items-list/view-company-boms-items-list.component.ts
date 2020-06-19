@@ -55,7 +55,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   //   vulnerable: string,
   // };
   tableHeader: TableHeader = {
-    title: 'BOM ItemGroups',
+    title: 'BOM Items',
     addButton: {
       enable: true,
     },

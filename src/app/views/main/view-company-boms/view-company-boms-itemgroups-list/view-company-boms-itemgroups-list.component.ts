@@ -54,7 +54,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   //   vulnerable: string;
   // };
   tableHeader: TableHeader = {
-    title: 'BOM Items',
+    title: 'BOM Item Groups',
     addButton: {
       enable: true,
     },
@@ -100,18 +100,18 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
     },
     {
       title: 'Type',
-      propertyName: 'Type',
+      propertyName: 'itemType',
       order: {
         enable: true,
-        tag: 'Type',
+        tag: 'itemType',
       },
     },
     {
       title: 'Vulnerable',
-      propertyName: 'Vulnerable',
+      propertyName: 'vulnerable',
       order: {
         enable: true,
-        tag: 'Vulnerable',
+        tag: 'vulnerable',
       },
     },
   ];

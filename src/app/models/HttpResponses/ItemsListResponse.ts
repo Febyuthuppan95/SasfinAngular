@@ -19,3 +19,12 @@ export class Items {
   typeID: number;
   vulnerable: string;
 }
+
+export class ItemError {
+  bomID: number;
+  rowNumber: number;
+  tariffCode: string;
+  usageType: string;
+  itemType: string;
+  itemclass: string;
+}
