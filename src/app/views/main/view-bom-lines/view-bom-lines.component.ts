@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { Pagination } from '../../../models/Pagination';
@@ -6,31 +12,32 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
-import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
+import { SnackbarModel } from '../../../models/StateModels/SnackbarModel';
+import { HelpSnackbar } from '../../../services/HelpSnackbar.service';
+import {
+  TableHeading,
+  SelectedRecord,
+  Order,
+  TableHeader,
+} from 'src/app/models/Table';
 import { CompanyService, SelectedBOM } from 'src/app/services/Company.Service';
-import { Service } from 'src/app/models/HttpResponses/Service';
 import { ServicesService } from 'src/app/services/Services.Service';
-import { GetBOMLines } from 'src/app/models/HttpRequests/GetBOMLines';
-import {BOMsLinesResponse, BOMLine, BOMUpload} from 'src/app/models/HttpResponses/BOMsLinesResponse';
+import { BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import {ApiService} from '../../../services/api.service';
-import {environment} from '../../../../environments/environment';
-import {Outcome} from '../../../models/HttpResponses/Outcome';
-import {DocumentService} from '../../../services/Document.Service';
+import { ApiService } from '../../../services/api.service';
+import { environment } from '../../../../environments/environment';
+import { Outcome } from '../../../models/HttpResponses/Outcome';
+import { DocumentService } from '../../../services/Document.Service';
 
 @Component({
   selector: 'app-view-bom-lines',
   templateUrl: './view-bom-lines.component.html',
-  styleUrls: ['./view-bom-lines.component.scss']
+  styleUrls: ['./view-bom-lines.component.scss'],
 })
 export class ViewBOMLinesComponent implements OnInit, OnDestroy {
-
   constructor(
     private companyService: CompanyService,
-    private ServiceService: ServicesService,
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
@@ -51,9 +58,11 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     this.orderBy = 'Name';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
-    this.subscription = this.IMenuService.subSidebarEmit$.pipe(takeUntil(this.unsubscribe$)).subscribe(result => {
-      this.sidebarCollapsed = result;
-    });
+    this.subscription = this.IMenuService.subSidebarEmit$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((result) => {
+        this.sidebarCollapsed = result;
+      });
   }
 
   @ViewChild(NotificationComponent, { static: true })
@@ -62,10 +71,10 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   @ViewChild('bomFile', { static: false })
   bomFile: ElementRef;
 
-  @ViewChild('openAddModal', {static: true})
+  @ViewChild('openAddModal', { static: true })
   openAddModal: ElementRef;
 
-  @ViewChild('closeAddModal', {static: true})
+  @ViewChild('closeAddModal', { static: true })
   closeAddModal: ElementRef;
 
   // @ViewChild('openeditModal', {static: true})
@@ -80,29 +89,28 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   // closeRemoveModal: ElementRef;
 
   Item: {
-    itemID: number,
-    item: string,
-    description: string,
-    tariff: number,
-    type: string,
-    mIDP: string,
-    pI: string,
-    vulnerable: string,
-
+    itemID: number;
+    item: string;
+    description: string;
+    tariff: number;
+    type: string;
+    mIDP: string;
+    pI: string;
+    vulnerable: string;
   };
 
   tableHeader: TableHeader = {
     title: 'BOM Lines',
     addButton: {
-     enable: true,
+      enable: true,
     },
     backButton: {
-      enable: true
+      enable: true,
     },
     filters: {
       search: true,
       selectRowCount: true,
-    }
+    },
   };
 
   tableHeadings: TableHeading[] = [
@@ -111,48 +119,48 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       propertyName: 'RowNum',
       order: {
         enable: false,
-      }
+      },
     },
     {
       title: 'Item Code',
       propertyName: 'ItemCode',
       order: {
         enable: true,
-        tag: 'ItemCode'
-      }
+        tag: 'ItemCode',
+      },
     },
     {
       title: 'Tariff Code',
       propertyName: 'TariffCode',
       order: {
         enable: true,
-        tag: 'TariffCode'
-      }
+        tag: 'TariffCode',
+      },
     },
     {
       title: 'Unit Of Measure',
       propertyName: 'UnitOfMeasure',
       order: {
         enable: true,
-        tag: 'UnitOfMeasure'
-      }
+        tag: 'UnitOfMeasure',
+      },
     },
     {
       title: 'Quarter',
       propertyName: 'Quarter',
       order: {
         enable: true,
-        tag: 'Quarter'
-      }
+        tag: 'Quarter',
+      },
     },
     {
       title: 'Usage Type',
       propertyName: 'UsageType',
       order: {
         enable: true,
-        tag: 'UsageType'
-      }
-    }
+        tag: 'UsageType',
+      },
+    },
   ];
 
   selectedRow = -1;
@@ -201,20 +209,23 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   filePreview: string;
 
   ngOnInit() {
+    this.themeService
+      .observeTheme()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((theme) => {
+        this.currentTheme = theme;
+      });
 
-    this.themeService.observeTheme().pipe(takeUntil(this.unsubscribe$)).subscribe((theme) => {
-      this.currentTheme = theme;
-    });
-
-    this.companyService.observeBOM().pipe(takeUntil(this.unsubscribe$)).subscribe((obj: SelectedBOM) => {
-      if (obj !== undefined) {
-        this.bomid = obj.bomid;
-        this.bomstatus = obj.status;
-        this.loadBOMLines(true);
-      }
-    });
-
-
+    this.companyService
+      .observeBOM()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((obj: SelectedBOM) => {
+        if (obj !== undefined) {
+          this.bomid = obj.bomid;
+          this.bomstatus = obj.status;
+          this.loadBOMLines(true);
+        }
+      });
   }
 
   loadBOMLines(displayGrowl: boolean) {
@@ -228,26 +239,32 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection,
         rowStart: this.rowStart,
-        rowEnd: this.rowEnd
+        rowEnd: this.rowEnd,
       },
-      requestProcedure: `BOMLineList`
+      requestProcedure: `BOMLineList`,
     };
-    this.ApiService.post(`${environment.ApiEndpoint}/companies/BomLines`, model).then((res: any) => {
-      if (res.outcome.outcome === 'SUCCESS') {
-        if (displayGrowl) {
-          this.notify.successmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage);
-        } else {
+    this.ApiService.post(
+      `${environment.ApiEndpoint}/companies/BomLines`,
+      model
+    ).then(
+      (res: any) => {
+        if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
-            this.notify.errorsmsg(
+            this.notify.successmsg(
               res.outcome.outcome,
-              res.outcome.outcomeMessage);
+              res.outcome.outcomeMessage
+            );
+          } else {
+            if (displayGrowl) {
+              this.notify.errorsmsg(
+                res.outcome.outcome,
+                res.outcome.outcomeMessage
+              );
+            }
           }
         }
-      }
-      this.BOMLines = res.data;
-      if (res.rowCount === 0) {
+        this.BOMLines = res.data;
+        if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
@@ -257,22 +274,23 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
         }
-    },
-      msg => {
-      // console.log(msg);
-      this.showLoader = false;
-      this.notify.errorsmsg(
+      },
+      (msg) => {
+        // console.log(msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
-      });
+      }
+    );
   }
 
   back() {
     this.router.navigate(['companies', 'boms']);
   }
 
-  pageChange($event: {rowStart: number, rowEnd: number}) {
+  pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
     this.loadBOMLines(false);
@@ -282,7 +300,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     this.rowStart = 1;
     this.loadBOMLines(false);
   }
-
 
   toggleFilters() {
     this.displayFilter = !this.displayFilter;
@@ -318,7 +335,10 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
       this.snackbarService.setHelpContext(newContext);
     } else {
-      if ($event.target.attributes.matTooltip !== undefined && $event.target !== undefined) {
+      if (
+        $event.target.attributes.matTooltip !== undefined &&
+        $event.target !== undefined
+      ) {
         $event.target.setAttribute('mattooltip', 'New Tooltip');
         $event.srcElement.setAttribute('matTooltip', 'New Tooltip');
       }
@@ -355,24 +375,19 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        bomID: this.bomid // this needs to get the actual bomID
+        bomID: this.bomid, // this needs to get the actual bomID
       },
-      requestProcedure: `BomLineAdd`
+      requestProcedure: `BomLineAdd`,
     };
     this.IDocumentService.upload(this.BomFile, model, 'boms/upload').then(
       (res: Outcome) => {
         // console.log('BOMUploadRes');
         console.log('Response: ' + res);
         if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(
-            res.outcome,
-            res.outcomeMessage);
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadBOMLines(false);
         } else {
-          this.notify.errorsmsg(
-            res.outcome,
-            res.outcomeMessage
-          );
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
       },
       (msg) => {
@@ -389,7 +404,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
 
   // editItem(id: number) {
   //   this.loadServices(false);
-
 
   //   this.themeService.toggleContextMenu(false);
   //   this.contextMenu = false;
@@ -507,11 +521,5 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    }
-
+  }
 }
-
-
-
-
-

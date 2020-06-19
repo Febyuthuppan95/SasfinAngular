@@ -6,7 +6,7 @@
         </ng-container>
       </div>
       <app-table
-        *ngIf="this.BOMLines.length > 0"
+        *ngIf="this.BOMLines"
         [dataset]="this.BOMLines"
         [headings]="this.tableHeadings"
         [recordsPerPage]="this.recordsPerPage"
