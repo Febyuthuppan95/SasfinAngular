@@ -10,6 +10,7 @@ import { Duty, DutyListResponse } from 'src/app/models/HttpRequests/SAD500Line';
 import { CaptureService } from 'src/app/services/capture.service';
 import {Pagination} from '../../../../components/pagination/pagination.component';
 import {MenuService} from '../../../../services/Menu.Service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-view-duty-tax-types',
@@ -21,7 +22,8 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService,
               private themeService: ThemeService,
               private captureService: CaptureService,
-              private IMenuService: MenuService) {
+              private IMenuService: MenuService,
+              private location: Location) {
     this.rowStart = 1;
     this.rowEnd = 15;
     this.recordsPerPage = 15;
@@ -68,11 +70,11 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Name',
-      propertyName: 'name',
+      title: 'Code',
+      propertyName: 'code',
       order: {
         enable: true,
-        tag: 'Name'
+        tag: 'Code'
       }
     },
     {
@@ -117,7 +119,6 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
   sidebarCollapsed = true;
 
   ngOnInit() {
-
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -137,7 +138,7 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
       orderDirection: this.orderDirection
     }).then(
       (res: DutyListResponse) => {
-
+        console.log(JSON.stringify(res));
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -178,13 +179,13 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
     this.loadDataset(false);
   }
 
-  // orderChange($event: Order) {
-  //   this.orderBy = $event.orderBy;
-  //   this.orderDirection = $event.orderByDirection;
-  //   this.rowStart = 1;
-  //   this.rowEnd = $event.rowCountPerPage;
-  //   this.loadDataset(false);
-  // }
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.recordsPerPage;
+    this.loadDataset(false);
+  }
 
   popClick(event, user) {
       this.contextMenuX = event.clientX + 3;
@@ -213,6 +214,10 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
   searchEvent(query: string) {
     this.filter = query;
     this.loadDataset(false);
+  }
+
+  back() {
+    this.location.back();
   }
 
   ngOnDestroy(): void {
