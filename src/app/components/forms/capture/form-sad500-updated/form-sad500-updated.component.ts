@@ -247,12 +247,16 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        console.log(res.attachmentErrors.attachmentErrors);
+        console.log(res.lines);
+
         this.lines = res.lines;
         this.lines.forEach((line) => {
           line.isLocal = false;
           line.specificSAD500LineID = line.sad500LineID;
           line.sad500ID = this.form.controls.SAD500ID.value;
           line.uniqueIdentifier = UUID.UUID();
+          line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
         });
 
         if (this.lines.length > 0) {
@@ -450,6 +454,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.form.controls[`${key}ODate`].setValue(new Date());
     this.form.controls[`${key}OBit`].setValue(true);
     this.form.controls[`${key}OReason`].setValue(reason);
+    this.form.controls[key].setErrors(null);
   }
 
   undoOverride(key: string) {

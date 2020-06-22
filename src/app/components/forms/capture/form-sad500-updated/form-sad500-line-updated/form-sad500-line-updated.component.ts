@@ -86,6 +86,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.specificSAD500LineID = this.data.sad500LineID;
       this.form.patchValue(this.data);
       this.form.controls.duties.setValue(this.data.duties);
+      this.errors = this.data.errors;
     } else {
       this.data.specificSAD500LineID = -1;
       this.data.sad500LineID = -1;
@@ -95,6 +96,27 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   }
 
   ngAfterViewInit(): void {
+    if (this.errors.length > 0) {
+      Object.keys(this.form.controls).forEach(key => {
+        this.errors.forEach((error) => {
+          let field = error.fieldName.toUpperCase();
+
+          if (field === 'TARIFF') {
+            field = 'TARIFFID';
+          }
+
+          if (field === 'COUNTRY OF ORGIN') {
+            field = 'COOID';
+          }
+
+          if (key.toUpperCase() === field) {
+            this.form.controls[key].setErrors({incorrect: true});
+            this.form.controls[key].markAsTouched();
+          }
+        });
+      });
+    }
+
     setTimeout(() => {
       this.shortcuts.push(
         {
@@ -116,11 +138,40 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   ngOnChanges() {
     this.form.reset();
 
-    if (this.data !== null) {
+    if (this.data) {
+      this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.sad500LineID;
       this.form.patchValue(this.data);
-
       this.form.controls.duties.setValue(this.data.duties);
+      this.errors = this.data.errors;
+
+      console.log(this.errors);
+
+      if (this.errors.length > 0) {
+        Object.keys(this.form.controls).forEach(key => {
+          this.errors.forEach((error) => {
+            let field = error.fieldName.toUpperCase();
+
+            if (field === 'TARIFF') {
+              field = 'TARIFFID';
+            }
+
+            if (field === 'COUNTRY OF ORGIN') {
+              field = 'COOID';
+            }
+
+            if (key.toUpperCase() === field) {
+              this.form.controls[key].setErrors({incorrect: true});
+              this.form.controls[key].markAsTouched();
+            }
+          });
+        });
+      }
+    } else {
+      this.data.specificSAD500LineID = -1;
+      this.data.sad500LineID = -1;
+      this.form.controls.specificSAD500LineID.setValue(-1);
+      this.form.controls.sad500LineID.setValue(-1);
     }
   }
 

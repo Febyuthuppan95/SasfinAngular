@@ -41,8 +41,8 @@
   </mat-card>
 </ng-container>
 
-<ng-container *ngIf="!displayLines">
-  <form [formGroup]="form" (ngSubmit)="submit(form)">
+<ng-container>
+  <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
     <div class="row">
       <div class="col-6">
         <mat-form-field appearance="fill">
