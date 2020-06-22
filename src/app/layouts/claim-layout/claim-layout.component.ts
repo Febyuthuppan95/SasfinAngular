@@ -40,22 +40,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   // build Columns
   columnsA: MatTableColumn[] = [
     {
-      name: "rowNum",
+      name: 'rowNum',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemName",
+      name: 'itemName',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemID",
+      name: 'itemID',
       isSort: true,
       isFilter: false
     },
     {
-      name: "action",
+      name: 'action',
       isSort: true,
       isFilter: false
     }
@@ -63,22 +63,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
   columnsB: MatTableColumn[] = [
     {
-      name: "rowNum",
+      name: 'rowNum',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemName",
+      name: 'itemName',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemID",
+      name: 'itemID',
       isSort: true,
       isFilter: false
     },
     {
-      name: "action",
+      name: 'action',
       isSort: true,
       isFilter: false
     }
@@ -760,7 +760,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    
+
   }
   initTableDataTypes() {
     switch(this.currentClaim.serviceName) {
@@ -874,7 +874,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.loadMainDataSet();
         }
         console.log(res);
-       
+
       },
       msg => {
         console.log('error');
@@ -945,7 +945,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             });
           }
-         
+
          if(this.currentClaim.serviceName === '538') {
            this.dataS = res.data;
            this.pageS.length = res.rowCount;
@@ -953,7 +953,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.data = res.data;
           this.pageA.length = res.rowCount;
          }
-          
+
         } else {
 
           // error
@@ -984,8 +984,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
-   * @param $event 
+   *
+   * @param $event
    * 521, 536 - Assigned Lines Row Event
    */
   rowEventB($event) {
@@ -1014,7 +1014,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         captureJoinImportID: this.selectedA,
-        
+
         rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
         rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
       },
@@ -1120,7 +1120,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             exportHSQuantity: this.selectedD
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
-    
+
         };
         break;
       }
@@ -1151,7 +1151,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         };
       }
     }
-    
+
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
       (res: Outcome) => {
         if(res.outcome === 'SUCCESS') {
@@ -1198,7 +1198,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         statusID: 2
       },
-      requestProcedure: "UpdateCompanyServiceClaimStatus"
+      requestProcedure: 'UpdateCompanyServiceClaimStatus'
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
       (res: Outcome) => {

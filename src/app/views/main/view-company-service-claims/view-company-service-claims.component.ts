@@ -122,7 +122,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   @ViewChild('myInput', { static: true })
   myInputVariable: ElementRef;
 
- 
+
 
   tableHeader: TableHeader = {
     title: `Service Claims`,
@@ -163,7 +163,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   ];
-  
+
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -203,7 +203,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   focusImport: Import;
   /* Claims Modal*/
 
- 
+
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -336,7 +336,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
   removeExportline(component: Import, element:ExportLine) {
     const model = {
-      requestParams: { 
+      requestParams: {
         userID: this.currentUser.userID,
           companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
           captureJoinImportID: element.captureJoinImportID,
@@ -372,7 +372,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     }
   addExportline(component: Import, element:Export) {
     const model = {
-      requestParams: { 
+      requestParams: {
         userID: this.currentUser.userID,
           companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
           captureJoinImportID: component.cjid,
@@ -412,7 +412,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         component.totalShortfallQuantity =0;
         this.assignedExports.forEach((y:ExportLine) => {
           component.exportQuantity += y.totalExportUnits;
-        
+
           this.availableExports = this.availableExports.filter(x => x.cjid !== y.captureJoinExportID);
         });
         component.totalShortfallQuantity = component.totHSQuantity - component.exportQuantity;
@@ -497,7 +497,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
      this.myInputVariable.nativeElement.value = null;
      this.initClaimForm();
      this.openPopulateModal.nativeElement.click();
-     
+
      // this.router.navigate()
   }
 
@@ -565,7 +565,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     });
 
   }
-  
+
 
    polulateLines() {
       const requestModel = {
@@ -674,10 +674,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   pageEvent: PageEvent;
   claimRequestParams: FormGroup;
  selectedCompanyServiceClaimID: number;
- 
+
  minClaimDate = new Date()
 
- 
+
  setPageSizeOptions(setPageSizeOptionsInput: string) {
   if (setPageSizeOptionsInput) {
     this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
@@ -712,6 +712,7 @@ saveRow() {
 
 }
 addServiceClaim() {
+
   this.openCreateModal.nativeElement.click();
 }
 createCompanyServiceClaim() {
@@ -723,7 +724,7 @@ createCompanyServiceClaim() {
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
       if (res.outcome.outcome === 'SUCCESS') {
-        
+
         this.closePopulateModal.nativeElement.click();
         this.loadServiceClaims(true);
       }
@@ -778,6 +779,7 @@ if (this.permitslist.length === 0) {
   })
 }
 openAddClaimPermits($event) {
+  this.permitsByDate.reset(null);
   this.openPermitModal.nativeElement.click();
 }
 loadCompanyPermits() {
@@ -793,7 +795,7 @@ loadCompanyPermits() {
   };
   this.companyService.getCompanyPermits(model).then(
     (res: CompanyPermitsListResponse) => {
-      
+
       if (res.outcome.outcome === 'SUCCESS') {
        this.Permits = res.permits
        console.log(this.Permits);
@@ -808,10 +810,10 @@ loadCompanyPermits() {
     }
   );
 }
-// 
+//
 generateClaimRequest() {
  this.updateCompanyServiceClaim();
-  
+
 }
 updateCompanyServiceClaim() {
   const model = {
@@ -852,7 +854,7 @@ loadClaimRequestData() {
     (res: ClaimImportComponents) => {
       if (res.outcome.outcome === 'SUCCESS') {
         this.loadingData = false;
-        this.importComponents = res.imports; 
+        this.importComponents = res.imports;
         this.importComponents.forEach((x: Import) => {
           x.exportQuantity = 0;
           x.totalShortfallQuantity = x.totHSQuantity
