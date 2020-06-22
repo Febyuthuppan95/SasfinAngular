@@ -83,6 +83,8 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     } else {
       this.data.specificSAD500LineID = -1;
       this.data.sad500LineID = -1;
+      this.form.controls.specificSAD500LineID.setValue(-1);
+      this.form.controls.sad500LineID.setValue(-1);
     }
   }
 

@@ -273,6 +273,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             line.isDeleted = 0;
             line.sad500ID = form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
+            console.log(line);
 
             if (line.isLocal) {
               await this.captureService.sad500LineAdd(line).then((res: any) =>  {
@@ -281,7 +282,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               await this.captureService.sad500LineUpdate(line).then((res) => console.log(res), (msg) => console.log(JSON.stringify(msg)));
             }
 
-            if (line.duties) {
+            if (line.duties && sad500LineID !== null && sad500LineID) {
               await this.saveLineDuty(line.duties.filter(x => x.isLocal === true), async (duty) => {
                 const dutyRequest = {
                   userID: this.currentUser.userID,

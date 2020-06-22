@@ -47,6 +47,8 @@ constructor(private userService: UserService,
   }
 
   ngOnChanges() {
+    console.log(this.sad500LineID);
+
     if (this.sad500LineIDTemp !== this.sad500LineID) {
       this.load();
       this.query.setValue('');
@@ -99,7 +101,7 @@ constructor(private userService: UserService,
         .sad500LineDutyList({
           userID: this.currentUser.userID,
           dutyID: -1,
-          sad500LineID: this.sad500LineID,
+          sad500LineID: this.sad500LineID === null ? -1 : this.sad500LineID,
           filter: '',
           rowStart: 1,
           rowEnd: 100,
