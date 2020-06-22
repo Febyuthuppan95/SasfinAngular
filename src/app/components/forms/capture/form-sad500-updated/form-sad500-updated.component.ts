@@ -16,6 +16,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { UUID } from 'angular2-uuid';
+import { DialogOverrideComponent } from '../dialog-override/dialog-override.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -428,4 +429,32 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   ngOnDestroy(): void {}
+
+  // @override methods
+  overrideDialog(key, label) {
+    this.dialog.open(DialogOverrideComponent, {
+      width: '512px',
+      data: {
+        label
+      }
+    }).afterClosed().subscribe((val) => {
+      if (val) {
+        this.override(key, val);
+      }
+    });
+  }
+
+  override(key: string, reason: string) {
+    this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
+    this.form.controls[`${key}ODate`].setValue(new Date());
+    this.form.controls[`${key}OBit`].setValue(true);
+    this.form.controls[`${key}OReason`].setValue(reason);
+  }
+
+  undoOverride(key: string) {
+    this.form.controls[`${key}OUserID`].setValue(null);
+    this.form.controls[`${key}ODate`].setValue(new Date());
+    this.form.controls[`${key}OBit`].setValue(false);
+    this.form.controls[`${key}OReason`].setValue(null);
+  }
 }
