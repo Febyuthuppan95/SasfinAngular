@@ -59,8 +59,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     console.log(this.currentDoctype);
     switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD': {
-        this.componentService.renderComponent(FormSAD500Component);
-        // this.componentService.renderComponent(FormSad500UpdatedComponent);
+        // this.componentService.renderComponent(FormSAD500Component);
+        this.componentService.renderComponent(FormSad500UpdatedComponent);
         break;
       }
       case 'CRN' : {
@@ -88,8 +88,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'VOC': {
-        this.componentService.renderComponent(FormSAD500Component);
-        // this.componentService.renderComponent(FormSad500UpdatedComponent);
+        // this.componentService.renderComponent(FormSAD500Component);
+        this.componentService.renderComponent(FormSad500UpdatedComponent);
         break;
       }
       case 'WAY': {

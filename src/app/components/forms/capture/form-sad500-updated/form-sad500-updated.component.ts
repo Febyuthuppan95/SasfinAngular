@@ -14,7 +14,8 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { UUID } from 'angular2-uuid';
 
 @AutoUnsubscribe()
 @Component({
@@ -29,17 +30,18 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
               private objectHelpService: ObjectHelpService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
   public activeLine: any;
-  public activeIndex: any;
+  public activeIndex = 0;
   public displayLines = false;
   public errors: any[] = [];
-  public shortcuts: ShortcutInput[] = [];
+  public shortcuts: ShortcutInput[];
   public help = false;
   public isVOC = false;
 
@@ -56,13 +58,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.form = new FormGroup({
-      userID: new FormControl(null, [Validators.required]),
+      userID: new FormControl(this.currentUser.userID, [Validators.required]),
       SAD500ID: new FormControl(null, [Validators.required]),
       serialNo: new FormControl(null, [Validators.required]),
       lrn: new FormControl(null, [Validators.required]),
       rebateCode: new FormControl(null),
       totalCustomsValue: new FormControl(0, [Validators.required]),
-      cpc: new FormControl(null, [Validators.required]),
+      cpcID: new FormControl(null, [Validators.required]),
       waybillNo: new FormControl(null, [Validators.required]),
       supplierRef: new FormControl(null, [Validators.required]),
       mrn: new FormControl(null, [Validators.required]),
@@ -90,11 +92,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       totalDutyOUserID: new FormControl(null),
       totalDutyODate: new FormControl(null),
       totalDutyOReason: new FormControl(null),
-      isDeleted: new FormControl(false)
-    });
-
-    this.form.controls.cpc.valueChanges.subscribe((val) => {
-      console.log(val);
+      isDeleted: new FormControl(0),
     });
 
     this.transactionService.observerCurrentAttachment()
@@ -117,94 +115,84 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.eventService.observeCaptureEvent()
     .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-
   }
 
   ngAfterViewInit(): void {
-    this.shortcuts.push(
-        {
-          key: 'alt + .',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.nextLine()
-        },
-        {
-          key: 'alt + ,',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.prevLine()
-        },
-        {
-          key: 'alt + /',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => alert('Focus form')
-        },
-        {
-          key: 'alt + m',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            alert('Focus form');
-            this.activeLine = null;
-            this.activeIndex = -1;
-          }
-        },
-        {
-          key: 'alt + n',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            alert('Focus form');
-            this.activeLine = null;
-            this.activeIndex = -1;
-          }
-        },
-        {
-          key: 'alt + s',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-              {
-                if (!this.dialogOpen) {
-                  this.dialogOpen = true;
-                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-                    this.dialogOpen = false;
-                    if (status) {
-                      // this.saveLines();
-                    }
-                  });
-                }
-              }
-          }
-        },
-        {
-          key: 'alt + l',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.displayLines = !this.displayLines;
-
-            // if (this.displayLines) {
-            //   // this.sad500Tooltip.hide();
-            //   // this.sadLinesTooltip.show();
-            //   // setTimeout(() => { this.sadLinesTooltip.hide(); } , 1000);
-            // } else {
-            //   this.sadLinesTooltip.hide();
-            //   this.sad500Tooltip.show();
-            //   setTimeout(() => { this.sad500Tooltip.hide(); } , 1000);
-            // }
-          }
-        },
-        {
-            key: 'ctrl + alt + h',
+    setTimeout(() => {
+        this.shortcuts = [
+          {
+            key: 'alt + .',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.nextLine()
+          },
+          {
+            key: 'alt + ,',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.prevLine()
+          },
+          {
+            key: 'alt + /',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => alert('Focus form')
+          },
+          {
+            key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              //  this.toggelHelpBar();
+              alert('Focus form');
+              this.activeLine = null;
+              this.activeIndex = -1;
             }
-        }
-    );
+          },
+          {
+            key: 'alt + n',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              alert('Focus form');
+              this.activeLine = null;
+              this.activeIndex = -1;
+            }
+          },
+          {
+            key: 'alt + s',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+                {
+                  if (!this.dialogOpen) {
+                    this.dialogOpen = true;
+                    this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                      this.dialogOpen = false;
+                      if (status) {
+                        this.submit(this.form);
+                      }
+                    });
+                  }
+                }
+            }
+          },
+          {
+            key: 'alt + l',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              this.displayLines = !this.displayLines;
+            }
+          },
+          {
+              key: 'ctrl + alt + h',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.toggelHelpBar();
+              }
+          }];
+    });
   }
 
   async load() {
@@ -217,11 +205,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
       const response: any = res;
+      console.log(response);
       response.userID = request.userID;
+      response.cpcID = response.cpc;
       response.SAD500ID = request.specificID;
       response.attachmentStatusID = response.statusID;
 
       this.form.patchValue(response);
+      this.form.controls.userID.setValue(this.currentUser.userID);
       this.errors = res.attachmentErrors.attachmentErrors;
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {
@@ -234,12 +225,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         });
       }
 
+      this.form.updateValueAndValidity();
       await this.loadLines();
     });
-  }
-
-  getError(key: string): string {
-    return this.errors.find(x => x.fieldName === key).errorDescription;
   }
 
   async loadLines() {
@@ -257,33 +245,70 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        console.log(res);
         this.lines = res.lines;
-        this.activeIndex = this.lines.length - 1;
-        if (this.activeIndex > -1) {
-            this.activeLine = this.lines[this.activeIndex - 1];
+        this.lines.forEach((line) => {
+          line.isLocal = false;
+          line.specificSAD500LineID = line.sad500LineID;
+          line.sad500ID = this.form.controls.SAD500ID.value;
+          line.uniqueIdentifier = UUID.UUID();
+        });
+
+        if (this.lines.length > 0) {
+            this.activeLine = this.lines[this.activeIndex];
         }
       });
   }
 
-  submit(form: FormGroup, escalation?: boolean) {
+  getError(key: string): string {
+    return this.errors.find(x => x.fieldName === key).errorDescription;
+  }
+
+  async submit(form: FormGroup, escalation?: boolean) {
       const requestModel = form.value;
-      this.captureService.sad500Update(requestModel).then(
-        (res: Outcome) => {
-          console.log(res);
+
+      await this.captureService.sad500Update(requestModel).then(
+        async (res: Outcome) => {
+          await this.saveLines(this.lines, async (line) => {
+            let sad500LineID = line.sad500LineID;
+            line.isDeleted = 0;
+            line.sad500ID = form.controls.SAD500ID.value;
+            line.userID = this.currentUser.userID;
+            console.log(line);
+
+            if (line.isLocal) {
+              await this.captureService.sad500LineAdd(line).then((res: any) =>  {
+                console.log(res); sad500LineID = res.createdID; }, (msg) => console.log(JSON.stringify(msg)));
+            } else {
+              await this.captureService.sad500LineUpdate(line).then((res) => console.log(res), (msg) => console.log(JSON.stringify(msg)));
+            }
+
+            if (line.duties && sad500LineID !== null && sad500LineID) {
+              await this.saveLineDuty(line.duties.filter(x => x.isLocal === true), async (duty) => {
+                const dutyRequest = {
+                  userID: this.currentUser.userID,
+                  dutyID: duty.dutyTaxTypeID,
+                  sad500LineID,
+                  value: duty.value
+                };
+
+                // tslint:disable-next-line: max-line-length
+                await this.captureService.sad500LineDutyAdd(dutyRequest)
+                .then(
+                  (res) => console.log(res),
+                  (msg) => console.log(JSON.stringify(msg)));
+              });
+            }
+          });
 
           if (res.outcome === 'SUCCESS') {
-            // this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
             // this.companyService.setCapture({ capturestate: true });
             // this.router.navigateByUrl('transaction/capturerlanding');
           } else {
-            // this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
-        (msg) => {
-          console.log(JSON.stringify(msg));
-          // this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
+        (msg) => console.log(JSON.stringify(msg))
       );
   }
 
@@ -301,65 +326,39 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.objectHelpService.toggleHelp(this.help);
   }
 
-  // Line Controls
-
+  // [Line Controls]
   queueLine($event: any) {
-    this.lines.push($event);
+    const target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+    $event.userID = this.currentUser.userID;
+    console.log($event.duties);
+
+    if (!target) {
+      $event.isLocal = true;
+      this.lines.push($event);
+      this.snackbar.open('Line added to queue', '', {duration: 3000});
+    } else {
+      $event.isLocal = false;
+      const original = this.lines[this.lines.indexOf(target)];
+      $event.specificSAD500LineID = original.specificSAD500LineID;
+      $event.sad500LineID = original.specificSAD500LineID;
+      $event.sad500ID = original.SAD500ID;
+      this.lines[this.lines.indexOf(target)] = $event;
+      this.snackbar.open('Line queued to update', '', {duration: 3000});
+    }
+
+    this.cancelLine();
   }
 
-  // saveLines(obj: FormGroup, escalation) {
-  //     if (obj !== null && obj !== undefined) {
-  //       const perfect = obj.value;
+  async saveLineDuty(duties: any, callback) {
+    for (let index = 0; index < duties.length; index++) {
+      await callback(duties[index], index, duties);
+    }
+  }
 
-  //       this.captureService.sad500LineAdd(perfect).then(
-  //         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-  //           console.log();
-  //         });
-  //     } else {
-  //       if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
-  //         const lineCreate: any = this.lineQueue[this.lineIndex];
-  //         delete lineCreate.isPersist;
-  //         const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-  //         this.captureService.sad500LineAdd(perfect).then(
-  //           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-  //             if (res.outcome === 'SUCCESS') {
-
-  //               const currentLine = this.lineQueue[this.lineIndex];
-
-  //               if (currentLine.duties) {
-  //                 if (currentLine.duties.length > 0) {
-  //                   currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-  //                   this.dutyIndex = 0;
-  //                   this.saveLineDuty(currentLine.duties[0]);
-  //                 } else {
-  //                   this.nextLineAsync();
-  //                 }
-  //               } else {
-  //                 this.nextLineAsync();
-  //               }
-  //             } else {
-  //               console.log('Line not saved');
-  //             }
-  //           },
-  //           (msg) => {
-  //             console.log(JSON.stringify(msg));
-  //           }
-  //         );
-  //       } else {
-  //         this.submit(escalation);
-  //       }
-  //     }
-  // }
-
-  saveLineDuty(line: any) {
-    this.captureService.sad500LineDutyAdd({
-      userID: this.currentUser.userID,
-      dutyID: line.dutyTaxTypeID,
-      sad500LineID: line.sad500Line,
-      value: line.value
-    }).then(
-      (res: Outcome) => {},
-    );
+  async saveLines(lines: any[], callback) {
+    for (let index = 0; index < lines.length; index++) {
+      await callback(lines[index], index, lines);
+    }
   }
 
   prevLine() {
@@ -391,10 +390,37 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.activeIndex = -1;
   }
 
+  async deleteLine() {
+    const targetLine = this.lines[this.activeIndex];
+    targetLine.isDeleted = 1;
+    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+
+    if (!targetLine.isLocal) {
+      await this.captureService.sad500LineUpdate(targetLine);
+    }
+
+    this.lines.splice(this.lines.indexOf(targetLine), 1);
+    this.activeLine = null;
+    this.activeIndex = -1;
+  }
+
+  async deleteDuty() {
+    const targetLine = this.lines.find(x => x !== this.lines[this.activeIndex]);
+    targetLine.isDeleted = 1;
+    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+
+    if (!targetLine.isLocal) {
+      await this.captureService.sad500LineUpdate(targetLine);
+    }
+
+    this.lines.splice(this.lines.indexOf(targetLine), 1);
+    this.activeLine = null;
+    this.activeIndex = -1;
+  }
+
   cancelLine() {
     this.activeLine = null;
-    console.log(this.lines.length);
-    this.activeIndex = this.lines.length - 1;
+    this.activeIndex = 0;
     this.activeLine = this.lines[this.activeIndex];
   }
 
