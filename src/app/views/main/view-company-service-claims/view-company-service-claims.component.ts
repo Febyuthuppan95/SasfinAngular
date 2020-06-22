@@ -876,10 +876,12 @@ export class Import {
   cjid: number;
   totDuty: number;
   exportQuantity?: number;
+  availHSQuantity?: number;
   totalShortfallQuantity?: number;
-  totHSQuantity: number;
+  totHSQuantity?: number;
   availDuty: number;
   importDate: Date | string
+  mrn?: string;
 }
 
 export class ClaimImportComponents {
