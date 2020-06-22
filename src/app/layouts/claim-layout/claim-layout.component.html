@@ -41,7 +41,7 @@
                     <mat-icon>undo</mat-icon>
                 </button>
                 <button matTooltip="Submit Claim " class="mat-elevation-z4" style="margin-left: 20px; background-color: #4BB543;" 
-                mat-mini-fab color="primary" aria-label="Queue Report" (click)="updateClaimStatus()">
+                mat-mini-fab color="primary" aria-label="Queue Report" (click)="updateClaimLines()">
                     <mat-icon>playlist_add_check</mat-icon>
                 </button>
             </div>
@@ -56,15 +56,15 @@
                     <mat-card-content>
                         <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Claim Parameters</button>
                         <form [formGroup]="claimRequestParams">
-                            <div class="row">
-                                <mat-form-field class="col-md-4">
+                            <div class="row" *ngIf="this.currentClaim.serviceName ==='521'">
+                                <mat-form-field class="col-md-4" >
                                     <mat-label>Export Date Range:</mat-label>
                                     <input required matInput [matDatepicker]="exportStartDate" formControlName="ExportStartDate">
                                     <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
                                     <mat-datepicker #exportStartDate></mat-datepicker>
                                     <!-- <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error> -->
                                 </mat-form-field>
-                                <mat-form-field class="col-md-4">
+                                <mat-form-field class="col-md-4" >
                                     <mat-label>To:</mat-label>
                                     <input required matInput [matDatepicker]="exportEndDate" formControlName="ExportEndDate">
                                     <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
@@ -95,7 +95,22 @@
                                     <mat-datepicker-toggle matSuffix [for]="ClaimDate"></mat-datepicker-toggle>
                                     <mat-datepicker #ClaimDate></mat-datepicker>
                                   </mat-form-field>
-                                  
+                                  <mat-form-field class="offset-md-1 col-md-2" *ngIf="this.currentClaim.serviceName ==='538'">
+                                    <mat-label>Duty%</mat-label>
+                                    <mat-select required formControlName="Duty">
+                                    <mat-option *ngFor="let duty of dutyPercentages" [value]="duty.value" >
+                                        {{duty.value}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                  <mat-form-field class="offset-md-1 col-md-2" *ngIf="this.currentClaim.serviceName ==='536'">
+                                    <mat-label>Extension Days</mat-label>
+                                    <mat-select required formControlName="ExtensionDays">
+                                    <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
+                                        {{day.value}}
+                                    </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                             <div class="row">
                                 <!-- <div class="col-sm-10 text-right"> <button id="submitButton" *ngIf="this.importComponents"  mat-raised-button color="primary" (click)="updateClaimStatus()">Submit Claim</button></div> -->
@@ -106,7 +121,26 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div class="bottom-section row">
+            <div class="bottom-section row" *ngIf="this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID === undefined">
+                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                   
+                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available SAD500's</button>
+                    <app-nested-table *ngIf="!this.loading"
+                    [action_icon]="'view_headline'"
+                    [isPageable]="'true'"
+                    [parents] = "this.data" 
+                    [headings]="this.headings"
+                    [filter]="this.filterS"
+                    [(paginator)]="this.pageS"
+                    [pageSizeOptions]="[5, 10]"
+                    (rowEvent)="rowEventS($event)"
+                    [noDataError] ="'No Available SAD500s'"
+                    (pageEvent)="paginateA($event)"
+                    [action_toolip]="'View Data'"
+                    ></app-nested-table>
+                </mat-card>
+            </div>
+            <div class="bottom-section row" *ngIf="this.showMain">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                    
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Imports</button>

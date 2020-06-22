@@ -137,5 +137,6 @@ export class SelectedCompanyClaim {
   serviceName: string;
   companyServiceClaimID: number;
   claimStatus: string;
+  sad500ID?: number;
 }
 

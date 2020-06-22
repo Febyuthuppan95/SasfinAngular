@@ -1,10 +1,26 @@
 export const ServiceStoredProcedures = {
-    read: {
-        list: 'ImportsList',
-        lines: 'ExportsList'
+    claim521: {
+        parameters : {
+            read: 'CompanyServiceClaimLines',
+            update: 'CompanyServiceClaimsUpdate'
+        },
+        imports: {
+            read: 'ImportsList521',
+        },
+        assigned: {
+
+        },
+        exports: {
+
+        }
     },
-    update: {
-        line: 'CompanyServiceClaimLineUpdate',
-        claim: 'UpdateCompanyServiceClaimStatus'
+    claim536: {
+
+    },
+    claim538: {
+
+    },
+    claim522: {
+
     }
 }
