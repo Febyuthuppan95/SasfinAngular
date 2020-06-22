@@ -45,6 +45,7 @@
               "src/mobile.scss"
             ],
             "scripts": [
+              "node_modules/mammoth/mammoth.browser.min.js"
             ]
           },
           "configurations": {
