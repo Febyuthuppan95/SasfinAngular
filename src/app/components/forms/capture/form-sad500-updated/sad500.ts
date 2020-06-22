@@ -1,0 +1,37 @@
+export class SAD500 {
+  userID: number;
+  saD500ID: number;
+  serialNo: string;
+  lrn: string;
+  rebateCode: string;
+  totalCustomsValue: number;
+  cpcID: number;
+  waybillNo: string;
+  supplierRef: string;
+  mrn: string;
+  attachmentStatusID: number;
+  importersCode: string;
+  fileRef: string;
+  totalDuty: number;
+  isDeleted: number;
+  lrnOBit: boolean;
+  lrnOUserID: number;
+  lrnODate: Date;
+  lrnOReason: string;
+  mrnOBit: boolean;
+  mrnOUserID: number;
+  mrnODate: Date;
+  mrnOReason: string;
+  importersCodeOBit: boolean;
+  importersCodeOUserID: number;
+  importersCodeODate: Date;
+  importersCodeOReason: string;
+  fileRefOBit: boolean;
+  fileRefOUserID: number;
+  fileRefODate: Date;
+  fileRefOReason: string;
+  totalDutyOBit: boolean;
+  totalDutyOUserID: number;
+  totalDutyODate: Date;
+  totalDutyOReason: string;
+}

@@ -1,4 +1,4 @@
-<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <app-notification></app-notification>
 
 <div class="capture-header">
@@ -21,17 +21,18 @@
   <mat-card>
     <mat-card-content>
       <div style="padding: 0 24px; height: 62px;" class="line-list">
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLine();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
         <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         <p *ngIf="!lines" style="font-size: 16px;">No SAD500 Lines Added</p>
         <p *ngIf="lines">
           <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
           <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
-        <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
         <!-- &nbsp;<span>{{lineState}}</span> -->
-      </p>
+        </p>
       <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
           <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
       </div> -->
@@ -43,7 +44,7 @@
 <ng-container *ngIf="!displayLines">
   <form [formGroup]="form" (ngSubmit)="submit(form)">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             Serial No
@@ -53,7 +54,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             LRN
@@ -73,7 +74,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             Total Customs Value
@@ -83,8 +84,8 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
-        <ls-autocomplete-cpc [(control)]="form.controls.cpc"></ls-autocomplete-cpc>
+      <div class="col-6">
+        <ls-autocomplete-cpc [(control)]="form.controls.cpcID"></ls-autocomplete-cpc>
         <br /><br />
       </div>
       <div class="col-12">
@@ -97,7 +98,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             Supplier Ref
@@ -107,7 +108,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             MRN
@@ -117,7 +118,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             TIN Number

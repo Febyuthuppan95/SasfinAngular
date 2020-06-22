@@ -1,0 +1,20 @@
+<p>Assign Duty</p>
+<mat-form-field [appearance]="appearance">
+  <mat-label>
+    Duty Types
+  </mat-label>
+  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
+  <mat-hint>Select a duty type and assign a duty value</mat-hint>
+</mat-form-field>
+<mat-autocomplete #cpcAuto="matAutocomplete" (optionSelected)="assignDuty($event.option.value.dutyTaxTypeID, $event.option.value.code)" [displayWith]="displayFn">
+  <mat-option *ngFor="let item of list" [value]="item">
+    {{item.code}}
+  </mat-option>
+</mat-autocomplete>
+<br>
+<mat-list role="list">
+  <mat-list-item role="listitem" *ngFor="let item of assignedList">
+    <button mat-icon-button (click)="revokeDuty(item)" type="button"><mat-icon>delete</mat-icon></button>{{item.label ? item.label : item.code}}&nbsp;({{item.duty}})
+    <span *ngIf="item.isLocal">&nbsp; - Line needs to update before changes apply</span>
+  </mat-list-item>
+</mat-list>

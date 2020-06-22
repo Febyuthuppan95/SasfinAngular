@@ -9,8 +9,6 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
   public post(url: string, requestModel: object) {
-    console.log(requestModel);
-
     return new Promise((resolve, reject) => {
       this.httpClient
           .post(url, requestModel)

@@ -29,18 +29,27 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy {
       this.control = new FormControl();
     }
 
-    this.load();
+    this.control.valueChanges.subscribe((val) => {
+      if (val === null) {
+        this.query.reset(null);
+        this.load(true);
+      } else {
+        this.load(true);
+      }
+    });
+
+    this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
 
-      if (this.query.valid) {
+      if (this.query.value) {
         this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
       }
     });
   }
 
-  load() {
+  load(setDefault?: boolean) {
     const request: ListCountriesRequest = {
       userID: this.currentUser.userID,
       specificCountryID: -1,
@@ -55,6 +64,11 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy {
       .then((res: CountriesListResponse) => {
         this.list = res.countriesList;
         this.listTemp = res.countriesList;
+
+        if (setDefault) {
+          const defaultValue = this.list.find(x => x.countryID === this.control.value);
+          this.query.setValue(defaultValue, { emitEvent: false });
+        }
       });
   }
 

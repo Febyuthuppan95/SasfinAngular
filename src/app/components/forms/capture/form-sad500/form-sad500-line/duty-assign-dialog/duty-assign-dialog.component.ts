@@ -14,12 +14,9 @@ export class DutyAssignDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Duty
     ) { }
 
-  ngOnInit() {
-    console.log(this.data);
-  }
+  ngOnInit() {}
+
   onNoClick(): void {
-    console.log(this.data);
     this.dialogRef.close();
   }
-
 }

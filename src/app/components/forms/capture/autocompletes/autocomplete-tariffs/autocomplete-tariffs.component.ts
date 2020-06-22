@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { TariffService } from 'src/app/services/Tariff.service';
@@ -10,7 +10,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
   templateUrl: './autocomplete-tariffs.component.html',
   styleUrls: ['./autocomplete-tariffs.component.scss']
 })
-export class AutocompleteTariffsComponent implements OnInit, OnDestroy {
+export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private userService: UserService,
               private tariffService: TariffService) { }
 
@@ -20,21 +20,34 @@ export class AutocompleteTariffsComponent implements OnInit, OnDestroy {
   private currentUser = this.userService.getCurrentUser();
 
   public list: any [] = [];
-  public query = new FormControl();
+  public query = new FormControl('');
 
   ngOnInit() {
     if (!this.control) {
       this.control = new FormControl();
     }
 
-    this.load();
+    this.control.valueChanges.subscribe((val) => {
+      if (val === null) {
+        this.query.reset('');
+        this.load(true);
+      } else {
+        this.load(true);
+      }
+    });
+
+    this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.load();
     });
   }
 
-  load() {
+  ngOnChanges() {
+
+  }
+
+  load(setDefault?: boolean) {
     this.tariffService
     .list({
       userID: this.currentUser.userID,
@@ -60,7 +73,11 @@ export class AutocompleteTariffsComponent implements OnInit, OnDestroy {
         rowCount: number;
       }) => {
         this.list = res.tariffList;
-        // this.valueKeeper.setValue(this.list.find(x => x.tariffID === this.control.value));
+
+        if (setDefault) {
+          const defaultValue = this.list.find(x => x.id === this.control.value);
+          this.query.setValue(defaultValue, { emitEvent: false });
+        }
       });
   }
 

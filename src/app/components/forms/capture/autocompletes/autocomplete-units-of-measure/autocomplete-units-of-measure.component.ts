@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
@@ -30,18 +30,27 @@ constructor(private userService: UserService,
       this.control = new FormControl();
     }
 
-    this.load();
+    this.control.valueChanges.subscribe((val) => {
+      if (val === null) {
+        this.query.reset(null);
+        this.load(true);
+      } else {
+        this.load(true);
+      }
+    });
+
+    this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
 
-      if (this.query.valid) {
+      if (this.query.value) {
         this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
       }
     });
   }
 
-  load() {
+  load(setDefault?: boolean) {
     this.unitService
     .list({
       userID: this.currentUser.userID,
@@ -57,6 +66,11 @@ constructor(private userService: UserService,
         if (res.outcome.outcome === 'SUCCESS') {
           this.list = res.unitOfMeasureList;
           this.listTemp = res.unitOfMeasureList;
+
+          if (setDefault) {
+            const defaultValue = this.list.find(x => x.unitOfMeasureID === this.control.value);
+            this.query.setValue(defaultValue, { emitEvent: false });
+          }
         }
       });
   }
