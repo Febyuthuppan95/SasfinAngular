@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-form-sad500-line-updated',
@@ -9,53 +10,53 @@ import { AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 })
 export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterViewInit {
 
-  constructor() { }
+  constructor(private snackbar: MatSnackBar) { }
 
   public form = new FormGroup({
-    userID: new FormControl(null, [Validators.required]),
-    specificSAD500LineID: new FormControl(null, [Validators.required]),
+    userID: new FormControl(null),
+    specificSAD500LineID: new FormControl(null),
     tariffID: new FormControl(null, [Validators.required]),
     unitOfMeasureID: new FormControl(null, [Validators.required]),
-    originalLineID: new FormControl(null, [Validators.required]),
+    originalLineID: new FormControl(null),
     cooID: new FormControl(null, [Validators.required]),
-    replacedByLineID: new FormControl(null, [Validators.required]),
+    replacedByLineID: new FormControl(null),
     lineNo: new FormControl(null, [Validators.required]),
     customsValue: new FormControl(null, [Validators.required]),
     previousDeclaration: new FormControl(null, [Validators.required]),
     quantity: new FormControl(null, [Validators.required]),
-    duty: new FormControl(null, [Validators.required]),
+    duty: new FormControl(null),
     duties: new FormControl(null, [Validators.required]),
     supplyUnit: new FormControl(null, [Validators.required]),
-    lineNoOBit: new FormControl(false, [Validators.required]),
-    lineNoOUserID: new FormControl(null, [Validators.required]),
-    lineNoODate: new FormControl(new Date(), [Validators.required]),
-    lineNoOReason: new FormControl(null, [Validators.required]),
-    customsValueOBit: new FormControl(false, [Validators.required]),
-    customsValueOUserID: new FormControl(null, [Validators.required]),
-    customsValueODate: new FormControl(new Date(), [Validators.required]),
-    customsValueOReason: new FormControl(null, [Validators.required]),
-    quantityOBit: new FormControl(false, [Validators.required]),
-    quantityOUserID: new FormControl(null, [Validators.required]),
-    quantityODate: new FormControl(new Date(), [Validators.required]),
-    quantityOReason: new FormControl(null, [Validators.required]),
-    previousDeclarationOBit: new FormControl(false, [Validators.required]),
-    previousDeclarationOUserID: new FormControl(null, [Validators.required]),
-    previousDeclarationODate: new FormControl(new Date(), [Validators.required]),
-    previousDeclarationOReason: new FormControl(null, [Validators.required]),
-    dutyOBit: new FormControl(false, [Validators.required]),
-    dutyOUserID: new FormControl(null, [Validators.required]),
-    dutyODate: new FormControl(new Date(), [Validators.required]),
-    dutyOReason: new FormControl(null, [Validators.required]),
-    vatOBit: new FormControl(false, [Validators.required]),
-    vatOUserID: new FormControl(null, [Validators.required]),
-    vatODate: new FormControl(new Date(), [Validators.required]),
-    vatOReason: new FormControl(null, [Validators.required]),
-    supplyUnitOBit: new FormControl(false, [Validators.required]),
-    supplyUnitOUserID: new FormControl(null, [Validators.required]),
-    supplyUnitODate: new FormControl(new Date(), [Validators.required]),
-    supllyUnitOReason: new FormControl(null, [Validators.required]),
-    sad500ID: new FormControl(null, [Validators.required]),
-    isDeleted: new FormControl(0, [Validators.required]),
+    lineNoOBit: new FormControl(false),
+    lineNoOUserID: new FormControl(null),
+    lineNoODate: new FormControl(new Date()),
+    lineNoOReason: new FormControl(null),
+    customsValueOBit: new FormControl(false),
+    customsValueOUserID: new FormControl(null),
+    customsValueODate: new FormControl(new Date()),
+    customsValueOReason: new FormControl(null),
+    quantityOBit: new FormControl(false),
+    quantityOUserID: new FormControl(null),
+    quantityODate: new FormControl(new Date()),
+    quantityOReason: new FormControl(null),
+    previousDeclarationOBit: new FormControl(false),
+    previousDeclarationOUserID: new FormControl(null),
+    previousDeclarationODate: new FormControl(new Date()),
+    previousDeclarationOReason: new FormControl(null),
+    dutyOBit: new FormControl(false),
+    dutyOUserID: new FormControl(null),
+    dutyODate: new FormControl(new Date()),
+    dutyOReason: new FormControl(null),
+    vatOBit: new FormControl(false),
+    vatOUserID: new FormControl(null),
+    vatODate: new FormControl(new Date()),
+    vatOReason: new FormControl(null),
+    supplyUnitOBit: new FormControl(false),
+    supplyUnitOUserID: new FormControl(null),
+    supplyUnitODate: new FormControl(new Date()),
+    supllyUnitOReason: new FormControl(null),
+    sad500ID: new FormControl(null),
+    isDeleted: new FormControl(0),
     uniqueIdentifier: new FormControl(),
   });
 
@@ -123,7 +124,11 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   }
 
   submit(form: FormGroup) {
-    this.submission.emit(form.value);
+    if (form.valid) {
+      this.submission.emit(form.value);
+    } else {
+      this.snackbar.open('Please fill in line details');
+    }
   }
 
 }

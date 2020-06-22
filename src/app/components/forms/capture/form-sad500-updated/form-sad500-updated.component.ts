@@ -264,6 +264,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   async submit(form: FormGroup, escalation?: boolean) {
+    if (form.valid && this.lines.length > 0) {
       const requestModel = form.value;
 
       await this.captureService.sad500Update(requestModel).then(
@@ -273,7 +274,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             line.isDeleted = 0;
             line.sad500ID = form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
-            console.log(line);
 
             if (line.isLocal) {
               await this.captureService.sad500LineAdd(line).then((res: any) =>  {
@@ -310,6 +310,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         },
         (msg) => console.log(JSON.stringify(msg))
       );
+    } else {
+      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+    }
   }
 
   updateHelpContext(slug: string) {
