@@ -67,7 +67,8 @@ shortcuts: ShortcutInput[] = [];
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
 
-@ViewChild(KeyboardShortcutsComponent, { static: true }) private keyboard: KeyboardShortcutsComponent;
+@ViewChild(KeyboardShortcutsComponent, { static: true })
+private keyboard: KeyboardShortcutsComponent;
 
 @ViewChild('sadLinesTooltip', {static : false})
 sadLinesTooltip: MatTooltip;
@@ -974,6 +975,8 @@ dialogOpen = false;
   }
 
   saveLineDuty(line: Duty) {
+    console.log(line);
+
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
       dutyID: line.dutyTaxTypeID,

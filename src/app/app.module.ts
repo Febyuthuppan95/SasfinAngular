@@ -238,6 +238,12 @@ import { ViewCompanyBomsItemgroupsListComponent } from './views/main/view-compan
 import { ViewCompanyBomsItemsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
 import { ViewCompanyBomsItemgroupsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
 import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-company-boms/view-company-boms-lines-error-list/view-company-boms-lines-error-list.component';
+import { FormSad500UpdatedComponent } from './components/forms/capture/form-sad500-updated/form-sad500-updated.component';
+import { AutocompleteCPCComponent } from './components/forms/capture/autocompletes/autocomplete-cpc/autocomplete-cpc.component';
+import { AutocompleteCooComponent } from './components/forms/capture/autocompletes/autocomplete-coo/autocomplete-coo.component';
+import { FormSad500LineUpdatedComponent } from './components/forms/capture/form-sad500-updated/form-sad500-line-updated/form-sad500-line-updated.component';
+import { AutocompleteTariffsComponent } from './components/forms/capture/autocompletes/autocomplete-tariffs/autocomplete-tariffs.component';
+import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/autocompletes/autocomplete-units-of-measure/autocomplete-units-of-measure.component';
 
 @NgModule({
   declarations: [
@@ -402,7 +408,13 @@ import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-compan
     ViewCompanyBomsItemgroupsListComponent,
     ViewCompanyBomsItemsErrorsListComponent,
     ViewCompanyBomsItemgroupsErrorsListComponent,
-    ViewCompanyBomsLinesErrorListComponent
+    ViewCompanyBomsLinesErrorListComponent,
+    FormSad500UpdatedComponent,
+    AutocompleteCPCComponent,
+    AutocompleteCooComponent,
+    FormSad500LineUpdatedComponent,
+    AutocompleteTariffsComponent,
+    AutocompleteUnitsOfMeasureComponent
   ],
   imports: [
     BrowserModule,
@@ -498,7 +510,8 @@ import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-compan
     EscalateBottomSheetComponent,
     DutyAssignDialogComponent,
     UploadProdatComponent,
-    DialogEscalationReasonComponent
+    DialogEscalationReasonComponent,
+    FormSad500UpdatedComponent
   ]
 })
 export class AppModule { }
