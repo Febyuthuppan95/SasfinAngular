@@ -67,8 +67,6 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
         if (res.rowCount > 0 )  {
           this.cpcList = res.data;
           this.cpcListTemp = res.data;
-          console.log(this.cpcList);
-          console.log(this.control.value);
           if (setDefault) {
             const defaultValue = this.cpcList.find(x => x.CPCID === this.control.value);
             this.query.setValue(defaultValue, { emitEvent: false });
