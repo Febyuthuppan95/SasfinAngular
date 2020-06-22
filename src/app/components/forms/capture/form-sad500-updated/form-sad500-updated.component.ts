@@ -320,6 +320,19 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       const requestModel = form.value;
       requestModel.attachmentStatusID = 3;
 
+      await this.captureService.vocUpdate(requestModel).then(
+        (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Cannot reach server');
+        }
+      );
+
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
