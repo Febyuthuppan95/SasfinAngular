@@ -17,6 +17,9 @@ import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { UUID } from 'angular2-uuid';
 import { DialogOverrideComponent } from '../dialog-override/dialog-override.component';
+import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { Router } from '@angular/router';
 
 @AutoUnsubscribe()
 @Component({
@@ -32,7 +35,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private eventService: EventService,
               private objectHelpService: ObjectHelpService,
               private dialog: MatDialog,
-              private snackbar: MatSnackBar) {}
+              private snackbar: MatSnackBar,
+              private companyService: CompanyService,
+              private router: Router) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -50,6 +55,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
+  private originalSAD500ID: number;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -63,7 +69,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       SAD500ID: new FormControl(null, [Validators.required]),
       serialNo: new FormControl(null, [Validators.required]),
       lrn: new FormControl(null, [Validators.required]),
-      rebateCode: new FormControl(null),
       totalCustomsValue: new FormControl(0, [Validators.required]),
       cpcID: new FormControl(null, [Validators.required]),
       waybillNo: new FormControl(null, [Validators.required]),
@@ -94,6 +99,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       totalDutyODate: new FormControl(null),
       totalDutyOReason: new FormControl(null),
       isDeleted: new FormControl(0),
+
+      // VOC
+      vocID: new FormControl(null),
+      referenceNo: new FormControl(null),
+      reason: new FormControl(null),
     });
 
     this.transactionService.observerCurrentAttachment()
@@ -106,8 +116,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         if (capture.docType === 'VOC') {
           // this.vocGet();
           this.isVOC = true;
-          this.form.controls.rebateCode.setValidators([Validators.required]);
+          this.form.controls.referenceNo.setValidators([Validators.required]);
           this.form.updateValueAndValidity();
+          this.load();
         } else {
           this.load();
         }
@@ -194,10 +205,50 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     });
   }
 
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+}
+
   async load() {
+    if (this.isVOC) {
+      const vocRequest = {
+        userID: this.currentUser.userID,
+        vocID: this.attachmentID,
+        transactionID: this.transactionID,
+        filter: '',
+        orderBy: '',
+        orderByDirection: '',
+        rowStart: 1,
+        rowEnd: 10
+      };
+
+      await this.captureService.vocList(vocRequest).then(
+        (res: VOCListResponse) => {
+          console.log(res);
+          if (res.rowCount !== 0) {
+            this.originalSAD500ID = res.vocs[0].originalID;
+            this.form.controls.referenceNo.setValue(res.vocs[0].referenceNo);
+            this.form.controls.reason.setValue(res.vocs[0].reason);
+            this.form.controls.vocID.setValue(res.vocs[0].sad500ID);
+          } else {
+            this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+        });
+    }
+
     const request = {
       userID: this.currentUser.userID,
-      specificID: this.attachmentID,
+      specificID: this.isVOC ? this.form.controls.vocID.value : this.attachmentID,
       transactionID: this.transactionID,
       fileType: this.attachmentLabel === 'VOC' ? 'VOC' : 'SAD',
     };
@@ -234,7 +285,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     const requestModel = {
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
-      sad500ID: this.attachmentID,
+      sad500ID: this.isVOC ? this.originalSAD500ID : this.attachmentID,
       specificSAD500LineID: -1,
       filter:  '',
       orderBy: '',
@@ -245,9 +296,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        console.log(res.attachmentErrors.attachmentErrors);
-        console.log(res.lines);
-
         this.lines = res.lines;
         this.lines.forEach((line) => {
           line.isLocal = false;
@@ -268,15 +316,16 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   async submit(form: FormGroup, escalation?: boolean) {
-    if (form.valid && this.lines.length > 0) {
+    if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
+      requestModel.attachmentStatusID = 3;
 
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
             let sad500LineID = line.sad500LineID;
             line.isDeleted = 0;
-            line.sad500ID = form.controls.SAD500ID.value;
+            line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
 
             if (line.isLocal) {
@@ -306,8 +355,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
-            // this.companyService.setCapture({ capturestate: true });
-            // this.router.navigateByUrl('transaction/capturerlanding');
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
@@ -337,7 +386,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   queueLine($event: any) {
     const target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
     $event.userID = this.currentUser.userID;
-    console.log($event.duties);
 
     if (!target) {
       $event.isLocal = true;
@@ -348,7 +396,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       const original = this.lines[this.lines.indexOf(target)];
       $event.specificSAD500LineID = original.specificSAD500LineID;
       $event.sad500LineID = original.specificSAD500LineID;
-      $event.sad500ID = original.SAD500ID;
+      $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
+
+      if (this.isVOC) {
+        $event.originalLineID = original.specificSAD500LineID;
+      }
+
       this.lines[this.lines.indexOf(target)] = $event;
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
