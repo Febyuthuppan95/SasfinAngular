@@ -503,9 +503,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
 
   }
-    /****** END PARAMS *******/
+  /****** END PARAMS *******/
 
-    /****** IMPORTS *******/
+  /****** IMPORTS *******/
   //Main Left Table
   loadMainDataSet() {
     const reqP = {
