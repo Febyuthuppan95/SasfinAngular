@@ -144,7 +144,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              alert('Focus form');
               this.activeLine = null;
               this.activeIndex = -1;
             }
@@ -154,7 +153,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              alert('Focus form');
               this.activeLine = null;
               this.activeIndex = -1;
             }
