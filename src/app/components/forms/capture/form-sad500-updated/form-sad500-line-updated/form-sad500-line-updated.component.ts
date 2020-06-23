@@ -71,6 +71,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   public displayLines = false;
   public errors: any[] = [];
   public shortcuts: any[] = [];
+  public sadLine500ID = -1;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -84,10 +85,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     if (this.data) {
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.sad500LineID;
+      this.sadLine500ID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
     } else {
+      this.sadLine500ID = -1;
       this.data.specificSAD500LineID = -1;
       this.data.sad500LineID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
