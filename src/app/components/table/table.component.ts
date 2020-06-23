@@ -113,6 +113,8 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       this.displayData.push(record);
     });
 
+    console.log(this.rowCount);
+
     if (this.rowCount !== undefined) {
       this.paginate = true;
     }

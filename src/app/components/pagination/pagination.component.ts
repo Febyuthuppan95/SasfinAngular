@@ -116,6 +116,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     if (this.rowCount <= this.recordsPerPage) {
       this.prevPageState = false;
       this.nextPageState = false;
+      this.showingPages = [];
     } else {
       this.showingPages = Array<Pagination>();
       this.showingPages[0] = this.pages[this.activePage - 1];

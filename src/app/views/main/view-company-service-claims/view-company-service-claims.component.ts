@@ -287,14 +287,16 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.rowCount = res.rowCount;
         this.CompanyServiceClaims = res.serviceClaims;
+
+        console.log(this.rowCount);
 
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
-          this.rowCount = res.rowCount;
           this.showingRecords = res.serviceClaims.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyServiceClaims.length - 1;
@@ -652,7 +654,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   exportEndDate = new Date();
   claimPermits: [];
   permitsByDate = new FormControl();
-  CompanyServiceClaims: CompanyServiceClaim[] = [];
+  CompanyServiceClaims: CompanyServiceClaim[];
   Permits: Permit[] = [];
 
   SAD500Lines: SAD500LinesByPermit[] = [];
