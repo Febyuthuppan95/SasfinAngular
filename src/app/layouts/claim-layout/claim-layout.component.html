@@ -128,14 +128,14 @@
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
                     [isPageable]="'true'"
-                    [parents] = "this.data"
-                    [headings]="this.headings"
+                    [parents] = "this.dataS" 
+                    [headings]="this.headingsS"
                     [filter]="this.filterS"
                     [(paginator)]="this.pageS"
                     [pageSizeOptions]="[5, 10]"
                     (rowEvent)="rowEventS($event)"
                     [noDataError] ="'No Available SAD500s'"
-                    (pageEvent)="paginateA($event)"
+                    (pageEvent)="paginateS($event)"
                     [action_toolip]="'View Data'"
                     ></app-nested-table>
                 </mat-card>

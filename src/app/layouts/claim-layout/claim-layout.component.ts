@@ -34,6 +34,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   headingsB: TableHeading[]=[];
   dataLinesAssigned: any[] = [];
   headingsC: TableHeading[]= [];
+  headingsS: TableHeading[]= [];
   docPreview = false;
   claimRequestParams: FormGroup;
 
@@ -757,6 +758,292 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         ];
         break;
       }
+      case '538': {
+        this.headingsS = [
+          {
+            title: '#',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'sad500id',
+            order: {
+              enable: true,
+              tag: 'sad500id'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: null,
+            order: {
+              enable: true,
+              tag: null
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          }
+        ];
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'cjid',
+            order: {
+              enable: true,
+              tag: 'cjid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
+            title: 'Total HS Quantity',
+            propertyName: 'totHSQuantity',
+            order: {
+              enable: true,
+              tag: 'totHSQuantity'
+            },
+            position: 4
+          },
+          {
+            title: 'Available HS Quantity',
+            propertyName: 'availHSQuantity',
+            order: {
+              enable: true,
+              tag: 'availHSQuantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Component Code',
+            propertyName: 'itemName',
+            order: {
+              enable: true,
+              tag: 'ItemName'
+            },
+            position: 6
+          },
+          {
+            title: 'Available Duty',
+            propertyName: 'availDuty',
+            order: {
+              enable: true,
+              tag: 'availDuty'
+            },
+            position: 7
+          },
+          {
+            title: 'Total Duty',
+            propertyName: 'totDuty',
+            order: {
+              enable: true,
+              tag: 'totDuty'
+            },
+            position: 8
+          },
+          // {
+          //   title: 'Import Date',
+          //   propertyName: 'importDate',
+          //   order: {
+          //     enable: true,
+          //     tag: 'importDate'
+          //   },
+          //   position: 9
+          // }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'capturejoinimportid',
+            order: {
+              enable: true,
+              tag: 'capturejoinimportid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'capturejoinexportid',
+            order: {
+              enable: true,
+              tag: 'capturejoinexportid'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Code',
+            propertyName: 'prodname',
+            order: {
+              enable: true,
+              tag: 'prodname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity Per',
+            propertyName: 'quantityper',
+            order: {
+              enable: true,
+              tag: 'quantityper'
+            },
+            position: 4
+          },
+          {
+            title: 'Avail Exp Quantity',
+            propertyName: 'availexpquantity',
+            order: {
+              enable: true,
+              tag: 'availexpquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Export Quantity',
+            propertyName: 'expquantity',
+            order: {
+              enable: true,
+              tag: 'expquantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Quantity',
+            propertyName: 'totquantity',
+            order: {
+              enable: true,
+              tag: 'totquantity'
+            },
+            position: 7
+          },
+          {
+            title: 'Export Date',
+            propertyName: 'exportdate',
+            order: {
+              enable: true,
+              tag: 'exportdate'
+            },
+            position: 8
+          }
+        ];
+        this.headingsC = [
+          {
+            title: '',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'oemsupplyid',
+            order: {
+              enable: true,
+              tag: 'oemsupplyid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Code',
+            propertyName: 'prodname',
+            order: {
+              enable: true,
+              tag: 'prodname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity Per',
+            propertyName: 'quantityper',
+            order: {
+              enable: true,
+              tag: 'quantityper'
+            },
+            position: 4
+          },
+          {
+            title: 'Available Export Quantity',
+            propertyName: 'availexpquantity',
+            order: {
+              enable: true,
+              tag: 'availexpquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Export Quantity',
+            propertyName: 'expquantity',
+            order: {
+              enable: true,
+              tag: 'expquantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Quantity',
+            propertyName: 'totquantity',
+            order: {
+              enable: true,
+              tag: 'totquantity'
+            },
+            position: 7
+          }
+        ];
+        break;
+      }
     }
 
   }
@@ -769,6 +1056,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         break;
       }
       case '536': {
+        this.data = new Array<Import>();
+        this.dataLinesAvailable = new Array<Export>();
+        this.dataLinesAssigned= new Array<Export>();
+        break;
+      }
+      case '538': {
         this.data = new Array<Import>();
         this.dataLinesAvailable = new Array<Export>();
         this.dataLinesAssigned= new Array<Export>();
@@ -838,7 +1131,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
       (res : UpdateResponse ) => {
         if(this.currentClaim.serviceName === '538') {
-
+          this.update538Params();
         }
         console.log(res);
         this.loadMainDataSet();
@@ -853,24 +1146,28 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        lookbackDays: this.claimRequestParams.get('LookBackDays') ? this.claimRequestParams.get('LookBackDays').value : null,
-        extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value: null,
-        exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value: null,
-        exportEndDate: this.claimRequestParams.get('ExportEndDate') ? this.claimRequestParams.get('ExportEndDate').value : null,
-        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+        dutyPercentage:this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
+        sad500ID: this.currentClaim.sad500ID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         companyID: this.currentClaim.companyID
       },
       requestProcedure: `CompanyServiceClaimsParametersUpdate`
     };
     console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`,model).then(
       (res : UpdateResponse ) => {
-        if(this.currentClaim.serviceName === '538') {
+        this.snackbar.open('Successfully assigned SAD500', res.outcome.outcome, {
+          duration: 3000,
+          panelClass: 'claim-snackbar-success',
+          horizontalPosition: 'center',
+        });
+        if(this.currentClaim.sad500ID > 0) {
           this.loadSADLineSet();
         } else {
           this.loadMainDataSet();
         }
+        
+      
         console.log(res);
 
       },
@@ -879,6 +1176,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
+  loadSAD
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
