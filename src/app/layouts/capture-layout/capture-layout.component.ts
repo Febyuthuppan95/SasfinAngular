@@ -215,7 +215,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.showHelp = !this.showHelp
         },
         {
-          key: 'alt + down',
+          key: 'alt + 2',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
@@ -237,7 +237,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
-          key: 'alt + up',
+          key: 'alt + 8',
         },
     );
 
