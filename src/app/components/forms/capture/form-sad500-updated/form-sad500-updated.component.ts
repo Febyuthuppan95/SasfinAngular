@@ -528,5 +528,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.form.controls[`${key}ODate`].setValue(new Date());
     this.form.controls[`${key}OBit`].setValue(false);
     this.form.controls[`${key}OReason`].setValue(null);
+
+    if (this.errors.length > 0) {
+      this.errors.forEach((error) => {
+        if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+          this.form.controls[key].setErrors({incorrect: true});
+          this.form.controls[key].markAsTouched();
+        }
+      });
+    }
   }
 }

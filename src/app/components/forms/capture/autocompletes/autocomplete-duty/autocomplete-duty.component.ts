@@ -23,6 +23,7 @@ constructor(private userService: UserService,
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any [] = [];
+  private listMaster: any [] = [];
 
   public assignedList: any[] = [];
   public list: any [] = [];
@@ -57,6 +58,7 @@ constructor(private userService: UserService,
   processAssigned() {
     if (this.control.value !== null && this.control.value) {
       this.control.value.forEach((item) => {
+        console.log(item);
         this.assignedList.push(item);
       });
     }
@@ -65,11 +67,22 @@ constructor(private userService: UserService,
       const current = this.listTemp.find(x => x.dutyTaxTypeID === item.dutyTaxTypeID);
 
       if (current) {
+        console.log(current);
         item.label = current.code;
+        item.name = current.code;
         this.listTemp = this.listTemp.filter(x => x.dutyTaxTypeID !== item.dutyTaxTypeID);
         this.list = this.listTemp;
       }
+    });
 
+    this.assignedList = this.assignedList.filter((thing, index, self) =>
+      index === self.findIndex((t) => (
+        t.dutyTaxTypeID === thing.dutyTaxTypeID
+    )));
+
+    this.assignedList.forEach((item) => {
+      const current = this.listMaster.find(x => x.dutyTaxTypeID === item.dutyTaxTypeID);
+      item.name = current.code;
     });
 
     this.control.setValue(this.assignedList);
@@ -89,6 +102,7 @@ constructor(private userService: UserService,
         async (res: DutyListResponse) => {
           this.list = res.duties;
           this.listTemp = this.list;
+          this.listMaster = this.list;
           await this.loadAssignedDuty();
         }
       );
