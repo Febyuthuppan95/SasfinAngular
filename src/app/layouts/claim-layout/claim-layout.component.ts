@@ -41,22 +41,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   // build Columns
   columnsA: MatTableColumn[] = [
     {
-      name: "rowNum",
+      name: 'rowNum',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemName",
+      name: 'itemName',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemID",
+      name: 'itemID',
       isSort: true,
       isFilter: false
     },
     {
-      name: "action",
+      name: 'action',
       isSort: true,
       isFilter: false
     }
@@ -64,22 +64,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
   columnsB: MatTableColumn[] = [
     {
-      name: "rowNum",
+      name: 'rowNum',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemName",
+      name: 'itemName',
       isSort: true,
       isFilter: false
     },
     {
-      name: "itemID",
+      name: 'itemID',
       isSort: true,
       isFilter: false
     },
     {
-      name: "action",
+      name: 'action',
       isSort: true,
       isFilter: false
     }
@@ -121,13 +121,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     pageIndex: 0
   }
   constructor(private formBuilder: FormBuilder,
-    private apiService: ApiService,
-    private themeService: ThemeService,
-    private userService: UserService,
-    private companyService: CompanyService,
-    private claimService: ServicesService,
-    private snackbar: MatSnackBar,
-    private router: Router) {
+              private apiService: ApiService,
+              private userService: UserService,
+              private claimService: ServicesService,
+              private snackbar: MatSnackBar,
+              private router: Router) {
       this.lookBackDays.push(
         {value: 180},
         {value: 270},
@@ -144,7 +142,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         {value: 14},
         {value: 15}
         );
-        this.dutyPercentages.push(
+      this.dutyPercentages.push(
           {value: 20},
         {value: 21},
         {value: 22},
@@ -176,11 +174,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.unsubscribe$.unsubscribe();
   }
   back() {
-    this.router.navigate(['companies','serviceclaims']);
+    this.router.navigate(['companies', 'serviceclaims']);
   }
   reset() {
     this.loading = true;
-    const model ={
+    const model = {
       requestParams: {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID
@@ -1047,7 +1045,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    
+
   }
   initTableDataTypes() {
     switch(this.currentClaim.serviceName) {
@@ -1161,7 +1159,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.loadMainDataSet();
         }
         console.log(res);
-       
+
       },
       msg => {
         console.log('error');
@@ -1171,7 +1169,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
-  //Main Left Table
+  // Main Left Table
   loadSADLineSet() {
     const reqP = {
       userID: this.currentUser.userID,
@@ -1194,9 +1192,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             });
           }
-         this.pageA.length = res.rowCount;
-         this.data = res.data;
-        this.showMain = true;
+          this.pageA.length = res.rowCount;
+          this.data = res.data;
+          this.showMain = true;
         } else {
 
           // error
@@ -1232,15 +1230,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             });
           }
-         
-         if(this.currentClaim.serviceName === '538') {
+
+          if(this.currentClaim.serviceName === '538') {
            this.dataS = res.data;
            this.pageS.length = res.rowCount;
          } else {
           this.data = res.data;
           this.pageA.length = res.rowCount;
          }
-          
+
         } else {
 
           // error
@@ -1271,8 +1269,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
-   * @param $event 
+   *
+   * @param $event
    * 521, 536 - Assigned Lines Row Event
    */
   rowEventB($event) {
@@ -1301,7 +1299,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         captureJoinImportID: this.selectedA,
-        
+
         rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
         rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
       },
@@ -1407,7 +1405,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             exportHSQuantity: this.selectedD
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
-    
+
         };
         break;
       }
@@ -1423,6 +1421,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
+
+        break;
       }
       case '538': {
         model = {
@@ -1438,7 +1438,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         };
       }
     }
-    
+
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
       (res: Outcome) => {
         if(res.outcome === 'SUCCESS') {
@@ -1485,7 +1485,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         statusID: 2
       },
-      requestProcedure: "UpdateCompanyServiceClaimStatus"
+      requestProcedure: 'UpdateCompanyServiceClaimStatus'
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
       (res: Outcome) => {
@@ -1549,12 +1549,12 @@ export class LineData {
 }
 
 export class ClaimSAD500 {
-RowNum: number;
-SADID: number;
-SADLineID: number;
-Item: string;
-Quantity: number;
-CustomVal: number;
-Duty: number;
-AvailCustomVal: number;
+  RowNum: number;
+  SADID: number;
+  SADLineID: number;
+  Item: string;
+  Quantity: number;
+  CustomVal: number;
+  Duty: number;
+  AvailCustomVal: number;
 }

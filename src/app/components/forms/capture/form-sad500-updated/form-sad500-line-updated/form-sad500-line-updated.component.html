@@ -1,10 +1,10 @@
 <ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <br>
 <ng-container *ngIf="data === null">
-  <button mat-raised-button class="btn-sm btn-success btn" (click)="submit(form)">Add to Queue</button>
+  <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Add to Queue</button>
 </ng-container>
 <ng-container *ngIf="data !== null">
-  <button mat-raised-button class="btn-sm btn-primary btn" (click)="submit(form)">Update</button>
+  <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Update</button>
 </ng-container>
 <br><br>
 
@@ -28,6 +28,10 @@
           Line No
         </mat-label>
         <input matInput type="text" formControlName="lineNo">
+        <mat-icon *ngIf="form.controls.lineNoOBit.value" matSuffix (click)="undoOverride('lineNo')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.lineNoOBit.value">OVERRIDE: {{form.controls.lineNoOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.lineNoOBit.value && form.controls.lineNo.errors?.incorrect" matSuffix (click)="overrideDialog('lineNo', 'Line No')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.lineNoOBit.value  && form.controls.lineNo.errors?.incorrect">{{getError('lineNo')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -37,6 +41,10 @@
           Customs Value
         </mat-label>
         <input matInput type="text" formControlName="customsValue">
+        <mat-icon *ngIf="form.controls.customsValueOBit.value" matSuffix (click)="undoOverride('customsValue')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.customsValueOBit.value">OVERRIDE: {{form.controls.customsValueOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.customsValueOBit.value && form.controls.customsValue.errors?.incorrect" matSuffix (click)="overrideDialog('customsValue', 'Customs Value')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.customsValueOBit.value  && form.controls.customsValue.errors?.incorrect">{{getError('customsValue')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -46,6 +54,10 @@
           Previous Declaration
         </mat-label>
         <input matInput type="text" formControlName="previousDeclaration">
+        <mat-icon *ngIf="form.controls.previousDeclarationOBit.value" matSuffix (click)="undoOverride('previousDeclaration')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.previousDeclarationOBit.value">OVERRIDE: {{form.controls.previousDeclarationOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.previousDeclarationOBit.value && form.controls.previousDeclaration.errors?.incorrect" matSuffix (click)="overrideDialog('previousDeclaration', 'Previous Declaration')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.previousDeclarationOBit.value  && form.controls.previousDeclaration.errors?.incorrect">{{getError('previousDeclaration')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -64,6 +76,10 @@
           Supply Unit
         </mat-label>
         <input matInput type="number" formControlName="supplyUnit">
+        <mat-icon *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.supplyUnitOBit.value">OVERRIDE: {{form.controls.supplyUnitOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.supplyUnitOBit.value && form.controls.supplyUnit.errors?.incorrect" matSuffix (click)="overrideDialog('supplyUnit', 'Supply Unit')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.supplyUnitOBit.value  && form.controls.supplyUnit.errors?.incorrect">{{getError('supplyUnit')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>

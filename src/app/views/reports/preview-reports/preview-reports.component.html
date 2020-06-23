@@ -18,7 +18,7 @@
             <div class="col-6" *ngFor="let item of reports">
               <mat-card class="report-tile" (click)="buildGetLink(item)">
                 <!-- <mat-card-header><mat-card-title color="accent">Pending</mat-card-title></mat-card-header> -->
-                <mat-card-content>    
+                <mat-card-content>
                   <h5>{{item.reportName}}</h5>
                   <mat-checkbox #checkBox color="primary" class="report-select" (change)="item.selected = $event.checked"></mat-checkbox>
                   <mat-chip color="accent" selected>Pending</mat-chip>
@@ -32,8 +32,16 @@
           <p>Preview</p>
           <br>
 
-          <ng-container>
-            <ngx-doc-viewer #ngxDoc [url]="this.selectedReport" viewer="google" style="width:100%;height:512px;"></ngx-doc-viewer>
+          <ng-container *ngIf="this.selectedReport">
+            <!-- <ngx-doc-viewer #ngxDoc [url]="this.selectedReport" viewer="mammoth" style="width:100%;height:512px;"></ngx-doc-viewer> -->
+            <!-- <div *ngIf="reportHTMLTest" [innerHTML]="reportHTMLTest"></div> -->
+            <pdf-viewer
+              class="viewer"
+              [(src)]="selectedReport"
+              [render-text]="true"
+              [autoresize]="false"
+              [fit-to-page]="false">
+            </pdf-viewer>
           </ng-container>
 
         </div>

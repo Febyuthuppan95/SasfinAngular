@@ -55,4 +55,20 @@ export class ApiService {
           );
     });
   }
+
+  public getFile(url: string) {
+    return new Promise((resolve, reject) => {
+      this.httpClient
+          .get(url, { responseType: 'blob'})
+          .toPromise()
+          .then(
+            res => {
+              resolve(res);
+            },
+            msg => {
+              reject(msg);
+            }
+          );
+    });
+  }
 }

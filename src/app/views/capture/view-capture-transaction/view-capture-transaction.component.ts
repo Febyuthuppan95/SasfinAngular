@@ -79,10 +79,6 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
-      // case 'IMPORT CLEARING INSTRUCTION': {
-      //   this.componentService.renderComponent(FormImportClearingInstructionComponent);
-      //   break;
-      // }
       case 'INV': {
         this.componentService.renderComponent(FormInvoiceComponent);
         break;
@@ -96,14 +92,6 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         this.componentService.renderComponent(FormWaybillComponent);
         break;
       }
-      // case 'CUSWORK': {
-      //   this.componentService.renderComponent(FormCustomWorksheetComponent);
-      //   break;
-      // }
-      // case 'CUSTOMS WORKSHEET': {
-      //   this.componentService.renderComponent(FormCustomWorksheetComponent);
-      //   break;
-      // }
     }
   }
 

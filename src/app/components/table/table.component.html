@@ -16,8 +16,8 @@
     <div class="filters" [ngClass]="(toggleFilter)? 'filters-show': ''">
       <form class="form-inline">
         <select
-          *ngIf="this.tableHeader.filters.selectRowCount"
-          [value]='this.recordsPerPage'
+          *ngIf="tableHeader.filters.selectRowCount"
+          [value]='recordsPerPage'
           [(ngModel)]="recordsPerPage"
           [ngModelOptions]="{standalone: true}"
           class="shadow-sm form-control mb-2 mr-sm-2 form-control-sm form-control-{{ currentTheme }}"
@@ -79,11 +79,11 @@
 </table>
 <app-pagination
   *ngIf="this.paginate"
-  [currentTheme]="this.currentTheme"
-  [(recordCount)]="this.displayData.length"
-  [recordsPerPage]="this.recordsPerPage"
-  [rowStart]="this.rowStart"
-  [rowEnd]="this.rowEnd"
-  [rowCount]="this.rowCount"
+  [currentTheme]="currentTheme"
+  [(recordCount)]="displayData.length"
+  [(recordsPerPage)]="recordsPerPage"
+  [rowStart]="rowStart"
+  [rowEnd]="rowEnd"
+  [rowCount]="rowCount"
   (pageChangeEvent)="pageChangeEvent($event)">
 </app-pagination>
