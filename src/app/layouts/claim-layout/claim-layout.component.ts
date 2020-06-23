@@ -34,6 +34,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   headingsB: TableHeading[]=[];
   dataLinesAssigned: any[] = [];
   headingsC: TableHeading[]= [];
+  headingsS: TableHeading[]= [];
   docPreview = false;
   claimRequestParams: FormGroup;
 
@@ -511,6 +512,292 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         break;
       }
       case '536': {
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'cjid',
+            order: {
+              enable: true,
+              tag: 'cjid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
+            title: 'Total HS Quantity',
+            propertyName: 'totHSQuantity',
+            order: {
+              enable: true,
+              tag: 'totHSQuantity'
+            },
+            position: 4
+          },
+          {
+            title: 'Available HS Quantity',
+            propertyName: 'availHSQuantity',
+            order: {
+              enable: true,
+              tag: 'availHSQuantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Component Code',
+            propertyName: 'itemName',
+            order: {
+              enable: true,
+              tag: 'ItemName'
+            },
+            position: 6
+          },
+          {
+            title: 'Available Duty',
+            propertyName: 'availDuty',
+            order: {
+              enable: true,
+              tag: 'availDuty'
+            },
+            position: 7
+          },
+          {
+            title: 'Total Duty',
+            propertyName: 'totDuty',
+            order: {
+              enable: true,
+              tag: 'totDuty'
+            },
+            position: 8
+          },
+          // {
+          //   title: 'Import Date',
+          //   propertyName: 'importDate',
+          //   order: {
+          //     enable: true,
+          //     tag: 'importDate'
+          //   },
+          //   position: 9
+          // }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'capturejoinimportid',
+            order: {
+              enable: true,
+              tag: 'capturejoinimportid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'capturejoinexportid',
+            order: {
+              enable: true,
+              tag: 'capturejoinexportid'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Code',
+            propertyName: 'prodname',
+            order: {
+              enable: true,
+              tag: 'prodname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity Per',
+            propertyName: 'quantityper',
+            order: {
+              enable: true,
+              tag: 'quantityper'
+            },
+            position: 4
+          },
+          {
+            title: 'Avail Exp Quantity',
+            propertyName: 'availexpquantity',
+            order: {
+              enable: true,
+              tag: 'availexpquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Export Quantity',
+            propertyName: 'expquantity',
+            order: {
+              enable: true,
+              tag: 'expquantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Quantity',
+            propertyName: 'totquantity',
+            order: {
+              enable: true,
+              tag: 'totquantity'
+            },
+            position: 7
+          },
+          {
+            title: 'Export Date',
+            propertyName: 'exportdate',
+            order: {
+              enable: true,
+              tag: 'exportdate'
+            },
+            position: 8
+          }
+        ];
+        this.headingsC = [
+          {
+            title: '',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'oemsupplyid',
+            order: {
+              enable: true,
+              tag: 'oemsupplyid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Code',
+            propertyName: 'prodname',
+            order: {
+              enable: true,
+              tag: 'prodname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity Per',
+            propertyName: 'quantityper',
+            order: {
+              enable: true,
+              tag: 'quantityper'
+            },
+            position: 4
+          },
+          {
+            title: 'Available Export Quantity',
+            propertyName: 'availexpquantity',
+            order: {
+              enable: true,
+              tag: 'availexpquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Export Quantity',
+            propertyName: 'expquantity',
+            order: {
+              enable: true,
+              tag: 'expquantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Quantity',
+            propertyName: 'totquantity',
+            order: {
+              enable: true,
+              tag: 'totquantity'
+            },
+            position: 7
+          }
+        ];
+        break;
+      }
+      case '538': {
+        this.headingsS = [
+          {
+            title: '#',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'sad500id',
+            order: {
+              enable: true,
+              tag: 'sad500id'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: null,
+            order: {
+              enable: true,
+              tag: null
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          }
+        ];
         this.headings = [
           {
             title: '#',
