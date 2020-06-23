@@ -45,11 +45,12 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // if (this.recordsPerPage !== this.recordsPerPageTemp) {
-    //   this.recordsPerPage = this.recordsPerPage;
-    //   this.activePage = 1;
-    //   this.paginateData();
-    // }
+    if (this.recordsPerPage !== this.recordsPerPageTemp) {
+      this.recordsPerPageTemp = this.recordsPerPage;
+      this.activePage = 1;
+      this.paginateData();
+      this.pageChange(1);
+    }
 
     if (this.rowCountTemp !== this.rowCount) {
       this.rowCountTemp = this.rowCount;
