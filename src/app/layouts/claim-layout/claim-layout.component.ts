@@ -1061,6 +1061,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         this.dataLinesAssigned= new Array<Export>();
         break;
       }
+      case '538': {
+        this.data = new Array<Import>();
+        this.dataLinesAvailable = new Array<Export>();
+        this.dataLinesAssigned= new Array<Export>();
+        break;
+      }
     }
   }
   initClaimFormData() {
@@ -1125,7 +1131,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
       (res : UpdateResponse ) => {
         if(this.currentClaim.serviceName === '538') {
-
+          this.update538Params();
         }
         console.log(res);
         this.loadMainDataSet();
@@ -1140,24 +1146,28 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        lookbackDays: this.claimRequestParams.get('LookBackDays') ? this.claimRequestParams.get('LookBackDays').value : null,
-        extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value: null,
-        exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value: null,
-        exportEndDate: this.claimRequestParams.get('ExportEndDate') ? this.claimRequestParams.get('ExportEndDate').value : null,
-        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+        dutyPercentage:this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
+        sad500ID: this.currentClaim.sad500ID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         companyID: this.currentClaim.companyID
       },
       requestProcedure: `CompanyServiceClaimsParametersUpdate`
     };
     console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`,model).then(
       (res : UpdateResponse ) => {
-        if(this.currentClaim.serviceName === '538') {
+        this.snackbar.open('Successfully assigned SAD500', res.outcome.outcome, {
+          duration: 3000,
+          panelClass: 'claim-snackbar-success',
+          horizontalPosition: 'center',
+        });
+        if(this.currentClaim.sad500ID > 0) {
           this.loadSADLineSet();
         } else {
           this.loadMainDataSet();
         }
+        
+      
         console.log(res);
 
       },
@@ -1166,6 +1176,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
+  loadSAD
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
