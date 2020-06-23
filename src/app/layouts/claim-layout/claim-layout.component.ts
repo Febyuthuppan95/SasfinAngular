@@ -120,13 +120,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     pageIndex: 0
   }
   constructor(private formBuilder: FormBuilder,
-    private apiService: ApiService,
-    private themeService: ThemeService,
-    private userService: UserService,
-    private companyService: CompanyService,
-    private claimService: ServicesService,
-    private snackbar: MatSnackBar,
-    private router: Router) {
+              private apiService: ApiService,
+              private userService: UserService,
+              private claimService: ServicesService,
+              private snackbar: MatSnackBar,
+              private router: Router) {
       this.lookBackDays.push(
         {value: 180},
         {value: 270},
@@ -143,7 +141,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         {value: 14},
         {value: 15}
         );
-        this.dutyPercentages.push(
+      this.dutyPercentages.push(
           {value: 20},
         {value: 21},
         {value: 22},
@@ -179,7 +177,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   reset() {
     this.loading = true;
-    const model ={
+    const model = {
       requestParams: {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID
@@ -884,7 +882,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
-  //Main Left Table
+  // Main Left Table
   loadSADLineSet() {
     const reqP = {
       userID: this.currentUser.userID,
@@ -907,9 +905,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               horizontalPosition: 'center',
             });
           }
-         this.pageA.length = res.rowCount;
-         this.data = res.data;
-        this.showMain = true;
+          this.pageA.length = res.rowCount;
+          this.data = res.data;
+          this.showMain = true;
         } else {
 
           // error
@@ -946,7 +944,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             });
           }
 
-         if(this.currentClaim.serviceName === '538') {
+          if(this.currentClaim.serviceName === '538') {
            this.dataS = res.data;
            this.pageS.length = res.rowCount;
          } else {
@@ -1136,6 +1134,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
+
+        break;
       }
       case '538': {
         model = {
