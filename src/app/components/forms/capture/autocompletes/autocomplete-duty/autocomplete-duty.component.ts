@@ -55,15 +55,13 @@ constructor(private userService: UserService,
   }
 
   processAssigned() {
-    if (this.control.value !== null) {
+    if (this.control.value !== null && this.control.value) {
       this.control.value.forEach((item) => {
         this.assignedList.push(item);
       });
     }
 
     this.assignedList.forEach((item) => {
-      console.log(this.listTemp[0]);
-      console.log(item);
       const current = this.listTemp.find(x => x.dutyTaxTypeID === item.dutyTaxTypeID);
 
       if (current) {
