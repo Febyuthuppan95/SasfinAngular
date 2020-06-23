@@ -173,7 +173,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.unsubscribe$.unsubscribe();
   }
   back() {
-    this.router.navigate(['companies','serviceclaims']);
+    this.router.navigate(['companies', 'serviceclaims']);
   }
   reset() {
     this.loading = true;
@@ -1262,12 +1262,12 @@ export class LineData {
 }
 
 export class ClaimSAD500 {
-RowNum: number;
-SADID: number;
-SADLineID: number;
-Item: string;
-Quantity: number;
-CustomVal: number;
-Duty: number;
-AvailCustomVal: number;
+  RowNum: number;
+  SADID: number;
+  SADLineID: number;
+  Item: string;
+  Quantity: number;
+  CustomVal: number;
+  Duty: number;
+  AvailCustomVal: number;
 }
