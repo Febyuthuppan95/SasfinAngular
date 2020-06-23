@@ -55,6 +55,12 @@ constructor(private userService: UserService,
   }
 
   processAssigned() {
+    if (this.control.value !== null) {
+      this.control.value.forEach((item) => {
+        this.assignedList.push(item);
+      });
+    }
+
     this.assignedList.forEach((item) => {
       console.log(this.listTemp[0]);
       console.log(item);
