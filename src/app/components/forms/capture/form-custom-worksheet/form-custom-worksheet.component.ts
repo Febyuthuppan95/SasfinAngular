@@ -76,10 +76,10 @@ export class FormCustomWorksheetComponent
   sad500Tooltip: MatTooltip;
 
   CWSForm = new FormGroup({
-    control1: new FormControl(null, [Validators.nullValidator]),
+    control1: new FormControl(null),
     control1a: new FormControl(null),
     control2: new FormControl(null, [Validators.required]),
-    ontrol2a: new FormControl(null),
+    control2a: new FormControl(null),
     control3: new FormControl(null, [Validators.nullValidator]),
     control3a: new FormControl(null),
   });
@@ -372,13 +372,19 @@ export class FormCustomWorksheetComponent
       })
       .then(
         (res: CustomsWorksheetListResponse) => {
+          console.log(res);
           if (res.customsWorksheets.length === 1) {
             this.form.LRN.value = res.customsWorksheets[0].lrn;
             this.form.LRN.error = res.customsWorksheets[0].lrnError;
+            this.CWSForm.controls.control1.setValue(res.customsWorksheets[0].lrn);
+
             this.form.fileRef.value = res.customsWorksheets[0].fileRef;
             this.form.fileRef.error = res.customsWorksheets[0].fileRefError;
+            this.CWSForm.controls.control2.setValue(res.customsWorksheets[0].fileRef);
+
             this.form.waybillNo.value = res.customsWorksheets[0].waybillNo;
             this.form.waybillNo.error = res.customsWorksheets[0].waybillNoError;
+            this.CWSForm.controls.control3.setValue(res.customsWorksheets[0].waybillNo);
 
             this.form.waybillNo.OBit = res.customsWorksheets[0].waybillNoOBit;
             this.form.waybillNo.OUserID =
@@ -484,12 +490,18 @@ export class FormCustomWorksheetComponent
           supplyUnit: lineCreate.supplyUnit,
         };
 
+        console.log(perfect);
+
         this.captureService.customWorksheetLineAdd(perfect).then(
           (res: {
             outcome: string;
             outcomeMessage: string;
             createdID: number;
-          }) => { },
+          }) => {
+            if (res.outcome === 'SUCCESS') {
+              this.nextLineAsync();
+            }
+          },
           (msg) => {
             console.log(`Client Error: ${JSON.stringify(JSON.stringify(msg))}`);
           }

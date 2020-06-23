@@ -14,7 +14,6 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./autocomplete-cpc.component.scss']
 })
 export class AutocompleteCPCComponent implements OnInit, OnDestroy {
-
   constructor(private userService: UserService,
               private apiService: ApiService) { }
 
@@ -29,22 +28,32 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
   public valueKeeper = new FormControl();
 
   ngOnInit() {
+
     if (!this.control) {
       this.control = new FormControl();
     }
 
-    this.loadCPC();
+    this.control.valueChanges.subscribe((val) => {
+      if (val === null) {
+        this.query.reset(null);
+        this.loadCPC(true);
+      } else {
+        this.loadCPC(true);
+      }
+    });
+
+    this.loadCPC(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.cpcList = this.cpcListTemp;
 
-      if (this.query.valid) {
+      if (value && value !== null && value !== '') {
         this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
       }
     });
   }
 
-  loadCPC() {
+  loadCPC(setDefault?: boolean) {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -58,6 +67,10 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
         if (res.rowCount > 0 )  {
           this.cpcList = res.data;
           this.cpcListTemp = res.data;
+          if (setDefault) {
+            const defaultValue = this.cpcList.find(x => x.CPCID === this.control.value);
+            this.query.setValue(defaultValue, { emitEvent: false });
+          }
         }
       });
   }

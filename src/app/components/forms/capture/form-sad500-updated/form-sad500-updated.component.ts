@@ -14,7 +14,12 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { UUID } from 'angular2-uuid';
+import { DialogOverrideComponent } from '../dialog-override/dialog-override.component';
+import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
+import { CompanyService } from 'src/app/services/Company.Service';
+import { Router } from '@angular/router';
 
 @AutoUnsubscribe()
 @Component({
@@ -29,17 +34,20 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
               private objectHelpService: ObjectHelpService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
+              private companyService: CompanyService,
+              private router: Router) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
   public activeLine: any;
-  public activeIndex: any;
+  public activeIndex = 0;
   public displayLines = false;
   public errors: any[] = [];
-  public shortcuts: ShortcutInput[] = [];
+  public shortcuts: ShortcutInput[];
   public help = false;
   public isVOC = false;
 
@@ -47,6 +55,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
+  private originalSAD500ID: number;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -56,13 +65,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnInit() {
     this.form = new FormGroup({
-      userID: new FormControl(null, [Validators.required]),
+      userID: new FormControl(this.currentUser.userID, [Validators.required]),
       SAD500ID: new FormControl(null, [Validators.required]),
       serialNo: new FormControl(null, [Validators.required]),
       lrn: new FormControl(null, [Validators.required]),
-      rebateCode: new FormControl(null),
       totalCustomsValue: new FormControl(0, [Validators.required]),
-      cpc: new FormControl(null, [Validators.required]),
+      cpcID: new FormControl(null, [Validators.required]),
       waybillNo: new FormControl(null, [Validators.required]),
       supplierRef: new FormControl(null, [Validators.required]),
       mrn: new FormControl(null, [Validators.required]),
@@ -90,11 +98,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       totalDutyOUserID: new FormControl(null),
       totalDutyODate: new FormControl(null),
       totalDutyOReason: new FormControl(null),
-      isDeleted: new FormControl(false)
-    });
+      isDeleted: new FormControl(0),
 
-    this.form.controls.cpc.valueChanges.subscribe((val) => {
-      console.log(val);
+      // VOC
+      vocID: new FormControl(null),
+      referenceNo: new FormControl(null),
+      reason: new FormControl(null),
     });
 
     this.transactionService.observerCurrentAttachment()
@@ -107,8 +116,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         if (capture.docType === 'VOC') {
           // this.vocGet();
           this.isVOC = true;
-          this.form.controls.rebateCode.setValidators([Validators.required]);
+          this.form.controls.referenceNo.setValidators([Validators.required]);
           this.form.updateValueAndValidity();
+          this.load();
         } else {
           this.load();
         }
@@ -117,136 +127,165 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.eventService.observeCaptureEvent()
     .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-
   }
 
   ngAfterViewInit(): void {
-    this.shortcuts.push(
-        {
-          key: 'alt + .',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.nextLine()
-        },
-        {
-          key: 'alt + ,',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.prevLine()
-        },
-        {
-          key: 'alt + /',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => alert('Focus form')
-        },
-        {
-          key: 'alt + m',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            alert('Focus form');
-            this.activeLine = null;
-            this.activeIndex = -1;
-          }
-        },
-        {
-          key: 'alt + n',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            alert('Focus form');
-            this.activeLine = null;
-            this.activeIndex = -1;
-          }
-        },
-        {
-          key: 'alt + s',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-              {
-                if (!this.dialogOpen) {
-                  this.dialogOpen = true;
-                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-                    this.dialogOpen = false;
-                    if (status) {
-                      // this.saveLines();
-                    }
-                  });
-                }
-              }
-          }
-        },
-        {
-          key: 'alt + l',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.displayLines = !this.displayLines;
-
-            // if (this.displayLines) {
-            //   // this.sad500Tooltip.hide();
-            //   // this.sadLinesTooltip.show();
-            //   // setTimeout(() => { this.sadLinesTooltip.hide(); } , 1000);
-            // } else {
-            //   this.sadLinesTooltip.hide();
-            //   this.sad500Tooltip.show();
-            //   setTimeout(() => { this.sad500Tooltip.hide(); } , 1000);
-            // }
-          }
-        },
-        {
-            key: 'ctrl + alt + h',
+    setTimeout(() => {
+        this.shortcuts = [
+          {
+            key: 'alt + .',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.nextLine()
+          },
+          {
+            key: 'alt + ,',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.prevLine()
+          },
+          {
+            key: 'alt + /',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => alert('Focus form')
+          },
+          {
+            key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              //  this.toggelHelpBar();
+              this.activeLine = null;
+              this.activeIndex = -1;
             }
-        }
-    );
+          },
+          {
+            key: 'alt + n',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              this.activeLine = null;
+              this.activeIndex = -1;
+            }
+          },
+          {
+            key: 'alt + s',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+                {
+                  if (!this.dialogOpen) {
+                    this.dialogOpen = true;
+                    this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                      this.dialogOpen = false;
+                      if (status) {
+                        this.submit(this.form);
+                      }
+                    });
+                  }
+                }
+            }
+          },
+          {
+            key: 'alt + l',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              this.displayLines = !this.displayLines;
+            }
+          },
+          {
+              key: 'ctrl + alt + h',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.toggelHelpBar();
+              }
+          }];
+    });
   }
 
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+}
+
   async load() {
+    if (this.isVOC) {
+      const vocRequest = {
+        userID: this.currentUser.userID,
+        vocID: this.attachmentID,
+        transactionID: this.transactionID,
+        filter: '',
+        orderBy: '',
+        orderByDirection: '',
+        rowStart: 1,
+        rowEnd: 10
+      };
+
+      await this.captureService.vocList(vocRequest).then(
+        (res: VOCListResponse) => {
+          console.log(res);
+          if (res.rowCount !== 0) {
+            this.originalSAD500ID = res.vocs[0].originalID;
+            this.form.controls.referenceNo.setValue(res.vocs[0].referenceNo);
+            this.form.controls.reason.setValue(res.vocs[0].reason);
+            this.form.controls.vocID.setValue(res.vocs[0].sad500ID);
+          } else {
+            this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
+        });
+    }
+
     const request = {
       userID: this.currentUser.userID,
-      specificID: this.attachmentID,
+      specificID: this.isVOC ? this.form.controls.vocID.value : this.attachmentID,
       transactionID: this.transactionID,
       fileType: this.attachmentLabel === 'VOC' ? 'VOC' : 'SAD',
     };
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
       const response: any = res;
+      console.log(response);
       response.userID = request.userID;
+      response.cpcID = response.cpc;
       response.SAD500ID = request.specificID;
       response.attachmentStatusID = response.statusID;
 
       this.form.patchValue(response);
+      this.form.controls.userID.setValue(this.currentUser.userID);
       this.errors = res.attachmentErrors.attachmentErrors;
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
           res.attachmentErrors.attachmentErrors.forEach((error) => {
-            if (key === error.fieldName) {
+            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
               this.form.controls[key].setErrors({incorrect: true});
+              this.form.controls[key].markAsTouched();
             }
           });
         });
       }
 
+      this.form.updateValueAndValidity();
       await this.loadLines();
     });
-  }
-
-  getError(key: string): string {
-    return this.errors.find(x => x.fieldName === key).errorDescription;
   }
 
   async loadLines() {
     const requestModel = {
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
-      sad500ID: this.attachmentID,
+      sad500ID: this.isVOC ? this.originalSAD500ID : this.attachmentID,
       specificSAD500LineID: -1,
       filter:  '',
       orderBy: '',
@@ -257,34 +296,91 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        console.log(res);
         this.lines = res.lines;
-        this.activeIndex = this.lines.length - 1;
-        if (this.activeIndex > -1) {
-            this.activeLine = this.lines[this.activeIndex - 1];
+        this.lines.forEach((line) => {
+          line.isLocal = false;
+          line.specificSAD500LineID = line.sad500LineID;
+          line.sad500ID = this.form.controls.SAD500ID.value;
+          line.uniqueIdentifier = UUID.UUID();
+          line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
+        });
+
+        if (this.lines.length > 0) {
+            this.activeLine = this.lines[this.activeIndex];
         }
       });
   }
 
-  submit(form: FormGroup, escalation?: boolean) {
+  getError(key: string): string {
+    return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
+  }
+
+  async submit(form: FormGroup, escalation?: boolean) {
+    if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
-      this.captureService.sad500Update(requestModel).then(
-        (res: Outcome) => {
-          console.log(res);
+      requestModel.attachmentStatusID = 3;
+
+      if (this.isVOC) {
+        await this.captureService.vocUpdate(requestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            }
+          },
+          (msg) => {
+            this.notify.errorsmsg('Failure', 'Cannot reach server');
+          }
+        );
+      }
+
+      await this.captureService.sad500Update(requestModel).then(
+        async (res: Outcome) => {
+          await this.saveLines(this.lines, async (line) => {
+            let sad500LineID = line.sad500LineID;
+            line.isDeleted = 0;
+            line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
+            line.userID = this.currentUser.userID;
+
+            if (line.isLocal) {
+              await this.captureService.sad500LineAdd(line).then((res: any) =>  {
+                console.log(res); sad500LineID = res.createdID; }, (msg) => console.log(JSON.stringify(msg)));
+            } else {
+              await this.captureService.sad500LineUpdate(line).then((res) => console.log(res), (msg) => console.log(JSON.stringify(msg)));
+            }
+
+            if (line.duties && sad500LineID !== null && sad500LineID) {
+              await this.saveLineDuty(line.duties.filter(x => x.isLocal === true), async (duty) => {
+                const dutyRequest = {
+                  userID: this.currentUser.userID,
+                  dutyID: duty.dutyTaxTypeID,
+                  sad500LineID,
+                  value: duty.value
+                };
+
+                // tslint:disable-next-line: max-line-length
+                await this.captureService.sad500LineDutyAdd(dutyRequest)
+                .then(
+                  (res) => console.log(res),
+                  (msg) => console.log(JSON.stringify(msg)));
+              });
+            }
+          });
 
           if (res.outcome === 'SUCCESS') {
-            // this.notify.successmsg(res.outcome, res.outcomeMessage);
-            // this.companyService.setCapture({ capturestate: true });
-            // this.router.navigateByUrl('transaction/capturerlanding');
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
           } else {
-            // this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
         },
-        (msg) => {
-          console.log(JSON.stringify(msg));
-          // this.notify.errorsmsg('Failure', 'Cannot reach server');
-        }
+        (msg) => console.log(JSON.stringify(msg))
       );
+    } else {
+      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+    }
   }
 
   updateHelpContext(slug: string) {
@@ -301,65 +397,43 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.objectHelpService.toggleHelp(this.help);
   }
 
-  // Line Controls
-
+  // [Line Controls]
   queueLine($event: any) {
-    this.lines.push($event);
+    const target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+    $event.userID = this.currentUser.userID;
+
+    if (!target) {
+      $event.isLocal = true;
+      this.lines.push($event);
+      this.snackbar.open('Line added to queue', '', {duration: 3000});
+    } else {
+      $event.isLocal = false;
+      const original = this.lines[this.lines.indexOf(target)];
+      $event.specificSAD500LineID = original.specificSAD500LineID;
+      $event.sad500LineID = original.specificSAD500LineID;
+      $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
+
+      if (this.isVOC) {
+        $event.originalLineID = original.specificSAD500LineID;
+      }
+
+      this.lines[this.lines.indexOf(target)] = $event;
+      this.snackbar.open('Line queued to update', '', {duration: 3000});
+    }
+
+    this.cancelLine();
   }
 
-  // saveLines(obj: FormGroup, escalation) {
-  //     if (obj !== null && obj !== undefined) {
-  //       const perfect = obj.value;
+  async saveLineDuty(duties: any, callback) {
+    for (let index = 0; index < duties.length; index++) {
+      await callback(duties[index], index, duties);
+    }
+  }
 
-  //       this.captureService.sad500LineAdd(perfect).then(
-  //         (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-  //           console.log();
-  //         });
-  //     } else {
-  //       if (this.lineIndex < this.lineQueue.length && this.attachmentType !== 'VOC') {
-  //         const lineCreate: any = this.lineQueue[this.lineIndex];
-  //         delete lineCreate.isPersist;
-  //         const perfect: SADLineCaptureThatSHOULDWorks = lineCreate;
-  //         this.captureService.sad500LineAdd(perfect).then(
-  //           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
-  //             if (res.outcome === 'SUCCESS') {
-
-  //               const currentLine = this.lineQueue[this.lineIndex];
-
-  //               if (currentLine.duties) {
-  //                 if (currentLine.duties.length > 0) {
-  //                   currentLine.duties.forEach((duty) => duty.sad500Line = res.createdID);
-  //                   this.dutyIndex = 0;
-  //                   this.saveLineDuty(currentLine.duties[0]);
-  //                 } else {
-  //                   this.nextLineAsync();
-  //                 }
-  //               } else {
-  //                 this.nextLineAsync();
-  //               }
-  //             } else {
-  //               console.log('Line not saved');
-  //             }
-  //           },
-  //           (msg) => {
-  //             console.log(JSON.stringify(msg));
-  //           }
-  //         );
-  //       } else {
-  //         this.submit(escalation);
-  //       }
-  //     }
-  // }
-
-  saveLineDuty(line: any) {
-    this.captureService.sad500LineDutyAdd({
-      userID: this.currentUser.userID,
-      dutyID: line.dutyTaxTypeID,
-      sad500LineID: line.sad500Line,
-      value: line.value
-    }).then(
-      (res: Outcome) => {},
-    );
+  async saveLines(lines: any[], callback) {
+    for (let index = 0; index < lines.length; index++) {
+      await callback(lines[index], index, lines);
+    }
   }
 
   prevLine() {
@@ -391,12 +465,77 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.activeIndex = -1;
   }
 
+  async deleteLine() {
+    const targetLine = this.lines[this.activeIndex];
+    targetLine.isDeleted = 1;
+    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+
+    if (!targetLine.isLocal) {
+      await this.captureService.sad500LineUpdate(targetLine);
+    }
+
+    this.lines.splice(this.lines.indexOf(targetLine), 1);
+    this.activeLine = null;
+    this.activeIndex = -1;
+  }
+
+  async deleteDuty() {
+    const targetLine = this.lines.find(x => x !== this.lines[this.activeIndex]);
+    targetLine.isDeleted = 1;
+    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+
+    if (!targetLine.isLocal) {
+      await this.captureService.sad500LineUpdate(targetLine);
+    }
+
+    this.lines.splice(this.lines.indexOf(targetLine), 1);
+    this.activeLine = null;
+    this.activeIndex = -1;
+  }
+
   cancelLine() {
     this.activeLine = null;
-    console.log(this.lines.length);
-    this.activeIndex = this.lines.length - 1;
+    this.activeIndex = 0;
     this.activeLine = this.lines[this.activeIndex];
   }
 
   ngOnDestroy(): void {}
+
+  // @override methods
+  overrideDialog(key, label) {
+    this.dialog.open(DialogOverrideComponent, {
+      width: '512px',
+      data: {
+        label
+      }
+    }).afterClosed().subscribe((val) => {
+      if (val) {
+        this.override(key, val);
+      }
+    });
+  }
+
+  override(key: string, reason: string) {
+    this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
+    this.form.controls[`${key}ODate`].setValue(new Date());
+    this.form.controls[`${key}OBit`].setValue(true);
+    this.form.controls[`${key}OReason`].setValue(reason);
+    this.form.controls[key].setErrors(null);
+  }
+
+  undoOverride(key: string) {
+    this.form.controls[`${key}OUserID`].setValue(null);
+    this.form.controls[`${key}ODate`].setValue(new Date());
+    this.form.controls[`${key}OBit`].setValue(false);
+    this.form.controls[`${key}OReason`].setValue(null);
+
+    if (this.errors.length > 0) {
+      this.errors.forEach((error) => {
+        if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+          this.form.controls[key].setErrors({incorrect: true});
+          this.form.controls[key].markAsTouched();
+        }
+      });
+    }
+  }
 }

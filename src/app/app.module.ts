@@ -244,6 +244,8 @@ import { AutocompleteCooComponent } from './components/forms/capture/autocomplet
 import { FormSad500LineUpdatedComponent } from './components/forms/capture/form-sad500-updated/form-sad500-line-updated/form-sad500-line-updated.component';
 import { AutocompleteTariffsComponent } from './components/forms/capture/autocompletes/autocomplete-tariffs/autocomplete-tariffs.component';
 import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/autocompletes/autocomplete-units-of-measure/autocomplete-units-of-measure.component';
+import { AutocompleteDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/autocomplete-duty.component';
+import { DialogOverrideComponent } from './components/forms/capture/dialog-override/dialog-override.component';
 
 @NgModule({
   declarations: [
@@ -414,7 +416,9 @@ import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/
     AutocompleteCooComponent,
     FormSad500LineUpdatedComponent,
     AutocompleteTariffsComponent,
-    AutocompleteUnitsOfMeasureComponent
+    AutocompleteUnitsOfMeasureComponent,
+    AutocompleteDutyComponent,
+    DialogOverrideComponent
   ],
   imports: [
     BrowserModule,
@@ -511,7 +515,8 @@ import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/
     DutyAssignDialogComponent,
     UploadProdatComponent,
     DialogEscalationReasonComponent,
-    FormSad500UpdatedComponent
+    FormSad500UpdatedComponent,
+    DialogOverrideComponent
   ]
 })
 export class AppModule { }

@@ -9,8 +9,6 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
   public post(url: string, requestModel: object) {
-    console.log(requestModel);
-
     return new Promise((resolve, reject) => {
       this.httpClient
           .post(url, requestModel)
@@ -46,6 +44,22 @@ export class ApiService {
     return new Promise((resolve, reject) => {
       this.httpClient
           .get(url)
+          .toPromise()
+          .then(
+            res => {
+              resolve(res);
+            },
+            msg => {
+              reject(msg);
+            }
+          );
+    });
+  }
+
+  public getFile(url: string) {
+    return new Promise((resolve, reject) => {
+      this.httpClient
+          .get(url, { responseType: 'blob'})
           .toPromise()
           .then(
             res => {

@@ -1,4 +1,4 @@
-<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <app-notification></app-notification>
 
 <div class="capture-header">
@@ -21,17 +21,18 @@
   <mat-card>
     <mat-card-content>
       <div style="padding: 0 24px; height: 62px;" class="line-list">
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLine();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
         <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         <p *ngIf="!lines" style="font-size: 16px;">No SAD500 Lines Added</p>
         <p *ngIf="lines">
           <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
           <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
-        <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
         <!-- &nbsp;<span>{{lineState}}</span> -->
-      </p>
+        </p>
       <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
           <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
       </div> -->
@@ -40,10 +41,10 @@
   </mat-card>
 </ng-container>
 
-<ng-container *ngIf="!displayLines">
-  <form [formGroup]="form" (ngSubmit)="submit(form)">
+<ng-container>
+  <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             Serial No
@@ -53,13 +54,16 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             LRN
           </mat-label>
           <input matInput type="text" formControlName="lrn" />
-          <mat-error *ngIf="form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
+          <mat-icon *ngIf="form.controls.lrnOBit.value" matSuffix (click)="undoOverride('lrn')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.lrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.lrnOBit.value && form.controls.lrn.errors?.incorrect" matSuffix (click)="overrideDialog('lrn', 'LRN')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-error *ngIf="!form.controls.lrnOBit.value  && form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -68,12 +72,12 @@
           <mat-label>
             Rebate Code
           </mat-label>
-          <input matInput type="text" formControlName="rebateCode" />
-          <mat-error *ngIf="form.controls.rebateCode.errors?.incorrect">{{getError('rebateCode')}}</mat-error>
+          <input matInput type="text" formControlName="referenceNo" />
+          <mat-error *ngIf="form.controls.referenceNo.errors?.incorrect">{{getError('referenceNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-6">
         <mat-form-field appearance="fill">
           <mat-label>
             Total Customs Value
@@ -83,8 +87,8 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
-        <ls-autocomplete-cpc [(control)]="form.controls.cpc"></ls-autocomplete-cpc>
+      <div class="col-6">
+        <ls-autocomplete-cpc [(control)]="form.controls.cpcID"></ls-autocomplete-cpc>
         <br /><br />
       </div>
       <div class="col-12">
@@ -97,7 +101,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             Supplier Ref
@@ -107,23 +111,29 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             MRN
           </mat-label>
           <input matInput type="text" formControlName="mrn" />
-          <mat-error *ngIf="form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
+          <mat-icon *ngIf="form.controls.mrnOBit.value" matSuffix (click)="undoOverride('mrn')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.mrnOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect" matSuffix (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-error *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12">
+      <div class="col-4">
         <mat-form-field appearance="fill">
           <mat-label>
             TIN Number
           </mat-label>
           <input matInput type="text" formControlName="importersCode" />
-          <mat-error *ngIf="form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+          <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'TIN Number')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-error *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -133,7 +143,10 @@
             File Ref
           </mat-label>
           <input matInput type="text" formControlName="fileRef" />
-          <mat-error *ngIf="form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
+          <mat-icon *ngIf="form.controls.fileRefOBit.value" matSuffix (click)="undoOverride('fileRef')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.fileRefOBit.value">OVERRIDE: {{form.controls.fileRefOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect" matSuffix (click)="overrideDialog('fileRef', 'File Ref')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-error *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -143,7 +156,10 @@
             Total Duty
           </mat-label>
           <input matInput type="number" formControlName="totalDuty" />
-          <mat-error *ngIf="form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
+          <mat-icon *ngIf="form.controls.totalDutyOBit.value" matSuffix (click)="undoOverride('totalDuty')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.totalDutyOBit.value">OVERRIDE: {{form.controls.totalDutyOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.totalDutyOBit.value && form.controls.totalDuty.errors?.incorrect" matSuffix (click)="overrideDialog('totalDuty', 'Total Duty')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-error *ngIf="!form.controls.totalDutyOBit.value && form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>

@@ -9,7 +9,8 @@ import { ReportsService } from 'src/app/services/Reports.Service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
-
+import { ApiService } from 'src/app/services/api.service';
+import {convertToHtml} from "mammoth";
 
 type AOA = any[][];
 
@@ -24,7 +25,8 @@ export class PreviewReportsComponent implements OnInit {
     private companyService: CompanyService,
     private userService: UserService,
     private reportService: ReportsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private apiService: ApiService,
   ) { }
 
   reports: ServiceClaimReport[] = [];
@@ -34,88 +36,84 @@ export class PreviewReportsComponent implements OnInit {
   data: AOA = [[1, 2], [3, 4]];
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName = 'SheetJS.xlsx';
+
   @ViewChild('fileDownload', { static: false })
   fileDownload: ElementRef;
+
   @ViewChild('ngxDoc', {static: false})
   ngxDoc: ElementRef;
+
   @ViewChild('iframe', {static: false})
   iframe: ElementRef;
 
+  file;
+  claimReport: SelectedClaimReport;
+  reportHTMLTest;
 
-claimReport: SelectedClaimReport;
   ngOnInit() {
     this.companyService.observeClaimReport().subscribe((obj: SelectedClaimReport) => {
       this.claimReport = obj;
-    })
-    // Get list of reports we want to view
-
-    // this.reports = [
-    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-    //   { reportFile: 'file', reportName: '521 - Report', reportID: 1, selected: false },
-    // ];
+    });
     this.getClaimReports();
   }
-// C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx
 
-getClaimReports() {
-  const model: GetServiceClaimReports = {
-    userID: this.currentUser.userID,
-    companyServiceClaimID: this.claimReport.claimNumber,
-    filter: '',
-    rowStart: 1,
-    rowEnd: 15,
-    orderBy: '',
-    orderByDirection: ''
-  };
-  this.companyService.getServiceClaimReports(model).then(
-    (res: ServiceClaimReportsListResponse) => {
-      console.log(res);
-      if (res.outcome.outcome === 'SUCCESS') {
-        this.reports = res.companyServiceClaimReports;
-      } else { 
+  getClaimReports() {
+    const model: GetServiceClaimReports = {
+      userID: this.currentUser.userID,
+      companyServiceClaimID: this.claimReport.claimNumber,
+      filter: '',
+      rowStart: 1,
+      rowEnd: 15,
+      orderBy: '',
+      orderByDirection: ''
+    };
+    this.companyService.getServiceClaimReports(model).then(
+      (res: ServiceClaimReportsListResponse) => {
+        console.log(res);
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.reports = res.companyServiceClaimReports;
+        } else {
+
+        }
+      },
+      (msg) => {
 
       }
-    },
-    (msg) => {
+    );
+  }
+  getSingleReport(rep: ServiceClaimReport) {
+    console.log(this.claimReport);
+  // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
 
-    }
-  );
-}
-getSingleReport(rep: ServiceClaimReport) {
-  console.log(this.claimReport);
- // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
+  // GET .. ?reportID=12&claimID=23&
+  // selectedReport = URL
+    console.log(rep);
+    const model = {
+      reportID: rep.reportID,
+      // claimID: this.claimReport.claimNumber,
+      claimID: 10001,
+      companyID: this.claimReport.companyID,
+      reportService: this.claimReport.serviceName
+    };
+    this.reportService.getReport(model).then(
+      (res: Blob) => {
+        const fileBlob = new Blob([res] , {type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(fileBlob);
+        this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.fileDownload.nativeElement.download = `Report_${rep.reportID}.xlsx`;
+        this.fileDownload.nativeElement.href = url;
+        // let iframe = this.ngxDoc.nativeElement;
+        this.selectedReport = url;
+        // this.iframe.nativeElement.src = `Report_${rep.reportID}.xlsx`;
+        this.fileDownload.nativeElement.click();
+        console.log(url);
+      });
+  }
 
- // GET .. ?reportID=12&claimID=23&
- // selectedReport = URL
- console.log(rep);
-   const model = {
-     reportID: rep.reportID,
-     //claimID: this.claimReport.claimNumber,
-     claimID: 10001,
-     companyID: this.claimReport.companyID,
-     reportService: this.claimReport.serviceName
-   };
-  this.reportService.getReport(model).then(
-    (res: Blob) => {
-      const fileBlob = new Blob([res] , {type: 'application/octet-stream' });
-      const url = window.URL.createObjectURL(fileBlob);
-      this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      this.fileDownload.nativeElement.download = `Report_${rep.reportID}.xlsx`;
-      this.fileDownload.nativeElement.href = url;
-      // let iframe = this.ngxDoc.nativeElement;
-      this.selectedReport = url;
-      //this.iframe.nativeElement.src = `Report_${rep.reportID}.xlsx`;
-      this.fileDownload.nativeElement.click();
-      console.log(url);
-    });
-}
-
-buildGetLink(rep: ServiceClaimReport) {
-  this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/1/10001/${this.claimReport.companyID}/${this.claimReport.serviceName}`;
-  //this.selectedReport = `http://197.189.218.50:7777/api/v1.0/reports/preview/1/10001/${this.claimReport.companyID}/${this.claimReport.serviceName}`;
-}
+  buildGetLink(rep: ServiceClaimReport) {
+    // tslint:disable-next-line: max-line-length
+    this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/10001/${this.claimReport.companyID}/${rep.serviceName}`;
+  }
 
   onFileChange(evt: any) {
     console.log(evt);
@@ -160,9 +158,9 @@ buildGetLink(rep: ServiceClaimReport) {
     return this.reports.filter(x => x.selected);
   }
   downloadFiles() {
-    this.reports.forEach((x:ServiceClaimReport) => {
+    this.reports.forEach((x: ServiceClaimReport) => {
       this.getSingleReport(x);
-    })
+    });
   }
 
 }

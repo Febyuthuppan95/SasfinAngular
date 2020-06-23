@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/services/user.Service';
-import { AllowIn } from 'ng-keyboard-shortcuts';
+import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 
 @Component({
   selector: 'app-form-sad500-line-updated',
@@ -10,50 +12,55 @@ import { AllowIn } from 'ng-keyboard-shortcuts';
 })
 export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterViewInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private snackbar: MatSnackBar, private dialog: MatDialog,
+              private userService: UserService) { }
 
   public form = new FormGroup({
-    userID: new FormControl(null, [Validators.required]),
-    SAD500ID: new FormControl(null, [Validators.required]),
+    userID: new FormControl(null),
+    specificSAD500LineID: new FormControl(null),
     tariffID: new FormControl(null, [Validators.required]),
     unitOfMeasureID: new FormControl(null, [Validators.required]),
-    originalLineID: new FormControl(null, [Validators.required]),
+    originalLineID: new FormControl(null),
     cooID: new FormControl(null, [Validators.required]),
-    replacedByLineID: new FormControl(null, [Validators.required]),
+    replacedByLineID: new FormControl(null),
     lineNo: new FormControl(null, [Validators.required]),
     customsValue: new FormControl(null, [Validators.required]),
     previousDeclaration: new FormControl(null, [Validators.required]),
     quantity: new FormControl(null, [Validators.required]),
-    duty: new FormControl(null, [Validators.required]),
+    duty: new FormControl(null),
+    duties: new FormControl(null, [Validators.required]),
     supplyUnit: new FormControl(null, [Validators.required]),
-    lineNoOBit: new FormControl(false, [Validators.required]),
-    lineNoOUserID: new FormControl(null, [Validators.required]),
-    lineNoODate: new FormControl(null, [Validators.required]),
-    lineNoOReason: new FormControl(null, [Validators.required]),
-    customsValueOBit: new FormControl(false, [Validators.required]),
-    customsValueOUserID: new FormControl(null, [Validators.required]),
-    customsValueODate: new FormControl(null, [Validators.required]),
-    customsValueOReason: new FormControl(null, [Validators.required]),
-    quantityOBit: new FormControl(false, [Validators.required]),
-    quantityOUserID: new FormControl(null, [Validators.required]),
-    quantityODate: new FormControl(null, [Validators.required]),
-    quantityOReason: new FormControl(null, [Validators.required]),
-    previousDeclarationOBit: new FormControl(false, [Validators.required]),
-    previousDeclarationOUserID: new FormControl(null, [Validators.required]),
-    previousDeclarationODate: new FormControl(null, [Validators.required]),
-    previousDeclarationOReason: new FormControl(null, [Validators.required]),
-    dutyOBit: new FormControl(false, [Validators.required]),
-    dutyOUserID: new FormControl(null, [Validators.required]),
-    dutyODate: new FormControl(null, [Validators.required]),
-    dutyOReason: new FormControl(null, [Validators.required]),
-    vatOBit: new FormControl(false, [Validators.required]),
-    vatOUserID: new FormControl(null, [Validators.required]),
-    vatODate: new FormControl(null, [Validators.required]),
-    vatOReason: new FormControl(null, [Validators.required]),
-    supplyUnitOBit: new FormControl(false, [Validators.required]),
-    supplyUnitOUserID: new FormControl(null, [Validators.required]),
-    supplyUnitODate: new FormControl(null, [Validators.required]),
-    supllyUnitOReason: new FormControl(null, [Validators.required]),
+    lineNoOBit: new FormControl(false),
+    lineNoOUserID: new FormControl(null),
+    lineNoODate: new FormControl(new Date()),
+    lineNoOReason: new FormControl(null),
+    customsValueOBit: new FormControl(false),
+    customsValueOUserID: new FormControl(null),
+    customsValueODate: new FormControl(new Date()),
+    customsValueOReason: new FormControl(null),
+    quantityOBit: new FormControl(false),
+    quantityOUserID: new FormControl(null),
+    quantityODate: new FormControl(new Date()),
+    quantityOReason: new FormControl(null),
+    previousDeclarationOBit: new FormControl(false),
+    previousDeclarationOUserID: new FormControl(null),
+    previousDeclarationODate: new FormControl(new Date()),
+    previousDeclarationOReason: new FormControl(null),
+    dutyOBit: new FormControl(false),
+    dutyOUserID: new FormControl(null),
+    dutyODate: new FormControl(new Date()),
+    dutyOReason: new FormControl(null),
+    vatOBit: new FormControl(false),
+    vatOUserID: new FormControl(null),
+    vatODate: new FormControl(new Date()),
+    vatOReason: new FormControl(null),
+    supplyUnitOBit: new FormControl(false),
+    supplyUnitOUserID: new FormControl(null),
+    supplyUnitODate: new FormControl(new Date()),
+    supplyUnitOReason: new FormControl(null),
+    sad500ID: new FormControl(null),
+    isDeleted: new FormControl(0),
+    uniqueIdentifier: new FormControl(),
   });
 
   public attachmentLabel: string;
@@ -63,41 +70,109 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   public activeIndex: any;
   public displayLines = false;
   public errors: any[] = [];
-  public shortcuts: any[];
+  public shortcuts: any[] = [];
 
-  private attachmentID: number;
-  private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
   @Output() submission = new EventEmitter<any>();
 
+  @ViewChild(KeyboardShortcutsComponent, { static: true })
+  private keyboard: KeyboardShortcutsComponent;
+
   ngOnInit() {
     if (this.data) {
+      this.data.sad500ID = this.data.SAD500ID;
+      this.data.specificSAD500LineID = this.data.sad500LineID;
       this.form.patchValue(this.data);
+      this.form.controls.duties.setValue(this.data.duties);
+      this.errors = this.data.errors;
+    } else {
+      this.data.specificSAD500LineID = -1;
+      this.data.sad500LineID = -1;
+      this.form.controls.specificSAD500LineID.setValue(-1);
+      this.form.controls.sad500LineID.setValue(-1);
     }
+
+
   }
 
   ngAfterViewInit(): void {
-    this.shortcuts.push(
-      {
-        key: 'alt + a',
-        preventDefault: true,
-        allowIn: [AllowIn.Textarea, AllowIn.Input],
-        command: (e) => this.submit(this.form),
-      },
-      {
-        key: 'alt + k',
-        preventDefault: true,
-        allowIn: [AllowIn.Textarea, AllowIn.Input],
-        // command: (e) => (this.focusDutiesQuery = !this.focusDutiesQuery),
-      }
-    );
+    // if (this.errors.length > 0) {
+    //   Object.keys(this.form.controls).forEach(key => {
+    //     this.errors.forEach((error) => {
+    //       let field = error.fieldName.toUpperCase();
+
+    //       if (field === 'TARIFF') {
+    //         field = 'TARIFFID';
+    //       }
+
+    //       if (field === 'COUNTRY OF ORGIN') {
+    //         field = 'COOID';
+    //       }
+
+    //       if (key.toUpperCase() === field) {
+    //         this.form.controls[key].setErrors({incorrect: true});
+    //         this.form.controls[key].markAsTouched();
+    //       }
+    //     });
+    //   });
+    // }
+
+    setTimeout(() => {
+      this.shortcuts.push(
+        {
+          key: 'alt + a',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: () => this.submit(this.form),
+        },
+        {
+          key: 'alt + k',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          // command: (e) => (this.focusDutiesQuery = !this.focusDutiesQuery),
+        }
+      );
+    });
   }
 
   ngOnChanges() {
     this.form.reset();
-    this.form.patchValue(this.data);
+
+    if (this.data) {
+      this.data.sad500ID = this.data.SAD500ID;
+      this.data.specificSAD500LineID = this.data.sad500LineID;
+      this.form.patchValue(this.data);
+      this.form.controls.duties.setValue(this.data.duties);
+      this.errors = this.data.errors;
+
+      // if (this.errors.length > 0) {
+      //   Object.keys(this.form.controls).forEach(key => {
+      //     this.errors.forEach((error) => {
+      //       let field = error.fieldName.toUpperCase();
+
+      //       if (field === 'TARIFF') {
+      //         field = 'TARIFFID';
+      //       }
+
+      //       if (field === 'COUNTRY OF ORGIN') {
+      //         field = 'COOID';
+      //       }
+
+      //       if (key.toUpperCase() === field) {
+      //         this.form.controls[key].setErrors({incorrect: true});
+      //         this.form.controls[key].markAsTouched();
+      //       }
+      //     });
+      //   });
+      // }
+    } else {
+      this.data.specificSAD500LineID = -1;
+      this.data.sad500LineID = -1;
+      this.form.controls.specificSAD500LineID.setValue(-1);
+      this.form.controls.sad500LineID.setValue(-1);
+    }
   }
 
   getError(key: string): string {
@@ -105,7 +180,39 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   }
 
   submit(form: FormGroup) {
-    this.submission.emit(form.value);
+    if (form.valid) {
+      this.submission.emit(form.value);
+    } else {
+      this.snackbar.open('Please fill in line details');
+    }
   }
+
+    // @override methods
+    overrideDialog(key, label) {
+      this.dialog.open(DialogOverrideComponent, {
+        width: '512px',
+        data: {
+          label
+        }
+      }).afterClosed().subscribe((val) => {
+        if (val) {
+          this.override(key, val);
+        }
+      });
+    }
+
+    override(key: string, reason: string) {
+      this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
+      this.form.controls[`${key}ODate`].setValue(new Date());
+      this.form.controls[`${key}OBit`].setValue(true);
+      this.form.controls[`${key}OReason`].setValue(reason);
+    }
+
+    undoOverride(key: string) {
+      this.form.controls[`${key}OUserID`].setValue(null);
+      this.form.controls[`${key}ODate`].setValue(new Date());
+      this.form.controls[`${key}OBit`].setValue(false);
+      this.form.controls[`${key}OReason`].setValue(null);
+    }
 
 }

@@ -124,8 +124,14 @@ export class NestedTableComponent implements OnInit, OnChanges {
     console.log($event);
   }
   rowAction($event) {
-
-    this.rowEvent.emit(JSON.stringify({lineA: $event[1].value, lineB: $event[2].value}));
+    console.log($event);
+    this.rowEvent.emit(
+      JSON.stringify({
+        lineA: $event[1].value,
+        lineB: $event[2].value,
+        // lineC: $event[4].value,
+        lineD: $event[5].value
+      }));
   }
   paginate($event: PageEvent) {
     this.pageEvent.emit($event);

@@ -97,32 +97,32 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
-  @ViewChild(NotificationComponent, { static: true })
+  @ViewChild(NotificationComponent, { static: false })
   private notify: NotificationComponent;
 
-  @ViewChild('openPopulateModal', {static: true})
+  @ViewChild('openPopulateModal', {static: false})
   openPopulateModal: ElementRef;
-  @ViewChild('closePopulateModal', {static: true})
+  @ViewChild('closePopulateModal', {static: false})
   closePopulateModal: ElementRef;
 
-  @ViewChild('openCreateModal', {static: true})
+  @ViewChild('openCreateModal', {static: false})
   openCreateModal: ElementRef;
-  @ViewChild('closeCreateModal', {static: true})
+  @ViewChild('closeCreateModal', {static: false})
   closeCreateModal: ElementRef;
-  @ViewChild('openPermitModal', {static: true})
+  @ViewChild('openPermitModal', {static: false})
   openPermitModal: ElementRef;
-  @ViewChild('closePermitModal', {static: true})
+  @ViewChild('closePermitModal', {static: false})
   closePermitModal: ElementRef;
 
-  @ViewChild('openReportsModal', {static: true})
+  @ViewChild('openReportsModal', {static: false})
   openReportsModal: ElementRef;
-  @ViewChild('closeReportsModal', {static: true})
+  @ViewChild('closeReportsModal', {static: false})
   closeReportsModal: ElementRef;
 
-  @ViewChild('myInput', { static: true })
+  @ViewChild('myInput', { static: false })
   myInputVariable: ElementRef;
 
- 
+
 
   tableHeader: TableHeader = {
     title: `Service Claims`,
@@ -163,7 +163,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   ];
-  
+
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -201,9 +201,69 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   loadingData = false;
   loadingImportData = false;
   focusImport: Import;
+  // Generate Company Service
+  selectedCompanyServiceID = -1;
+  selectedCompanyServiceIDControl = new FormControl(-1);
+  selectedClaimDate: Date = new Date();
+  ServiceClaim: {
+    companyServiceID: number,
+    companyServiceClaimNumber: number,
+    serviceID: number,
+    serviceName: string,
+    permitCount: number,
+    exportStartDate: Date | string,
+    exportEndDate: Date | string,
+    claimDate: Date | string,
+    name: string,
+    extensionDays: number,
+    lookBackDays: number
+  };
+  claimForm = {
+    exportStartDate: {
+      valid: true,
+      error: ''
+    },
+    exportEndDate: {
+      valid: true,
+      error: ''
+    },
+
+  }
+  selectedRow = -1;
+  lookBackDays = [];
+  extensionDays = [];
+  selectedExtensionDays = 15;
+  exportStartDate = new Date();
+  exportEndDate = new Date();
+  claimPermits: [];
+  permitsByDate = new FormControl();
+  CompanyServiceClaims: CompanyServiceClaim[];
+  Permits: Permit[] = [];
+
+  SAD500Lines: SAD500LinesByPermit[] = [];
+  SAD500SelectedLines = [];
+  isChecked: boolean;
+
+  importComponents: Import[];
+  selectProducts: Export[];
+  availableExports: Export[];
+  assignedExports: ExportLine[];
+  displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
+  dataSource = new MatTableDataSource<Export>(this.availableExports);
+  eDataSource = new MatTableDataSource<ExportLine>(this.assignedExports);
+  selection = new SelectionModel<Export>(true, []);
+
+  length = 100;
+  pageSize = 5;
+  pageSizeOptions: number[] = [5];
+  pageEvent: PageEvent;
+  claimRequestParams: FormGroup;
+  selectedCompanyServiceClaimID: number;
+
+  minClaimDate = new Date()
   /* Claims Modal*/
 
- 
+
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
@@ -221,6 +281,14 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadCompanyPermits();
     this.loadCompanyServices();
 
+    this.claimRequestParams = this.formBuilder.group({
+      lookbackDays: [null, { validators: [Validators.required] , updateOn: 'blur'}],
+      extensionDays: [null, { validators: [Validators.required] , updateOn: 'blur'}],
+      exportStartDate: [null, { validators: [Validators.required] , updateOn: 'blur'}],
+      exportEndDate: [null, { validators: [Validators.required] , updateOn: 'blur'}],
+      selectedPermits: [null, { validators: [Validators.required] , updateOn: 'blur'}],
+      claimDate: [null, { validators: [Validators.required] , updateOn: 'blur'}]
+    });
 
   }
   initClaimForm() {
@@ -234,7 +302,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       exportEndDate: [this.ServiceClaim.exportEndDate, { validators: [Validators.required] , updateOn: 'blur'}],
       selectedPermits: [this.claimPermits, { validators: [Validators.required] , updateOn: 'blur'}],
       claimDate: [this.selectedClaimDate, { validators: [Validators.required] , updateOn: 'blur'}]
-    })
+    });
   }
   loadCompanyServices() {
     const model = {
@@ -287,14 +355,16 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        this.rowCount = res.rowCount;
         this.CompanyServiceClaims = res.serviceClaims;
+
+        console.log(this.rowCount);
 
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
-          this.rowCount = res.rowCount;
           this.showingRecords = res.serviceClaims.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyServiceClaims.length - 1;
@@ -336,7 +406,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
   removeExportline(component: Import, element:ExportLine) {
     const model = {
-      requestParams: { 
+      requestParams: {
         userID: this.currentUser.userID,
           companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
           captureJoinImportID: element.captureJoinImportID,
@@ -372,7 +442,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     }
   addExportline(component: Import, element:Export) {
     const model = {
-      requestParams: { 
+      requestParams: {
         userID: this.currentUser.userID,
           companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
           captureJoinImportID: component.cjid,
@@ -412,7 +482,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         component.totalShortfallQuantity =0;
         this.assignedExports.forEach((y:ExportLine) => {
           component.exportQuantity += y.totalExportUnits;
-        
+
           this.availableExports = this.availableExports.filter(x => x.cjid !== y.captureJoinExportID);
         });
         component.totalShortfallQuantity = component.totHSQuantity - component.exportQuantity;
@@ -497,7 +567,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
      this.myInputVariable.nativeElement.value = null;
      this.initClaimForm();
      this.openPopulateModal.nativeElement.click();
-     
+
      // this.router.navigate()
   }
 
@@ -547,12 +617,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   permitselected(permitIDs) {
-    console.log(permitIDs);
     this.permitslist = permitIDs;
   }
-  // Generate Company Service
-  selectedCompanyServiceID = -1;
-  selectedClaimDate: Date = new Date();
+
   createCompanyServiceSelected(companyServiceID) {
     this.selectedCompanyServiceID = companyServiceID;
   }
@@ -563,9 +630,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     checked.forEach(c => {
       this.SAD500SelectedLines.push(c.value);
     });
-
   }
-  
 
    polulateLines() {
       const requestModel = {
@@ -578,9 +643,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         (res: {outcome: Outcome}) => {
           if (res.outcome.outcome === 'SUCCESS') {
             this.loadingData = false;
-              this.notify.successmsg('Success', 'SAD500 lines has been Added');
-              this.closePopulateModal.nativeElement.click();
-              this.loadServiceClaims(false);
+            this.notify.successmsg('Success', 'SAD500 lines has been Added');
+            this.closePopulateModal.nativeElement.click();
+            this.loadServiceClaims(false);
             } else {
             this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
           }
@@ -620,64 +685,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     }
   }
-  ServiceClaim: {
-    companyServiceID: number,
-    companyServiceClaimNumber: number,
-    serviceID: number,
-    serviceName: string,
-    permitCount: number,
-    exportStartDate: Date | string,
-    exportEndDate: Date | string,
-    claimDate: Date | string,
-    name: string,
-    extensionDays: number,
-    lookBackDays: number
-  };
-  claimForm = {
-    exportStartDate: {
-      valid: true,
-      error: ''
-    },
-    exportEndDate: {
-      valid: true,
-      error: ''
-    },
 
-  }
-  selectedRow = -1;
-  lookBackDays = [];
-  extensionDays = [];
-  selectedExtensionDays = 15;
-  exportStartDate = new Date();
-  exportEndDate = new Date();
-  claimPermits: [];
-  permitsByDate = new FormControl();
-  CompanyServiceClaims: CompanyServiceClaim[] = [];
-  Permits: Permit[] = [];
 
-  SAD500Lines: SAD500LinesByPermit[] = [];
-  SAD500SelectedLines = [];
-  isChecked: boolean;
-
-  importComponents: Import[];
-  selectProducts: Export[];
-  availableExports: Export[];
-  assignedExports: ExportLine[];
-  displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
-  dataSource = new MatTableDataSource<Export>(this.availableExports);
-  eDataSource = new MatTableDataSource<ExportLine>(this.assignedExports);
-  selection = new SelectionModel<Export>(true, []);
-
-  length = 100;
-  pageSize = 5;
-  pageSizeOptions: number[] = [5];
-  pageEvent: PageEvent;
-  claimRequestParams: FormGroup;
- selectedCompanyServiceClaimID: number;
- 
- minClaimDate = new Date()
-
- 
  setPageSizeOptions(setPageSizeOptionsInput: string) {
   if (setPageSizeOptionsInput) {
     this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
@@ -719,13 +728,22 @@ createCompanyServiceClaim() {
     userID: this.currentUser.userID,
     companyServiceID: this.selectedCompanyServiceID,
     claimDate: this.selectedClaimDate
-  }
+  };
+
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
       if (res.outcome.outcome === 'SUCCESS') {
-        
-        this.closePopulateModal.nativeElement.click();
+        this.closeCreateModal.nativeElement.click();
+        this.notify.successmsg(
+          res.outcome.outcome,
+          res.outcome.outcomeMessage
+        );
         this.loadServiceClaims(true);
+      } else {
+        this.notify.errorsmsg(
+          res.outcome.outcome,
+          res.outcome.outcomeMessage
+        );
       }
     },
     msg => {
@@ -739,9 +757,11 @@ createCompanyServiceClaim() {
 }
 addCompanyServiceClaimPermits() {
   console.log(this.permitslist.length);
-if (this.permitslist.length === 0) {
-  // error
-}
+
+  if (this.permitslist.length === 0) {
+    // error
+  }
+
   let successCount = 0;
   this.permitslist.forEach(x => {
     // Save each permit
@@ -778,6 +798,7 @@ if (this.permitslist.length === 0) {
   })
 }
 openAddClaimPermits($event) {
+  this.permitsByDate.reset(null);
   this.openPermitModal.nativeElement.click();
 }
 loadCompanyPermits() {
@@ -793,7 +814,7 @@ loadCompanyPermits() {
   };
   this.companyService.getCompanyPermits(model).then(
     (res: CompanyPermitsListResponse) => {
-      
+
       if (res.outcome.outcome === 'SUCCESS') {
        this.Permits = res.permits
        console.log(this.Permits);
@@ -808,10 +829,10 @@ loadCompanyPermits() {
     }
   );
 }
-// 
+//
 generateClaimRequest() {
  this.updateCompanyServiceClaim();
-  
+
 }
 updateCompanyServiceClaim() {
   const model = {
@@ -852,10 +873,10 @@ loadClaimRequestData() {
     (res: ClaimImportComponents) => {
       if (res.outcome.outcome === 'SUCCESS') {
         this.loadingData = false;
-        this.importComponents = res.imports; 
+        this.importComponents = res.imports;
         this.importComponents.forEach((x: Import) => {
           x.exportQuantity = 0;
-          x.totalShortfallQuantity = x.totHSQuantity
+          x.totalShortfallQuantity = x.totHSQuantity;
         });
       } else {
         this.loadingData = false;
@@ -876,10 +897,12 @@ export class Import {
   cjid: number;
   totDuty: number;
   exportQuantity?: number;
+  availHSQuantity?: number;
   totalShortfallQuantity?: number;
-  totHSQuantity: number;
+  totHSQuantity?: number;
   availDuty: number;
-  importDate: Date | string
+  importDate: Date | string;
+  mrn?: string;
 }
 
 export class ClaimImportComponents {
@@ -942,7 +965,7 @@ export class ExportLine {
 }
 
 // New Classes
- export class newComponentItem {
+export class newComponentItem {
     itemID: number;
     componentCode: string;
     importQuantity: number;
@@ -952,7 +975,7 @@ export class ExportLine {
     mrn?: string;
  }
 
- export class newImportComponent {
+export class newImportComponent {
    captureJoinID: number;
    mrn: string;
    hsQuantity: number;
