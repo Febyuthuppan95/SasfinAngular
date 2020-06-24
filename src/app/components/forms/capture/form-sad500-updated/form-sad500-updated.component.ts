@@ -215,7 +215,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     console.log(invalid);
-}
+  }
 
   async load() {
     if (this.isVOC) {

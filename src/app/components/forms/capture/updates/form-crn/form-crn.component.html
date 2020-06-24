@@ -1,0 +1,126 @@
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<app-notification></app-notification>
+
+<div class="capture-header">
+  <h1 class="capture-form-title text-dark">
+    <span>{{attachmentLabel}}</span>
+  </h1>
+</div>
+<br>
+
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-mrn')">
+        <mat-label>
+          MRN
+        </mat-label>
+        <input matInput type="text" formControlName="mrn" />
+        <mat-icon *ngIf="form.controls.mrnOBit.value" matSuffix (click)="undoOverride('mrn')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect" matSuffix (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.mrnOBit.value  && form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-lrn')">
+        <mat-label>
+          LRN
+        </mat-label>
+        <input matInput type="text" formControlName="lrn" />
+        <mat-icon *ngIf="form.controls.lrnOBit.value" matSuffix (click)="undoOverride('lrn')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.lrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.lrnOBit.value && form.controls.lrn.errors?.incorrect" matSuffix (click)="overrideDialog('lrn', 'LRN')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.lrnOBit.value  && form.controls.lrn.errors?.incorrect">{{getError('lrn')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-serialNo')">
+        <mat-label>
+          Serial No
+        </mat-label>
+        <input matInput type="text" formControlName="serialNo" />
+        <mat-icon *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect" matSuffix (click)="overrideDialog('serialNo', 'serialNo')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-importersCode')">
+        <mat-label>
+          Importers Code
+        </mat-label>
+        <input matInput type="text" formControlName="importersCode" />
+        <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'importersCode')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-waybillNo')">
+        <mat-label>
+          Waybill No
+        </mat-label>
+        <input matInput type="text" formControlName="waybillNo" />
+        <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.waybillNoOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'waybillNo')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-4">
+      <ls-autocomplete-cpc [(control)]="form.controls.pcc"></ls-autocomplete-cpc>
+      <br /><br />
+    </div>
+    <div class="col-4">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-totalCustomsValue')">
+        <mat-label>
+          Total Customs Value
+        </mat-label>
+        <input matInput type="text" formControlName="totalCustomsValue" />
+        <mat-icon *ngIf="form.controls.totalCustomsValueOBit.value" matSuffix (click)="undoOverride('totalCustomsValue')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.totalCustomsValueOBit.value">OVERRIDE: {{form.controls.totalCustomsValueOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.totalCustomsValueOBit.value && form.controls.totalCustomsValue.errors?.incorrect" matSuffix (click)="overrideDialog('totalCustomsValue', 'Total Customs Value')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.totalCustomsValueOBit.value  && form.controls.totalCustomsValue.errors?.incorrect">{{getError('totalCustomsValue')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-4">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-totalDuty')">
+        <mat-label>
+          Total Duty
+        </mat-label>
+        <input matInput type="text" formControlName="totalDuty" />
+        <mat-icon *ngIf="form.controls.totalDutyOBit.value" matSuffix (click)="undoOverride('totalDuty')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.totalDutyOBit.value">OVERRIDE: {{form.controls.totalDutyOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.totalDutyOBit.value && form.controls.totalDuty.errors?.incorrect" matSuffix (click)="overrideDialog('totalDuty', 'Total Duty')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.totalDutyOBit.value  && form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-fileRef')">
+        <mat-label>
+          File Reference
+        </mat-label>
+        <input matInput type="text" formControlName="fileRef" />
+        <mat-icon *ngIf="form.controls.fileRefOBit.value" matSuffix (click)="undoOverride('fileRef')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.fileRefOBit.value">OVERRIDE: {{form.controls.fileRefOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect" matSuffix (click)="overrideDialog('fileRef', 'File Reference')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.fileRefOBit.value  && form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-edi-statuses [(control)]="form.controls.ediStatusID"></ls-autocomplete-edi-statuses>
+      <br /><br />
+    </div>
+  </div>
+</form>

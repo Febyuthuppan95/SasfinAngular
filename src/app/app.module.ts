@@ -247,6 +247,12 @@ import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/
 import { AutocompleteDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/autocomplete-duty.component';
 import { DialogOverrideComponent } from './components/forms/capture/dialog-override/dialog-override.component';
 import { DialogGuard } from './guards/dialog.guard';
+import { FormIciComponent } from './components/forms/capture/updates/form-ici/form-ici.component';
+import { FormCrnComponent } from './components/forms/capture/updates/form-crn/form-crn.component';
+import { FormWayComponent } from './components/forms/capture/updates/form-way/form-way.component';
+import { FormCswComponent } from './components/forms/capture/updates/form-csw/form-csw.component';
+import { FormInvComponent } from './components/forms/capture/updates/form-inv/form-inv.component';
+import { AutocompleteEdiStatusesComponent } from './components/forms/capture/autocompletes/autocomplete-edi-statuses/autocomplete-edi-statuses.component';
 
 @NgModule({
   declarations: [
@@ -419,7 +425,13 @@ import { DialogGuard } from './guards/dialog.guard';
     AutocompleteTariffsComponent,
     AutocompleteUnitsOfMeasureComponent,
     AutocompleteDutyComponent,
-    DialogOverrideComponent
+    DialogOverrideComponent,
+    FormIciComponent,
+    FormCrnComponent,
+    FormWayComponent,
+    FormCswComponent,
+    FormInvComponent,
+    AutocompleteEdiStatusesComponent
   ],
   imports: [
     BrowserModule,
@@ -518,7 +530,12 @@ import { DialogGuard } from './guards/dialog.guard';
     UploadProdatComponent,
     DialogEscalationReasonComponent,
     FormSad500UpdatedComponent,
-    DialogOverrideComponent
+    DialogOverrideComponent,
+    FormIciComponent,
+    FormCrnComponent,
+    FormWayComponent,
+    FormCswComponent,
+    FormInvComponent
   ]
 })
 export class AppModule { }
