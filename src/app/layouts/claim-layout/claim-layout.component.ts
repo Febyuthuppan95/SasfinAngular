@@ -1176,7 +1176,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
-  loadSAD
+
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
