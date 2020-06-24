@@ -213,7 +213,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             invalid.push(name);
         }
     }
-    return invalid;
+
+    console.log(invalid);
 }
 
   async load() {
@@ -335,6 +336,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         );
       }
 
+      if (!this.isVOC) {
+        delete requestModel.vocID;
+        delete requestModel.referenceNo;
+        delete requestModel.reason;
+      }
+
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
@@ -380,6 +387,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       );
     } else {
       this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+      this.findInvalidControls(form);
     }
   }
 

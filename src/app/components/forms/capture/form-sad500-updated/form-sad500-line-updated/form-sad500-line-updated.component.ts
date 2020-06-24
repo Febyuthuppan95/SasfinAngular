@@ -28,7 +28,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     previousDeclaration: new FormControl(null, [Validators.required]),
     quantity: new FormControl(null, [Validators.required]),
     duty: new FormControl(null),
-    duties: new FormControl(null, [Validators.required]),
+    duties: new FormControl(null),
     supplyUnit: new FormControl(null, [Validators.required]),
     lineNoOBit: new FormControl(false),
     lineNoOUserID: new FormControl(null),
@@ -182,11 +182,24 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     return this.errors.find(x => x.fieldName === key).errorDescription;
   }
 
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+
+    console.log(invalid);
+}
+
   submit(form: FormGroup) {
     if (form.valid) {
       this.submission.emit(form.value);
     } else {
-      this.snackbar.open('Please fill in line details');
+      this.findInvalidControls(form);
+      this.snackbar.open('Please fill in line details', '', {duration: 3000});
     }
   }
 
