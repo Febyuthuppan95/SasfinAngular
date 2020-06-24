@@ -268,6 +268,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         });
         break;
       }
+      case '522': {
+        this.claimRequestParams = this.formBuilder.group({
+          LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+        });
+        break;
+      }
     }
     this.pageEvent = {
       pageIndex: 0,
@@ -1044,31 +1050,226 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         ];
         break;
       }
+      case '522': {
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'cjid',
+            order: {
+              enable: true,
+              tag: 'cjid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
+            title: 'Item Code',
+            propertyName: 'name',
+            order: {
+              enable: true,
+              tag: 'name'
+            },
+            position: 4
+          },
+          {
+            title: 'Available Quantity',
+            propertyName: 'availquantity',
+            order: {
+              enable: true,
+              tag: 'availquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Available Duty',
+            propertyName: 'availduty',
+            order: {
+              enable: true,
+              tag: 'availduty'
+            },
+            position: 6
+          }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rowNum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'oemsupplyid',
+            order: {
+              enable: true,
+              tag: 'oemsupplyid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Code',
+            propertyName: 'prodname',
+            order: {
+              enable: true,
+              tag: 'prodname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity Per',
+            propertyName: 'quantityper',
+            order: {
+              enable: true,
+              tag: 'quantityper'
+            },
+            position: 4
+          },
+          {
+            title: 'Available Export Quantity',
+            propertyName: 'availexpquantity',
+            order: {
+              enable: true,
+              tag: 'availexpquantity'
+            },
+            position: 5
+          },
+          {
+            title: 'Export Quantity',
+            propertyName: 'expquantity',
+            order: {
+              enable: true,
+              tag: 'expquantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Quantity',
+            propertyName: 'totquantity',
+            order: {
+              enable: true,
+              tag: 'totquantity'
+            },
+            position: 7
+          }
+        ];
+        this.headingsC = [
+          {
+            title: '#',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'invoicelineID',
+            order: {
+              enable: true,
+              tag: 'invoicelineID'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'Item Code',
+            propertyName: 'name',
+            order: {
+              enable: true,
+              tag: 'name'
+            },
+            position: 3
+          },
+          {
+            title: 'Total HS Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 4
+          },
+          {
+            title: 'Available HS Quantity',
+            propertyName: 'availquantity',
+            order: {
+              enable: true,
+              tag: 'availquantity'
+            },
+            position: 5
+          }
+        ];
+        break;
+      }
     }
 
   }
-  initTableDataTypes() {
-    switch(this.currentClaim.serviceName) {
-      case '521': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-      case '536': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-      case '538': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-    }
-  }
+  // initTableDataTypes() {
+  //   switch(this.currentClaim.serviceName) {
+  //     case '521': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //     case '536': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //     case '538': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //   }
+  // }
   initClaimFormData() {
     this.loading = true;
     const model = {
