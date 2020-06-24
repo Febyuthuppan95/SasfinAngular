@@ -14,6 +14,9 @@ import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form
 import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
 import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
 import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/form-sad500-updated/form-sad500-updated.component';
+import { FormIciComponent } from 'src/app/components/forms/capture/updates/form-ici/form-ici.component';
+import { FormCrnComponent } from 'src/app/components/forms/capture/updates/form-crn/form-crn.component';
+import { FormWayComponent } from 'src/app/components/forms/capture/updates/form-way/form-way.component';
 
 
 @Component({
@@ -64,7 +67,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'CRN' : {
-        this.componentService.renderComponent(FormCustomReleaseComponent);
+        this.componentService.renderComponent(FormCrnComponent);
+        // this.componentService.renderComponent(FormCustomReleaseComponent);
         break;
       }
       case 'CWS' : {
@@ -72,11 +76,12 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'ICI': {
-        this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        this.componentService.renderComponent(FormIciComponent);
+        // this.componentService.renderComponent(FormImportClearingInstructionComponent);
         break;
       }
       case 'ECI': {
-        this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        this.componentService.renderComponent(FormIciComponent);
         break;
       }
       case 'INV': {
@@ -89,7 +94,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
         break;
       }
       case 'WAY': {
-        this.componentService.renderComponent(FormWaybillComponent);
+        // this.componentService.renderComponent(FormWaybillComponent);
+        this.componentService.renderComponent(FormWayComponent);
         break;
       }
     }

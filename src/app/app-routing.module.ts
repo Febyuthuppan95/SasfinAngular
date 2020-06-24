@@ -79,6 +79,7 @@ import {ViewCompanyBomsItemsListComponent} from './views/main/view-company-boms/
 import {ViewCompanyBomsItemsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
 import {ViewCompanyBomsItemgroupsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-list.component';
 import {ViewCompanyBomsItemgroupsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
+import { DialogGuard } from './guards/dialog.guard';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -90,6 +91,7 @@ const routes: Routes = [
         path: 'account',
         component: AccountComponent,
         canActivate: [AnonGuard],
+        canActivateChild: [DialogGuard],
         children: [
           { path: 'login', component: ViewLoginComponent },
           { path: 'forgotpassword', component: ViewForgotPasswordComponent },
@@ -100,6 +102,7 @@ const routes: Routes = [
         path: '',
         component: MainLayoutComponent,
         canActivate: [AuthenticationGuard],
+        canActivateChild: [DialogGuard],
         children: [
           { path: '', component: RedirectComponent },
           {
@@ -431,6 +434,7 @@ const routes: Routes = [
       {
         path: 'capture',
         component: CaptureLayoutComponent,
+        canActivateChild: [DialogGuard],
         children: [
           {
             path: 'transaction/attachment',
@@ -445,6 +449,7 @@ const routes: Routes = [
       },
       {
         path: 'claim',
+        canActivateChild: [DialogGuard],
         component: ClaimLayoutComponent,
         children: [
           { path: 'capture', component: ViewCompanyServiceClaimDataComponent },

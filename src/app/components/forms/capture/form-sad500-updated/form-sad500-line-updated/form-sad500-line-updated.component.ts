@@ -28,7 +28,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     previousDeclaration: new FormControl(null, [Validators.required]),
     quantity: new FormControl(null, [Validators.required]),
     duty: new FormControl(null),
-    duties: new FormControl(null, [Validators.required]),
+    duties: new FormControl(null),
     supplyUnit: new FormControl(null, [Validators.required]),
     lineNoOBit: new FormControl(false),
     lineNoOUserID: new FormControl(null),
@@ -71,6 +71,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   public displayLines = false;
   public errors: any[] = [];
   public shortcuts: any[] = [];
+  public sadLine500ID = -1;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -84,10 +85,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     if (this.data) {
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.sad500LineID;
+      this.sadLine500ID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
     } else {
+      this.sadLine500ID = -1;
       this.data.specificSAD500LineID = -1;
       this.data.sad500LineID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
@@ -179,11 +182,24 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     return this.errors.find(x => x.fieldName === key).errorDescription;
   }
 
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+
+    console.log(invalid);
+}
+
   submit(form: FormGroup) {
     if (form.valid) {
       this.submission.emit(form.value);
     } else {
-      this.snackbar.open('Please fill in line details');
+      this.findInvalidControls(form);
+      this.snackbar.open('Please fill in line details', '', {duration: 3000});
     }
   }
 

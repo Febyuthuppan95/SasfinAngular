@@ -47,7 +47,7 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
     this.conversations = [];
     this.currentUser = this.userService.getCurrentUser();
     this.setResponsibleUser();
-    this.getConversations();
+    // this.getConversations();
   }
 
   setResponsibleUser() {
@@ -90,14 +90,14 @@ export class ChatConversationListComponent implements OnInit, OnChanges {
         this.transactionID = curr.transactionID;
       }
     });
-    this.chatService.conversationList(model).then(
-      (res: ChatConversationListResponse) => {
-        if (res !== null) {
-          this.conversations = res.conversations;
-        } else {
-        }
-      }, (msg) => {
-      });
+    // this.chatService.conversationList(model).then(
+    //   (res: ChatConversationListResponse) => {
+    //     if (res !== null) {
+    //       this.conversations = res.conversations;
+    //     } else {
+    //     }
+    //   }, (msg) => {
+    //   });
   }
   setConvo = ($event: number) => {
     this.selectedConvo.emit($event);

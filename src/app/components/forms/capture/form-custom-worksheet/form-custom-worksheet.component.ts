@@ -265,7 +265,6 @@ export class FormCustomWorksheetComponent
   }
 
   submit(escalation?: boolean) {
-    console.log(escalation);
     if ((this.LinesValid && this.CWSForm.valid) || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
@@ -279,19 +278,21 @@ export class FormCustomWorksheetComponent
 
         waybillNoOBit: this.form.waybillNo.OBit,
         waybillNoOUserID: this.form.waybillNo.OUserID,
-        waybillNoODate: this.form.waybillNo.ODate,
+        waybillNoODate: new Date(this.form.waybillNo.ODate),
         waybillNoOReason: this.form.waybillNo.OReason,
 
         lrnOBit: this.form.LRN.OBit,
         lrnOUserID: this.form.LRN.OUserID,
-        lrnODate: this.form.LRN.ODate,
+        lrnODate: new Date(this.form.LRN.ODate),
         lrnOReason: this.form.LRN.OReason,
 
         fileRefOBit: this.form.fileRef.OBit,
         fileRefOUserID: this.form.fileRef.OUserID,
-        fileRefODate: this.form.fileRef.ODate,
+        fileRefODate: new Date(this.form.fileRef.ODate),
         fileRefOReason: this.form.fileRef.OReason,
       };
+
+      console.log(requestModel);
 
       this.captureService.customWorksheetUpdate(requestModel).then(
         (res: Outcome) => {
@@ -303,7 +304,7 @@ export class FormCustomWorksheetComponent
           }
         },
         (msg) => {
-          console.log(JSON.stringify(msg));
+          console.log(msg);
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );

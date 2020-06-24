@@ -66,7 +66,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.submit());
+    .subscribe((escalation?: boolean) => this.submit(escalation));
 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -119,7 +119,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             waybillID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             isDeleted: 0,
-            attachmentStatusID: 3,
+            attachmentStatusID: escalation ? 7 : 3,
           };
 
           this.captureService.waybillUpdate(requestModel).then(
