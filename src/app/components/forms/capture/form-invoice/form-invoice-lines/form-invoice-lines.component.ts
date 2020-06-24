@@ -325,7 +325,6 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
       this.unitOfMeasureQuery = '';
     }
     submit(isDeleted?: boolean) {
-      console.log('alt + s');
       if (this.LinesForm.valid && !isDeleted) {
         if (this.isUpdate) {
           const request: InvoiceLine = {
@@ -336,11 +335,10 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
             invoiceLineID: this.updateSAD500Line.invoiceLineID,
             unitPrice: this.form.unitPrice.value,
             totalLineValue: this.form.totalLineValue.value,
-            // unitOfMeasure: this.form.unitOfMeasure,
             cooID: this.form.cooID.value,
             unitOfMeasureID: this.form.unitOfMeasureID.value,
             guid: UUID.UUID(),
-            isDeleted: isDeleted
+            isDeleted
           };
 
           this.updateLine.emit(request);
@@ -357,11 +355,11 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
             totalLineValue: this.form.totalLineValue.value,
             guid: UUID.UUID(),
           };
+
           this.submitLine.emit(request);
         }
-    }
-    else if(!this.LinesForm.valid && isDeleted) {
-      if(this.isUpdate) {
+    } else if (isDeleted) {
+      if (this.isUpdate) {
         const request: InvoiceLine = {
           prodCode: this.form.prodCode.value,
           invoiceID: this.updateSAD500Line.invoiceID,
@@ -371,13 +369,12 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
           unitPrice: this.form.unitPrice.value,
           totalLineValue: this.form.totalLineValue.value,
           isPersist: true,
-          // unitOfMeasure: this.form.unitOfMeasure,
           cooID: this.form.cooID.value,
           unitOfMeasureID: this.form.unitOfMeasureID.value,
           guid: UUID.UUID(),
-          isDeleted: isDeleted
+          isDeleted
         };
-        console.log(request);
+
         this.updateLine.emit(request);
       } else {
         this.snackbar.open(`Cannot delete an unsaved line`, '', {
@@ -387,8 +384,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
         });
       }
 
-    }
-    else {
+    } else {
       this.snackbar.open(`Please fill in the all lines data`, '', {
         duration: 3000,
         panelClass: ['capture-snackbar-error'],

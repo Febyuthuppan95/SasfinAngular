@@ -386,17 +386,17 @@ loader = false;
   updateLine(obj: InvoiceLine) {
     console.log(obj);
     if (obj.isPersist) {
-      const requestModel = {};
-      if(obj.isDeleted) {
+      let requestModel = {};
+      if (obj.isDeleted) {
         this.lineState = 'Saving';
-        const requestModel = {
+        requestModel = {
           userID: this.currentUser.userID,
           invoiceLineID: obj.invoiceLineID,
           isDeleted: 1
         };
       } else {
         this.lineState = 'Saving';
-        const requestModel = {
+        requestModel = {
           userID: this.currentUser.userID,
           invoiceLineID: obj.invoiceLineID,
           prodCode: obj.prodCode,
@@ -405,11 +405,9 @@ loader = false;
           isDeleted: 0,
           unitPrice: obj.unitPrice,
           totalLineValue: obj.totalLineValue,
-          // unitOfMeasure: obj.unitOfMeasure,
           unitOfMeasureID: obj.unitOfMeasureID
         };
       }
-     
 
       this.captureService.invoiceLineUpdate(requestModel).then(
         (res: Outcome) => {
