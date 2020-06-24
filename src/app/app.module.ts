@@ -246,6 +246,7 @@ import { AutocompleteTariffsComponent } from './components/forms/capture/autocom
 import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/autocompletes/autocomplete-units-of-measure/autocomplete-units-of-measure.component';
 import { AutocompleteDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/autocomplete-duty.component';
 import { DialogOverrideComponent } from './components/forms/capture/dialog-override/dialog-override.component';
+import { DialogGuard } from './guards/dialog.guard';
 
 @NgModule({
   declarations: [
@@ -490,7 +491,8 @@ import { DialogOverrideComponent } from './components/forms/capture/dialog-overr
     CheckListService,
     ChannelService,
     StorageService,
-    RightGuard
+    RightGuard,
+    DialogGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [
