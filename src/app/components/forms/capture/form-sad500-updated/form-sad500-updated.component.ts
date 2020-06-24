@@ -321,7 +321,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   async submit(form: FormGroup, escalation?: boolean) {
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = 3;
+      requestModel.attachmentStatusID = escalation ? 7 : 3;
 
       if (this.isVOC) {
         const vocRequest = {
@@ -331,10 +331,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           reason: requestModel.reason,
           mrn: requestModel.mrn,
           isDeleted: false,
-          attachmentStatusID: 3,
+          attachmentStatusID: escalation ? 7 : 3,
         };
-
-        console.log(vocRequest);
 
         await this.captureService.vocUpdate(vocRequest).then(
           (res: Outcome) => {

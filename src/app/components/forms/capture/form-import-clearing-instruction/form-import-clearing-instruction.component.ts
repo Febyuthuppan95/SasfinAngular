@@ -151,7 +151,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
     this.objectHelpService.toggleHelp(this.help);
   }
 
-  submit(escalation?:boolean) {
+  submit(escalation?: boolean) {
     if (this.ICIForm.valid || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
@@ -160,7 +160,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         importersCode: this.form.importersCode.value,
         supplierRef: this.form.supplierRef.value,
         isDeleted: 0,
-        attachmentStatusID: escalation ? 7: 3,
+        attachmentStatusID: escalation ? 7 : 3,
 
         supplierRefOBit: this.form.supplierRef.OBit,
         supplierRefOUserID: this.form.supplierRef.OUserID,

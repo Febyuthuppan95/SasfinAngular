@@ -183,6 +183,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     isUpdate: boolean;
     currentCompany : {companyID: number, companyName: string};
+
     ngOnInit() {
       this.companyService.observeCompany()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(res => {

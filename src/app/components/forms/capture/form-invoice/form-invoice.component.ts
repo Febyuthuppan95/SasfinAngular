@@ -344,7 +344,7 @@ loader = false;
             invoiceNo: this.form.invoiceNo.value,
             companyID: this.form.fromCompanyID.value,
             currencyID: this.form.currencyID.value,
-            attachmentStatusID: escalation ? 7: 3,
+            attachmentStatusID: escalation ? 7 : 3,
             cooID: this.form.cooID.value,
             invoiceDate: this.form.invoiceDate.value,
             incoTermTypeID: this.form.incoType.value,
