@@ -120,7 +120,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div class="bottom-section row" *ngIf="this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID === undefined">
+            <div class="bottom-section row" *ngIf="!this.showMain">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
 
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available SAD500's</button>
