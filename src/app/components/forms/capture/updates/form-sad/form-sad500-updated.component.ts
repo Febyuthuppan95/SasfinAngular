@@ -16,10 +16,10 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { UUID } from 'angular2-uuid';
-import { DialogOverrideComponent } from '../dialog-override/dialog-override.component';
 import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
+import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -50,6 +50,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public shortcuts: ShortcutInput[];
   public help = false;
   public isVOC = false;
+  public isExport = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -113,6 +114,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.transactionID = capture.transactionID;
         this.attachmentLabel = capture.docType;
         this.transactionLabel = capture.transactionType;
+        this.isExport = capture.transactionType === 'Export' ? true : false;
         if (capture.docType === 'VOC') {
           this.isVOC = true;
           this.form.controls.referenceNo.setValidators([Validators.required]);
@@ -352,7 +354,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         delete requestModel.vocID;
         delete requestModel.referenceNo;
         delete requestModel.reason;
+        delete requestModel.originalID;
+        delete requestModel.replacedByID;
       }
+
+      console.log(requestModel);
 
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
@@ -419,7 +425,16 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   // [Line Controls]
   queueLine($event: any) {
-    const target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+    let target = null;
+
+    if (this.lines) {
+      if (this.lines.length > 0) {
+        target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+      }
+    } else {
+      this.lines = [];
+    }
+
     $event.userID = this.currentUser.userID;
 
     if (!target) {
@@ -430,7 +445,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
       $event.specificSAD500LineID = original.specificSAD500LineID;
-      $event.sad500LineID = original.specificSAD500LineID;
       $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
 
       if (this.isVOC) {

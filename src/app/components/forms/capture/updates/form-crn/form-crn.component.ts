@@ -16,7 +16,9 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-crn',
   templateUrl: './form-crn.component.html',

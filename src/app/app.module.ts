@@ -238,10 +238,8 @@ import { ViewCompanyBomsItemgroupsListComponent } from './views/main/view-compan
 import { ViewCompanyBomsItemsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
 import { ViewCompanyBomsItemgroupsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
 import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-company-boms/view-company-boms-lines-error-list/view-company-boms-lines-error-list.component';
-import { FormSad500UpdatedComponent } from './components/forms/capture/form-sad500-updated/form-sad500-updated.component';
 import { AutocompleteCPCComponent } from './components/forms/capture/autocompletes/autocomplete-cpc/autocomplete-cpc.component';
 import { AutocompleteCooComponent } from './components/forms/capture/autocompletes/autocomplete-coo/autocomplete-coo.component';
-import { FormSad500LineUpdatedComponent } from './components/forms/capture/form-sad500-updated/form-sad500-line-updated/form-sad500-line-updated.component';
 import { AutocompleteTariffsComponent } from './components/forms/capture/autocompletes/autocomplete-tariffs/autocomplete-tariffs.component';
 import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/autocompletes/autocomplete-units-of-measure/autocomplete-units-of-measure.component';
 import { AutocompleteDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/autocomplete-duty.component';
@@ -253,6 +251,13 @@ import { FormWayComponent } from './components/forms/capture/updates/form-way/fo
 import { FormCswComponent } from './components/forms/capture/updates/form-csw/form-csw.component';
 import { FormInvComponent } from './components/forms/capture/updates/form-inv/form-inv.component';
 import { AutocompleteEdiStatusesComponent } from './components/forms/capture/autocompletes/autocomplete-edi-statuses/autocomplete-edi-statuses.component';
+import { FormInvLinesComponent } from './components/forms/capture/updates/form-inv/form-inv-lines/form-inv-lines.component';
+import { AutocompleteCurrencyComponent } from './components/forms/capture/autocompletes/autocomplete-currency/autocomplete-currency.component';
+import { AutocompleteIncoComponent } from './components/forms/capture/autocompletes/autocomplete-inco/autocomplete-inco.component';
+import { AutocompleteItemsComponent } from './components/forms/capture/autocompletes/autocomplete-items/autocomplete-items.component';
+import { FormSad500UpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-updated.component';
+import { FormSad500LineUpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-line-updated/form-sad500-line-updated.component';
+import { FormCswLinesComponent } from './components/forms/capture/updates/form-csw/form-csw-lines/form-csw-lines.component';
 
 @NgModule({
   declarations: [
@@ -431,7 +436,12 @@ import { AutocompleteEdiStatusesComponent } from './components/forms/capture/aut
     FormWayComponent,
     FormCswComponent,
     FormInvComponent,
-    AutocompleteEdiStatusesComponent
+    AutocompleteEdiStatusesComponent,
+    FormInvLinesComponent,
+    AutocompleteCurrencyComponent,
+    AutocompleteIncoComponent,
+    AutocompleteItemsComponent,
+    FormCswLinesComponent
   ],
   imports: [
     BrowserModule,

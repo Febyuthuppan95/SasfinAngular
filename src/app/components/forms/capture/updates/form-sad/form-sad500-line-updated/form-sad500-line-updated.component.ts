@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/services/user.Service';
-import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
+import { DialogOverrideComponent } from '../../../dialog-override/dialog-override.component';
 
 @Component({
   selector: 'app-form-sad500-line-updated',
@@ -26,7 +26,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     lineNo: new FormControl(null, [Validators.required]),
     customsValue: new FormControl(null, [Validators.required]),
     previousDeclaration: new FormControl(null, [Validators.required]),
-    quantity: new FormControl(null, [Validators.required]),
+    quantity: new FormControl(null),
     duty: new FormControl(null),
     duties: new FormControl(null),
     supplyUnit: new FormControl(null, [Validators.required]),
@@ -76,6 +76,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
+  @Input() isExport: boolean;
   @Output() submission = new EventEmitter<any>();
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
@@ -97,7 +98,8 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.form.controls.sad500LineID.setValue(-1);
     }
 
-
+    // this.form.controls.duties.setValidators(this.isExport ? null : null);
+    // this.form.controls.duties.updateValueAndValidity();
   }
 
   ngAfterViewInit(): void {
@@ -176,6 +178,9 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.form.controls.specificSAD500LineID.setValue(-1);
       this.form.controls.sad500LineID.setValue(-1);
     }
+
+    // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
+    // this.form.controls.duties.updateValueAndValidity();
   }
 
   getError(key: string): string {

@@ -12,7 +12,7 @@
   </div>
   <h1 class="capture-form-title text-dark">
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
-    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{attachmentLabel}}</span></span>
+    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
   </h1>
 </div>
 <br>
@@ -177,5 +177,5 @@
 </ng-container>
 
 <ng-container *ngIf="displayLines">
-  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)"></app-form-sad500-line-updated>
+  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-sad500-line-updated>
 </ng-container>
