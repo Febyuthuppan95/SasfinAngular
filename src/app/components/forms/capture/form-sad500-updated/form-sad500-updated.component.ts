@@ -114,9 +114,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.attachmentLabel = capture.docType;
         this.transactionLabel = capture.transactionType;
         if (capture.docType === 'VOC') {
-          // this.vocGet();
           this.isVOC = true;
           this.form.controls.referenceNo.setValidators([Validators.required]);
+          this.form.controls.reason.setValidators([Validators.required]);
           this.form.updateValueAndValidity();
           this.load();
         } else {
@@ -234,10 +234,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         (res: VOCListResponse) => {
           console.log(res);
           if (res.rowCount !== 0) {
+            console.log(res.vocs[0]);
             this.originalSAD500ID = res.vocs[0].originalID;
             this.form.controls.referenceNo.setValue(res.vocs[0].referenceNo);
             this.form.controls.reason.setValue(res.vocs[0].reason);
-            this.form.controls.vocID.setValue(res.vocs[0].sad500ID);
+            this.form.controls.vocID.setValue(res.vocs[0].vocID);
+            this.form.controls.SAD500ID.setValue(res.vocs[0].sad500ID);
           } else {
             this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
           }
@@ -249,7 +251,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     const request = {
       userID: this.currentUser.userID,
-      specificID: this.isVOC ? this.form.controls.vocID.value : this.attachmentID,
+      specificID: this.isVOC ? this.form.controls.SAD500ID.value : this.attachmentID,
       transactionID: this.transactionID,
       fileType: this.attachmentLabel === 'VOC' ? 'VOC' : 'SAD',
     };
@@ -322,7 +324,19 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       requestModel.attachmentStatusID = 3;
 
       if (this.isVOC) {
-        await this.captureService.vocUpdate(requestModel).then(
+        const vocRequest = {
+          userID: this.currentUser.userID,
+          vocID: requestModel.vocID,
+          referenceNo: requestModel.referenceNo,
+          reason: requestModel.reason,
+          mrn: requestModel.mrn,
+          isDeleted: false,
+          attachmentStatusID: 3,
+        };
+
+        console.log(vocRequest);
+
+        await this.captureService.vocUpdate(vocRequest).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -377,8 +391,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.companyService.setCapture({ capturestate: true });
-            this.router.navigateByUrl('transaction/capturerlanding');
+            // this.companyService.setCapture({ capturestate: true });
+            // this.router.navigateByUrl('transaction/capturerlanding');
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }

@@ -163,6 +163,15 @@
         </mat-form-field>
         <br /><br />
       </div>
+      <div class="col-12" *ngIf="isVOC">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Reason for VOC
+          </mat-label>
+          <textarea matInput type="text" formControlName="reason"></textarea>
+        </mat-form-field>
+        <br /><br />
+      </div>
     </div>
   </form>
 </ng-container>
