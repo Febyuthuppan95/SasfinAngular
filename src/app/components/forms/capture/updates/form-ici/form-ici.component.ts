@@ -16,7 +16,9 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-ici',
   templateUrl: './form-ici.component.html',

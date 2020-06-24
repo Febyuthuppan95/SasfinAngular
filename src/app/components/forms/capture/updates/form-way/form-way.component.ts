@@ -17,7 +17,9 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-way',
   templateUrl: './form-way.component.html',

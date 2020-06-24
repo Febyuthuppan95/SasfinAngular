@@ -34,7 +34,9 @@ import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.compon
 import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
