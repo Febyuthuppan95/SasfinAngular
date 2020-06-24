@@ -9,7 +9,7 @@ export class DialogGuard implements CanActivateChild, CanActivate {
   canActivate() {
     if (this.dialog.openDialogs.length > 0) {
       this.dialog.closeAll();
-  }
+    }
 
     return true;
   }

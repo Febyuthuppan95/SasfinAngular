@@ -391,8 +391,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
           if (res.outcome === 'SUCCESS') {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
-            // this.companyService.setCapture({ capturestate: true });
-            // this.router.navigateByUrl('transaction/capturerlanding');
+            this.companyService.setCapture({ capturestate: true });
+            this.router.navigateByUrl('transaction/capturerlanding');
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
