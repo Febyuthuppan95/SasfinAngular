@@ -408,7 +408,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
-            let sad500LineID = line.sad500LineID;
+            let sad500LineID = line.specificSAD500LineID;
             line.isDeleted = 0;
             line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
@@ -421,7 +421,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             }
 
             if (line.duties && sad500LineID !== null && sad500LineID) {
-              await this.saveLineDuty(line.duties.filter(x => x.isLocal === true), async (duty) => {
+              const duties = line.duties.filter(x => x.isLocal === true);
+
+              console.log(duties);
+              await this.saveLineDuty(duties, async (duty) => {
                 const dutyRequest = {
                   userID: this.currentUser.userID,
                   dutyID: duty.dutyTaxTypeID,
