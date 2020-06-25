@@ -12,12 +12,14 @@ export class EscalateBottomSheetComponent implements OnInit {
 
   constructor(
     private bottomSheetRef: MatBottomSheetRef<EscalateDialogComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: string) { }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
 
   reason;
 
   ngOnInit() {
     this.reason = this.data;
+
+    console.log(this.reason);
   }
   openLink(): void {
     this.bottomSheetRef.dismiss();

@@ -1,7 +1,7 @@
 <button mat-button (click)="openLink();" style="float: right;"><span class="mdi mdi-close"></span></button>
 <h1 mat-dialog-title (click)="openLink();">Escalation Reason</h1>
 <div mat-dialog-content (click)="openLink();">
-    <p [innerHTML]="reason ? reason : 'No message'"></p>
+    <p [innerHTML]="reason !== 'undefined' ? reason : 'No message'"></p>
 </div>
 <!-- <h1 mat-dialog-title>Escalate Capture</h1>
 <div mat-dialog-content style="overflow: none !important;">

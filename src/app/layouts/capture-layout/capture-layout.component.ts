@@ -166,7 +166,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
       this.transactionType = obj.transactionType;
-      this.reason = obj.reason;
+      this.reason = `${obj.reason}`;
       this.escalated = obj.issueID > 0 ? true : false;
       this.initTypes();
 
@@ -179,8 +179,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   toggleReason(): void {
+    const reason: string = this.reason;
+
     this.bottomSheet = this.escalationReason.open(EscalateBottomSheetComponent, {
-      data: this.reason
+      data: reason
     });
   }
 
