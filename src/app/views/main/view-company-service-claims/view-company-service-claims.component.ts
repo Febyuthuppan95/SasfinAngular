@@ -87,14 +87,13 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       {value: 14},
       {value: 15}
       );
-      /* Claims Modal Data*/
-      // Init with dummy 1
-      const fullYear = new Date().getFullYear();
-      const fullmonth = new Date().getMonth()
+    /* Claims Modal Data*/
+    // Init with dummy 1
+    const fullYear = new Date().getFullYear();
+    const fullmonth = new Date().getMonth()
 
-      this.minClaimDate = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate() + 7);
-      this.selectedClaimDate = this.minClaimDate;
-
+    this.minClaimDate = new Date();
+    this.selectedClaimDate = this.minClaimDate;
   }
 
   @ViewChild(NotificationComponent, { static: false })
