@@ -245,13 +245,13 @@ $dockSize: 64px;
 }
 
 .dock-top-left {
+  height: $dockSize;
   left: 0;
   top: 0;
-  width: 256px;
-  height: $dockSize;
+  width: 512px;
   position: fixed;
   padding: 12px;
-  z-index: 99999;
+  z-index: 99999999;
 }
 
 .info-item {

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatCheckboxModule, MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS} from '@angular/material';
+import {MatCheckboxModule, MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MAT_BOTTOM_SHEET_DATA} from '@angular/material';
 import {MatButtonModule, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -73,9 +73,13 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
     MatNativeDateModule
   ],
   providers: [
+    // {
+    //   provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
+    //   useValue: {hasBackdrop: false}
+    // },
     {
-      provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
-      useValue: {hasBackdrop: false}
+      provide: MAT_BOTTOM_SHEET_DATA,
+      useValue: {}
     }
   ],
   exports: [
