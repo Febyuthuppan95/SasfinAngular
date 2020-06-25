@@ -64,6 +64,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
     this.initTable();
   }
   initTable() {
+    console.log('change');
     this.loading = true;
     this.displayData = [];
     this.columnsToDisplay = [];
