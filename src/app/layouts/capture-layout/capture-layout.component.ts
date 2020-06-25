@@ -454,7 +454,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.themeService.toggleHelp();
   }
 
-  submitCapture(isEscalation?: boolean, saveProgress?: boolean) {
+  submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     if (!this.dialogOpen) {
       this.dialogOpen = true;
       const dialogConf = new MatDialogConfig();
@@ -463,7 +463,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         this.dialogOpen = false;
 
         if (status) {
-          this.eventService.triggerCaptureEvent(isEscalation, saveProgress);
+          this.eventService.triggerCaptureEvent(isEscalation, saveProgress, escalationResolved);
          }
       });
     }

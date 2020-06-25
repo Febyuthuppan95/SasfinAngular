@@ -86,7 +86,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
         this.load();
       }
   }
-  public submissionEvent = (escalation, saveProgress) => this.submit(this.form, escalation, saveProgress);
+  public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {
     // this.transactionService.observerCurrentAttachment()
@@ -216,12 +216,12 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
   }
 
-  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean) {
+  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
     if (form.valid || escalation) {
       const requestModel: any = form.value;
-      requestModel.attachmentStatusID = escalation ? 7 : (saveProgress ? 2 : 3);
+      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
 
       this.captureService.iciUpdate(requestModel).then(
         (res: Outcome) => {

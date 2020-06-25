@@ -18,6 +18,7 @@ export class Invoice {
   companyID: number;
   invoiceNo: string;
   currencyID: number;
+  statusID: number;
   incoID: number;
 
   invoiceNoOBit: boolean;

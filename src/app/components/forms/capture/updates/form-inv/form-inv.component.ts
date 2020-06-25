@@ -72,7 +72,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.load();
     }
   }
-  public submissionEvent = (escalation, saveProgress) => this.submit(this.form, escalation, saveProgress);
+  public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -246,6 +246,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
+      this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
       this.form.controls.invoiceDate.setValue(new Date(res.invoices[0].invoiceDate));
       this.errors = res.attachmentErrors.attachmentErrors;
 
@@ -313,12 +314,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
   }
 
-  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean) {
+  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = escalation ? 7 : (saveProgress ? 2 : 3);
+      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
 
       await this.captureService.invoiceUpdate(requestModel).then(
         async (res: Outcome) => {
