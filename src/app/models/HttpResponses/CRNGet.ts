@@ -28,52 +28,52 @@ export class CRNGet {
 
    serialNoOBit: boolean;
    serialNoOUserID: number;
-   serialNoODate: string;
+   serialNoODate: Date;
    serialNoOReason: string;
 
    lrnOBit: boolean;
    lrnOUserID: number;
-   lrnODate: string;
+   lrnODate: Date;
    lrnOReason: string;
 
    importersCodeOBit: boolean;
    importersCodeOUserID: number;
-   importersCodeODate: string;
+   importersCodeODate: Date;
    importersCodeOReason: string;
 
    pccOBit: boolean;
    pccOUserID: number;
-   pccODate: string;
+   pccODate: Date;
    pccOReason: string;
 
    fobOBit: boolean;
    fobOUserID: number;
-   fobODate: string;
+   fobODate: Date;
    fobOReason: string;
 
    waybillNoOBit: boolean;
    waybillNoOUserID: number;
-   waybillNoODate: string;
+   waybillNoODate: Date;
    waybillNoOReason: string;
 
    fileRefOBit: boolean;
    fileRefOUserID: number;
-   fileRefODate: string;
+   fileRefODate: Date;
    fileRefOReason: string;
 
    totalCustomsValueOBit: boolean;
    totalCustomsValueOUserID: number;
-   totalCustomsValueODate: string;
+   totalCustomsValueODate: Date;
    totalCustomsValueOReason: string;
 
    totalDutyOBit: boolean;
    totalDutyOUserID: number;
-   totalDutyODate: string;
+   totalDutyODate: Date;
    totalDutyOReason: string;
 
    mrnOBit: boolean;
    mrnOUserID: number;
-   mrnODate: string;
+   mrnODate: Date;
    mrnOReason: string;
 }
 

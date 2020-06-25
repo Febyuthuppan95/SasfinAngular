@@ -30,57 +30,57 @@ export class CustomWorksheetLine {
 
     cooOBit: boolean;
     cooOUserID: number;
-    cooODate: string;
+    cooODate: Date;
     cooOReason: string;
 
     tariffHeadingOBit: boolean;
     tariffHeadingOUserID: number;
-    tariffHeadingODate: string;
+    tariffHeadingODate: Date;
     tariffHeadingOReason: string;
 
     hsQuantityOBit: boolean;
     hsQuantityOUserID: number;
-    hsQuantityODate: string;
+    hsQuantityODate: Date;
     hsQuantityOReason: string;
 
     foreignInvOBit: boolean;
     foreignInvOUserID: number;
-    foreignInvODate: string;
+    foreignInvODate: Date;
     foreignInvOReason: string;
 
     custValOBit: boolean;
     custValOUserID: number;
-    custValODate: string;
+    custValODate: Date;
     custValOReason: string;
 
     dutyOBit: boolean;
     dutyOUserID: number;
-    dutyODate: string;
+    dutyODate: Date;
     dutyOReason: string;
 
     commonFactorOBit: boolean;
     commonFactorOUserID: number;
-    commonFactorODate: string;
+    commonFactorODate: Date;
     commonFactorOReason: string;
 
     invoiceNoOBit: boolean;
     invoiceNoOUserID: number;
-    invooiceNoODate: string;
+    invooiceNoODate: Date;
     invoiceNoOReason: string;
 
     prodCodeOBit: boolean;
     prodCodeOUserID: number;
-    prodCodeODate: string;
+    prodCodeODate: Date;
     prodCodeOReason: string;
 
     vatOBit: boolean;
     vatOUserID: number;
-    vatODate: string;
+    vatODate: Date;
     vatOReason: string;
 
     supplyUnitOBit: boolean;
     supplyUnitOUserID: number;
-    supplyUnitODate: string;
+    supplyUnitODate: Date;
     supplyUnitOReason: string;
 
     errors?: AttachmentErrorResponse;

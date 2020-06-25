@@ -23,57 +23,57 @@ export class SAD500Get {
 
   waybillNoOBit: boolean;
   waybillNoOUserID: number;
-  waybillNoODate: string;
+  waybillNoODate: Date;
   waybillNoOReason: string;
 
   serialNoOBit: boolean;
   serialNoOUserID: number;
-  serialNoODate: string;
+  serialNoODate: Date;
   serialNoOReason: string;
 
   pccOBit: boolean;
   pccOUserID: number;
-  pccODate: string;
+  pccODate: Date;
   pccOReason: string;
 
   supplierRefOBit: boolean;
   supplierRefOUserID: number;
-  supplierRefODate: string;
+  supplierRefODate: Date;
   supplierRefOReason: string;
 
   totalCustomValueOBit: boolean;
   totalCustomValueOUserID: number;
-  totalCustomValueODate: string;
+  totalCustomValueODate: Date;
   totalCustomValueOReason: string;
 
   lrnOBit: boolean;
   lrnOUserID: number;
-  lrnODate: string;
+  lrnODate: Date;
   lrnOReason: string;
 
   mrnOBit: boolean;
   mrnOUserID: number;
-  mrnODate: string;
+  mrnODate: Date;
   mrnOReason: string;
 
   cpcOBit: boolean;
   cpcOUserID: number;
-  cpcODate: string;
+  cpcODate: Date;
   cpcOReason: string;
 
   importersCodeOBit: boolean;
   importersCodeOUserID: number;
-  importersCodeODate: string;
+  importersCodeODate: Date;
   importersCodeOReason: string;
 
   fileRefOBit: boolean;
   fileRefOUserID: number;
-  fileRefODate: string;
+  fileRefODate: Date;
   fileRefOReason: string;
 
   totalDutyOBit: boolean;
   totalDutyOUserID: number;
-  totalDutyODate: string;
+  totalDutyODate: Date;
   totalDutyOReason: string;
 
   escalationReason: string;

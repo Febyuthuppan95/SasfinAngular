@@ -18,6 +18,6 @@ export class Waybill {
 
   waybillNoOBit: boolean;
   waybillNoOUserID: number;
-  waybillNoODate: string;
+  waybillNoODate: Date;
   waybillNoOReason: string;
 }

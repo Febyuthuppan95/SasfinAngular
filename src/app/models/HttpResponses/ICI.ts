@@ -22,16 +22,16 @@ export class ICI {
 
   supplierRefOBit: boolean;
   supplierRefOUserID: number;
-  supplierRefODate: string;
+  supplierRefODate: Date;
   supplierRefOReason: string;
 
   importersCodeOBit: boolean;
   importersCodeOUserID: number;
-  importersCodeODate: string;
+  importersCodeODate: Date;
   importersCodeOReason: string;
 
   waybillNoOBit: boolean;
   waybillNoOUserID: number;
-  waybillNoODate: string;
+  waybillNoODate: Date;
   waybillNoOReason: string;
 }

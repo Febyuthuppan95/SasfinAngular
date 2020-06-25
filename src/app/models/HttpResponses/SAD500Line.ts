@@ -34,37 +34,37 @@ export class SAD500Line {
 
     lineNoOBit?: boolean;
     lineNoOUserID?: number;
-    lineNoODate: string;
+    lineNoODate: Date;
     lineNoOReason: string;
 
     customsValueOBit?: boolean;
     customsValueOUserID?: number;
-    customsValueODate: string;
+    customsValueODate: Date;
     customsValueOReason: string;
 
     quantityOBit?: boolean;
     quantityOUserID?: number;
-    quantityODate: string;
+    quantityODate: Date;
     quantityOReason: string;
 
     previousDeclarationOBit?: boolean;
     previousDeclarationOUserID?: number;
-    previousDeclarationODate: string;
+    previousDeclarationODate: Date;
     previousDeclarationOReason: string;
 
     dutyOBit?: boolean;
     dutyOUserID?: number;
-    dutyODate: string;
+    dutyODate: Date;
     dutyOReason: string;
 
     vatOBit?: boolean;
     vatOUserID?: number;
-    vatODate: string;
+    vatODate: Date;
     vatOReason: string;
 
     supplyUnitOBit?: boolean;
     supplyUnitOUserID?: number;
-    supplyUnitODate: string;
+    supplyUnitODate: Date;
     supllyUnitOReason: string;
 }
 export class SAD500LineDutyList {

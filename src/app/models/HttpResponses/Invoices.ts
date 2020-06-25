@@ -22,7 +22,7 @@ export class Invoice {
 
   invoiceNoOBit: boolean;
   invoiceNoOUserID: number;
-  invoiceNoODate: string;
+  invoiceNoODate: Date;
   invoiceNoOReason: string;
 }
 

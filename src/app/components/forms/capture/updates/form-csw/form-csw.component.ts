@@ -255,6 +255,16 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.form.controls.customworksheetID.setValue(this.attachmentID);
+
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          console.log(key);
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(new Date(this.form.controls[key].value));
+          }
+        }
+      });
+
       this.errors = res.attachmentErrors.attachmentErrors;
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {
@@ -315,6 +325,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : 3;
 
+      console.log(requestModel);
+
       await this.captureService.customWorksheetUpdate(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
@@ -323,13 +335,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             line.customsWorksheetID = this.attachmentID;
 
             if (line.isLocal) {
-              await this.captureService.customWorksheetLineAdd(line).then(
-                (res: any) => console.log(res),
-                (msg) => console.log(JSON.stringify(msg)));
+              await this.captureService.customWorksheetLineAdd(line);
             } else {
-              await this.captureService.customWorksheetLineUpdate(line).then(
-                (res) => console.log(res),
-                (msg) => console.log(JSON.stringify(msg)));
+              await this.captureService.customWorksheetLineUpdate(line);
             }
           });
 

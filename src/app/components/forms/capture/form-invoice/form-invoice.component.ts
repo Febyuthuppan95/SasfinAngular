@@ -854,6 +854,6 @@ export class InvoiceUpdateModel {
   isDeleted: number;
   invoiceNoOBit: boolean;
   invoiceNoOUserID: number;
-  invoiceNoODate: string;
+  invoiceNoODate: Date;
   invoiceNoOReason: string;
 }
