@@ -6,6 +6,7 @@ import { KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { DialogOverrideComponent } from '../../../dialog-override/dialog-override.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { EventService } from 'src/app/services/event.service';
+import { UUID } from 'angular2-uuid';
 
 @AutoUnsubscribe()
 @Component({
@@ -169,7 +170,9 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     form.markAllAsTouched();
 
     if (form.valid) {
-      this.submission.emit(form.value);
+      const line: any = form.value;
+      line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
+      this.submission.emit(line);
     } else {
       this.findInvalidControls(form);
       this.snackbar.open('Please fill in line details', '', {duration: 3000});
