@@ -148,6 +148,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   selectedEDIIndex = 0;
   ediDisable: boolean;
   ediStatuses: any[] = [];
+  docType = '';
 
   private unsubscribe$ = new Subject<void>();
 
@@ -171,6 +172,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       if (data !== null || data !== undefined) {
         this.transactionID = data.transactionID;
         this.transactionType = data.transactionType;
+        this.docType = data.docType;
+
+        console.log(data);
       }
     });
 
@@ -310,7 +314,15 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           }
 
           this.dataList = res.attachments;
-          console.log(this.dataList);
+
+          if (this.transactionType === 'Export') {
+            this.dataList.forEach((item) => {
+                if (item.fileType === 'Import Clearing Instruction') {
+                  item.fileType = 'Export Clearing Instruction';
+                }
+            });
+          }
+
           this.sad500DataList = this.dataList.filter(x => x.fileType === 'SAD500');
 
           if (res.rowCount === 0) {

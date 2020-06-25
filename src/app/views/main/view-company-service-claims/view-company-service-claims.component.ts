@@ -91,18 +91,18 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       {value: 14},
       {value: 15}
       );
-      /* Claims Modal Data*/
-      // Init with dummy 1
-      const fullYear = new Date().getFullYear();
-      const fullmonth = new Date().getMonth()
+    /* Claims Modal Data*/
+    // Init with dummy 1
+    const fullYear = new Date().getFullYear();
+    const fullmonth = new Date().getMonth()
 
-      this.minClaimDate = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate() + 7);
-      this.selectedClaimDate = this.minClaimDate;
-      this.ServiceClaim = {
-        companyServiceID: -1, 
-        companyServiceClaimNumber: 0,
-        serviceName: ''
-      }
+    this.minClaimDate = new Date();
+    this.selectedClaimDate = this.minClaimDate;
+    this.ServiceClaim = {
+      companyServiceID: -1,
+      companyServiceClaimNumber: 0,
+      serviceName: ''
+    };
   }
 
   @ViewChild(NotificationComponent, { static: false })
@@ -283,7 +283,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadCompanyServices();
 
   }
-  
+
   loadCompanyServices() {
     const model = {
       userID: this.currentUser.userID,
@@ -361,7 +361,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     );
   }
-  
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
@@ -495,7 +495,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.selectedCompanyServiceID = companyServiceID;
     this.ServiceClaim.serviceName = this.companyServiceList.find(x => x.componyServiceID === companyServiceID).serviceName;
     console.log(this.ServiceClaim.serviceName);
-   
+
   }
 
   sad500selected(checked) {
@@ -584,7 +584,7 @@ createCompanyServiceClaim() {
           );
           this.loadServiceClaims(true);
         }
-        
+
       } else {
         this.notify.errorsmsg(
           res.outcome.outcome,
