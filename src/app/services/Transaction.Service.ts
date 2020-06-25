@@ -23,7 +23,7 @@ export class TransactionService {
   public observerCurrentAttachment() {
     return this.currentAttachment.asObservable(); }
   // tslint:disable-next-line: max-line-length
-  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionType:string, transactionName?: string, issueID?: number, reason?: string}) {
+  public setCurrentAttachment(next: { transactionID: number, attachmentID: number, docType: string, transactionType: string, transactionName?: string, issueID?: number, reason?: string}) {
     this.currentAttachment.next(next);
     sessionStorage.setItem(`${environment.Sessions.transactionData}`, JSON.stringify(next));
   }

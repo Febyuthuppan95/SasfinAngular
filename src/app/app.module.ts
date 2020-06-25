@@ -258,6 +258,7 @@ import { AutocompleteItemsComponent } from './components/forms/capture/autocompl
 import { FormSad500UpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-updated.component';
 import { FormSad500LineUpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-line-updated/form-sad500-line-updated.component';
 import { FormCswLinesComponent } from './components/forms/capture/updates/form-csw/form-csw-lines/form-csw-lines.component';
+import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [
@@ -514,7 +515,11 @@ import { FormCswLinesComponent } from './components/forms/capture/updates/form-c
     ChannelService,
     StorageService,
     RightGuard,
-    DialogGuard
+    DialogGuard,
+    {
+      provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
+      useValue: {hasBackdrop: false}
+    }
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -545,7 +550,8 @@ import { FormCswLinesComponent } from './components/forms/capture/updates/form-c
     FormCrnComponent,
     FormWayComponent,
     FormCswComponent,
-    FormInvComponent
+    FormInvComponent,
+    EscalateBottomSheetComponent
   ]
 })
 export class AppModule { }

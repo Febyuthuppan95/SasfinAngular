@@ -22,6 +22,7 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,7 +40,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private location: Location) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -82,7 +84,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      userID: new FormControl(null, [Validators.required]),
+      userID: new FormControl(null),
       customworksheetID: new FormControl(null),
       transactionID: new FormControl(null),
       waybillNo: new FormControl(null, [Validators.required]),
@@ -247,38 +249,43 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.customWorksheetList(request).then(async (res: CustomsWorksheetListResponse) => {
-      const response: any = res.customsWorksheets[0];
-      response.userID = request.userID;
-      response.customworksheetID = response.customWorksheetID;
-      response.attachmentStatusID = response.statusID;
+      if (res.customsWorksheets.length > 0) {
+        const response: any = res.customsWorksheets[0];
+        response.userID = request.userID;
+        response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
+        response.attachmentStatusID = response.statusID;
 
-      this.form.patchValue(response);
-      this.form.controls.userID.setValue(this.currentUser.userID);
-      this.form.controls.customworksheetID.setValue(this.attachmentID);
+        this.form.patchValue(response);
+        this.form.controls.userID.setValue(this.currentUser.userID);
+        this.form.controls.customworksheetID.setValue(this.attachmentID);
 
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-
-      this.errors = res.attachmentErrors.attachmentErrors;
-
-      if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
-          res.attachmentErrors.attachmentErrors.forEach((error) => {
-            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-              this.form.controls[key].setErrors({incorrect: true});
-              this.form.controls[key].markAsTouched();
+          if (key.indexOf('ODate') !== -1) {
+            if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+              this.form.controls[key].setValue(null);
             }
-          });
+          }
         });
+
+        this.errors = res.attachmentErrors.attachmentErrors;
+
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          Object.keys(this.form.controls).forEach(key => {
+            res.attachmentErrors.attachmentErrors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                this.form.controls[key].setErrors({incorrect: true});
+                this.form.controls[key].markAsTouched();
+              }
+            });
+          });
+        }
+
+        this.form.updateValueAndValidity();
+        await this.loadLines();
+      } else {
+        this.location.back();
       }
 
-      this.form.updateValueAndValidity();
-      await this.loadLines();
     });
   }
 
@@ -325,6 +332,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      requestModel.userID = this.currentUser.userID;
 
       console.log(requestModel);
 

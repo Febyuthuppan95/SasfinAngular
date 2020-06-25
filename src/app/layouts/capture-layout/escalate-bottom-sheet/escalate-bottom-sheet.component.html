@@ -1,6 +1,7 @@
-<h1 mat-dialog-title>Escalation Reason</h1>
-<div mat-dialog-content>
-    <p>{{this.reason}}</p>
+<button mat-button (click)="openLink();" style="float: right;"><span class="mdi mdi-close"></span></button>
+<h1 mat-dialog-title (click)="openLink();">Escalation Reason</h1>
+<div mat-dialog-content (click)="openLink();">
+    <p>{{reason}}</p>
 </div>
 <!-- <h1 mat-dialog-title>Escalate Capture</h1>
 <div mat-dialog-content style="overflow: none !important;">

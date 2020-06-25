@@ -30,25 +30,26 @@
         <span class="mdi mdi-close"></span>
       </button>
       &nbsp;&nbsp;
-      <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture()" class="bg-success text-light" matTooltip="Submit and close" matTooltipPosition="after">
+      <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture()" class="bg-success text-light" matTooltip="Submit and close" matTooltipPosition="below">
           <span class="mdi mdi-check"></span>
         </button>
         &nbsp;&nbsp;
-        <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, true)" class="bg-primary text-light" matTooltip="Save Progress" matTooltipPosition="after">
+        <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, true)" class="bg-primary text-light" matTooltip="Save Progress" matTooltipPosition="below">
           <span class="mdi mdi-content-save"></span>
         </button>
         <ng-container *ngIf="escalated">
-          &nbsp;&nbsp;
-          <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, true, true)" class="bg-info text-light" matTooltip="Resolve Escalation" matTooltipPosition="after">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <button style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, false, true)" class="bg-info text-light" matTooltip="Resolve Escalation" matTooltipPosition="below">
             <span class="mdi mdi-chevron-right"></span>
+          </button>
+          &nbsp;&nbsp;
+          <button style="z-index: 99999999999999;" mat-mini-fab class="bg-info text-light" (click)="toggleReason()" matTooltip="View Escalation Reason" matTooltipPosition="below"><span class="mdi mdi-eye" ></span>
           </button>
         </ng-container>
         &nbsp;&nbsp;
-        <button *ngIf="!escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-light" (click)="toggelEscalate()" matTooltip="Escalate Attachment" matTooltipPosition="after"><span class="mdi mdi-exclamation" ></span>
+        <button *ngIf="!escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-light" (click)="toggelEscalate()" matTooltip="Escalate Attachment" matTooltipPosition="below"><span class="mdi mdi-exclamation" ></span>
         </button>
-        &nbsp;&nbsp;
-        <button *ngIf="escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-info text-light" (click)="toggleReason()" matTooltip="View Escalation Reason" matTooltipPosition="after"><span class="mdi mdi-eye" ></span>
-        </button>
+
     </div>
 </div>
 <div class="dock dock-top" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">

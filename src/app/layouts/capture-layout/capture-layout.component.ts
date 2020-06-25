@@ -175,11 +175,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     // get the help value
     // this.helpValue  = this.themeService.observeHelpValue();
   }
+
   toggleReason(): void {
     this.escalationReason.open(EscalateBottomSheetComponent, {
       data: this.reason
     });
   }
+
   closeHelpContext() {
     const newContext: SnackbarModel = {
       display: false,
@@ -189,8 +191,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-
-
     this.shortcuts.push(
         {
             key: 'alt + i',
@@ -259,15 +259,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        console.log(res);
         res.data.forEach(x => {
           this.transactionTypes.push({
             name: x.Name,
-            description:x.Description,
+            description: x.Description,
             value: x.FileTypeID
           })
         });
-        console.log(this.transactionTypes);
+
         this.loadCaptureInfo();
       }
     );

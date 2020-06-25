@@ -320,6 +320,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      requestModel.userID = this.currentUser.userID;
 
       await this.captureService.invoiceUpdate(requestModel).then(
         async (res: Outcome) => {

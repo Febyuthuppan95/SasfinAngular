@@ -40,7 +40,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private router: Router) {}
 
   public form = new FormGroup({
-    userID: new FormControl(null, [Validators.required]),
+    userID: new FormControl(null),
     SAD500ID: new FormControl(null, [Validators.required]),
     serialNo: new FormControl(null, [Validators.required]),
     lrn: new FormControl(null, [Validators.required]),
@@ -368,6 +368,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      requestModel.userID = this.currentUser.userID;
 
       if (this.isVOC) {
         const vocRequest = {
