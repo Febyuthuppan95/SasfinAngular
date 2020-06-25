@@ -39,227 +39,7 @@
 <app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)" (addClaimPermits)="openAddClaimPermits($event)" [companyID]="this.companyID" [companyName]="this.companyName" [companyServiceID]="this.ServiceClaim.companyServiceID" [status]="this.ServiceClaim.status" [companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" [serviceID]=" this.ServiceClaim.serviceID" [serviceName]="this.ServiceClaim.serviceName" [permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
 </app-menu>
 
-<!--populate Modal-->
-<button class="hide" data-toggle="modal" data-target="#populate" #openPopulateModal></button>
-<div class="modal fade modal-maxsize" id="populate" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
-  <div class="modal-dialog modal-size modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Populate Claim Data</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="claimRequestParams">
-          <div class="modal-body">
-            <div class="row"> <!--Export Data-->
-              <mat-form-field class="col-md-4">
-                <mat-label>Export Date Range:</mat-label>
-                <input required matInput [matDatepicker]="exportStartDate" formControlName="exportStartDate">
-                <mat-datepicker-toggle matSuffix [for]="exportStartDate"></mat-datepicker-toggle>
-                <mat-datepicker #exportStartDate></mat-datepicker>
-                <!-- <mat-error *ngIf="email.invalid">Export Start Date is required</mat-error> -->
-              </mat-form-field>
-              <mat-form-field class="col-md-4">
-                <mat-label>To:</mat-label>
-                <input required matInput [matDatepicker]="exportEndDate" formControlName="exportEndDate">
-                <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
-                <mat-datepicker #exportEndDate></mat-datepicker>
-                <mat-hint>Warning: </mat-hint>
-              </mat-form-field>
-              <mat-form-field class="offset-md-1 col-md-2">
-                <mat-label>Extension Days</mat-label>
-                <mat-select required [(value)]="this.selectedExtensionDays" formControlName="extensionDays">
-                  <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
-                    {{day.value}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="row"><!--Import Data-->
-              <mat-form-field class="col-md-4">
-                <mat-label>Lookback Days</mat-label>
-                <mat-select required formControlName="lookBackDays">
-                  <mat-option *ngFor="let day of lookBackDays" [value]="day.value">
-                    {{day.value}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="col-md-4">
-                <mat-label>Claim Date:</mat-label>
-                <input matInput [matDatepicker]="claimDate">
-                <mat-datepicker-toggle matSuffix [for]="claimDate"></mat-datepicker-toggle>
-                <mat-datepicker #claimDate></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field class="col-md-3">
-                <mat-label>Permits</mat-label>
-                <mat-select [formControl]="permitsByDate" multiple (selectionChange)="permitselected($event.value)">
-                  <mat-option *ngFor="let permit of this.Permits" [value]="permit.permitID">{{permit.permitCode}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="form-group text-right row">
-              <div class="col-sm-10 text-right"> <button id="submitButton" *ngIf="this.importComponents"  mat-raised-button color="primary" (click)="updateClaimStatus()">Submit Claim</button></div>
-              <div class="col-sm-1 "><button mat-raised-button color="primary" (click)="generateClaimRequest()">Generate</button></div>
-              <input hidden #myInput [(ngModel)]="this.submissiondate" [ngModelOptions]="{standalone: true}">
-            </div>
-            <br>
-            <hr/>
-            <br>
-            <mat-card class="mat-title-card offset-md-3 col-md-6 text-center ls-text-"><label style="
-              font-size: 20px;
-              font-weight: 600;
-          ">Claim Imports by Component</label></mat-card>
 
-          <mat-progress-spinner class="loader"  *ngIf="this.loadingData">
-          </mat-progress-spinner>
-            <div class="data" *ngIf="importComponents">
-              <div class="row" >
-                <!-- <label class="col-md-2 text-center">Component Code</label> -->
-                <button mat-button color="primary" class="col-md-2 text-center" >Component Code</button>
-                <button mat-button color="primary" class="col-md-2 text-center">Total Import Quantity</button>
-                <button mat-button color="primary" class="col-md-2 text-center">Total Export Quantity</button>
-                <button mat-button color="primary" class="col-md-2 text-center">Total Duty</button>
-                <button mat-button color="primary" class="col-md-2 text-center">Total Shortfall</button>
-                <!-- <label class="col-md-2 text-center">Total Import Quantity</label>
-                <label class="col-md-2 text-center">Total Export Quantity</label>
-                <label class="col-md-2 text-center">Total Duty</label> -->
-              </div>
-              <mat-accordion>
-                <mat-expansion-panel *ngFor="let component of importComponents" (opened)="loadImportData(component)">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      <label class="col-md-2 text-center">{{component.itemName}}</label>
-                      <label class="col-md-2 text-center">{{component.totHSQuantity}}</label>
-                      <label class="col-md-2 text-center">{{component.exportQuantity}}</label>
-                      <label class="col-md-2 text-center">{{component.totDuty}}</label>
-                      <label class="col-md-2 text-center">{{component.totalShortfallQuantity}}</label>
-                      <label class="col-md-2 text-center">{{component.mrn}}</label>
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <div #exports width="100%">
-                   <mat-progress-spinner class="loader"  *ngIf="this.loadingImportData">
-                    </mat-progress-spinner>
-                    <table mat-table [dataSource]="assignedExports" class="mat-elevation-z8" multiTemplateDataRows>
-                      <ng-container matColumnDef="rowNum">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.rowNum}} </td>
-                      </ng-container>
-
-                      <!-- Name Column -->
-                      <ng-container matColumnDef="prodCode">
-                        <th mat-header-cell *matHeaderCellDef> Component Code </th>
-                        <td mat-cell *matCellDef="let element"> {{element.prodName}} </td>
-                      </ng-container>
-
-                      <!-- Weight Column -->
-                      <ng-container matColumnDef="quantityPer">
-                        <th mat-header-cell *matHeaderCellDef> Quantity Per </th>
-                        <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
-                      </ng-container>
-
-                      <!-- Symbol Column -->
-                      <ng-container matColumnDef="exportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> Exported Quantity </th>
-                        <td mat-cell *matCellDef="let element"> {{element.supplyUnit}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="totalExportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> Total Exported Quantity </th>
-                        <td mat-cell *matCellDef="let element"> {{element.totalExportUnits}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="totalExportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> MRN </th>
-                        <td mat-cell *matCellDef="let element"> {{element.mrn}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef>
-                          <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
-                                        [checked]="selection.hasValue() && isAllSelected()"
-                                        [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                        [aria-label]="checkboxLabel()">
-                          </mat-checkbox> -->
-                        </th>
-                        <td mat-cell *matCellDef="let row">
-                          <button mat-icon-button color="primary" (click)="removeExportline(component, row)"><mat-icon>arrow_downward</mat-icon></button>
-                          <!-- <mat-checkbox (click)="$event.stopPropagation()"
-                                        (change)="$event ? selection.toggle(row) : null"
-                                        [checked]="selection.isSelected(row)"
-                                        [aria-label]="checkboxLabel(row)">
-                          </mat-checkbox> -->
-                        </td>
-                      </ng-container>
-
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns"
-                      class="example-element-row"></tr>
-                      <!-- [class.example-expanded-row]="expandedElement === element" -->
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-                    <mat-divider style="margin:10px;"></mat-divider>
-                    <mat-card class="mat-title-card offset-md-3 col-md-6 text-center ls-text-">
-                      <label style="font-size: 14px;font-weight: 600;">Available Exports</label>
-                    </mat-card>
-                    <mat-divider style="margin:10px;"></mat-divider>
-                    <table mat-table [dataSource]="availableExports" class="mat-elevation-z8">
-                      <ng-container matColumnDef="rowNum">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.rowNum}} </td>
-                      </ng-container>
-
-                      <!-- Name Column -->
-                      <ng-container matColumnDef="prodCode">
-                        <th mat-header-cell *matHeaderCellDef> Component Code </th>
-                        <td mat-cell *matCellDef="let element"> {{element.prodName}} </td>
-                      </ng-container>
-
-                      <!-- Weight Column -->
-                      <ng-container matColumnDef="quantityPer">
-                        <th mat-header-cell *matHeaderCellDef> Quantity Per </th>
-                        <td mat-cell *matCellDef="let element"> {{element.quantityPer}} </td>
-                      </ng-container>
-
-                      <!-- Symbol Column -->
-                      <ng-container matColumnDef="exportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> Exported Quantity </th>
-                        <td mat-cell *matCellDef="let element"> {{element.expQuantity}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="totalExportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> Total Exported Quantity </th>
-                        <td mat-cell *matCellDef="let element"> {{element.totQuantity}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="totalExportedQuantity">
-                        <th mat-header-cell *matHeaderCellDef> MRN </th>
-                        <td mat-cell *matCellDef="let element"> {{element.mrn}} </td>
-                      </ng-container>
-                      <ng-container matColumnDef="select">
-                        <th mat-header-cell *matHeaderCellDef>
-                        </th>
-                        <td mat-cell *matCellDef="let row">
-                          <button mat-icon-button color="primary" (click)="addExportline(component, row)"><mat-icon>arrow_upward</mat-icon></button>
-                        </td>
-                      </ng-container>
-
-                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                    </table>
-                  </div>
-                </mat-expansion-panel>
-              </mat-accordion>
-              <mat-paginator [length]="length"
-                          [pageSize]="pageSize"
-                          [pageSizeOptions]="pageSizeOptions"
-                          (page)="pageEvent = $event"
-                          color="primary">
-              </mat-paginator>
-            </div>
-        </div>
-      <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePopulateModal>Close</button>
-        <button type="button" (click)="polulateLines()" class="btn btn-primary btn-sm">Save</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
 <!--Add Modal-->
 <button class="hide" data-toggle="modal" data-target="#create" #openCreateModal></button>
 <div class="modal fade modal-maxsize" id="create" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -274,18 +54,20 @@
     <form >
         <div class="modal-body">
           <div class="row">
-            <mat-form-field class="col-md-3">
-            <mat-label>Services</mat-label>
-            <mat-select [formControl]="selectedCompanyServiceIDControl" (selectionChange)="createCompanyServiceSelected($event.value)">
-              <mat-option *ngFor="let service of companyServiceList" [value]="service.componyServiceID">{{service.serviceName}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col-md-4">
-            <mat-label>Claim Date:</mat-label>
-            <input matInput [min]="minClaimDate" [matDatepicker]="createClaimDate" [(ngModel)]="this.selectedClaimDate" [ngModelOptions]="{standalone: true}">
-            <mat-datepicker-toggle matSuffix [for]="createClaimDate"></mat-datepicker-toggle>
-            <mat-datepicker #createClaimDate></mat-datepicker>
-          </mat-form-field>
+            <mat-form-field class="col-md-10">
+              <mat-label>Services</mat-label>
+              <mat-select [formControl]="selectedCompanyServiceIDControl" (selectionChange)="createCompanyServiceSelected($event.value, null)">
+                <mat-option *ngFor="let service of companyServiceList" [value]="service.componyServiceID">{{service.serviceName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row" *ngIf="this.ServiceClaim.serviceName !== '522'">
+            <mat-form-field class="col-md-10">
+              <mat-label>Claim Date:</mat-label>
+              <input matInput [min]="minClaimDate" [matDatepicker]="createClaimDate" [(ngModel)]="this.selectedClaimDate" [ngModelOptions]="{standalone: true}">
+              <mat-datepicker-toggle matSuffix [for]="createClaimDate"></mat-datepicker-toggle>
+              <mat-datepicker #createClaimDate></mat-datepicker>
+            </mat-form-field>
           </div>
         </div>
       <div class="modal-footer bg-dark">

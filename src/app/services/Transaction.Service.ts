@@ -210,7 +210,7 @@ export class TransactionService {
     });
   }
 
-  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name: string) {
+  public createdTransaction(userID: number, companyID: number, typeID: number, statusID: number, name?: string) {
     console.log(name);
 
     const requestModel: CreateTransactionRequest = {
