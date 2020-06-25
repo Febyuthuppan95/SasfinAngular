@@ -48,7 +48,11 @@ constructor(private userService: UserService,
   }
 
   ngOnChanges() {
-    if (this.sad500LineIDTemp !== this.sad500LineID) {
+    console.log(this.sad500LineID);
+    if (this.sad500LineID == null) {
+      this.load();
+      this.query.setValue('');
+    } else if (this.sad500LineIDTemp !== this.sad500LineID) {
       this.load();
       this.query.setValue('');
       this.sad500LineIDTemp = this.sad500LineID;

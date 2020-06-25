@@ -82,7 +82,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       companyID: new FormControl(null),
       currencyID: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
-      invoiceDate: new FormControl(null, [Validators.required]),
+      invoiceDate: new FormControl(new Date(), [Validators.required]),
       incoTermTypeID: new FormControl(null),
       cooID: new FormControl(null),
       isDeleted: new FormControl(0),
