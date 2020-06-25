@@ -1,6 +1,7 @@
 <div mat-dialog-content [focus] = "this.focus" #matDialogSubmit>
   <div style="text-align: center;">
-    <p>Submit Capture</p>
+    <h4>{{data.title}}</h4>
+    <p>{{data.desc}}</p>
     <br>
     <button mat-raised-button (click)="this.confirm()" class="bg-success text-light">Submit</button>&nbsp;<button mat-button (click)="this.cancel()">Cancel</button>
   </div>
