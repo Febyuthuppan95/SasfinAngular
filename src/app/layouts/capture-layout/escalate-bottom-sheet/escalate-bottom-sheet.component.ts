@@ -19,9 +19,8 @@ export class EscalateBottomSheetComponent implements OnInit {
   ngOnInit() {
     this.reason = this.data;
   }
-  openLink(event: MouseEvent): void {
+  openLink(): void {
     this.bottomSheetRef.dismiss();
-    event.preventDefault();
   }
 
 }
