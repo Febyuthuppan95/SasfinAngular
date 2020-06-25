@@ -14,7 +14,7 @@ export class EscalateBottomSheetComponent implements OnInit {
     private bottomSheetRef: MatBottomSheetRef<EscalateDialogComponent>,
     @Inject(MAT_BOTTOM_SHEET_DATA) public data: string) { }
 
-  reason = '';
+  reason;
 
   ngOnInit() {
     this.reason = this.data;
