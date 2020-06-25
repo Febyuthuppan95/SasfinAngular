@@ -299,7 +299,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         // tslint:disable-next-line: curly
         if (this.lines)
           if (this.lines.length > 0) {
+              this.activeIndex = 0;
               this.activeLine = this.lines[this.activeIndex];
+              this.paginationControl.setValue(1, { emitEvent: false });
           }  else {
               this.lines = [];
               this.newLine();
@@ -335,6 +337,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });

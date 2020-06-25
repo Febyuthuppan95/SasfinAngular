@@ -228,6 +228,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });

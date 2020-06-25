@@ -305,7 +305,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
         });
 
+        this.activeIndex = 0;
         this.activeLine = this.lines[this.activeIndex];
+        this.paginationControl.setValue(1, { emitEvent: false });
         } else {
           this.lines = [];
           this.newLine();
@@ -343,6 +345,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });
