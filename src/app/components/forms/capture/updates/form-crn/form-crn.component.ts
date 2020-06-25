@@ -123,6 +123,7 @@ public init() {
     this.load();
   }
 }
+public submissionEvent = (escalation) => this.submit(this.form, escalation);
 
 ngOnInit() {
   // this.transactionService.observerCurrentAttachment()
@@ -137,9 +138,9 @@ ngOnInit() {
   //   }
   // });
 
-  this.eventService.observeCaptureEvent()
-  .pipe(takeUntil(this.$unsubscribe))
-  .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+  // this.eventService.observeCaptureEvent()
+  // .pipe(takeUntil(this.$unsubscribe))
+  // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 }
 
 ngAfterViewInit(): void {

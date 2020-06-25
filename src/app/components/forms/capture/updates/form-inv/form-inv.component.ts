@@ -72,6 +72,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.load();
     }
   }
+  public submissionEvent = (escalation) => this.submit(this.form, escalation);
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -108,8 +109,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         this.companyID = res.companyID;
       });
 
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
@@ -245,7 +246,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
-      this.form.controls.invoiceDate.setValue(res.invoices[0].invoiceDate);
+      this.form.controls.invoiceDate.setValue(new Date(res.invoices[0].invoiceDate));
       this.errors = res.attachmentErrors.attachmentErrors;
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {

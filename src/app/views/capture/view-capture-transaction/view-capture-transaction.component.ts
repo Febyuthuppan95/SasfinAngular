@@ -11,6 +11,7 @@ import { FormInvComponent } from 'src/app/components/forms/capture/updates/form-
 import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/updates/form-sad/form-sad500-updated.component';
 import { FormCswComponent } from 'src/app/components/forms/capture/updates/form-csw/form-csw.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { EventService } from 'src/app/services/event.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,7 +25,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
 
   constructor(private themeService: ThemeService,
               private transactionService: TransactionService,
-              private componentService: ComponentService) { }
+              private componentService: ComponentService,
+              private eventService: EventService) { }
 
   currentTheme: string;
   currentDoctype: string;
@@ -47,11 +49,19 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
       this.currentDoctype = data.docType;
       this.capture = data;
     });
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((escalation?: boolean) => this.submitComponent(escalation));
   }
 
   ngAfterViewInit(): void {
     this.componentService.setContainer(this.captureForm);
     this.loadComponent();
+  }
+
+  submitComponent(escalation?: boolean) {
+    this.componentRef.instance.submissionEvent(escalation);
   }
 
   loadComponent() {

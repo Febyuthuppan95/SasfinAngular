@@ -78,6 +78,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  public submissionEvent = (escalation) => this.submit(this.form, escalation);
+
   ngOnInit() {
     this.form = new FormGroup({
       userID: new FormControl(null, [Validators.required]),
@@ -114,8 +116,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     //   }
     // });
 
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {

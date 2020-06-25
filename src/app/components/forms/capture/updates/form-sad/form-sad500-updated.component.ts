@@ -76,15 +76,20 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.isExport = this.capture.transactionType === 'Export' ? true : false;
       if (this.capture.docType === 'VOC') {
         this.isVOC = true;
-        this.form.controls.referenceNo.setValidators([Validators.required]);
         this.form.controls.reason.setValidators([Validators.required]);
         this.form.updateValueAndValidity();
         this.load();
       } else {
         this.load();
       }
+
+      if (this.isExport) {
+        this.form.controls.referenceNo.setValidators([Validators.required]);
+        this.form.updateValueAndValidity();
+      }
     }
   }
+  public submissionEvent = (escalation) => this.submit(this.form, escalation);
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -149,8 +154,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     //   }
     // });
 
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {

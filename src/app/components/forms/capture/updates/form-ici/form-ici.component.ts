@@ -86,6 +86,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
         this.load();
       }
   }
+  public submissionEvent = (escalation) => this.submit(this.form, escalation);
 
   ngOnInit() {
     // this.transactionService.observerCurrentAttachment()
@@ -99,8 +100,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     //   }
     // });
 
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
   }
 
   ngAfterViewInit(): void {
