@@ -387,10 +387,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
@@ -627,10 +627,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
@@ -913,10 +913,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
@@ -1118,7 +1118,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         this.headingsB = [
           {
             title: '',
-            propertyName: 'rowNum',
+            propertyName: 'rownum',
             order: {
               enable: false,
             },
@@ -1126,66 +1126,39 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
-            propertyName: 'oemsupplyid',
+            propertyName: 'capturejoinimportid',
             order: {
               enable: true,
-              tag: 'oemsupplyid'
+              tag: 'capturejoinimportid'
             },
             position: 1
           },
           {
             title: 'IDsecond',
-            propertyName: 'itemid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'itemid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
           {
             title: 'Product Code',
-            propertyName: 'prodname',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'prodname'
+              tag: 'name'
             },
             position: 3
           },
           {
-            title: 'Quantity Per',
-            propertyName: 'quantityper',
+            title: 'Quantity',
+            propertyName: 'quantity',
             order: {
               enable: true,
-              tag: 'quantityper'
+              tag: 'quantity'
             },
             position: 4
-          },
-          {
-            title: 'Available Export Quantity',
-            propertyName: 'availexpquantity',
-            order: {
-              enable: true,
-              tag: 'availexpquantity'
-            },
-            position: 5
-          },
-          {
-            title: 'Export Quantity',
-            propertyName: 'expquantity',
-            order: {
-              enable: true,
-              tag: 'expquantity'
-            },
-            position: 6
-          },
-          {
-            title: 'Total Quantity',
-            propertyName: 'totquantity',
-            order: {
-              enable: true,
-              tag: 'totquantity'
-            },
-            position: 7
           }
         ];
         this.headingsC = [
@@ -1199,19 +1172,19 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
-            propertyName: 'invoicelineID',
+            propertyName: 'invoicelineid',
             order: {
               enable: true,
-              tag: 'invoicelineID'
+              tag: 'invoicelineid'
             },
             position: 1
           },
           {
             title: 'IDsecond',
-            propertyName: 'itemID',
+            propertyName: 'itemid',
             order: {
               enable: true,
-              tag: 'itemID'
+              tag: 'itemid'
             },
             position: 2
           },
@@ -1489,6 +1462,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const lineData = JSON.parse($event);
     // this.selectedA = lineData.lineA; // Import cjid
     this.selectedB = lineData.lineB; // Export cjid
+    
+    this.selectedC = lineData.lineC;
+
     // this.selectedC = lineData.lineC;
     // this.selectedD = lineData.lineD; // Assign Line Quantity
     this.updateTopChild();
@@ -1520,6 +1496,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
+        console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
           this.loading = false;
           this.dataLinesAssigned = res.data;
@@ -1537,12 +1514,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   updateTopChild() {
     this.loading = true;
+    
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        captureJoinImportID: this.selectedA,
-        captureJoinExportID: this.selectedB,
+        companyServiceClaimLineID: this.selectedB,
         isDeleted: 1
       },
       requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
@@ -1561,6 +1537,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
@@ -1593,6 +1570,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
@@ -1649,6 +1627,19 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
       }
+      case '522': {
+        model = {
+          requestParams: {
+            userID: this.currentUser.userID,
+            companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+            captureJoinImportID: this.selectedA,
+            exportInvoiceLineID: this.selectedB,
+            importHSQuantity: this.selectedC,
+            exportHSQuantity: this.selectedD
+          },
+          requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
+        };
+      }
     }
 
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
@@ -1664,6 +1655,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
