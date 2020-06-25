@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { DialogOverrideComponent } from '../../../dialog-override/dialog-override.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { EventService } from 'src/app/services/event.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -13,8 +14,10 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./form-inv-lines.component.scss']
 })
 export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  constructor(private snackbar: MatSnackBar, private dialog: MatDialog,
-              private userService: UserService) { }
+  constructor(private snackbar: MatSnackBar,
+              private dialog: MatDialog,
+              private userService: UserService,
+              private eventService: EventService) { }
 
   public form = new FormGroup({
     userID: new FormControl(null),
@@ -75,7 +78,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   private keyboard: KeyboardShortcutsComponent;
 
   ngOnInit() {
-    if (this.data) {
+    if (this.data && this.data !== null) {
       this.data.invoiceID = this.data.invoiceID;
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;
@@ -86,6 +89,10 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.form.controls.invoiceLineID.setValue(-1);
       this.form.controls.invoiceID.setValue(-1);
     }
+
+    this.eventService.submitLines.subscribe(() => {
+      this.submit(this.form);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -110,7 +117,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   ngOnChanges() {
     this.form.reset();
 
-    if (this.data) {
+    if (this.data && this.data !== null) {
       this.data.invoiceID = this.data.invoiceID;
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;

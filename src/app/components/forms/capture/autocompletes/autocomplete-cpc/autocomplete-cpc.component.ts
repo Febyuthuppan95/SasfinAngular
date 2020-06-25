@@ -48,7 +48,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
       this.cpcList = this.cpcListTemp;
 
       if (value && value !== null && value !== '') {
-        this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
+        this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${value.toUpperCase()}*`));
       }
     });
   }

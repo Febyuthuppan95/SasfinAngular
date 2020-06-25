@@ -40,11 +40,12 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy {
 
     this.load(true);
 
-    this.query.valueChanges.subscribe(() => {
+    this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
+      const query: string = value;
 
-      if (this.query.value) {
-        this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
+      if (query && query !== null) {
+        this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
       }
     });
   }

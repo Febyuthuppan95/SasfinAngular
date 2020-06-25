@@ -26,9 +26,9 @@
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         <p *ngIf="!lines" style="font-size: 16px;">No Custom Worksheet Lines Added</p>
         <p *ngIf="lines">
-          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
-          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
-          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
+          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 || activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="(lines.length === 1 && activeIndex <= 0) || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
+          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line <input type="number" [max]="lines.length - 1" [min]="1" step="1" matInput class="pagination-input" [formControl]="paginationControl" /> of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
         <!-- &nbsp;<span>{{lineState}}</span> -->

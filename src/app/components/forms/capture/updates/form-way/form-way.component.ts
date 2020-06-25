@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -66,17 +66,29 @@ private notify: NotificationComponent;
 @ViewChild(KeyboardShortcutsComponent, { static: true })
 private keyboard: KeyboardShortcutsComponent;
 
+@Input() capture: any;
+
+public init() {
+  if (this.capture) {
+    this.attachmentID = this.capture.attachmentID;
+    this.transactionID = this.capture.transactionID;
+    this.attachmentLabel = 'Waybill';
+    this.transactionLabel = this.capture.transactionType;
+    this.load();
+  }
+}
+
 ngOnInit() {
-  this.transactionService.observerCurrentAttachment()
-  .subscribe((capture: any) => {
-    if (capture) {
-      this.attachmentID = capture.attachmentID;
-      this.transactionID = capture.transactionID;
-      this.attachmentLabel = 'Waybill';
-      this.transactionLabel = capture.transactionType;
-      this.load();
-    }
-  });
+  // this.transactionService.observerCurrentAttachment()
+  // .subscribe((capture: any) => {
+  //   if (capture) {
+  //     this.attachmentID = capture.attachmentID;
+  //     this.transactionID = capture.transactionID;
+  //     this.attachmentLabel = 'Waybill';
+  //     this.transactionLabel = capture.transactionType;
+  //     this.load();
+  //   }
+  // });
 
   this.eventService.observeCaptureEvent()
   .subscribe((escalation?: boolean) => this.submit(this.form, escalation));

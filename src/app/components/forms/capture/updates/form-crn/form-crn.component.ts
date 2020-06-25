@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -17,6 +17,8 @@ import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @AutoUnsubscribe()
 @Component({
@@ -105,24 +107,38 @@ private attachmentID: number;
 private transactionID: number;
 private currentUser = this.userService.getCurrentUser();
 private dialogOpen = false;
+private $unsubscribe = new Subject();
 
 @ViewChild(NotificationComponent, { static: true })
 private notify: NotificationComponent;
 
+@Input() capture: any;
+
+public init() {
+  if (this.capture) {
+    this.attachmentID = this.capture.attachmentID;
+    this.transactionID = this.capture.transactionID;
+    this.attachmentLabel = 'Customs Release Notification';
+    this.transactionLabel = this.capture.transactionType;
+    this.load();
+  }
+}
 
 ngOnInit() {
-  this.transactionService.observerCurrentAttachment()
-  .subscribe((capture: any) => {
-    if (capture) {
-      this.attachmentID = capture.attachmentID;
-      this.transactionID = capture.transactionID;
-      this.attachmentLabel = 'Customs Release Notification';
-      this.transactionLabel = capture.transactionType;
-      this.load();
-    }
-  });
+  // this.transactionService.observerCurrentAttachment()
+  // .pipe(takeUntil(this.$unsubscribe))
+  // .subscribe((capture: any) => {
+  //   if (capture) {
+  //     this.attachmentID = capture.attachmentID;
+  //     this.transactionID = capture.transactionID;
+  //     this.attachmentLabel = 'Customs Release Notification';
+  //     this.transactionLabel = capture.transactionType;
+  //     this.load();
+  //   }
+  // });
 
   this.eventService.observeCaptureEvent()
+  .pipe(takeUntil(this.$unsubscribe))
   .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 }
 
@@ -258,7 +274,10 @@ async submit(form: FormGroup, escalation?: boolean) {
   }
 }
 
-ngOnDestroy(): void {}
+ngOnDestroy(): void {
+  console.log('Destroyed CRN');
+  this.$unsubscribe.complete();
+}
 
 overrideDialog(key: string, label) {
   this.dialog.open(DialogOverrideComponent, {

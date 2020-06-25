@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener, Input } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -48,6 +48,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public shortcuts: ShortcutInput[];
   public help = false;
   public companyID: number;
+  public paginationControl = new FormControl(1);
 
   private attachmentID: number;
   private transactionID: number;
@@ -59,6 +60,18 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
+
+  @Input() capture: any;
+
+  public init() {
+    if (this.capture) {
+      this.attachmentID = this.capture.attachmentID;
+      this.transactionID = this.capture.transactionID;
+      this.attachmentLabel = this.capture.docType;
+      this.transactionLabel = this.capture.transactionType;
+      this.load();
+    }
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -78,17 +91,17 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       invoiceNoOReason: new FormControl(null),
     });
 
-    this.transactionService.observerCurrentAttachment()
-    .subscribe((capture: any) => {
-      if (capture) {
-        console.log(capture);
-        this.attachmentID = capture.attachmentID;
-        this.transactionID = capture.transactionID;
-        this.attachmentLabel = capture.docType;
-        this.transactionLabel = capture.transactionType;
-        this.load();
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .subscribe((capture: any) => {
+    //   if (capture) {
+    //     console.log(capture);
+    //     this.attachmentID = capture.attachmentID;
+    //     this.transactionID = capture.transactionID;
+    //     this.attachmentLabel = capture.docType;
+    //     this.transactionLabel = capture.transactionType;
+    //     this.load();
+    //   }
+    // });
 
     this.companyService.observeCompany()
       .subscribe(res => {
@@ -97,6 +110,22 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.eventService.observeCaptureEvent()
     .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+
+    this.paginationControl.valueChanges.subscribe((value) => {
+      if (value && value !== null && value == '') {
+        if (value > this.lines.length) {
+          value = this.lines.length;
+          this.paginationControl.setValue(this.lines.length);
+        } else if (value <= 0) {
+          this.paginationControl.setValue(1);
+        } else {
+          this.activeIndex = value - 1;
+          this.activeLine = this.lines[this.activeIndex];
+        }
+      } else {
+        this.paginationControl.setValue(1);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -171,7 +200,17 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               command: e => {
                 this.toggelHelpBar();
               }
-          }];
+            },
+            {
+              key: 'alt + a',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                if (this.displayLines) {
+                  this.eventService.submitLines.next();
+                }
+              }
+            }];
     });
   }
 
@@ -352,19 +391,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.activeIndex >= 1) {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length - 1) {
+    if (this.activeIndex < this.lines.length) {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
-
-    }
-
-    if (this.activeIndex === -1) {
-      this.activeIndex++;
-      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 

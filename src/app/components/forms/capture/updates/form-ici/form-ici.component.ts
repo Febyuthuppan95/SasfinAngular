@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -75,17 +75,29 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
-  ngOnInit() {
-    this.transactionService.observerCurrentAttachment()
-    .subscribe((capture: any) => {
-      if (capture) {
-        this.attachmentID = capture.attachmentID;
-        this.transactionID = capture.transactionID;
+  @Input() capture: any;
+
+  public init() {
+      if (this.capture) {
+        this.attachmentID = this.capture.attachmentID;
+        this.transactionID = this.capture.transactionID;
         this.attachmentLabel = 'Clearing Instruction';
-        this.transactionLabel = capture.transactionType;
+        this.transactionLabel = this.capture.transactionType;
         this.load();
       }
-    });
+  }
+
+  ngOnInit() {
+    // this.transactionService.observerCurrentAttachment()
+    // .subscribe((capture: any) => {
+    //   if (capture) {
+    //     this.attachmentID = capture.attachmentID;
+    //     this.transactionID = capture.transactionID;
+    //     this.attachmentLabel = 'Clearing Instruction';
+    //     this.transactionLabel = capture.transactionType;
+    //     this.load();
+    //   }
+    // });
 
     this.eventService.observeCaptureEvent()
     .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
@@ -223,7 +235,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    console.log('Destroyed ICI');
+  }
 
   overrideDialog(key: string, label) {
     this.dialog.open(DialogOverrideComponent, {

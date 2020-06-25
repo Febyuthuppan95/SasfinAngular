@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -21,7 +21,9 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-csw',
   templateUrl: './form-csw.component.html',
@@ -50,6 +52,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public shortcuts: ShortcutInput[];
   public help = false;
   public isExport = false;
+  public paginationControl = new FormControl(1);
 
   private attachmentID: number;
   private transactionID: number;
@@ -61,6 +64,19 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
+
+  @Input() capture: any;
+
+  public init() {
+    if (this.capture) {
+      this.attachmentID = this.capture.attachmentID;
+      this.transactionID = this.capture.transactionID;
+      this.attachmentLabel = this.capture.docType;
+      this.transactionLabel = this.capture.transactionType;
+      this.isExport = this.capture.transactionType === 'Export' ? true : false;
+      this.load();
+    }
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -86,20 +102,36 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       fileRefOReason: new FormControl(null),
     });
 
-    this.transactionService.observerCurrentAttachment()
-    .subscribe((capture: any) => {
-      if (capture) {
-        this.attachmentID = capture.attachmentID;
-        this.transactionID = capture.transactionID;
-        this.attachmentLabel = capture.docType;
-        this.transactionLabel = capture.transactionType;
-        this.isExport = capture.transactionType === 'Export' ? true : false;
-        this.load();
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .subscribe((capture: any) => {
+    //   if (capture) {
+    //     this.attachmentID = capture.attachmentID;
+    //     this.transactionID = capture.transactionID;
+    //     this.attachmentLabel = capture.docType;
+    //     this.transactionLabel = capture.transactionType;
+    //     this.isExport = capture.transactionType === 'Export' ? true : false;
+    //     this.load();
+    //   }
+    // });
 
     this.eventService.observeCaptureEvent()
     .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
+
+    this.paginationControl.valueChanges.subscribe((value) => {
+      if (value && value !== null && value == '') {
+        if (value > this.lines.length) {
+          value = this.lines.length;
+          this.paginationControl.setValue(this.lines.length);
+        } else if (value <= 0) {
+          this.paginationControl.setValue(1);
+        } else {
+          this.activeIndex = value - 1;
+          this.activeLine = this.lines[this.activeIndex];
+        }
+      } else {
+        this.paginationControl.setValue(1);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -174,6 +206,16 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               command: e => {
                 this.toggelHelpBar();
               }
+          },
+          {
+            key: 'alt + a',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              if (this.displayLines) {
+                this.eventService.submitLines.next();
+              }
+            }
           }];
     });
   }
@@ -358,19 +400,15 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.activeIndex >= 1) {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length - 1) {
+    if (this.activeIndex < this.lines.length) {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
-
-    }
-
-    if (this.activeIndex === -1) {
-      this.activeIndex++;
-      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 

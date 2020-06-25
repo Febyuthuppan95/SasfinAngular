@@ -1,19 +1,24 @@
-import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/services/user.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { DialogOverrideComponent } from '../../../dialog-override/dialog-override.component';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { EventService } from 'src/app/services/event.service';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-form-csw-lines',
   templateUrl: './form-csw-lines.component.html',
   styleUrls: ['./form-csw-lines.component.scss']
 })
-export class FormCswLinesComponent implements OnInit, OnChanges, AfterViewInit {
+export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
-  constructor(private snackbar: MatSnackBar, private dialog: MatDialog,
-              private userService: UserService) { }
+  constructor(private snackbar: MatSnackBar,
+              private dialog: MatDialog,
+              private userService: UserService,
+              private eventService: EventService) { }
 
   public form = new FormGroup({
     userID: new FormControl(null),
@@ -98,7 +103,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, AfterViewInit {
   private keyboard: KeyboardShortcutsComponent;
 
   ngOnInit() {
-    if (this.data) {
+    if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
       this.errors = this.data.errors;
     } else {
@@ -106,8 +111,12 @@ export class FormCswLinesComponent implements OnInit, OnChanges, AfterViewInit {
       this.form.controls.customWorksheetLineID.setValue(-1);
     }
 
-    this.form.controls.duty.setValidators(this.isExport ? null : null);
+    this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
     this.form.controls.duty.updateValueAndValidity();
+
+    this.eventService.submitLines.subscribe(() => {
+      this.submit(this.form);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -132,7 +141,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges() {
     this.form.reset();
 
-    if (this.data) {
+    if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
       this.errors = this.data.errors;
     } else {
@@ -196,4 +205,5 @@ export class FormCswLinesComponent implements OnInit, OnChanges, AfterViewInit {
       this.form.controls[`${key}OReason`].setValue(null);
     }
 
+    ngOnDestroy(): void {}
 }
