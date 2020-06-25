@@ -22,7 +22,6 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,8 +39,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router,
-              private location: Location) {}
+              private router: Router) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
