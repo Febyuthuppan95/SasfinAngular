@@ -32,7 +32,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
     if (this.statusID !== 5 && this.statusID !== 4) {
       this.docService.loadDocumentToViewer(this.docPath);
       // tslint:disable-next-line: max-line-length
-      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType });
+      this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1 });
       this.router.navigate(['capture', 'transaction', 'attachment']);
     }
   }
