@@ -56,6 +56,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     totalLineValueOUserID: new FormControl(null),
     totalLineValueODate: new FormControl(null),
     totalLineValueOReason: new FormControl(null),
+    uniqueIdentifier: new FormControl(),
   });
 
   public attachmentLabel: string;

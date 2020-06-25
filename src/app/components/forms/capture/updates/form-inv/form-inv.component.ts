@@ -81,7 +81,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       companyID: new FormControl(null),
       currencyID: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
-      invoiceDate: new FormControl(null, [Validators.required]),
+      invoiceDate: new FormControl(new Date(), [Validators.required]),
       incoTermTypeID: new FormControl(null),
       cooID: new FormControl(null),
       isDeleted: new FormControl(0),
@@ -242,10 +242,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const response: any = res.invoices[0];
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
-      console.log(res.invoices[0]);
 
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
+      this.form.controls.invoiceDate.setValue(res.invoices[0].invoiceDate);
       this.errors = res.attachmentErrors.attachmentErrors;
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {

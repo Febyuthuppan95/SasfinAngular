@@ -81,6 +81,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     supplyUnitOUserID: new FormControl(null),
     supplyUnitODate: new FormControl(null),
     supplyUnitOReason: new FormControl(null),
+    uniqueIdentifier: new FormControl(),
   });
 
   public attachmentLabel: string;
