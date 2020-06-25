@@ -136,7 +136,7 @@ private notify: NotificationComponent;
           this.router.navigate(['capture', 'transaction', 'attachment']);
           this.loading = false;
         } else {
-          this.notify.errorsmsg('FAILURE', 'No attachments to capture');
+          this.notify.toastrwarning('Information', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
         }
 
@@ -146,7 +146,6 @@ private notify: NotificationComponent;
       }
     );
   }
-
 
   loadAttachmentStats() {
     const model = {

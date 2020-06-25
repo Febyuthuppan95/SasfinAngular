@@ -130,6 +130,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
   reason = '';
 
+  bottomSheet;
+
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
     // this.companyService.setCapture({ capturestate: true});
@@ -177,7 +179,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   toggleReason(): void {
-    this.escalationReason.open(EscalateBottomSheetComponent, {
+    this.bottomSheet = this.escalationReason.open(EscalateBottomSheetComponent, {
       data: this.reason
     });
   }
@@ -223,6 +225,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
         },
         {
+          key: 'alt + [',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
           key: 'alt + p',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
@@ -240,6 +248,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
           key: 'alt + 8',
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+          key: 'alt + ]',
         },
     );
 
@@ -451,6 +465,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.themeService.toggleHelp();
+
+    if (this.bottomSheet) {
+      this.bottomSheet.close();
+    }
   }
 
   submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {
