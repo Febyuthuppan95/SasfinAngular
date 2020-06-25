@@ -46,6 +46,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private themeService: ThemeService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    console.log(this.rowCount);
     if (this.config !== null && this.config !== undefined) {
       if (this.config.dataset !== null && this.config.dataset !== undefined) {
         this.dataset = this.config.dataset;
