@@ -436,7 +436,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
     targetLine.isDeleted = 1;
-    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+    targetLine.customWorksheetID = this.attachmentID;
 
     if (!targetLine.isLocal) {
       await this.captureService.customWorksheetLineUpdate(targetLine);
@@ -445,6 +445,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     this.lines.splice(this.lines.indexOf(targetLine), 1);
     this.activeLine = null;
     this.activeIndex = -1;
+    this.paginationControl.setValue(1, { emitEvent: false });
   }
 
   cancelLine() {

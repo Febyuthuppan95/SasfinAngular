@@ -427,7 +427,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
     targetLine.isDeleted = 1;
-    targetLine.invoiceLineID = this.form.controls.invoiceLineID.value;
+    targetLine.invoiceID = this.attachmentID;
 
     if (!targetLine.isLocal) {
       await this.captureService.invoiceLineUpdate(targetLine);
@@ -436,6 +436,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     this.lines.splice(this.lines.indexOf(targetLine), 1);
     this.activeLine = null;
     this.activeIndex = -1;
+    this.paginationControl.setValue(1, { emitEvent: false });
   }
 
   cancelLine() {
