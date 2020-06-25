@@ -36,7 +36,20 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" (reportscompanyService)="reportscompanyService($event)" (addClaimPermits)="openAddClaimPermits($event)" [companyID]="this.companyID" [companyName]="this.companyName" [userID]="this.currentUser.userID" [transactionID]="this.ServiceClaim.transactionID" [companyServiceID]="this.ServiceClaim.companyServiceID" [status]="this.ServiceClaim.status" [companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" [serviceID]=" this.ServiceClaim.serviceID" [serviceName]="this.ServiceClaim.serviceName" [permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
+<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" 
+(reportscompanyService)="reportscompanyService($event)" 
+(addClaimPermits)="openAddClaimPermits($event)" 
+(submit522Claim) = "submit522Claim($event)"
+[companyID]="this.companyID" 
+[companyName]="this.companyName" 
+[userID]="this.currentUser.userID" 
+[transactionID]="this.ServiceClaim.transactionID" 
+[companyServiceID]="this.ServiceClaim.companyServiceID" 
+[status]="this.ServiceClaim.status" 
+[companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" 
+[serviceID]=" this.ServiceClaim.serviceID" 
+[serviceName]="this.ServiceClaim.serviceName" 
+[permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
 </app-menu>
 
 
@@ -73,6 +86,36 @@
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeCreateModal>Close</button>
         <button type="button" (click)="createCompanyServiceClaim()" class="btn btn-primary btn-sm">Save</button>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#create22" #openCreate522Modal></button>
+<div class="modal fade" id="create22" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-size modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="modalContent">Create new Service Claim</h5>
+      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form>
+        <div class="modal-body">
+          <div>
+            <mat-form-field>
+              <mat-label>Claim Date:</mat-label>
+              <input matInput [min]="minClaimDate" [matDatepicker]="create522ClaimDate" [(ngModel)]="selectedClaimDate" [ngModelOptions]="{standalone: true}">
+              <mat-datepicker-toggle matSuffix [for]="create522ClaimDate"></mat-datepicker-toggle>
+              <mat-datepicker #create522ClaimDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeCreate522Modal>Close</button>
+        <button type="button" (click)="submit522Claim()" class="btn btn-primary btn-sm">Save</button>
       </div>
     </form>
   </div>

@@ -35,6 +35,7 @@ import { environment } from 'src/environments/environment';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UUID } from 'angular2-uuid';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -117,6 +118,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   openCreateModal: ElementRef;
   @ViewChild('closeCreateModal', {static: false})
   closeCreateModal: ElementRef;
+  @ViewChild('openCreate522Modal', {static: false})
+  openCreate522Modal: ElementRef;
+  @ViewChild('closeCreate522Modal', {static: false})
+  closeCreate522Modal: ElementRef;
+
   @ViewChild('openPermitModal', {static: false})
   openPermitModal: ElementRef;
   @ViewChild('closePermitModal', {static: false})
@@ -284,6 +290,59 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
+  
+  submit522Claim() {
+    this.showLoader = true;
+    console.log('Updating claim params..');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        companyID: this.companyID
+      },
+      requestProcedure: `CompanyServiceClaimsUpdate`
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
+      (res : UpdateResponse ) => {
+        this.updateClaimStatus();
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+
+  }
+  updateClaimStatus() {
+    const model ={
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        statusID: 2
+      },
+      requestProcedure: 'UpdateCompanyServiceClaimStatus'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadServiceClaims(true)
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
+  }
   loadCompanyServices() {
     const model = {
       userID: this.currentUser.userID,

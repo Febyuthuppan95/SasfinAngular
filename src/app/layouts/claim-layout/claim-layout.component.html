@@ -88,7 +88,7 @@
                                       </mat-option>
                                     </mat-select>
                                   </mat-form-field>
-                                  <mat-form-field class="col-md-4">
+                                  <mat-form-field class="col-md-4" *ngIf="this.currentClaim.serviceName !=='522'">
                                     <mat-label>Claim Date:</mat-label>
                                     <input matInput [matDatepicker]="ClaimDate" formControlName="ClaimDate">
                                     <mat-datepicker-toggle matSuffix [for]="ClaimDate"></mat-datepicker-toggle>
@@ -141,7 +141,6 @@
             </div>
             <div class="bottom-section row" *ngIf="this.showMain">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
-
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Imports</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
