@@ -299,6 +299,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         this.activeLine = this.lines[this.activeIndex];
         } else {
           this.lines = [];
+          this.newLine();
         }
       });
   }
@@ -308,6 +309,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async submit(form: FormGroup, escalation?: boolean) {
+    form.markAllAsTouched();
+
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : 3;

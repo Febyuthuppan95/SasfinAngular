@@ -288,9 +288,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.invoiceLineID);
         });
 
-        if (this.lines.length > 0) {
-            this.activeLine = this.lines[this.activeIndex];
-        }
+        // tslint:disable-next-line: curly
+        if (this.lines)
+          if (this.lines.length > 0) {
+              this.activeLine = this.lines[this.activeIndex];
+          }  else {
+              this.lines = [];
+              this.newLine();
+          }
       });
   }
 
@@ -299,6 +304,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async submit(form: FormGroup, escalation?: boolean) {
+    form.markAllAsTouched();
+
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : 3;

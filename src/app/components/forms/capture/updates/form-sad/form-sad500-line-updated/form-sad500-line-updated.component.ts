@@ -97,8 +97,6 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.errors = this.data.errors;
     } else {
       this.sadLine500ID = -1;
-      this.data.specificSAD500LineID = -1;
-      this.data.sad500LineID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
       this.form.controls.sad500LineID.setValue(-1);
     }
@@ -209,6 +207,8 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 }
 
   submit(form: FormGroup) {
+    form.markAllAsTouched();
+
     if (form.valid) {
       this.submission.emit(form.value);
     } else {

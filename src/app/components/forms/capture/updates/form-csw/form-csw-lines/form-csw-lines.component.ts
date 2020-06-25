@@ -170,6 +170,8 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 }
 
   submit(form: FormGroup) {
+    form.markAllAsTouched();
+
     if (form.valid) {
       this.submission.emit(form.value);
     } else {
