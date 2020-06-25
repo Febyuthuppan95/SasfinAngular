@@ -189,25 +189,25 @@ export class FormVOCComponent implements OnInit, AfterViewInit, OnDestroy {
     unitOfMeasureID: number;
 
     ngOnInit() {
-      this.themeService.observeTheme()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(theme => this.currentTheme = theme);
+      // this.themeService.observeTheme()
+      // .pipe(takeUntil(this.unsubscribe$))
+      // .subscribe(theme => this.currentTheme = theme);
 
-      this.transactionService.observerCurrentAttachment()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.currentAttachmentID = data.attachmentID;
-        this.currentTransactionID = data.transactionID;
-      });
+      // this.transactionService.observerCurrentAttachment()
+      // .pipe(takeUntil(this.unsubscribe$))
+      // .subscribe(data => {
+      //   this.currentAttachmentID = data.attachmentID;
+      //   this.currentTransactionID = data.transactionID;
+      // });
 
-      this.currentUser = this.userService.getCurrentUser();
+      // this.currentUser = this.userService.getCurrentUser();
 
-      this.eventService.observeCaptureEvent().pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => this.submit());
+      // this.eventService.observeCaptureEvent().pipe(takeUntil(this.unsubscribe$))
+      // .subscribe(data => this.submit());
 
-      this.loadUnits();
-      this.loadTarrifs();
-      this.loadDuties();
+      // this.loadUnits();
+      // this.loadTarrifs();
+      // this.loadDuties();
     }
 
     ngAfterViewInit(): void {

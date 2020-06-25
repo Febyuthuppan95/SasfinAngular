@@ -78,7 +78,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public submissionEvent = (escalation) => this.submit(this.form, escalation);
+  public submissionEvent = (escalation, saveProgress) => this.submit(this.form, escalation, saveProgress);
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -317,12 +317,12 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
   }
 
-  async submit(form: FormGroup, escalation?: boolean) {
+  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean) {
     form.markAllAsTouched();
 
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = escalation ? 7 : 3;
+      requestModel.attachmentStatusID = escalation ? 7 : (saveProgress ? 2 : 3);
 
       console.log(requestModel);
 
@@ -341,9 +341,13 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           if (res.outcome === 'SUCCESS') {
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.companyService.setCapture({ capturestate: true });
-            this.router.navigateByUrl('transaction/capturerlanding');
+            if (saveProgress) {
+              this.snackbar.open('Progress Saved', '', { duration: 3000 });
+            } else {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
+            }
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }

@@ -186,25 +186,25 @@ lineIndex = 0;
 loader = false;
 
   ngOnInit() {
-    this.clearQueries();
-    this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(value => this.currentTheme = value);
+    // this.clearQueries();
+    // this.themeService.observeTheme()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((escalation?: boolean) => this.submit(escalation));
+    // this.eventService.observeCaptureEvent()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((escalation?: boolean, saveProgress?: boolean) => this.submit(escalation));
 
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadCapture();
-        this.loadLines();
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.loadCapture();
+    //     this.loadLines();
+    //   }
+    // });
 
   }
 

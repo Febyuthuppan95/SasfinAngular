@@ -280,35 +280,35 @@ transactionTypeDisplay = '';
 dialogOpen = false;
 
   ngOnInit() {
-    console.log(this.themeService.observeHelpValue());
-    this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(value => this.currentTheme = value);
+    // console.log(this.themeService.observeHelpValue());
+    // this.themeService.observeTheme()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((escalation?: boolean) =>
-      this.saveLines(null, escalation)
-    );
+    // this.eventService.observeCaptureEvent()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((escalation?: boolean) =>
+    //   this.saveLines(null, escalation)
+    // );
 
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number, docType: string, transactionType: string }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.attachmentType = curr.docType;
-        this.transactionType = curr.transactionType;
-        this.transactionTypeDisplay = curr.transactionType.toUpperCase();
-        if (curr.docType === 'VOC') {
-          this.vocGet();
-        } else {
-          this.loadCapture();
-          this.loadLines();
-          this.loadCPC();
-        }
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((curr: { transactionID: number, attachmentID: number, docType: string, transactionType: string }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.attachmentType = curr.docType;
+    //     this.transactionType = curr.transactionType;
+    //     this.transactionTypeDisplay = curr.transactionType.toUpperCase();
+    //     if (curr.docType === 'VOC') {
+    //       this.vocGet();
+    //     } else {
+    //       this.loadCapture();
+    //       this.loadLines();
+    //       this.loadCPC();
+    //     }
+    //   }
+    // });
   }
 
   updateHelpContext(slug: string) {

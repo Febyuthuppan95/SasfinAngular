@@ -204,23 +204,23 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   ediStatusControl = new FormControl();
 
   ngOnInit() {
-    this.themeService.observeTheme()
-    .subscribe(value => this.currentTheme = value);
+    // this.themeService.observeTheme()
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(escalation));
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean, saveProgress?: boolean) => this.submit(escalation));
 
-    this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadCapture();
-      }
-    });
+    // this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
+    // .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.loadCapture();
+    //   }
+    // });
 
-    this.loadEDIStatuses();
-    this.loadCPC();
+    // this.loadEDIStatuses();
+    // this.loadCPC();
   }
 
   ngAfterViewInit(): void {

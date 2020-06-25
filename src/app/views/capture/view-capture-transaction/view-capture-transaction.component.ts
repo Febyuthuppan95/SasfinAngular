@@ -52,7 +52,7 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((escalation?: boolean) => this.submitComponent(escalation));
+    .subscribe((data: { escalation?: boolean; saveProgress?: boolean}) => this.submitComponent(data.escalation, data.saveProgress));
   }
 
   ngAfterViewInit(): void {
@@ -60,8 +60,8 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     this.loadComponent();
   }
 
-  submitComponent(escalation?: boolean) {
-    this.componentRef.instance.submissionEvent(escalation);
+  submitComponent(escalation?: boolean, saveProgress?: boolean) {
+    this.componentRef.instance.submissionEvent(escalation, saveProgress);
   }
 
   loadComponent() {
