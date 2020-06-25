@@ -374,6 +374,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   // [Line Controls]
   queueLine($event: any) {
     let target = null;
+    console.log($event);
 
     if (this.lines) {
       if (this.lines.length > 0) {
@@ -442,10 +443,17 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       await this.captureService.invoiceLineUpdate(targetLine);
     }
 
-    this.lines.splice(this.lines.indexOf(targetLine), 1);
-    this.activeLine = null;
-    this.activeIndex = -1;
-    this.paginationControl.setValue(1, { emitEvent: false });
+    if (this.lines.length === 1) {
+      this.lines = [];
+      this.activeLine = null;
+      this.activeIndex = -1;
+      this.paginationControl.setValue(1, { emitEvent: false });
+    } else {
+      this.lines.splice(this.lines.indexOf(targetLine), 1);
+      this.activeIndex = 0;
+      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(1, { emitEvent: false });
+    }
   }
 
   cancelLine() {

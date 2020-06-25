@@ -22,7 +22,6 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,8 +39,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router,
-              private location: Location) {}
+              private router: Router) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -249,7 +247,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.customWorksheetList(request).then(async (res: CustomsWorksheetListResponse) => {
-      if (res.customsWorksheets.length > 0) {
         const response: any = res.customsWorksheets[0];
         response.userID = request.userID;
         response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
@@ -282,9 +279,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.form.updateValueAndValidity();
         await this.loadLines();
-      } else {
-        this.location.back();
-      }
 
     });
   }
@@ -331,6 +325,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
+      // tslint:disable-next-line: max-line-length
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
 
@@ -457,10 +452,17 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       await this.captureService.customWorksheetLineUpdate(targetLine);
     }
 
-    this.lines.splice(this.lines.indexOf(targetLine), 1);
-    this.activeLine = null;
-    this.activeIndex = -1;
-    this.paginationControl.setValue(1, { emitEvent: false });
+    if (this.lines.length === 1) {
+      this.lines = [];
+      this.activeLine = null;
+      this.activeIndex = -1;
+      this.paginationControl.setValue(1, { emitEvent: false });
+    } else {
+      this.lines.splice(this.lines.indexOf(targetLine), 1);
+      this.activeIndex = 0;
+      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(1, { emitEvent: false });
+    }
   }
 
   cancelLine() {

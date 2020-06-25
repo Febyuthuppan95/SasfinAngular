@@ -554,9 +554,17 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       await this.captureService.sad500LineUpdate(targetLine);
     }
 
-    this.lines.splice(this.lines.indexOf(targetLine), 1);
-    this.activeLine = null;
-    this.activeIndex = -1;
+    if (this.lines.length === 1) {
+      this.lines = [];
+      this.activeLine = null;
+      this.activeIndex = -1;
+      this.paginationControl.setValue(1, { emitEvent: false });
+    } else {
+      this.lines.splice(this.lines.indexOf(targetLine), 1);
+      this.activeIndex = 0;
+      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(1, { emitEvent: false });
+    }
   }
 
   async deleteDuty() {

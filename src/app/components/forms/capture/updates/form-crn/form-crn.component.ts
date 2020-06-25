@@ -197,6 +197,7 @@ async load() {
     const response: any = res.customs[0];
     response.customsReleaseID = res.customs[0].customReleaseID;
     response.attachmentStatusID = response.statusID;
+    response.pcc = res.customs[0].pcc;
 
     this.form.patchValue(response);
     this.form.controls.userID.setValue(this.currentUser.userID);

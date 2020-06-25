@@ -376,7 +376,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       (res: ChatIssueCreateReponse) => {
         if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
           // this.companyService.setCapture({ capturestate: false});
-          this.submitCapture(true);
+          this.submitCapture(true, false, false, 'Escalation', 'This attachment will be escalated');
         } else {
           this.snackBarMat.open(res.outcome.outcomeMessage, '', {
             duration: 2000
@@ -453,12 +453,16 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.themeService.toggleHelp();
   }
 
-  submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
+  submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {
     if (!this.dialogOpen) {
       this.dialogOpen = true;
       const dialogConf = new MatDialogConfig();
       dialogConf.autoFocus = true;
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+      this.dialog.open(SubmitDialogComponent, {
+        data: {
+          title, desc
+        }
+      }).afterClosed().subscribe((status: boolean) => {
         this.dialogOpen = false;
 
         if (status) {

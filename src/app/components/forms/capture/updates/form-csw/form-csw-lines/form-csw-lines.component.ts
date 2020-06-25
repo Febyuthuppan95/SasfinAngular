@@ -6,6 +6,7 @@ import { KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { DialogOverrideComponent } from '../../../dialog-override/dialog-override.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { EventService } from 'src/app/services/event.service';
+import { UUID } from 'angular2-uuid';
 
 @AutoUnsubscribe()
 @Component({
@@ -92,7 +93,6 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   public displayLines = false;
   public errors: any[] = [];
   public shortcuts: any[] = [];
-  public sadLine500ID = -1;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -115,7 +115,6 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
       });
       this.errors = this.data.errors;
     } else {
-      this.sadLine500ID = -1;
       this.form.controls.customWorksheetLineID.setValue(-1);
     }
 
@@ -187,7 +186,10 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     form.markAllAsTouched();
 
     if (form.valid) {
-      this.submission.emit(form.value);
+      const line: any = form.value;
+      line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
+
+      this.submission.emit(line);
     } else {
       this.findInvalidControls(form);
       this.snackbar.open('Please fill in line details', '', {duration: 3000});
