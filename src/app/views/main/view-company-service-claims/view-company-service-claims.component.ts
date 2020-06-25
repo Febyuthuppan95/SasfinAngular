@@ -34,6 +34,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UUID } from 'angular2-uuid';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -215,7 +216,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   ServiceClaim: {
     companyServiceID: number,
     companyServiceClaimNumber: number,
-    serviceName: string
+    serviceName: string,
+    transactionID?: number
   };
   claimForm = {
     exportStartDate: {
@@ -344,7 +346,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
           this.showLoader = false;
         } else {
           this.noData = false;
-          this.showingRecords = res.serviceClaims.length;
+          this.showingRecords = this.CompanyServiceClaims.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyServiceClaims.length - 1;
         }
@@ -386,6 +388,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   popClick(event, obj) {
     this.ServiceClaim = obj;
+    if(this.ServiceClaim.serviceName === '522') {
+      this.ServiceClaim.transactionID = this.getTransactionID();
+    }
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -609,12 +614,18 @@ create522Transaction() {
     (res: Outcome) => {
       if(res.outcome === 'SUCCESS') {
        
-        
+       const transactionID =  this.getTransactionID(); 
         this.companyService.setCompany({
           companyID: this.companyID,
-          companyName: this.companyName
+          companyName: this.companyName,
+          selectedTransactionID:  transactionID
         });
-        this.router.navigate(['companies', 'transactions']);
+        if(transactionID > 0) {
+          this.router.navigate(['transaction', 'attachments']);  
+        } else {
+          this.router.navigate(['companies', 'transactions']);
+        }
+        
       }
       else {
         this.notify.errorsmsg(
@@ -631,6 +642,21 @@ create522Transaction() {
       );
     }
   );
+}
+getTransactionID(): number {
+  const model = {
+    requestParams: {
+      userID: this.currentUser.userID,
+      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber
+    },
+    requestProcedure: 'CompanyServiceClaimParametersList'
+  };
+  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    (res:ListReadResponse) => {
+      return res.data[0].TransactionID
+    }
+  )
+  return 0;
 }
 addCompanyServiceClaimPermits() {
   console.log(this.permitslist.length);

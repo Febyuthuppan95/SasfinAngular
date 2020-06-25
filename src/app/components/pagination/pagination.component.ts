@@ -138,11 +138,12 @@ export class PaginationComponent implements OnInit, OnChanges {
         }
       }
 
-      if (+this.activePage + 1 <= pagenumber) {
-        this.showingPages[2] = this.pages[+this.activePage + 1];
+      if (+this.activePage + 1 <= pagenumber-1) {
+        this.showingPages[2] = this.pages[+this.activePage+1];
       }
     }
     this.showPagination = true;
+    console.log(this.showingPages);
   }
 
 }
