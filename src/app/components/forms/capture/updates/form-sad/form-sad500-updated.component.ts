@@ -39,7 +39,48 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private companyService: CompanyService,
               private router: Router) {}
 
-  public form: FormGroup;
+  public form = new FormGroup({
+    userID: new FormControl(null, [Validators.required]),
+    SAD500ID: new FormControl(null, [Validators.required]),
+    serialNo: new FormControl(null, [Validators.required]),
+    lrn: new FormControl(null, [Validators.required]),
+    totalCustomsValue: new FormControl(0, [Validators.required]),
+    cpcID: new FormControl(null, [Validators.required]),
+    waybillNo: new FormControl(null, [Validators.required]),
+    supplierRef: new FormControl(null, [Validators.required]),
+    mrn: new FormControl(null, [Validators.required]),
+    attachmentStatusID: new FormControl(null),
+    importersCode: new FormControl(null, [Validators.required]),
+    fileRef: new FormControl(null, [Validators.required]),
+    totalDuty: new FormControl(0, [Validators.required]),
+    lrnOBit: new FormControl(false),
+    lrnOUserID: new FormControl(null),
+    lrnODate: new FormControl(null),
+    lrnOReason: new FormControl(null),
+    mrnOBit: new FormControl(false),
+    mrnOUserID: new FormControl(null),
+    mrnODate: new FormControl(null),
+    mrnOReason: new FormControl(null),
+    importersCodeOBit: new FormControl(false),
+    importersCodeOUserID: new FormControl(null),
+    importersCodeODate: new FormControl(null),
+    importersCodeOReason: new FormControl(null),
+    fileRefOBit: new FormControl(false),
+    fileRefOUserID: new FormControl(null),
+    fileRefODate: new FormControl(null),
+    fileRefOReason: new FormControl(null),
+    totalDutyOBit: new FormControl(false),
+    totalDutyOUserID: new FormControl(null),
+    totalDutyODate: new FormControl(null),
+    totalDutyOReason: new FormControl(null),
+    isDeleted: new FormControl(0),
+
+    // VOC
+    vocID: new FormControl(null),
+    referenceNo: new FormControl(null),
+    reason: new FormControl(null),
+  });
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -92,71 +133,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public submissionEvent = (escalation) => this.submit(this.form, escalation);
 
   ngOnInit() {
-    this.form = new FormGroup({
-      userID: new FormControl(this.currentUser.userID, [Validators.required]),
-      SAD500ID: new FormControl(null, [Validators.required]),
-      serialNo: new FormControl(null, [Validators.required]),
-      lrn: new FormControl(null, [Validators.required]),
-      totalCustomsValue: new FormControl(0, [Validators.required]),
-      cpcID: new FormControl(null, [Validators.required]),
-      waybillNo: new FormControl(null, [Validators.required]),
-      supplierRef: new FormControl(null, [Validators.required]),
-      mrn: new FormControl(null, [Validators.required]),
-      attachmentStatusID: new FormControl(null),
-      importersCode: new FormControl(null, [Validators.required]),
-      fileRef: new FormControl(null, [Validators.required]),
-      totalDuty: new FormControl(0, [Validators.required]),
-      lrnOBit: new FormControl(false),
-      lrnOUserID: new FormControl(null),
-      lrnODate: new FormControl(null),
-      lrnOReason: new FormControl(null),
-      mrnOBit: new FormControl(false),
-      mrnOUserID: new FormControl(null),
-      mrnODate: new FormControl(null),
-      mrnOReason: new FormControl(null),
-      importersCodeOBit: new FormControl(false),
-      importersCodeOUserID: new FormControl(null),
-      importersCodeODate: new FormControl(null),
-      importersCodeOReason: new FormControl(null),
-      fileRefOBit: new FormControl(false),
-      fileRefOUserID: new FormControl(null),
-      fileRefODate: new FormControl(null),
-      fileRefOReason: new FormControl(null),
-      totalDutyOBit: new FormControl(false),
-      totalDutyOUserID: new FormControl(null),
-      totalDutyODate: new FormControl(null),
-      totalDutyOReason: new FormControl(null),
-      isDeleted: new FormControl(0),
-
-      // VOC
-      vocID: new FormControl(null),
-      referenceNo: new FormControl(null),
-      reason: new FormControl(null),
-    });
-
-    // this.transactionService.observerCurrentAttachment()
-    // .subscribe((capture: any) => {
-    //   if (capture) {
-    //     this.attachmentID = capture.attachmentID;
-    //     this.transactionID = capture.transactionID;
-    //     this.attachmentLabel = capture.docType;
-    //     this.transactionLabel = capture.transactionType;
-    //     this.isExport = capture.transactionType === 'Export' ? true : false;
-    //     if (capture.docType === 'VOC') {
-    //       this.isVOC = true;
-    //       this.form.controls.referenceNo.setValidators([Validators.required]);
-    //       this.form.controls.reason.setValidators([Validators.required]);
-    //       this.form.updateValueAndValidity();
-    //       this.load();
-    //     } else {
-    //       this.load();
-    //     }
-    //   }
-    // });
-
-    // this.eventService.observeCaptureEvent()
-    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
         if (value > this.lines.length) {
