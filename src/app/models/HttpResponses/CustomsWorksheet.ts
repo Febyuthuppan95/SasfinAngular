@@ -25,17 +25,17 @@ export class CustomsWorksheet {
 
   waybillNoOBit: boolean;
   waybillNoOUserID: number;
-  waybillNoODate: Date;
+  waybillNoODate: string;
   waybillNoOReason: string;
 
   fileRefOBit: boolean;
   fileRefOUserID: number;
-  fileRefODate: Date;
+  fileRefODate: string;
   fileRefOReason: string;
 
   lrnOBit: boolean;
   lrnOUserID: number;
-  lrnODate: Date;
+  lrnODate: string;
   lrnOReason: string;
 
 }

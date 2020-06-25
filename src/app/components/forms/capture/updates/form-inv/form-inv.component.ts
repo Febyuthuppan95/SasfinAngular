@@ -249,6 +249,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.controls.invoiceDate.setValue(new Date(res.invoices[0].invoiceDate));
       this.errors = res.attachmentErrors.attachmentErrors;
 
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
+
       if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
           res.attachmentErrors.attachmentErrors.forEach((error) => {
@@ -318,13 +326,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             line.userID = this.currentUser.userID;
 
             if (line.isLocal) {
-              await this.captureService.invoiceLineAdd(line).then(
-                (res: any) => console.log(res),
-                (msg) => console.log(JSON.stringify(msg)));
+              await this.captureService.invoiceLineAdd(line);
             } else {
-              await this.captureService.invoiceLineUpdate(line).then(
-                (res) => console.log(res),
-                (msg) => console.log(JSON.stringify(msg)));
+              await this.captureService.invoiceLineUpdate(line);
             }
           });
 

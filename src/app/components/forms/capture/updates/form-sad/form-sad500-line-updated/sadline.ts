@@ -17,31 +17,31 @@ export class SAD500Line {
   isDeleted: number;
   lineNoOBit: boolean;
   lineNoOUserID: number;
-  lineNoODate: Date;
+  lineNoODate: string;
   lineNoOReason: string;
   customsValueOBit: boolean;
   customsValueOUserID: number;
-  customsValueODate: Date;
+  customsValueODate: string;
   customsValueOReason: string;
   quantityOBit: boolean;
   quantityOUserID: number;
-  quantityODate: Date;
+  quantityODate: string;
   quantityOReason: string;
   previousDeclarationOBit: boolean;
   previousDeclarationOUserID: number;
-  previousDeclarationODate: Date;
+  previousDeclarationODate: string;
   previousDeclarationOReason: string;
   dutyOBit: boolean;
   dutyOUserID: number;
-  dutyODate: Date;
+  dutyODate: string;
   dutyOReason: string;
   vatOBit: boolean;
   vatOUserID: number;
-  vatODate: Date;
+  vatODate: string;
   vatOReason: string;
   supplyUnitOBit: boolean;
   supplyUnitOUserID: number;
-  supplyUnitODate: Date;
+  supplyUnitODate: string;
   supllyUnitOReason: string;
 
   // UI Variables

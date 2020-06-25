@@ -258,9 +258,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
-          console.log(key);
           if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(new Date(this.form.controls[key].value));
+            this.form.controls[key].setValue(null);
           }
         }
       });

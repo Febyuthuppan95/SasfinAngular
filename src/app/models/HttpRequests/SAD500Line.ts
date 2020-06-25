@@ -28,31 +28,31 @@ export class SadTest {
   supplyUnit: number;
   LineNoOBit: boolean;
   LineNoOUserID: number;
-  LineNoODate: Date;
+  LineNoODate: string;
   LineNoOReason: string;
   CustomsValueOBit: boolean;
   CustomsValueOUserID: number;
-  CustomsValueODate: Date;
+  CustomsValueODate: string;
   CustomsValueOReason: string;
   QuantityOBit: boolean;
   QuantityOUserID: number;
-  QuantityODate: Date;
+  QuantityODate: string;
   QuantityOReason: string;
   PreviousDeclarationOBit: boolean;
   PreviousDeclarationOUserID: number;
-  PreviousDeclarationODate: Date;
+  PreviousDeclarationODate: string;
   PreviousDeclarationOReason: string;
   DutyOBit: boolean;
   DutyOUserID: number;
-  DutyODate: Date;
+  DutyODate: string;
   DutyOReason: string;
   VATOBit: boolean;
   VATOUserID: number;
-  VATODate: Date;
+  VATODate: string;
   VATOReason: string;
   supplyUnitOBit: boolean;
   supplyUnitOUserID: number;
-  supplyUnitODate: Date;
+  supplyUnitODate: string;
   SupllyUnitOReason: string;
 }
 
@@ -73,37 +73,37 @@ export class SAD500LineCreateRequest {
 
   lineNoOBit?: boolean;
   lineNoOUserID?: number;
-  lineNoODate: Date;
+  lineNoODate: string;
   lineNoOReason: string;
 
   customsValueOBit?: boolean;
   customsValueOUserID?: number;
-  customsValueODate: Date;
+  customsValueODate: string;
   customsValueOReason: string;
 
   quantityOBit?: boolean;
   quantityOUserID?: number;
-  quantityODate: Date;
+  quantityODate: string;
   quantityOReason: string;
 
   previousDeclarationOBit?: boolean;
   previousDeclarationOUserID?: number;
-  previousDeclarationODate: Date;
+  previousDeclarationODate: string;
   previousDeclarationOReason: string;
 
   dutyOBit?: boolean;
   dutyOUserID?: number;
-  dutyODate: Date;
+  dutyODate: string;
   dutyOReason: string;
 
   vatOBit?: boolean;
   vatOUserID?: number;
-  vatODate: Date;
+  vatODate: string;
   vatOReason: string;
 
   supplyUnitOBit?: boolean;
   supplyUnitOUserID?: number;
-  supplyUnitODate: Date;
+  supplyUnitODate: string;
   supllyUnitOReason: string;
 
 

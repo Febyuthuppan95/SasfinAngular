@@ -106,6 +106,13 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   ngOnInit() {
     if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
       this.errors = this.data.errors;
     } else {
       this.sadLine500ID = -1;
@@ -144,6 +151,13 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
       this.errors = this.data.errors;
     } else {
       this.form.controls.customWorksheetLineID.setValue(-1);

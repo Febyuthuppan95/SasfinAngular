@@ -84,6 +84,15 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;
       this.form.patchValue(this.data);
+
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
+
       this.errors = this.data.errors;
     } else {
       this.invoiceID = -1;
@@ -123,6 +132,15 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;
       this.form.patchValue(this.data);
+
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
+
       this.errors = this.data.errors;
     } else {
       this.invoiceID = -1;

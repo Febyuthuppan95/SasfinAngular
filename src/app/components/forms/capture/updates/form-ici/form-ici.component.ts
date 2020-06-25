@@ -163,6 +163,14 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.errors = res.attachmentErrors.attachmentErrors;
 
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
+
       if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
           res.attachmentErrors.attachmentErrors.forEach((error) => {

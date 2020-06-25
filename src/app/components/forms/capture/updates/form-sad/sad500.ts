@@ -16,22 +16,22 @@ export class SAD500 {
   isDeleted: number;
   lrnOBit: boolean;
   lrnOUserID: number;
-  lrnODate: Date;
+  lrnODate: string;
   lrnOReason: string;
   mrnOBit: boolean;
   mrnOUserID: number;
-  mrnODate: Date;
+  mrnODate: string;
   mrnOReason: string;
   importersCodeOBit: boolean;
   importersCodeOUserID: number;
-  importersCodeODate: Date;
+  importersCodeODate: string;
   importersCodeOReason: string;
   fileRefOBit: boolean;
   fileRefOUserID: number;
-  fileRefODate: Date;
+  fileRefODate: string;
   fileRefOReason: string;
   totalDutyOBit: boolean;
   totalDutyOUserID: number;
-  totalDutyODate: Date;
+  totalDutyODate: string;
   totalDutyOReason: string;
 }
