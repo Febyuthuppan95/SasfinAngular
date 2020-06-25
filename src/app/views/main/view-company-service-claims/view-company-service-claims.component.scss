@@ -201,9 +201,9 @@ tr.active {
   .modal-content {
     height: 100%;
   }
-  
-  
-  
+
+
+
   .modal-body {
     margin-bottom: 64px;
   }
@@ -212,7 +212,7 @@ tr.active {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: -72px;
 }
 #submitButton {
   background-color: #4DCA37;
@@ -368,3 +368,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   opacity: 0.5;
 }
 
+.mat-form-field {
+  width: 100%;
+}
