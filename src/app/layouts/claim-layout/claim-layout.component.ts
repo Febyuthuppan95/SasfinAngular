@@ -1417,9 +1417,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           }
 
           if(this.currentClaim.serviceName === '538') {
+            this.dataS = [];
            this.dataS = res.data;
            this.pageS.length = res.rowCount;
          } else {
+           this.data = [];
           this.data = res.data;
           this.pageA.length = res.rowCount;
          }
@@ -1482,6 +1484,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   // Top Right Table
   loadTopChild() {
     this.loading = true;
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1498,6 +1501,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       (res: ReadResponse) => {
         console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
+          this.dataLinesAssigned = [];
           this.loading = false;
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
@@ -1548,7 +1552,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   // Bottom Right Table
   loadBottomChild() {
+
     this.loading = true;
+    
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1564,6 +1570,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
           this.loading = false;
+          this.dataLinesAvailable = [];
           this.dataLinesAvailable = res.data;
           this.pageC.length = res.rowCount;
 
