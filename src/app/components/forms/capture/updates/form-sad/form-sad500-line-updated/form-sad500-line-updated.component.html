@@ -1,10 +1,10 @@
 <ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <br>
 <ng-container *ngIf="data === null || !data">
-  <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Add to Queue</button>
+  <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Queue Creation</button>
 </ng-container>
 <ng-container *ngIf="data !== null && data">
-  <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Update</button>
+  <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Queue Update</button>
 </ng-container>
 <br><br>
 
