@@ -300,7 +300,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
-  
+  submit522() {
+    this.openCreate522Modal.nativeElement.click();
+  }
   submit522Claim() {
     this.showLoader = true;
     console.log('Updating claim params..');
