@@ -1001,12 +1001,21 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
+            propertyName: 'sad500lineid',
+            order: {
+              enable: true,
+              tag: 'sad500lineid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDSecond',
             propertyName: 'prccid',
             order: {
               enable: true,
               tag: 'prccid'
             },
-            position: 1
+            position: 2
           },
           {
             title: 'File No',
@@ -1015,7 +1024,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'fileno'
             },
-            position: 2
+            position: 3
           },
           {
             title: 'PRCC Number',
@@ -1024,7 +1033,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'prccno'
             },
-            position: 3
+            position: 4
           },
           {
             title: 'Reg Number',
@@ -1033,7 +1042,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'regno'
             },
-            position: 4
+            position: 5
           },
           {
             title: 'Available Customs Value',
@@ -1042,7 +1051,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'availcustval'
             },
-            position: 5
+            position: 6
           },
           {
             title: 'Total Customs Value',
@@ -1051,7 +1060,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'totalcustval'
             },
-            position: 6
+            position: 7
           }
         ];
         break;
