@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
-  AssetRoute: 'http://197.189.218.50:8888/assets/dist',
-  ImageRoute: 'http://197.189.218.50:8888/assets/dist/images',
-  ApiEndpoint: 'http://197.189.218.50:7777/api/v1.0',
-  ApiBackgroundImages: 'http://197.189.218.50:7777/api/v1.0/public/images/background',
-  ApiProfileImages: 'http://197.189.218.50:7777/api/v1.0/public/images/profile',
-  ApiDocuments: 'http://197.189.218.50:7777/api/v1.0/public/document',
+  AssetRoute: 'http://lateral.solutions:8888/assets/dist',
+  ImageRoute: 'http://lateral.solutions:8888/assets/dist/images',
+  ApiEndpoint: 'http://lateral.solutions:7777/api/v1.0',
+  ApiBackgroundImages: 'http://lateral.solutions:7777/api/v1.0/public/images/background',
+  ApiProfileImages: 'http://lateral.solutions:7777/api/v1.0/public/images/profile',
+  ApiDocuments: 'http://lateral.solutions:7777/api/v1.0/public/document',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -21,11 +21,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'http://197.189.218.50:7777/api/v1.0/users/list',
-      create: 'http://197.189.218.50:7777/api/v1.0/users/add',
-      update: 'http://197.189.218.50:7777/api/v1.0/users/update',
-      upload: 'http://197.189.218.50:7777/api/v1.0/users/upload',
-      hub: 'http://197.189.218.50:7777/Communication/Hub'
+      list: 'http://lateral.solutions:7777/api/v1.0/users/list',
+      create: 'http://lateral.solutions:7777/api/v1.0/users/add',
+      update: 'http://lateral.solutions:7777/api/v1.0/users/update',
+      upload: 'http://lateral.solutions:7777/api/v1.0/users/upload',
+      hub: 'http://lateral.solutions:7777/Communication/Hub'
     }
   }
 };
