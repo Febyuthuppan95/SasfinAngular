@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -16,10 +16,10 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { UUID } from 'angular2-uuid';
-import { DialogOverrideComponent } from '../dialog-override/dialog-override.component';
 import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
+import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,7 +39,48 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private companyService: CompanyService,
               private router: Router) {}
 
-  public form: FormGroup;
+  public form = new FormGroup({
+    userID: new FormControl(null),
+    SAD500ID: new FormControl(null, [Validators.required]),
+    serialNo: new FormControl(null, [Validators.required]),
+    lrn: new FormControl(null, [Validators.required]),
+    totalCustomsValue: new FormControl(0, [Validators.required]),
+    cpcID: new FormControl(null, [Validators.required]),
+    waybillNo: new FormControl(null, [Validators.required]),
+    supplierRef: new FormControl(null, [Validators.required]),
+    mrn: new FormControl(null, [Validators.required]),
+    attachmentStatusID: new FormControl(null),
+    importersCode: new FormControl(null, [Validators.required]),
+    fileRef: new FormControl(null, [Validators.required]),
+    totalDuty: new FormControl(0, [Validators.required]),
+    lrnOBit: new FormControl(false),
+    lrnOUserID: new FormControl(null),
+    lrnODate: new FormControl(null),
+    lrnOReason: new FormControl(null),
+    mrnOBit: new FormControl(false),
+    mrnOUserID: new FormControl(null),
+    mrnODate: new FormControl(null),
+    mrnOReason: new FormControl(null),
+    importersCodeOBit: new FormControl(false),
+    importersCodeOUserID: new FormControl(null),
+    importersCodeODate: new FormControl(null),
+    importersCodeOReason: new FormControl(null),
+    fileRefOBit: new FormControl(false),
+    fileRefOUserID: new FormControl(null),
+    fileRefODate: new FormControl(null),
+    fileRefOReason: new FormControl(null),
+    totalDutyOBit: new FormControl(false),
+    totalDutyOUserID: new FormControl(null),
+    totalDutyODate: new FormControl(null),
+    totalDutyOReason: new FormControl(null),
+    isDeleted: new FormControl(0),
+
+    // VOC
+    vocID: new FormControl(null),
+    referenceNo: new FormControl(null),
+    reason: new FormControl(null),
+  });
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -50,6 +91,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public shortcuts: ShortcutInput[];
   public help = false;
   public isVOC = false;
+  public isExport = false;
+  public paginationControl = new FormControl(1);
 
   private attachmentID: number;
   private transactionID: number;
@@ -63,70 +106,48 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
+  @Input() capture: any;
+
+  public init() {
+    if (this.capture) {
+      this.attachmentID = this.capture.attachmentID;
+      this.transactionID = this.capture.transactionID;
+      this.attachmentLabel = this.capture.docType;
+      this.transactionLabel = this.capture.transactionType;
+      this.isExport = this.capture.transactionType === 'Export' ? true : false;
+      if (this.capture.docType === 'VOC') {
+        this.isVOC = true;
+        this.form.controls.reason.setValidators([Validators.required]);
+        this.form.updateValueAndValidity();
+        this.load();
+      } else {
+        this.load();
+      }
+
+      if (this.isExport) {
+        this.form.controls.referenceNo.setValidators([Validators.required]);
+        this.form.updateValueAndValidity();
+      }
+    }
+  }
+  public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
+
   ngOnInit() {
-    this.form = new FormGroup({
-      userID: new FormControl(this.currentUser.userID, [Validators.required]),
-      SAD500ID: new FormControl(null, [Validators.required]),
-      serialNo: new FormControl(null, [Validators.required]),
-      lrn: new FormControl(null, [Validators.required]),
-      totalCustomsValue: new FormControl(0, [Validators.required]),
-      cpcID: new FormControl(null, [Validators.required]),
-      waybillNo: new FormControl(null, [Validators.required]),
-      supplierRef: new FormControl(null, [Validators.required]),
-      mrn: new FormControl(null, [Validators.required]),
-      attachmentStatusID: new FormControl(null),
-      importersCode: new FormControl(null, [Validators.required]),
-      fileRef: new FormControl(null, [Validators.required]),
-      totalDuty: new FormControl(0, [Validators.required]),
-      lrnOBit: new FormControl(false),
-      lrnOUserID: new FormControl(null),
-      lrnODate: new FormControl(null),
-      lrnOReason: new FormControl(null),
-      mrnOBit: new FormControl(false),
-      mrnOUserID: new FormControl(null),
-      mrnODate: new FormControl(null),
-      mrnOReason: new FormControl(null),
-      importersCodeOBit: new FormControl(false),
-      importersCodeOUserID: new FormControl(null),
-      importersCodeODate: new FormControl(null),
-      importersCodeOReason: new FormControl(null),
-      fileRefOBit: new FormControl(false),
-      fileRefOUserID: new FormControl(null),
-      fileRefODate: new FormControl(null),
-      fileRefOReason: new FormControl(null),
-      totalDutyOBit: new FormControl(false),
-      totalDutyOUserID: new FormControl(null),
-      totalDutyODate: new FormControl(null),
-      totalDutyOReason: new FormControl(null),
-      isDeleted: new FormControl(0),
-
-      // VOC
-      vocID: new FormControl(null),
-      referenceNo: new FormControl(null),
-      reason: new FormControl(null),
-    });
-
-    this.transactionService.observerCurrentAttachment()
-    .subscribe((capture: any) => {
-      if (capture) {
-        this.attachmentID = capture.attachmentID;
-        this.transactionID = capture.transactionID;
-        this.attachmentLabel = capture.docType;
-        this.transactionLabel = capture.transactionType;
-        if (capture.docType === 'VOC') {
-          // this.vocGet();
-          this.isVOC = true;
-          this.form.controls.referenceNo.setValidators([Validators.required]);
-          this.form.updateValueAndValidity();
-          this.load();
+    this.paginationControl.valueChanges.subscribe((value) => {
+      if (value && value !== null && value == '') {
+        if (value > this.lines.length) {
+          value = this.lines.length;
+          this.paginationControl.setValue(this.lines.length);
+        } else if (value <= 0) {
+          this.paginationControl.setValue(1);
         } else {
-          this.load();
+          this.activeIndex = value - 1;
+          this.activeLine = this.lines[this.activeIndex];
         }
+      } else {
+        this.paginationControl.setValue(1);
       }
     });
-
-    this.eventService.observeCaptureEvent()
-    .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
   }
 
   ngAfterViewInit(): void {
@@ -201,7 +222,17 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               command: e => {
                 this.toggelHelpBar();
               }
-          }];
+            },
+            {
+              key: 'alt + a',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                if (this.displayLines) {
+                  this.eventService.submitLines.next();
+                }
+              }
+            }];
     });
   }
 
@@ -213,8 +244,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             invalid.push(name);
         }
     }
-    return invalid;
-}
+
+    console.log(invalid);
+  }
 
   async load() {
     if (this.isVOC) {
@@ -233,10 +265,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         (res: VOCListResponse) => {
           console.log(res);
           if (res.rowCount !== 0) {
+            console.log(res.vocs[0]);
             this.originalSAD500ID = res.vocs[0].originalID;
             this.form.controls.referenceNo.setValue(res.vocs[0].referenceNo);
             this.form.controls.reason.setValue(res.vocs[0].reason);
-            this.form.controls.vocID.setValue(res.vocs[0].sad500ID);
+            this.form.controls.vocID.setValue(res.vocs[0].vocID);
+            this.form.controls.SAD500ID.setValue(res.vocs[0].sad500ID);
           } else {
             this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
           }
@@ -248,7 +282,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     const request = {
       userID: this.currentUser.userID,
-      specificID: this.isVOC ? this.form.controls.vocID.value : this.attachmentID,
+      specificID: this.isVOC ? this.form.controls.SAD500ID.value : this.attachmentID,
       transactionID: this.transactionID,
       fileType: this.attachmentLabel === 'VOC' ? 'VOC' : 'SAD',
     };
@@ -264,6 +298,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.errors = res.attachmentErrors.attachmentErrors;
+
+      Object.keys(this.form.controls).forEach(key => {
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
+          }
+        }
+      });
 
       if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
@@ -306,7 +348,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         });
 
         if (this.lines.length > 0) {
-            this.activeLine = this.lines[this.activeIndex];
+          this.activeIndex = 0;
+          this.activeLine = this.lines[this.activeIndex];
+          this.paginationControl.setValue(1, { emitEvent: false });
+        } else {
+          this.lines = [];
+          this.newLine();
         }
       });
   }
@@ -315,13 +362,26 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
   }
 
-  async submit(form: FormGroup, escalation?: boolean) {
+  async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
+    form.markAllAsTouched();
+
     if ((form.valid && this.lines.length > 0) || escalation) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = 3;
+      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      requestModel.userID = this.currentUser.userID;
 
       if (this.isVOC) {
-        await this.captureService.vocUpdate(requestModel).then(
+        const vocRequest = {
+          userID: this.currentUser.userID,
+          vocID: requestModel.vocID,
+          referenceNo: requestModel.referenceNo,
+          reason: requestModel.reason,
+          mrn: requestModel.mrn,
+          isDeleted: false,
+          attachmentStatusID: escalation ? 7 : 3,
+        };
+
+        await this.captureService.vocUpdate(vocRequest).then(
           (res: Outcome) => {
             if (res.outcome === 'SUCCESS') {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -335,10 +395,20 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         );
       }
 
+      if (!this.isVOC) {
+        delete requestModel.vocID;
+        delete requestModel.referenceNo;
+        delete requestModel.reason;
+        delete requestModel.originalID;
+        delete requestModel.replacedByID;
+      }
+
+      console.log(requestModel);
+
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
           await this.saveLines(this.lines, async (line) => {
-            let sad500LineID = line.sad500LineID;
+            let sad500LineID = line.specificSAD500LineID;
             line.isDeleted = 0;
             line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
@@ -351,7 +421,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             }
 
             if (line.duties && sad500LineID !== null && sad500LineID) {
-              await this.saveLineDuty(line.duties.filter(x => x.isLocal === true), async (duty) => {
+              const duties = line.duties.filter(x => x.isLocal === true);
+
+              console.log(duties);
+              await this.saveLineDuty(duties, async (duty) => {
                 const dutyRequest = {
                   userID: this.currentUser.userID,
                   dutyID: duty.dutyTaxTypeID,
@@ -369,9 +442,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           });
 
           if (res.outcome === 'SUCCESS') {
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.companyService.setCapture({ capturestate: true });
-            this.router.navigateByUrl('transaction/capturerlanding');
+            if (saveProgress) {
+              this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.load();
+            } else {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
+            }
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
@@ -380,6 +458,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       );
     } else {
       this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+      this.findInvalidControls(form);
     }
   }
 
@@ -399,7 +478,16 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   // [Line Controls]
   queueLine($event: any) {
-    const target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+    let target = null;
+
+    if (this.lines) {
+      if (this.lines.length > 0) {
+        target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
+      }
+    } else {
+      this.lines = [];
+    }
+
     $event.userID = this.currentUser.userID;
 
     if (!target) {
@@ -410,7 +498,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
       $event.specificSAD500LineID = original.specificSAD500LineID;
-      $event.sad500LineID = original.specificSAD500LineID;
       $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
 
       if (this.isVOC) {
@@ -440,19 +527,15 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     if (this.activeIndex >= 1) {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length - 1) {
+    if (this.activeIndex < this.lines.length) {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
-
-    }
-
-    if (this.activeIndex === -1) {
-      this.activeIndex++;
-      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
     }
   }
 
@@ -474,9 +557,17 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       await this.captureService.sad500LineUpdate(targetLine);
     }
 
-    this.lines.splice(this.lines.indexOf(targetLine), 1);
-    this.activeLine = null;
-    this.activeIndex = -1;
+    if (this.lines.length === 1) {
+      this.lines = [];
+      this.activeLine = null;
+      this.activeIndex = -1;
+      this.paginationControl.setValue(1, { emitEvent: false });
+    } else {
+      this.lines.splice(this.lines.indexOf(targetLine), 1);
+      this.activeIndex = 0;
+      this.activeLine = this.lines[this.activeIndex];
+      this.paginationControl.setValue(1, { emitEvent: false });
+    }
   }
 
   async deleteDuty() {

@@ -113,7 +113,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   companyName: string;
   companyID: number;
   TypesList: any[] = [];
-  typeControl = new FormControl([Validators.required]);
+  typeControl = new FormControl(null, [Validators.required]);
 
   private unsubscribe$ = new Subject<void>();
 
@@ -340,7 +340,7 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
   }
 
   addCompanyInfo() {
-    if (this.typeControl.valid && this.Info !== '' && this.Info) {
+    if (this.typeControl.valid && this.Info !== '' && this.Info && this.typeControl.value !== -1) {
       const requestModel: AddCompanyInfo = {
         userID: this.currentUser.userID,
         companyID: this.companyID,
@@ -376,11 +376,10 @@ export class ViewCompanyInfoComponent implements OnInit, OnDestroy {
     this.Info = this.focusDescription;
     this.Type =  this.focusCompTypeID;
     this.openeditModal.nativeElement.click();
-
   }
 
   UpdateCompany() {
-    if (this.typeControl.valid && this.Info !== '' && this.Info) {
+    if (this.typeControl.valid && this.Info !== '' && this.Info && this.typeControl.value !== -1) {
     const requestModel: UpdateCompanyInfo = {
       userID: this.currentUser.userID,
       specificCompanyInfoID: this.focusCompanyInfoID,

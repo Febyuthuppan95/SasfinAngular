@@ -12,7 +12,7 @@
   </div>
   <h1 class="capture-form-title text-dark">
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
-    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{attachmentLabel}}</span></span>
+    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
   </h1>
 </div>
 <br>
@@ -27,7 +27,7 @@
         <p *ngIf="!lines" style="font-size: 16px;">No SAD500 Lines Added</p>
         <p *ngIf="lines">
           <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
-          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-right"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0 || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
           <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
@@ -67,7 +67,7 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-12" *ngIf="isVOC">
+      <div class="col-12" *ngIf="isExport">
         <mat-form-field appearance="fill">
           <mat-label>
             Rebate Code
@@ -163,10 +163,19 @@
         </mat-form-field>
         <br /><br />
       </div>
+      <div class="col-12" *ngIf="isVOC">
+        <mat-form-field appearance="fill">
+          <mat-label>
+            Reason for VOC
+          </mat-label>
+          <textarea matInput type="text" formControlName="reason"></textarea>
+        </mat-form-field>
+        <br /><br />
+      </div>
     </div>
   </form>
 </ng-container>
 
 <ng-container *ngIf="displayLines">
-  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)"></app-form-sad500-line-updated>
+  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-sad500-line-updated>
 </ng-container>

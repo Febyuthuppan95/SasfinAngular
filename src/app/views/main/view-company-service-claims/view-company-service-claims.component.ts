@@ -27,11 +27,15 @@ import { R3ComponentMetadata } from '@angular/compiler';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
-import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
+import { CompanyPermitsListResponse, Permit, ClaimPermit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { CompanyServiceResponse, CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
+import { TransactionService } from 'src/app/services/Transaction.Service';
+import { UUID } from 'angular2-uuid';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -56,7 +60,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private transactionService: TransactionService
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -87,16 +92,21 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       {value: 14},
       {value: 15}
       );
-      /* Claims Modal Data*/
-      // Init with dummy 1
-      const fullYear = new Date().getFullYear();
-      const fullmonth = new Date().getMonth()
+    /* Claims Modal Data*/
+    // Init with dummy 1
+    const fullYear = new Date().getFullYear();
+    const fullmonth = new Date().getMonth()
 
-      this.minClaimDate = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate() + 7);
-      this.selectedClaimDate = this.minClaimDate;
-
+   
+    this.minClaimDate = new Date();
+    this.selectedClaimDate = this.minClaimDate;
+    this.ServiceClaim = {
+      companyServiceID: -1,
+      companyServiceClaimNumber: 0,
+      serviceName: ''
+    };
   }
-
+  removable = true;
   @ViewChild(NotificationComponent, { static: false })
   private notify: NotificationComponent;
 
@@ -109,6 +119,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   openCreateModal: ElementRef;
   @ViewChild('closeCreateModal', {static: false})
   closeCreateModal: ElementRef;
+  @ViewChild('openCreate522Modal', {static: false})
+  openCreate522Modal: ElementRef;
+  @ViewChild('closeCreate522Modal', {static: false})
+  closeCreate522Modal: ElementRef;
+
   @ViewChild('openPermitModal', {static: false})
   openPermitModal: ElementRef;
   @ViewChild('closePermitModal', {static: false})
@@ -161,6 +176,14 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
       }
+    },
+    {
+      title: 'Status',
+      propertyName: 'status',
+      order: {
+        enable: true,
+        tag: 'status'
+      }
     }
   ];
 
@@ -195,6 +218,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   companyID = 0;
   companyName = '';
   permitslist = [];
+  companyServiceClaimPermits: ClaimPermit[] = [];
   submissiondate: Date;
   complete = false;
   companyServiceList: CompService[] =[];
@@ -208,15 +232,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   ServiceClaim: {
     companyServiceID: number,
     companyServiceClaimNumber: number,
-    serviceID: number,
     serviceName: string,
-    permitCount: number,
-    exportStartDate: Date | string,
-    exportEndDate: Date | string,
-    claimDate: Date | string,
-    name: string,
-    extensionDays: number,
-    lookBackDays: number
+    transactionID?: number
   };
   claimForm = {
     exportStartDate: {
@@ -281,28 +298,116 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadCompanyPermits();
     this.loadCompanyServices();
 
-    this.claimRequestParams = this.formBuilder.group({
-      lookbackDays: [null, { validators: [Validators.required] , updateOn: 'blur'}],
-      extensionDays: [null, { validators: [Validators.required] , updateOn: 'blur'}],
-      exportStartDate: [null, { validators: [Validators.required] , updateOn: 'blur'}],
-      exportEndDate: [null, { validators: [Validators.required] , updateOn: 'blur'}],
-      selectedPermits: [null, { validators: [Validators.required] , updateOn: 'blur'}],
-      claimDate: [null, { validators: [Validators.required] , updateOn: 'blur'}]
-    });
+  }
+
+  submit522() {
+    this.openCreate522Modal.nativeElement.click();
+  }
+  submit522Claim() {
+    this.showLoader = true;
+    console.log('Updating claim params..');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        companyID: this.companyID
+      },
+      requestProcedure: `CompanyServiceClaimsUpdate`
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
+      (res : UpdateResponse ) => {
+        this.updateClaimStatus();
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
 
   }
-  initClaimForm() {
-    console.log(this.ServiceClaim);
-    this.exportStartDate = new Date('1 JAN 2019');
-    console.log(this.exportStartDate);
-    this.claimRequestParams = this.formBuilder.group({
-      lookbackDays: [this.ServiceClaim.lookBackDays, { validators: [Validators.required] , updateOn: 'blur'}],
-      extensionDays: [this.ServiceClaim.extensionDays, { validators: [Validators.required] , updateOn: 'blur'}],
-      exportStartDate: [this.ServiceClaim.exportStartDate, { validators: [Validators.required] , updateOn: 'blur'}],
-      exportEndDate: [this.ServiceClaim.exportEndDate, { validators: [Validators.required] , updateOn: 'blur'}],
-      selectedPermits: [this.claimPermits, { validators: [Validators.required] , updateOn: 'blur'}],
-      claimDate: [this.selectedClaimDate, { validators: [Validators.required] , updateOn: 'blur'}]
-    });
+  remove($event: ClaimPermit) {
+    console.log($event);
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimPermitID: $event.CompanyServiceClaimPermitID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        permitID: $event.PermitID,
+        isDeleted: true
+      },
+      requestProcedure: 'CompanyServiceClaimPermitsUpdate'
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
+      (res: ListReadResponse) => {
+        this.loadCompanyServiceClaimPermits();
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
+  } 
+  loadCompanyServiceClaimPermits() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        rowStart: 1,
+        rowEnd: 10
+      },
+      requestProcedure: 'CompanyServiceClaimPemitsList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+      (res: ListReadResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.companyServiceClaimPermits = res.data;
+          
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
+  }
+  updateClaimStatus() {
+    const model ={
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        statusID: 2
+      },
+      requestProcedure: 'UpdateCompanyServiceClaimStatus'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
+      (res: Outcome) => {
+        if (res.outcome === 'SUCCESS') {
+          this.loadServiceClaims(true)
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
   }
   loadCompanyServices() {
     const model = {
@@ -317,6 +422,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
+        console.log(res);
         if(res.outcome.outcome ==='SUCCESS') {
           this.companyServiceList = res.services
         } else {
@@ -365,7 +471,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
           this.showLoader = false;
         } else {
           this.noData = false;
-          this.showingRecords = res.serviceClaims.length;
+          this.showingRecords = this.CompanyServiceClaims.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyServiceClaims.length - 1;
         }
@@ -380,121 +486,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     );
   }
-  loadImportData(component: Import) {
-    this.loadingImportData = true;
-    console.log(component);
-    this.focusImport = component;
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        itemID: this.focusImport.itemID,
-        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-        rowStart: 1,
-        rowEnd: 100
-      },
-      requestProcedure: "ExportList"
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/exports`, model).then(
-      (res: ExportListResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.availableExports = res.exports;
-          console.log(this.availableExports);
-          this.loadAssignedData(component);
-        }
-      }
-    );
-  }
-  removeExportline(component: Import, element:ExportLine) {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-          captureJoinImportID: element.captureJoinImportID,
-          captureJoinExportID: element.captureJoinExportID,
-          isDeleted: 1
-      },
-      requestProcedure: "CompanyServiceClaimLineUpdate"
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/line`, model).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadImportData(component);
-        }
-      }
-    );
-    }
-    updateClaimStatus() {
-      const model ={
-        requestParams: {
-          userID: this.currentUser.userID,
-          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-          statusID: 2
-        },
-        requestProcedure: "UpdateCompanyServiceClaimStatus"
-      };
-      this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
-        (res: Outcome) => {
-          if (res.outcome === 'SUCCESS') {
-            this.closePopulateModal.nativeElement.click();
-          }
-        }
-      );
-    }
-  addExportline(component: Import, element:Export) {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-          companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-          captureJoinImportID: component.cjid,
-          captureJoinExportID: element.cjid
-      },
-      requestProcedure: "CompanyServiceClaimLineAdd"
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimLine`, model).then(
-      (res: Outcome) => {
-        if (res.outcome === 'SUCCESS') {
-          this.loadImportData(component);
-        }
-      }
-    );
-  }
-  loadAssignedData(component: Import) {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-        captureJoinImportID: component.cjid,
-        rowStart: 1,
-        rowEnd: 100,
-        filter: "",
-        orderBy: "TransactionID",
-        orderByDirection: "DESC"
-      },
-      requestProcedure: "CompanyServiceClaimLineList"
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/lines`, model).then(
-      (res: ExportLinesResponse) => {
-        console.log(res);
-        this.loadingImportData = false
-        this.assignedExports = res.lines;
-        // remove asssinged from available
-        component.exportQuantity =0;
-        component.totalShortfallQuantity =0;
-        this.assignedExports.forEach((y:ExportLine) => {
-          component.exportQuantity += y.totalExportUnits;
 
-          this.availableExports = this.availableExports.filter(x => x.cjid !== y.captureJoinExportID);
-        });
-        component.totalShortfallQuantity = component.totHSQuantity - component.exportQuantity;
-        // Update Import Totals
-        this.importComponents.forEach((x: Import) => {
-          if (x.cjid === component.cjid) {
-            x = component;
-          }
-        })
-      }
-    );
-  }
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
@@ -521,6 +513,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   popClick(event, obj) {
     this.ServiceClaim = obj;
+    if(this.ServiceClaim.serviceName === '522') {
+      this.ServiceClaim.transactionID = this.getTransactionID();
+    }
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -565,7 +560,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   populatecompanyService($event) {
      this.myInputVariable.nativeElement.value = null;
-     this.initClaimForm();
+
      this.openPopulateModal.nativeElement.click();
 
      // this.router.navigate()
@@ -620,8 +615,12 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.permitslist = permitIDs;
   }
 
-  createCompanyServiceSelected(companyServiceID) {
+  createCompanyServiceSelected(companyServiceID, name) {
+
     this.selectedCompanyServiceID = companyServiceID;
+    this.ServiceClaim.serviceName = this.companyServiceList.find(x => x.componyServiceID === companyServiceID).serviceName;
+    console.log(this.ServiceClaim.serviceName);
+
   }
 
   sad500selected(checked) {
@@ -632,29 +631,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     });
   }
 
-   polulateLines() {
-      const requestModel = {
-        userID: this.currentUser.userID,
-        sad500linesIDs: this.SAD500SelectedLines,
-        status: this.complete
-      };
-
-      this.companyService.addSAD500Linesclaim(requestModel).then(
-        (res: {outcome: Outcome}) => {
-          if (res.outcome.outcome === 'SUCCESS') {
-            this.loadingData = false;
-            this.notify.successmsg('Success', 'SAD500 lines has been Added');
-            this.closePopulateModal.nativeElement.click();
-            this.loadServiceClaims(false);
-            } else {
-            this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          }
-        },
-        (msg) => {
-          this.notify.errorsmsg('Failure', 'SAD500 lines not Added');
-        }
-      );
-   }
 
   compareDate(date1: Date, date2: Date): number {
     const d1Year = date1.getFullYear();
@@ -708,18 +684,6 @@ masterToggle() {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
 }
-toggleSelectedRow(rowNum: number) {
-  //When opening or closing or canceling an accordion row
-  // have row num
-  // If closed: open
-  // If opened and !saved: deselect
-}
-cancelRow() {
-
-}
-saveRow() {
-
-}
 addServiceClaim() {
   this.openCreateModal.nativeElement.click();
 }
@@ -727,18 +691,25 @@ createCompanyServiceClaim() {
   const model = {
     userID: this.currentUser.userID,
     companyServiceID: this.selectedCompanyServiceID,
-    claimDate: this.selectedClaimDate
+    claimDate: this.selectedClaimDate || null
   };
-
+  console.log(model);
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
       if (res.outcome.outcome === 'SUCCESS') {
+        console.log(this.ServiceClaim.serviceName)
+        if(this.ServiceClaim.serviceName === '522') {
         this.closeCreateModal.nativeElement.click();
-        this.notify.successmsg(
-          res.outcome.outcome,
-          res.outcome.outcomeMessage
-        );
-        this.loadServiceClaims(true);
+          this.create522Transaction();
+        } else {
+          this.closeCreateModal.nativeElement.click();
+          this.notify.successmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+          this.loadServiceClaims(true);
+        }
+
       } else {
         this.notify.errorsmsg(
           res.outcome.outcome,
@@ -754,6 +725,63 @@ createCompanyServiceClaim() {
       );
     }
   );
+}
+create522Transaction() {
+  console.log(`522-${new Date().toLocaleString()}`);
+
+  this.transactionService.createdTransaction(
+    this.currentUser.userID,
+    this.companyID,
+    2,
+    1,
+    `522-${new Date().toLocaleString()}`
+  ).then(
+    (res: Outcome) => {
+      if(res.outcome === 'SUCCESS') {
+       
+       const transactionID =  this.getTransactionID(); 
+        this.companyService.setCompany({
+          companyID: this.companyID,
+          companyName: this.companyName,
+          selectedTransactionID:  transactionID
+        });
+        if(transactionID > 0) {
+          this.router.navigate(['transaction', 'attachments']);  
+        } else {
+          this.router.navigate(['companies', 'transactions']);
+        }
+        
+      }
+      else {
+        this.notify.errorsmsg(
+          res.outcome,
+          res.outcomeMessage
+        );
+      }
+    },
+    msg => {
+      this.showLoader = false;
+      this.notify.errorsmsg(
+        'Server Error',
+        'Something went wrong while trying to access the server.'
+      );
+    }
+  );
+}
+getTransactionID(): number {
+  const model = {
+    requestParams: {
+      userID: this.currentUser.userID,
+      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber
+    },
+    requestProcedure: 'CompanyServiceClaimParametersList'
+  };
+  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    (res:ListReadResponse) => {
+      return res.data[0].TransactionID
+    }
+  )
+  return 0;
 }
 addCompanyServiceClaimPermits() {
   console.log(this.permitslist.length);
@@ -798,6 +826,7 @@ addCompanyServiceClaimPermits() {
   })
 }
 openAddClaimPermits($event) {
+  this.loadCompanyServiceClaimPermits();
   this.permitsByDate.reset(null);
   this.openPermitModal.nativeElement.click();
 }
@@ -830,64 +859,9 @@ loadCompanyPermits() {
   );
 }
 //
-generateClaimRequest() {
- this.updateCompanyServiceClaim();
 
-}
-updateCompanyServiceClaim() {
-  const model = {
-    requestParams: {
-      userID: this.currentUser.userID,
-      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-      lookbackDays: this.claimRequestParams.get('lookbackDays').value,
-      exportStartDate: this.claimRequestParams.get('exportStartDate').value,
-      exportEndDate: this.claimRequestParams.get('exportEndDate').value,
-      extensionDays: this.claimRequestParams.get('extensionDays').value,
-      claimDate: this.claimRequestParams.get('claimDate').value
-    },
-    requestProcedure: 'CompanyServiceClaimsUpdate'
-  };
-  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update`, model).then(
-    (res: Outcome) => {
-      if(res.outcome === 'SUCCESS') {
-        this.loadingData = true;
-        this.loadClaimRequestData();
-      }
-    });
-  console.log(model);
-}
-loadClaimRequestData() {
-  const reqP = {
-    userID: this.currentUser.userID,
-      companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
-      rowStart: this.rowStart,
-      rowEnd: this.rowEnd,
-      orderBy: "",
-      orderByDirection: ""
-  };
-  const model = {
-    requestParams: reqP,
-    requestProcedure: 'ImportsList'
-  };
-  this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/read/imports`, model).then(
-    (res: ClaimImportComponents) => {
-      if (res.outcome.outcome === 'SUCCESS') {
-        this.loadingData = false;
-        this.importComponents = res.imports;
-        this.importComponents.forEach((x: Import) => {
-          x.exportQuantity = 0;
-          x.totalShortfallQuantity = x.totHSQuantity;
-        });
-      } else {
-        this.loadingData = false;
-        // error
-      }
-    },
-    (msg) => {
 
-    }
-  );
-}
+
 
 }
 export class Import {

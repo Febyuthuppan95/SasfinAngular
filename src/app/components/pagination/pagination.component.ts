@@ -113,11 +113,14 @@ export class PaginationComponent implements OnInit, OnChanges {
     this.updatePagination();
   }
 
+  // page: number;
+  // rowStart: number;
+  // rowEnd: number;
   updatePagination() {
     if (this.rowCount <= this.recordsPerPage) {
       this.prevPageState = false;
       this.nextPageState = false;
-      this.showingPages = [];
+      this.showingPages = [{page: 1, rowStart: 1, rowEnd: +this.recordsPerPage}];
     } else {
       this.showingPages = Array<Pagination>();
       this.showingPages[0] = this.pages[this.activePage - 1];
@@ -135,11 +138,12 @@ export class PaginationComponent implements OnInit, OnChanges {
         }
       }
 
-      if (+this.activePage + 1 <= pagenumber) {
-        this.showingPages[2] = this.pages[+this.activePage + 1];
+      if (+this.activePage + 1 <= pagenumber-1) {
+        this.showingPages[2] = this.pages[+this.activePage+1];
       }
     }
     this.showPagination = true;
+    console.log(this.showingPages);
   }
 
 }

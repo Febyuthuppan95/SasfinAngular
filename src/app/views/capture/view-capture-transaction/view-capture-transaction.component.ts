@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, Inject, ViewContainerRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit, OnDestroy, ComponentRef } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
-import { FormSAD500Component } from 'src/app/components/forms/capture/form-sad500/form-sad500.component';
 import { ComponentService } from 'src/app/services/ComponentLoader.service';
-import { FormCustomReleaseComponent } from 'src/app/components/forms/capture/form-custom-release/form-custom-release.component';
-// tslint:disable-next-line: max-line-length
-import { FormImportClearingInstructionComponent } from 'src/app/components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { FormInvoiceComponent } from 'src/app/components/forms/capture/form-invoice/form-invoice.component';
-import { FormWaybillComponent } from 'src/app/components/forms/capture/form-waybill/form-waybill.component';
-import { FormVOCComponent } from 'src/app/components/forms/capture/form-voc/form-voc.component';
-import { FormCustomWorksheetComponent } from 'src/app/components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
-import { ChatOverlayComponent } from 'src/app/modules/chat/components/chat-overlay/chat-overlay.component';
-import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/form-sad500-updated/form-sad500-updated.component';
+import { FormIciComponent } from 'src/app/components/forms/capture/updates/form-ici/form-ici.component';
+import { FormCrnComponent } from 'src/app/components/forms/capture/updates/form-crn/form-crn.component';
+import { FormWayComponent } from 'src/app/components/forms/capture/updates/form-way/form-way.component';
+import { FormInvComponent } from 'src/app/components/forms/capture/updates/form-inv/form-inv.component';
+import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/updates/form-sad/form-sad500-updated.component';
+import { FormCswComponent } from 'src/app/components/forms/capture/updates/form-csw/form-csw.component';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { EventService } from 'src/app/services/event.service';
 
-
+@AutoUnsubscribe()
 @Component({
   selector: 'app-view-capture-transaction',
   templateUrl: './view-capture-transaction.component.html',
@@ -25,15 +23,18 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   @ViewChild('captureForm', { read: ViewContainerRef, static: false })
   captureForm: ViewContainerRef;
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private themeService: ThemeService, private transactionService: TransactionService, private componentService: ComponentService) { }
+  constructor(private themeService: ThemeService,
+              private transactionService: TransactionService,
+              private componentService: ComponentService,
+              private eventService: EventService) { }
 
   currentTheme: string;
   currentDoctype: string;
   captureFormComponent: any = null;
+  capture: any;
+  componentRef: ComponentRef<any>;
 
   private unsubscribe$ = new Subject<void>();
-
 
   ngOnInit() {
     this.themeService.observeTheme()
@@ -46,8 +47,13 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
       this.currentDoctype = data.docType;
-      console.log(this.currentDoctype);
+      this.capture = data;
     });
+
+    this.eventService.observeCaptureEvent()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data: { escalation?: boolean; saveProgress?: boolean; escalationResolved?: boolean}) =>
+    this.submitComponent(data.escalation, data.saveProgress, data.escalationResolved));
   }
 
   ngAfterViewInit(): void {
@@ -55,49 +61,58 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     this.loadComponent();
   }
 
+  submitComponent(escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
+    this.componentRef.instance.submissionEvent(escalation, saveProgress, escalationResolved);
+  }
+
   loadComponent() {
-    console.log(this.currentDoctype);
+    this.captureForm.clear();
+
     switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD': {
-        // this.componentService.renderComponent(FormSAD500Component);
-        this.componentService.renderComponent(FormSad500UpdatedComponent);
+        this.componentRef = this.componentService.generateComponent(FormSad500UpdatedComponent) as ComponentRef<FormSad500UpdatedComponent>;
         break;
       }
       case 'CRN' : {
-        this.componentService.renderComponent(FormCustomReleaseComponent);
+        this.componentRef = this.componentService.generateComponent(FormCrnComponent) as ComponentRef<FormCrnComponent>;
         break;
       }
       case 'CWS' : {
-        this.componentService.renderComponent(FormCustomWorksheetComponent);
+        this.componentRef = this.componentService.generateComponent(FormCswComponent) as ComponentRef<FormCswComponent>;
         break;
       }
       case 'ICI': {
-        this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        this.componentRef = this.componentService.generateComponent(FormIciComponent) as ComponentRef<FormIciComponent>;
         break;
       }
       case 'ECI': {
-        this.componentService.renderComponent(FormImportClearingInstructionComponent);
+        this.componentRef = this.componentService.generateComponent(FormIciComponent) as ComponentRef<FormIciComponent>;
         break;
       }
       case 'INV': {
-        this.componentService.renderComponent(FormInvoiceComponent);
+        this.componentRef = this.componentService.generateComponent(FormInvComponent) as ComponentRef<FormInvComponent>;
         break;
       }
       case 'VOC': {
-        // this.componentService.renderComponent(FormSAD500Component);
-        this.componentService.renderComponent(FormSad500UpdatedComponent);
+        this.componentRef = this.componentService.generateComponent(FormSad500UpdatedComponent) as ComponentRef<FormSad500UpdatedComponent>;
         break;
       }
       case 'WAY': {
-        this.componentService.renderComponent(FormWaybillComponent);
+        this.componentRef = this.componentService.generateComponent(FormWayComponent) as ComponentRef<FormWayComponent>;
         break;
       }
     }
+
+    this.componentRef.instance.capture = this.capture;
+    this.componentRef.instance.init();
+    this.componentService.renderComponent(this.componentRef);
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.captureForm.remove();
+    this.componentService.destroyComponent();
   }
 
 }

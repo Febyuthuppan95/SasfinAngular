@@ -1,0 +1,134 @@
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<br>
+<ng-container *ngIf="data === null">
+  <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Queue Creation</button>
+</ng-container>
+<ng-container *ngIf="data !== null">
+  <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Queue Update</button>
+</ng-container>
+<br><br>
+
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Common Factor
+        </mat-label>
+        <input matInput type="text" formControlName="commonFactor">
+        <mat-icon *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.commonFactorOBit.value">OVERRIDE: {{form.controls.commonFactorOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.commonFactorOBit.value && form.controls.commonFactor.errors?.incorrect" matSuffix (click)="overrideDialog('commonFactor', 'Common Factor')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.commonFactorOBit.value  && form.controls.commonFactor.errors?.incorrect">{{getError('commonFactor')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Customs Value
+        </mat-label>
+        <input matInput type="text" formControlName="custVal">
+        <mat-icon *ngIf="form.controls.custValOBit.value" matSuffix (click)="undoOverride('custVal')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.custValOBit.value">OVERRIDE: {{form.controls.custValOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.custValOBit.value && form.controls.custVal.errors?.incorrect" matSuffix (click)="overrideDialog('custVal', 'Customs Value')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.custValOBit.value  && form.controls.custVal.errors?.incorrect">{{getError('custVal')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          HS Quantity
+        </mat-label>
+        <input matInput type="text" formControlName="hsQuantity">
+        <mat-icon *ngIf="form.controls.hsQuantityOBit.value" matSuffix (click)="undoOverride('hsQuantity')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.hsQuantityOBit.value">OVERRIDE: {{form.controls.hsQuantityOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantity.errors?.incorrect" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantity.errors?.incorrect">{{getError('hsQuantity')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Foreign Inv Value
+        </mat-label>
+        <input matInput type="number" formControlName="foreignInv">
+        <mat-icon *ngIf="form.controls.foreignInvOBit.value" matSuffix (click)="undoOverride('foreignInv')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.foreignInvOBit.value">OVERRIDE: {{form.controls.foreignInvOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.foreignInvOBit.value && form.controls.foreignInv.errors?.incorrect" matSuffix (click)="overrideDialog('foreignInv', 'foreignInv')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.foreignInvOBit.value  && form.controls.foreignInv.errors?.incorrect">{{getError('foreignInv')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Duty
+        </mat-label>
+        <input matInput type="number" formControlName="duty">
+        <mat-icon *ngIf="form.controls.dutyOBit.value" matSuffix (click)="undoOverride('duty')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.dutyOBit.value">OVERRIDE: {{form.controls.dutyOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.dutyOBit.value && form.controls.duty.errors?.incorrect" matSuffix (click)="overrideDialog('duty', 'Duty')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.dutyOBit.value  && form.controls.duty.errors?.incorrect">{{getError('duty')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-4">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Supply Unit
+        </mat-label>
+        <input matInput type="number" formControlName="supplyUnit">
+        <mat-icon *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.supplyUnitOBit.value">OVERRIDE: {{form.controls.supplyUnitOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.supplyUnitOBit.value && form.controls.supplyUnit.errors?.incorrect" matSuffix (click)="overrideDialog('supplyUnit', 'supplyUnit')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.supplyUnitOBit.value  && form.controls.supplyUnit.errors?.incorrect">{{getError('supplyUnit')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-8">
+      <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-currency [(control)]="form.controls.currencyID"></ls-autocomplete-currency>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-coo [(control)]="form.controls.cooID"></ls-autocomplete-coo>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-tariffs [(control)]="form.controls.tariffID"></ls-autocomplete-tariffs>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Invoice No
+        </mat-label>
+        <input matInput type="number" formControlName="invoiceNo">
+        <mat-icon *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.invoiceNoOBit.value">OVERRIDE: {{form.controls.invoiceNoOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div>
+    <!-- <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Product Code
+        </mat-label>
+        <input matInput type="number" formControlName="prodCode">
+        <mat-icon *ngIf="form.controls.prodCodeOBit.value" matSuffix (click)="undoOverride('prodCode')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.prodCodeOBit.value">OVERRIDE: {{form.controls.prodCodeOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.prodCodeOBit.value && form.controls.prodCode.errors?.incorrect" matSuffix (click)="overrideDialog('prodCode', 'prodCode')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.prodCodeOBit.value  && form.controls.prodCode.errors?.incorrect">{{getError('prodCode')}}</mat-error>
+      </mat-form-field>
+      <br><br>
+    </div> -->
+  </div>
+</form>

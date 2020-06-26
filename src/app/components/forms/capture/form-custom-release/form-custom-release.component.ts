@@ -204,23 +204,23 @@ export class FormCustomReleaseComponent implements OnInit, AfterViewInit, OnDest
   ediStatusControl = new FormControl();
 
   ngOnInit() {
-    this.themeService.observeTheme()
-    .subscribe(value => this.currentTheme = value);
+    // this.themeService.observeTheme()
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .subscribe(() => this.submit());
+    // this.eventService.observeCaptureEvent()
+    // .subscribe((escalation?: boolean, saveProgress?: boolean) => this.submit(escalation));
 
-    this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadCapture();
-      }
-    });
+    // this.attachmentSubscription = this.transactionService.observerCurrentAttachment()
+    // .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.loadCapture();
+    //   }
+    // });
 
-    this.loadEDIStatuses();
-    this.loadCPC();
+    // this.loadEDIStatuses();
+    // this.loadCPC();
   }
 
   ngAfterViewInit(): void {
@@ -274,7 +274,7 @@ loadCPC() {
       if (res.rowCount > 0 )  {
         this.cpcList = res.data;
         this.cpcListTemp = res.data;
-        
+
       };
       console.log(res);
     }
@@ -372,93 +372,93 @@ selectFilteredCPC() {
 
   submit(escalation?: boolean) {
     console.log(this.CRNForm.controls);
-      if (this.CRNForm.valid || escalation) {
-          const requestModel = {
-            userID: this.currentUser.userID,
-            customsReleaseID: this.attachmentID,
-            fileRef: this.form.fileRef.value,
-            totalCustomsValue: this.form.totalCustomsValue.value,
-            totalDuty: this.form.totalDuty.value,
-            serialNo: this.form.serialNo.value,
-            lrn: this.form.LRN.value,
-            importersCode: this.form.importersCode.value,
-            pcc: this.form.PCC.value,
-            waybillNo: this.form.waybillNo.value,
-            mrn: this.form.MRN.value,
-            ediStatusID: this.form.ediStatusID.value,
-            supplierRef: this.form.supplierRef.value,
-            attachmentStatusID: escalation ? 7: 3,
-            isDeleted: 0,
+    if (this.CRNForm.valid || escalation) {
+        const requestModel = {
+          userID: this.currentUser.userID,
+          customsReleaseID: this.attachmentID,
+          fileRef: this.form.fileRef.value,
+          totalCustomsValue: this.form.totalCustomsValue.value,
+          totalDuty: this.form.totalDuty.value,
+          serialNo: this.form.serialNo.value,
+          lrn: this.form.LRN.value,
+          importersCode: this.form.importersCode.value,
+          pcc: this.form.PCC.value,
+          waybillNo: this.form.waybillNo.value,
+          mrn: this.form.MRN.value,
+          ediStatusID: this.form.ediStatusID.value,
+          supplierRef: this.form.supplierRef.value,
+          attachmentStatusID: escalation ? 7 : 3,
+          isDeleted: 0,
 
-            serialNoOBit: this.form.serialNo.OBit,
-            serialNoOUserID: this.form.serialNo.OUserID,
-            serialNoODate: this.form.serialNo.ODate,
-            serialNoOReason: this.form.serialNo.OReason,
+          serialNoOBit: this.form.serialNo.OBit,
+          serialNoOUserID: this.form.serialNo.OUserID,
+          serialNoODate: this.form.serialNo.ODate,
+          serialNoOReason: this.form.serialNo.OReason,
 
-            lrnOBit: this.form.LRN.OBit,
-            lrnOUserID: this.form.LRN.OUserID,
-            lrnODate: this.form.LRN.ODate,
-            lrnOReason: this.form.LRN.OReason,
+          lrnOBit: this.form.LRN.OBit,
+          lrnOUserID: this.form.LRN.OUserID,
+          lrnODate: this.form.LRN.ODate,
+          lrnOReason: this.form.LRN.OReason,
 
-            importersCodeOBit: this.form.importersCode.OBit,
-            importersCodeOUserID: this.form.importersCode.OUserID,
-            importersCodeODate: this.form.importersCode.ODate,
-            importersCodeOReason: this.form.importersCode.OReason,
+          importersCodeOBit: this.form.importersCode.OBit,
+          importersCodeOUserID: this.form.importersCode.OUserID,
+          importersCodeODate: this.form.importersCode.ODate,
+          importersCodeOReason: this.form.importersCode.OReason,
 
-            pccOBit: this.form.PCC.OBit,
-            pccOUserID: this.form.PCC.OUserID,
-            pccCODate: this.form.PCC.ODate,
-            pccOReason: this.form.PCC.OReason,
+          pccOBit: this.form.PCC.OBit,
+          pccOUserID: this.form.PCC.OUserID,
+          pccCODate: this.form.PCC.ODate,
+          pccOReason: this.form.PCC.OReason,
 
-            waybillNoOBit: this.form.waybillNo.OBit,
-            waybillNoOUserID: this.form.waybillNo.OUserID,
-            waybillNoODate: this.form.waybillNo.ODate,
-            waybillNoOReason: this.form.waybillNo.OReason,
+          waybillNoOBit: this.form.waybillNo.OBit,
+          waybillNoOUserID: this.form.waybillNo.OUserID,
+          waybillNoODate: this.form.waybillNo.ODate,
+          waybillNoOReason: this.form.waybillNo.OReason,
 
-            fileRefOBit: this.form.fileRef.OBit,
-            fileRefOUserID: this.form.fileRef.OUserID,
-            fileRefODate: this.form.fileRef.ODate,
-            fileRefOReason: this.form.fileRef.OReason,
+          fileRefOBit: this.form.fileRef.OBit,
+          fileRefOUserID: this.form.fileRef.OUserID,
+          fileRefODate: this.form.fileRef.ODate,
+          fileRefOReason: this.form.fileRef.OReason,
 
-            totalCustomsValueOBit: this.form.totalCustomsValue.OBit,
-            totalCustomsValueOUserID: this.form.totalCustomsValue.OUserID,
-            totalCustomsValueODate: this.form.totalCustomsValue.ODate,
-            totalCustomsValueOReason: this.form.totalCustomsValue.OReason,
+          totalCustomsValueOBit: this.form.totalCustomsValue.OBit,
+          totalCustomsValueOUserID: this.form.totalCustomsValue.OUserID,
+          totalCustomsValueODate: this.form.totalCustomsValue.ODate,
+          totalCustomsValueOReason: this.form.totalCustomsValue.OReason,
 
-            totalDutyOBit: this.form.totalDuty.OBit,
-            totalDutyOUserID: this.form.totalDuty.OUserID,
-            totalDutyODate: this.form.totalDuty.ODate,
-            totalDutyOReason: this.form.totalDuty.OReason,
+          totalDutyOBit: this.form.totalDuty.OBit,
+          totalDutyOUserID: this.form.totalDuty.OUserID,
+          totalDutyODate: this.form.totalDuty.ODate,
+          totalDutyOReason: this.form.totalDuty.OReason,
 
-            mrnOBit: this.form.MRN.OBit,
-            mrnOUserID: this.form.MRN.OUserID,
-            mrnODate: this.form.MRN.ODate,
-            mrnOReason: this.form.MRN.OReason
-          };
+          mrnOBit: this.form.MRN.OBit,
+          mrnOUserID: this.form.MRN.OUserID,
+          mrnODate: this.form.MRN.ODate,
+          mrnOReason: this.form.MRN.OReason
+        };
 
-          this.transactionService.customsReleaseUpdate(requestModel).then(
-            (res: Outcome) => {
-              if (res.outcome === 'SUCCESS') {
-                this.notify.successmsg(res.outcome, res.outcomeMessage);
+        this.transactionService.customsReleaseUpdate(requestModel).then(
+          (res: Outcome) => {
+            if (res.outcome === 'SUCCESS') {
+              this.notify.successmsg(res.outcome, res.outcomeMessage);
 
-                this.companyService.setCapture({ capturestate: true });
-                this.router.navigateByUrl('transaction/capturerlanding');
-              } else {
-                this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-              }
-            },
-            (msg) => {
-              console.log(JSON.stringify(msg));
-              this.notify.errorsmsg('Failure', 'Cannot reach server');
+              this.companyService.setCapture({ capturestate: true });
+              this.router.navigateByUrl('transaction/capturerlanding');
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
             }
-          );
-      } else {
-        this.snackbar.open(`Please fill in the all header data`, '', {
-          duration: 3000,
-          panelClass: ['capture-snackbar-error'],
-          horizontalPosition: 'center',
-        });
-      }
+          },
+          (msg) => {
+            console.log(JSON.stringify(msg));
+            this.notify.errorsmsg('Failure', 'Cannot reach server');
+          }
+        );
+    } else {
+      this.snackbar.open(`Please fill in the all header data`, '', {
+        duration: 3000,
+        panelClass: ['capture-snackbar-error'],
+        horizontalPosition: 'center',
+      });
+    }
   }
 
   loadCapture() {
@@ -662,9 +662,9 @@ selectFilteredCPC() {
     this.disabledpcc = false;
   }
 
- 
 
-  
+
+
 
 
   OverrideWaybillNoClick() {

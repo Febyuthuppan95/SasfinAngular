@@ -11,13 +11,14 @@ export class InvoiceGetResponse {
 export class Invoice {
   rowNum: number;
   invoiceID: number;
-  invoiceDate: string;
+  invoiceDate: Date;
   fileID: number;
   transactionID: number;
   cooID: number;
   companyID: number;
   invoiceNo: string;
   currencyID: number;
+  statusID: number;
   incoID: number;
 
   invoiceNoOBit: boolean;

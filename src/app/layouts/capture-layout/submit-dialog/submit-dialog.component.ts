@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-submit-dialog',
@@ -8,13 +8,12 @@ import { MatDialogRef } from '@angular/material';
 })
 export class SubmitDialogComponent implements OnInit, AfterViewInit {
 
-  constructor(private matDialogRef: MatDialogRef<SubmitDialogComponent>) { }
+  constructor(private matDialogRef: MatDialogRef<SubmitDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: { title: string; desc: string; }) { }
   focus = true;
   @ViewChild('matDialogSubmit', {static: true}) dialogRef: ElementRef;
-  ngOnInit() {
-   
-  }
-  ngAfterViewInit():void {
+  ngOnInit() {}
+  ngAfterViewInit(): void {
     console.log(this.dialogRef.nativeElement.innerHTML);
     this.dialogRef.nativeElement.click();
   }

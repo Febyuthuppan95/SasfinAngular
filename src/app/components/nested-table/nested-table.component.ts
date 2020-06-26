@@ -64,6 +64,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
     this.initTable();
   }
   initTable() {
+    console.log('change');
     this.loading = true;
     this.displayData = [];
     this.columnsToDisplay = [];
@@ -129,7 +130,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
       JSON.stringify({
         lineA: $event[1].value,
         lineB: $event[2].value,
-        // lineC: $event[4].value,
+        lineC: $event[4].value,
         lineD: $event[5].value
       }));
   }

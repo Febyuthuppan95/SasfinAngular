@@ -88,23 +88,23 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   dialogOpen = false;
 
   ngOnInit() {
-    this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(value => this.currentTheme = value);
+    // this.themeService.observeTheme()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((escalation?: boolean) => this.submit(escalation));
+    // // this.eventService.observeCaptureEvent()
+    // // .pipe(takeUntil(this.unsubscribe$))
+    // // .subscribe((escalation?: boolean, saveProgress?: boolean) => this.submit(escalation));
 
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadICI();
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.loadICI();
+    //   }
+    // });
   }
 
   updateHelpContext(slug: string) {
@@ -151,7 +151,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
     this.objectHelpService.toggleHelp(this.help);
   }
 
-  submit(escalation?:boolean) {
+  submit(escalation?: boolean) {
     if (this.ICIForm.valid || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
@@ -160,7 +160,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         importersCode: this.form.importersCode.value,
         supplierRef: this.form.supplierRef.value,
         isDeleted: 0,
-        attachmentStatusID: escalation ? 7: 3,
+        attachmentStatusID: escalation ? 7 : 3,
 
         supplierRefOBit: this.form.supplierRef.OBit,
         supplierRefOUserID: this.form.supplierRef.OUserID,

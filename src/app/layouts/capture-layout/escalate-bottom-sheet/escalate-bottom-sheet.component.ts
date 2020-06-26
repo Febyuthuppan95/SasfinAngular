@@ -1,6 +1,7 @@
 import { EscalateDialogComponent } from './../escalate-dialog/escalate-dialog.component';
-import { Component, OnInit, Input, Inject } from '@angular/core';
-import { MatBottomSheetRef, MAT_DIALOG_DATA, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-escalate-bottom-sheet',
@@ -11,16 +12,17 @@ export class EscalateBottomSheetComponent implements OnInit {
 
   constructor(
     private bottomSheetRef: MatBottomSheetRef<EscalateDialogComponent>,
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: string) { }
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
 
-  reason = '';
+  reason;
+
   ngOnInit() {
-    console.log(this.data);
     this.reason = this.data;
+
+    console.log(this.reason);
   }
-  openLink(event: MouseEvent): void {
+  openLink(): void {
     this.bottomSheetRef.dismiss();
-    event.preventDefault();
   }
 
 }

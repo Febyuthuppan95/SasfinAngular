@@ -12,10 +12,11 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { SelectedCompany } from 'src/app/services/Cities.Service';
 import { PageEvent, MatSnackBar } from '@angular/material';
 import { ServicesService, SelectedCompanyClaim } from 'src/app/services/Services.Service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, ignoreElements } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-claim-layout',
@@ -158,18 +159,23 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.claimService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$)).subscribe((res)=> {
       this.currentClaim = res;
+      this.currentUser = this.userService.getCurrentUser();
+      this.showMain = false;
+      this.init();
     });
-    this.currentUser = this.userService.getCurrentUser();
+  }
+
+  async init() {
     // INIT FORM DATA
     this.initClaimForm();
     // Table Headers
     this.initTableHeaders();
-
     // Check main
     this.initService();
     // INIT data
-    this.loadMainDataSet();
+    // await this.loadMainDataSet();
   }
+
   ngOnDestroy(): void {
     this.unsubscribe$.unsubscribe();
   }
@@ -215,26 +221,26 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   initService() {
     this.showMain = false;
+    console.log(this.currentClaim);
     if (this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID > 0) {
       this.showMain = true;
-    } else {
+    } else if (this.currentClaim.serviceName !== '538') {
       this.showMain = true;
     }
   }
-  // initServiceType() {
-  //   switch(this.currentClaim.serviceID) {
-  //     case 1:  // 521
-  //       break;
-  //     case 2: // 536
-  //     break;
-  //     case 3:
-  //   }
-  // }
-  loadDataSets() {
+  initServiceType() {
+    if(this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID ===0) {
+      this.showMain = false;
+    } else {
+      this.showMain = true;
+    }
+   // this.showMain =this.currentClaim.serviceName === '538' ? false : true;
+  }
+  async loadDataSets() {
     this.loading = true;
-    this.loadMainDataSet();
-    this.loadTopChild();
-    this.loadBottomChild();
+    await this.loadMainDataSet();
+    await this.loadTopChild();
+    await this.loadBottomChild();
     this.loading = false;
   }
 
@@ -265,6 +271,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           ClaimDate: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           Duty: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+        });
+        break;
+      }
+      case '522': {
+        this.claimRequestParams = this.formBuilder.group({
+          LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}]
         });
         break;
       }
@@ -381,10 +393,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
@@ -621,67 +633,103 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyserviceclaimlineid',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyserviceclaimlineid'
             },
             position: 2
           },
+          // {
+          //   title: 'MRN',
+          //   propertyName: 'mrn',
+          //   order: {
+          //     enable: true,
+          //     tag: 'mrn'
+          //   },
+          //   position: 3
+          // },
+          // {
+          //   title: 'PRCC Number',
+          //   propertyName: 'prccnumber',
+          //   order: {
+          //     enable: true,
+          //     tag: 'prccnumber'
+          //   },
+          //   position: 3
+          // },
+          // {
+          //   title: 'Customs Value',
+          //   propertyName: 'customsvalue',
+          //   order: {
+          //     enable: true,
+          //     tag: 'customsvalue'
+          //   },
+          //   position: 4
+          // },
           {
-            title: 'Product Code',
-            propertyName: 'prodname',
+            title: 'MRN',
+            propertyName: 'mrn',
             order: {
               enable: true,
-              tag: 'prodname'
+              tag: 'mrn'
             },
             position: 3
           },
           {
-            title: 'Quantity Per',
-            propertyName: 'quantityper',
+            title: 'Item',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'quantityper'
+              tag: 'name'
             },
             position: 4
           },
           {
-            title: 'Avail Exp Quantity',
-            propertyName: 'availexpquantity',
+            title: 'Import HS Quantity',
+            propertyName: 'importhsquantity',
             order: {
               enable: true,
-              tag: 'availexpquantity'
+              tag: 'importhsquantity'
             },
             position: 5
           },
-          {
-            title: 'Export Quantity',
-            propertyName: 'expquantity',
-            order: {
-              enable: true,
-              tag: 'expquantity'
-            },
-            position: 6
-          },
-          {
-            title: 'Total Quantity',
-            propertyName: 'totquantity',
-            order: {
-              enable: true,
-              tag: 'totquantity'
-            },
-            position: 7
-          },
-          {
-            title: 'Export Date',
-            propertyName: 'exportdate',
-            order: {
-              enable: true,
-              tag: 'exportdate'
-            },
-            position: 8
-          }
+          // {
+          //   title: 'Avail Exp Quantity',
+          //   propertyName: 'availexpquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'availexpquantity'
+          //   },
+          //   position: 5
+          // },
+          // {
+          //   title: 'Export Quantity',
+          //   propertyName: 'expquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'expquantity'
+          //   },
+          //   position: 6
+          // },
+          // {
+          //   title: 'Total Quantity',
+          //   propertyName: 'totquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'totquantity'
+          //   },
+          //   position: 7
+          // },
+          // {
+          //   title: 'Export Date',
+          //   propertyName: 'exportdate',
+          //   order: {
+          //     enable: true,
+          //     tag: 'exportdate'
+          //   },
+          //   position: 8
+          // }
         ];
         this.headingsC = [
           {
@@ -799,7 +847,229 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         this.headings = [
           {
             title: '#',
-            propertyName: 'rowNum',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'sadlineid',
+            order: {
+              enable: true,
+              tag: 'sadlineid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 4
+          },
+          {
+            title: 'Available Customs Value',
+            propertyName: 'availcustomval',
+            order: {
+              enable: true,
+              tag: 'availcustomval'
+            },
+            position: 5
+          },
+          {
+            title: 'Component Code',
+            propertyName: 'item',
+            order: {
+              enable: true,
+              tag: 'item'
+            },
+            position: 6
+          },
+          {
+            title: 'Duty',
+            propertyName: 'duty',
+            order: {
+              enable: true,
+              tag: 'duty'
+            },
+            position: 7
+          },
+          {
+            title: 'Customs Value',
+            propertyName: 'customval',
+            order: {
+              enable: true,
+              tag: 'customval'
+            },
+            position: 8
+          },
+          // {
+          //   title: 'Import Date',
+          //   propertyName: 'importDate',
+          //   order: {
+          //     enable: true,
+          //     tag: 'importDate'
+          //   },
+          //   position: 9
+          // }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'capturejoinimportid',
+            order: {
+              enable: true,
+              tag: 'capturejoinimportid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'companyserviceclaimlineid',
+            order: {
+              enable: true,
+              tag: 'companyserviceclaimlineid'
+            },
+            position: 2
+          },
+          {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
+            title: 'Customs Value',
+            propertyName: 'customsvalue',
+            order: {
+              enable: true,
+              tag: 'customsvalue'
+            },
+            position: 4
+          },
+          {
+            title: 'PRCC Number',
+            propertyName: 'prccnumber',
+            order: {
+              enable: true,
+              tag: 'prccnumber'
+            },
+            position: 5
+          }
+        ];
+        this.headingsC = [
+          {
+            title: '',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'sad500lineid',
+            order: {
+              enable: true,
+              tag: 'sad500lineid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDSecond',
+            propertyName: 'prccid',
+            order: {
+              enable: true,
+              tag: 'prccid'
+            },
+            position: 2
+          },
+          {
+            title: 'File No',
+            propertyName: 'fileno',
+            order: {
+              enable: true,
+              tag: 'fileno'
+            },
+            position: 3
+          },
+          {
+            title: 'PRCC Number',
+            propertyName: 'prccno',
+            order: {
+              enable: true,
+              tag: 'prccno'
+            },
+            position: 4
+          },
+          {
+            title: 'Reg Number',
+            propertyName: 'regno',
+            order: {
+              enable: true,
+              tag: 'regno'
+            },
+            position: 5
+          },
+          {
+            title: 'Available Customs Value',
+            propertyName: 'availcustval',
+            order: {
+              enable: true,
+              tag: 'availcustval'
+            },
+            position: 6
+          },
+          {
+            title: 'Total Customs Value',
+            propertyName: 'totalcustval',
+            order: {
+              enable: true,
+              tag: 'totalcustval'
+            },
+            position: 7
+          }
+        ];
+        break;
+      }
+      case '522': {
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rownum',
             order: {
               enable: false,
             },
@@ -833,64 +1103,37 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 3
           },
           {
-            title: 'Total HS Quantity',
-            propertyName: 'totHSQuantity',
+            title: 'Item Code',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'totHSQuantity'
+              tag: 'name'
             },
             position: 4
           },
           {
-            title: 'Available HS Quantity',
-            propertyName: 'availHSQuantity',
+            title: 'Available Quantity',
+            propertyName: 'availquantity',
             order: {
               enable: true,
-              tag: 'availHSQuantity'
+              tag: 'availquantity'
             },
             position: 5
           },
           {
-            title: 'Component Code',
-            propertyName: 'itemName',
+            title: 'Available Duty',
+            propertyName: 'availduty',
             order: {
               enable: true,
-              tag: 'ItemName'
+              tag: 'availduty'
             },
             position: 6
-          },
-          {
-            title: 'Available Duty',
-            propertyName: 'availDuty',
-            order: {
-              enable: true,
-              tag: 'availDuty'
-            },
-            position: 7
-          },
-          {
-            title: 'Total Duty',
-            propertyName: 'totDuty',
-            order: {
-              enable: true,
-              tag: 'totDuty'
-            },
-            position: 8
-          },
-          // {
-          //   title: 'Import Date',
-          //   propertyName: 'importDate',
-          //   order: {
-          //     enable: true,
-          //     tag: 'importDate'
-          //   },
-          //   position: 9
-          // }
+          }
         ];
         this.headingsB = [
           {
             title: '',
-            propertyName: 'rowNum',
+            propertyName: 'rownum',
             order: {
               enable: false,
             },
@@ -907,72 +1150,36 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDsecond',
-            propertyName: 'capturejoinexportid',
+            propertyName: 'companyServiceClaimLineID',
             order: {
               enable: true,
-              tag: 'capturejoinexportid'
+              tag: 'companyServiceClaimLineID'
             },
             position: 2
           },
           {
             title: 'Product Code',
-            propertyName: 'prodname',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'prodname'
+              tag: 'name'
             },
             position: 3
           },
           {
-            title: 'Quantity Per',
-            propertyName: 'quantityper',
+            title: 'Quantity',
+            propertyName: 'quantity',
             order: {
               enable: true,
-              tag: 'quantityper'
+              tag: 'quantity'
             },
             position: 4
-          },
-          {
-            title: 'Avail Exp Quantity',
-            propertyName: 'availexpquantity',
-            order: {
-              enable: true,
-              tag: 'availexpquantity'
-            },
-            position: 5
-          },
-          {
-            title: 'Export Quantity',
-            propertyName: 'expquantity',
-            order: {
-              enable: true,
-              tag: 'expquantity'
-            },
-            position: 6
-          },
-          {
-            title: 'Total Quantity',
-            propertyName: 'totquantity',
-            order: {
-              enable: true,
-              tag: 'totquantity'
-            },
-            position: 7
-          },
-          {
-            title: 'Export Date',
-            propertyName: 'exportdate',
-            order: {
-              enable: true,
-              tag: 'exportdate'
-            },
-            position: 8
           }
         ];
         this.headingsC = [
           {
-            title: '',
-            propertyName: 'rowNum',
+            title: '#',
+            propertyName: 'rownum',
             order: {
               enable: false,
             },
@@ -980,10 +1187,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
-            propertyName: 'oemsupplyid',
+            propertyName: 'invoicelineid',
             order: {
               enable: true,
-              tag: 'oemsupplyid'
+              tag: 'invoicelineid'
             },
             position: 1
           },
@@ -997,49 +1204,31 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 2
           },
           {
-            title: 'Product Code',
-            propertyName: 'prodname',
+            title: 'Item Code',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'prodname'
+              tag: 'name'
             },
             position: 3
           },
           {
-            title: 'Quantity Per',
-            propertyName: 'quantityper',
+            title: 'Total HS Quantity',
+            propertyName: 'quantity',
             order: {
               enable: true,
-              tag: 'quantityper'
+              tag: 'quantity'
             },
             position: 4
           },
           {
-            title: 'Available Export Quantity',
-            propertyName: 'availexpquantity',
+            title: 'Available HS Quantity',
+            propertyName: 'availquantity',
             order: {
               enable: true,
-              tag: 'availexpquantity'
+              tag: 'availquantity'
             },
             position: 5
-          },
-          {
-            title: 'Export Quantity',
-            propertyName: 'expquantity',
-            order: {
-              enable: true,
-              tag: 'expquantity'
-            },
-            position: 6
-          },
-          {
-            title: 'Total Quantity',
-            propertyName: 'totquantity',
-            order: {
-              enable: true,
-              tag: 'totquantity'
-            },
-            position: 7
           }
         ];
         break;
@@ -1047,29 +1236,29 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     }
 
   }
-  initTableDataTypes() {
-    switch(this.currentClaim.serviceName) {
-      case '521': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-      case '536': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-      case '538': {
-        this.data = new Array<Import>();
-        this.dataLinesAvailable = new Array<Export>();
-        this.dataLinesAssigned= new Array<Export>();
-        break;
-      }
-    }
-  }
-  initClaimFormData() {
+  // initTableDataTypes() {
+  //   switch(this.currentClaim.serviceName) {
+  //     case '521': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //     case '536': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //     case '538': {
+  //       this.data = new Array<Import>();
+  //       this.dataLinesAvailable = new Array<Export>();
+  //       this.dataLinesAssigned= new Array<Export>();
+  //       break;
+  //     }
+  //   }
+  // }
+  async initClaimFormData() {
     this.loading = true;
     const model = {
       requestParams: {
@@ -1082,7 +1271,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestProcedure: `CompanyServiceClaimsList`
     };
 
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
         let objectKeys: string[];
         let objectValues: string[];
@@ -1103,10 +1292,55 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
           });
         });
-        // Get objects and values from res
         this.loading =false;
+        if(this.currentClaim.serviceName !== '521') {
+          this.loadClaimParams();
+        } else {
+          this.loadMainDataSet();
+          this.showMain = true;
+        }
+        // Get objects and values from res
+
       },
       msg => {
+        this.loading =false;
+        //snackbaa
+      }
+    );
+  }
+  async loadClaimParams() {
+    this.loading =true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        rowStart: 1,
+        rowEnd: 5
+      },
+      requestProcedure: `CompanyServiceClaimParametersList`
+    };
+
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+      (res: ListReadResponse) => {
+       console.log(res);
+       if(res.rowCount > 0) {
+        if(res.data[0].SAD500ID > 0) {
+          this.currentClaim.sad500ID = res.data[0].SAD500ID;
+          console.log(this.currentClaim);
+          this.showMain = true; // Show SAD500 Lines
+          // this.loadSADLineSet();
+         } else {
+           this.showMain = false; // Show SAD0500's
+         }
+       }
+       this.loadMainDataSet();
+
+
+        // Get objects and values from res
+        this.loading = false;
+      },
+      msg => {
+        this.loading =false;
         //snackbaa
       }
     );
@@ -1166,8 +1400,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         } else {
           this.loadMainDataSet();
         }
-        
-      
+
+
         console.log(res);
 
       },
@@ -1176,12 +1410,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
-  loadSAD
+
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
   // Main Left Table
-  loadSADLineSet() {
+  async loadSADLineSet() {
     const reqP = {
       userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID ,
@@ -1193,16 +1427,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestParams: reqP,
       requestProcedure: `ImportsListSADLine538`
     };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
         if (res.outcome.outcome === 'SUCCESS') {
-          if(this.selectedA === null || this.selectedA === undefined) {
-            this.snackbar.open('Successfully Retrieved SAD500 Line Imports', res.outcome.outcome, {
-              duration: 3000,
-              panelClass: 'claim-snackbar-success',
-              horizontalPosition: 'center',
-            });
-          }
+          // if(this.selectedA === null || this.selectedA === undefined) {
+          //   this.snackbar.open('Successfully Retrieved SAD500 Line Imports', res.outcome.outcome, {
+          //     duration: 3000,
+          //     panelClass: 'claim-snackbar-success',
+          //     horizontalPosition: 'center',
+          //   });
+          // }
           this.pageA.length = res.rowCount;
           this.data = res.data;
           this.showMain = true;
@@ -1220,7 +1454,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
-  loadMainDataSet() {
+  async loadMainDataSet() {
     const reqP = {
       userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID ,
@@ -1231,24 +1465,32 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestParams: reqP,
       requestProcedure: `ImportsList${this.currentClaim.serviceName}`
     };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-      (res: any) => {
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+      async (res: any) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if(this.selectedA === null || this.selectedA === undefined) {
-            this.snackbar.open('Successfully Retrieved Imports', res.outcome.outcome, {
-              duration: 3000,
-              panelClass: 'claim-snackbar-success',
-              horizontalPosition: 'center',
-            });
-          }
+            if(this.currentClaim.serviceName === '538') {
+              console.log(this.showMain);
+              if(this.showMain) {
+                await this.loadSADLineSet(); // there is an SAD500ID
+              } else {
+                // No ID, still need to selected
+                this.dataS = [];
+                this.dataS = res.data;
+                this.pageS.length = res.rowCount;
+              }
+           } else {
+             this.data = [];
+              this.data = res.data;
+              this.pageA.length = res.rowCount;
+              this.snackbar.open('Successfully Retrieved Imports', res.outcome.outcome, {
+                duration: 3000,
+                panelClass: 'claim-snackbar-success',
+                horizontalPosition: 'center',
+              });
+           }
 
-          if(this.currentClaim.serviceName === '538') {
-           this.dataS = res.data;
-           this.pageS.length = res.rowCount;
-         } else {
-          this.data = res.data;
-          this.pageA.length = res.rowCount;
-         }
+          }
 
         } else {
 
@@ -1268,7 +1510,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const lineData = JSON.parse($event);
     this.selectedA = lineData.lineA;
     this.currentClaim.sad500ID = lineData.lineA;
-    this.loadSADLineSet();
+    this.update538Params();
   }
   rowEventA($event) {
     const lineData = JSON.parse($event)
@@ -1288,6 +1530,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const lineData = JSON.parse($event);
     // this.selectedA = lineData.lineA; // Import cjid
     this.selectedB = lineData.lineB; // Export cjid
+
+    this.selectedC = lineData.lineC;
+
     // this.selectedC = lineData.lineC;
     // this.selectedD = lineData.lineD; // Assign Line Quantity
     this.updateTopChild();
@@ -1303,8 +1548,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   /****** END IMPORTS *******/
   // Top Right Table
-  loadTopChild() {
+  async loadTopChild() {
     this.loading = true;
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1317,9 +1563,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestProcedure: `CompanyServiceClaimLineList${this.currentClaim.serviceName}`
 
     };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
+        console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
+          this.dataLinesAssigned = [];
           this.loading = false;
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
@@ -1336,12 +1584,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   updateTopChild() {
     this.loading = true;
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        captureJoinImportID: this.selectedA,
-        captureJoinExportID: this.selectedB,
+        companyServiceClaimLineID: this.selectedB,
         isDeleted: 1
       },
       requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
@@ -1360,6 +1607,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
@@ -1369,29 +1617,47 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
   // Bottom Right Table
-  loadBottomChild() {
+  async loadBottomChild() {
+
     this.loading = true;
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        itemID: this.selectedB,
-        rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
-        rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
-      },
-      requestProcedure: `ExportsList${this.currentClaim.serviceName}`
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    let model = {};
+    if(this.currentClaim.serviceName === '538') {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          sad500LineID: this.selectedA,
+          rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
+          rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
+        },
+        requestProcedure: `ExportsList${this.currentClaim.serviceName}`
+      };
+    } else {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          itemID: this.selectedB,
+          rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
+          rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
+        },
+        requestProcedure: `ExportsList${this.currentClaim.serviceName}`
+      };
+    }
+   console.log(model);
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
         console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
           this.loading = false;
+          this.dataLinesAvailable = [];
           this.dataLinesAvailable = res.data;
+          console.log(this.dataLinesAvailable);
           this.pageC.length = res.rowCount;
-
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
@@ -1401,7 +1667,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateBottomChild() {
+  async updateBottomChild() {
     this.loading = true;
     let model = {};
     switch(this.currentClaim.serviceName) {
@@ -1448,9 +1714,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
       }
+      case '522': {
+        model = {
+          requestParams: {
+            userID: this.currentUser.userID,
+            companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+            captureJoinImportID: this.selectedA,
+            exportInvoiceLineID: this.selectedB,
+            importHSQuantity: this.selectedC,
+            exportHSQuantity: this.selectedD
+          },
+          requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
+        };
+      }
     }
 
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
       (res: Outcome) => {
         if(res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Assigned', res.outcome, {
@@ -1463,6 +1742,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],
@@ -1471,7 +1751,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       }
     );
   }
-  updateClaimLines() {
+  async updateClaimLines() {
     this.loading = true;
     const model ={
       requestParams: {
@@ -1480,7 +1760,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `UpdateCompanyServiceClaimLinesUsed${this.currentClaim.serviceName}`
     };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
       (res: Outcome) => {
         this.updateClaimStatus();
       },
@@ -1488,7 +1768,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
       });
   }
-  updateClaimStatus() {
+  async updateClaimStatus() {
     this.loading = true;
     const model ={
       requestParams: {
@@ -1498,7 +1778,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       },
       requestProcedure: 'UpdateCompanyServiceClaimStatus'
     };
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Claim Submitted and sent for reporting. Please wait to be redirected.', res.outcome, {

@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
+import { ListReadResponse } from '../../forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-context-menu-service-claims',
@@ -10,10 +13,15 @@ import { ServicesService } from 'src/app/services/Services.Service';
 })
 export class ContextMenuServiceClaimsComponent implements OnInit {
 
-  constructor(private router: Router, private companyService: CompanyService, private claimService: ServicesService) { }
+  constructor(
+    private router: Router, 
+    private companyService: CompanyService, 
+    private claimService: ServicesService,
+    private apiService: ApiService) { }
 
   @Input() companyServiceClaimID: number;
   @Input() companyServiceID: number;
+  @Input() userID: number;
   @Input() companyID: number;
   @Input() companyName: string;
   @Input() serviceID: number;
@@ -21,12 +29,18 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   @Input() serviceName: string;
   @Input() status: string;
   @Input() currentTheme: string;
-
+  
+  @Input() transactionID?: number;
   @Output() populatecompanyService = new EventEmitter<number>();
   @Output() reportscompanyService = new EventEmitter<number>();
   @Output() addClaimPermits = new EventEmitter<number>();
-
-  ngOnInit() {}
+  @Output() submit522Claim = new EventEmitter<number>();
+populate = false;
+  ngOnInit() {
+    
+    
+    
+  }
 
   Populate() {
     // this.populatecompanyService.emit(+this.companyServiceClaimID);
@@ -40,6 +54,14 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
     });
     this.router.navigate(['claim','capture']);
   }
+  CaptureInvoices() {
+    this.companyService.setCompany({
+      companyID: this.companyID,
+      companyName: this.companyName,
+      selectedTransactionID: this.transactionID
+    });
+    this.router.navigate([ 'transaction','attachments']);
+  }
 
   Reports() {
     // tslint:disable-next-line: max-line-length
@@ -48,6 +70,9 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   }
   ClaimPermits() {
     this.addClaimPermits.emit(+1);
+  }
+  Submit522Report() {
+    this.submit522Claim.emit(1);
   }
 }
 

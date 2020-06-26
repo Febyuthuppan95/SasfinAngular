@@ -39,7 +39,7 @@ export class ChatContactListComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.loadContacts();
+    // this.loadContacts();
 
     this.chatService.observeConversation()
     .pipe(takeUntil(this.unsubscribe$))
@@ -81,7 +81,7 @@ export class ChatContactListComponent implements OnInit, OnDestroy {
   }
 
   contactSearch() {
-    this.loadContacts();
+    // this.loadContacts();
   }
 
   showConversationsEvent() {

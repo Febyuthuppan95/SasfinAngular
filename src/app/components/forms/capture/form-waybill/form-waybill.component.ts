@@ -60,23 +60,23 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
   dialogOpen = false;
 
   ngOnInit() {
-    this.themeService.observeTheme()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(value => this.currentTheme = value);
+    // this.themeService.observeTheme()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe(value => this.currentTheme = value);
 
-    this.eventService.observeCaptureEvent()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => this.submit());
+    // this.eventService.observeCaptureEvent()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((escalation?: boolean, saveProgress?: boolean) => this.submit(escalation));
 
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((curr: { transactionID: number, attachmentID: number }) => {
-      if (curr !== null || curr !== undefined) {
-        this.attachmentID = curr.attachmentID;
-        this.transactionID = curr.transactionID;
-        this.loadData();
-      }
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((curr: { transactionID: number, attachmentID: number }) => {
+    //   if (curr !== null || curr !== undefined) {
+    //     this.attachmentID = curr.attachmentID;
+    //     this.transactionID = curr.transactionID;
+    //     this.loadData();
+    //   }
+    // });
   }
 
   ngAfterViewInit(): void {
@@ -119,7 +119,7 @@ export class FormWaybillComponent implements OnInit, AfterViewInit, OnDestroy {
             waybillID: this.attachmentID,
             waybillNo: this.form.waybillNo.value,
             isDeleted: 0,
-            attachmentStatusID: 3,
+            attachmentStatusID: escalation ? 7 : 3,
           };
 
           this.captureService.waybillUpdate(requestModel).then(

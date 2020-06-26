@@ -1,0 +1,11 @@
+<mat-form-field [appearance]="appearance">
+  <mat-label>
+    Items
+  </mat-label>
+  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
+</mat-form-field>
+<mat-autocomplete #cpcAuto="matAutocomplete" (optionSelected)="control.setValue($event.option.value.ItemID)" [displayWith]="displayFn">
+  <mat-option *ngFor="let item of list" [value]="item">
+    {{item.Item}}
+  </mat-option>
+</mat-autocomplete>

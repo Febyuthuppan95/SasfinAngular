@@ -13,7 +13,7 @@ export class CRNGet {
    serialNo: string;
    lrn: string;
    importersCode: string;
-   pcc: string;
+   pcc: number;
    fob: string;
    waybillNo: string;
    mrn: string;

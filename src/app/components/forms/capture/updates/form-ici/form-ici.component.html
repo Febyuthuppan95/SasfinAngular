@@ -1,0 +1,53 @@
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<app-notification></app-notification>
+
+<div class="capture-header">
+  <h1 class="capture-form-title text-dark">
+    <span>{{attachmentLabel}}</span>
+  </h1>
+</div>
+<br>
+
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <div class="row">
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Waybill No
+        </mat-label>
+        <input matInput type="text" formControlName="waybillNo" />
+        <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Supplier Ref
+        </mat-label>
+        <input matInput type="text" formControlName="supplierRef" />
+        <mat-icon *ngIf="form.controls.supplierRefOBit.value" matSuffix (click)="undoOverride('supplierRef')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.supplierRefOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.supplierRefOBit.value && form.controls.supplierRef.errors?.incorrect" matSuffix (click)="overrideDialog('supplierRef', 'Supplier Ref')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.supplierRefOBit.value  && form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill">
+        <mat-label>
+          Importers Code
+        </mat-label>
+        <input matInput type="text" formControlName="importersCode" />
+        <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'Importers Code')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+      </mat-form-field>
+      <br /><br />
+    </div>
+  </div>
+</form>

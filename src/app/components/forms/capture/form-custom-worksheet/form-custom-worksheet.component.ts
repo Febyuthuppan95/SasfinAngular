@@ -142,28 +142,28 @@ export class FormCustomWorksheetComponent
   dialogOpen = false;
 
   ngOnInit() {
-    console.log('worksheet');
-    this.themeService
-      .observeTheme()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((value) => (this.currentTheme = value));
+    // console.log('worksheet');
+    // this.themeService
+    //   .observeTheme()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((value) => (this.currentTheme = value));
 
-    this.eventService
-      .observeCaptureEvent()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((escalation?: boolean) => this.saveLines(escalation));
+    // this.eventService
+    //   .observeCaptureEvent()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((escalation?: boolean) => this.saveLines(escalation));
 
-    this.transactionService
-      .observerCurrentAttachment()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((curr: { transactionID: number; attachmentID: number }) => {
-        if (curr !== null || curr !== undefined) {
-          this.attachmentID = curr.attachmentID;
-          this.transactionID = curr.transactionID;
-          this.loadCapture();
-          this.loadLines();
-        }
-      });
+    // this.transactionService
+    //   .observerCurrentAttachment()
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((curr: { transactionID: number; attachmentID: number }) => {
+    //     if (curr !== null || curr !== undefined) {
+    //       this.attachmentID = curr.attachmentID;
+    //       this.transactionID = curr.transactionID;
+    //       this.loadCapture();
+    //       this.loadLines();
+    //     }
+    //   });
   }
 
   ngAfterViewInit(): void {
@@ -265,7 +265,6 @@ export class FormCustomWorksheetComponent
   }
 
   submit(escalation?: boolean) {
-    console.log(escalation);
     if ((this.LinesValid && this.CWSForm.valid) || escalation) {
       const requestModel = {
         userID: this.currentUser.userID,
@@ -279,19 +278,21 @@ export class FormCustomWorksheetComponent
 
         waybillNoOBit: this.form.waybillNo.OBit,
         waybillNoOUserID: this.form.waybillNo.OUserID,
-        waybillNoODate: this.form.waybillNo.ODate,
+        waybillNoODate: new Date(this.form.waybillNo.ODate),
         waybillNoOReason: this.form.waybillNo.OReason,
 
         lrnOBit: this.form.LRN.OBit,
         lrnOUserID: this.form.LRN.OUserID,
-        lrnODate: this.form.LRN.ODate,
+        lrnODate: new Date(this.form.LRN.ODate),
         lrnOReason: this.form.LRN.OReason,
 
         fileRefOBit: this.form.fileRef.OBit,
         fileRefOUserID: this.form.fileRef.OUserID,
-        fileRefODate: this.form.fileRef.ODate,
+        fileRefODate: new Date(this.form.fileRef.ODate),
         fileRefOReason: this.form.fileRef.OReason,
       };
+
+      console.log(requestModel);
 
       this.captureService.customWorksheetUpdate(requestModel).then(
         (res: Outcome) => {
@@ -303,7 +304,7 @@ export class FormCustomWorksheetComponent
           }
         },
         (msg) => {
-          console.log(JSON.stringify(msg));
+          console.log(msg);
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );

@@ -34,7 +34,9 @@ import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.compon
 import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
@@ -128,6 +130,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   noCaptureInformation = true;
   reason = '';
 
+  bottomSheet;
+
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
     // this.companyService.setCapture({ capturestate: true});
@@ -162,7 +166,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
       this.transactionType = obj.transactionType;
-      this.reason = obj.reason;
+      this.reason = `${obj.reason}`;
       this.escalated = obj.issueID > 0 ? true : false;
       this.initTypes();
 
@@ -173,11 +177,15 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     // get the help value
     // this.helpValue  = this.themeService.observeHelpValue();
   }
+
   toggleReason(): void {
-    this.escalationReason.open(EscalateBottomSheetComponent, {
-      data: this.reason
+    const reason: string = this.reason;
+
+    this.bottomSheet = this.escalationReason.open(EscalateBottomSheetComponent, {
+      data: reason
     });
   }
+
   closeHelpContext() {
     const newContext: SnackbarModel = {
       display: false,
@@ -187,8 +195,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-
-
     this.shortcuts.push(
         {
             key: 'alt + i',
@@ -221,6 +227,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
         },
         {
+          key: 'alt + [',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+        },
+        {
           key: 'alt + p',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
@@ -238,6 +250,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
           key: 'alt + 8',
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+          key: 'alt + ]',
         },
     );
 
@@ -257,15 +275,14 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        console.log(res);
         res.data.forEach(x => {
           this.transactionTypes.push({
             name: x.Name,
-            description:x.Description,
+            description: x.Description,
             value: x.FileTypeID
           })
         });
-        console.log(this.transactionTypes);
+
         this.loadCaptureInfo();
       }
     );
@@ -375,7 +392,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       (res: ChatIssueCreateReponse) => {
         if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
           // this.companyService.setCapture({ capturestate: false});
-          this.submitCapture(true);
+          this.submitCapture(true, false, false, 'Escalation', 'This attachment will be escalated');
         } else {
           this.snackBarMat.open(res.outcome.outcomeMessage, '', {
             duration: 2000
@@ -450,20 +467,26 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.themeService.toggleHelp();
+
+    if (this.bottomSheet) {
+      this.bottomSheet.close();
+    }
   }
 
-  submitCapture(isEscalation?: boolean) {
-
+  submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {
     if (!this.dialogOpen) {
-
       this.dialogOpen = true;
       const dialogConf = new MatDialogConfig();
       dialogConf.autoFocus = true;
-      this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+      this.dialog.open(SubmitDialogComponent, {
+        data: {
+          title, desc
+        }
+      }).afterClosed().subscribe((status: boolean) => {
         this.dialogOpen = false;
 
         if (status) {
-          this.eventService.triggerCaptureEvent(isEscalation);
+          this.eventService.triggerCaptureEvent(isEscalation, saveProgress, escalationResolved);
          }
       });
     }

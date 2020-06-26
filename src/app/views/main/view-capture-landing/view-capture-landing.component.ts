@@ -111,7 +111,6 @@ private notify: NotificationComponent;
     .GetAttatchments(model)
     .then(
       (res: CaptureAttachmentResponse) => {
-        console.log(res);
         if (res.captureattachment.attachmentID !== 0 || res.captureattachment.transactionID !== 0) {
           this.CaptureInfo = res.captureattachment;
           this.docPath = res.captureattachment.filepath;
@@ -123,15 +122,21 @@ private notify: NotificationComponent;
           this.companyName = res.captureattachment.companyName;
           this.transactionType = res.captureattachment.transactionType;
           this.docService.loadDocumentToViewer(this.docPath);
-          // tslint:disable-next-line: max-line-length
-          this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID,
-            // tslint:disable-next-line: max-line-length
-            docType: this.fileType, transactionType: this.transactionType, issueID: res.captureattachment.issueID, reason: res.captureattachment.reason});
+
+          this.transactionService.setCurrentAttachment({
+            transactionID: this.transactionID,
+            attachmentID: this.attachmentID,
+            docType: this.fileType,
+            transactionType: this.transactionType,
+            issueID: res.captureattachment.issueID,
+            reason: res.captureattachment.reason
+          });
+
           this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
           this.router.navigate(['capture', 'transaction', 'attachment']);
           this.loading = false;
         } else {
-          this.notify.errorsmsg('FAILURE', 'No attachments to capture');
+          this.notify.toastrwarning('Information', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
         }
 
@@ -141,7 +146,6 @@ private notify: NotificationComponent;
       }
     );
   }
-
 
   loadAttachmentStats() {
     const model = {
