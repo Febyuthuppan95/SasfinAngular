@@ -55,7 +55,7 @@
                 <mat-card class="offset-sm-1 col-sm-11">
                     <mat-card-content>
                         <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Claim Parameters</button>
-                        <form [formGroup]="claimRequestParams">
+                        <form [formGroup]="claimRequestParams" *ngIf="claimRequestParams">
                             <div class="row" *ngIf="this.currentClaim.serviceName ==='521'">
                                 <mat-form-field class="col-md-4" >
                                     <mat-label>Export Date Range:</mat-label>
@@ -122,7 +122,6 @@
             </div>
             <div class="bottom-section row" *ngIf="!this.showMain">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
-
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available SAD500's</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
