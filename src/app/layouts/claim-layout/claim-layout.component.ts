@@ -674,7 +674,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'mrn'
             },
-            position: 4
+            position: 3
           },
           {
             title: 'Item',
@@ -683,7 +683,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'name'
             },
-            position: 3
+            position: 4
           },
           {
             title: 'Import HS Quantity',
@@ -692,7 +692,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'importhsquantity'
             },
-            position: 4
+            position: 5
           },
           // {
           //   title: 'Avail Exp Quantity',
