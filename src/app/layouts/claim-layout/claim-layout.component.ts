@@ -632,59 +632,68 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 2
           },
           {
-            title: 'Product Code',
-            propertyName: 'prodname',
+            title: 'MRN',
+            propertyName: 'mrn',
             order: {
               enable: true,
-              tag: 'prodname'
-            },
-            position: 3
-          },
-          {
-            title: 'Quantity Per',
-            propertyName: 'quantityper',
-            order: {
-              enable: true,
-              tag: 'quantityper'
+              tag: 'mrn'
             },
             position: 4
           },
           {
-            title: 'Avail Exp Quantity',
-            propertyName: 'availexpquantity',
+            title: 'Item',
+            propertyName: 'name',
             order: {
               enable: true,
-              tag: 'availexpquantity'
+              tag: 'name'
             },
-            position: 5
+            position: 3
           },
           {
-            title: 'Export Quantity',
-            propertyName: 'expquantity',
+            title: 'Import HS Quantity',
+            propertyName: 'importhsquantity',
             order: {
               enable: true,
-              tag: 'expquantity'
+              tag: 'importhsquantity'
             },
-            position: 6
+            position: 4
           },
-          {
-            title: 'Total Quantity',
-            propertyName: 'totquantity',
-            order: {
-              enable: true,
-              tag: 'totquantity'
-            },
-            position: 7
-          },
-          {
-            title: 'Export Date',
-            propertyName: 'exportdate',
-            order: {
-              enable: true,
-              tag: 'exportdate'
-            },
-            position: 8
-          }
+          // {
+          //   title: 'Avail Exp Quantity',
+          //   propertyName: 'availexpquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'availexpquantity'
+          //   },
+          //   position: 5
+          // },
+          // {
+          //   title: 'Export Quantity',
+          //   propertyName: 'expquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'expquantity'
+          //   },
+          //   position: 6
+          // },
+          // {
+          //   title: 'Total Quantity',
+          //   propertyName: 'totquantity',
+          //   order: {
+          //     enable: true,
+          //     tag: 'totquantity'
+          //   },
+          //   position: 7
+          // },
+          // {
+          //   title: 'Export Date',
+          //   propertyName: 'exportdate',
+          //   order: {
+          //     enable: true,
+          //     tag: 'exportdate'
+          //   },
+          //   position: 8
+          // }
         ];
         this.headingsC = [
           {
@@ -1281,7 +1290,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.showMain = true;
         }
         // Get objects and values from res
-        
+
       },
       msg => {
         this.loading =false;
@@ -1313,8 +1322,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
            this.showMain = false; // Show SAD0500's
          }
        }
-     
-        
+
+
         // Get objects and values from res
         this.loading = false;
       },
@@ -1379,8 +1388,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         } else {
           this.loadMainDataSet();
         }
-        
-      
+
+
         console.log(res);
 
       },
@@ -1508,7 +1517,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const lineData = JSON.parse($event);
     // this.selectedA = lineData.lineA; // Import cjid
     this.selectedB = lineData.lineB; // Export cjid
-    
+
     this.selectedC = lineData.lineC;
 
     // this.selectedC = lineData.lineC;
@@ -1562,7 +1571,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   updateTopChild() {
     this.loading = true;
-    
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1598,7 +1607,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   loadBottomChild() {
 
     this.loading = true;
-    
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
