@@ -112,7 +112,10 @@ export class PreviewReportsComponent implements OnInit {
 
   buildGetLink(rep: ServiceClaimReport) {
     // tslint:disable-next-line: max-line-length
-    this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/10001/${this.claimReport.companyID}/${rep.serviceName}`;
+    if(rep.reportQueueStatusID === 2) {
+      this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/10001/${this.claimReport.companyID}/${rep.serviceName}`;
+    }
+    
   }
 
   onFileChange(evt: any) {

@@ -18,3 +18,10 @@ export class Permit {
   exportdateStart: string;
   exportdateEnd: string;
 }
+
+export class ClaimPermit {
+  RowNum: number;
+  PermitID: number;
+  PermitCode: string;
+  CompanyServiceClaimPermitID: number;
+}

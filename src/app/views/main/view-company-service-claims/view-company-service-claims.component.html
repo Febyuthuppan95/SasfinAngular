@@ -141,6 +141,15 @@
               </mat-select>
             </mat-form-field>
           </div>
+          <div class="row">
+            <mat-chip-list #chipList aria-label="Permit selection">
+            <mat-chip *ngFor="let permit of companyServiceClaimPermits" [selectable]="selectable"
+                      [removable]="removable" (removed)="remove(permit)">
+              {{permit.PermitCode}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+          </div>
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closePermitModal>Close</button>
