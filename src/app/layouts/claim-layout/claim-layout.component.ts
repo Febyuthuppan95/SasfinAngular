@@ -12,10 +12,11 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { SelectedCompany } from 'src/app/services/Cities.Service';
 import { PageEvent, MatSnackBar } from '@angular/material';
 import { ServicesService, SelectedCompanyClaim } from 'src/app/services/Services.Service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, ignoreElements } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 
 @Component({
   selector: 'app-claim-layout',
@@ -160,13 +161,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       this.currentClaim = res;
     });
     this.currentUser = this.userService.getCurrentUser();
+    this.showMain = false;
     // INIT FORM DATA
     this.initClaimForm();
     // Table Headers
     this.initTableHeaders();
 
     // Check main
-    this.initService();
+    // this.initService();
     // INIT data
     this.loadMainDataSet();
   }
@@ -215,21 +217,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   initService() {
     this.showMain = false;
+    console.log(this.currentClaim);
     if (this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID > 0) {
       this.showMain = true;
-    } else {
+    } else if (this.currentClaim.serviceName !== '538') {
       this.showMain = true;
     }
   }
-  // initServiceType() {
-  //   switch(this.currentClaim.serviceID) {
-  //     case 1:  // 521
-  //       break;
-  //     case 2: // 536
-  //     break;
-  //     case 3:
-  //   }
-  // }
+  initServiceType() {
+   this.showMain =this.currentClaim.serviceName === '538' ? false : true;
+  }
   loadDataSets() {
     this.loading = true;
     this.loadMainDataSet();
@@ -1277,10 +1274,52 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
           });
         });
-        // Get objects and values from res
         this.loading =false;
+        if(this.currentClaim.serviceName !== '521') {
+          this.loadClaimParams();
+        } else {
+          this.showMain = true;
+        }
+        // Get objects and values from res
+        
       },
       msg => {
+        this.loading =false;
+        //snackbaa
+      }
+    );
+  }
+  loadClaimParams() {
+    this.loading =true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        rowStart: 1,
+        rowEnd: 5
+      },
+      requestProcedure: `CompanyServiceClaimParametersList`
+    };
+
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+      (res: ListReadResponse) => {
+       console.log(res);
+       if(res.rowCount > 0) {
+        if(res.data[0].SAD500ID !== null && res.data[0].SAD500ID !== undefined) {
+          this.currentClaim.sad500ID = res.data[0].SAD500ID;
+          this.showMain = true; // Show SAD500 Lines
+          // this.loadSADLineSet();
+         } else {
+           this.showMain = false; // Show SAD0500's
+         }
+       }
+     
+        
+        // Get objects and values from res
+        this.loading = false;
+      },
+      msg => {
+        this.loading =false;
         //snackbaa
       }
     );
@@ -1417,13 +1456,18 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           }
 
           if(this.currentClaim.serviceName === '538') {
-            this.dataS = [];
-           this.dataS = res.data;
-           this.pageS.length = res.rowCount;
+            if(this.showMain) {
+              this.loadSADLineSet(); // there is an SAD500ID
+            } else {
+              // No ID, still need to selected
+              this.dataS = [];
+              this.dataS = res.data;
+              this.pageS.length = res.rowCount;
+            }
          } else {
            this.data = [];
-          this.data = res.data;
-          this.pageA.length = res.rowCount;
+            this.data = res.data;
+            this.pageA.length = res.rowCount;
          }
 
         } else {
@@ -1444,7 +1488,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const lineData = JSON.parse($event);
     this.selectedA = lineData.lineA;
     this.currentClaim.sad500ID = lineData.lineA;
-    this.loadSADLineSet();
+    this.update538Params();
   }
   rowEventA($event) {
     const lineData = JSON.parse($event)

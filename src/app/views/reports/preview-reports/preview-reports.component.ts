@@ -58,6 +58,7 @@ export class PreviewReportsComponent implements OnInit {
   }
 
   getClaimReports() {
+    console.log(this.claimReport.claimNumber);
     const model: GetServiceClaimReports = {
       userID: this.currentUser.userID,
       companyServiceClaimID: this.claimReport.claimNumber,
@@ -91,7 +92,7 @@ export class PreviewReportsComponent implements OnInit {
     const model = {
       reportID: rep.reportID,
       // claimID: this.claimReport.claimNumber,
-      claimID: 10001,
+      claimID: this.claimReport.claimNumber,
       companyID: this.claimReport.companyID,
       reportService: this.claimReport.serviceName
     };
@@ -111,8 +112,12 @@ export class PreviewReportsComponent implements OnInit {
   }
 
   buildGetLink(rep: ServiceClaimReport) {
+    console.log(rep);
     // tslint:disable-next-line: max-line-length
-    this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/10001/${this.claimReport.companyID}/${rep.serviceName}`;
+    if(rep.reportQueueStatusID === 2) {
+      this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/${this.claimReport.claimNumber}/${this.claimReport.companyID}/${rep.serviceName}`;
+    }
+    
   }
 
   onFileChange(evt: any) {

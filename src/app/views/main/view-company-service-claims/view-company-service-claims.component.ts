@@ -27,7 +27,7 @@ import { R3ComponentMetadata } from '@angular/compiler';
 import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
-import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
+import { CompanyPermitsListResponse, Permit, ClaimPermit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { CompanyServiceResponse, CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { ApiService } from 'src/app/services/api.service';
@@ -97,6 +97,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     const fullYear = new Date().getFullYear();
     const fullmonth = new Date().getMonth()
 
+   
     this.minClaimDate = new Date();
     this.selectedClaimDate = this.minClaimDate;
     this.ServiceClaim = {
@@ -105,7 +106,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       serviceName: ''
     };
   }
-
+  removable = true;
   @ViewChild(NotificationComponent, { static: false })
   private notify: NotificationComponent;
 
@@ -175,6 +176,14 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         enable: true,
         tag: 'CompanyServiceClaimNumber'
       }
+    },
+    {
+      title: 'Status',
+      propertyName: 'status',
+      order: {
+        enable: true,
+        tag: 'status'
+      }
     }
   ];
 
@@ -209,6 +218,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   companyID = 0;
   companyName = '';
   permitslist = [];
+  companyServiceClaimPermits: ClaimPermit[] = [];
   submissiondate: Date;
   complete = false;
   companyServiceList: CompService[] =[];
@@ -290,7 +300,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
-  
+  submit522() {
+    this.openCreate522Modal.nativeElement.click();
+  }
   submit522Claim() {
     this.showLoader = true;
     console.log('Updating claim params..');
@@ -317,6 +329,60 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     );
 
+  }
+  remove($event: ClaimPermit) {
+    console.log($event);
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimPermitID: $event.CompanyServiceClaimPermitID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        permitID: $event.PermitID,
+        isDeleted: true
+      },
+      requestProcedure: 'CompanyServiceClaimPermitsUpdate'
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
+      (res: ListReadResponse) => {
+        this.loadCompanyServiceClaimPermits();
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
+  } 
+  loadCompanyServiceClaimPermits() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+        rowStart: 1,
+        rowEnd: 10
+      },
+      requestProcedure: 'CompanyServiceClaimPemitsList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+      (res: ListReadResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.companyServiceClaimPermits = res.data;
+          
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+
+    );
   }
   updateClaimStatus() {
     const model ={
@@ -760,6 +826,7 @@ addCompanyServiceClaimPermits() {
   })
 }
 openAddClaimPermits($event) {
+  this.loadCompanyServiceClaimPermits();
   this.permitsByDate.reset(null);
   this.openPermitModal.nativeElement.click();
 }

@@ -20,8 +20,8 @@
                 <!-- <mat-card-header><mat-card-title color="accent">Pending</mat-card-title></mat-card-header> -->
                 <mat-card-content>
                   <h5>{{item.reportName}}</h5>
-                  <mat-checkbox #checkBox color="primary" class="report-select" (change)="item.selected = $event.checked"></mat-checkbox>
-                  <mat-chip color="accent" selected>Pending</mat-chip>
+                  <mat-checkbox #checkBox color="primary" [disabled]="item.reportQueueStatusID !== 2" class="report-select" (change)="item.selected = $event.checked"></mat-checkbox>
+                  <mat-chip color="accent" selected>{{item.reportQueueStatus}}</mat-chip>
                 </mat-card-content>
               </mat-card>
             </div>

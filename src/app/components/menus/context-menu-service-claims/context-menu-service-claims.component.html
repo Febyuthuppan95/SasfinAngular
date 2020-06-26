@@ -1,5 +1,5 @@
 <a (click)="ClaimPermits()" *ngIf="this.serviceName === '521' && this.status === 'Created'" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Assign Permits</span></a>
-<a *ngIf="(this.permitCount > 0 && this.status === 'Created') || (this.serviceName === '522' && this.status === 'Created')"
+<a *ngIf="this.status === 'Created' && ((this.permitCount > 0 && this.serviceName === '521') || (this.serviceName !== '521'))"
     (click)="Populate()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Populate</span></a>
 
 <a *ngIf="this.status !== 'Created'" (click)="Reports()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Reports</span></a>

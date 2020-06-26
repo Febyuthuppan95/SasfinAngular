@@ -35,8 +35,11 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   @Output() reportscompanyService = new EventEmitter<number>();
   @Output() addClaimPermits = new EventEmitter<number>();
   @Output() submit522Claim = new EventEmitter<number>();
-
+populate = false;
   ngOnInit() {
+    
+    
+    
   }
 
   Populate() {
