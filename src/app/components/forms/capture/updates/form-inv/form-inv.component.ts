@@ -233,7 +233,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
-      this.form.controls.invoiceDate.setValue(new Date(res.invoices[0].invoiceDate));
+
+      const invoiceDate = new Date(res.invoices[0].invoiceDate);
+
+      if (invoiceDate.getFullYear() < 2000) {
+        invoiceDate.setFullYear(2020);
+      }
+
+      this.form.controls.invoiceDate.setValue(invoiceDate);
+
       this.errors = res.attachmentErrors.attachmentErrors;
 
       Object.keys(this.form.controls).forEach(key => {
