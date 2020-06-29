@@ -122,8 +122,8 @@ export class PreviewReportsComponent implements OnInit {
   }
 
   loaded() {
-    const advertismentContainer = document.getElementsByClassName('pdfViewer');
-    advertismentContainer.item(advertismentContainer.length - 1).remove();
+    // const advertismentContainer = document.getElementsByClassName('pdfViewer');
+    // advertismentContainer.item(advertismentContainer.length - 1).remove();
   }
 
   onFileChange(evt: any) {
