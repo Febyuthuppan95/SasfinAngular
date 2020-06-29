@@ -103,14 +103,14 @@ export class ViewPermitsListComponent implements OnInit {
         tag: 'PermitCode'
       }
     },
-    {
-      title: 'Permit Reference',
-      propertyName: 'permitReference',
-      order: {
-        enable: true,
-        tag: 'PermitReference'
-      }
-    },
+    // {
+    //   title: 'Permit Reference',
+    //   propertyName: 'permitReference',
+    //   order: {
+    //     enable: true,
+    //     tag: 'PermitReference'
+    //   }
+    // },
     {
       title: 'Start Date',
       propertyName: 'dateStart',
