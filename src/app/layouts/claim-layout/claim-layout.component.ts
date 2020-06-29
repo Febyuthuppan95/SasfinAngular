@@ -220,22 +220,21 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
   initService() {
-    this.showMain = false;
+    this.showMain = true;
     console.log(this.currentClaim);
-    if (this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID > 0) {
-      this.showMain = true;
-    } else if (this.currentClaim.serviceName !== '538') {
-      this.showMain = true;
-    }
-  }
-  initServiceType() {
-    if(this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID ===0) {
+    if (this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID < 1) {
       this.showMain = false;
-    } else {
-      this.showMain = true;
-    }
-   // this.showMain =this.currentClaim.serviceName === '538' ? false : true;
+    } 
+    
   }
+  // initServiceType() {
+  //   if(this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID ===0) {
+  //     this.showMain = false;
+  //   } else {
+  //     this.showMain = true;
+  //   }
+  //  // this.showMain =this.currentClaim.serviceName === '538' ? false : true;
+  // }
   async loadDataSets() {
     this.loading = true;
     await this.loadMainDataSet();
@@ -674,7 +673,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'mrn'
             },
-            position: 3
+            position: 4
           },
           {
             title: 'Item',
@@ -683,7 +682,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'name'
             },
-            position: 4
+            position: 3
           },
           {
             title: 'Import HS Quantity',
@@ -692,7 +691,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'importhsquantity'
             },
-            position: 5
+            position: 4
           },
           // {
           //   title: 'Avail Exp Quantity',
@@ -1009,7 +1008,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 1
           },
           {
-            title: 'IDSecond',
+            title: 'IDsecond',
             propertyName: 'prccid',
             order: {
               enable: true,
@@ -1324,13 +1323,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       (res: ListReadResponse) => {
        console.log(res);
        if(res.rowCount > 0) {
-        if(res.data[0].SAD500ID > 0) {
+        if(res.data[0].SAD500ID === 0) {
+          this.showMain = false; // Show SAD0500's
+         
+          // this.loadSADLineSet();
+         } else {
           this.currentClaim.sad500ID = res.data[0].SAD500ID;
           console.log(this.currentClaim);
           this.showMain = true; // Show SAD500 Lines
-          // this.loadSADLineSet();
-         } else {
-           this.showMain = false; // Show SAD0500's
          }
        }
        this.loadMainDataSet();
