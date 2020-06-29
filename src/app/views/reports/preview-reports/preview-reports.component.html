@@ -40,7 +40,8 @@
               [(src)]="selectedReport"
               [render-text]="true"
               [autoresize]="false"
-              [fit-to-page]="false">
+              [fit-to-page]="false"
+              (after-load-complete)="loaded()">
             </pdf-viewer>
           </ng-container>
 
