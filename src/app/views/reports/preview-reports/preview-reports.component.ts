@@ -11,6 +11,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
 import {convertToHtml} from "mammoth";
+import { Router } from '@angular/router';
 
 type AOA = any[][];
 
@@ -27,6 +28,7 @@ export class PreviewReportsComponent implements OnInit {
     private reportService: ReportsService,
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
+    private router: Router
   ) { }
 
   reports: ServiceClaimReport[] = [];
@@ -81,6 +83,9 @@ export class PreviewReportsComponent implements OnInit {
 
       }
     );
+  }
+  back() {
+    this.router.navigate(['companies', 'serviceclaims']);
   }
   getSingleReport(rep: ServiceClaimReport) {
     console.log(this.claimReport);

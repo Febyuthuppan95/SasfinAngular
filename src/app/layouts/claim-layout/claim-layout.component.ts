@@ -95,6 +95,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   filterS = true;
   filterB = false;
   loading = false;
+  importLabel = "Available Imports";
   // User
   currentUser: User;
   currentClaim: SelectedCompanyClaim;
@@ -228,14 +229,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     } 
     
   }
-  // initServiceType() {
-  //   if(this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID ===0) {
-  //     this.showMain = false;
-  //   } else {
-  //     this.showMain = true;
-  //   }
-  //  // this.showMain =this.currentClaim.serviceName === '538' ? false : true;
-  // }
   async loadDataSets() {
     this.loading = true;
     await this.loadMainDataSet();
@@ -270,7 +263,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         this.claimRequestParams = this.formBuilder.group({
           LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           ClaimDate: ['', { validators: [Validators.required] , updateOn: 'blur'}],
-          Duty: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+          DutyPercentage: ['', { validators: [Validators.required] , updateOn: 'blur'}]
         });
         break;
       }
@@ -519,6 +512,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 8
           }
         ];
+        this.importLabel = "Available Imports";
         break;
       }
       case '536': {
@@ -1063,6 +1057,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 7
           }
         ];
+        this.importLabel = "Available SAD500 Lines";
         break;
       }
       case '522': {
@@ -1236,28 +1231,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     }
 
   }
-  // initTableDataTypes() {
-  //   switch(this.currentClaim.serviceName) {
-  //     case '521': {
-  //       this.data = new Array<Import>();
-  //       this.dataLinesAvailable = new Array<Export>();
-  //       this.dataLinesAssigned= new Array<Export>();
-  //       break;
-  //     }
-  //     case '536': {
-  //       this.data = new Array<Import>();
-  //       this.dataLinesAvailable = new Array<Export>();
-  //       this.dataLinesAssigned= new Array<Export>();
-  //       break;
-  //     }
-  //     case '538': {
-  //       this.data = new Array<Import>();
-  //       this.dataLinesAvailable = new Array<Export>();
-  //       this.dataLinesAssigned= new Array<Export>();
-  //       break;
-  //     }
-  //   }
-  // }
   async initClaimFormData() {
     this.loading = true;
     const model = {
@@ -1272,7 +1245,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
 
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-      (res: any) => {
+      (res: ListReadResponse) => {
+        console.log(res);
         let objectKeys: string[];
         let objectValues: string[];
         res.data.forEach(obj => {
@@ -1330,6 +1304,21 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           // this.loadSADLineSet();
          } else {
           this.currentClaim.sad500ID = res.data[0].SAD500ID;
+          let objectKeys: string[];
+        let objectValues: string[];
+        res.data.forEach(obj => {
+
+          objectKeys = Object.keys(obj);
+          objectValues = Object.values(obj);
+
+          objectKeys.forEach((element: string, i:number) => {
+            if (this.claimRequestParams.get(element) !== null
+            && this.claimRequestParams.get(element) !== undefined) {
+              this.claimRequestParams.get(element).setValue(objectValues[i]);
+            }
+
+          });
+        });
           console.log(this.currentClaim);
           this.showMain = true; // Show SAD500 Lines
          }
@@ -1431,13 +1420,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
         if (res.outcome.outcome === 'SUCCESS') {
-          // if(this.selectedA === null || this.selectedA === undefined) {
-          //   this.snackbar.open('Successfully Retrieved SAD500 Line Imports', res.outcome.outcome, {
-          //     duration: 3000,
-          //     panelClass: 'claim-snackbar-success',
-          //     horizontalPosition: 'center',
-          //   });
-          // }
           this.pageA.length = res.rowCount;
           this.data = res.data;
           this.showMain = true;
@@ -1529,21 +1511,17 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
    */
   rowEventB($event) {
     const lineData = JSON.parse($event);
-    // this.selectedA = lineData.lineA; // Import cjid
+    
     this.selectedB = lineData.lineB; // Export cjid
 
     this.selectedC = lineData.lineC;
-
-    // this.selectedC = lineData.lineC;
-    // this.selectedD = lineData.lineD; // Assign Line Quantity
     this.updateTopChild();
   }
 
   rowEventC($event) {
     const lineData = JSON.parse($event)
-    // SelectedA = importCJID
+    console.log(lineData);
     this.selectedB = lineData.lineA; // Export List CJID
-    // this.selectedC = lineData.lineC;
     this.selectedD = lineData.lineD; // Export Line Quantity
     this.updateBottomChild();
   }
@@ -1593,8 +1571,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         isDeleted: 1
       },
       requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
-
     };
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/line`, model).then(
       (res: Outcome) => {
         if(res.outcome === 'SUCCESS') {
@@ -1670,7 +1648,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
   async updateBottomChild() {
     this.loading = true;
-    let model = {};
+    let model = null;
+    console.log(this.currentClaim.serviceName);
     switch(this.currentClaim.serviceName) {
       case '521': {
         model = {
@@ -1714,6 +1693,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
+
+        break;
       }
       case '522': {
         model = {
@@ -1727,11 +1708,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           requestProcedure: `CompanyServiceClaimLineAdd${this.currentClaim.serviceName}`
         };
+
+        break;
       }
     }
-
+    console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
       (res: Outcome) => {
+        console.log(res);
         if(res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Assigned', res.outcome, {
             duration: 3000,
