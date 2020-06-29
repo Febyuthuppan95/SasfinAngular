@@ -61,7 +61,7 @@
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
-          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID, file.file, file.statusID, file.fileType, file.fileTypeID); setClickedRow(i)" [class.active]="i == selectedRow">
+          <tr *ngFor="let file of dataList; let i=index" class="userRecord" (click)="popClick($event, file.attachmentID, file.file, file.statusID, file.fileType, file.fileTypeID, file.reason); setClickedRow(i)" [class.active]="i == selectedRow">
             <td>{{file.rowNum}}</td>
             <td>{{file.name}}</td>
             <td>{{file.fileType}}</td>
@@ -186,5 +186,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" (removeAttachment)="removeAttachment($event)" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID" [transactionType]="this.transactionType" [statusID]="this.focusStatusID" [fileType]="this.focusType" [fileTypeID]="this.focusFileType" ></app-context-menu-transaction-attachment>
+<app-context-menu-transaction-attachment [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" (removeAttachment)="removeAttachment($event)" [docPath]="focusPath" [attachmentID]="focusHelp" [transactionID]="this.transactionID" [transactionType]="this.transactionType" [statusID]="this.focusStatusID" [fileType]="this.focusType" [fileTypeID]="this.focusFileType" [reason]="focusReason"></app-context-menu-transaction-attachment>
 </div>

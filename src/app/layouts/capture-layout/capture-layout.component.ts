@@ -469,7 +469,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.themeService.toggleHelp();
 
     if (this.bottomSheet) {
-      this.bottomSheet.close();
+      try {
+        this.bottomSheet.close();
+      } catch {
+        // Nothing required
+      }
     }
   }
 
