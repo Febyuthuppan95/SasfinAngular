@@ -441,19 +441,19 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
-            propertyName: 'cjid',
+            propertyName: 'itemid',
             order: {
               enable: true,
-              tag: 'cjid'
+              tag: 'itemid'
             },
             position: 1
           },
           {
             title: 'IDsecond',
-            propertyName: 'itemid',
+            propertyName: 'cjid',
             order: {
               enable: true,
-              tag: 'itemid'
+              tag: 'cjid'
             },
             position: 2
           },
@@ -736,19 +736,19 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           },
           {
             title: 'IDfirst',
-            propertyName: 'oemsupplyid',
+            propertyName: 'itemid',
             order: {
               enable: true,
-              tag: 'oemsupplyid'
+              tag: 'itemid'
             },
             position: 1
           },
           {
             title: 'IDsecond',
-            propertyName: 'itemid',
+            propertyName: 'oemsupplyid',
             order: {
               enable: true,
-              tag: 'itemid'
+              tag: 'oemsupplyid'
             },
             position: 2
           },
@@ -1153,13 +1153,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 2
           },
           {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 3
+          },
+          {
             title: 'Product Code',
             propertyName: 'name',
             order: {
               enable: true,
               tag: 'name'
             },
-            position: 3
+            position: 4
           },
           {
             title: 'Quantity',
@@ -1168,7 +1177,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'quantity'
             },
-            position: 4
+            position: 5
           }
         ];
         this.headingsC = [
@@ -1521,7 +1530,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   rowEventC($event) {
     const lineData = JSON.parse($event)
     console.log(lineData);
-    this.selectedB = lineData.lineA; // Export List CJID
+    this.selectedB = lineData.lineB; // Export List CJID
     this.selectedD = lineData.lineD; // Export Line Quantity
     this.updateBottomChild();
   }
