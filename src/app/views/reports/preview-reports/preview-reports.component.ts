@@ -114,10 +114,16 @@ export class PreviewReportsComponent implements OnInit {
   buildGetLink(rep: ServiceClaimReport) {
     console.log(rep);
     // tslint:disable-next-line: max-line-length
-    if(rep.reportQueueStatusID === 2) {
+    if (rep.reportQueueStatusID === 2) {
+      // tslint:disable-next-line: max-line-length
       this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/${this.claimReport.claimNumber}/${this.claimReport.companyID}/${rep.serviceName}`;
     }
-    
+
+  }
+
+  loaded() {
+    const advertismentContainer = document.getElementsByClassName('pdfViewer');
+    advertismentContainer.item(advertismentContainer.length - 1).remove();
   }
 
   onFileChange(evt: any) {
