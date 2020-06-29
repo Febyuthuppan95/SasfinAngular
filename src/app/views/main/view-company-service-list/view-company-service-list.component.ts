@@ -120,6 +120,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   capturerIndex = 0;
   serviceIndex = 0;
   consultantIndex = 0;
+  tempLoaded = false;
 
   ResConsultants: ResponsibleConsultant[] = [];
   ResCapturers: ResponsibleCapturer[] = [];
@@ -133,6 +134,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   CapID: number;
   SerID: number;
   serviceslist: Service[] = [];
+  serviceslisttemp: Service[] = [];
   focusService: string;
   focusconsultant: number;
   focuscapturer: number;
@@ -279,8 +281,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
           this.loadServices(false);
           this.loadUsers();
-
-
         },
         msg => {
           this.showLoader = false;
@@ -292,7 +292,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       );
   }
 
-  loadUsers() {
+  async loadUsers() {
     const model: GetUserList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -302,7 +302,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       orderBy: this.orderBy,
       orderDirection: this.orderDirection
     };
-    this.userService
+    await this.userService
       .getUserList(model)
       .then(
         (res: UserListResponse) => {
@@ -335,7 +335,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
       );
   }
 
-  loadServices(displayGrowl: boolean) {
+  async loadServices(displayGrowl: boolean) {
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -347,20 +347,29 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
     };
 
-    this.ServiceService
+    await this.ServiceService
     .getServiceList(model)
     .then(
       (res: ServiceListResponse) => {
-
           this.serviceslist = res.serviceses;
+
+          if (!this.tempLoaded) {
+            this.serviceslisttemp = res.serviceses;
+          }
 
           this.dataList.forEach(Cservice => {
             this.serviceslist.forEach((service, index) => {
-              if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
-                this.serviceslist.splice(index, 1);
-              }
-            });
-        });
+                if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
+                  this.serviceslist.splice(index, 1);
+
+                  if (!this.tempLoaded) {
+                    this.serviceslisttemp.splice(index, 1);
+                  }
+                }
+              });
+          });
+
+          this.tempLoaded = true;
       }
     );
   }
@@ -414,13 +423,8 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, CSid, id, service, consultant, capturer, start, end) {
-    if (this.sidebarCollapsed) {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    } else {
-      this.contextMenuX = event.clientX + 3;
-      this.contextMenuY = event.clientY + 5;
-    }
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
 
     this.focuscompserviceID = CSid;
     this.focusServiceID = id;
@@ -446,13 +450,32 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   popOff() {
     this.contextMenu = false;
     this.selectedRow = -1;
+
+    this.focuscompserviceID = undefined;
+    this.focusServiceID = undefined;
+    this.focusService = undefined;
+    this.focusconsultant = undefined;
+    this.focuscapturer = undefined;
+    this.focusstart = undefined;
+    this.focusend = undefined;
+
+    this.loadUsers();
+    this.loadServices(false);
   }
   setClickedRow(index) {
     this.selectedRow = index;
   }
 
 
-  Add() {
+ Add() {
+    this.focuscompserviceID = undefined;
+    this.focusServiceID = undefined;
+    this.focusService = undefined;
+    this.focusconsultant = undefined;
+    this.focuscapturer = undefined;
+    this.focusstart = undefined;
+    this.focusend = undefined;
+
     this.myInputVariable1.nativeElement.value = -1;
     this.myInputVariable2.nativeElement.value = -1;
     this.myInputVariable3.nativeElement.value = -1;
@@ -464,6 +487,7 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     this.serviceIndex = 0;
     this.capturerIndex = 0;
     this.consultantIndex = 0;
+    this.focusServiceID = -1;
 
     if (this.serviceslist.length > 0) {
       this.openaddModal.nativeElement.click();
@@ -486,16 +510,6 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.SerID === -1) {
       error++;
     }
-    // if (this.StartDate === null || this.StartDate.toString() === '') {
-    //   error++;
-    // }
-    // if (this.EndDate === null || this.EndDate.toString() === '') {
-    //   error++;
-    // }
-    // if (new Date(this.StartDate) > new Date(this.EndDate) && this.EndDate != null ) {
-    //   error++;
-    //   this.notify.toastrwarning('Error', 'End date cannot be before start date');
-    // }
 
     if (error === 0) {
       const requestModel: AddCompanyService = {

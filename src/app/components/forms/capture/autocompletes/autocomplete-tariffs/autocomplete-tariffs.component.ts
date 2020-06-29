@@ -66,11 +66,17 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   load(setDefault?: boolean) {
+    let filter = '';
+
+    if (this.query.value && this.query.value !== null) {
+      filter = this.query.value;
+    }
+
     this.tariffService
     .list({
       userID: this.currentUser.userID,
       specificTariffID: -1,
-      filter: this.query.value,
+      filter,
       rowStart: 1,
       rowEnd: 10,
     })
