@@ -309,7 +309,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+        claimDate: this.selectedClaimDate,
         companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
         companyID: this.companyID
       },
@@ -318,7 +318,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
       (res : UpdateResponse ) => {
-        this.updateClaimStatus();
+        // this.updateClaimStatus();
       },
       msg => {
         this.showLoader = false;
