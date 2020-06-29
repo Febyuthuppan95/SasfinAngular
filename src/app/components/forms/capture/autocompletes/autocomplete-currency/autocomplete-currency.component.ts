@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
@@ -11,7 +11,7 @@ import { Currency } from 'src/app/models/HttpResponses/Currency';
   templateUrl: './autocomplete-currency.component.html',
   styleUrls: ['./autocomplete-currency.component.scss']
 })
-export class AutocompleteCurrencyComponent implements OnInit, OnDestroy {
+export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
               private currencyService: CurrenciesService) { }
 
@@ -20,6 +20,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy {
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Currency[] = [];
+  private isRequired = false;
 
   public list: Currency[] = [];
   public query = new FormControl();
@@ -30,25 +31,52 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy {
       this.control = new FormControl();
     }
 
-    this.control.valueChanges.subscribe((val) => {
-      if (val === null) {
-        this.query.reset(null);
-        this.load(true);
-      } else {
-        this.load(true);
-      }
-    });
+    this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
 
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
-      const query: string = value;
 
-      if (query && query !== null) {
-        this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.query.value.toUpperCase()}*`));
+      if (value) {
+        if (value.code) {
+          this.control.setValue(value.currencyID);
+          this.query.setErrors(null);
+        } else {
+          const query: string = value;
+          if (query && query !== null) {
+            console.log(query);
+            this.list = this.list.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+
+          this.control.reset(null);
+          this.query.setErrors({ incorrect: true });
+        }
       }
     });
+  }
+
+  ngOnChanges() {
+    this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    if (this.control.value === null) {
+      this.query.reset(null);
+      this.load(true);
+    } else {
+      this.load(true);
+    }
   }
 
   load(setDefault?: boolean) {
@@ -76,7 +104,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy {
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.name}` : '';
+    return item ? `${item.code}, ${item.name}` : '';
   }
 
   ngOnDestroy(): void {}

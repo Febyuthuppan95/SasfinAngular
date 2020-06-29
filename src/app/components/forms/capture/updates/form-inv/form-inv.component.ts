@@ -26,8 +26,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./form-inv.component.scss']
 })
 export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
-  constructor(private transactionService: TransactionService,
-              private captureService: CaptureService,
+  constructor(private captureService: CaptureService,
               private userService: UserService,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
@@ -72,7 +71,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.load();
     }
   }
-  public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
+
+  public submissionEvent =
+    (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved)
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -92,25 +93,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       invoiceNoOReason: new FormControl(null),
     });
 
-    // this.transactionService.observerCurrentAttachment()
-    // .subscribe((capture: any) => {
-    //   if (capture) {
-    //     console.log(capture);
-    //     this.attachmentID = capture.attachmentID;
-    //     this.transactionID = capture.transactionID;
-    //     this.attachmentLabel = capture.docType;
-    //     this.transactionLabel = capture.transactionType;
-    //     this.load();
-    //   }
-    // });
-
     this.companyService.observeCompany()
       .subscribe(res => {
         this.companyID = res.companyID;
       });
-
-    // this.eventService.observeCaptureEvent()
-    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
