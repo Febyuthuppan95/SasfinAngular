@@ -24,7 +24,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   constructor(private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService
-    ) { 
+    ) {
       this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.activePage = +1;
@@ -248,7 +248,17 @@ export class ViewCompanyOemListComponent implements OnInit {
     );
   }
   AddCompanyOEM() {
-    console.log(this.OEM);
+    let error = 0;
+
+    if (!this.OEM.OEMName || this.OEM.OEMName === null || this.OEM.OEMName === '') {
+      error++;
+    }
+
+    if (!this.OEM.OEMRefNum || this.OEM.OEMRefNum === null || this.OEM.OEMRefNum === '') {
+      error++;
+    }
+
+    if (error === 0) {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
@@ -260,7 +270,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     };
     // company service api call
     this.companyService.companyOEMAdd(model).then(
-      (res:Outcome) => {
+      (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
@@ -287,8 +297,25 @@ export class ViewCompanyOemListComponent implements OnInit {
         );
       }
     );
+    } else {
+      this.notify.toastrwarning(
+        'Warning',
+        'Please fill in all fields'
+      );
+    }
   }
   EditCompanyOEM(deleted?: boolean) {
+    let error = 0;
+
+    if (!this.OEM.OEMName || this.OEM.OEMName === null || this.OEM.OEMName === '') {
+      error++;
+    }
+
+    if (!this.OEM.OEMRefNum || this.OEM.OEMRefNum === null || this.OEM.OEMRefNum === '') {
+      error++;
+    }
+
+    if (error === 0) {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
@@ -329,6 +356,12 @@ export class ViewCompanyOemListComponent implements OnInit {
         );
       }
     );
+  } else {
+    this.notify.toastrwarning(
+      'Warning',
+      'Please fill in all fields'
+    );
+  }
   }
   pageChange(obj: PaginationChange) {
     console.log(obj);
