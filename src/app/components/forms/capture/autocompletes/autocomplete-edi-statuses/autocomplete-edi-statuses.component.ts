@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './autocomplete-edi-statuses.component.html',
   styleUrls: ['./autocomplete-edi-statuses.component.scss']
 })
-export class AutocompleteEdiStatusesComponent implements OnInit {
+export class AutocompleteEdiStatusesComponent implements OnInit, OnChanges {
 
 constructor(private userService: UserService,
             private captureService: CaptureService) { }
@@ -19,6 +19,7 @@ constructor(private userService: UserService,
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
+  private isRequired = false;
 
   public list: any[] = [];
   public query = new FormControl();
@@ -29,25 +30,45 @@ constructor(private userService: UserService,
       this.control = new FormControl();
     }
 
-    this.control.valueChanges.subscribe((val) => {
-      if (val === null) {
-        this.query.reset(null);
-        this.load(true);
-      } else {
-        this.load(true);
-      }
-    });
+    this.isRequired = this.control.validator !== null;
 
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
-      const query: string = value;
 
-      if (query && query !== null) {
-        this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+      if (value) {
+        if (value.EDIStatusID) {
+          this.control.setValue(value.EDIStatusID);
+          this.query.setErrors(null);
+        } else {
+          const query: string = value;
+          if (query && query !== null) {
+            this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+
+          this.control.reset(null);
+          this.query.setErrors({ incorrect: true });
+        }
       }
     });
+  }
+
+  ngOnChanges() {
+    this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    if (this.control.value === null) {
+      this.query.reset(null);
+      this.load(true);
+    } else {
+      this.load(true);
+    }
   }
 
   load(setDefault?: boolean) {

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
@@ -13,7 +13,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   templateUrl: './autocomplete-cpc.component.html',
   styleUrls: ['./autocomplete-cpc.component.scss']
 })
-export class AutocompleteCPCComponent implements OnInit, OnDestroy {
+export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
               private apiService: ApiService) { }
 
@@ -22,35 +22,57 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy {
 
   private currentUser = this.userService.getCurrentUser();
   private cpcListTemp: any [] = [];
+  private isRequired = false;
 
   public cpcList: any [] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
 
   ngOnInit() {
-
     if (!this.control) {
       this.control = new FormControl();
     }
 
-    this.control.valueChanges.subscribe((val) => {
-      if (val === null) {
-        this.query.reset(null);
-        this.loadCPC(true);
-      } else {
-        this.loadCPC(true);
-      }
-    });
+    this.isRequired = this.control.validator !== null;
 
     this.loadCPC(true);
 
     this.query.valueChanges.subscribe((value) => {
       this.cpcList = this.cpcListTemp;
 
-      if (value && value !== null && value !== '') {
-        this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${value.toUpperCase()}*`));
+      if (value) {
+        if (value.CPCID) {
+          this.control.setValue(value.CPCID);
+          this.query.setErrors(null);
+        } else {
+          const query: string = value;
+          if (query && query !== null) {
+            console.log(query);
+            this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+
+          this.control.reset(null);
+          this.query.setErrors({ incorrect: true });
+        }
       }
     });
+  }
+
+  ngOnChanges() {
+    this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    if (this.control.value === null) {
+      this.query.reset(null);
+      this.loadCPC(true);
+    } else {
+      this.loadCPC(true);
+    }
   }
 
   loadCPC(setDefault?: boolean) {

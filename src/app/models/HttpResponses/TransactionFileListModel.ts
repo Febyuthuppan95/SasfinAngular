@@ -20,4 +20,5 @@ export class TransactionFile {
   current?: boolean;
   issueID?: number;
   resolved?: boolean;
+  reason?: string;
 }

@@ -125,6 +125,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               private apiService: ApiService,
               private userService: UserService,
               private claimService: ServicesService,
+              private companyService: CompanyService,
               private snackbar: MatSnackBar,
               private router: Router) {
       this.lookBackDays.push(
@@ -673,7 +674,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'mrn'
             },
-            position: 4
+            position: 3
           },
           {
             title: 'Item',
@@ -682,7 +683,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'name'
             },
-            position: 3
+            position: 4
           },
           {
             title: 'Import HS Quantity',
@@ -691,7 +692,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               enable: true,
               tag: 'importhsquantity'
             },
-            position: 4
+            position: 5
           },
           // {
           //   title: 'Avail Exp Quantity',
@@ -1752,17 +1753,49 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
   async updateClaimLines() {
+let model = {};
+    if(this.currentClaim.serviceName === '521') {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          usageTypeID: 1
+        },
+        requestProcedure: 'UsageAdd'
+      };
+    } else {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        },
+        requestProcedure: `CompanyServiceClaimLineUsed${this.currentClaim.serviceName}`
+      };
+    }
     this.loading = true;
-    const model ={
-      requestParams: {
-        userID: this.currentUser.userID,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-      },
-      requestProcedure: `UpdateCompanyServiceClaimLinesUsed${this.currentClaim.serviceName}`
-    };
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
       (res: Outcome) => {
-        this.updateClaimStatus();
+        if (res.outcome === 'SUCCESS') {
+          this.snackbar.open('Claim Submitted and sent for reporting. Please wait to be redirected..', res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          }).afterDismissed().subscribe(() =>{
+            this.companyService.setClaimReport({
+              companyID: this.currentClaim.companyID, 
+              companyName: this.currentClaim.companyName, 
+              companyServiceID: this.currentClaim.serviceID, 
+              claimNumber: this.currentClaim.companyServiceClaimID, 
+              serviceName: this.currentClaim.serviceName});
+            this.router.navigate(['claim','reports']);
+          });
+        } else {
+          this.snackbar.open(res.outcomeMessage, res.outcome, {
+            duration: 3000,
+            panelClass: ['claim-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+        }
       },
       msg => {
 
@@ -1812,6 +1845,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.loadMainDataSet();
   }
   paginateA($event) {
+    console.log($event);
     this.pageA = $event;
     this.loadMainDataSet();
   }

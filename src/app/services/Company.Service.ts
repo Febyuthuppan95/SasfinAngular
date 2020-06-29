@@ -1283,11 +1283,11 @@ export class SelectedPermit {
 }
 
 export class SelectedClaimReport {
-  companyServiceID: number;
+  companyServiceID?: number;
   companyID: number;
   companyName: string;
   claimNumber: number;
-  serviceId: number;
+  serviceId?: number;
   serviceName: string;
 }
 

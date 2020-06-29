@@ -115,6 +115,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   focusDescription: string;
   focusStatusID: number;
   focusType: string;
+  focusReason: string;
 
   noData = false;
   showLoader = true;
@@ -395,7 +396,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, fileName, statusID, doctype?, fileTypeID?) {
+  popClick(event, id, fileName, statusID, doctype?, fileTypeID?, reason?) {
 
     console.log(doctype);
     console.log(fileTypeID);
@@ -412,6 +413,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.focusPath = fileName;
     this.focusStatusID = statusID;
     this.focusFileType = fileTypeID;
+    this.focusReason = reason;
     this.focusType = this.transactionTypes.find(x => x.value === fileTypeID).name;
 
     if (!this.contextMenu) {

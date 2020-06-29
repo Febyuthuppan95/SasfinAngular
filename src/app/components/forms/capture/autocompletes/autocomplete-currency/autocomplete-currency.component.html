@@ -3,8 +3,10 @@
     Currency
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
+  <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
+  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected</mat-error>
 </mat-form-field>
-<mat-autocomplete #cpcAuto="matAutocomplete" (optionSelected)="control.setValue($event.option.value.currencyID)" [displayWith]="displayFn">
+<mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
   <mat-option *ngFor="let item of list" [value]="item">
     {{item.code}}, {{item.name}}
   </mat-option>

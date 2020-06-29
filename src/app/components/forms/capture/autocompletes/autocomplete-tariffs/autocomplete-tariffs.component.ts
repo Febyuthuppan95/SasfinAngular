@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TariffService } from 'src/app/services/Tariff.service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 
@@ -18,6 +18,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   @Input() appearance = 'fill';
 
   private currentUser = this.userService.getCurrentUser();
+  private isRequired = false;
 
   public list: any [] = [];
   public query = new FormControl('');
@@ -27,32 +28,55 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
       this.control = new FormControl();
     }
 
-    this.control.valueChanges.subscribe((val) => {
-      if (val === null) {
-        this.query.reset('');
-        this.load(true);
-      } else {
-        this.load(true);
-      }
-    });
+    this.isRequired = this.control.validator !== null;
 
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
-      this.load();
+      if (value) {
+        if (value.id) {
+          this.control.setValue(value.id);
+          this.query.setErrors(null);
+          this.control.setErrors(null);
+        } else {
+          this.load(false);
+          this.control.reset(null);
+          this.query.setErrors({ incorrect: true });
+          this.control.setErrors({ incorrect: true });
+        }
+      }
     });
   }
 
   ngOnChanges() {
+    this.isRequired = this.control.validator !== null;
 
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    if (this.control.value === null) {
+      this.query.reset(null);
+      this.load(true);
+    } else {
+      this.load(true);
+    }
   }
 
   load(setDefault?: boolean) {
+    let filter = '';
+
+    if (this.query.value && this.query.value !== null) {
+      filter = this.query.value;
+    }
+
     this.tariffService
     .list({
       userID: this.currentUser.userID,
       specificTariffID: -1,
-      filter: this.query.value,
+      filter,
       rowStart: 1,
       rowEnd: 10,
     })
