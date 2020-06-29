@@ -318,7 +318,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
       (res : UpdateResponse ) => {
-        // this.updateClaimStatus();
+        this.closeCreate522Modal.nativeElement.click();
+        this.updateClaimStatus();
       },
       msg => {
         this.showLoader = false;
@@ -385,7 +386,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     );
   }
   updateClaimStatus() {
-    const model ={
+    const model = {
       requestParams: {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
