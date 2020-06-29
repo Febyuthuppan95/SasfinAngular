@@ -119,11 +119,17 @@ export class PreviewReportsComponent implements OnInit {
       this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/${this.claimReport.claimNumber}/${this.claimReport.companyID}/${rep.serviceName}`;
     }
 
-  }
+  }*
 
   loaded() {
-    // const advertismentContainer = document.getElementsByClassName('pdfViewer');
-    // advertismentContainer.item(advertismentContainer.length - 1).remove();
+    const advertismentContainer = document.getElementsByClassName('pdfViewer');
+
+    // if (advertismentContainer.length > 1) {
+
+    // }
+    const child = advertismentContainer.item[advertismentContainer.length - 1];
+    console.log(child);
+    // // child.remove();
   }
 
   onFileChange(evt: any) {
