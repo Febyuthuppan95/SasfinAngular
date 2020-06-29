@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { IncoTerm, IncoTermTypesReponse } from '../../form-invoice/form-invoice.component';
 import { CaptureService } from 'src/app/services/capture.service';
 
@@ -10,7 +10,7 @@ import { CaptureService } from 'src/app/services/capture.service';
   templateUrl: './autocomplete-inco.component.html',
   styleUrls: ['./autocomplete-inco.component.scss']
 })
-export class AutocompleteIncoComponent implements OnInit, OnDestroy {
+export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
               private captureService: CaptureService) { }
 
@@ -19,6 +19,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy {
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: IncoTerm[] = [];
+  private isRequired = false;
 
   public list: IncoTerm[] = [];
   public query = new FormControl();
@@ -28,6 +29,8 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy {
     if (!this.control) {
       this.control = new FormControl();
     }
+
+    this.isRequired = this.control.validator !== null;
 
     this.control.valueChanges.subscribe((val) => {
       if (val === null) {
@@ -42,13 +45,42 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy {
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
-      const query: string = value;
 
-      if (query && query !== null) {
-        this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+      if (value) {
+        if (value.incoTermTypeID) {
+          this.control.setValue(value.incoTermTypeID);
+          this.query.setErrors(null);
+          this.control.setErrors(null);
+        } else {
+          const query: string = value;
+          if (query && query !== null) {
+            this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+
+          this.control.reset(null);
+          this.query.setErrors({ incorrect: true });
+          this.control.setErrors({ incorrect: true });
+        }
       }
     });
   }
+
+  ngOnChanges() {
+    this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    if (this.control.value === null) {
+      this.query.reset(null);
+      this.load(true);
+    } else {
+      this.load(true);
+    }
+ }
 
   load(setDefault?: boolean) {
 

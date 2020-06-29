@@ -194,7 +194,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
       this.transationService.listAttatchments(model)
         .then((res: TransactionFileListResponse) => {
-          if (res.attachments.filter(x => x.statusID === 2).length === res.attachments.length) {
+          if (res.attachments.filter(x => x.statusID === 3).length === res.attachments.length && res.attachments.length > 0) {
             item.sendAll = true;
           } else {
             item.sendAll = false;
