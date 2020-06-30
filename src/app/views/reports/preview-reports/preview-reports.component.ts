@@ -11,6 +11,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
 import {convertToHtml} from "mammoth";
+import { Router } from '@angular/router';
 
 type AOA = any[][];
 
@@ -27,6 +28,7 @@ export class PreviewReportsComponent implements OnInit {
     private reportService: ReportsService,
     private sanitizer: DomSanitizer,
     private apiService: ApiService,
+    private router: Router
   ) { }
 
   reports: ServiceClaimReport[] = [];
@@ -82,6 +84,9 @@ export class PreviewReportsComponent implements OnInit {
       }
     );
   }
+  back() {
+    this.router.navigate(['companies', 'serviceclaims']);
+  }
   getSingleReport(rep: ServiceClaimReport) {
     console.log(this.claimReport);
   // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
@@ -119,11 +124,17 @@ export class PreviewReportsComponent implements OnInit {
       this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/${this.claimReport.claimNumber}/${this.claimReport.companyID}/${rep.serviceName}`;
     }
 
-  }
+  }*
 
   loaded() {
     const advertismentContainer = document.getElementsByClassName('pdfViewer');
-    advertismentContainer.item(advertismentContainer.length - 1).remove();
+
+    // if (advertismentContainer.length > 1) {
+
+    // }
+    const child = advertismentContainer.item[advertismentContainer.length - 1];
+    console.log(child);
+    // // child.remove();
   }
 
   onFileChange(evt: any) {

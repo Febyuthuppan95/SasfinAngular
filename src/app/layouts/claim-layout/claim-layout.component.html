@@ -95,8 +95,8 @@
                                     <mat-datepicker #ClaimDate></mat-datepicker>
                                   </mat-form-field>
                                   <mat-form-field class="offset-md-1 col-md-2" *ngIf="this.currentClaim.serviceName ==='538'">
-                                    <mat-label>Duty%</mat-label>
-                                    <mat-select required formControlName="Duty">
+                                    <mat-label>Min Duty %</mat-label>
+                                    <mat-select required formControlName="DutyPercentage">
                                     <mat-option *ngFor="let duty of dutyPercentages" [value]="duty.value" >
                                         {{duty.value}}
                                     </mat-option>
@@ -140,7 +140,7 @@
             </div>
             <div class="bottom-section row" *ngIf="this.showMain">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
-                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Imports</button>
+                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">{{this.importLabel}}</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
                     [isPageable]="'true'"
