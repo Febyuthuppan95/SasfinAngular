@@ -343,7 +343,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
       requestParams: {
         userID: this.currentUser.userID,
         CompanyID: this.companyID,
-        StatusID : statusID,
+        StatusID : 1,
         BOMInput: BOMIn
       },
       requestProcedure: `BOMAdd`
