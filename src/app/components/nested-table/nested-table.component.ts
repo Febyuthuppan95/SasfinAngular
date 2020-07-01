@@ -95,15 +95,19 @@ export class NestedTableComponent implements OnInit, OnChanges {
         // Determine what values need to be displayed
         this.headings.forEach((heading) => { // 7 : 8x7 = 56
       
-          if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== null
-          && objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
+          // if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== null
+          // && objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
+            if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
             // Create object for new record array
             field = {
               key: heading,
-              value: objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)]
+              value: objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] === null 
+              ? "empty field" : objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)]
             };
             // Push object to record array
             record.push(field);
+          } else {
+
           }
         });
         // Record populated, pushing to displayData

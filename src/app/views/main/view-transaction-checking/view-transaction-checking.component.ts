@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -18,6 +18,7 @@ import { Pagination } from 'src/app/models/Pagination';
 import { TableHeading } from 'src/app/models/Table';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
+
 @Component({
   selector: 'app-view-transaction-checking',
   templateUrl: './view-transaction-checking.component.html',
@@ -32,6 +33,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   observedTransaction: Transaction;
   loading: boolean;
   childrenLoaded: boolean;
+  isOpen = false;
   /**Data Events */
  rowStart =1;
  rowEnd = 15;
@@ -222,6 +224,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
   /**View Children */
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+  @ViewChild('trigger', {static: false})
+  private trigger: ElementRef;
 
   constructor(
     private userService: UserService,
@@ -367,11 +371,15 @@ private unsubscribe = new Subject<void>();
         };
         this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
           (res:InvoiceLineRead) => {
+            this.loading = false;
             console.log(res);
             if(res.lines.length > 0) {
               invoices.push(res.lines[0]);
               console.log(this.AssignedInvoiceLines);
             } 
+          },
+          msg => {
+            this.loading = false;
           }
         );
       });
@@ -401,7 +409,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -422,7 +430,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -444,7 +452,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -490,9 +498,11 @@ private unsubscribe = new Subject<void>();
     console.log(this.step);
     this.getAssignedInvoiceLines(cust.CustomWorksheetID);
   }
+
   /**Datatable Events */
   InvoiceEvent($event) {
-    console.log($event);
+    this.trigger.nativeElement.click();
+    
   }
 }
 
