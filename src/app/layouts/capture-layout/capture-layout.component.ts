@@ -469,7 +469,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
     if (this.bottomSheet) {
       try {
-        this.bottomSheet.close();
+        this.bottomSheet.dismiss();
       } catch {
         // Nothing required
       }
