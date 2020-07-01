@@ -222,10 +222,11 @@ export class ViewCompanyOemListComponent implements OnInit {
     console.log(model);
     // company service api call
     this.companyService.companyOEMList(model).then(
-      (res:CompanyOEMList) => {
-        if (res.rowCount === 0) {
+      (res: CompanyOEMList) => {
+        if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
+          this.dataList = [];
         } else {
           this.noData = false;
           this.dataset = res;
@@ -234,7 +235,6 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
-          // this.paginateData();
         }
       },
       msg => {
@@ -362,6 +362,10 @@ export class ViewCompanyOemListComponent implements OnInit {
       'Please fill in all fields'
     );
   }
+  }
+
+  recordsPerPageChange($event) {
+
   }
   pageChange(obj: PaginationChange) {
     console.log(obj);

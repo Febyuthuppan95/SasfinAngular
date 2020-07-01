@@ -7,16 +7,16 @@
         </ng-container>
       </div>
       <app-table
-        *ngIf="this.dataList"
-        [(dataset)]="this.dataList"
-        [headings]="this.tableHeadings"
-        [(recordsPerPage)]="this.showingRecords"
-        [(rowStart)]="this.rowStart"
-        [(rowEnd)]="this.rowEnd"
-        [(rowCount)]="this.rowCount"
-        [orderBy]="this.orderBy"
-        [orderByDirection]="this.orderDirection"
-        [tableHeader]="this.tableHeader"
+        *ngIf="dataList"
+        [(dataset)]="dataList"
+        [headings]="tableHeadings"
+        [(recordsPerPage)]="showingRecords"
+        [(rowStart)]="rowStart"
+        [(rowEnd)]="rowEnd"
+        [(rowCount)]="rowCount"
+        [orderBy]="orderBy"
+        [orderByDirection]="orderDirection"
+        [tableHeader]="tableHeader"
         (selectedRecord)="setClickedRow($event)"
         (orderChange)="orderChange($event)"
         (pageChange)="pageChange($event)"
@@ -26,14 +26,14 @@
       </app-table>
     </div>
   </div>
-  
+
   <!--Edit Modal-->
   <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
   <div class="modal fade" id="editOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalContent">Edit {{this.focusOEMName}}</h5>
+          <h5 class="modal-title" id="modalContent">Edit {{focusOEMName}}</h5>
           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -44,12 +44,12 @@
               <div class="form-group">
                 <label class="control-label">OEM Name:</label>
                 <input type="text" placeholder="Name" class="form-control"
-                [(ngModel)]="this.focusOEMName" [ngModelOptions]="{standalone: true}"  required/>
+                [(ngModel)]="focusOEMName" [ngModelOptions]="{standalone: true}"  required/>
               </div>
               <div class="form-group">
                 <label class="control-label">Reference No:</label>
                 <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="this.focusOEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
+                [(ngModel)]="focusOEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
               </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--Add Modal-->
   <button class="hide" data-toggle="modal" data-target="#addOEM" #openaddModal></button>
   <div class="modal fade" id="addOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -79,12 +79,12 @@
               <div class="form-group">
                   <label class="control-label">OEM Name:</label>
                   <input type="text" placeholder="OEM Name" class="form-control"
-                  [(ngModel)]="this.OEM.OEMName" [ngModelOptions]="{standalone: true}"  required/>
+                  [(ngModel)]="OEM.OEMName" [ngModelOptions]="{standalone: true}"  required/>
               </div>
               <div class="form-group">
                 <label class="control-label">Reference No:</label>
                 <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="this.OEM.OEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
+                [(ngModel)]="OEM.OEMRefNum" [ngModelOptions]="{standalone: true}"  required/>
               </div>
         </div>
         <div class="modal-footer bg-dark">
@@ -95,10 +95,9 @@
       </div>
     </div>
   </div>
-  
+
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(this.focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="focusOEMID" [companyOEMName]="focusOEMName" [companyOEMRefNum]="focusOEMRefNum"></app-company-oem-context-menu>
+  <app-company-oem-context-menu (EditCompanyOEM)="EditOEM(focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyOEMID]="focusOEMID" [companyOEMName]="focusOEMName" [companyOEMRefNum]="focusOEMRefNum"></app-company-oem-context-menu>
   </div>
-  
