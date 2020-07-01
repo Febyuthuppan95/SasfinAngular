@@ -3,9 +3,8 @@ import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
 import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
-
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -28,7 +27,7 @@ import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog
 import { EventService } from 'src/app/services/event.service';
 import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
-import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { ApiService } from 'src/app/services/api.service';
