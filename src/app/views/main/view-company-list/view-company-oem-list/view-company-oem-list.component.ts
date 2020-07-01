@@ -307,11 +307,11 @@ export class ViewCompanyOemListComponent implements OnInit {
   EditCompanyOEM(deleted?: boolean) {
     let error = 0;
 
-    if (!this.OEM.OEMName || this.OEM.OEMName === null || this.OEM.OEMName === '') {
+    if (!this.focusOEMName || this.focusOEMName === null || this.focusOEMName === '') {
       error++;
     }
 
-    if (!this.OEM.OEMRefNum || this.OEM.OEMRefNum === null || this.OEM.OEMRefNum === '') {
+    if (!this.focusOEMRefNum || this.focusOEMRefNum === null || this.focusOEMRefNum === '') {
       error++;
     }
 
