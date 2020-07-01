@@ -1030,20 +1030,20 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 4
           },
           {
-            title: 'Reg Number',
-            propertyName: 'regno',
-            order: {
-              enable: true,
-              tag: 'regno'
-            },
-            position: 5
-          },
-          {
             title: 'Available Customs Value',
             propertyName: 'availcustval',
             order: {
               enable: true,
               tag: 'availcustval'
+            },
+            position: 5
+          },
+          {
+            title: 'Reg Number',
+            propertyName: 'regno',
+            order: {
+              enable: true,
+              tag: 'regno'
             },
             position: 6
           },

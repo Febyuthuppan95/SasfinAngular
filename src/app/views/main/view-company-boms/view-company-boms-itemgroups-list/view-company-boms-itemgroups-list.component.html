@@ -6,8 +6,8 @@
       </ng-container>
     </div>
     <app-table
-      *ngIf="this.BOMLines"
-      [dataset]="this.BOMLines"
+      *ngIf="this.itemGroups"
+      [dataset]="this.itemGroups"
       [headings]="this.tableHeadings"
       [recordsPerPage]="this.recordsPerPage"
       [rowStart]="this.rowStart"

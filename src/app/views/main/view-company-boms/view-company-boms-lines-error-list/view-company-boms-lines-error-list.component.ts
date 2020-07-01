@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../services/Company.Service';
 import {UserService} from '../../../../services/User.Service';
 import {ThemeService} from '../../../../services/Theme.Service';
@@ -10,6 +10,11 @@ import {Subject} from 'rxjs';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../models/Table';
 import {BOMLine} from '../../../../models/HttpResponses/BOMsLinesResponse';
 import {takeUntil} from 'rxjs/operators';
+import {ItemError} from '../../../../models/HttpResponses/ItemsListResponse';
+import {User} from '../../../../models/HttpResponses/User';
+import {NotificationComponent} from '../../../../components/notification/notification.component';
+import {ApiService} from '../../../../services/api.service';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-view-company-boms-lines-error-list',
@@ -24,9 +29,14 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
+    // tslint:disable-next-line:no-shadowed-variable
+    private ApiService: ApiService,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
   ) { }
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
   bomid = -1;
@@ -44,9 +54,9 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
   //   vulnerable: string;
   // };
   tableHeader: TableHeader = {
-    title: 'BOM Items',
+    title: 'BOM Item Errors',
     addButton: {
-      enable: true,
+      enable: false,
     },
     backButton: {
       enable: true,
@@ -65,47 +75,47 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
       },
     },
     {
-      title: 'Item',
-      propertyName: 'Item',
+      title: 'Spreadsheet Line Number',
+      propertyName: 'spreadsheetLineNumber',
       order: {
         enable: true,
-        tag: 'Item',
+        tag: 'spreadsheetLineNumber',
       },
     },
     {
-      title: 'Description',
-      propertyName: 'Description',
+      title: 'Tariff Code',
+      propertyName: 'tariffCode',
       order: {
         enable: true,
-        tag: 'Description',
+        tag: 'tariffCode',
       },
     },
     {
-      title: 'Tariff',
-      propertyName: 'Tariff',
+      title: 'Usage Type',
+      propertyName: 'usageType',
       order: {
         enable: true,
-        tag: 'Tariff',
+        tag: 'usagType',
       },
     },
     {
-      title: 'Type',
-      propertyName: 'Type',
+      title: 'Item Type',
+      propertyName: 'itemType',
       order: {
         enable: true,
-        tag: 'Type',
+        tag: 'itemType',
       },
     },
     {
-      title: 'Vulnerable',
-      propertyName: 'Vulnerable',
+      title: 'Item Class',
+      propertyName: 'itemClass',
       order: {
         enable: true,
-        tag: 'Vulnerable',
+        tag: 'itemClass',
       },
     },
   ];
-  BOMLines: BOMLine[] = [];
+  itemErrors: ItemError[] = [];
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
@@ -120,6 +130,11 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
   contextMenuY = 0;
   rowCountPerPage: number;
   filter: string;
+
+  currentUser: User = this.userService.getCurrentUser();
+  noData = false;
+  showingRecords: number;
+  totalShowing: number;
 
   ngOnInit() {
     this.themeService
@@ -138,6 +153,31 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
           this.bomstatus = obj.status;
         }
       });
+    this.loadItemErrors(true);
+  }
+
+  loadItemErrors(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        UserID: this.currentUser.userID,
+        BomID: this.bomid
+      },
+      requestProcedure: `BOMItemErrorsList`
+    };
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/items/errors`, model).then((res: any) => {
+        console.log(res);
+        this.itemErrors = res.data;
+      },
+      msg => {
+        console.log(msg);
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      });
+    this.showLoader = false;
   }
 
   // table methods
@@ -163,24 +203,24 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemErrors(false); // reload data
   }
 
   pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemErrors(false); // reload data
   }
 
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemErrors(false); // reload data
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemErrors(false); // reload data
   }
 
   add() {

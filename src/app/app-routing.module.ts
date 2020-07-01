@@ -80,6 +80,7 @@ import {ViewCompanyBomsItemsErrorsListComponent} from './views/main/view-company
 import {ViewCompanyBomsItemgroupsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-list.component';
 import {ViewCompanyBomsItemgroupsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
 import { DialogGuard } from './guards/dialog.guard';
+import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -415,6 +416,12 @@ const routes: Routes = [
             component: ViewCheckingScreenComponent,
             data: { right: 'Transactions' },
             canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/checking',
+            component: ViewTransactionCheckingComponent,
+            data: { right: 'Transactions' },
+            canActivate: [RightGuard]
           },
           { path: 'refreshComponent', component: ChatRedirectComponent },
           {

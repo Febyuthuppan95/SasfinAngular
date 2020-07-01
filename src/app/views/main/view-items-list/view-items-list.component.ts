@@ -1,32 +1,32 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
-import { MenuService } from 'src/app/services/Menu.Service';
-import { Pagination } from '../../../models/Pagination';
-import { NotificationComponent } from '../../../components/notification/notification.component';
-import { UserService } from '../../../services/user.Service';
-import { User } from '../../../models/HttpResponses/User';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {MenuService} from 'src/app/services/Menu.Service';
+import {Pagination} from '../../../models/Pagination';
+import {NotificationComponent} from '../../../components/notification/notification.component';
+import {UserService} from '../../../services/user.Service';
+import {User} from '../../../models/HttpResponses/User';
+import {ThemeService} from 'src/app/services/theme.Service.js';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
-import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService } from 'src/app/services/Company.Service';
-import { GetItemList } from 'src/app/models/HttpRequests/GetItemList';
-import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
-import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
-import { GetItemServiceList } from 'src/app/models/HttpRequests/GetItemServiceList';
-import { ItemServiceListResponse, ItemService } from 'src/app/models/HttpResponses/ItemServiceListResponse';
-import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
-import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
-import { Service } from 'src/app/models/HttpResponses/Service';
-import { ServicesService } from 'src/app/services/Services.Service';
-import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
-import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
-import { takeUntil } from 'rxjs/operators';
-import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffListResponse';
-import { ItemTypeListResponse } from 'src/app/models/HttpResponses/ItemTypeListResponse';
-import { ItemType } from 'src/app/models/HttpResponses/ItemType';
-import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
-import { FormControl } from '@angular/forms';
+import {Order, SelectedRecord, TableHeader, TableHeading} from 'src/app/models/Table';
+import {CompanyService} from 'src/app/services/Company.Service';
+import {GetItemList} from 'src/app/models/HttpRequests/GetItemList';
+import {Items, ItemsListResponse} from 'src/app/models/HttpResponses/ItemsListResponse';
+import {UpdateItemResponse} from 'src/app/models/HttpResponses/UpdateItemResponse';
+import {GetItemServiceList} from 'src/app/models/HttpRequests/GetItemServiceList';
+import {ItemService, ItemServiceListResponse} from 'src/app/models/HttpResponses/ItemServiceListResponse';
+import {ServiceListResponse} from 'src/app/models/HttpResponses/ServiceListResponse';
+import {GetServiceLList} from 'src/app/models/HttpRequests/GetServiceLList';
+import {Service} from 'src/app/models/HttpResponses/Service';
+import {ServicesService} from 'src/app/services/Services.Service';
+import {AddItemServiceResponse} from 'src/app/models/HttpResponses/AddItemServiceResponse';
+import {UpdateItemServiceResponse} from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
+import {takeUntil} from 'rxjs/operators';
+import {Tariff, TariffListResponse} from 'src/app/models/HttpResponses/TariffListResponse';
+import {ItemTypeListResponse} from 'src/app/models/HttpResponses/ItemTypeListResponse';
+import {ItemType} from 'src/app/models/HttpResponses/ItemType';
+import {GetTariffList} from 'src/app/models/HttpRequests/GetTariffList';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-view-items-list',
@@ -86,7 +86,6 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     typeID: number,
     type: string,
     vulnerable: string,
-
   };
 
   tableHeader: TableHeader = {
@@ -235,8 +234,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         this.itemservicelist = res.itemServices;
 
         if (res.outcome.outcome === 'SUCCESS') {
-          const returnValue = this.separateMe(this.servicelist, this.itemservicelist);
-          this.returnedservices = returnValue;
+          this.returnedservices = this.separateMe(this.servicelist, this.itemservicelist);
         }
       },
       msg => {
