@@ -123,18 +123,17 @@ export class PreviewReportsComponent implements OnInit {
       // tslint:disable-next-line: max-line-length
       this.selectedReport =  `${environment.ApiEndpoint}/reports/preview/${rep.reportID}/${this.claimReport.claimNumber}/${this.claimReport.companyID}/${rep.serviceName}`;
     }
-
-  }*
+  }
 
   loaded() {
     const advertismentContainer = document.getElementsByClassName('pdfViewer');
+    const children = advertismentContainer[0].children;
 
-    // if (advertismentContainer.length > 1) {
-
-    // }
-    const child = advertismentContainer.item[advertismentContainer.length - 1];
-    console.log(child);
-    // // child.remove();
+    if (children.length > 2) {}
+    // const targetChild = children[children.length - 1];
+    // console.log(children);
+    // console.log(targetChild);
+    // targetChild.remove();
   }
 
   onFileChange(evt: any) {

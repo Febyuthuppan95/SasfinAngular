@@ -344,16 +344,18 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       .then(
         (res: TransactionFileListResponse) => {
           this.attachmentList = res.attachments;
+          this.attachmentListShowing = [];
           const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
           this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
           this.attachmentListShowing.push(current);
+          const length = this.attachmentList.length > 4 ? 4 : this.attachmentList.length;
 
-          this.attachmentList.forEach((item, i) => {
-            if (i < 4) {
-              this.attachmentListShowing.push(item);
-            }
-          });
+          console.log(this.attachmentList);
+
+          for (let i = 0; i < length; i++) {
+            this.attachmentListShowing.push(this.attachmentList[i]);
+          }
 
           this.attachmentListShowing.forEach((attach) => {
             if (attach !== undefined) {
@@ -365,9 +367,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
             }
           });
-        },
-        (msg) => {}
-      );
+        });
   }
   toggelEscalate() {
     // Modal toggle

@@ -1,7 +1,6 @@
 <div [class.hide]="!enabled" class="snack-bar-container" [ngClass]="(settings.display)?'snack-bar-show':''">
   <div class="snack-bar shadow text-light bg-dark" (click)="close()">
-        <button class="float-right btn btn-primary btn-sm" (click)="edit()">Edit</button>
-        <button class="float-right btn btn-sm" (click)="close()">x</button>
+        <button class="float-right btn btn-primary btn-sm" (click)="edit()" *ngIf="canEdit">Edit</button>
     <div class="row">
       <div class="col-12">
         <p class="snack-bar-content" style="margin-bottom: 6px"><strong>{{settings.title}}</strong></p>
@@ -17,9 +16,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editObjectHelpLabel">Edit Help Item</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
       <form (submit)="updateObjectHelp()" enctype="multipart/form-data">
       <div class="modal-body">
