@@ -82,6 +82,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   Citiesset: CitiesResponse;
   dataList: Address[] = [];
   CitiesList: Cities[] = [];
+  autocompleteCities: Cities[] = [];
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -151,10 +152,10 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
-    });
 
-    this.loadCompanyInfoList();
-    this.loadCitiesList();
+      this.loadCompanyInfoList();
+      this.loadCitiesList(true);
+    });
   }
 
   backToCompanies() {
@@ -218,7 +219,6 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   }
 
   CityBar() {
-
     this.rowStart = 1;
     this.loadCitiesList();
   }
@@ -269,12 +269,12 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
       );
   }
 
-  loadCitiesList() {
+  loadCitiesList(replaceDataset?: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
 
     const model = {
-      filter: this.CitySearch,
+      filter: this.CitySearch ? this.CitySearch : '',
       userID: this.currentUser.userID,
       specificCityID: -1,
       specificRegionID: -1,
@@ -287,18 +287,14 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
 
     this.cityService.list(model).then(
         (res: CitiesResponse) => {
-          if (res.rowCount === 0) {
-            this.noData = true;
-            this.showLoader = false;
-          } else {
-            this.noData = false;
             this.Citiesset = res;
-            this.CitiesList = res.citiesLists;
-            // this.rowCount = res.rowCount;
+            this.autocompleteCities = res.citiesLists;
+
+            if (replaceDataset) {
+              this.CitiesList = res.citiesLists;
+            }
+
             this.showLoader = false;
-            // this.showingRecords = res.citiesLists.length;
-            // this.totalShowing = +this.rowStart + +this.dataset.addresses.length - 1;
-          }
         },
         msg => {
           this.showLoader = false;
