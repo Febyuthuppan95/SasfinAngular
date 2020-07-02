@@ -20,6 +20,7 @@ import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
+import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
 
 @AutoUnsubscribe()
 @Component({
@@ -461,6 +462,17 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.findInvalidControls(form);
     }
   }
+
+  // async updateErrors(errors: AttachmentError[]): Promise<void> {
+  //   await this.captureService.updateAttachmentErrors({
+  //     userID: this.currentUser.userID,
+  //     attachmentErrors: errors.map(x => {
+  //       return {
+  //         attachmentErrorID: x.attachmentErrorID
+  //       };
+  //      })
+  //   });
+  // }
 
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
