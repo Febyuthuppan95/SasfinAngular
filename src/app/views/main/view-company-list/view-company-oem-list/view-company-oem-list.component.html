@@ -22,7 +22,8 @@
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
         (addButtonEvent)="Add()"
-        (searchEvent)="searchBar($event)">
+        (searchEvent)="searchBar($event)"
+        (backButtonEvent)="router.navigate(['companies'])">
       </app-table>
     </div>
   </div>

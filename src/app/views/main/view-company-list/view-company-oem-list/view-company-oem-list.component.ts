@@ -12,7 +12,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Subject } from 'rxjs';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { JsonPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-company-oem-list',
@@ -22,21 +22,22 @@ import { JsonPipe } from '@angular/common';
 export class ViewCompanyOemListComponent implements OnInit {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService
-    ) {
-      this.rowStart = 1;
-    this.rowCountPerPage = 15;
-    this.activePage = +1;
-    this.prevPageState = true;
-    this.nextPageState = false;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
-    this.filter = '';
-    this.orderBy = 'Name';
-    this.orderDirection = 'ASC';
-    this.totalShowing = 0;
-    }
+              private userService: UserService,
+              private themeService: ThemeService,
+              public router: Router
+              ) {
+                this.rowStart = 1;
+                this.rowCountPerPage = 15;
+                this.activePage = +1;
+                this.prevPageState = true;
+                this.nextPageState = false;
+                this.prevPage = +this.activePage - 1;
+                this.nextPage = +this.activePage + 1;
+                this.filter = '';
+                this.orderBy = 'Name';
+                this.orderDirection = 'ASC';
+                this.totalShowing = 0;
+              }
     defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -91,7 +92,7 @@ export class ViewCompanyOemListComponent implements OnInit {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -203,6 +204,10 @@ export class ViewCompanyOemListComponent implements OnInit {
       rowEnd: 15
     };
     this.pageChange(obj);
+  }
+
+  back() {
+    this.router
   }
 
   loadCompanyOEMs() {
