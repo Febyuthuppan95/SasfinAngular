@@ -82,10 +82,10 @@ export class ViewItemValuesComponent implements OnInit, OnDestroy {
 
   tableHeadings: TableHeading[] = [
     {
-      title: '',
+      title: '#',
       propertyName: 'rowNum',
       order: {
-        enable: true,
+        enable: false,
       }
     },
     {
