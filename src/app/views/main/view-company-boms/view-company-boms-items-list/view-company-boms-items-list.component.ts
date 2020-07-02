@@ -57,7 +57,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   tableHeader: TableHeader = {
     title: 'BOM Items',
     addButton: {
-      enable: true,
+      enable: false,
     },
     backButton: {
       enable: true,
@@ -100,11 +100,11 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
       },
     },
     {
-      title: 'Type',
-      propertyName: 'Type',
+      title: 'Item Type',
+      propertyName: 'ItemType',
       order: {
         enable: true,
-        tag: 'Type',
+        tag: 'ItemType',
       },
     },
     {

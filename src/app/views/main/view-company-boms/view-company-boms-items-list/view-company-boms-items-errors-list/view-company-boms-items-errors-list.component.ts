@@ -107,7 +107,7 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
   ];
   BOMLines: BOMLine[] = [];
   // table vars - every page
-  showLoader = true;
+  showLoader = false;
   recordsPerPage = 15;
   rowStart: number;
   rowEnd: number;
