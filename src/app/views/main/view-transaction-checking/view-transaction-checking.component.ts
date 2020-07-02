@@ -17,6 +17,7 @@ import { ConstantPool } from '@angular/compiler';
 import { Pagination } from 'src/app/models/Pagination';
 import { TableHeading } from 'src/app/models/Table';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { OverlayContainer, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 
 @Component({
@@ -68,6 +69,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
   CustomWorksheetLines: CustomWorksheetLine[];
   AvailableInvoiceLines: InvoiceLine[] = [];
   AvailableSAD500Lines: SAD500Line[] = [];
+  AvailableLines: any[] =[];
+  AssignedLines: any[] =[];
 
   /**Data Table Config
    */
@@ -217,6 +220,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
       position: 6
     }
   ]
+  AvailableHeadings: TableHeading[] =[];
+  AssignedHeadings: TableHeading[] = [];
   AssignedInvoiceLines: InvoiceLine[] = [];
 
 
@@ -226,7 +231,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   private notify: NotificationComponent;
   @ViewChild('trigger', {static: false})
   private trigger: ElementRef;
-
+  overlay: CdkOverlayOrigin;
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
@@ -501,6 +506,7 @@ private unsubscribe = new Subject<void>();
 
   /**Datatable Events */
   InvoiceEvent($event) {
+    console.log($event);
     this.trigger.nativeElement.click();
     
   }
