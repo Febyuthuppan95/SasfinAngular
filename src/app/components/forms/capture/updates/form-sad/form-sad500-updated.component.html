@@ -45,7 +45,7 @@
   <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
     <div class="row">
       <div class="col-6">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-serial-number')">
           <mat-label>
             Serial No
           </mat-label>
@@ -55,7 +55,7 @@
         <br /><br />
       </div>
       <div class="col-6">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-lrn')">
           <mat-label>
             LRN
           </mat-label>
@@ -68,7 +68,7 @@
         <br /><br />
       </div>
       <div class="col-12" *ngIf="isExport">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-rebate-code')">
           <mat-label>
             Rebate Code
           </mat-label>
@@ -78,7 +78,7 @@
         <br /><br />
       </div>
       <div class="col-6">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-total-customs-value')">
           <mat-label>
             Total Customs Value
           </mat-label>
@@ -87,12 +87,12 @@
         </mat-form-field>
         <br /><br />
       </div>
-      <div class="col-6">
+      <div class="col-6" (mouseover)="updateHelpContext('form-sad500-cpc')">
         <ls-autocomplete-cpc [(control)]="form.controls.cpcID"></ls-autocomplete-cpc>
         <br /><br />
       </div>
       <div class="col-12">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-waybill-no')">
           <mat-label>
             Waybill No
           </mat-label>
@@ -102,7 +102,7 @@
         <br /><br />
       </div>
       <div class="col-4">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-file-or-supplier-ref')">
           <mat-label>
             Supplier Ref
           </mat-label>
@@ -112,11 +112,11 @@
         <br /><br />
       </div>
       <div class="col-4">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-MRN')">
           <mat-label>
             MRN
           </mat-label>
-          <input matInput type="text" formControlName="mrn" />
+          <input matInput type="text" formControlName="mrn" (mouseover)="updateHelpContext('form-sad500-mrn')"/>
           <mat-icon *ngIf="form.controls.mrnOBit.value" matSuffix (click)="undoOverride('mrn')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.mrnOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect" matSuffix (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override">remove_circle</mat-icon>
@@ -125,7 +125,7 @@
         <br /><br />
       </div>
       <div class="col-4">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-importersCode')">
           <mat-label>
             TIN Number
           </mat-label>
@@ -138,7 +138,7 @@
         <br /><br />
       </div>
       <div class="col-12">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-file-ref')">
           <mat-label>
             File Ref
           </mat-label>
@@ -151,7 +151,7 @@
         <br /><br />
       </div>
       <div class="col-12">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-total-customs-duty')">
           <mat-label>
             Total Duty
           </mat-label>

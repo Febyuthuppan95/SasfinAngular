@@ -8,16 +8,16 @@ import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
-import { ICIListResponse } from 'src/app/models/HttpResponses/ICI';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { WaybillListResponse } from 'src/app/models/HttpResponses/Waybill';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
 
 @AutoUnsubscribe()
 @Component({
@@ -26,11 +26,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./form-way.component.scss']
 })
 export class FormWayComponent implements OnInit, AfterViewInit, OnDestroy {
-  constructor(private transactionService: TransactionService,
-              private captureService: CaptureService,
+  constructor(private captureService: CaptureService,
               private userService: UserService,
               private snackbarService: HelpSnackbar,
-              private eventService: EventService,
               private objectHelpService: ObjectHelpService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
@@ -51,7 +49,7 @@ form = new FormGroup({
 
 public attachmentLabel: string;
 public transactionLabel: string;
-public errors: any[] = [];
+public errors: AttachmentError[] = [];
 public shortcuts: ShortcutInput[];
 public help = false;
 
@@ -77,23 +75,11 @@ public init() {
     this.load();
   }
 }
-public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
-ngOnInit() {
-  // this.transactionService.observerCurrentAttachment()
-  // .subscribe((capture: any) => {
-  //   if (capture) {
-  //     this.attachmentID = capture.attachmentID;
-  //     this.transactionID = capture.transactionID;
-  //     this.attachmentLabel = 'Waybill';
-  //     this.transactionLabel = capture.transactionType;
-  //     this.load();
-  //   }
-  // });
+public submissionEvent = (escalation, saveProgress, escalationResolved) =>
+this.submit(this.form, escalation, saveProgress, escalationResolved)
 
-  // this.eventService.observeCaptureEvent()
-  // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-}
+ngOnInit() {}
 
 ngAfterViewInit(): void {
   setTimeout(() => {
@@ -109,17 +95,15 @@ ngAfterViewInit(): void {
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
-              {
-                if (!this.dialogOpen) {
-                  this.dialogOpen = true;
-                  this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-                    this.dialogOpen = false;
-                    if (status) {
-                      this.submit(this.form);
-                    }
-                  });
+            if (!this.dialogOpen) {
+              this.dialogOpen = true;
+              this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
+                this.dialogOpen = false;
+                if (status) {
+                  this.submit(this.form);
                 }
-              }
+              });
+            }
           }
         },
         {
@@ -212,12 +196,15 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
 
   if (form.valid || escalation) {
     const requestModel: any = form.value;
+    // tslint:disable-next-line: max-line-length
     requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
     requestModel.userID = this.currentUser.userID;
 
-    this.captureService.waybillUpdate(requestModel).then(
-      (res: Outcome) => {
+    await this.captureService.waybillUpdate(requestModel).then(
+      async (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
+          // await this.updateErrors(this.errors);
+
           if (saveProgress) {
             this.snackbar.open('Progress Saved', '', { duration: 3000 });
             this.load();
@@ -227,7 +214,7 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
             this.router.navigateByUrl('transaction/capturerlanding');
           }
       } else {
-      this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        this.notify.errorsmsg(res.outcome, res.outcomeMessage);
       }
     },
       (msg) => {
@@ -240,6 +227,17 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
     this.findInvalidControls(form);
   }
 }
+
+// async updateErrors(errors: AttachmentError[]): Promise<void> {
+//   await this.captureService.updateAttachmentErrors({
+//     userID: this.currentUser.userID,
+//     attachmentErrors: errors.map(x => {
+//       return {
+//         attachmentErrorID: x.attachmentErrorID
+//       };
+//      })
+//   });
+// }
 
 ngOnDestroy(): void {}
 

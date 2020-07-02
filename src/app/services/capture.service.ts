@@ -73,6 +73,6 @@ export class CaptureService {
   // tslint:disable-next-line: max-line-length
   customWorksheetLineList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/customsworksheet/lines/list`, requestModel);
 
-
   ediStatusList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/edi/status/list`, requestModel);
+  updateAttachmentErrors = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/error/update`, requestModel);
 }

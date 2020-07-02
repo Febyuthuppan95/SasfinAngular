@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {log} from 'util';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
@@ -25,11 +26,10 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     private helpSnackbarService: HelpSnackbar,
     private objectHelpService: ObjectHelpService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storage: StorageService
   ) {
-   this.settings = new SnackbarModel();
-
-  // this.settings = 'test';
+    this.settings = new SnackbarModel();
     this.focus = new SnackbarModel();
   }
 
@@ -42,6 +42,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
+  public canEdit = false;
 
   private unsubscribe$ = new Subject<void>();
   settings: SnackbarModel;
@@ -52,6 +53,9 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   objectHelpDictionary: Map<string, string>;
 
   ngOnInit() {
+
+    this.canEdit = this.checkRight('HelpGlossary');
+
     this.helpSnackbarService.observeHelpContext()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((context: SnackbarModel) => {
@@ -95,6 +99,16 @@ export class SnackBarComponent implements OnInit, OnDestroy {
 
       this.enabled = allow;
     });
+  }
+
+  private checkRight(right: string) {
+    const rights: string[] = this.storage.get('rights').map((item) => item.name);
+
+    if (rights.indexOf(right) === -1) {
+      return false;
+    }
+
+    return true;
   }
 
   close() {

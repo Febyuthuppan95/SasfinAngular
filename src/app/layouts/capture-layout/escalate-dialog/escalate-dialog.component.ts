@@ -1,5 +1,6 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Component, OnInit, Inject } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-escalate-dialog',
@@ -8,12 +9,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 })
 export class EscalateDialogComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<EscalateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ''
-    ) { }
-  reason = '';
-  onNoClick(): void {
-    this.dialogRef.close();
+  constructor(public dialogRef: MatDialogRef<EscalateDialogComponent>) { }
+
+  reasonControl = new FormControl(null, [Validators.required]);
+
+  submit() {
+    if (this.reasonControl.valid) {
+      this.dialogRef.close(this.reasonControl.value);
+    }
   }
 }

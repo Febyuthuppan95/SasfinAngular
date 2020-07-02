@@ -7,6 +7,8 @@ import { DialogOverrideComponent } from '../../../dialog-override/dialog-overrid
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { EventService } from 'src/app/services/event.service';
 import { UUID } from 'angular2-uuid';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @AutoUnsubscribe()
 @Component({
@@ -19,7 +21,8 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   constructor(private snackbar: MatSnackBar,
               private dialog: MatDialog,
               private userService: UserService,
-              private eventService: EventService) { }
+              private eventService: EventService,
+              private snackbarService: HelpSnackbar) { }
 
   public form = new FormGroup({
     userID: new FormControl(null),
@@ -164,6 +167,15 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
     this.form.controls.duty.updateValueAndValidity();
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   getError(key: string): string {

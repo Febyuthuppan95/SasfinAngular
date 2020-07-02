@@ -56,7 +56,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   tableHeader: TableHeader = {
     title: 'BOM Item Groups',
     addButton: {
-      enable: true,
+      enable: false,
     },
     backButton: {
       enable: true,
@@ -99,19 +99,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       },
     },
     {
-      title: 'Type',
-      propertyName: 'itemType',
+      title: 'Item Type',
+      propertyName: 'ItemType',
       order: {
         enable: true,
-        tag: 'itemType',
+        tag: 'ItemType',
       },
     },
     {
       title: 'Vulnerable',
-      propertyName: 'vulnerable',
+      propertyName: 'Vulnerable',
       order: {
         enable: true,
-        tag: 'vulnerable',
+        tag: 'Vulnerable',
       },
     },
   ];

@@ -7,6 +7,8 @@ import { DialogOverrideComponent } from '../../../dialog-override/dialog-overrid
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { EventService } from 'src/app/services/event.service';
 import { UUID } from 'angular2-uuid';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -18,7 +20,8 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   constructor(private snackbar: MatSnackBar,
               private dialog: MatDialog,
               private userService: UserService,
-              private eventService: EventService) { }
+              private eventService: EventService,
+              private snackbarService: HelpSnackbar) { }
 
   public form = new FormGroup({
     userID: new FormControl(null),
@@ -177,6 +180,15 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.findInvalidControls(form);
       this.snackbar.open('Please fill in line details', '', {duration: 3000});
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
     // @override methods

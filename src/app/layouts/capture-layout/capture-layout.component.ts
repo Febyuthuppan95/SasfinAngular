@@ -3,9 +3,8 @@ import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
 import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
-
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -28,7 +27,7 @@ import { AttachmentDialogComponent } from './attachment-dialog/attachment-dialog
 import { EventService } from 'src/app/services/event.service';
 import { QuitDialogComponent } from './quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './submit-dialog/submit-dialog.component';
-import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
+import { CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { ApiService } from 'src/app/services/api.service';
@@ -344,16 +343,18 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       .then(
         (res: TransactionFileListResponse) => {
           this.attachmentList = res.attachments;
+          this.attachmentListShowing = [];
           const current = this.attachmentList.find(x => x.attachmentID === this.attachmentID);
           this.attachmentList = this.attachmentList.filter(x => x.attachmentID !== this.attachmentID);
 
           this.attachmentListShowing.push(current);
+          const length = this.attachmentList.length > 4 ? 4 : this.attachmentList.length;
 
-          this.attachmentList.forEach((item, i) => {
-            if (i < 4) {
-              this.attachmentListShowing.push(item);
-            }
-          });
+          console.log(this.attachmentList);
+
+          for (let i = 0; i < length; i++) {
+            this.attachmentListShowing.push(this.attachmentList[i]);
+          }
 
           this.attachmentListShowing.forEach((attach) => {
             if (attach !== undefined) {
@@ -365,9 +366,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
             }
           });
-        },
-        (msg) => {}
-      );
+        });
   }
   toggelEscalate() {
     // Modal toggle
@@ -470,7 +469,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
     if (this.bottomSheet) {
       try {
-        this.bottomSheet.close();
+        this.bottomSheet.dismiss();
       } catch {
         // Nothing required
       }

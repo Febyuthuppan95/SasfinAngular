@@ -12,7 +12,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { Subject } from 'rxjs';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { JsonPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-company-oem-list',
@@ -22,21 +22,22 @@ import { JsonPipe } from '@angular/common';
 export class ViewCompanyOemListComponent implements OnInit {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService
-    ) {
-      this.rowStart = 1;
-    this.rowCountPerPage = 15;
-    this.activePage = +1;
-    this.prevPageState = true;
-    this.nextPageState = false;
-    this.prevPage = +this.activePage - 1;
-    this.nextPage = +this.activePage + 1;
-    this.filter = '';
-    this.orderBy = 'Name';
-    this.orderDirection = 'ASC';
-    this.totalShowing = 0;
-    }
+              private userService: UserService,
+              private themeService: ThemeService,
+              public router: Router
+              ) {
+                this.rowStart = 1;
+                this.rowCountPerPage = 15;
+                this.activePage = +1;
+                this.prevPageState = true;
+                this.nextPageState = false;
+                this.prevPage = +this.activePage - 1;
+                this.nextPage = +this.activePage + 1;
+                this.filter = '';
+                this.orderBy = 'Name';
+                this.orderDirection = 'ASC';
+                this.totalShowing = 0;
+              }
     defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
@@ -91,7 +92,7 @@ export class ViewCompanyOemListComponent implements OnInit {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -205,6 +206,10 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.pageChange(obj);
   }
 
+  back() {
+    this.router
+  }
+
   loadCompanyOEMs() {
     const model = {
       requestParams: {
@@ -222,10 +227,11 @@ export class ViewCompanyOemListComponent implements OnInit {
     console.log(model);
     // company service api call
     this.companyService.companyOEMList(model).then(
-      (res:CompanyOEMList) => {
-        if (res.rowCount === 0) {
+      (res: CompanyOEMList) => {
+        if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
+          this.dataList = [];
         } else {
           this.noData = false;
           this.dataset = res;
@@ -234,7 +240,6 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
-          // this.paginateData();
         }
       },
       msg => {
@@ -307,11 +312,11 @@ export class ViewCompanyOemListComponent implements OnInit {
   EditCompanyOEM(deleted?: boolean) {
     let error = 0;
 
-    if (!this.OEM.OEMName || this.OEM.OEMName === null || this.OEM.OEMName === '') {
+    if (!this.focusOEMName || this.focusOEMName === null || this.focusOEMName === '') {
       error++;
     }
 
-    if (!this.OEM.OEMRefNum || this.OEM.OEMRefNum === null || this.OEM.OEMRefNum === '') {
+    if (!this.focusOEMRefNum || this.focusOEMRefNum === null || this.focusOEMRefNum === '') {
       error++;
     }
 
@@ -363,6 +368,10 @@ export class ViewCompanyOemListComponent implements OnInit {
     );
   }
   }
+
+  recordsPerPageChange($event) {
+
+  }
   pageChange(obj: PaginationChange) {
     console.log(obj);
     this.rowStart = obj.rowStart;
@@ -399,10 +408,15 @@ export class ViewCompanyOemListComponent implements OnInit {
 
     // this.loadCompanies();
   }
-  searchBar(filter: string) {
+
+  searchBar($event) {
+    console.log('Searching');
     this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.filter = $event;
     this.loadCompanyOEMs();
   }
+
   orderChange($event: Order) {
     this.orderBy = $event.orderBy;
     this.orderDirection = $event.orderByDirection;
@@ -410,6 +424,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.rowEnd = this.rowCountPerPage;
     this.loadCompanyOEMs();
   }
+
   popClick(event, oem) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;

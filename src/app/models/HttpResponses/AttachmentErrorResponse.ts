@@ -10,11 +10,24 @@ export class Error {
   rowNum: number;
   errorID: number;
   attachmentFieldNameID: number;
-  attachmentErrorID: string;
-  transactionID: string;
-  attachmentID: string;
-  FileTypeID: string;
+  attachmentErrorID: number;
+  transactionID: number;
+  attachmentID: number;
+  FileTypeID: number;
   FileType: string;
   fieldName: string;
-  errorDescription: number;
+  errorDescription: string;
+}
+
+export class AttachmentError {
+  rowNum: number;
+  errorID: number;
+  attachmentFieldNameID: number;
+  attachmentErrorID: number;
+  transactionID: number;
+  attachmentID: number;
+  FileTypeID: number;
+  FileType: string;
+  fieldName: string;
+  errorDescription: string;
 }
