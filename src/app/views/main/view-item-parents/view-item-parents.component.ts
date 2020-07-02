@@ -127,22 +127,22 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
         tag: 'UnitsOfMeasureName'
       }
     },
-    {
-      title: 'Start Date',
-      propertyName: 'startDateText',
-      order: {
-        enable: true,
-        tag: 'StartDate'
-      }
-    },
-    {
-      title: 'End Date',
-      propertyName: 'endDateText',
-      order: {
-        enable: true,
-        tag: 'EndDate'
-      }
-    }
+    // {
+    //   title: 'Start Date',
+    //   propertyName: 'startDateText',
+    //   order: {
+    //     enable: true,
+    //     tag: 'StartDate'
+    //   }
+    // },
+    // {
+    //   title: 'End Date',
+    //   propertyName: 'endDateText',
+    //   order: {
+    //     enable: true,
+    //     tag: 'EndDate'
+    //   }
+    // }
   ];
 
   selectedRow = -1;
