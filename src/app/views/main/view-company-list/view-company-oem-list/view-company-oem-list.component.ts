@@ -408,10 +408,15 @@ export class ViewCompanyOemListComponent implements OnInit {
 
     // this.loadCompanies();
   }
-  searchBar(filter: string) {
+
+  searchBar($event) {
+    console.log('Searching');
     this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.filter = $event;
     this.loadCompanyOEMs();
   }
+
   orderChange($event: Order) {
     this.orderBy = $event.orderBy;
     this.orderDirection = $event.orderByDirection;
@@ -419,6 +424,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.rowEnd = this.rowCountPerPage;
     this.loadCompanyOEMs();
   }
+
   popClick(event, oem) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
