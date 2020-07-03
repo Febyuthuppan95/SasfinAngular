@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
@@ -17,6 +17,8 @@ import { ConstantPool } from '@angular/compiler';
 import { Pagination } from 'src/app/models/Pagination';
 import { TableHeading } from 'src/app/models/Table';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { OverlayContainer, CdkOverlayOrigin } from '@angular/cdk/overlay';
+
 
 @Component({
   selector: 'app-view-transaction-checking',
@@ -32,6 +34,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   observedTransaction: Transaction;
   loading: boolean;
   childrenLoaded: boolean;
+  isOpen = false;
   /**Data Events */
  rowStart =1;
  rowEnd = 15;
@@ -66,6 +69,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
   CustomWorksheetLines: CustomWorksheetLine[];
   AvailableInvoiceLines: InvoiceLine[] = [];
   AvailableSAD500Lines: SAD500Line[] = [];
+  AvailableLines: any[] =[];
+  AssignedLines: any[] =[];
 
   /**Data Table Config
    */
@@ -215,6 +220,8 @@ export class ViewTransactionCheckingComponent implements OnInit {
       position: 6
     }
   ]
+  AvailableHeadings: TableHeading[] =[];
+  AssignedHeadings: TableHeading[] = [];
   AssignedInvoiceLines: InvoiceLine[] = [];
 
 
@@ -222,7 +229,9 @@ export class ViewTransactionCheckingComponent implements OnInit {
   /**View Children */
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
-
+  @ViewChild('trigger', {static: false})
+  private trigger: ElementRef;
+  overlay: CdkOverlayOrigin;
   constructor(
     private userService: UserService,
     private themeService: ThemeService,
@@ -367,11 +376,15 @@ private unsubscribe = new Subject<void>();
         };
         this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
           (res:InvoiceLineRead) => {
+            this.loading = false;
             console.log(res);
             if(res.lines.length > 0) {
               invoices.push(res.lines[0]);
               console.log(this.AssignedInvoiceLines);
             } 
+          },
+          msg => {
+            this.loading = false;
           }
         );
       });
@@ -401,7 +414,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -422,7 +435,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -444,7 +457,7 @@ private unsubscribe = new Subject<void>();
         this.loading = false;
       },
       msg => {
-
+        this.loading = false;
       }
     );
   }
@@ -490,9 +503,12 @@ private unsubscribe = new Subject<void>();
     console.log(this.step);
     this.getAssignedInvoiceLines(cust.CustomWorksheetID);
   }
+
   /**Datatable Events */
   InvoiceEvent($event) {
     console.log($event);
+    this.trigger.nativeElement.click();
+    
   }
 }
 

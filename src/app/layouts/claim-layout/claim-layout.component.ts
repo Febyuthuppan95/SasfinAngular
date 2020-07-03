@@ -85,7 +85,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       isFilter: false
     }
   ];
-  ///
+  //
   selectedA: number;
   selectedB: number;
   selectedC: number;

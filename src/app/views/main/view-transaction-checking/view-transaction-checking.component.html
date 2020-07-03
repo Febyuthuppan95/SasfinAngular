@@ -111,4 +111,61 @@
     <br />
     <p class="ls-text-{{ currentTheme }}" *ngIf="this.CaptureJoins !== null">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
+
+      
 </div>
+<button class="hide" data-toggle="modal" data-target="#tables" #trigger></button>
+<!-- <div mat-dialog class="modal fade" aria-labelledby="modalContent" aria-hidden="true" id="tables">
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-6"> 
+        <mat-card>Table here</mat-card>
+      </div>
+      <div class="col-sm-6"> 
+        <mat-card>Table here</mat-card>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div mat-dialog class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="modalContent" id="tables">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadBackgroundLabel">Assign Relationship</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6"> <!--Left Table-->
+            <app-nested-table *ngIf="this.AssignedLines.length > 0"
+              [action_icon]="'edit'"
+              [parents] = "this.AssignedLines" 
+              [isPageable]="'false'"
+              [headings]="this.AssignedHeadings"
+              (rowEvent)="InvoiceEvent($event)"
+              [noDataError] ="'No Lines Assigned'"
+              [action_toolip]="'arrow_back'"
+              ></app-nested-table>
+          </div>
+          <div class="col-sm-6"> <!--Right Table-->
+            <app-nested-table *ngIf="this.AvailableLines.length > 0"
+              [action_icon]="'edit'"
+              [parents] = "this.AvailableLines" 
+              [isPageable]="'false'"
+              [headings]="this.AvailableHeadings"
+              (rowEvent)="InvoiceEvent($event)"
+              [noDataError] ="'No Lines Available'"
+              [action_toolip]="'arrow_forward'"
+              ></app-nested-table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

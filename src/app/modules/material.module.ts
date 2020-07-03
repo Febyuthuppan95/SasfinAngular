@@ -33,6 +33,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redirect.component';
+import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -80,6 +81,11 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
     {
       provide: MAT_BOTTOM_SHEET_DATA,
       useValue: {}
+    },
+    ,
+    { 
+      provide: OverlayContainer, 
+      useClass: FullscreenOverlayContainer
     }
   ],
   exports: [
