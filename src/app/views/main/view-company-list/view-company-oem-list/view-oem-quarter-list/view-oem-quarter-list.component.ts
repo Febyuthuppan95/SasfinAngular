@@ -12,6 +12,7 @@ import { OemQuartersContextMenuComponent } from 'src/app/components/menus/oem-qu
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-oem-quarter-list',
@@ -23,7 +24,8 @@ export class ViewOemQuarterListComponent implements OnInit {
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -46,7 +48,7 @@ export class ViewOemQuarterListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
 
-  dataList: CompanyOEMQuarter[];
+  dataList: CompanyOEMQuarter[] = [];
   pages: Pagination[];
   showingPages: Pagination[];
   dataset: CompanyOEMQuartersList;
@@ -94,7 +96,7 @@ tableHeader: TableHeader = {
    enable: true,
   },
   backButton: {
-    enable: false
+    enable: true
   },
   filters: {
     search: true,
@@ -232,6 +234,7 @@ private unsubscribe$ = new Subject<void>();
         } else {
           this.noData = true;
           this.showLoader = false;
+          this.dataList = [];
         }
       },
       msg => {
@@ -244,6 +247,15 @@ private unsubscribe$ = new Subject<void>();
       }
     );
   }
+
+  back() {
+    this.router.navigate(['companies', 'oems']);
+  }
+
+  recordsPerPageChange($event) {
+
+  }
+
   editOEMQuarter(deleted?: boolean) {
     const model = {
       requestParams: {
@@ -321,7 +333,7 @@ private unsubscribe$ = new Subject<void>();
     this.rowEnd = obj.rowEnd;
 
     this.loadOEMQuarters();
-    
+
   }
   searchBar(filter: string) {
     this.rowStart = 1;
@@ -362,14 +374,14 @@ private unsubscribe$ = new Subject<void>();
 
     this.openeditModal.nativeElement.click();
   }
-  
+
   Add() {
     this.focusOEMQuarterID = null;
     this.focusPeriodQuarter = null;
     this.focusPeriodYear = null;
     this.openaddModal.nativeElement.click();
   }
-  
+
   createYears() {
     for (var x =0; x < 10; x++) {
       this.years.push(this.now - x);
