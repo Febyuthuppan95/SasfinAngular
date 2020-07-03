@@ -233,8 +233,10 @@ export class ViewCompanyListComponent implements OnInit, OnDestroy {
     this.loadCompanies();
   }
 
-  recordsPerPageChange() {
-
+  recordsPerPageChange($event: number) {
+    this.rowStart = 1;
+    this.rowCountPerPage = $event;
+    this.loadCompanies();
   }
 
   searchBar(filter: string) {
