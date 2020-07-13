@@ -82,7 +82,6 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
       provide: MAT_BOTTOM_SHEET_DATA,
       useValue: {}
     },
-    ,
     { 
       provide: OverlayContainer, 
       useClass: FullscreenOverlayContainer
