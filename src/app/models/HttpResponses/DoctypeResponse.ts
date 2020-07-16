@@ -7,6 +7,7 @@ export class Doctype {
 export class Outcome {
   outcome: string;
   outcomeMessage: string;
+  createdID?: number;
 }
 
 export class DoctypeListResponse {

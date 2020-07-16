@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
 import { ListCountriesRequest, CountriesListResponse, CountryItem } from 'src/app/models/HttpRequests/Locations';
 import { PlaceService } from 'src/app/services/Place.Service';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -12,7 +14,8 @@ import { PlaceService } from 'src/app/services/Place.Service';
 })
 export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
-              private placeService: PlaceService) { }
+              private placeService: PlaceService,
+              private snackbar: MatSnackBar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
@@ -45,7 +48,8 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           const query: string = value;
           if (query && query !== null) {
-            this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+            this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`) ||
+            this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
           }
 
           this.control.reset(null);
@@ -96,6 +100,24 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
+  async createOption() {
+    const data = this.query.value.split(',');
+
+    if (data.length === 2) {
+      await this.placeService.addCountry({ userID:  this.currentUser.userID, name: data[1].trim(), code: data[0].trim() }).then(
+        async (res: Outcome) => {
+          if (res.outcome === 'SUCCESS') {
+            await this.load(true);
+          }
+
+          this.snackbar.open(res.outcomeMessage, '' , { duration: 3000 });
+        }
+      );
+    } else {
+      this.snackbar.open('Required Format: "Code, Country Name"', '' , { duration: 3000 });
+    }
+  }
+
   matchRuleShort(str, rule) {
     // tslint:disable-next-line: no-shadowed-variable
     const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
@@ -103,7 +125,7 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public displayFn(item: CountryItem): string {
-    return item ? `${item.name}` : '';
+    return item ? `${item.code}, ${item.name}` : '';
   }
 
   ngOnDestroy(): void {}
