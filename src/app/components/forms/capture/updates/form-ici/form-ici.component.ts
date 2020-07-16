@@ -39,9 +39,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   form = new FormGroup({
     userID: new FormControl(null),
     specificICIID: new FormControl(null),
-    waybillNo: new FormControl(null, [Validators.required]),
+    waybillNo: new FormControl(null),
     supplierRef: new FormControl(null, [Validators.required]),
-    importersCode: new FormControl(null, [Validators.required]),
+    importersCode: new FormControl(null),
     attachmentStatusID: new FormControl(3),
     isDeleted: new FormControl(0),
     supplierRefOBit: new FormControl(null),
@@ -88,21 +88,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   }
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
-  ngOnInit() {
-    // this.transactionService.observerCurrentAttachment()
-    // .subscribe((capture: any) => {
-    //   if (capture) {
-    //     this.attachmentID = capture.attachmentID;
-    //     this.transactionID = capture.transactionID;
-    //     this.attachmentLabel = 'Clearing Instruction';
-    //     this.transactionLabel = capture.transactionType;
-    //     this.load();
-    //   }
-    // });
-
-    // this.eventService.observeCaptureEvent()
-    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
