@@ -260,6 +260,8 @@ import { FormSad500LineUpdatedComponent } from './components/forms/capture/updat
 import { FormCswLinesComponent } from './components/forms/capture/updates/form-csw/form-csw-lines/form-csw-lines.component';
 import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
+import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
+import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 
 @NgModule({
   declarations: [
@@ -443,7 +445,9 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
     AutocompleteCurrencyComponent,
     AutocompleteIncoComponent,
     AutocompleteItemsComponent,
-    FormCswLinesComponent
+    FormCswLinesComponent,
+    ViewCompanySupplierListComponent,
+    CompanySupplierContextMenuComponent
   ],
   imports: [
     BrowserModule,
