@@ -201,6 +201,12 @@ this.themeService.observeTheme()
   loadQuarters() {
     
   }
+  EditCompanySupplier(flag: boolean) {
+
+  }
+  AddCompanySupplier() {
+    
+  }
 
 }
 export class CompanySupplier {
