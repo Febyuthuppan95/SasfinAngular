@@ -27,7 +27,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   public form = new FormGroup({
     userID: new FormControl(null),
     specificSAD500LineID: new FormControl(null),
-    tariffID: new FormControl(null, [Validators.required]),
+    tariffID: new FormControl(null),
     unitOfMeasureID: new FormControl(null, [Validators.required]),
     originalLineID: new FormControl(null),
     cooID: new FormControl(null, [Validators.required]),

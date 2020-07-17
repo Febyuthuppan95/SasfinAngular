@@ -3,11 +3,12 @@
     Tariff
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
+  <mat-hint>Heading.ItemNumber, Name</mat-hint>
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected</mat-error>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
   <mat-option *ngFor="let item of list" [value]="item">
-    {{item.name}}
+    {{item.heading}}.{{item.itemNumber}},&nbsp;{{item.name}}
   </mat-option>
 </mat-autocomplete>
