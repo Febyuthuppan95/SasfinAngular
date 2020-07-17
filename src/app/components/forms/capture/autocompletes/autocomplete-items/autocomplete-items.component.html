@@ -3,11 +3,10 @@
     Items
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
+  <mat-hint>Tariff, Name, Description</mat-hint>
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
-  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected</mat-error>
+  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
-  <mat-option *ngFor="let item of list" [value]="item">
-    {{item.Item}}
-  </mat-option>
+  <mat-option *ngFor="let item of list" [value]="item">{{item.Tariff}}, {{item.Item}}, {{item.Description}}</mat-option>
 </mat-autocomplete>

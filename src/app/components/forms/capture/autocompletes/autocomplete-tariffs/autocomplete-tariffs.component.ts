@@ -97,6 +97,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         rowCount: number;
       }) => {
         this.list = res.tariffList;
+        console.log(this.list);
 
         if (setDefault) {
           const defaultValue = this.list.find(x => x.id === this.control.value);
@@ -106,7 +107,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.name}` : '';
+    return item ? `${item.heading}.${item.itemNumber}, ${item.name}` : '';
   }
 
   ngOnDestroy(): void {}

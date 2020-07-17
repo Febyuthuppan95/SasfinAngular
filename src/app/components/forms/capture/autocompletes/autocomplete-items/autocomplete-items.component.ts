@@ -99,7 +99,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.Item}` : '';
+    return item ? `${item.Tariff}, ${item.Item}, ${item.Description}` : '';
   }
 
   ngOnDestroy(): void {}

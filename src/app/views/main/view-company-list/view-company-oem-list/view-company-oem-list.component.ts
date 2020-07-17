@@ -78,11 +78,11 @@ export class ViewCompanyOemListComponent implements OnInit {
   companyName: string;
   focusOEMID: number;
   focusOEMName: string;
-  focusOEMRefNum:string;
+  focusOEMRefNum: string;
   OEM: CompanyOEM = {
     RowNum: -1,
     CompanyOEMID: -1,
-    OEMName: '',
+    OEMCompanyName: '',
     OEMRefNum: ''
   };
 
@@ -123,7 +123,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       },
       {
         title: 'OEM Name',
-        propertyName: 'OEMName',
+        propertyName: 'OEMCompanyName',
         order: {
           enable: true,
         },
@@ -153,7 +153,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     },
     {
       title: 'OEM Name',
-      propertyName: 'OEMName',
+      propertyName: 'OEMCompanyName',
       order: {
         enable: true,
       },
@@ -207,7 +207,8 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
 
   back() {
-    this.router
+    // tslint:disable-next-line: no-unused-expression
+    this.router;
   }
 
   loadCompanyOEMs() {
@@ -224,7 +225,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       },
       requestProcedure: 'CompanyOEMList'
     };
-    console.log(model);
+    // console.log(model);
     // company service api call
     this.companyService.companyOEMList(model).then(
       (res: CompanyOEMList) => {
@@ -236,7 +237,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          console.log(this.dataList);
+          console.log('oem list: ' + JSON.stringify(this.dataList));
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -255,7 +256,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   AddCompanyOEM() {
     let error = 0;
 
-    if (!this.OEM.OEMName || this.OEM.OEMName === null || this.OEM.OEMName === '') {
+    if (!this.OEM.OEMCompanyName || this.OEM.OEMCompanyName === null || this.OEM.OEMCompanyName === '') {
       error++;
     }
 
@@ -268,10 +269,10 @@ export class ViewCompanyOemListComponent implements OnInit {
       requestParams: {
       userID: this.currentUser.userID,
       companyID: this.companyID,
-      OEMName: this.OEM.OEMName,
+      OEMName: this.OEM.OEMCompanyName,
       OEMRefNum: this.OEM.OEMRefNum
       },
-      requestProcedure: "CompanyOEMCreate"
+      requestProcedure: 'CompanyOEMCreate'
     };
     // company service api call
     this.companyService.companyOEMAdd(model).then(
@@ -329,17 +330,17 @@ export class ViewCompanyOemListComponent implements OnInit {
       OEMRefNum: this.focusOEMRefNum,
       isDeleted: deleted
       },
-      requestProcedure: "CompanyOEMUpdate"
+      requestProcedure: 'CompanyOEMUpdate'
     };
 
     // company service api call
     this.companyService.companyOEMUpdate(model).then(
-      (res:Outcome) => {
+      (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
           this.closeeditModal.nativeElement.click();
-          this.notify.successmsg('SUCCESS', 'OEM Information successfully updated')
+          this.notify.successmsg('SUCCESS', 'OEM Information successfully updated');
           this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
         } else {
           this.closeeditModal.nativeElement.click();
@@ -470,7 +471,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
   Add() {
     this.OEM.CompanyOEMID = null;
-    this.OEM.OEMName = null;
+    this.OEM.OEMCompanyName = null;
     this.OEM.OEMRefNum = null;
     this.openaddModal.nativeElement.click();
   }
@@ -481,10 +482,10 @@ export class ViewCompanyOemListComponent implements OnInit {
 export class CompanyOEM {
   RowNum: number;
   CompanyOEMID: number;
-  OEMName: string;
+  OEMCompanyName: string;
   OEMRefNum: string;
 }
-export class CompanyOEMList{
+export class CompanyOEMList {
   rowCount: number;
   data?: CompanyOEM[];
   outcome: Outcome;

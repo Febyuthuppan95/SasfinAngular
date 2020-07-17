@@ -332,7 +332,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     };
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
-
+          console.log('res' + JSON.stringify(res));
           if (res.outcome.outcome === 'SUCCESS') {
               this.notify.successmsg(
                 res.outcome.outcome,

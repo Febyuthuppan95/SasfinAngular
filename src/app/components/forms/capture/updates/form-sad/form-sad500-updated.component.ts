@@ -289,6 +289,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     };
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
+      if (res !== null) {
       const response: any = res;
       console.log(response);
       response.userID = request.userID;
@@ -321,6 +322,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
       this.form.updateValueAndValidity();
       await this.loadLines();
+    } else {
+      this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+    }
     });
   }
 
