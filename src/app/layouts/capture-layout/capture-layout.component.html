@@ -47,7 +47,7 @@
           </button>
         </ng-container>
         &nbsp;&nbsp;
-        <button *ngIf="!escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-light" (click)="toggelEscalate()" matTooltip="Escalate Attachment" matTooltipPosition="below"><span class="mdi mdi-exclamation" ></span>
+        <button *ngIf="!escalated" style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-dark" (click)="toggelEscalate()" matTooltip="Escalate Attachment" matTooltipPosition="below"><span class="mdi mdi-exclamation" ></span>
         </button>
 
     </div>
@@ -55,8 +55,8 @@
 <div class="dock dock-top" [ngClass]="{'hide-dock': !this.showDocks, 'hover-dock': !this.showDocks}">
     <div class="text-center">
       <button style="z-index: 99999999999999;" mat-mini-fab (click)="companyInfo()" class="bg-primary text-light" matTooltip="Company Information" matTooltipPosition="below"><span class="mdi mdi-information-variant"></span></button>&nbsp;&nbsp;
-      <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>
-
+      <button style="z-index: 99999999999999;" mat-mini-fab (click)="this.showHelp = !this.showHelp" class="bg-primary text-light" matTooltip="Help" matTooltipPosition="below"><span class="mdi mdi-help"></span></button>&nbsp;&nbsp;
+      <button style="z-index: 99999999999999;" mat-mini-fab (click)="fileIsMissing();" class="bg-warning text-darak" matTooltip="File is Missing" matTooltipPosition="below"><span class="mdi mdi-file-hidden"></span></button>
     </div>
 </div>
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
