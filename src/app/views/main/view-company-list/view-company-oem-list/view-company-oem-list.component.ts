@@ -13,6 +13,9 @@ import { Subject } from 'rxjs';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
+import { Company, CompaniesListResponse } from 'src/app/models/HttpResponses/CompaniesListResponse';
+import { CompanyList } from 'src/app/models/HttpRequests/Company';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-company-oem-list',
@@ -49,6 +52,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
 
+  companiesList: Company[] = [];
   dataList: CompanyOEM[];
   pages: Pagination[];
   showingPages: Pagination[];
@@ -68,6 +72,9 @@ export class ViewCompanyOemListComponent implements OnInit {
   noData = false;
   showLoader = true;
   displayFilter = false;
+
+  CompanyControl = new FormControl();
+  CompanySearch: string;
 
   contextMenu = false;
   contextMenuX = 0;
@@ -198,6 +205,8 @@ export class ViewCompanyOemListComponent implements OnInit {
         this.companyName = obj.companyName;
       }
     });
+
+    this.loadCompanies();
     // this.loadCompanyOEMs();
     const obj: PaginationChange = {
       rowStart: 1,
@@ -255,7 +264,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
   AddCompanyOEM() {
     let error = 0;
-
+    this.CompanyControl.reset();
     if (!this.OEM.OEMCompanyName || this.OEM.OEMCompanyName === null || this.OEM.OEMCompanyName === '') {
       error++;
     }
@@ -268,12 +277,13 @@ export class ViewCompanyOemListComponent implements OnInit {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
-      OEMCompanyID: this.companyID,
-      OEMName: this.OEM.OEMCompanyName,
-      OEMRefNum: this.OEM.OEMRefNum
+      oemCompanyID: this.companyID,
+      oemName: this.OEM.OEMCompanyName,
+      oemRefNum: this.OEM.OEMRefNum
       },
       requestProcedure: 'CompanyOEMCreate'
     };
+    console.log('model = ' + JSON.stringify(model));
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
@@ -333,6 +343,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       requestProcedure: 'CompanyOEMUpdate'
     };
 
+
     // company service api call
     this.companyService.companyOEMUpdate(model).then(
       (res: Outcome) => {
@@ -368,6 +379,50 @@ export class ViewCompanyOemListComponent implements OnInit {
       'Please fill in all fields'
     );
   }
+  }
+
+  CompanyBar() {
+    this.loadCompanies();
+  }
+
+  loadCompanies() {
+    const model: CompanyList = {
+      userID: this.currentUser.userID,
+      specificCompanyID: -1,
+      rowStart: 1,
+      filter: this.CompanySearch,
+      rowEnd: 100000000,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+
+    this.companyService
+      .list(model).then(
+        (res: CompaniesListResponse) => {
+          this.companiesList = res.companies;
+          if (res.rowCount === 0) {
+            this.noData = true;
+          } else {
+            console.log('companies list: ' + res);
+            this.noData = false;
+            this.companiesList = res.companies;
+          }
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+
+        }
+      );
+  }
+  selectedCompany(companyID: number, name: string) {
+    // this.countryID = country;
+    console.log(companyID);
+    this.companyID = companyID;
+    this.OEM.OEMCompanyName = name;
+    // this.form.cooID.value = country;
   }
 
   recordsPerPageChange($event) {

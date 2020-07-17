@@ -79,8 +79,17 @@
           <div class="modal-body">
               <div class="form-group">
                   <label class="control-label">OEM Name:</label>
-                  <input type="text" placeholder="OEM Name" class="form-control"
-                  [(ngModel)]="OEM.OEMCompanyName" [ngModelOptions]="{standalone: true}"  required/>
+                  <!-- <input type="text" placeholder="OEM Name" class="form-control" -->
+                  <!-- [(ngModel)]="OEM.OEMCompanyName" [ngModelOptions]="{standalone: true}"  required/> -->
+                  <mat-form-field class="form-control" style="border: transparent !important; padding: 0;">
+                    <input [(ngModel)]="this.CompanySearch" type="text" (keyup)="CompanyBar()" placeholder="Company" aria-label="Number" matInput [formControl]="CompanyControl" [matAutocomplete]="companyAuto" required>
+                    <mat-autocomplete #companyAuto="matAutocomplete" >
+                      <mat-option *ngFor="let company of companiesList" [value]="company.name"
+                      (onSelectionChange)="selectedCompany(company.companyID, company.name)">
+                      {{company.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
               </div>
               <div class="form-group">
                 <label class="control-label">Reference No:</label>
