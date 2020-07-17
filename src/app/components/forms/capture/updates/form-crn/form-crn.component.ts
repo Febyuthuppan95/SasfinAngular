@@ -98,6 +98,7 @@ public transactionLabel: string;
 public errors: any[] = [];
 public shortcuts: ShortcutInput[];
 public help = false;
+public loader = true;
 
 private attachmentID: number;
 private transactionID: number;
@@ -175,6 +176,7 @@ async load() {
   };
 
   await this.captureService.customsReleaseGet(requestModel).then(async (res: CRNList) => {
+    this.loader = false;
     if (res.customs.length > 0) {
       const response: any = res.customs[0];
       response.customsReleaseID = res.customs[0].customReleaseID;
@@ -209,6 +211,8 @@ async load() {
       this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
     }
 
+  }, (err) => {
+    this.loader = false;
   });
 }
 

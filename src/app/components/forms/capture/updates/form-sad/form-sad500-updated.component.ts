@@ -294,6 +294,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     };
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
+      this.loader = false;
+
       if (res !== null) {
       const response: any = res;
       console.log(response);
@@ -330,6 +332,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     } else {
       this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
     }
+    }, (err) => {
+      this.loader = false;
     });
   }
 
@@ -348,7 +352,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        this.loader = false;
         this.lines = res.lines;
         this.lines.forEach((line) => {
           line.isLocal = false;

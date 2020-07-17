@@ -53,7 +53,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public help = false;
   public isExport = false;
   public paginationControl = new FormControl(1);
-  public loader = false;
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -237,6 +237,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async load() {
+    this.loader = true;
     const request = {
       customsWorksheetID: this.attachmentID,
       userID: this.currentUser.userID,
@@ -250,6 +251,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.captureService.customWorksheetList(request).then(async (res: CustomsWorksheetListResponse) => {
       if (res.customsWorksheets.length > 0) {
+        this.loader = false;
         const response: any = res.customsWorksheets[0];
         response.userID = request.userID;
         response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
@@ -286,6 +288,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
       }
+    }, (err) => {
+      this.loader = false;
     });
   }
 

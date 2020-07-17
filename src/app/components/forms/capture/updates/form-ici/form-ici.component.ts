@@ -63,6 +63,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   public errors: any[] = [];
   public shortcuts: ShortcutInput[];
   public help = false;
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -142,6 +143,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     };
 
     await this.captureService.iciList(requestModel).then(async (res: ICIListResponse) => {
+      this.loader = false;
       if (res.clearingInstructions.length > 0) {
         const response: any = res.clearingInstructions[0];
         response.specificICIID = res.clearingInstructions[0].clearingInstructionID;
@@ -174,6 +176,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
       }
+    }, (err) => {
+      this.loader = false;
     });
   }
 
