@@ -26,7 +26,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     public router: Router,
-    private apiService: ApiService) { 
+    private apiService: ApiService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -83,6 +83,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   focusLocalReceiptID: number;
   focusPeriodYear: number;
   focusQuarterID: number;
+  focusOEMID: any;
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
@@ -269,7 +270,8 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   AddLocalReceipt() {
 
   }
-  
+  Add(){}
+
   recordsPerPageChange($event) {
 
   }
