@@ -84,6 +84,7 @@
   </form>
 </ng-container>
 
-<ng-container *ngIf="displayLines">
+<loader *ngIf="loader"></loader>
+<ng-container *ngIf="displayLines && !loader">
   <app-form-csw-lines [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-csw-lines>
 </ng-container>

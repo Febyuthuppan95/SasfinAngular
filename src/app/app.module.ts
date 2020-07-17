@@ -264,6 +264,7 @@ import { ViewCompanySupplierListComponent } from './views/main/view-company-list
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 import { ViewTransactionSuppliersComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-transaction-suppliers/view-transaction-suppliers.component';
+import { SpinningLoaderComponent } from './components/spinning-loader/spinning-loader.component';
 
 @NgModule({
   declarations: [
@@ -451,7 +452,8 @@ import { ViewTransactionSuppliersComponent } from './views/main/view-company-lis
     ViewCompanySupplierListComponent,
     CompanySupplierContextMenuComponent,
     ViewQuarterReceiptTransactionsComponent,
-    ViewTransactionSuppliersComponent
+    ViewTransactionSuppliersComponent,
+    SpinningLoaderComponent
   ],
   imports: [
     BrowserModule,

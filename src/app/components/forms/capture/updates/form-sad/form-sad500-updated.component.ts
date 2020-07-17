@@ -21,6 +21,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
+import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-sad500-line-updated.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -94,6 +95,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public isVOC = false;
   public isExport = false;
   public paginationControl = new FormControl(1);
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -106,6 +108,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
+
+  @ViewChild('lineForm', { static: false })
+  private lineForm: FormSad500LineUpdatedComponent;
 
   @Input() capture: any;
 
@@ -343,6 +348,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        this.loader = false;
         this.lines = res.lines;
         this.lines.forEach((line) => {
           line.isLocal = false;
@@ -542,16 +548,32 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   prevLine() {
     if (this.activeIndex >= 1) {
       this.activeIndex--;
+      this.lineForm.resetForm();
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 
   nextLine() {
     if (this.activeIndex < this.lines.length) {
       this.activeIndex++;
+      this.lineForm.resetForm();
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 
