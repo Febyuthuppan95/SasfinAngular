@@ -78,6 +78,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // tslint:disable-next-line: max-line-length
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {
@@ -247,6 +248,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.customWorksheetList(request).then(async (res: CustomsWorksheetListResponse) => {
+      if (res.customsWorksheets.length > 0) {
         const response: any = res.customsWorksheets[0];
         response.userID = request.userID;
         response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
@@ -280,6 +282,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.updateValueAndValidity();
         await this.loadLines();
 
+      } else {
+        this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+      }
     });
   }
 

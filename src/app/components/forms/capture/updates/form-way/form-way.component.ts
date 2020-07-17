@@ -130,6 +130,8 @@ async load() {
   };
 
   await this.captureService.waybillList(requestModel).then(async (res: WaybillListResponse) => {
+    if (res.waybills.length > 0) {
+
     const response: any = res.waybills[0];
     response.waybillID = res.waybills[0].waybillID;
     response.attachmentStatusID = response.statusID;
@@ -158,6 +160,9 @@ async load() {
     }
 
     this.form.updateValueAndValidity();
+  } else {
+    this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+  }
   });
 }
 

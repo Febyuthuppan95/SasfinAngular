@@ -226,6 +226,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.invoiceList(request).then(async (res: InvoiceGetResponse) => {
+      if (res.invoices.length > 0) {
       const response: any = res.invoices[0];
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
@@ -265,6 +266,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.updateValueAndValidity();
       await this.loadLines();
+    } else {
+      this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+    }
     });
   }
 
