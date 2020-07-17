@@ -176,6 +176,7 @@
   </form>
 </ng-container>
 
-<ng-container *ngIf="displayLines">
-  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-sad500-line-updated>
+<loader *ngIf="loader"></loader>
+<ng-container *ngIf="displayLines && !loader">
+  <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport" #lineForm></app-form-sad500-line-updated>
 </ng-container>

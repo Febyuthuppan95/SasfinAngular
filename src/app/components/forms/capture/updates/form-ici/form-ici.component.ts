@@ -63,6 +63,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   public errors: any[] = [];
   public shortcuts: ShortcutInput[];
   public help = false;
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -86,6 +87,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
         this.load();
       }
   }
+  // tslint:disable-next-line: max-line-length
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {}
@@ -141,34 +143,41 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     };
 
     await this.captureService.iciList(requestModel).then(async (res: ICIListResponse) => {
-      const response: any = res.clearingInstructions[0];
-      response.specificICIID = res.clearingInstructions[0].clearingInstructionID;
-      response.attachmentStatusID = response.statusID;
+      this.loader = false;
+      if (res.clearingInstructions.length > 0) {
+        const response: any = res.clearingInstructions[0];
+        response.specificICIID = res.clearingInstructions[0].clearingInstructionID;
+        response.attachmentStatusID = response.statusID;
 
-      this.form.patchValue(response);
-      this.form.controls.userID.setValue(this.currentUser.userID);
-      this.errors = res.attachmentErrors.attachmentErrors;
+        this.form.patchValue(response);
+        this.form.controls.userID.setValue(this.currentUser.userID);
+        this.errors = res.attachmentErrors.attachmentErrors;
 
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-
-      if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
-          res.attachmentErrors.attachmentErrors.forEach((error) => {
-            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-              this.form.controls[key].setErrors({incorrect: true});
-              this.form.controls[key].markAsTouched();
+          if (key.indexOf('ODate') !== -1) {
+            if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+              this.form.controls[key].setValue(null);
             }
-          });
+          }
         });
-      }
 
-      this.form.updateValueAndValidity();
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          Object.keys(this.form.controls).forEach(key => {
+            res.attachmentErrors.attachmentErrors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                this.form.controls[key].setErrors({incorrect: true});
+                this.form.controls[key].markAsTouched();
+              }
+            });
+          });
+        }
+
+        this.form.updateValueAndValidity();
+      } else {
+        this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+      }
+    }, (err) => {
+      this.loader = false;
     });
   }
 

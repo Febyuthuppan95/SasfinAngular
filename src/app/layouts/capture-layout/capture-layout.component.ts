@@ -326,6 +326,33 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
    }
   }
 
+  fileIsMissing() {
+    const model: ChatConversationIssue = {
+      transactionID: this.transactionID,
+      userID: this.currentUser.userID,
+      reason: 'File is missing on attachment',
+      fileType: this.attachmentType,
+      documentID: this.attachmentID
+    };
+
+    this.chatService.createIssue(model).then(
+      (res: ChatIssueCreateReponse) => {
+        if (res.outcome.outcome === 'SUCCESS' || res.outcome.outcome === 'Success') {
+          this.submitCapture(true, false, false, 'File Missing', 'This attachment will flagged');
+        } else {
+          this.snackBarMat.open(res.outcome.outcomeMessage, '', {
+            duration: 2000
+           });
+        }
+      },
+      (msg: Outcome) => {
+        this.snackBarMat.open('An Error occurred while flagging attachment', '', {
+          duration: 2000
+         });
+      }
+    );
+  }
+
   loadAttachments() {
     const model = {
       filter: '',

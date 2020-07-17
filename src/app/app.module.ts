@@ -262,6 +262,9 @@ import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
+import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
+import { ViewTransactionSuppliersComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-transaction-suppliers/view-transaction-suppliers.component';
+import { SpinningLoaderComponent } from './components/spinning-loader/spinning-loader.component';
 
 @NgModule({
   declarations: [
@@ -447,7 +450,10 @@ import { CompanySupplierContextMenuComponent } from './components/menus/company-
     AutocompleteItemsComponent,
     FormCswLinesComponent,
     ViewCompanySupplierListComponent,
-    CompanySupplierContextMenuComponent
+    CompanySupplierContextMenuComponent,
+    ViewQuarterReceiptTransactionsComponent,
+    ViewTransactionSuppliersComponent,
+    SpinningLoaderComponent
   ],
   imports: [
     BrowserModule,

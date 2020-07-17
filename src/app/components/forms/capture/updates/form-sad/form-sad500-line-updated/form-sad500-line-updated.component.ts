@@ -167,6 +167,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
+
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
           if (this.form.controls[key].value !== null || this.form.controls[key].value) {
@@ -174,6 +175,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           }
         }
       });
+
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
       this.sadLine500ID = this.data.sad500LineID;
@@ -205,7 +207,11 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     }
 
     // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
-    // this.form.controls.duties.updateValueAndValidity();
+    this.form.updateValueAndValidity();
+  }
+
+  public resetForm() {
+    this.form.controls.unitOfMeasureID.reset(null);
   }
 
   updateHelpContext(slug: string) {

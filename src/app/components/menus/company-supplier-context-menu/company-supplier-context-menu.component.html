@@ -1,1 +1,8 @@
-<p>company-supplier-context-menu works!</p>
+<div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}" style="cursor: pointer">
+    <div class="card">
+      <div class=" popBodyNav">
+        <a (click)="Edit()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Edit</span></a>
+        <a (click)="Transactions()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Manage Transactions</span></a>
+        </div>
+    </div>
+</div>

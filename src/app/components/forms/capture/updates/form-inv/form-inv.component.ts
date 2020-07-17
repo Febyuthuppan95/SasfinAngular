@@ -48,6 +48,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public help = false;
   public companyID: number;
   public paginationControl = new FormControl(1);
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -226,6 +227,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.invoiceList(request).then(async (res: InvoiceGetResponse) => {
+      this.loader = false;
+
+      if (res.invoices.length > 0) {
       const response: any = res.invoices[0];
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
@@ -265,6 +269,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.updateValueAndValidity();
       await this.loadLines();
+    } else {
+      this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+    }
+    }, (err) => {
+      this.loader = false;
     });
   }
 
@@ -408,6 +417,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 
@@ -416,6 +432,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 

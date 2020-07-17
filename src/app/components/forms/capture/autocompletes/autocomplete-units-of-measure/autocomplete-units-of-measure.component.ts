@@ -58,6 +58,8 @@ constructor(private userService: UserService,
   }
 
   ngOnChanges() {
+    console.log(this.control.value);
+
     this.isRequired = this.control.validator !== null;
 
     if (this.isRequired) {

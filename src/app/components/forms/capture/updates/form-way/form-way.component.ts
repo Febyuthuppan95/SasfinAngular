@@ -52,6 +52,7 @@ public transactionLabel: string;
 public errors: AttachmentError[] = [];
 public shortcuts: ShortcutInput[];
 public help = false;
+public loader = true;
 
 private attachmentID: number;
 private transactionID: number;
@@ -130,6 +131,10 @@ async load() {
   };
 
   await this.captureService.waybillList(requestModel).then(async (res: WaybillListResponse) => {
+    this.loader = false;
+
+    if (res.waybills.length > 0) {
+
     const response: any = res.waybills[0];
     response.waybillID = res.waybills[0].waybillID;
     response.attachmentStatusID = response.statusID;
@@ -158,6 +163,11 @@ async load() {
     }
 
     this.form.updateValueAndValidity();
+  } else {
+    this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+  }
+  }, (err) => {
+    this.loader = false;
   });
 }
 

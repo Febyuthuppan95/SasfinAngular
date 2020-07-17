@@ -53,6 +53,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public help = false;
   public isExport = false;
   public paginationControl = new FormControl(1);
+  public loader = true;
 
   private attachmentID: number;
   private transactionID: number;
@@ -78,6 +79,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // tslint:disable-next-line: max-line-length
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {
@@ -235,6 +237,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async load() {
+    this.loader = true;
     const request = {
       customsWorksheetID: this.attachmentID,
       userID: this.currentUser.userID,
@@ -247,6 +250,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.customWorksheetList(request).then(async (res: CustomsWorksheetListResponse) => {
+      if (res.customsWorksheets.length > 0) {
+        this.loader = false;
         const response: any = res.customsWorksheets[0];
         response.userID = request.userID;
         response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
@@ -280,6 +285,11 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.updateValueAndValidity();
         await this.loadLines();
 
+      } else {
+        this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+      }
+    }, (err) => {
+      this.loader = false;
     });
   }
 
@@ -423,6 +433,12 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 
@@ -431,6 +447,12 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 

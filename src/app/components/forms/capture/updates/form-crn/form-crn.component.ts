@@ -47,7 +47,7 @@ form = new FormGroup({
   serialNo: new FormControl(null),
   lrn: new FormControl(null, [Validators.required]),
   importersCode: new FormControl(null),
-  pcc: new FormControl(null),
+  pccID: new FormControl(null),
   fob: new FormControl(null),
   waybillNo: new FormControl(null, [Validators.required]),
   supplierRef: new FormControl(null),
@@ -67,10 +67,6 @@ form = new FormGroup({
   importersCodeOUserID: new FormControl(null),
   importersCodeODate: new FormControl(null),
   importersCodeOReason: new FormControl(null),
-  pccOBit: new FormControl(null),
-  pccOUserID: new FormControl(null),
-  pccODate: new FormControl(null),
-  pccOReason: new FormControl(null),
   fobOBit: new FormControl(null),
   fobOUserID: new FormControl(null),
   fobODate: new FormControl(null),
@@ -102,6 +98,7 @@ public transactionLabel: string;
 public errors: any[] = [];
 public shortcuts: ShortcutInput[];
 public help = false;
+public loader = true;
 
 private attachmentID: number;
 private transactionID: number;
@@ -123,25 +120,10 @@ public init() {
     this.load();
   }
 }
+// tslint:disable-next-line: max-line-length
 public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
-ngOnInit() {
-  // this.transactionService.observerCurrentAttachment()
-  // .pipe(takeUntil(this.$unsubscribe))
-  // .subscribe((capture: any) => {
-  //   if (capture) {
-  //     this.attachmentID = capture.attachmentID;
-  //     this.transactionID = capture.transactionID;
-  //     this.attachmentLabel = 'Customs Release Notification';
-  //     this.transactionLabel = capture.transactionType;
-  //     this.load();
-  //   }
-  // });
-
-  // this.eventService.observeCaptureEvent()
-  // .pipe(takeUntil(this.$unsubscribe))
-  // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
-}
+ngOnInit() {}
 
 ngAfterViewInit(): void {
   setTimeout(() => {
@@ -194,35 +176,43 @@ async load() {
   };
 
   await this.captureService.customsReleaseGet(requestModel).then(async (res: CRNList) => {
-    const response: any = res.customs[0];
-    response.customsReleaseID = res.customs[0].customReleaseID;
-    response.attachmentStatusID = response.statusID;
-    response.pcc = res.customs[0].pcc;
+    this.loader = false;
+    if (res.customs.length > 0) {
+      const response: any = res.customs[0];
+      response.customsReleaseID = res.customs[0].customReleaseID;
+      response.attachmentStatusID = response.statusID;
+      response.pccID = res.customs[0].pcc;
 
-    this.form.patchValue(response);
-    this.form.controls.userID.setValue(this.currentUser.userID);
-    this.errors = res.attachmentErrors.attachmentErrors;
+      this.form.patchValue(response);
+      this.form.controls.userID.setValue(this.currentUser.userID);
+      this.errors = res.attachmentErrors.attachmentErrors;
 
-    Object.keys(this.form.controls).forEach(key => {
-      if (key.indexOf('ODate') !== -1) {
-        if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-          this.form.controls[key].setValue(null);
-        }
-      }
-    });
-
-    if (res.attachmentErrors.attachmentErrors.length > 0) {
       Object.keys(this.form.controls).forEach(key => {
-        res.attachmentErrors.attachmentErrors.forEach((error) => {
-          if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-            this.form.controls[key].setErrors({incorrect: true});
-            this.form.controls[key].markAsTouched();
+        if (key.indexOf('ODate') !== -1) {
+          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+            this.form.controls[key].setValue(null);
           }
-        });
+        }
       });
+
+      if (res.attachmentErrors.attachmentErrors.length > 0) {
+        Object.keys(this.form.controls).forEach(key => {
+          res.attachmentErrors.attachmentErrors.forEach((error) => {
+            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+              this.form.controls[key].setErrors({incorrect: true});
+              this.form.controls[key].markAsTouched();
+            }
+          });
+        });
+      }
+
+      this.form.updateValueAndValidity();
+    } else {
+      this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
     }
 
-    this.form.updateValueAndValidity();
+  }, (err) => {
+    this.loader = false;
   });
 }
 

@@ -24,7 +24,8 @@ export const environment = {
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
     attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5',
     companyOEMData: 'f0e77e12-2f52-4a5b-ac12-c88bf6d4c2dc',
-    companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209'
+    companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209',
+    companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5'
   },
 
   // We should consider doing this for api endpoints -- Ashton
