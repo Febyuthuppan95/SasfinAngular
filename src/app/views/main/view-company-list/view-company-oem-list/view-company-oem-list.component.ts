@@ -267,7 +267,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
-      OEMCompanyID: this.companyID,
+      companyID: this.companyID,
       OEMName: this.OEM.OEMName,
       OEMRefNum: this.OEM.OEMRefNum
       },
