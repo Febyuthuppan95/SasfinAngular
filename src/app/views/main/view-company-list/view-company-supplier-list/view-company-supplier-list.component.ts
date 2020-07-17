@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Router } from '@angular/router';
-import { TableHeading, TableConfig, TableHeader } from 'src/app/models/Table';
+import { TableHeading, TableConfig, TableHeader, SelectedRecord, Order } from 'src/app/models/Table';
 import { User } from 'src/app/models/HttpResponses/User';
 import { environment } from 'src/environments/environment';
 import { Pagination } from 'src/app/models/Pagination';
@@ -13,18 +13,33 @@ import { CompanySupplierContextMenuComponent } from 'src/app/components/menus/co
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-view-company-supplier-list',
   templateUrl: './view-company-supplier-list.component.html',
   styleUrls: ['./view-company-supplier-list.component.scss']
 })
-export class ViewCompanySupplierListComponent implements OnInit {
+export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
     private userService: UserService,
     private themeService: ThemeService,
-    public router: Router) { }
+    public router: Router,
+    private apiService: ApiService) { 
+      this.rowStart = 1;
+      this.rowEnd = 15;
+      this.rowCountPerPage = 15;
+      this.activePage = +1;
+      this.prevPageState = true;
+      this.nextPageState = false;
+      this.prevPage = +this.activePage - 1;
+      this.nextPage = +this.activePage + 1;
+      this.filter = '';
+      this.orderBy = 'Name';
+      this.orderDirection = 'ASC';
+      this.totalShowing = 0;
+    }
 
     defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
@@ -37,10 +52,10 @@ export class ViewCompanySupplierListComponent implements OnInit {
   orderBy: string;
   orderDirection: string;
 
-  dataList: CompanySupplier[];
+  dataList: CompanyLocalReceipt[];
   pages: Pagination[];
   showingPages: Pagination[];
-  dataset: CompanySupplierList;
+  dataset: CompanyLocalReceiptList;
   rowCount: number;
   nextPage: number;
   nextPageState: boolean;
@@ -65,18 +80,20 @@ export class ViewCompanySupplierListComponent implements OnInit {
   selectedRow = -1;
   companyID: number;
   companyName: string;
-  focusSupplierID: number;
-  focusSupplierName: string;
+  focusLocalReceiptID: number;
+  focusPeriodYear: number;
+  focusQuarterID: number;
 
-
-  Supplier: CompanySupplier = {
+  SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
-    SupplierID: -1,
-    SupplierName: ''
+    CompanyLocalReceiptID: -1,
+    PeriodYear: -1,
+    QuarterID: -1,
+    CompanyID: -1
   };
 
   tableHeader: TableHeader = {
-    title: 'Company OEMs',
+    title: 'Quarterly Local Receipts',
     addButton: {
      enable: true,
     },
@@ -90,7 +107,7 @@ export class ViewCompanySupplierListComponent implements OnInit {
   };
   tableConfig: TableConfig = {
     header:  {
-      title: 'Company Suppliers',
+      title: 'Quarterly Local Receipts',
       addButton: {
       enable: true,
       },
@@ -141,15 +158,15 @@ export class ViewCompanySupplierListComponent implements OnInit {
       }
     },
     {
-      title: 'OEM Name',
-      propertyName: 'OEMName',
+      title: 'Period Year',
+      propertyName: 'PeriodYear',
       order: {
         enable: true,
       },
     },
     {
-      title: 'Reference Number',
-      propertyName: 'OEMRefNum',
+      title: 'Quarter',
+      propertyName: 'QuarterID',
       order: {
         enable: true,
       },
@@ -175,7 +192,8 @@ export class ViewCompanySupplierListComponent implements OnInit {
   closeaddModal: ElementRef;
 
   ngOnInit() {
-this.themeService.observeTheme()
+
+    this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
       this.currentTheme = theme;
@@ -184,9 +202,13 @@ this.themeService.observeTheme()
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCompany) => {
-      if (obj !== null || obj !== undefined) {
+      console.log(obj);
+      if (obj !== null && obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
+      } else {
+        this.companyID = 1;
+        this.loadLocalReceipts();
       }
     });
     // this.loadCompanyOEMs();
@@ -195,20 +217,123 @@ this.themeService.observeTheme()
       rowEnd: 15
     };
 
-
+  }
+  ngOnDestroy() {
+    this.companyService.flushCompanyLocalReceipt();
   }
 
-  loadQuarters() {
-    
+  loadLocalReceipts() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        rowStart: this.rowStart,
+        filter: this.filter,
+        rowEnd: this.rowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection
+      },
+      requestProcedure: 'CompanyLocalReceiptsList'
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`,model).then(
+      (res: CompanyLocalReceiptList) => {
+        console.log(res);
+        if (res.data.length === 0) {
+          this.noData = true;
+          this.showLoader = false;
+          this.dataList = [];
+        } else {
+          this.noData = false;
+          this.dataset = res;
+          this.dataList = res.data;
+          console.log(this.dataList);
+          this.rowCount = res.rowCount;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+
+      }
+    );
   }
-  EditCompanySupplier(flag: boolean) {
+  EditLocalReceipt(flag: boolean) {
 
   }
-  AddCompanySupplier() {
-    
+  AddLocalReceipt() {
+
+  }
+  
+  recordsPerPageChange($event) {
+
+  }
+  pageChange(obj: PaginationChange) {
+    console.log(obj);
+    this.rowStart = obj.rowStart;
+    this.rowEnd = obj.rowEnd;
+
+    this.loadLocalReceipts();
   }
 
+  searchBar($event) {
+    console.log('Searching');
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.filter = $event;
+    this.loadLocalReceipts();
+  }
+
+  orderChange($event: Order) {
+    this.orderBy = $event.orderBy;
+    this.orderDirection = $event.orderByDirection;
+    this.rowStart = 1;
+    this.rowEnd = this.rowCountPerPage;
+    this.loadLocalReceipts();
+  }
+
+  popClick(event, localReceipt) {
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.focusLocalReceiptID = localReceipt.localReceiptID;
+    this.focusQuarterID = localReceipt.QuarterID;
+    this.focusPeriodYear = localReceipt.PeriodYear;
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
+  popOff() {
+    this.contextMenu = false;
+    this.selectedRow = -1;
+  }
+  setClickedRow(obj: SelectedRecord) {
+    console.log(obj);
+    // this.selectedRow = index;
+    this.contextMenuX = obj.event.clientX + 3;
+    this.contextMenuY = obj.event.clientY + 5;
+    this.focusLocalReceiptID = obj.record.localReceiptID;
+    this.focusQuarterID = obj.record.localReceipt.QuarterID;
+    this.focusPeriodYear = obj.record.localReceipt.PeriodYear;
+
+    if (!this.contextMenu) {
+      this.themeService.toggleContextMenu(true);
+      this.contextMenu = true;
+    } else {
+      this.themeService.toggleContextMenu(false);
+      this.contextMenu = false;
+    }
+  }
 }
+
 export class CompanySupplier {
   RowNum: number;
   SupplierID: number;
@@ -217,5 +342,17 @@ export class CompanySupplier {
 export class CompanySupplierList {
   rowCount: number;
   data?: CompanySupplier[];
+  outcome: Outcome;
+}
+export class CompanyLocalReceipt {
+  RowNum: number;
+  PeriodYear: number;
+  QuarterID: number;
+  CompanyID: number;
+  CompanyLocalReceiptID: number;
+}
+export class CompanyLocalReceiptList {
+  rowCount: number;
+  data?: CompanyLocalReceipt[];
   outcome: Outcome;
 }

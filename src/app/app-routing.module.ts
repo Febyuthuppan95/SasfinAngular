@@ -81,6 +81,8 @@ import {ViewCompanyBomsItemgroupsListComponent} from './views/main/view-company-
 import {ViewCompanyBomsItemgroupsErrorsListComponent} from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
 import { DialogGuard } from './guards/dialog.guard';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
+import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
+import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -355,6 +357,18 @@ const routes: Routes = [
             path: 'transactions/',
             component: ViewTransactionsComponent,
             data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/localreceipts',
+            component: ViewCompanySupplierListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/localreceipts/transactions',
+            component: ViewQuarterReceiptTransactionsComponent,
+            data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
           {
