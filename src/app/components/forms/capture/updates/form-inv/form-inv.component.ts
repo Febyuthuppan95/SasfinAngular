@@ -48,6 +48,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public help = false;
   public companyID: number;
   public paginationControl = new FormControl(1);
+  public loader = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -412,6 +413,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex--;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 
@@ -420,6 +428,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      this.displayLines = false;
+      this.loader = true;
+      setTimeout(() => {
+        this.displayLines = true;
+        this.loader = false;
+      }, 1000);
     }
   }
 

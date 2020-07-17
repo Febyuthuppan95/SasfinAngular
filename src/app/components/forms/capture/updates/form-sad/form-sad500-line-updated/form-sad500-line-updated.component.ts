@@ -210,6 +210,10 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     this.form.updateValueAndValidity();
   }
 
+  public resetForm() {
+    this.form.controls.unitOfMeasureID.reset(null);
+  }
+
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,
