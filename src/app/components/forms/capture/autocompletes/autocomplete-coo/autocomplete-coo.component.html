@@ -4,7 +4,7 @@
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto">
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
-  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected</mat-error>
+  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
   <!-- <mat-error *ngIf="query.hasError('incorrect')">Format: "Code, Country Name"</mat-error> -->
   <!-- <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="createOption()">create</button> this option?</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">Format: "Code, Country Name"</mat-error> -->
