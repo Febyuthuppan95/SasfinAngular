@@ -61,7 +61,7 @@ export class CompanyService {
     let sessionData8: CompanyLocalReceipt = null;
     let sessionData9: LocalReceipt = null;
 
-    
+
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -228,7 +228,7 @@ export class CompanyService {
       return this.SelectedCapture.asObservable();
     }
 
-    // Flush Local Receipt Data 
+    // Flush Local Receipt Data
     flushCompanyLocalReceipt() {
       sessionStorage.removeItem(`${environment.Sessions.companyLocalReceiptData}`);
     }
