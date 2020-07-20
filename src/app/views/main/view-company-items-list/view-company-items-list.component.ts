@@ -266,7 +266,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   orderChange($event: Order) {
-    console.log($event);
+    // console.log($event);
     this.orderBy = $event.orderBy;
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
@@ -281,6 +281,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.itemsactivePage = +itemspageNumber;
     this.itemsprevPage = +this.itemsactivePage - 1;
     this.itemsnextPage = +this.itemsactivePage + 1;
+
+
 
     if (this.itemsprevPage < 1) {
       this.itemsprevPageState = true;
@@ -303,7 +305,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
     this.updateitemsPagination();
 
-    this.loadCompanyItemsList();
+    this.loadItems(false);
   }
 
   searchBar() {
@@ -330,9 +332,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
+    console.log('model' + JSON.stringify(model));
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
-          console.log('res' + JSON.stringify(res));
+          // console.log('res' + JSON.stringify(res));
           if (res.outcome.outcome === 'SUCCESS') {
               this.notify.successmsg(
                 res.outcome.outcome,
@@ -400,6 +403,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           this.itemsrowCount = res.rowCount;
           this.itemsshowingRecords = res.itemsLists.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
+          console.log('itemstotalShowing ' +  this.itemsrowCount);
           this.itemspaginateData();
         } else {
           this.noitemData = true;
@@ -492,7 +496,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   selectedRecord($event: SelectedRecord) {
-    console.log($event.record);
+    // console.log($event.record);
     this.popClick($event.event, $event.record.groupID, $event.record.itemid, $event.record.itemname, $event.record.itemparentid);
   }
 
@@ -635,7 +639,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `BOMItemAdd`
     };
-    console.log(this.ItemFile, model, 'boms/items/upload');
+    // console.log(this.ItemFile, model, 'boms/items/upload');
     // uncomment once testing is done
     // this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
     //   (res: Outcome) => {

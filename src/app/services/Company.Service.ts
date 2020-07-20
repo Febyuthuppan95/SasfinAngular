@@ -34,6 +34,7 @@ import { GetTariffList } from '../models/HttpRequests/GetTariffList';
 import { Outcome } from '../models/HttpResponses/DoctypeResponse';
 import { CompanyOEM, SelectedCompanyOEM } from '../views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 import { CompanyLocalReceipt } from '../views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
+import { LocalReceipt } from '../views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -58,8 +59,9 @@ export class CompanyService {
 
     let sessionData7: SelectedCompanyOEM = null;
     let sessionData8: CompanyLocalReceipt = null;
+    let sessionData9: LocalReceipt = null;
 
-    
+
 
     // company
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
@@ -92,6 +94,9 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.companyLocalReceiptData}`) !== undefined || null) {
       sessionData8 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyLocalReceiptData}`));
     }
+    if (sessionStorage.getItem(`${environment.Sessions.localTransactionData}`) !== undefined || null) {
+      sessionData9 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.localTransactionData}`));
+    }
 
     // company
     this.selectedCompany = new BehaviorSubject<SelectedCompany>(sessionData);
@@ -109,6 +114,8 @@ export class CompanyService {
     this.SelectedCapture = new BehaviorSubject<SelectedCapture>(sessionData6);
     // Local Receipts
     this.selectedLocalReceipt = new BehaviorSubject<CompanyLocalReceipt>(sessionData8);
+    this.selectedLocalTransaction = new BehaviorSubject<LocalReceipt>(sessionData9);
+
   }
   // company
   selectedCompany: BehaviorSubject<SelectedCompany>;
@@ -127,6 +134,7 @@ export class CompanyService {
 
   testObservation = new BehaviorSubject<SelectedCompany>(null).asObservable();
   selectedLocalReceipt: BehaviorSubject<CompanyLocalReceipt>;
+  selectedLocalTransaction: BehaviorSubject<LocalReceipt>;
 
   // subService.listen(this.testObservation).subscribe((val: object) => {});
   // listen (obsv: Observerable<any>) {
@@ -137,12 +145,15 @@ export class CompanyService {
   // subService.close();
 
   // Set Local Receipt
-  
+
   setLocalReceipt(record: CompanyLocalReceipt) {
     this.selectedLocalReceipt.next(record);
     sessionStorage.setItem(`${environment.Sessions.companyLocalReceiptData}`, JSON.stringify(record));
   }
-  setReceiptTransaction
+  setLocalTransaction(record: LocalReceipt) {
+    this.selectedLocalTransaction.next(record);
+    sessionStorage.setItem(`${environment.Sessions.localTransactionData}`, JSON.stringify(record));
+  }
   // Company
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);
@@ -179,6 +190,10 @@ export class CompanyService {
     sessionStorage.setItem(`${environment.Sessions.CaptureData}`, JSON.stringify(Capture));
   }
 
+  // LocalTransaction
+  observerLocalTransaction() {
+    return this.selectedLocalTransaction.asObservable();
+  }
   // Local Receipt
   observeLocalReceipt() {
     return this.selectedLocalReceipt.asObservable();
@@ -213,7 +228,7 @@ export class CompanyService {
       return this.SelectedCapture.asObservable();
     }
 
-    // Flush Local Receipt Data 
+    // Flush Local Receipt Data
     flushCompanyLocalReceipt() {
       sessionStorage.removeItem(`${environment.Sessions.companyLocalReceiptData}`);
     }
