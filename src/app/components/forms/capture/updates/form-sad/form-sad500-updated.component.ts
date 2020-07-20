@@ -518,6 +518,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     if (!target) {
       $event.isLocal = true;
       this.lines.push($event);
+
+      this.refresh();
       this.snackbar.open('Line added to queue', '', {duration: 3000});
     } else {
       $event.isLocal = false;
@@ -530,6 +532,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       }
 
       this.lines[this.lines.indexOf(target)] = $event;
+
+      this.refresh();
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
@@ -555,12 +559,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
-      this.displayLines = false;
-      this.loader = true;
-      setTimeout(() => {
-        this.displayLines = true;
-        this.loader = false;
-      }, 1000);
+      this.refresh();
+
     }
   }
 
@@ -571,22 +571,19 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
-      this.displayLines = false;
-      this.loader = true;
-      setTimeout(() => {
-        this.displayLines = true;
-        this.loader = false;
-      }, 1000);
+      this.refresh();
     }
   }
 
   specificLine(index: number) {
     this.activeLine = this.lines[index];
+    this.refresh();
   }
 
   newLine() {
     this.activeLine = null;
     this.activeIndex = -1;
+    this.refresh();
   }
 
   async deleteLine() {
@@ -609,6 +606,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(1, { emitEvent: false });
     }
+
+    this.refresh();
   }
 
   async deleteDuty() {
@@ -623,12 +622,16 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.lines.splice(this.lines.indexOf(targetLine), 1);
     this.activeLine = null;
     this.activeIndex = -1;
+
+    this.refresh();
   }
 
   cancelLine() {
     this.activeLine = null;
     this.activeIndex = 0;
     this.activeLine = this.lines[this.activeIndex];
+
+    this.refresh();
   }
 
   ngOnDestroy(): void {}
@@ -669,5 +672,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         }
       });
     }
+  }
+
+  refresh() {
+    this.displayLines = false;
+    this.loader = true;
+    setTimeout(() => {
+      this.displayLines = true;
+      this.loader = false;
+    }, 500);
   }
 }

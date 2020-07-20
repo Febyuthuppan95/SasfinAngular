@@ -39,6 +39,8 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
       this.query.setValidators(null);
     }
 
+    this.query.updateValueAndValidity();
+
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
