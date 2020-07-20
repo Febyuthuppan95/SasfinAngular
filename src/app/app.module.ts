@@ -263,7 +263,6 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
-
 import { SpinningLoaderComponent } from './components/spinning-loader/spinning-loader.component';
 import { ContextMenuQuarterTransactionsComponent } from './components/menus/context-menu-quarter-transactions/context-menu-quarter-transactions.component';
 import { FormC1Component } from './components/forms/capture/updates/form-c1/form-c1.component';
@@ -577,7 +576,9 @@ import { ContextMenuLocalAttachmentsComponent } from './components/menus/context
     FormWayComponent,
     FormCswComponent,
     FormInvComponent,
-    EscalateBottomSheetComponent
+    EscalateBottomSheetComponent,
+    FormC1Component,
+    FormSmdComponent
   ]
 })
 export class AppModule { }

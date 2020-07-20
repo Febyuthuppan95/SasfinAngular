@@ -186,9 +186,9 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
-    console.log(this.recordsPerPage);
+    // console.log(this.recordsPerPage);
     this.loadTariffs(false);
-    console.log(this.recordsPerPage);
+    // console.log(this.recordsPerPage);
   }
 
   loadTariffs(displayGrowl: boolean) {
@@ -283,7 +283,7 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
 
   viewDutyTaxTypes() {
     sessionStorage.setItem('tariffID', this.selectedTariff.id.toString());
-    console.log(sessionStorage.getItem('tarriffID'));
+    // console.log(sessionStorage.getItem('tarriffID'));
     this.router.navigate(['tariff', 'duties']);
   }
 

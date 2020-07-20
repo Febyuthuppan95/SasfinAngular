@@ -154,7 +154,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
-    console.log(this.attachmentQueueDisplay);
+    // console.log(this.attachmentQueueDisplay);
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -175,7 +175,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.transactionType = data.transactionType;
         this.docType = data.docType;
 
-        console.log(data);
+        // console.log(data);
       }
     });
 
@@ -200,7 +200,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.captureService.ediStatusList({}).then(
       (res: any) => {
         this.ediStatuses = res.data;
-        console.log(this.ediStatuses[0]);
+        // console.log(this.ediStatuses[0]);
       }
     );
   }
@@ -301,7 +301,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          console.log(res);
+          // console.log(res);
           if (res.outcome.outcome === 'FAILURE') {
             this.notify.errorsmsg(
               res.outcome.outcome,
@@ -398,8 +398,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   popClick(event, id, fileName, statusID, doctype?, fileTypeID?, reason?) {
 
-    console.log(doctype);
-    console.log(fileTypeID);
+    // console.log(doctype);
+    // console.log(fileTypeID);
 
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
@@ -514,7 +514,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   onTypeSelect(id: number) {
-    console.log(id);
+    // console.log(id);
 
     if (this.transactionTypes[id].name === 'VOC') {
       this.isVOC = true;
@@ -593,7 +593,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       transactionID: this.transactionID,
     }).then(
       (res: SAD500ListResponse) => {
-        console.log(res);
+        // console.log(res);
         this.sad500s = res.sad500s;
       },
       (msg) => {

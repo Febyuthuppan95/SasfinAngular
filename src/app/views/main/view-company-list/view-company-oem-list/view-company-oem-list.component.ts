@@ -246,7 +246,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          console.log('oem list: ' + JSON.stringify(this.dataList));
+          // console.log('oem list: ' + JSON.stringify(this.dataList));
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -283,7 +283,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       },
       requestProcedure: 'CompanyOEMCreate'
     };
-    console.log('model = ' + JSON.stringify(model));
+    // console.log('model = ' + JSON.stringify(model));
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
@@ -403,7 +403,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           if (res.rowCount === 0) {
             this.noData = true;
           } else {
-            console.log('companies list: ' + res);
+            // console.log('companies list: ' + res);
             this.noData = false;
             this.companiesList = res.companies;
           }
@@ -419,7 +419,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
   selectedCompany(companyID: number, name: string) {
     // this.countryID = country;
-    console.log(companyID);
+    // console.log(companyID);
     this.companyID = companyID;
     this.OEM.OEMCompanyName = name;
     // this.form.cooID.value = country;
@@ -429,7 +429,7 @@ export class ViewCompanyOemListComponent implements OnInit {
 
   }
   pageChange(obj: PaginationChange) {
-    console.log(obj);
+    // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
@@ -466,7 +466,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
 
   searchBar($event) {
-    console.log('Searching');
+    // console.log('Searching');
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.filter = $event;
@@ -487,7 +487,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.focusOEMID = oem.record.companyOEMID;
     this.focusOEMName = oem.record.OEMName;
     this.focusOEMRefNum = oem.record.OEMRefNum;
-    console.log(this.focusOEMRefNum);
+    // console.log(this.focusOEMRefNum);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
@@ -501,14 +501,14 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    console.log(obj);
+    // console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
     this.focusOEMID = obj.record.CompanyOEMID;
     this.focusOEMName = obj.record.OEMName;
     this.focusOEMRefNum = obj.record.OEMRefNum;
-    console.log(this.focusOEMID);
+    // console.log(this.focusOEMID);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;

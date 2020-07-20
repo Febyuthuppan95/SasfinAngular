@@ -182,7 +182,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     countryQuery = '';
 
     isUpdate: boolean;
-    currentCompany : {companyID: number, companyName: string};
+    currentCompany: {companyID: number, companyName: string};
 
     ngOnInit() {
       this.companyService.observeCompany()
@@ -510,8 +510,8 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
           const item = this.items.find(x => x.ItemID === this.updateSAD500Line.itemID);
 
-          console.log(item);
-          console.log(this.items[0]);
+          // console.log(item);
+          // console.log(this.items[0]);
           if (item) {
             this.LinesForm.controls.control4.setValue(item.Item);
           }
@@ -565,7 +565,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverrideprodCodeExcept() {
       this.disabledprodCode = true;
-      console.log(this.form.prodCode);
+      // console.log(this.form.prodCode);
     }
 
     UndoOverrideprodCode() {
@@ -587,7 +587,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverridequantityExcept() {
       this.disabledquantity = true;
-      console.log(this.form.quantity);
+      // console.log(this.form.quantity);
     }
 
     UndoOverridequantity() {
@@ -609,7 +609,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverrideitemValueExcept() {
       this.disableditemValue = true;
-      console.log(this.form.itemValue);
+      // console.log(this.form.itemValue);
     }
 
     UndoOverrideitemValue() {
@@ -631,7 +631,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverrideunitPriceExcept() {
       this.disabledunitPrice = true;
-      console.log(this.form.unitPrice);
+      // console.log(this.form.unitPrice);
     }
 
     UndoOverrideunitPrice() {
@@ -653,7 +653,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
 
     OverridetotalLineValueExcept() {
       this.disabledtotalLineValue = true;
-      console.log(this.form.totalLineValue);
+      // console.log(this.form.totalLineValue);
     }
 
     UndoOverridetotalLineValue() {

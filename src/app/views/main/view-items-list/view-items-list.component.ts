@@ -365,7 +365,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       (res: TariffListResponse) => {
 
           this.tarifflist = res.tariffList;
-          console.log(this.tarifflist);
+          // console.log(this.tarifflist);
 
       },
       msg => {
@@ -404,7 +404,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
   popClick(event, obj) {
     this.Item = obj;
-    console.log(obj);
+    // console.log(obj);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -453,8 +453,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.tariffID = this.Item.tariffID;
     this.itemtype = this.Item.type;
     this.itemtypeID = this.Item.typeID;
-    console.log(this.itemtype);
-    console.log(this.itemtypeID);
+    // console.log(this.itemtype);
+    // console.log(this.itemtypeID);
     this.vulnerableControl.setValue(this.Item.vulnerable === 'True' ? true : false);
     this.vulnerable = this.Item.vulnerable;
     this.openeditModal.nativeElement.click();
@@ -544,7 +544,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   }
   onTypeChange(id: number) {
     this.itemtypeID = id;
-    console.log(this.itemtypeID);
+    // console.log(this.itemtypeID);
   }
   onTariffChange(selectedtariffid: number) {
     this.tariffID = selectedtariffid;

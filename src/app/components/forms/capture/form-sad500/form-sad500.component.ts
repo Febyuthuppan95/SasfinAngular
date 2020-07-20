@@ -424,8 +424,8 @@ dialogOpen = false;
           this.cpcList = res.data;
           this.cpcListTemp = res.data;
 
-        };
-        console.log(res);
+        }
+        // console.log(res);
       }
     );
   }
@@ -491,7 +491,7 @@ dialogOpen = false;
     })
 
   submit(escalation?: boolean) {
-    console.log(this.SADForm.valid);
+    // console.log(this.SADForm.valid);
     this.findInvalidControls(this.SADForm);
 
     if (this.attachmentType === 'VOC') { // Save VOC Header
@@ -594,7 +594,7 @@ dialogOpen = false;
         }
       );
     } else {
-      console.log(this.SADForm.valid);
+      // console.log(this.SADForm.valid);
       this.findInvalidControls(this.SADForm);
 
       if (this.LinesValid && !this.SADForm.valid) {
@@ -619,7 +619,7 @@ dialogOpen = false;
         }
     }
 
-    console.log(invalid);
+    // console.log(invalid);
 }
 
   updateLine(obj: SAD500Line) {
@@ -785,14 +785,14 @@ dialogOpen = false;
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        console.log('res');
-        console.log(res.lines);
+        // console.log('res');
+        // console.log(res.lines);
         this.sad500CreatedLines = res.lines;
         if (this.sad500CreatedLines.length > 0) {
           this.LinesValid = true;
         }
 
-        this.lines = this.sad500CreatedLines.length -1;
+        this.lines = this.sad500CreatedLines.length - 1;
         if (this.lines > -1) {
             this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }
@@ -823,9 +823,9 @@ dialogOpen = false;
   }
 
   saveLines(obj?: SAD500LineCreateRequest, escalation?: boolean) {
-    console.log(this.SADForm.valid);
+    // console.log(this.SADForm.valid);
     this.findInvalidControls(this.SADForm);
-    console.log(escalation);
+    // console.log(escalation);
 
     if (this.LinesValid && this.SADForm.valid || escalation) {
 
@@ -975,7 +975,7 @@ dialogOpen = false;
   }
 
   saveLineDuty(line: Duty) {
-    console.log(line);
+    // console.log(line);
 
     this.captureService.sad500LineDutyAdd({
       userID: this.currentUser.userID,
@@ -1057,7 +1057,7 @@ dialogOpen = false;
   }
   cancelLine() {
     this.focusLineData = null;
-    console.log(this.sad500CreatedLines.length);
+    // console.log(this.sad500CreatedLines.length);
     this.lines = this.sad500CreatedLines.length - 1;
     this.focusLineData = this.sad500CreatedLines[this.lines];
 }
@@ -1183,7 +1183,7 @@ dialogOpen = false;
   OverrideLRNExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledLRN = true;
-    console.log(this.form.LRN);
+    // console.log(this.form.LRN);
   }
 
   UndoOverrideLRN() {
@@ -1206,7 +1206,7 @@ dialogOpen = false;
   OverrideMRNExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledMRN = true;
-    console.log(this.form.MRN);
+    // console.log(this.form.MRN);
   }
 
   UndoOverrideMRN() {
@@ -1229,7 +1229,7 @@ dialogOpen = false;
   OverrideCPCExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledCPC = true;
-    console.log(this.form.CPC);
+    // console.log(this.form.CPC);
   }
 
   UndoOverrideCPC() {
@@ -1252,7 +1252,7 @@ dialogOpen = false;
   OverrideimportersCodeExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledimportersCode = true;
-    console.log(this.form.importersCode);
+    // console.log(this.form.importersCode);
   }
 
   UndoOverrideimportersCode() {
@@ -1275,7 +1275,7 @@ dialogOpen = false;
   OverridefileRefExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledfileRef = true;
-    console.log(this.form.fileRef);
+    // console.log(this.form.fileRef);
   }
 
   UndoOverridefileRef() {
@@ -1298,7 +1298,7 @@ dialogOpen = false;
   OverridetotalCustomsDutyExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledtotalCustomsDuty = true;
-    console.log(this.form.totalCustomsDuty);
+    // console.log(this.form.totalCustomsDuty);
   }
 
   UndoOverridetotalCustomsDuty() {

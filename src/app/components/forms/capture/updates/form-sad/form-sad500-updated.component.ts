@@ -271,7 +271,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         (res: VOCListResponse) => {
           console.log(res);
           if (res.rowCount !== 0) {
-            console.log(res.vocs[0]);
             this.originalSAD500ID = res.vocs[0].originalID;
             this.form.controls.referenceNo.setValue(res.vocs[0].referenceNo);
             this.form.controls.reason.setValue(res.vocs[0].reason);

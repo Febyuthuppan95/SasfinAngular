@@ -53,7 +53,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
         } else {
           const query: string = value;
           if (query && query !== null) {
-            console.log(query);
+            // console.log(query);
             this.list = this.list.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
           }
 
@@ -89,7 +89,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.listTemp = res.currenciesList;
 
           if (setDefault) {
-            const defaultValue = this.listTemp.find(x => x.currencyID == this.control.value);
+            const defaultValue = this.listTemp.find(x => x.currencyID === this.control.value);
 
             if (defaultValue) {
               this.query.setValue(defaultValue, { emitEvent: false });

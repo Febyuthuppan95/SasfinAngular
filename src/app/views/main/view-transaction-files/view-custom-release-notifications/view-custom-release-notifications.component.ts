@@ -94,7 +94,7 @@ constructor(private themeService: ThemeService, private transactionService: Tran
   loadDataset() {
     this.captureService.customsReleaseList(this.listRequest).then(
       (res: CRNList) => {
-        console.log(res);
+        // console.log(res);
         this.tableConfig.dataset = res.customs;
 
         if (res.customs.length === 0) {

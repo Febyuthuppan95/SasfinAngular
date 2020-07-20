@@ -121,7 +121,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   }
 
   loadUnitsOfMeasures() {
-    console.log('running');
+    // console.log('running');
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
 
     const unitsOfMeasure = {
@@ -135,7 +135,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
     };
     this.unitService.list(unitsOfMeasure).then(
       (res: ListUnitsOfMeasure) => {
-        console.log(res);
+        // console.log(res);
         this.showLoader = false;
         {
           if (res.outcome.outcome === 'SUCCESS') {
@@ -200,7 +200,7 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
   }
 
   orderChange($event: Order) {
-    console.log($event);
+    // console.log($event);
     this.orderBy = $event.orderBy;
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;

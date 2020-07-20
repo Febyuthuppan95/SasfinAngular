@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Pagination } from 'src/app/models/Pagination';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Subject } from 'rxjs';
+// tslint:disable-next-line: max-line-length
 import { CompanySupplierContextMenuComponent } from 'src/app/components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -23,10 +24,10 @@ import { ApiService } from 'src/app/services/api.service';
 export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService,
-    public router: Router,
-    private apiService: ApiService) {
+              private userService: UserService,
+              private themeService: ThemeService,
+              public router: Router,
+              private apiService: ApiService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -203,7 +204,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCompany) => {
-      console.log(obj);
+      // console.log(obj);
       if (obj !== null && obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
@@ -237,10 +238,10 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       },
       requestProcedure: 'CompanyLocalReceiptsList'
     };
-    console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`,model).then(
+    // console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: CompanyLocalReceiptList) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -249,7 +250,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          console.log(this.dataList);
+          // console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -271,13 +272,13 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   AddLocalReceipt() {
 
   }
-  Add(){}
+  Add() {}
 
   recordsPerPageChange($event) {
 
   }
   pageChange(obj: PaginationChange) {
-    console.log(obj);
+    // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
@@ -285,7 +286,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   }
 
   searchBar($event) {
-    console.log('Searching');
+    // console.log('Searching');
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.filter = $event;
@@ -301,7 +302,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, localReceipt) {
-    console.log(localReceipt);
+    // console.log(localReceipt);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.focusLocalReceiptID = localReceipt.localReceiptID;
@@ -320,7 +321,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    console.log(obj);
+    // console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;

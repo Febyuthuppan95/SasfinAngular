@@ -95,9 +95,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     /* Claims Modal Data*/
     // Init with dummy 1
     const fullYear = new Date().getFullYear();
-    const fullmonth = new Date().getMonth()
+    const fullmonth = new Date().getMonth();
 
-   
+
     this.minClaimDate = new Date();
     this.selectedClaimDate = this.minClaimDate;
     this.ServiceClaim = {
@@ -221,7 +221,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   companyServiceClaimPermits: ClaimPermit[] = [];
   submissiondate: Date;
   complete = false;
-  companyServiceList: CompService[] =[];
+  companyServiceList: CompService[] = [];
   loadingData = false;
   loadingImportData = false;
   focusImport: Import;
@@ -245,7 +245,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       error: ''
     },
 
-  }
+  };
   selectedRow = -1;
   lookBackDays = [];
   extensionDays = [];
@@ -277,7 +277,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   claimRequestParams: FormGroup;
   selectedCompanyServiceClaimID: number;
 
-  minClaimDate = new Date()
+  minClaimDate = new Date();
   /* Claims Modal*/
 
 
@@ -305,7 +305,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
   submit522Claim() {
     this.showLoader = true;
-    console.log('Updating claim params..');
+    // console.log('Updating claim params..');
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -315,9 +315,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: `CompanyServiceClaimsUpdate`
     };
-    console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
-      (res : UpdateResponse ) => {
+    // console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`, model).then(
+      (res: UpdateResponse ) => {
         this.closeCreate522Modal.nativeElement.click();
         this.updateClaimStatus();
       },
@@ -332,7 +332,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
   remove($event: ClaimPermit) {
-    console.log($event);
+    // console.log($event);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -343,7 +343,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: 'CompanyServiceClaimPermitsUpdate'
     };
-    console.log(model);
+    // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
       (res: ListReadResponse) => {
         this.loadCompanyServiceClaimPermits();
@@ -357,7 +357,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
 
     );
-  } 
+  }
   loadCompanyServiceClaimPermits() {
     const model = {
       requestParams: {
@@ -372,7 +372,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       (res: ListReadResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           this.companyServiceClaimPermits = res.data;
-          
         }
       },
       msg => {
@@ -397,7 +396,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/status`, model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
-          this.loadServiceClaims(true)
+          this.loadServiceClaims(true);
         }
       },
       msg => {
@@ -423,11 +422,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.service(model).then(
       (res: CompanyServiceResponse) => {
-        console.log(res);
-        if(res.outcome.outcome ==='SUCCESS') {
-          this.companyServiceList = res.services
+        // console.log(res);
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.companyServiceList = res.services;
         } else {
-          //error
+          // error
         }
       },
       msg => {
@@ -454,7 +453,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.getCompanyServiceClaims(model).then(
       (res: CompanyServiceClaimsListResponse) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -465,7 +464,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         this.rowCount = res.rowCount;
         this.CompanyServiceClaims = res.serviceClaims;
 
-        console.log(this.rowCount);
+        // console.log(this.rowCount);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -514,7 +513,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   popClick(event, obj) {
     this.ServiceClaim = obj;
-    if(this.ServiceClaim.serviceName === '522') {
+    if (this.ServiceClaim.serviceName === '522') {
       this.ServiceClaim.transactionID = this.getTransactionID();
     }
     this.contextMenuX = event.clientX + 3;
@@ -620,7 +619,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
     this.selectedCompanyServiceID = companyServiceID;
     this.ServiceClaim.serviceName = this.companyServiceList.find(x => x.componyServiceID === companyServiceID).serviceName;
-    console.log(this.ServiceClaim.serviceName);
+    // console.log(this.ServiceClaim.serviceName);
 
   }
 
@@ -694,13 +693,13 @@ createCompanyServiceClaim() {
     companyServiceID: this.selectedCompanyServiceID,
     claimDate: this.selectedClaimDate || null
   };
-  console.log(model);
+  // console.log(model);
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
       if (res.outcome.outcome === 'SUCCESS') {
-        console.log(this.ServiceClaim.serviceName)
-        if(this.ServiceClaim.serviceName === '522') {
-        this.closeCreateModal.nativeElement.click();
+        // console.log(this.ServiceClaim.serviceName);
+        if (this.ServiceClaim.serviceName === '522') {
+          this.closeCreateModal.nativeElement.click();
           this.create522Transaction();
         } else {
           this.closeCreateModal.nativeElement.click();
@@ -728,7 +727,7 @@ createCompanyServiceClaim() {
   );
 }
 create522Transaction() {
-  console.log(`522-${new Date().toLocaleString()}`);
+ // console.log(`522-${new Date().toLocaleString()}`);
 
   this.transactionService.createdTransaction(
     this.currentUser.userID,
@@ -738,22 +737,22 @@ create522Transaction() {
     `522-${new Date().toLocaleString()}`
   ).then(
     (res: Outcome) => {
-      if(res.outcome === 'SUCCESS') {
-       
-       const transactionID =  this.getTransactionID(); 
+      if (res.outcome === 'SUCCESS') {
+
+        const transactionID =  this.getTransactionID();
         this.companyService.setCompany({
-          companyID: this.companyID,
-          companyName: this.companyName,
-          selectedTransactionID:  transactionID
+        companyID: this.companyID,
+        companyName: this.companyName,
+        selectedTransactionID:  transactionID
         });
-        if(transactionID > 0) {
-          this.router.navigate(['transaction', 'attachments']);  
+
+        if (transactionID > 0) {
+        this.router.navigate(['transaction', 'attachments']);
         } else {
-          this.router.navigate(['companies', 'transactions']);
+            this.router.navigate(['companies', 'transactions']);
         }
-        
-      }
-      else {
+
+      } else {
         this.notify.errorsmsg(
           res.outcome,
           res.outcomeMessage
@@ -778,14 +777,14 @@ getTransactionID(): number {
     requestProcedure: 'CompanyServiceClaimParametersList'
   };
   this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-    (res:ListReadResponse) => {
-      return res.data[0].TransactionID
+    (res: ListReadResponse) => {
+      return res.data[0].TransactionID;
     }
-  )
+  );
   return 0;
 }
 addCompanyServiceClaimPermits() {
-  console.log(this.permitslist.length);
+  // console.log(this.permitslist.length);
 
   if (this.permitslist.length === 0) {
     // error
@@ -800,9 +799,9 @@ addCompanyServiceClaimPermits() {
         companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
         permitID: x
       },
-      requestProcedure: "CompanyServiceClaimPermitAdd"
+      requestProcedure: 'CompanyServiceClaimPermitAdd'
     };
-    console.log(model);
+    // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimPermit`, model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
@@ -824,7 +823,7 @@ addCompanyServiceClaimPermits() {
         );
       }
     );
-  })
+  });
 }
 openAddClaimPermits($event) {
   this.loadCompanyServiceClaimPermits();
@@ -846,8 +845,8 @@ loadCompanyPermits() {
     (res: CompanyPermitsListResponse) => {
 
       if (res.outcome.outcome === 'SUCCESS') {
-       this.Permits = res.permits
-       console.log(this.Permits);
+       this.Permits = res.permits;
+       // console.log(this.Permits);
       }
     },
     msg => {

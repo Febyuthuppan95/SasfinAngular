@@ -12,6 +12,8 @@ import { FormSad500UpdatedComponent } from 'src/app/components/forms/capture/upd
 import { FormCswComponent } from 'src/app/components/forms/capture/updates/form-csw/form-csw.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { EventService } from 'src/app/services/event.service';
+import { FormC1Component } from 'src/app/components/forms/capture/updates/form-c1/form-c1.component';
+import { FormSmdComponent } from 'src/app/components/forms/capture/updates/form-smd/form-smd.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -37,6 +39,13 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
+    // Testing
+    // this.transactionService.setCurrentAttachment({
+    //   transactionID: 2211,
+    //   attachmentID: 14,
+    //   docType: 'SC1', transactionType: 'Import', transactionName: 'Test'
+    // });
+
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -99,6 +108,14 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
       }
       case 'WAY': {
         this.componentRef = this.componentService.generateComponent(FormWayComponent) as ComponentRef<FormWayComponent>;
+        break;
+      }
+      case 'SC1': {
+        this.componentRef = this.componentService.generateComponent(FormC1Component) as ComponentRef<FormC1Component>;
+        break;
+      }
+      case 'SMD': {
+        this.componentRef = this.componentService.generateComponent(FormSmdComponent) as ComponentRef<FormSmdComponent>;
         break;
       }
     }

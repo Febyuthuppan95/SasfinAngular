@@ -335,9 +335,9 @@ loader = false;
 
 
   submit(escalation?: boolean) {
-    console.log('Isvvalid');
-    console.log(this.InvForm.valid && this.LinesValid );
-    if (this.InvForm.valid && this.LinesValid|| escalation) {
+    // console.log('Isvvalid');
+    // console.log(this.InvForm.valid && this.LinesValid );
+    if (this.InvForm.valid && this.LinesValid || escalation) {
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
@@ -356,8 +356,8 @@ loader = false;
             invoiceNoOReason: this.form.invoiceNo.OReason,
           };
 
-          console.log('submit');
-          console.log(requestModel);
+          // console.log('submit');
+          // console.log(requestModel);
           this.captureService.invoiceUpdate(requestModel).then(
             (res: Outcome) => {
               if (res.outcome === 'SUCCESS') {
@@ -370,7 +370,7 @@ loader = false;
               }
             },
             (msg) => {
-              console.log(msg);
+              // console.log(msg);
               this.notify.errorsmsg('Failure', 'Cannot reach server');
             }
           );
@@ -411,7 +411,7 @@ loader = false;
 
       this.captureService.invoiceLineUpdate(requestModel).then(
         (res: Outcome) => {
-          console.log(res);
+          // console.log(res);
           if (res.outcome === 'SUCCESS') {
             this.loadLines();
             this.lineState = 'Updated successfully';
@@ -461,11 +461,11 @@ loader = false;
       orderByDirection: '',
       transactionID: this.transactionID
     };
-    console.log('requestModel');
-    console.log(requestModel);
+    // console.log('requestModel');
+    // console.log(requestModel);
     this.captureService.invoiceList(requestModel).then(
       (res: InvoiceGetResponse) => {
-        console.log(res.invoices);
+        // console.log(res.invoices);
         if (res.invoices !== undefined) {
           this.form.cooID.value = res.invoices[0].cooID;
           this.form.fromCompanyID.value = res.invoices[0].companyID;
@@ -549,7 +549,7 @@ loader = false;
     });
   }
 
-  saveLines(escalation?:boolean) {
+  saveLines(escalation?: boolean) {
 
     if (this.LinesValid && this.InvForm.valid || escalation) {
       if (this.lineIndex < this.lineQueue.length) {
@@ -665,7 +665,7 @@ loader = false;
   }
 
   selectedFromCompany(fromCompanyID: Company) {
-    console.log(fromCompanyID);
+    // console.log(fromCompanyID);
     this.form.fromCompanyID.value = fromCompanyID;
   }
 
@@ -708,7 +708,7 @@ loader = false;
     this.focusLineForm = !this.focusLineForm;
     this.focusLineData = null;
     this.InvForm.reset();
-    console.log(this.InvForm.get('control1').value);
+    // console.log(this.InvForm.get('control1').value);
     this.lines = -1;
   }
   deleteLine() {
@@ -716,7 +716,7 @@ loader = false;
   }
   cancelLine() {
     this.focusLineData = null;
-    console.log(this.sad500CreatedLines.length);
+    // console.log(this.sad500CreatedLines.length);
     this.lines = this.sad500CreatedLines.length - 1;
     this.focusLineData = this.sad500CreatedLines[this.lines];
   }
@@ -796,7 +796,7 @@ initfilterCountfries() {
 
   OverrideinvoiceNoExcept() {
     this.disabledinvoiceNo = true;
-    console.log(this.form.invoiceNo);
+    // console.log(this.form.invoiceNo);
   }
 
   UndoOverrideinvoiceNo() {

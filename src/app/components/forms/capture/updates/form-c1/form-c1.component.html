@@ -4,10 +4,10 @@
 <div class="capture-header">
   <div class="float-right" style="margin-top: -24px !important">
     <div class="indicator-wrapper" (click)="displayLines = false;">
-      <button #sad500Tooltip="matTooltip" matTooltip="SAD500" matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !displayLines}"></button>
+      <button #sad500Tooltip="matTooltip" matTooltip="SC1" matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !displayLines}"></button>
     </div>
     <div class="indicator-wrapper" (click)="displayLines = true;">
-      <button #sadLinesTooltip="matTooltip" matTooltip="SAD500 Lines" matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': displayLines}"></button>
+      <button #sadLinesTooltip="matTooltip" matTooltip="SC1 Lines" matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': displayLines}"></button>
     </div>
   </div>
   <h1 class="capture-form-title text-dark">
@@ -31,11 +31,7 @@
           <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
-        <!-- &nbsp;<span>{{lineState}}</span> -->
         </p>
-      <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
-          <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
-      </div> -->
     </div>
     </mat-card-content>
   </mat-card>
@@ -49,7 +45,7 @@
           <mat-label>
             Period Year
           </mat-label>
-          <input matInput type="text" formControlName="periodYear" />
+          <input matInput type="text" formControlName="PeriodYear" />
         </mat-form-field>
         <br /><br />
       </div>
@@ -58,7 +54,7 @@
           <mat-label>
             Quarter
           </mat-label>
-          <input matInput type="text" formControlName="quarterID" />
+          <input matInput type="text" formControlName="QuarterID" />
         </mat-form-field>
         <br /><br />
       </div>
@@ -67,7 +63,7 @@
           <mat-label>
            Supplier
           </mat-label>
-          <input matInput type="number" formControlName="supplierName" />
+          <input matInput type="number" formControlName="SupplierName" />
         </mat-form-field>
         <br /><br />
       </div>

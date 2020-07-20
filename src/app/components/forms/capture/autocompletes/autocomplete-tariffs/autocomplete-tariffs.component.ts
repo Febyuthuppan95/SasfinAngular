@@ -97,7 +97,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         rowCount: number;
       }) => {
         this.list = res.tariffList;
-        console.log(this.list);
+        // console.log(this.list);
 
         if (setDefault) {
           const defaultValue = this.list.find(x => x.id === this.control.value);

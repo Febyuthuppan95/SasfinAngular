@@ -160,7 +160,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe (obj => {
-      console.log(obj);
       this.transactionID = obj.transactionID;
       this.attachmentID = obj.attachmentID;
       this.attachmentType = obj.docType;
@@ -168,9 +167,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.reason = `${obj.reason}`;
       this.escalated = obj.issueID > 0 ? true : false;
       this.initTypes();
-
       this.loadAttachments();
-
     });
 
     // get the help value
@@ -286,6 +283,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     );
   }
+
   loadCaptureInfo() {
     const docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
     const requestModel = {
@@ -395,6 +393,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           });
         });
   }
+
   toggelEscalate() {
     // Modal toggle
     const escalateDialog = this.dialog.open(EscalateDialogComponent, { width: '512px' });

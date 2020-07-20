@@ -292,7 +292,7 @@ export class FormCustomWorksheetComponent
         fileRefOReason: this.form.fileRef.OReason,
       };
 
-      console.log(requestModel);
+      // console.log(requestModel);
 
       this.captureService.customWorksheetUpdate(requestModel).then(
         (res: Outcome) => {
@@ -304,7 +304,7 @@ export class FormCustomWorksheetComponent
           }
         },
         (msg) => {
-          console.log(msg);
+          // console.log(msg);
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
@@ -373,7 +373,7 @@ export class FormCustomWorksheetComponent
       })
       .then(
         (res: CustomsWorksheetListResponse) => {
-          console.log(res);
+          // console.log(res);
           if (res.customsWorksheets.length === 1) {
             this.form.LRN.value = res.customsWorksheets[0].lrn;
             this.form.LRN.error = res.customsWorksheets[0].lrnError;
@@ -460,7 +460,7 @@ export class FormCustomWorksheetComponent
     this.focusLineData = null;
     this.lines = -1;
 
-    console.log(obj);
+    // console.log(obj);
 
     this.snackbar.open(`Line #${this.lineQueue.length} added to queue`, '', {
       duration: 3000,
@@ -491,7 +491,7 @@ export class FormCustomWorksheetComponent
           supplyUnit: lineCreate.supplyUnit,
         };
 
-        console.log(perfect);
+        // console.log(perfect);
 
         this.captureService.customWorksheetLineAdd(perfect).then(
           (res: {

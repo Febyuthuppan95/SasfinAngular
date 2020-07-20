@@ -16,41 +16,75 @@
         <mat-label>
           Line No
         </mat-label>
-        <input matInput type="text" formControlName="lineNo">
+        <input matInput type="text" formControlName="LineNo">
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-document-no')">
+        <mat-label>
+          Document No
+        </mat-label>
+        <input matInput type="number" formControlName="DocumentNo">
       </mat-form-field>
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-item')">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-document-line-no')">
         <mat-label>
-          Part/Component No
+          Document Line No
         </mat-label>
-        <input matInput type="text" formControlName="itemID">
-        <!--Auto complete on Items-->
+        <input matInput type="text" formControlName="DocumentLineNo">
       </mat-form-field>
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-item-desc')">
-        <mat-label>
-          Item Description
-        </mat-label>
-        <input matInput type="text" formControlName="itemDescription">
-        </mat-form-field>
+      <ls-autocomplete-items [control]="form.controls.ItemID"></ls-autocomplete-items>
       <br><br>
     </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-c1-line-unit-of-measure')">
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-component-value')">
+        <mat-label>
+          Component Value
+        </mat-label>
+          <input matInput type="text" formControlName="ComponentValue">
+       </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-raw-material-value')">
+        <mat-label>
+          Raw Material Value
+        </mat-label>
+          <input matInput type="text" formControlName="RawMaterialValue">
+       </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-reference')">
+        <mat-label>
+          Reference
+        </mat-label>
+          <input matInput type="text" formControlName="Reference">
+       </mat-form-field>
+      <br><br>
+    </div>
+    <!-- <div class="col-4" (mouseover)="updateHelpContext('form-c1-line-unit-of-measure')">
         <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
         <br><br>
-    </div>
+    </div> -->
     <div class="col-8">
-        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-unitprice')">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-total-cost')">
             <mat-label>
-            Unit Price
+            Total Cost
             </mat-label>
-            <input matInput type="number" formControlName="unitprice">
+            <input matInput type="number" formControlName="TotalCost">
         </mat-form-field>
         <br><br>
     </div>
+    <div class="col-12">
+      <mat-checkbox formControlName="Active">Active</mat-checkbox>
+      <br><br>
+  </div>
   </div>
 </form>

@@ -76,7 +76,7 @@ constructor(private userService: UserService,
     this.captureService.ediStatusList({ pageIndex: 0, pageSize: 100 }).then(
       // tslint:disable-next-line: max-line-length
       (res: any) => {
-        console.log(res);
+        // console.log(res);
         this.list = res.data;
         this.listTemp = res.data;
 

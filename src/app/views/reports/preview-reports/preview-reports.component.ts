@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx';
 import { CompanyService, SelectedCompany, SelectedClaimReport } from 'src/app/services/Company.Service';
 import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
 import { UserService } from 'src/app/services/user.Service';
@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
-import {convertToHtml} from "mammoth";
+import {convertToHtml} from 'mammoth';
 import { Router } from '@angular/router';
 
 type AOA = any[][];
@@ -60,7 +60,7 @@ export class PreviewReportsComponent implements OnInit {
   }
 
   getClaimReports() {
-    console.log(this.claimReport.claimNumber);
+    // console.log(this.claimReport.claimNumber);
     const model: GetServiceClaimReports = {
       userID: this.currentUser.userID,
       companyServiceClaimID: this.claimReport.claimNumber,
@@ -72,7 +72,7 @@ export class PreviewReportsComponent implements OnInit {
     };
     this.companyService.getServiceClaimReports(model).then(
       (res: ServiceClaimReportsListResponse) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.reports = res.companyServiceClaimReports;
         } else {
@@ -88,12 +88,12 @@ export class PreviewReportsComponent implements OnInit {
     this.router.navigate(['companies', 'serviceclaims']);
   }
   getSingleReport(rep: ServiceClaimReport) {
-    console.log(this.claimReport);
+    // console.log(this.claimReport);
   // return "C:\Users\Eathon\Documents\LatSol_Documentation\SasfinGTS\521\Tempaltes\report1.xlsx";
 
   // GET .. ?reportID=12&claimID=23&
   // selectedReport = URL
-    console.log(rep);
+    // console.log(rep);
     const model = {
       reportID: rep.reportID,
       // claimID: this.claimReport.claimNumber,
@@ -112,12 +112,12 @@ export class PreviewReportsComponent implements OnInit {
         this.selectedReport = url;
         // this.iframe.nativeElement.src = `Report_${rep.reportID}.xlsx`;
         this.fileDownload.nativeElement.click();
-        console.log(url);
+        // console.log(url);
       });
   }
 
   buildGetLink(rep: ServiceClaimReport) {
-    console.log(rep);
+    // console.log(rep);
     // tslint:disable-next-line: max-line-length
     if (rep.reportQueueStatusID === 2) {
       // tslint:disable-next-line: max-line-length
@@ -137,7 +137,7 @@ export class PreviewReportsComponent implements OnInit {
   }
 
   onFileChange(evt: any) {
-    console.log(evt);
+    // console.log(evt);
 
 
     /* wire up file reader */
