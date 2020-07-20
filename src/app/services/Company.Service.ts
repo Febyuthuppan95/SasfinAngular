@@ -137,10 +137,12 @@ export class CompanyService {
   // subService.close();
 
   // Set Local Receipt
+  
   setLocalReceipt(record: CompanyLocalReceipt) {
     this.selectedLocalReceipt.next(record);
     sessionStorage.setItem(`${environment.Sessions.companyLocalReceiptData}`, JSON.stringify(record));
   }
+  setReceiptTransaction
   // Company
   setCompany(company: SelectedCompany) {
     this.selectedCompany.next(company);

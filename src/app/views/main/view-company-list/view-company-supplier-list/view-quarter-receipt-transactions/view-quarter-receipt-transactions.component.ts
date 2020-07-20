@@ -14,6 +14,7 @@ import { ContextMenuQuarterTransactionsComponent } from 'src/app/components/menu
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-quarter-receipt-transactions',
@@ -94,7 +95,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   };
 
   tableHeader: TableHeader = {
-    title: 'Quarterly Transactions',
+    title: 'Quarterly Receipts',
     addButton: {
      enable: true,
     },
@@ -108,7 +109,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   };
   tableConfig: TableConfig = {
     header:  {
-      title: 'Quarterly Transactions',
+      title: 'Local Receipts',
       addButton: {
       enable: true,
       },
@@ -129,15 +130,22 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
         }
       },
       {
-        title: 'Supplier Name',
-        propertyName: 'SupplierName',
+        title: 'Transaction Number',
+        propertyName: 'TransactionID',
         order: {
           enable: true,
         },
       },
       {
-        title: 'Transaction ID',
-        propertyName: 'TransactionID',
+        title: 'Name',
+        propertyName: 'Name',
+        order: {
+          enable: true,
+        }
+      },
+      {
+        title: 'Status',
+        propertyName: 'TransactionStatus',
         order: {
           enable: true,
         },
@@ -159,15 +167,22 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       }
     },
     {
-      title: 'Supplier Name',
-      propertyName: 'SupplierName',
+      title: 'Transaction Number',
+      propertyName: 'TransactionID',
       order: {
         enable: true,
       },
     },
     {
-      title: 'Transaction ID',
-      propertyName: 'TransactionID',
+      title: 'Name',
+      propertyName: 'Name',
+      order: {
+        enable: true,
+      }
+    },
+    {
+      title: 'Status',
+      propertyName: 'TransactionStatus',
       order: {
         enable: true,
       },
@@ -207,10 +222,10 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       if (obj !== null && obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
-        this.loadLocalReceipts();
+        this.loadTransactions();
       } else {
         this.companyID = 1;
-        this.loadLocalReceipts();
+        this.loadTransactions();
       }
     });
     // this.loadCompanyOEMs();
@@ -224,18 +239,18 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.companyService.flushCompanyLocalReceipt();
   }
 
-  loadLocalReceipts() {
+  loadTransactions() {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        companyID: this.companyID,
+        CompanyLocalReceiptID: this.companyID,
         rowStart: this.rowStart,
         filter: this.filter,
         rowEnd: this.rowEnd,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection
       },
-      requestProcedure: 'CompanyLocalReceiptsList'
+      requestProcedure: 'LocalReciptsList'
     };
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`,model).then(
@@ -281,7 +296,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
-    this.loadLocalReceipts();
+    this.loadTransactions();
   }
 
   searchBar($event) {
@@ -289,7 +304,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.filter = $event;
-    this.loadLocalReceipts();
+    this.loadTransactions();
   }
 
   orderChange($event: Order) {
@@ -297,7 +312,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadLocalReceipts();
+    this.loadTransactions();
   }
 
   popClick(event, localReceipt) {
@@ -336,4 +351,18 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       this.contextMenu = false;
     }
   }
+}
+
+export class LocalReceipt {
+  RowNum: number;
+  CompanyLocalReceiptID: number;
+  TransactionID: number;
+  Name: string;
+  TransactionStatus: string;
+}
+
+export class LocalReceiptsList {
+  rowCount: number;
+  data: LocalReceipt[];
+  outcome: Outcome
 }
