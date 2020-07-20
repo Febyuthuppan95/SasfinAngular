@@ -100,6 +100,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-  <app-company-supplier-context-menu (EditQuarterReceipts)="EditLocalReceipt(focusOEMID, $event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-company-supplier-context-menu>
+  <app-quarters-supply-context-menu  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
   </div>
 
