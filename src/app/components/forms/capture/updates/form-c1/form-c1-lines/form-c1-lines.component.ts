@@ -18,13 +18,25 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, OnDestroy {
 
   constructor(private snackbar: MatSnackBar,
-              private dialog: MatDialog,
-              private userService: UserService,
               private eventService: EventService,
               private snackbarService: HelpSnackbar) { }
 
   public form = new FormGroup({
     userID: new FormControl(null),
+    SupplierC1LineID: new FormControl(null),
+    SupplierC1ID: new FormControl(null),
+    DocumentNo: new FormControl(null),
+    DocumentLineNo: new FormControl(null),
+    ItemID: new FormControl(null),
+    SupplierItemID: new FormControl(null), // ?
+    LineNo: new FormControl(null),
+    Quantity: new FormControl(null),
+    TotalCost: new FormControl(null),
+    ComponentValue: new FormControl(null),
+    RawMaterialValue: new FormControl(null),
+    Reference: new FormControl(null),
+    Active: new FormControl(false),
+    IsDeleted: new FormControl(0),
   });
 
   public attachmentLabel: string;
@@ -35,9 +47,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   public displayLines = false;
   public errors: any[] = [];
   public shortcuts: any[] = [];
-  public sadLine500ID = -1;
-
-  private currentUser = this.userService.getCurrentUser();
+  public SupplierC1LineID = -1;
 
   @Input() data: any;
   @Output() submission = new EventEmitter<any>();
@@ -46,28 +56,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   private keyboard: KeyboardShortcutsComponent;
 
   ngOnInit() {
-    if (this.data && this.data !== null) {
-      this.data.sad500ID = this.data.SAD500ID;
-      this.data.specificSAD500LineID = this.data.sad500LineID;
-      this.sadLine500ID = this.data.specificSAD500LineID;
-      this.form.patchValue(this.data);
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-      this.form.controls.duties.setValue(this.data.duties);
-      this.errors = this.data.errors;
-    } else {
-      this.sadLine500ID = -1;
-      this.form.controls.specificSAD500LineID.setValue(-1);
-      this.form.controls.sad500LineID.setValue(-1);
-    }
-
-    // this.form.controls.duties.setValidators(this.isExport ? null : null);
-    // this.form.controls.duties.updateValueAndValidity();
+    this.updateForm();
 
     this.eventService.submitLines.subscribe(() => {
       this.submit(this.form);
@@ -75,27 +64,6 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   }
 
   ngAfterViewInit(): void {
-    // if (this.errors.length > 0) {
-    //   Object.keys(this.form.controls).forEach(key => {
-    //     this.errors.forEach((error) => {
-    //       let field = error.fieldName.toUpperCase();
-
-    //       if (field === 'TARIFF') {
-    //         field = 'TARIFFID';
-    //       }
-
-    //       if (field === 'COUNTRY OF ORGIN') {
-    //         field = 'COOID';
-    //       }
-
-    //       if (key.toUpperCase() === field) {
-    //         this.form.controls[key].setErrors({incorrect: true});
-    //         this.form.controls[key].markAsTouched();
-    //       }
-    //     });
-    //   });
-    // }
-
     setTimeout(() => {
       this.shortcuts.push(
         {
@@ -115,57 +83,19 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   }
 
   ngOnChanges() {
-    this.form.reset();
-
-    if (this.data && this.data !== null) {
-      this.data.sad500ID = this.data.SAD500ID;
-      this.data.specificSAD500LineID = this.data.specificSAD500LineID;
-      this.form.patchValue(this.data);
-
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-
-      this.form.controls.duties.setValue(this.data.duties);
-      this.errors = this.data.errors;
-      this.sadLine500ID = this.data.sad500LineID;
-
-      // if (this.errors.length > 0) {
-      //   Object.keys(this.form.controls).forEach(key => {
-      //     this.errors.forEach((error) => {
-      //       let field = error.fieldName.toUpperCase();
-
-      //       if (field === 'TARIFF') {
-      //         field = 'TARIFFID';
-      //       }
-
-      //       if (field === 'COUNTRY OF ORGIN') {
-      //         field = 'COOID';
-      //       }
-
-      //       if (key.toUpperCase() === field) {
-      //         this.form.controls[key].setErrors({incorrect: true});
-      //         this.form.controls[key].markAsTouched();
-      //       }
-      //     });
-      //   });
-      // }
-    } else {
-      this.sadLine500ID = -1;
-      this.form.controls.specificSAD500LineID.setValue(-1);
-      this.form.controls.sad500LineID.setValue(-1);
-    }
-
-    // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
-    this.form.updateValueAndValidity();
+    this.updateForm();
   }
 
-  public resetForm() {
-    this.form.controls.unitOfMeasureID.reset(null);
+  updateForm() {
+    if (this.data && this.data !== null) {
+      this.form.patchValue(this.data);
+      this.SupplierC1LineID = this.data.SupplierC1LineID;
+    } else {
+      this.SupplierC1LineID = -1;
+      this.form.controls.SupplierC1LineID.setValue(-1);
+    }
+
+    this.form.updateValueAndValidity();
   }
 
   updateHelpContext(slug: string) {
@@ -177,10 +107,6 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     this.snackbarService.setHelpContext(newContext);
   }
 
-  // getError(key: string): string {
-  //   return this.errors.find(x => x.fieldName === key).errorDescription;
-  // }
-
   public findInvalidControls(form: FormGroup) {
     const invalid = [];
     const controls = form.controls;
@@ -191,7 +117,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     }
 
     console.log(invalid);
-}
+  }
 
   submit(form: FormGroup) {
     form.markAllAsTouched();
@@ -206,33 +132,5 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     }
   }
 
-    // // @override methods
-    // overrideDialog(key, label) {
-    //   this.dialog.open(DialogOverrideComponent, {
-    //     width: '512px',
-    //     data: {
-    //       label
-    //     }
-    //   }).afterClosed().subscribe((val) => {
-    //     if (val) {
-    //       this.override(key, val);
-    //     }
-    //   });
-    // }
-
-    // override(key: string, reason: string) {
-    //   this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
-    //   this.form.controls[`${key}ODate`].setValue(new Date());
-    //   this.form.controls[`${key}OBit`].setValue(true);
-    //   this.form.controls[`${key}OReason`].setValue(reason);
-    // }
-
-    // undoOverride(key: string) {
-    //   this.form.controls[`${key}OUserID`].setValue(null);
-    //   this.form.controls[`${key}ODate`].setValue(new Date());
-    //   this.form.controls[`${key}OBit`].setValue(false);
-    //   this.form.controls[`${key}OReason`].setValue(null);
-    // }
-
-    ngOnDestroy(): void {}
+  ngOnDestroy(): void {}
 }

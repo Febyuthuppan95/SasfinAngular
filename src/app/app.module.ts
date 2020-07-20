@@ -572,7 +572,9 @@ import { FormSmdLinesComponent } from './components/forms/capture/updates/form-s
     FormWayComponent,
     FormCswComponent,
     FormInvComponent,
-    EscalateBottomSheetComponent
+    EscalateBottomSheetComponent,
+    FormC1Component,
+    FormSmdComponent
   ]
 })
 export class AppModule { }

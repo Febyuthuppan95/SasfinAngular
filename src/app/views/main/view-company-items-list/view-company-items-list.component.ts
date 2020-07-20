@@ -515,34 +515,15 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   Finalitemlist() {
-    this.items.splice(0, this.items.length);
-    let countitems = 0;
-
-
-    this.itemsdraft.forEach((item, index) => {
-      if (item.itemID !== this.focusItemID) {
-        countitems++;
-        this.items.push(item);
-      }
-    });
-
-    this.itemsrowCount = countitems;
-    this.itemsshowingRecords = countitems;
+    this.items = this.itemsdraft.filter(x => x.itemID !== this.focusItemID);
+    this.itemsrowCount = this.items.length;
+    this.itemsshowingRecords = this.items.length;
   }
 
   Finalitemparentslist() {
-    this.itemparents.splice(0, this.itemparents.length);
-    let countitemparent = 0;
-
-    this.items.forEach((item, index) => {
-      if (item.itemID !== this.focusItemParentID) {
-        countitemparent++;
-        this.itemparents.push(item);
-      }
-    });
-
-    this.itemsrowCount = countitemparent;
-    this.itemsshowingRecords = countitemparent;
+    this.itemparents = this.items.filter(x => x.itemID !== this.focusItemParentID);
+    this.itemsrowCount = this.itemparents.length;
+    this.itemsshowingRecords = this.itemparents.length;
   }
 
 
