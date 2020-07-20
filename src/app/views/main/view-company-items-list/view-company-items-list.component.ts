@@ -497,7 +497,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   selectedRecord($event: SelectedRecord) {
     // console.log($event.record);
-    this.popClick($event.event, $event.record.groupID, $event.record.itemid, $event.record.itemname, $event.record.itemparentid);
+    this.popClick($event.event, $event.record.groupID, $event.record.itemID, $event.record.itemname, $event.record.itemparentid);
   }
 
   popClick(event, groupid, itemid, itemname, itemparentid) {
