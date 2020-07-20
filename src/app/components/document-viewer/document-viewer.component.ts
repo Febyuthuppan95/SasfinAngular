@@ -33,7 +33,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
     .pipe(takeUntil(this.unsubscribeTransaction$))
     .subscribe((fileName) => {
       if (fileName !== null || undefined) {
-        console.log(fileName);
+        // console.log(fileName);
         this.docService.get(fileName).then(
           (res: ArrayBuffer) => {
             this.pdfSRC = res;

@@ -275,8 +275,8 @@ loadCPC() {
         this.cpcList = res.data;
         this.cpcListTemp = res.data;
 
-      };
-      console.log(res);
+      }
+      // console.log(res);
     }
   );
 }
@@ -371,7 +371,7 @@ selectFilteredCPC() {
   }
 
   submit(escalation?: boolean) {
-    console.log(this.CRNForm.controls);
+    // console.log(this.CRNForm.controls);
     if (this.CRNForm.valid || escalation) {
         const requestModel = {
           userID: this.currentUser.userID,
@@ -448,7 +448,7 @@ selectFilteredCPC() {
             }
           },
           (msg) => {
-            console.log(JSON.stringify(msg));
+            // console.log(JSON.stringify(msg));
             this.notify.errorsmsg('Failure', 'Cannot reach server');
           }
         );
@@ -475,7 +475,7 @@ selectFilteredCPC() {
 
     this.captureService.customsReleaseGet(requst).then(
       (res: CRNList) => {
-        console.log(res.customs);
+        // console.log(res.customs);
         this.form.MRN.value = res.customs[0].mrn;
         this.form.serialNo.value = res.customs[0].serialNo;
         this.form.importersCode.value = res.customs[0].importersCode;
@@ -582,7 +582,7 @@ selectFilteredCPC() {
   OverrideSerialNoExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledserialNo = true;
-    console.log(this.form.serialNo);
+    // console.log(this.form.serialNo);
   }
 
   UndoOverrideSerialNo() {
@@ -605,7 +605,7 @@ selectFilteredCPC() {
   OverrideLRNExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledLRN  = true;
-    console.log(this.form.LRN);
+    // console.log(this.form.LRN);
   }
 
   UndoOverrideLRN() {
@@ -627,7 +627,7 @@ selectFilteredCPC() {
 
   OverrideImportersCodeExcept() {
     this.disabledimportersCode  = true;
-    console.log(this.form.importersCode);
+    // console.log(this.form.importersCode);
   }
 
   UndoOverrideImportersCode() {
@@ -650,7 +650,7 @@ selectFilteredCPC() {
   OverridePCCExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledpcc  = true;
-    console.log(this.form.PCC);
+  // console.log(this.form.PCC);
   }
 
   UndoOverridePCC() {
@@ -678,7 +678,7 @@ selectFilteredCPC() {
   OverrideWaybillNoExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledwaybillNo  = true;
-    console.log(this.form.waybillNo);
+    // console.log(this.form.waybillNo);
   }
 
   UndoOverrideWaybillNo() {
@@ -701,7 +701,7 @@ selectFilteredCPC() {
   OverridefileRefExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledfileRef  = true;
-    console.log(this.form.fileRef);
+    // console.log(this.form.fileRef);
   }
 
   UndoOverridefileRef() {
@@ -724,7 +724,7 @@ selectFilteredCPC() {
   OverridetotalCustomsValueExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledtotalCustomsValue  = true;
-    console.log(this.form.totalCustomsValue);
+    // console.log(this.form.totalCustomsValue);
   }
 
   UndoOverridetotalCustomsValue() {
@@ -747,7 +747,7 @@ selectFilteredCPC() {
   OverridetotalDutyExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledtotalDuty  = true;
-    console.log(this.form.totalDuty);
+    // console.log(this.form.totalDuty);
   }
 
   UndoOverridetotalDuty() {
@@ -770,7 +770,7 @@ selectFilteredCPC() {
   OverrideMRNExcept() {
     // this.form.LRN .OReason = reason;
     this.disabledMRN  = true;
-    console.log(this.form.MRN);
+    // console.log(this.form.MRN);
   }
 
   UndoOverrideMRN() {
@@ -786,7 +786,7 @@ selectFilteredCPC() {
     this.captureService.ediStatusList({ pageIndex: 0, pageSize: 100 }).then(
       // tslint:disable-next-line: max-line-length
       (res: any) => {
-        console.log(res);
+        // console.log(res);
         this.editStatusList = res.data;
         this.editStatusListTemp = this.editStatusList;
 

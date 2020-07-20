@@ -201,7 +201,7 @@ private unsubscribe$ = new Subject<void>();
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedCompanyOEM) => {
       if (obj !== null || obj !== undefined) {
-        console.log(obj);
+        // console.log(obj);
         this.selectedOEM = obj;
       }
     });
@@ -226,7 +226,7 @@ private unsubscribe$ = new Subject<void>();
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          console.log(this.dataList);
+          // console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -266,12 +266,12 @@ private unsubscribe$ = new Subject<void>();
         periodYear: this.focusPeriodYear,
         isDeleted: deleted
       },
-      requestProcedure: "CompanyOEMQuartersUpdate"
+      requestProcedure: 'CompanyOEMQuartersUpdate'
     };
-    console.log(model);
+    // console.log(model);
     this.companyService.companyOEMQuarterUpdate(model).then(
       (res: Outcome) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
@@ -328,7 +328,7 @@ private unsubscribe$ = new Subject<void>();
     );
   }
   pageChange(obj: PaginationChange) {
-    console.log(obj);
+    // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
@@ -352,7 +352,7 @@ private unsubscribe$ = new Subject<void>();
       this.selectedRow = -1;
     }
     setClickedRow(obj: SelectedRecord) {
-      console.log(obj.record);
+      // console.log(obj.record);
       // this.selectedRow = index;
       this.contextMenuX = obj.event.clientX + 3;
       this.contextMenuY = obj.event.clientY + 5;
@@ -368,7 +368,7 @@ private unsubscribe$ = new Subject<void>();
       }
     }
   EditQuarter($event) {
-    console.log($event);
+    // console.log($event);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
 

@@ -138,7 +138,7 @@ export class ViewDutyTaxTypesComponent implements OnInit, OnDestroy {
       orderDirection: this.orderDirection
     }).then(
       (res: DutyListResponse) => {
-        console.log(JSON.stringify(res));
+        // console.log(JSON.stringify(res));
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;

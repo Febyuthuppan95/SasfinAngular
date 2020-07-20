@@ -515,8 +515,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.currencyQuery = '';
       }
     submit() {
-      console.log('logvalid');
-      console.log(this.LinesForm);
+      //console.log('logvalid');
+      // console.log(this.LinesForm);
       if (this.LinesForm.valid) {
         const model: CustomWorksheetLine = {
             userID: this.currentUser.userID,
@@ -598,8 +598,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         if ( this.isUpdate) {
           this.updateCWSLine.emit(model);
         } else {
-          console.log('model');
-          console.log(model);
+          // console.log('model');
+          // console.log(model);
           this.submitSADLine.emit(model);
         }
       } else {
@@ -626,8 +626,8 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.placeService.getCountriesCall(request).then(
             (res: CountriesListResponse) => {
                 this.countriesList = res.countriesList;
-                console.log( 'countriesList');
-                console.log( res.countriesList);
+                // console.log( 'countriesList');
+                // console.log( res.countriesList);
                 this.countriesListTemp = res.countriesList;
 
                 const currentCountry = this.countriesList.find(x => x.countryID === this.form.cooID.value);
@@ -748,10 +748,10 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     initfilterCurrency() {
       this.currenciesList = this.currenciesListTemp;
-      console.log(this.currenciesList);
-      console.log(this.form.currencyID.value);
+      // console.log(this.currenciesList);
+      // console.log(this.form.currencyID.value);
       this.currenciesList = this.currenciesList.filter(x => x.currencyID === this.form.currencyID.value.toString());
-      console.log(this.currenciesList);
+      // console.log(this.currenciesList);
       this.currencyQuery = this.currenciesList[0].code;
     }
 
@@ -810,7 +810,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     OverridecustValExcept() {
       // this.form.LRN .OReason = reason;
       this.disabledcustVal  = true;
-      console.log(this.form.custVal);
+      // console.log(this.form.custVal);
     }
 
     UndoOverridecustVal() {
@@ -832,7 +832,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
 
     OverridehsQuantityExcept() {
       this.disabledhsQuantity  = true;
-      console.log(this.form.hsQuantity);
+      // console.log(this.form.hsQuantity);
     }
 
     UndoOverridehsQuantity() {
@@ -855,7 +855,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     OverrideforeignInvExcept() {
       // this.form.LRN .OReason = reason;
       this.disabledforeignInv  = true;
-      console.log(this.form.foreignInv);
+      // console.log(this.form.foreignInv);
     }
 
     UndoOverrideforeignInv() {
@@ -878,7 +878,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     OverridedutyExcept() {
       // this.form.LRN .OReason = reason;
       this.disabledduty  = true;
-      console.log(this.form.duty);
+      // console.log(this.form.duty);
     }
 
     UndoOverrideduty() {

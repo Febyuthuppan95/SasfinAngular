@@ -236,9 +236,9 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     };
     this.companyService.getServiceClaimReports(model).then(
       (res: ServiceClaimReportsListResponse) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
-          
+
           if (displayGrowl) {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -246,10 +246,10 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
           }
         }
         this.ServiceClaimReports = res.companyServiceClaimReports;
-        this.ServiceClaimReports.forEach((x:ServiceClaimReport) => {
+        this.ServiceClaimReports.forEach((x: ServiceClaimReport) => {
           x.companyServiceClaimID = this.companyServiceClaimID;
         });
-        console.log(this.ServiceClaimReports);
+        // console.log(this.ServiceClaimReports);
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -342,7 +342,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
 
   previewreport(reportid) {
 
-    console.log(reportid);
+    // console.log(reportid);
 
     this.dialog.open(PreviewReportComponent, {
       width: '70%',
@@ -366,7 +366,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
     };
     this.companyService.prieviewReport(model).then(
       (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.dialog.open(PreviewReportComponent, {
             width: '80%',
@@ -391,7 +391,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
   }
 
   regenerate(reportid) {
-    console.log(reportid);
+    // console.log(reportid);
 
     const model = {
       userID: this.currentUser.userID,
@@ -421,7 +421,7 @@ export class ViewCompanyServiceclaimReportComponent implements OnInit {
   }
 
   exceldownload(reportid) {
-    console.log(reportid);
+    // console.log(reportid);
 
     const model = {
       userID: this.currentUser.userID,

@@ -266,7 +266,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   OverrideImportersExcept() {
     // this.form.importersCode.OReason = reason;
     this.disabledIC = true;
-    console.log(this.form.importersCode);
+    // console.log(this.form.importersCode);
   }
 
   UndoOverrideImporters() {

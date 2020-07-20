@@ -48,7 +48,7 @@ constructor(private userService: UserService,
   }
 
   ngOnChanges() {
-    console.log(this.sad500LineID);
+    // console.log(this.sad500LineID);
     if (this.sad500LineID == null) {
       this.load();
       this.query.setValue('');
@@ -62,7 +62,7 @@ constructor(private userService: UserService,
   processAssigned() {
     if (this.control.value !== null && this.control.value) {
       this.control.value.forEach((item) => {
-        console.log(item);
+        // console.log(item);
         this.assignedList.push(item);
       });
     }
@@ -71,7 +71,7 @@ constructor(private userService: UserService,
       const current = this.listTemp.find(x => x.dutyTaxTypeID === item.dutyTaxTypeID);
 
       if (current) {
-        console.log(current);
+        // console.log(current);
         item.label = current.code;
         item.name = current.code;
         this.listTemp = this.listTemp.filter(x => x.dutyTaxTypeID !== item.dutyTaxTypeID);

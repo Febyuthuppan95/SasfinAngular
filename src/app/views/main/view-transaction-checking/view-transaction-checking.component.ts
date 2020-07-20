@@ -27,8 +27,8 @@ import { OverlayContainer, CdkOverlayOrigin } from '@angular/cdk/overlay';
 })
 export class ViewTransactionCheckingComponent implements OnInit {
 
- 
-  
+
+
   currentUser: User;
   currentTheme: string;
   observedTransaction: Transaction;
@@ -36,7 +36,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   childrenLoaded: boolean;
   isOpen = false;
   /**Data Events */
- rowStart =1;
+ rowStart = 1;
  rowEnd = 15;
  filter = '';
  orderBy = '';
@@ -50,7 +50,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   prevPage: number;
   prevPageState: boolean;
 
-  
+
   orderDirection: string;
 
   totalShowing: number;
@@ -62,15 +62,15 @@ export class ViewTransactionCheckingComponent implements OnInit {
 
   /**Panel Numbers */
   step: number;
-  
+
   /**Data Lists */
   customWorksheetID: number;
   CaptureJoins: CaptureJoin[] = [];
   CustomWorksheetLines: CustomWorksheetLine[];
   AvailableInvoiceLines: InvoiceLine[] = [];
   AvailableSAD500Lines: SAD500Line[] = [];
-  AvailableLines: any[] =[];
-  AssignedLines: any[] =[];
+  AvailableLines: any[] = [];
+  AssignedLines: any[] = [];
 
   /**Data Table Config
    */
@@ -220,7 +220,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
       position: 6
     }
   ]
-  AvailableHeadings: TableHeading[] =[];
+  AvailableHeadings: TableHeading[] = [];
   AssignedHeadings: TableHeading[] = [];
   AssignedInvoiceLines: InvoiceLine[] = [];
 
@@ -238,14 +238,14 @@ export class ViewTransactionCheckingComponent implements OnInit {
     private transactionService: TransactionService,
     private companyService: CompanyService,
     private apiService: ApiService
-    ) { 
+    ) {
       this.currentUser = this.userService.getCurrentUser();
-      
+
     }
 private unsubscribe = new Subject<void>();
   ngOnInit() {
     this.step = 0;
-    console.log(this.observedTransaction);
+    // console.log(this.observedTransaction);
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe)).subscribe(res => {
       this.currentTheme = res;
@@ -253,27 +253,24 @@ private unsubscribe = new Subject<void>();
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe))
     .subscribe (obj => {
-      console.log(obj);
-      if(obj !== null && obj !== undefined) {
+      // console.log(obj);
+      if (obj !== null && obj !== undefined) {
         this.observedTransaction = {
           rowNum: 1,
           transactionID: obj.transactionID,
           name: obj.transactionName,
           type: obj.transactionType,
           status: ''
-        }
+        };
         this.getCaptureList();
       }
-      
+
     });
-
-    
-
   }
 
   getCaptureList() {
     this.loading = true;
-    
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -283,19 +280,19 @@ private unsubscribe = new Subject<void>();
       },
       requestProcedure: 'CaptureJoinsList'
     };
-    console.log(model);
+    // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        console.log(res);
+        // console.log(res);
         if (res.rowCount > 0) {
-          
+
           // Populate Key List List
           this.CaptureJoins = res.data;
           this.showingRecords = this.CaptureJoins.length;
           this.rowCount = res.rowCount;
           // Track the current Custom Worksheet
           this.customWorksheetID = this.CaptureJoins[0].CustomWorksheetID;
-          console.log(this.customWorksheetID);
+          // console.log(this.customWorksheetID);
           // Get
           this.loading = false;
           // this.notify.successmsg(
@@ -306,8 +303,6 @@ private unsubscribe = new Subject<void>();
         } else {
 
         }
-       
-        
       },
       msg => {
         this.loading = false;
@@ -334,7 +329,7 @@ private unsubscribe = new Subject<void>();
     };
     this.apiService.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       (res: ListReadResponse) => {
-        console.log(res.data);
+        // console.log(res.data);
         this.CustomWorksheetLines = res.data;
         this.loading = false;
       },
@@ -345,22 +340,22 @@ private unsubscribe = new Subject<void>();
   }
 
   joinLines() {
-    
+
   }
   async getAssignedInvoiceLines(custID: number) {
-    if(custID > 0) {
+    if (custID > 0) {
       this.AssignedInvoiceLines = [];
-      console.log(custID);
+      // console.log(custID);
       let arr: CaptureJoin[] = [];
       arr = this.CaptureJoins.filter(x => x.CustomWorksheetLineID.toLocaleString().localeCompare(custID.toLocaleString()));
-      if(arr.length > 0 ) {
+      if (arr.length > 0 ) {
        this.AssignedInvoiceLines = await this.getInvoiceLineInfo(arr);
        this.childrenLoaded = true;
       }
     }
   }
   getInvoiceLineInfo(lines: CaptureJoin[]): InvoiceLine[] {
-    let invoices: InvoiceLine[] = [];
+      let invoices: InvoiceLine[] = [];
 
       this.loading = true;
       lines.forEach(x => {
@@ -375,28 +370,24 @@ private unsubscribe = new Subject<void>();
           orderByDirection: ''
         };
         this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
-          (res:InvoiceLineRead) => {
+          (res: InvoiceLineRead) => {
             this.loading = false;
-            console.log(res);
-            if(res.lines.length > 0) {
+            // console.log(res);
+            if (res.lines.length > 0) {
               invoices.push(res.lines[0]);
-              console.log(this.AssignedInvoiceLines);
-            } 
+              // console.log(this.AssignedInvoiceLines);
+            }
           },
           msg => {
             this.loading = false;
           }
         );
       });
-     console.log(invoices);
+      // console.log(invoices);
 
-     return invoices;
-      
-
-    
-    
+      return invoices;
   }
-    
+
   getSADLineInfo() {
     this.loading = true;
     const model = {
@@ -409,7 +400,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'InvoiceLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res:ListReadResponse) => {
+      (res: ListReadResponse) => {
         this.AvailableInvoiceLines = res.data;
         this.loading = false;
       },
@@ -430,7 +421,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'TransactionInvoiceLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res:ListReadResponse) => {
+      (res: ListReadResponse) => {
         this.AvailableInvoiceLines = res.data;
         this.loading = false;
       },
@@ -452,7 +443,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'TransactionSADLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res:ListReadResponse) => {
+      (res: ListReadResponse) => {
         this.AvailableSAD500Lines = res.data;
         this.loading = false;
       },
@@ -462,10 +453,10 @@ private unsubscribe = new Subject<void>();
     );
   }
   searchBar() {
-    
   }
-  /**Pagination and Filtering */
- 
+
+  // Pagination and Filtering
+
   updatePagination() {
     if (this.CaptureJoins.length <= this.totalShowing) {
       this.prevPageState = false;
@@ -496,19 +487,18 @@ private unsubscribe = new Subject<void>();
 
   }
 
-  /**Expansion Events */
+  // Expansion Events
   focusWorksheet(cust: CustomWorksheetLine) {
-    console.log(cust);
-    this.step= cust.RowNum;
-    console.log(this.step);
+    // console.log(cust);
+    this.step = cust.RowNum;
+    // console.log(this.step);
     this.getAssignedInvoiceLines(cust.CustomWorksheetID);
   }
 
-  /**Datatable Events */
+  // Datatable Events
   InvoiceEvent($event) {
-    console.log($event);
+    // console.log($event);
     this.trigger.nativeElement.click();
-    
   }
 }
 

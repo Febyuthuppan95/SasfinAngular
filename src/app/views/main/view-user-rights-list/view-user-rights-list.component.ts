@@ -191,7 +191,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       rowStart: this.rowStart,
       rowEnd: 100000000
     };
-    console.log(uRModel);
+    // console.log(uRModel);
     this.userRightService
       .getUserRightsList(uRModel).then(
       (res: UserRightsListResponse) => {
@@ -336,7 +336,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       userRightID: rightID,
     };
 
-    console.log(requestModel);
+    // console.log(requestModel);
     this.userService
       .updateUserRight(requestModel).then(
         (res: UserRightReponse) => {
@@ -379,7 +379,7 @@ export class ViewUserRightsListComponent implements OnInit, OnDestroy {
       userRightID: right.userRightID,
     };
 
-    console.log(requestModel);
+    // console.log(requestModel);
     const result = this.userService
     .updateUserRight(requestModel).then(
       (res: UserRightReponse) => {

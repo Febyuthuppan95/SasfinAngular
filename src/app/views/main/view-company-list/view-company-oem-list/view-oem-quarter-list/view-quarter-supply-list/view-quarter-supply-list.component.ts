@@ -22,7 +22,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
 
   constructor(private companyService: CompanyService,
     private userService: UserService,
-    private themeService: ThemeService) { 
+    private themeService: ThemeService) {
       this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.activePage = +1;
@@ -190,7 +190,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
   ngOnInit() {
-    
+
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -201,18 +201,18 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     .subscribe((obj: SelectedCompanyOEM) => {
       if (obj !== null || obj !== undefined) {
         this.selectedCompanyOEM = obj;
-        console.log(this.selectedCompanyOEM);
+        // console.log(this.selectedCompanyOEM);
       }
     });
     this.pageChange({rowStart: 1, rowEnd: 15});
   }
   pageChange(obj: PaginationChange) {
-    console.log(obj);
+    // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
     this.loadSupplyList();
-    
+
   }
   loadSupplyList() {
     const model = {
@@ -226,16 +226,16 @@ export class ViewQuarterSupplyListComponent implements OnInit {
           orderBy: this.orderBy,
           orderByDirection: this.orderDirection
       },
-      requestProcedure: "CompanyOEMQuarterSupplyList"
+      requestProcedure: 'CompanyOEMQuarterSupplyList'
     };
     this.companyService.companyOEMQuarterSupplyList(model).then(
       (res: OEMQuarterSupplyList) => {
-        console.log(res);
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          console.log(this.dataList);
+          // console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -345,7 +345,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    console.log(obj.record);
+    // console.log(obj.record);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
@@ -362,7 +362,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     }
   }
   EditSupply($event) {
-    console.log($event);
+    // console.log($event);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
 

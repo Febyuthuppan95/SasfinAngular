@@ -100,7 +100,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
   loadDataset() {
     this.captureService.invoiceList(this.listRequest).then(
       (res: { outcome: Outcome, invoices: [], rowCount: number }) => {
-        console.log(res.invoices);
+        // console.log(res.invoices);
         this.tableConfig.dataset = res.invoices;
         this.tableConfig.rowCount = res.rowCount;
 
