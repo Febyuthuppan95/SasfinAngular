@@ -337,7 +337,7 @@ loader = false;
   submit(escalation?: boolean) {
     // console.log('Isvvalid');
     // console.log(this.InvForm.valid && this.LinesValid );
-    if (this.InvForm.valid && this.LinesValid|| escalation) {
+    if (this.InvForm.valid && this.LinesValid || escalation) {
           const requestModel = {
             userID: this.currentUser.userID,
             invoiceID: this.attachmentID,
@@ -549,7 +549,7 @@ loader = false;
     });
   }
 
-  saveLines(escalation?:boolean) {
+  saveLines(escalation?: boolean) {
 
     if (this.LinesValid && this.InvForm.valid || escalation) {
       if (this.lineIndex < this.lineQueue.length) {

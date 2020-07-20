@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { Pagination } from 'src/app/models/Pagination';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Subject } from 'rxjs';
+// tslint:disable-next-line: max-line-length
 import { CompanySupplierContextMenuComponent } from 'src/app/components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -23,10 +24,10 @@ import { ApiService } from 'src/app/services/api.service';
 export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService,
-    public router: Router,
-    private apiService: ApiService) {
+              private userService: UserService,
+              private themeService: ThemeService,
+              public router: Router,
+              private apiService: ApiService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;

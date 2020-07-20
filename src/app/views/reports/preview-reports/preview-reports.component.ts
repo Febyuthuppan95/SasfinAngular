@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx';
 import { CompanyService, SelectedCompany, SelectedClaimReport } from 'src/app/services/Company.Service';
 import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
 import { UserService } from 'src/app/services/user.Service';
@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
-import {convertToHtml} from "mammoth";
+import {convertToHtml} from 'mammoth';
 import { Router } from '@angular/router';
 
 type AOA = any[][];

@@ -120,8 +120,7 @@ export class ViewInvoicesComponent implements OnInit, OnDestroy {
     this.router.navigate(['transaction/attachments']);
   }
 
-  backToTransactions()
-  {
+  backToTransactions() {
     this.router.navigate(['companies/transactions']);
   }
 

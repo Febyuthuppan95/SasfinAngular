@@ -515,7 +515,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         this.currencyQuery = '';
       }
     submit() {
-      //console.log('logvalid');
+      // console.log('logvalid');
       // console.log(this.LinesForm);
       if (this.LinesForm.valid) {
         const model: CustomWorksheetLine = {
@@ -694,6 +694,7 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
     filterTariff() {
         // this.tariffs = this.tariffsTemp;
         // // tslint:disable-next-line: max-line-length
+        // tslint:disable-next-line: max-line-length
         // this.tariffs = this.tariffs.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${this.tariffQuery !== null ? this.tariffQuery.toUpperCase() : ''}*`));
         this.loadTarrifs(this.tariffQuery);
     }

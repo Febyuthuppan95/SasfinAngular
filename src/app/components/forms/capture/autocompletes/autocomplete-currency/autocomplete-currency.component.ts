@@ -89,7 +89,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.listTemp = res.currenciesList;
 
           if (setDefault) {
-            const defaultValue = this.listTemp.find(x => x.currencyID == this.control.value);
+            const defaultValue = this.listTemp.find(x => x.currencyID === this.control.value);
 
             if (defaultValue) {
               this.query.setValue(defaultValue, { emitEvent: false });

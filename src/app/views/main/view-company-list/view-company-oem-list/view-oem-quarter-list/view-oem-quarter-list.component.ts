@@ -76,10 +76,10 @@ export class ViewOemQuarterListComponent implements OnInit {
 
 
 quarters = [
-  {value: 1 ,Name: 'Q1'},
-  {value: 2 ,Name: 'Q2'},
-  {value: 3 ,Name: 'Q3'},
-  {value: 4 ,Name: 'Q4'}
+  {value: 1 , Name: 'Q1'},
+  {value: 2 , Name: 'Q2'},
+  {value: 3 , Name: 'Q3'},
+  {value: 4 , Name: 'Q4'}
 ];
 years = [];
 now = new Date().getFullYear();
@@ -302,7 +302,7 @@ private unsubscribe$ = new Subject<void>();
         quarterID: this.focusPeriodQuarter,
         periodYear: this.focusPeriodYear
       },
-      requestProcedure: "CompanyOEMQuartersCreate"
+      requestProcedure: 'CompanyOEMQuartersCreate'
     };
     this.companyService.companyOEMQuarterAdd(model).then(
       (res: Outcome) => {
@@ -383,7 +383,7 @@ private unsubscribe$ = new Subject<void>();
   }
 
   createYears() {
-    for (var x =0; x < 10; x++) {
+    for (let x = 0; x < 10; x++) {
       this.years.push(this.now - x);
     }
   }

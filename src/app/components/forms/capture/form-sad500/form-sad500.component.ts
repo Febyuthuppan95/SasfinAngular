@@ -792,7 +792,7 @@ dialogOpen = false;
           this.LinesValid = true;
         }
 
-        this.lines = this.sad500CreatedLines.length -1;
+        this.lines = this.sad500CreatedLines.length - 1;
         if (this.lines > -1) {
             this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }

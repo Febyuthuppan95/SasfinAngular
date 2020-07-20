@@ -6,6 +6,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { Subject } from 'rxjs';
+// tslint:disable-next-line: max-line-length
 import { QuartersSupplyContextMenuComponent } from 'src/app/components/menus/quarters-supply-context-menu/quarters-supply-context-menu.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -21,9 +22,9 @@ import { Order, SelectedRecord, TableHeader, TableConfig, TableHeading } from 's
 export class ViewQuarterSupplyListComponent implements OnInit {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService) {
-      this.rowStart = 1;
+              private userService: UserService,
+              private themeService: ThemeService) {
+    this.rowStart = 1;
     this.rowCountPerPage = 15;
     this.activePage = +1;
     this.prevPageState = true;
@@ -71,7 +72,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   selectedCompanyOEM: SelectedCompanyOEM;
   selectedQuarterSupply: SelectedOEMQuarterSupply = {
     rowNum: -1,
-    companyOEMQuarterSupplyID:-1,
+    companyOEMQuarterSupplyID: -1,
     productCode: '',
     productDescription: '',
     quantity: 0
@@ -253,7 +254,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
         );
 
       }
-    )
+    );
   }
   addSupply() {
     const model = {
@@ -265,11 +266,11 @@ export class ViewQuarterSupplyListComponent implements OnInit {
         productDescription: this.selectedQuarterSupply.productDescription,
         quantity: this.selectedQuarterSupply.quantity
       },
-      requestProcedure: "CompanyOEMQuarterSupplyCreate"
+      requestProcedure: 'CompanyOEMQuarterSupplyCreate'
     };
     this.companyService.companyOEMQuarterSupplyAdd(model).then(
       (res: Outcome) => {
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
           this.notify.successmsg(res.outcome, res.outcomeMessage);
         } else {
@@ -299,11 +300,11 @@ export class ViewQuarterSupplyListComponent implements OnInit {
         quantity: this.selectedQuarterSupply.quantity,
         isDeleted: deleted
       },
-      requestProcedure: "CompanyOEMQuarterSupplyUpdate"
+      requestProcedure: 'CompanyOEMQuarterSupplyUpdate'
     };
     this.companyService.companyOEMQuarterSupplyUpdate(model).then(
       (res: Outcome) => {
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
           this.notify.successmsg(res.outcome, res.outcomeMessage);
         } else {

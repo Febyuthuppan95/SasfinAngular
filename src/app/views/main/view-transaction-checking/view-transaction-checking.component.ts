@@ -35,7 +35,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   loading: boolean;
   childrenLoaded: boolean;
   isOpen = false;
-  /**Data Events */
+  // Data Events
  rowStart = 1;
  rowEnd = 15;
  filter = '';
@@ -60,10 +60,10 @@ export class ViewTransactionCheckingComponent implements OnInit {
   activePage: number;
 
 
-  /**Panel Numbers */
+  // Panel Numbers
   step: number;
 
-  /**Data Lists */
+  // Data Lists
   customWorksheetID: number;
   CaptureJoins: CaptureJoin[] = [];
   CustomWorksheetLines: CustomWorksheetLine[];
@@ -219,14 +219,14 @@ export class ViewTransactionCheckingComponent implements OnInit {
       },
       position: 6
     }
-  ]
+  ];
   AvailableHeadings: TableHeading[] = [];
   AssignedHeadings: TableHeading[] = [];
   AssignedInvoiceLines: InvoiceLine[] = [];
 
 
 
-  /**View Children */
+  // View Children
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
   @ViewChild('trigger', {static: false})

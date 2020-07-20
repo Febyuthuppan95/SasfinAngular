@@ -10,6 +10,7 @@ import { CompanyLocalReceipt, CompanyLocalReceiptList } from '../view-company-su
 import { Pagination } from 'src/app/models/Pagination';
 import { TableHeader, TableConfig, TableHeading, SelectedRecord, Order } from 'src/app/models/Table';
 import { Subject } from 'rxjs';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuQuarterTransactionsComponent } from 'src/app/components/menus/context-menu-quarter-transactions/context-menu-quarter-transactions.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -24,10 +25,10 @@ import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestroy {
 
   constructor(private companyService: CompanyService,
-    private userService: UserService,
-    private themeService: ThemeService,
-    public router: Router,
-    private apiService: ApiService) {
+              private userService: UserService,
+              private themeService: ThemeService,
+              public router: Router,
+              private apiService: ApiService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -253,7 +254,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       requestProcedure: 'LocalReciptsList'
     };
     // console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`,model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: CompanyLocalReceiptList) => {
         // console.log(res);
         if (res.data.length === 0) {
@@ -364,5 +365,5 @@ export class LocalReceipt {
 export class LocalReceiptsList {
   rowCount: number;
   data: LocalReceipt[];
-  outcome: Outcome
+  outcome: Outcome;
 }

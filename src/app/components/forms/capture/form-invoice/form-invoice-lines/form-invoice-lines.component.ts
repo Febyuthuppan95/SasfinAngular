@@ -182,7 +182,7 @@ export class FormInvoiceLinesComponent implements OnInit, OnChanges, AfterViewIn
     countryQuery = '';
 
     isUpdate: boolean;
-    currentCompany : {companyID: number, companyName: string};
+    currentCompany: {companyID: number, companyName: string};
 
     ngOnInit() {
       this.companyService.observeCompany()
