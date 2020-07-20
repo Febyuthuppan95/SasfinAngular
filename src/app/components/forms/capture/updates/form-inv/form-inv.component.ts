@@ -392,6 +392,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!target) {
       $event.isLocal = true;
       this.lines.push($event);
+      this.refresh();
       this.snackbar.open('Line added to queue', '', {duration: 3000});
     } else {
       $event.isLocal = false;
@@ -400,6 +401,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.invoiceID = original.invoiceID;
 
       this.lines[this.lines.indexOf(target)] = $event;
+      this.refresh();
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
@@ -418,12 +420,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
-      this.displayLines = false;
-      this.loader = true;
-      setTimeout(() => {
-        this.displayLines = true;
-        this.loader = false;
-      }, 1000);
+      this.refresh();
     }
   }
 
@@ -433,22 +430,19 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
-      this.displayLines = false;
-      this.loader = true;
-      setTimeout(() => {
-        this.displayLines = true;
-        this.loader = false;
-      }, 1000);
+      this.refresh();
     }
   }
 
   specificLine(index: number) {
     this.activeLine = this.lines[index];
+    this.refresh();
   }
 
   newLine() {
     this.activeLine = null;
     this.activeIndex = -1;
+    this.refresh();
   }
 
   async deleteLine() {
@@ -471,12 +465,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(1, { emitEvent: false });
     }
+
+    this.refresh();
   }
 
   cancelLine() {
     this.activeLine = null;
     this.activeIndex = 0;
     this.activeLine = this.lines[this.activeIndex];
+    this.refresh();
   }
 
   ngOnDestroy(): void {}
@@ -517,5 +514,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     }
+  }
+
+  refresh() {
+    this.displayLines = false;
+    this.loader = true;
+    setTimeout(() => {
+      this.displayLines = true;
+      this.loader = false;
+    }, 500);
   }
 }

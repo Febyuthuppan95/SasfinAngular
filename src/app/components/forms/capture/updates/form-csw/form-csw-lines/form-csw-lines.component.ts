@@ -28,7 +28,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     userID: new FormControl(null),
     customWorksheetLineID: new FormControl(null),
     customWorksheetID: new FormControl(null),
-    currencyID: new FormControl(null, [Validators.required]),
+    currencyID: new FormControl(null),
     unitOfMeasureID: new FormControl(null),
     cooID: new FormControl(null),
     tariffID: new FormControl(null),
