@@ -88,6 +88,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
       this.load();
     }
   }
+
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {
@@ -207,7 +208,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async load() {
- 
+
 
     const model = {
       requestParams: {
