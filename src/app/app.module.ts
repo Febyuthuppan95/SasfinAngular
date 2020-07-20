@@ -263,13 +263,16 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
-import { ViewTransactionSuppliersComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-transaction-suppliers/view-transaction-suppliers.component';
+
 import { SpinningLoaderComponent } from './components/spinning-loader/spinning-loader.component';
 import { ContextMenuQuarterTransactionsComponent } from './components/menus/context-menu-quarter-transactions/context-menu-quarter-transactions.component';
 import { FormC1Component } from './components/forms/capture/updates/form-c1/form-c1.component';
 import { FormSmdComponent } from './components/forms/capture/updates/form-smd/form-smd.component';
 import { FormC1LinesComponent } from './components/forms/capture/updates/form-c1/form-c1-lines/form-c1-lines.component';
 import { FormSmdLinesComponent } from './components/forms/capture/updates/form-smd/form-smd-lines/form-smd-lines.component';
+import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
+import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
+import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
 
 @NgModule({
   declarations: [
@@ -457,13 +460,15 @@ import { FormSmdLinesComponent } from './components/forms/capture/updates/form-s
     ViewCompanySupplierListComponent,
     CompanySupplierContextMenuComponent,
     ViewQuarterReceiptTransactionsComponent,
-    ViewTransactionSuppliersComponent,
     SpinningLoaderComponent,
     ContextMenuQuarterTransactionsComponent,
     FormC1Component,
     FormSmdComponent,
     FormC1LinesComponent,
-    FormSmdLinesComponent
+    FormSmdLinesComponent,
+    ViewC1AttachmentsComponent,
+    ViewSmdAttachmentsComponent,
+    ContextMenuLocalAttachmentsComponent
   ],
   imports: [
     BrowserModule,
