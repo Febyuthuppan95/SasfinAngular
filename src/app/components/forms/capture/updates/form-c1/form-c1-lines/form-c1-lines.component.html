@@ -1,0 +1,56 @@
+
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<br>
+<ng-container *ngIf="data === null || !data">
+  <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Queue Creation</button>
+</ng-container>
+<ng-container *ngIf="data !== null && data">
+  <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Queue Update</button>
+</ng-container>
+<br><br>
+
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-line-no')">
+        <mat-label>
+          Line No
+        </mat-label>
+        <input matInput type="text" formControlName="lineNo">
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-item')">
+        <mat-label>
+          Part/Component No
+        </mat-label>
+        <input matInput type="text" formControlName="itemID">
+        <!--Auto complete on Items-->
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-item-desc')">
+        <mat-label>
+          Item Description
+        </mat-label>
+        <input matInput type="text" formControlName="itemDescription">
+      <br><br>
+    </div>
+    <div class="col-4" (mouseover)="updateHelpContext('form-c1-line-unit-of-measure')">
+        <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
+        <br><br>
+    </div>
+    <div class="col-8">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-unitprice')">
+            <mat-label>
+            Unit Price
+            </mat-label>
+            <input matInput type="number" formControlName="unitprice">
+        </mat-form-field>
+        <br><br>
+    </div>
+   
+  </div>
+</form>

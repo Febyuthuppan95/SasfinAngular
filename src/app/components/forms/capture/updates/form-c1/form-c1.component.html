@@ -1,0 +1,82 @@
+<ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<app-notification></app-notification>
+
+<div class="capture-header">
+  <div class="float-right" style="margin-top: -24px !important">
+    <div class="indicator-wrapper" (click)="displayLines = false;">
+      <button #sad500Tooltip="matTooltip" matTooltip="SAD500" matTooltipPosition="before" class="indicator-btn" [ngClass]="{'indicator-active': !displayLines}"></button>
+    </div>
+    <div class="indicator-wrapper" (click)="displayLines = true;">
+      <button #sadLinesTooltip="matTooltip" matTooltip="SAD500 Lines" matTooltipPosition="before" class="indicator-btn bg-warning" [ngClass]="{'indicator-active': displayLines}"></button>
+    </div>
+  </div>
+  <h1 class="capture-form-title text-dark">
+    <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
+    <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
+  </h1>
+</div>
+<br>
+
+<ng-container *ngIf="displayLines">
+  <mat-card>
+    <mat-card-content>
+      <div style="padding: 0 24px; height: 62px;" class="line-list">
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLine();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
+        <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
+        <p *ngIf="!lines" style="font-size: 16px;">No C1 Lines Added</p>
+        <p *ngIf="lines">
+          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0 || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
+          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
+          <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
+        &nbsp;
+        <!-- &nbsp;<span>{{lineState}}</span> -->
+        </p>
+      <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
+          <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
+      </div> -->
+    </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+
+<ng-container>
+  <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-period')">
+          <mat-label>
+            Period Year
+          </mat-label>
+          <input matInput type="text" formControlName="periodYear" />
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-quarter')">
+          <mat-label>
+            Quarter
+          </mat-label>
+          <input matInput type="text" formControlName="quarterID" />
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-supplier')">
+          <mat-label>
+           Supplier
+          </mat-label>
+          <input matInput type="number" formControlName="supplierName" />
+        </mat-form-field>
+        <br /><br />
+      </div>
+    </div>
+  </form>
+</ng-container>
+
+<loader *ngIf="loader"></loader>
+<ng-container *ngIf="displayLines && !loader">
+  <app-form-c1-lines [(data)]="activeLine" (submission)="queueLine($event)" #lineForm></app-form-c1-lines>
+</ng-container>
+

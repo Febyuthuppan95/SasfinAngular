@@ -30,6 +30,7 @@ export class CompanySupplierContextMenuComponent implements OnInit {
     this.companyService.observeLocalReceipt()
     .pipe(takeUntil(this.$unsubscribe)).subscribe(
       (res: CompanyLocalReceipt) => {
+        console.log(res);
         if(res !== null && res !== undefined) {
           this.currentLocalReceipt = res;
         }
@@ -40,8 +41,7 @@ export class CompanySupplierContextMenuComponent implements OnInit {
     this.EditQuarterReceipts.emit(JSON.stringify(this.currentLocalReceipt));
   }
   Transactions() {
-    
-    this.router.navigate(["companies", "localreceipts", "transaction"]);
+    this.router.navigate(["companies", "localreceipts", "transactions"]);
   }
 
 }

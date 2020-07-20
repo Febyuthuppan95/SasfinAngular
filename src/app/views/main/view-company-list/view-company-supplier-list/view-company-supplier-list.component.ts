@@ -207,6 +207,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       if (obj !== null && obj !== undefined) {
         this.companyID = obj.companyID;
         this.companyName = obj.companyName;
+        this.loadLocalReceipts();
       } else {
         this.companyID = 1;
         this.loadLocalReceipts();
@@ -300,6 +301,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, localReceipt) {
+    console.log(localReceipt);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.focusLocalReceiptID = localReceipt.localReceiptID;
@@ -323,9 +325,9 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
     this.focusLocalReceiptID = obj.record.localReceiptID;
-    this.focusQuarterID = obj.record.localReceipt.QuarterID;
-    this.focusPeriodYear = obj.record.localReceipt.PeriodYear;
-
+    this.focusQuarterID = obj.record.QuarterID;
+    this.focusPeriodYear = obj.record.PeriodYear;
+    this.companyService.setLocalReceipt(obj.record);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;
