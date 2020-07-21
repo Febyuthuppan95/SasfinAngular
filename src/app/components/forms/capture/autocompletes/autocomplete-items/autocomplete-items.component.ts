@@ -4,6 +4,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
+import { MatDialog } from '@angular/material';
+import { DialogCreateItemsComponent } from './dialog-create-items/dialog-create-items.component';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -13,11 +15,13 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
-              private apiService: ApiService) { }
+              private apiService: ApiService,
+              private dialog: MatDialog) { }
 
   @Input() control: FormControl;
   @Input() companyID: number;
   @Input() appearance = 'fill';
+  @Input() label = 'Items';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -76,17 +80,16 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
-  load(setDefault?: boolean, filter?: string) {
+  async load(setDefault?: boolean, filter?: string) {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        companyID: this.companyID,
         filter,
       },
-      requestProcedure: 'ItemGroupsList'
+      requestProcedure: 'ItemsList'
     };
 
-    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+    await this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
         this.list = res.data;
         this.listTemp = res.data;
@@ -98,8 +101,21 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       });
   }
 
+  async createItem() {
+    this.dialog.open(DialogCreateItemsComponent, {
+      width: '512px'
+    }).afterClosed().subscribe(async (id) => {
+      console.log(id);
+
+      if (id) {
+        this.control.setValue(id);
+        await this.load(true);
+      }
+    });
+  }
+
   public displayFn(item: any): string {
-    return item ? `${item.Tariff}, ${item.Item}, ${item.Description}` : '';
+    return item ? `${item.Tariff !== '' && item.Tariff !== null ? item.Tariff + ', ' : ''}${item.Name}, ${item.Description}` : '';
   }
 
   ngOnDestroy(): void {}

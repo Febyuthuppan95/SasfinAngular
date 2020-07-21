@@ -37,6 +37,8 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     Reference: new FormControl(null),
     Active: new FormControl(false),
     IsDeleted: new FormControl(0),
+    uniqueIdentifier: new FormControl(null),
+    isLocal: new FormControl(false),
   });
 
   public attachmentLabel: string;
@@ -50,6 +52,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   public SupplierC1LineID = -1;
 
   @Input() data: any;
+  @Input() companyID: any;
   @Output() submission = new EventEmitter<any>();
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
@@ -59,7 +62,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     this.updateForm();
 
     this.eventService.submitLines.subscribe(() => {
-      this.submit(this.form);
+      this.submit(this.form.value);
     });
   }
 
@@ -93,6 +96,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     } else {
       this.SupplierC1LineID = -1;
       this.form.controls.SupplierC1LineID.setValue(-1);
+      this.form.controls.uniqueIdentifier.setValue(UUID.UUID());
     }
 
     this.form.updateValueAndValidity();

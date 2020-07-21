@@ -269,6 +269,8 @@ import { FormC1Component } from './components/forms/capture/updates/form-c1/form
 import { FormSmdComponent } from './components/forms/capture/updates/form-smd/form-smd.component';
 import { FormC1LinesComponent } from './components/forms/capture/updates/form-c1/form-c1-lines/form-c1-lines.component';
 import { FormSmdLinesComponent } from './components/forms/capture/updates/form-smd/form-smd-lines/form-smd-lines.component';
+import { AutocompleteCompaniesComponent } from './components/forms/capture/autocompletes/autocomplete-companies/autocomplete-companies.component';
+import { DialogCreateItemsComponent } from './components/forms/capture/autocompletes/autocomplete-items/dialog-create-items/dialog-create-items.component';
 import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
 import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
@@ -465,6 +467,8 @@ import { ContextMenuLocalAttachmentsComponent } from './components/menus/context
     FormSmdComponent,
     FormC1LinesComponent,
     FormSmdLinesComponent,
+    AutocompleteCompaniesComponent,
+    DialogCreateItemsComponent,
     ViewC1AttachmentsComponent,
     ViewSmdAttachmentsComponent,
     ContextMenuLocalAttachmentsComponent
@@ -578,7 +582,8 @@ import { ContextMenuLocalAttachmentsComponent } from './components/menus/context
     FormInvComponent,
     EscalateBottomSheetComponent,
     FormC1Component,
-    FormSmdComponent
+    FormSmdComponent,
+    DialogCreateItemsComponent
   ]
 })
 export class AppModule { }

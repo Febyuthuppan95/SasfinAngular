@@ -42,10 +42,10 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     userID: new FormControl(null),
     SupplierC1ID: new FormControl(null, [Validators.required]),
     TransactionID: new FormControl(null, [Validators.required]),
-    PeriodYear: new FormControl(null, [Validators.required]),
-    QuarterID: new FormControl(null, [Validators.required]),
+    // PeriodYear: new FormControl(null, [Validators.required]),
+    // QuarterID: new FormControl(null, [Validators.required]),
     CompanyID: new FormControl(null, [Validators.required]),
-    SupplierName: new FormControl(null, [Validators.required]),
+    // SupplierName: new FormControl(null, [Validators.required]),
     IsDeleted: new FormControl(0),
     AttachmentStatusID: new FormControl(null)
   });
@@ -68,7 +68,6 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
-  private originalSAD500ID: number;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -208,22 +207,19 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async load() {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        SupplierC1ID: this.attachmentID,
-        TransactionID: this.transactionID,
-      },
-      requestProcedure: 'SupplierC1List'
+    const requestParams = {
+      userID: this.currentUser.userID,
+      SupplierC1ID: this.attachmentID,
+      TransactionID: this.transactionID,
     };
 
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    this.captureService.post({ request: requestParams, procedure: 'SupplierC1List' }).then(
       async (res: ListReadResponse) => {
       this.loader = false;
       console.log(res);
 
       if (res.data !== null) {
-        this.form.patchValue(res.data);
+        this.form.patchValue(res.data[0]);
         this.form.controls.userID.setValue(this.currentUser.userID);
 
         this.form.updateValueAndValidity();
@@ -241,22 +237,21 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
       requestParams: {
         userID: this.currentUser.userID,
         SupplierC1ID: this.form.controls.SupplierC1ID.value,
-        transactionID: this.transactionID,
         filter:  '',
         orderBy: '',
         orderByDirection: '',
         rowStart: 1,
         rowEnd: 1000000,
       },
-      requestProcedure: 'SupplierC1LinesList'
+      requestProcedure: 'SupplierC1LineList'
     };
 
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    this.captureService.post({ request: model.requestParams, procedure: model.requestProcedure }).then(
       async (res: ListReadResponse) => {
+        console.log(res);
         this.lines = res.data;
         this.lines.forEach((line) => {
           line.isLocal = false;
-          line.SupplierC1LineID = line.SupplierC1LineID;
           line.SupplierC1ID = this.form.controls.SupplierC1ID.value,
           line.uniqueIdentifier = UUID.UUID();
         });
@@ -277,39 +272,52 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     form.markAllAsTouched();
 
     if ((form.valid && this.lines.length > 0) || escalation) {
-      const requestModel = form.value;
+      const request = form.value;
       // tslint:disable-next-line: max-line-length
-      requestModel.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
-      requestModel.userID = this.currentUser.userID;
+      request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      request.userID = this.currentUser.userID;
 
-      await this.captureService.sad500Update(requestModel).then(
-        async (res: Outcome) => {
+      await this.captureService.post({ request, procedure: 'SupplierC1Update' }).then(
+        async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
           await this.saveLines(this.lines, async (line) => {
-            let sad500LineID = line.specificSAD500LineID;
-            line.isDeleted = 0;
-            line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
+            const lineRequest = line;
+            delete lineRequest.RowNum;
+            delete lineRequest.isLocal;
+            delete lineRequest.uniqueIdentifier;
+            delete lineRequest.ItemName;
+            delete lineRequest.SupplierItem;
+            delete lineRequest.SupplierName;
+
+            line.IsDeleted = 0;
             line.userID = this.currentUser.userID;
 
-            if (line.isLocal) {
-              await this.captureService.sad500LineAdd(line).then((response: any) =>  {
-                sad500LineID = response.createdID; }, (msg) => console.log(JSON.stringify(msg)));
+            console.log(line);
+
+            if (line.SupplierC1LineID === -1) {
+              delete lineRequest.SupplierC1LineID;
+              delete lineRequest.IsDeleted;
+              console.log(lineRequest);
+              await this.captureService
+                .post({ request: lineRequest, procedure: 'SupplierC1LineAdd' })
+                .then((response: any) => console.log(JSON.stringify(response)), (msg) => console.log(JSON.stringify(msg)));
             } else {
-              // tslint:disable-next-line: max-line-length
-              await this.captureService.sad500LineUpdate(line).then((response) => console.log(response), (msg) => console.log(JSON.stringify(msg)));
+              await this.captureService
+                .post({ request: lineRequest, procedure: 'SupplierC1LineUpdate' })
+                .then((response) => console.log(response), (msg) => console.log(JSON.stringify(msg)));
             }
           });
 
-          if (res.outcome === 'SUCCESS') {
+          if (res.outcome) {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
               this.load();
             } else {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              this.notify.successmsg('SC1 Submitted', res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });
               this.router.navigateByUrl('transaction/capturerlanding');
             }
           } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            this.notify.errorsmsg('Failed to submit SC1', res.outcomeMessage);
           }
         },
         (msg) => console.log(JSON.stringify(msg))
@@ -357,8 +365,8 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     } else {
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
-      $event.specificSAD500LineID = original.specificSAD500LineID;
-      $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
+      $event.SupplierC1LineID = original.SupplierC1LineID;
+      $event.SupplierC1ID = this.attachmentID;
 
       this.refresh();
       this.lines[this.lines.indexOf(target)] = $event;
@@ -411,7 +419,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     targetLine.saD500ID = this.form.controls.SAD500ID.value;
 
     if (!targetLine.isLocal) {
-      await this.captureService.sad500LineUpdate(targetLine);
+      await this.captureService.post({ request: targetLine, procedure: 'SupplierC1LineUpdate' });
     }
 
     if (this.lines.length === 1) {

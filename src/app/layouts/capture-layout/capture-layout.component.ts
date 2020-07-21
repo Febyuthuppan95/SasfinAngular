@@ -151,10 +151,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data: SelectedCompany) => {
-      this.company = {
-        id: data.companyID,
-        name: data.companyName
-      };
+      if (data !== null) {
+        this.company = {
+          id: data.companyID,
+          name: data.companyName
+        };
+      }
     });
     this.themeService.setToggleValue(true);
     this.transactionService.observerCurrentAttachment()
@@ -288,7 +290,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     const docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
-      companyID: this.company.id,
+      companyID: this.company ? this.company.id : -1,
       doctypeID: docTypeID,
       filter: '',
       orderBy: '',
