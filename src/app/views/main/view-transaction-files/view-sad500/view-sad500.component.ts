@@ -51,7 +51,7 @@ export class ViewSAD500Component implements OnInit, OnDestroy {
       { title: 'Serial No', propertyName: 'serialNo', order: { enable: false } },
       { title: 'Total Customs Value', propertyName: 'totalCustomsValue', order: { enable: false } },
       { title: 'Waybill No', propertyName: 'waybillNo', order: { enable: false } },
-      { title: 'PCC', propertyName: 'pcc', order: { enable: false } },
+      // { title: 'CPC', propertyName: 'cpc', order: { enable: false } },
       { title: 'LRN', propertyName: 'lrn', order: { enable: false } },
       { title: 'MRN', propertyName: 'mrn', order: { enable: false } },
       { title: 'Status', propertyName: 'status', order: { enable: false } }
