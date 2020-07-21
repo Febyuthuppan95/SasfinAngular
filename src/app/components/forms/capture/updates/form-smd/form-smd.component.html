@@ -24,14 +24,18 @@
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLine();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
         <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
-        <p *ngIf="!lines" style="font-size: 16px;">No C1 Lines Added</p>
+        <p *ngIf="!lines" style="font-size: 16px;">No Invoice Lines Added</p>
         <p *ngIf="lines">
-          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 && activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
-          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="lines.length === 1 && activeIndex <= 0 || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
-          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line {{ activeIndex + 1 }} of {{ lines.length }}</span>
+          <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 || activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="(lines.length === 1 && activeIndex <= 0) || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
+          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line <input type="number" [max]="lines.length - 1" [min]="1" step="1" matInput class="pagination-input" [formControl]="paginationControl" /> of {{ lines.length }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
+        <!-- &nbsp;<span>{{lineState}}</span> -->
         </p>
+      <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
+          <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
+      </div> -->
     </div>
     </mat-card-content>
   </mat-card>

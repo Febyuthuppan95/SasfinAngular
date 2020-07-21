@@ -42,7 +42,7 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
     // Testing
     // this.transactionService.setCurrentAttachment({
     //   transactionID: 2210,
-    //   attachmentID: 3,
+    //   attachmentID: 4,
     //   docType: 'SMD', transactionType: 'Import', transactionName: 'Test'
     // });
 

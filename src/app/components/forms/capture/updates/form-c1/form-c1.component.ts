@@ -271,7 +271,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation) {
+    if ((form.valid && this.lines.length > 0) || escalation || saveProgress) {
       const request = form.value;
       // tslint:disable-next-line: max-line-length
       request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
@@ -287,6 +287,8 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
             delete lineRequest.ItemName;
             delete lineRequest.SupplierItem;
             delete lineRequest.SupplierName;
+
+            lineRequest.SupplierC1ID = this.attachmentID;
 
             line.IsDeleted = 0;
             line.userID = this.currentUser.userID;
@@ -415,11 +417,15 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
 
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
-    targetLine.isDeleted = 1;
-    targetLine.saD500ID = this.form.controls.SAD500ID.value;
+    targetLine.IsDeleted = 1;
+    targetLine.SupplierC1ID = this.attachmentID;
 
     if (!targetLine.isLocal) {
-      await this.captureService.post({ request: targetLine, procedure: 'SupplierC1LineUpdate' });
+      await this.captureService.post({ request: {
+        IsDeleted: 1,
+        UserID: this.currentUser.userID,
+        SupplierC1LineID: targetLine.SupplierC1LineID
+      }, procedure: 'SupplierC1LineUpdate' });
     }
 
     if (this.lines.length === 1) {

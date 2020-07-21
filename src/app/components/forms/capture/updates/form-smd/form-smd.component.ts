@@ -257,7 +257,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation) {
+    if ((form.valid && this.lines.length > 0) || escalation || saveProgress) {
       const request = form.value;
       // tslint:disable-next-line: max-line-length
       request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
@@ -267,6 +267,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
         async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
           console.log(res);
 
+          console.log(this.lines);
           await this.saveLines(this.lines, async (line) => {
             const lineRequest = line;
             delete lineRequest.uniqueIdentifier;
@@ -285,6 +286,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
                 .post({ request: lineRequest, procedure: 'SupplierSMDLinesAdd' })
                 .then((response: any) => console.log(JSON.stringify(response)), (msg) => console.log(JSON.stringify(msg)));
             } else {
+              delete lineRequest.UnitOfMeasure;
+              console.log(lineRequest);
               await this.captureService
                 .post({ request: lineRequest, procedure: 'SupplierSMDLinesUpdate' })
                 .then((response) => console.log(response), (msg) => console.log(JSON.stringify(msg)));
@@ -349,8 +352,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
-      $event.SupplierC1LineID = original.SupplierC1LineID;
-      $event.SupplierC1ID = this.attachmentID;
+      $event.SupplierSMDLineID = original.SupplierSMDLineID;
+      $event.SupplierSMDID = this.attachmentID;
 
       this.refresh();
       this.lines[this.lines.indexOf(target)] = $event;
@@ -391,22 +394,23 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     this.refresh();
   }
 
-  newLine(refresh?) {
+  newLine() {
     this.activeLine = null;
     this.activeIndex = -1;
 
-    if (refresh) {
-      this.refresh();
-    }
+    this.refresh();
   }
 
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
-    targetLine.isDeleted = 1;
-    targetLine.saD500ID = this.form.controls.SAD500ID.value;
 
     if (!targetLine.isLocal) {
-      await this.captureService.post({ request: targetLine, procedure: 'SupplierC1LineUpdate' });
+
+      await this.captureService.post({ request: {
+        IsDeleted: 1,
+        UserID: this.currentUser.userID,
+        SupplierSMDLineID: targetLine.SupplierSMDLineID
+      }, procedure: 'SupplierSMDLinesUpdate' });
     }
 
     if (this.lines.length === 1) {
