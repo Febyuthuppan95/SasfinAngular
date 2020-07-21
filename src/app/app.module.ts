@@ -269,6 +269,8 @@ import { FormC1Component } from './components/forms/capture/updates/form-c1/form
 import { FormSmdComponent } from './components/forms/capture/updates/form-smd/form-smd.component';
 import { FormC1LinesComponent } from './components/forms/capture/updates/form-c1/form-c1-lines/form-c1-lines.component';
 import { FormSmdLinesComponent } from './components/forms/capture/updates/form-smd/form-smd-lines/form-smd-lines.component';
+import { AutocompleteCompaniesComponent } from './components/forms/capture/autocompletes/autocomplete-companies/autocomplete-companies.component';
+import { DialogCreateItemsComponent } from './components/forms/capture/autocompletes/autocomplete-items/dialog-create-items/dialog-create-items.component';
 
 @NgModule({
   declarations: [
@@ -461,7 +463,9 @@ import { FormSmdLinesComponent } from './components/forms/capture/updates/form-s
     FormC1Component,
     FormSmdComponent,
     FormC1LinesComponent,
-    FormSmdLinesComponent
+    FormSmdLinesComponent,
+    AutocompleteCompaniesComponent,
+    DialogCreateItemsComponent
   ],
   imports: [
     BrowserModule,
@@ -572,7 +576,8 @@ import { FormSmdLinesComponent } from './components/forms/capture/updates/form-s
     FormInvComponent,
     EscalateBottomSheetComponent,
     FormC1Component,
-    FormSmdComponent
+    FormSmdComponent,
+    DialogCreateItemsComponent
   ]
 })
 export class AppModule { }
