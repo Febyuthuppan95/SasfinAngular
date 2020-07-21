@@ -54,15 +54,6 @@
         <br /><br />
       </div>
       <div class="col-6">
-        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-quarter')">
-          <mat-label>
-            Quarter
-          </mat-label>
-          <input matInput type="text" formControlName="QuarterID" />
-        </mat-form-field>
-        <br /><br />
-      </div>
-      <div class="col-6">
         <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-supplier')">
           <mat-label>
            Supplier
@@ -73,6 +64,10 @@
       </div> -->
       <div class="col-6">
         <ls-autocomplete-companies [control]="form.controls.CompanyID"></ls-autocomplete-companies>
+        <br /><br />
+      </div>
+      <div class="col-6">
+        <ls-autocomplete-quarter [control]="form.controls.QuarterID"></ls-autocomplete-quarter>
         <br /><br />
       </div>
     </div>

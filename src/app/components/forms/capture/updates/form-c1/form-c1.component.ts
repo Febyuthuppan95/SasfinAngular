@@ -42,10 +42,9 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     userID: new FormControl(null),
     SupplierC1ID: new FormControl(null, [Validators.required]),
     TransactionID: new FormControl(null, [Validators.required]),
-    // PeriodYear: new FormControl(null, [Validators.required]),
-    // QuarterID: new FormControl(null, [Validators.required]),
     CompanyID: new FormControl(null, [Validators.required]),
-    // SupplierName: new FormControl(null, [Validators.required]),
+    // PeriodYear: new FormControl(null, [Validators.required]),
+    QuarterID: new FormControl(null, [Validators.required]),
     IsDeleted: new FormControl(0),
     AttachmentStatusID: new FormControl(null)
   });
@@ -216,7 +215,6 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     this.captureService.post({ request: requestParams, procedure: 'SupplierC1List' }).then(
       async (res: ListReadResponse) => {
       this.loader = false;
-      console.log(res);
 
       if (res.data !== null) {
         this.form.patchValue(res.data[0]);
@@ -248,7 +246,6 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
 
     this.captureService.post({ request: model.requestParams, procedure: model.requestProcedure }).then(
       async (res: ListReadResponse) => {
-        console.log(res);
         this.lines = res.data;
         this.lines.forEach((line) => {
           line.isLocal = false;
@@ -279,6 +276,8 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
 
       await this.captureService.post({ request, procedure: 'SupplierC1Update' }).then(
         async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
+          console.log(res);
+
           await this.saveLines(this.lines, async (line) => {
             const lineRequest = line;
             delete lineRequest.RowNum;
@@ -293,12 +292,10 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
             line.IsDeleted = 0;
             line.userID = this.currentUser.userID;
 
-            console.log(line);
-
             if (line.SupplierC1LineID === -1) {
               delete lineRequest.SupplierC1LineID;
               delete lineRequest.IsDeleted;
-              console.log(lineRequest);
+
               await this.captureService
                 .post({ request: lineRequest, procedure: 'SupplierC1LineAdd' })
                 .then((response: any) => console.log(JSON.stringify(response)), (msg) => console.log(JSON.stringify(msg)));

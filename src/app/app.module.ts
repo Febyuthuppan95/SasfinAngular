@@ -274,6 +274,7 @@ import { DialogCreateItemsComponent } from './components/forms/capture/autocompl
 import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
 import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
+import { AutocompleteQuarterComponent } from './components/forms/capture/autocompletes/autocomplete-quarter/autocomplete-quarter.component';
 
 @NgModule({
   declarations: [
@@ -471,7 +472,8 @@ import { ContextMenuLocalAttachmentsComponent } from './components/menus/context
     DialogCreateItemsComponent,
     ViewC1AttachmentsComponent,
     ViewSmdAttachmentsComponent,
-    ContextMenuLocalAttachmentsComponent
+    ContextMenuLocalAttachmentsComponent,
+    AutocompleteQuarterComponent
   ],
   imports: [
     BrowserModule,
