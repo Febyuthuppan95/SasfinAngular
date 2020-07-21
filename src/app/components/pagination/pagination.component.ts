@@ -143,7 +143,7 @@ export class PaginationComponent implements OnInit, OnChanges {
       }
     }
     this.showPagination = true;
-    console.log(this.showingPages);
+    // console.log(this.showingPages);
   }
 
 }

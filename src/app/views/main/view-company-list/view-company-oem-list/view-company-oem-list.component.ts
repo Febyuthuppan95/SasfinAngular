@@ -81,6 +81,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   contextMenuY = 0;
   sidebarCollapsed = true;
   selectedRow = -1;
+  oemCompanyID: number;
   companyID: number;
   companyName: string;
   focusOEMID: number;
@@ -246,7 +247,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          // console.log('oem list: ' + JSON.stringify(this.dataList));
+          // log('oem list: ' + JSON.stringify(this.dataList));
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -265,7 +266,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   AddCompanyOEM() {
     let error = 0;
     this.CompanyControl.reset();
-    if (!this.OEM.OEMCompanyName || this.OEM.OEMCompanyName === null || this.OEM.OEMCompanyName === '') {
+    if (this.oemCompanyID === 0 || this.oemCompanyID === undefined) {
       error++;
     }
 
@@ -277,8 +278,8 @@ export class ViewCompanyOemListComponent implements OnInit {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
-      oemCompanyID: this.companyID,
-      oemName: this.OEM.OEMCompanyName,
+      oemCompanyID: this.oemCompanyID,
+      CompanyID: this.companyID,
       oemRefNum: this.OEM.OEMRefNum
       },
       requestProcedure: 'CompanyOEMCreate'
@@ -287,6 +288,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
+        // console.log('res ' + JSON.stringify(res));
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
@@ -303,6 +305,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           // this.totalShowing = +this.rowStart + +this.dataset.companyOEMs.length - 1;
           // this.paginateData();
         }
+        this.oemCompanyID = 0;
       },
       msg => {
         this.closeaddModal.nativeElement.click();
@@ -322,8 +325,9 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
   EditCompanyOEM(deleted?: boolean) {
     let error = 0;
+    this.CompanyControl.reset();
 
-    if (!this.focusOEMName || this.focusOEMName === null || this.focusOEMName === '') {
+    if (this.oemCompanyID === 0 || this.oemCompanyID === undefined) {
       error++;
     }
 
@@ -335,9 +339,10 @@ export class ViewCompanyOemListComponent implements OnInit {
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
-      CompanyOEMID: this.focusOEMID,
-      OEMName: this.focusOEMName,
-      OEMRefNum: this.focusOEMRefNum,
+      companyOEMID: this.focusOEMID,
+      CompanyID: this.companyID,
+      OEMCompanyID: this.oemCompanyID,
+      oemRefNum: this.focusOEMRefNum,
       isDeleted: deleted
       },
       requestProcedure: 'CompanyOEMUpdate'
@@ -363,6 +368,8 @@ export class ViewCompanyOemListComponent implements OnInit {
           // this.totalShowing = +this.rowStart + +this.dataset.companyOEMs.length - 1;
           // this.paginateData();
         }
+
+        this.oemCompanyID = 0;
       },
       msg => {
         this.closeeditModal.nativeElement.click();
@@ -420,7 +427,9 @@ export class ViewCompanyOemListComponent implements OnInit {
   selectedCompany(companyID: number, name: string) {
     // this.countryID = country;
     // console.log(companyID);
-    this.companyID = companyID;
+    this.oemCompanyID = companyID;
+    console.log('here');
+    console.log(companyID);
     this.OEM.OEMCompanyName = name;
     // this.form.cooID.value = country;
   }
