@@ -83,6 +83,8 @@ import { DialogGuard } from './guards/dialog.guard';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
+import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
+import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -368,6 +370,18 @@ const routes: Routes = [
           {
             path: 'companies/localreceipts/transactions',
             component: ViewQuarterReceiptTransactionsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/localreceipts/transactions/c1',
+            component: ViewC1AttachmentsComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'companies/localreceipts/transactions/smd',
+            component: ViewSmdAttachmentsComponent,
             data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
