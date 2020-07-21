@@ -386,11 +386,16 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           this.attachmentListShowing.forEach((attach) => {
             if (attach !== undefined) {
               attach.statusID === 1 ? attach.tooltip = 'Pending Capture' : console.log() ;
-              attach.statusID === 2 ? attach.tooltip = 'Awaiting Review' : console.log() ;
-              attach.statusID === 3 ? attach.tooltip = 'Errors' : console.log() ;
-              attach.statusID === 4 ? attach.tooltip = 'Captured Successful' : console.log() ;
+              attach.statusID === 2 ? attach.tooltip = 'In Capture' : console.log() ;
+              attach.statusID === 3 ? attach.tooltip = 'Capture not Evaluated' : console.log() ;
+              attach.statusID === 4 ? attach.tooltip = 'In Evaluation' : console.log() ;
+              attach.statusID === 5 ? attach.tooltip = 'Assess Succeeded' : console.log() ;
+              attach.statusID === 6 ? attach.tooltip = 'Assess Failed' : console.log() ;
+              attach.statusID === 7 ? attach.tooltip = 'Escalated' : console.log() ;
+              attach.statusID === 8 ? attach.tooltip = 'Escalation Resolved' : console.log() ;
+              attach.statusID === 9 ? attach.tooltip = 'Override Capture' : console.log() ;
 
-              this.attachmentID === attach.attachmentID ? attach.tooltip = 'Current' : console.log() ;
+              this.attachmentID === attach.attachmentID ? attach.tooltip += ' - Current' : console.log() ;
             }
           });
         });
