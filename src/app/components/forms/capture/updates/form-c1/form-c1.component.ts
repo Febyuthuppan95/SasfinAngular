@@ -471,6 +471,11 @@ export class SupplierC1 {
   AttachmentStatusID: number;
   AttachmentStatus: string;
 }
+export class SupplierC1List {
+  rowCount: number;
+  data?: SupplierC1[];
+  outcome: Outcome;
+}
 
 export class SupplierC1Line {
   LineNo: number;
