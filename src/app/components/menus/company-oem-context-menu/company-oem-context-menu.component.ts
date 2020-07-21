@@ -22,9 +22,6 @@ export class CompanyOemContextMenuComponent implements OnInit {
 
   @Output() EditCompanyOEM = new EventEmitter<string>();
   ngOnInit() {
-    console.log(this.companyOEMID);
-    console.log(this.companyOEMName);
-    console.log(this.companyOEMRefNum);
   }
 
   Edit() {
@@ -34,12 +31,12 @@ export class CompanyOemContextMenuComponent implements OnInit {
     }));
   }
   Quarters() {
-    console.log(this.companyOEMID);
-    this.companyService.setCompanyOEM({ 
-      companyOEMID: this.companyOEMID, 
+    // console.log(this.companyOEMID);
+    this.companyService.setCompanyOEM({
+      companyOEMID: this.companyOEMID,
       oemName: this.companyOEMName,
       oemRefNum: this.companyOEMRefNum });
-      this.router.navigate(['companies', 'oem', 'quarters']);
+    this.router.navigate(['companies', 'oem', 'quarters']);
   }
 
 }

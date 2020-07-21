@@ -203,7 +203,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     });
 
     this.loadCompanyItemsList(true);
-    this.loadItems(false);
+
   }
 
   onFileChange(files: FileList) {
@@ -332,7 +332,6 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    console.log('model' + JSON.stringify(model));
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
           // console.log('res' + JSON.stringify(res));
@@ -403,7 +402,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           this.itemsrowCount = res.rowCount;
           this.itemsshowingRecords = res.itemsLists.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
-          console.log('itemstotalShowing ' +  this.itemsrowCount);
+          // console.log(this.itemsdataset);
           this.itemspaginateData();
         } else {
           this.noitemData = true;
@@ -503,7 +502,6 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   popClick(event, groupid, itemid, itemname, itemparentid) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
-
     this.focusItemGroupID = groupid;
     this.focusItemID = itemid;
     this.focusItemName = itemname;
@@ -519,15 +517,36 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   Finalitemlist() {
-    this.items = this.itemsdraft.filter(x => x.itemID !== this.focusItemID);
-    this.itemsrowCount = this.items.length;
-    this.itemsshowingRecords = this.items.length;
+    console.log(this.items);
+    this.items.splice(0, this.items.length);
+    console.log(this.items);
+    let countitems = 0;
+
+
+    this.itemsdraft.forEach((item, index) => {
+      if (item.itemID !== this.focusItemID) {
+        countitems++;
+        this.items.push(item);
+      }
+    });
+
+    this.itemsrowCount = countitems;
+    this.itemsshowingRecords = countitems;
   }
 
   Finalitemparentslist() {
-    this.itemparents = this.items.filter(x => x.itemID !== this.focusItemParentID);
-    this.itemsrowCount = this.itemparents.length;
-    this.itemsshowingRecords = this.itemparents.length;
+    this.itemparents.splice(0, this.itemparents.length);
+    let countitemparent = 0;
+
+    this.items.forEach((item, index) => {
+      if (item.itemID !== this.focusItemParentID) {
+        countitemparent++;
+        this.itemparents.push(item);
+      }
+    });
+
+    this.itemsrowCount = countitemparent;
+    this.itemsshowingRecords = countitemparent;
   }
 
 
@@ -540,7 +559,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   OpenGroup($event) {
-    this.Finalitemlist();
+    this.loadItems(false);
+    // this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddGroupModal.nativeElement.click();
@@ -552,6 +572,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       itemID: this.focusItemID,
       addedItemID: itemid
     };
+
     this.companyService
     .addtoGroup(requestModel).then(
       (res: ItemGroupReponse) => {
@@ -580,8 +601,9 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   OpenParent($event) {
 
-    this.Finalitemlist();
-    this.Finalitemparentslist();
+    // this.Finalitemlist();
+    // this.Finalitemparentslist();
+    this.loadItems(false);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddParentModal.nativeElement.click();
