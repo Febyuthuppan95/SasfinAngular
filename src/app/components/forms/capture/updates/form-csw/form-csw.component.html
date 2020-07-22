@@ -23,7 +23,7 @@
       <div style="padding: 0 24px; height: 62px;" class="line-list">
         <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLine();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
         <button mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
-        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
+        <button mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1 && lines.length > 0" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         <p *ngIf="!lines" style="font-size: 16px;">No Custom Worksheet Lines Added</p>
         <p *ngIf="lines">
           <button (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 || activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
