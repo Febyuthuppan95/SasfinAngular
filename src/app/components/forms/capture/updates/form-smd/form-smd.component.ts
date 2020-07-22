@@ -250,6 +250,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.lines = [];
         }
+
+        this.newLine(true);
       });
   }
 
@@ -394,11 +396,13 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     this.refresh();
   }
 
-  newLine() {
+  newLine(norefresh) {
     this.activeLine = null;
     this.activeIndex = -1;
 
-    this.refresh();
+    if (!norefresh) {
+      this.refresh();
+    }
   }
 
   async deleteLine() {
