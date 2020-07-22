@@ -91,6 +91,8 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
 
     await this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
+        console.log(res);
+
         this.list = res.data;
         this.listTemp = res.data;
 
