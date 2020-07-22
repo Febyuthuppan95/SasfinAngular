@@ -7,12 +7,12 @@
       </div>
       <app-table
       *ngIf="this.tableConfig.dataset"
-      [dataset]="this.tableConfig.dataset"
-      [headings]="this.tableConfig.headings"
-      [recordsPerPage]="this.tableConfig.recordsPerPage"
-      [rowStart]="this.tableConfig.rowStart"
-      [rowEnd]="this.tableConfig.rowEnd"
-      [rowCount]="this.tableConfig.rowCount"
+      [(dataset)]="this.tableConfig.dataset"
+      [(headings)]="this.tableConfig.headings"
+      [(recordsPerPage)]="this.tableConfig.recordsPerPage"
+      [(rowStart)]="this.tableConfig.rowStart"
+      [(rowEnd)]="this.tableConfig.rowEnd"
+      [(rowCount)]="this.tableConfig.rowCount"
       [orderBy]="this.tableConfig.orderBy"
       [orderByDirection]="this.tableConfig.orderByDirection"
       [tableHeader]="this.tableConfig.header"
@@ -21,7 +21,7 @@
       (showingRecordsEvent)="recordsPerPageChange($event)"
       (pageChange)="pageChange($event)"
       (searchEvent)="searchFilter($event)"
-      (selectedRecord="selectedRecord($event)")>
+      (selectedRecord)="selectedRecord($event)">
       </app-table>
     </div>
   </div>
