@@ -120,10 +120,12 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
-  rowStart: number;
-  rowEnd: number;
+  rowStart: number = 1;
+  rowEnd: number = 15;
+  orderBy: string = '';
+  orderByDirection: '';
+  dataset: null;
   rowCount: number;
-  orderBy: string;
   orderDirection: string;
   selectedRow = -1;
   contextMenu = false;
@@ -131,6 +133,8 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   contextMenuY = 0;
   rowCountPerPage: number;
   filter: string;
+
+
 
   currentUser: User = this.userService.getCurrentUser();
   noData = false;
@@ -171,6 +175,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/items`, model).then((res: any) => {
       console.log(res);
       this.items = res.data;
+      this.rowCount = res.rowCount;
     },
       msg => {
       console.log(msg);
