@@ -36,19 +36,19 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)" 
-(reportscompanyService)="reportscompanyService($event)" 
-(addClaimPermits)="openAddClaimPermits($event)" 
+<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)"
+(reportscompanyService)="reportscompanyService($event)"
+(addClaimPermits)="openAddClaimPermits($event)"
 (submit522Claim) = "submit522($event)"
-[companyID]="this.companyID" 
-[companyName]="this.companyName" 
-[userID]="this.currentUser.userID" 
-[transactionID]="this.ServiceClaim.transactionID" 
-[companyServiceID]="this.ServiceClaim.companyServiceID" 
-[status]="this.ServiceClaim.status" 
-[companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber" 
-[serviceID]=" this.ServiceClaim.serviceID" 
-[serviceName]="this.ServiceClaim.serviceName" 
+[companyID]="this.companyID"
+[companyName]="this.companyName"
+[userID]="this.currentUser.userID"
+[transactionID]="this.ServiceClaim.transactionID"
+[companyServiceID]="this.ServiceClaim.companyServiceID"
+[status]="this.ServiceClaim.status"
+[companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber"
+[serviceID]=" this.ServiceClaim.serviceID"
+[serviceName]="this.ServiceClaim.serviceName"
 [permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
 </app-menu>
 
@@ -84,9 +84,9 @@
               <mat-datepicker #createClaimDate></mat-datepicker>
             </mat-form-field>
           </div>
-          <!-- <div class="form-group" 
+          <!-- <div class="form-group"
             *ngIf="this.ServiceClaim.serviceName === 'C1'
-            || this.ServiceClaim.serviceName === 'SMD'"> 
+            || this.ServiceClaim.serviceName === 'SMD'">
             <mat-form-field>
               <mat-label>Quarter</mat-label>
               <mat-select [(ngModel)]="this.focusPeriodQuarter" name="quarter" (selectionChange)="periodQuarter($event.value)">

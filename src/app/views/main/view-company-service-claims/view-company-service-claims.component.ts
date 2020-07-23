@@ -97,7 +97,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     // Init with dummy 1
     const fullYear = new Date().getFullYear();
     const fullmonth = new Date().getMonth();
-    
 
 
     this.minClaimDate = new Date();
@@ -108,7 +107,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       serviceName: ''
     };
   }
-  
+
   removable = true;
   @ViewChild(NotificationComponent, { static: false })
   private notify: NotificationComponent;
@@ -228,6 +227,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   loadingData = false;
   loadingImportData = false;
   focusImport: Import;
+
+  selectable = false;
   // Generate Company Service
   selectedCompanyServiceID = -1;
   selectedCompanyServiceIDControl = new FormControl(-1);
@@ -236,7 +237,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     companyServiceID: number,
     companyServiceClaimNumber: number,
     serviceName: string,
-    transactionID?: number
+    transactionID?: number,
+    status?: string;
+    serviceID?: number;
+    permitCount?: number;
+
   };
   claimForm = {
     exportStartDate: {
@@ -285,7 +290,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
 
   ngOnInit() {
-   
+
     this.themeService.observeTheme().subscribe((theme) => {
       this.currentTheme = theme;
     });
@@ -300,11 +305,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadServiceClaims(true);
     this.loadCompanyPermits();
     this.loadCompanyServices();
-   
+
 
   }
 
- 
+
 
   submit522() {
     this.openCreate522Modal.nativeElement.click();
@@ -625,7 +630,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
     this.selectedCompanyServiceID = companyServiceID;
     this.ServiceClaim.serviceName = this.companyServiceList.find(x => x.componyServiceID === companyServiceID).serviceName;
-    
+
     // console.log(this.ServiceClaim.serviceName);
 
   }
