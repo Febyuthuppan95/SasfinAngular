@@ -74,7 +74,9 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div *ngIf="this.ServiceClaim.serviceName !== '522'">
+          <div *ngIf="this.ServiceClaim.serviceName !== '522'
+          && this.ServiceClaim.serviceName !== 'C1'
+          && this.ServiceClaim.serviceName !== 'SMD'">
             <mat-form-field>
               <mat-label>Claim Date:</mat-label>
               <input matInput [min]="minClaimDate" [matDatepicker]="createClaimDate" [(ngModel)]="selectedClaimDate" [ngModelOptions]="{standalone: true}">
@@ -82,7 +84,50 @@
               <mat-datepicker #createClaimDate></mat-datepicker>
             </mat-form-field>
           </div>
+          <!-- <div class="form-group" 
+            *ngIf="this.ServiceClaim.serviceName === 'C1'
+            || this.ServiceClaim.serviceName === 'SMD'"> 
+            <mat-form-field>
+              <mat-label>Quarter</mat-label>
+              <mat-select [(ngModel)]="this.focusPeriodQuarter" name="quarter" (selectionChange)="periodQuarter($event.value)">
+                <mat-option *ngFor="let quarter of quarters" [value]="quarter.value">
+                  {{quarter.Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
         </div>
+        <div class="form-group"
+        *ngIf="this.ServiceClaim.serviceName === 'C1'
+        || this.ServiceClaim.serviceName === 'SMD'">
+          <mat-form-field>
+              <mat-label>Year</mat-label>
+              <mat-select [(ngModel)]="this.focusPeriodYear" name="year" (selectionChange)="periodYear($event.value)">
+                <mat-option *ngFor="let year of years" [value]="year">
+                  {{year}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-group"
+        *ngIf="this.ServiceClaim.serviceName === 'C1'
+        || this.ServiceClaim.serviceName === 'SMD'">
+          <mat-form-field>
+            <mat-label>
+              <input type="text"
+                placeholder="Enter OEM Name..."
+                aria-label="Number"
+                matInput
+                [formControl]="oemControl"
+                [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectedOEM($event.option.value)">
+                  <mat-option  *ngFor="let oem of oemList" [value]="oem">
+                    {{oem.OEMCompanyName}}
+                  </mat-option>
+                </mat-autocomplete>
+            </mat-label>
+          </mat-form-field>
+        </div> -->
+      </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeCreateModal>Close</button>
         <button type="button" (click)="createCompanyServiceClaim()" class="btn btn-primary btn-sm">Save</button>

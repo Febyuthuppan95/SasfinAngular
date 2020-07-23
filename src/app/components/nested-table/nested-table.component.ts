@@ -16,7 +16,9 @@ export class NestedTableComponent implements OnInit, OnChanges {
   noData: boolean = false;
   @Input() parents: Object[] = [];
   @Input() action_icon: string;
+  @Input() second_icon: string;
   @Input() action_toolip: string;
+  @Input() second_tooltip: string;
   @Input() filter?: boolean;
   @Input() paginator?: PageEvent;
   @Input() pageSizeOptions?: string[] = [];
@@ -28,6 +30,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
   @Output() getChildrenEvent = new EventEmitter<number>();
   @Output() rowEvent = new EventEmitter<string>();
   @Output() pageEvent = new EventEmitter<PageEvent>();
+  @Output() assignEvent = new EventEmitter<string>();
   // Initializing
   loading = false;
   displayData: any[] = [];
@@ -71,7 +74,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
     if ( this.parents.length > 0) {
       this.headings.forEach(x => {
-        if (x.title !== 'IDfirst' && x.title !== 'IDsecond') {
+        if (x.title !== 'IDfirst' && x.title !== 'IDsecond' && x.title !== 'Failed') {
           x.propertyName = x.propertyName.toLowerCase();
           this.columnsToDisplay.push(x.propertyName);
         }
@@ -131,6 +134,16 @@ export class NestedTableComponent implements OnInit, OnChanges {
   rowAction($event) {
     console.log($event);
     this.rowEvent.emit(
+      JSON.stringify({
+        lineA: $event[1].value,
+        lineB: $event[2].value,
+        lineC: $event[4].value,
+        lineD: $event[5].value
+      }));
+  }
+  assignAction($event) {
+    console.log($event);
+    this.assignEvent.emit(
       JSON.stringify({
         lineA: $event[1].value,
         lineB: $event[2].value,

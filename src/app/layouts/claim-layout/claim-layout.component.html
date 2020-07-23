@@ -50,7 +50,8 @@
     </mat-toolbar>
     <mat-progress-bar mode="indeterminate"  *ngIf="loading" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
     <div class="row">
-        <div class="col-sm-6">
+        <div [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') 
+        ? 'col-sm-5':'col-sm-7'">
             <div class="top-section row">
                 <mat-card class="offset-sm-1 col-sm-11">
                     <mat-card-content>
@@ -79,7 +80,48 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="row">
+                           
+                            <div class="row" *ngIf="this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD'">
+                                <mat-form-field class="col-md-5">
+                                    <mat-label>Quarter</mat-label>
+                                    <mat-select formControlName="QuarterID" (selectionChange)="periodQuarter($event.value)">
+                                        <mat-option *ngFor="let quarter of quarters" [value]="quarter.value">
+                                        {{quarter.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="col-md-5">
+                                    <mat-label>Year</mat-label>
+                                    <mat-select formControlName="PeriodYear" (selectionChange)="periodYear($event.value)">
+                                      <mat-option *ngFor="let year of years" [value]="year">
+                                        {{year}}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                            </div>
+                            <div class="row" *ngIf="this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD'">
+                                <mat-form-field class="col-md-5" >
+                                    <mat-label>Lookback Periods</mat-label>
+                                    <input matInput required type="number" min="1" autocomplete="off" formControlName="LookbackPeriod" >
+                                </mat-form-field>
+                                <mat-form-field class="col-md-5">
+                                    <mat-label>Specific OEM</mat-label>
+                                      <input type="text"
+                                        placeholder="Enter OEM Name..."
+                                        aria-label="Number"
+                                        matInput
+                                        [formControl]="oemControl"
+                                        autocomplete="off"
+                                        [matAutocomplete]="auto">
+                                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="selectedOEM($event.option.value)">
+                                          <mat-option  *ngFor="let oem of oemList" [value]="oem">
+                                            {{oem.OEMCompanyName}}
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                    
+                                  </mat-form-field>
+                            </div>
+                            <div class="row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD'">
                                 <mat-form-field class="col-md-4">
                                     <mat-label>Lookback Days</mat-label>
                                     <mat-select required formControlName="LookBackDays" >
@@ -138,7 +180,7 @@
                     ></app-nested-table>
                 </mat-card>
             </div>
-            <div class="bottom-section row" *ngIf="this.showMain">
+            <div class="bottom-section row" *ngIf="this.showMain && (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD')">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">{{this.importLabel}}</button>
                     <app-nested-table *ngIf="!this.loading"
@@ -156,9 +198,32 @@
                     ></app-nested-table>
                 </mat-card>
             </div>
+            <div class="bottom-section row" *ngIf="this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD'">
+                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">OEM Products</button>
+                    <app-nested-table *ngIf="!this.loading"
+                    [action_icon]="'view_headline'"
+                    [second_icon]="'rule'"
+                    [isPageable]="'true'"
+                    [parents] = "this.data"
+                    [headings]="this.headings"
+                    [filter]="this.filterA"
+                    [(paginator)]="this.pageA"
+                    [pageSizeOptions]="[5, 10]"
+                    (rowEvent)="rowEventA($event)"
+                    (assignEvent)="assignRowEvent($event)"
+                    [noDataError] ="'No Available OEM Supply'"
+                    (pageEvent)="paginateA($event)"
+                    [action_toolip]="'View Data'"
+                    [second_tooltip]="'Add/Remove Line'"
+                    ></app-nested-table>
+                </mat-card>
+            </div>
         </div>
-        <div class="data-lines col-sm-6">
-            <div class="top-section-right row">
+        <div class="data-lines " 
+        [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') 
+        ? 'col-sm-7':'col-sm-5'">
+            <div class="top-section-right row" *ngIf="(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD')">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Assigned Exports</button>
                 <app-nested-table *ngIf="!this.loading"
@@ -176,7 +241,23 @@
                 ></app-nested-table>
             </mat-card>
             </div>
-            <div class="bottom-section-right row">
+            <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')">
+                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Product Components</button>
+                <app-nested-table *ngIf="!this.loading"
+                [(parents)] = "this.dataLinesAssigned"
+                [isPageable]="'true'"
+                [headings]="this.headingsB"
+                [filter]="this.filterB"
+                [(paginator)]="this.pageB"
+                [pageSizeOptions]="[5]"
+                [noDataError] ="'No Component Data'"
+                (pageEvent)="paginateB($event)"
+                (rowEvent)="rowEventB($event)"
+                ></app-nested-table>
+            </mat-card>
+            </div>
+            <div class="bottom-section-right row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD'">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="warn"  style="font-size: 1.2rem;">Available Exports</button>
                     <app-nested-table *ngIf="!this.loading"
