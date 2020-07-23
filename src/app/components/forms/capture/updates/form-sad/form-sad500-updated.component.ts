@@ -366,7 +366,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           this.paginationControl.setValue(1, { emitEvent: false });
         } else {
           this.lines = [];
-          this.newLine();
+          this.newLine(true);
         }
       });
   }
@@ -579,10 +579,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.refresh();
   }
 
-  newLine() {
+  newLine(norefresh) {
     this.activeLine = null;
     this.activeIndex = -1;
-    this.refresh();
+
+    if (!norefresh) {
+      this.refresh();
+    }
   }
 
   async deleteLine() {
