@@ -16,6 +16,7 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
 
   @Input() x: number;
   @Input() y: number;
+  @Input() currentTheme: string;
   @Input() docPath: string;
   currentTransaction
   ngOnInit() {
