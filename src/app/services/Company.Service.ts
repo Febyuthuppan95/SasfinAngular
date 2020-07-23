@@ -898,6 +898,23 @@ export class CompanyService {
     });
   }
 
+  public getItemjoinList(model: GetItemList) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/itemsJoin`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getItemTypesList(model) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/itemtypes/list`;
