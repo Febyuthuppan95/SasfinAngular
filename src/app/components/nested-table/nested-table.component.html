@@ -9,19 +9,33 @@
       </mat-form-field>
     <table color="primary" *ngIf="displayData.length > 0" mat-table [dataSource]="displayData" class="mat-elevation-z0 table table-hover table-striped table-{{ currentTheme }}" multiTemplateDataRows>
         <ng-container matColumnDef="{{column.propertyName}}" *ngFor="let column of headings">
-          <th mat-header-cell *matHeaderCellDef> {{column.title}} </th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;
+          font-weight: 600;
+          font-size: 1.1rem;
+          padding-bottom: 10px;
+          color: #3F51B5;"> {{column.title}} </th>
           <td mat-cell  *matCellDef="let element" (click)="what(element, column)"> {{element[column.position].value}} </td>
         </ng-container>
         <ng-container matColumnDef="action" class="col-1">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row"><button mat-icon-button color="primary" (click)="rowAction(row)" [matTooltip]="action_toolip"><mat-icon>{{this.action_icon}}</mat-icon></button></td>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="primary" (click)="rowAction(row)" [matTooltip]="action_toolip" *ngIf="this.action_icon !==' '">
+              <mat-icon>{{this.action_icon}}</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="assignAction(row)" [matTooltip]="second_tooltip" *ngIf="this.second_icon !==' '">
+              <mat-icon>{{this.second_icon}}</mat-icon>
+            </button>
+            <button mat-button color="warn" *ngIf="row.failed">
+              FAILED
+            </button>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
     </table>
     <button *ngIf="this.displayData.length === 0" class="col-sm-12" mat-button color="primary"  [disabled]="disabled" style="font-size: 0.9rem;">{{noDataError}}</button>
-    <mat-paginator *ngIf="displayData.length > 0 && this.paginator"  [length]="this.paginator.length"
+    <mat-paginator style="font-size: 1rem;" *ngIf="displayData.length > 0 && this.paginator"  [length]="this.paginator.length"
                     [pageSize]="this.paginator.pageSize"
                     [pageSizeOptions]="this.pageSizeOptions" (page)="this.paginate($event)">
     </mat-paginator >

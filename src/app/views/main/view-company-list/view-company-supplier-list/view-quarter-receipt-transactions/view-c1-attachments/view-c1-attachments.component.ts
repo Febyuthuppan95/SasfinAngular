@@ -14,6 +14,9 @@ import { ContextMenuLocalAttachmentsComponent } from 'src/app/components/menus/c
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { LocalReceipt } from '../view-quarter-receipt-transactions.component';
+import { CompanyLocalReceipt } from '../../view-company-supplier-list.component';
+import { TransactionService } from 'src/app/services/Transaction.Service';
 
 @Component({
   selector: 'app-view-c1-attachments',
@@ -26,7 +29,8 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private themeService: ThemeService,
               public router: Router,
-              private apiService: ApiService) {
+              private apiService: ApiService,
+              private transactionService: TransactionService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -84,6 +88,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
   focusPeriodYear: number;
   focusQuarterID: number;
   focusOEMID: any;
+  focusTransactionID: number;
 
   SelectedRecord: SupplierC1 = {
    TransactionID: -1,
@@ -91,11 +96,12 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
    SupplierName: '',
    CertificateNo: '',
    AttachmentStatus: '',
-   AttachmentStatusID: -1
+   AttachmentStatusID: -1,
+   FilePath: ''
   };
 
   tableHeader: TableHeader = {
-    title: 'Quarterly Receipts',
+    title: 'Supplier C1s',
     addButton: {
      enable: true,
     },
@@ -109,7 +115,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
   };
   tableConfig: TableConfig = {
     header:  {
-      title: 'Local Receipts',
+      title: 'Supplier C1s',
       addButton: {
       enable: true,
       },
@@ -130,22 +136,29 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
         }
       },
       {
-        title: 'Transaction Number',
-        propertyName: 'TransactionID',
+        title: 'Supplier C1 ID',
+        propertyName: 'SupplierC1ID',
         order: {
           enable: true,
         },
       },
       {
-        title: 'Name',
-        propertyName: 'Name',
+        title: 'Supplier Name',
+        propertyName: 'SupplierName',
         order: {
           enable: true,
         }
       },
       {
-        title: 'Status',
-        propertyName: 'TransactionStatus',
+        title: 'Certificate Number',
+        propertyName: 'CertificateNo',
+        order: {
+          enable: true,
+        },
+      },
+      {
+        title: 'Attachment Status',
+        propertyName: 'AttachmentStatus',
         order: {
           enable: true,
         },
@@ -167,22 +180,29 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
       }
     },
     {
-      title: 'Transaction Number',
-      propertyName: 'TransactionID',
+      title: 'Supplier C1 ID',
+      propertyName: 'SupplierC1ID',
       order: {
         enable: true,
       },
     },
     {
-      title: 'Name',
-      propertyName: 'Name',
+      title: 'Supplier Name',
+      propertyName: 'SupplierName',
       order: {
         enable: true,
       }
     },
     {
-      title: 'Status',
-      propertyName: 'TransactionStatus',
+      title: 'Certificate Number',
+      propertyName: 'CertificateNo',
+      order: {
+        enable: true,
+      },
+    },
+    {
+      title: 'Attachment Status',
+      propertyName: 'AttachmentStatus',
       order: {
         enable: true,
       },
@@ -206,7 +226,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
-
+  currentReceipt: CompanyLocalReceipt;
   ngOnInit() {
 
     this.themeService.observeTheme()
@@ -214,20 +234,30 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
-
-    this.companyService.observeCompany()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((obj: SelectedCompany) => {
-      // console.log(obj);
-      if (obj !== null && obj !== undefined) {
-        this.companyID = obj.companyID;
-        this.companyName = obj.companyName;
-        this.loadTransactions();
-      } else {
-        this.companyID = 1;
-        this.loadTransactions();
+    this.companyService.observeLocalReceipt().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (res:CompanyLocalReceipt) => {
+        console.log(res);
+        if (res !== null && res !== undefined) {
+          this.currentReceipt = res;
+          this.loadAttachments();
+        }
       }
-    });
+    );
+    // this.companyService.observeCompany()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((obj: SelectedCompany) => {
+      
+    //   console.log(obj);
+    //   if (obj !== null && obj !== undefined) {
+    //     this.companyID = obj.companyID;
+    //     this.companyName = obj.companyName;
+    //     this.focusTransactionID = obj.selectedTransactionID;
+    //    this.loadAttachments();
+    //   } else {
+    //     this.companyID = 1;
+    //     this.loadAttachments();
+    //   }
+    // });
     // this.loadCompanyOEMs();
     const obj: PaginationChange = {
       rowStart: 1,
@@ -239,23 +269,24 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.companyService.flushCompanyLocalReceipt();
   }
 
-  loadTransactions() {
+  loadAttachments() {
     const model = {
-      requestParams: {
+      request: {
         userID: this.currentUser.userID,
-        CompanyLocalReceiptID: this.companyID,
+        transactionID: this.currentReceipt.TransactionID,
         rowStart: this.rowStart,
         filter: this.filter,
         rowEnd: this.rowEnd,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection
       },
-      requestProcedure: 'LocalReciptsList'
+      procedure: 'SupplierC1List'
     };
     // console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: SupplierC1List) => {
-        // console.log(res);
+
+       console.log(res);
         if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -296,7 +327,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
-    this.loadTransactions();
+    //this.loadTransactions();
   }
 
   searchBar($event) {
@@ -304,7 +335,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.filter = $event;
-    this.loadTransactions();
+    //this.loadTransactions();
   }
 
   orderChange($event: Order) {
@@ -312,7 +343,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadTransactions();
+    //this.loadTransactions();
   }
 
   popClick(event, localReceipt) {
@@ -342,7 +373,14 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.focusLocalReceiptID = obj.record.localReceiptID;
     this.focusQuarterID = obj.record.QuarterID;
     this.focusPeriodYear = obj.record.PeriodYear;
-    this.companyService.setLocalReceipt(obj.record);
+    this.SelectedRecord = obj.record;
+    console.log(obj.record);
+    this.transactionService.setCurrentAttachment({ 
+      transactionID: obj.record.TransactionID,
+      attachmentID: obj.record.SupplierC1ID,
+      docType: 'SC1',
+      transactionType: 'local'
+      });
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;

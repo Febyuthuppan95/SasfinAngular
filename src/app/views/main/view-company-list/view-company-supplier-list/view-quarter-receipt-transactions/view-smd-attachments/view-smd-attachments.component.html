@@ -1,1 +1,106 @@
-<p>view-smd-attachments works!</p>
+
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+    <div class="ls-card-body">
+      <div class="float-right">
+        <ng-container *ngIf="showLoader">
+          <app-loader></app-loader>
+        </ng-container>
+      </div>
+      <app-table
+        *ngIf="dataList"
+        [(dataset)]="dataList"
+        [headings]="tableHeadings"
+        [(recordsPerPage)]="showingRecords"
+        [(rowStart)]="rowStart"
+        [(rowEnd)]="rowEnd"
+        [(rowCount)]="rowCount"
+        [orderBy]="orderBy"
+        [orderByDirection]="orderDirection"
+        [tableHeader]="tableHeader"
+        (selectedRecord)="setClickedRow($event)"
+        (orderChange)="orderChange($event)"
+        (pageChange)="pageChange($event)"
+        (showingRecordsEvent)="recordsPerPageChange($event)"
+        (addButtonEvent)="Add()"
+        (searchEvent)="searchBar($event)"
+        (backButtonEvent)="router.navigate(['companies', 'localreceipts', 'transactions'])">
+      </app-table>
+    </div>
+  </div> 
+
+  <!--Edit Modal-->
+  <!-- <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
+  <div class="modal fade" id="editOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalContent">Edit </h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+        <div class="modal-body">
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="control-label">Period Year:</label>
+                <input type="text" placeholder="Name" class="form-control"
+                [(ngModel)]="focusPeriodYear" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Quarter:</label>
+                <input type="text" placeholder="Registration No" class="form-control"
+                [(ngModel)]="focusQuarterID" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+          <button type="button" (click)="EditLocalReceipt(false)" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="EditLocalReceipt(true)" class="btn btn-danger btn-sm">Delete</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div> -->
+
+  <!--Add Modal-->
+<!-- <button class="hide" data-toggle="modal" data-target="#addOEM" #openaddModal></button>
+  <div class="modal fade" id="addOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalContent">Add</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form >
+          <div class="modal-body">
+              <div class="form-group">
+                  <label class="control-label">Supplier Name:</label>
+                  <input type="text" placeholder="Supplier Name" class="form-control"
+                  [(ngModel)]="SelectedReceipt.PeriodYear" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Reference No:</label>
+                <input type="text" placeholder="Registration No" class="form-control"
+                [(ngModel)]="SelectedReceipt.QuarterID" [ngModelOptions]="{standalone: true}"  required/>
+              </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
+          <button type="button" (click)="AddLocalReceipt()"  class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div> -->
+
+  <app-notification></app-notification>
+  <app-modal-component></app-modal-component>
+  <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+    <app-context-menu-local-attachments [docPath]="this.SelectedRecord.FilePath" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-context-menu-local-attachments>
+  </div>
+
+

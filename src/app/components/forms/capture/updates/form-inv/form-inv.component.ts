@@ -308,7 +308,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               this.paginationControl.setValue(1, { emitEvent: false });
           }  else {
               this.lines = [];
-              this.newLine(false);
+              this.newLine(true);
           }
       });
   }

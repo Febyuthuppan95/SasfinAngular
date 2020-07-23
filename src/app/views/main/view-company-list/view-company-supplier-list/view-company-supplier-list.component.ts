@@ -302,6 +302,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, localReceipt) {
+    console.log(localReceipt);
     // console.log(localReceipt);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
@@ -321,6 +322,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
+    console.log(obj);
     // console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
@@ -362,3 +364,4 @@ export class CompanyLocalReceiptList {
   data?: CompanyLocalReceipt[];
   outcome: Outcome;
 }
+

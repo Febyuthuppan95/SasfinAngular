@@ -3,7 +3,17 @@
     thead {
         margin-bottom:10px !important;
         font-size: 1.1rem !important;
+        .mat-header-cell {
+            text-align: center !important;
+        }
+       
     }
+    .mat-row, .mat-header-row {
+        text-align: center;
+    }
+}
+.table thead tr th {
+    text-align: center !important;
 }
 .matDataTable {
     width: 100%;
@@ -12,4 +22,11 @@ mat-paginator {
     width: 100%;
     right:10px;
     bottom: 5px;
+}
+.table thead th {
+    border-top: 0;
+    border-bottom-width: 1px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: center;
 }
