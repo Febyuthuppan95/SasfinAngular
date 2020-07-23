@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Import, Export, ClaimImportComponents } from 'src/app/views/main/view-company-service-claims/view-company-service-claims.component';
 import { TableHeading } from 'src/app/models/Table';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -17,6 +17,7 @@ import { Subject } from 'rxjs';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { CompanyOEM, CompanyOEMList } from 'src/app/views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 
 @Component({
   selector: 'app-claim-layout',
@@ -38,6 +39,21 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   headingsS: TableHeading[]= [];
   docPreview = false;
   claimRequestParams: FormGroup;
+
+
+  quarters = [
+    {value: 1 , Name: 'Q1'},
+    {value: 2 , Name: 'Q2'},
+    {value: 3 , Name: 'Q3'},
+    {value: 4 , Name: 'Q4'}
+  ];
+  years = [];
+  oemList: CompanyOEM[] =[];
+  now = new Date().getFullYear();
+  focusPeriodYear: number;
+  focusPeriodQuarter: number;
+  focusOEMID: number;
+  oemControl = new FormControl();
 
   // build Columns
   columnsA: MatTableColumn[] = [
@@ -160,13 +176,48 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.claimService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$)).subscribe((res)=> {
+      console.log(res);
       this.currentClaim = res;
       this.currentUser = this.userService.getCurrentUser();
       this.showMain = false;
       this.init();
     });
+
+    this.oemControl.valueChanges.subscribe(
+      (res: string) => {
+        this.loadCompanyOEMs();
+      }
+    );
+    this.loadCompanyOEMs();
+    this.createYears();
   }
 
+  loadCompanyOEMs() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyID: this.currentClaim.companyID,
+        companyOEMID: -1,
+        rowStart: 1,
+        filter: (this.oemControl.value === null || this.oemControl.value === undefined) ? "" : this.oemControl.value,
+        rowEnd: 5,
+      },
+      requestProcedure: 'CompanyOEMList'
+    };
+    console.log(model);
+    // console.log(model);
+    // company service api call
+    this.companyService.companyOEMList(model).then(
+      (res: CompanyOEMList) => {
+          this.loading = false;
+          this.oemList = res.data;
+      },
+      msg => {
+        this.loading = false;
+  
+      }
+    );
+  }
   async init() {
     // INIT FORM DATA
     this.initClaimForm();
@@ -272,6 +323,22 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}]
         });
         break;
+      }
+      case 'C1' :{
+        this.claimRequestParams = this.formBuilder.group({
+          LookbackPeriod: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          PeriodYear: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          QuarterID: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          OEMCompanyID: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+        });
+      }
+      case 'SMD' :{
+        this.claimRequestParams = this.formBuilder.group({
+          LookbackPeriod: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          PeriodYear: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          QuarterID: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          OEMCompanyID: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+        });
       }
     }
     this.pageEvent = {
@@ -1237,6 +1304,146 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         ];
         break;
       }
+      case 'C1': {
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'companyoemquartersaleid',
+            order: {
+              enable: true,
+              tag: 'companyoemquartersaleid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Name',
+            propertyName: 'productname',
+            order: {
+              enable: true,
+              tag: 'productname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 4
+          }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'companyserviceclaimlinec1id',
+            order: {
+              enable: true,
+              tag: 'companyserviceclaimlinec1id'
+            },
+            position: 2
+          },
+          {
+            title: 'Component',
+            propertyName: 'component',
+            order: {
+              enable: true,
+              tag: 'component'
+            },
+            position: 3
+          },
+          {
+            title: 'Quarter ',
+            propertyName: 'quarterid',
+            order: {
+              enable: true,
+              tag: 'quarterid'
+            },
+            position: 4
+          },
+          {
+            title: 'Period Year',
+            propertyName: 'periodyear',
+            order: {
+              enable: true,
+              tag: 'periodyear'
+            },
+            position: 5
+          },
+          {
+            title: 'Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Component Value',
+            propertyName: 'componentvalue',
+            order: {
+              enable: true,
+              tag: 'componentvalue'
+            },
+            position: 7
+          },
+          {
+            title: 'Raw Material Value',
+            propertyName: 'rawmaterialvalue',
+            order: {
+              enable: true,
+              tag: 'rawmaterialvalue'
+            },
+            position: 8
+          },
+          {
+            title: 'Failed',
+            propertyName: 'failed',
+            order: {
+              enable: true,
+              tag: 'failed'
+            },
+            position: 9
+          }
+        ];
+        break;
+      }
     }
 
   }
@@ -1346,34 +1553,36 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   updateClaimParams() {
     console.log('Updating claim params..');
-
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        lookbackDays: this.claimRequestParams.get('LookBackDays') ? this.claimRequestParams.get('LookBackDays').value : null,
-        extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value: null,
-        exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value: null,
-        exportEndDate: this.claimRequestParams.get('ExportEndDate') ? this.claimRequestParams.get('ExportEndDate').value : null,
-        claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        companyID: this.currentClaim.companyID
-      },
-      requestProcedure: `CompanyServiceClaimsUpdate`
-    };
-    console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
-      (res : UpdateResponse ) => {
-        if(this.currentClaim.serviceName === '538') {
-          this.update538Params();
+    if(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') {
+      this.update538Params();
+    } else {
+      const model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          lookbackDays: this.claimRequestParams.get('LookBackDays') ? this.claimRequestParams.get('LookBackDays').value : null,
+          extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value: null,
+          exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value: null,
+          exportEndDate: this.claimRequestParams.get('ExportEndDate') ? this.claimRequestParams.get('ExportEndDate').value : null,
+          claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          companyID: this.currentClaim.companyID
+        },
+        requestProcedure: `CompanyServiceClaimsUpdate`
+      };
+      console.log(model);
+      this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
+        (res : UpdateResponse ) => {
+          if(this.currentClaim.serviceName === '538') {
+            this.update538Params();
+          }
+          console.log(res);
+          this.loadMainDataSet();
+        },
+        msg => {
+          console.log('error');
         }
-        console.log(res);
-        this.loadMainDataSet();
-      },
-      msg => {
-        console.log('error');
-      }
-    );
-
+      );
+    }
   }
   update538Params() {
     const model = {
@@ -1382,14 +1591,18 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         dutyPercentage:this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
         sad500ID: this.currentClaim.sad500ID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        companyID: this.currentClaim.companyID
+        companyID: this.currentClaim.companyID,
+        lookBackPeriod: this.claimRequestParams.get('LookbackPeriod').value,
+        periodYear: this.claimRequestParams.get('PeriodYear').value,
+        quarterID: this.claimRequestParams.get('QuarterID').value,
+        oemCompanyID: this.claimRequestParams.get('OEMCompanyID').value
       },
-      requestProcedure: `CompanyServiceClaimsParametersUpdate`
+      requestProcedure: `CompanyServiceClaimParametersUpdate`
     };
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`,model).then(
       (res : UpdateResponse ) => {
-        this.snackbar.open('Successfully assigned SAD500', res.outcome.outcome, {
+        this.snackbar.open('Successfully updated claim parameters','SUCCESS', {
           duration: 3000,
           panelClass: 'claim-snackbar-success',
           horizontalPosition: 'center',
@@ -1509,8 +1722,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.selectedA = lineData.lineA; // cjid
     this.selectedB = lineData.lineB; // itemID
     this.selectedC = lineData.lineD; // Import Avail Quatity
+    console.log(lineData);
+    if(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
+      this.loadBottomChild();
+    }
     this.loadTopChild();
-    this.loadBottomChild();
+   
   }
 
   /**
@@ -1534,25 +1751,45 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.selectedD = lineData.lineD; // Export Line Quantity
     this.updateBottomChild();
   }
+  assignRowEvent($event) {
+    console.log($event);
+  }
   /****** END IMPORTS *******/
   // Top Right Table
   async loadTopChild() {
     this.loading = true;
 
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        captureJoinImportID: this.selectedA,
-
-        rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
-        rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
-      },
-      requestProcedure: `CompanyServiceClaimLineList${this.currentClaim.serviceName}`
-
-    };
+    let model = {};
+    if (this.currentClaim.serviceName === 'C1'
+    || this.currentClaim.serviceName === 'SMD') {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          companyOEMQuarterSaleID: this.selectedB,
+          rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
+          rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
+        },
+        requestProcedure: `CompanyServiceClaimLineList${this.currentClaim.serviceName}`
+      };
+    } else {
+      model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+          captureJoinImportID: this.selectedA,
+  
+          rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
+          rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
+        },
+        requestProcedure: `CompanyServiceClaimLineList${this.currentClaim.serviceName}`
+  
+      };
+    }
+    console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
+
         console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
           this.dataLinesAssigned = [];
@@ -1849,6 +2086,26 @@ let model = {};
   paginateC($event) {
     this.pageC = $event;
     this.loadBottomChild();
+  }
+
+  selectedOEM(oem: CompanyOEM) {
+    console.log(oem);
+    console.log(this.oemControl.value);
+    this.oemControl.setValue(oem.OEMCompanyName);
+    this.claimRequestParams.get('OEMCompanyID').setValue(oem.OEMCompanyID);
+  }
+  createYears() {
+    for (let x = 0; x < 20; x++) {
+      this.years.push(this.now - x);
+    }
+  }
+  periodYear(year: number) {
+    this.focusPeriodYear = year;
+    console.log(this.focusPeriodYear);
+  }
+  periodQuarter(quarterID: number) {
+    this.focusPeriodQuarter = quarterID;
+    console.log(this.focusPeriodQuarter);
   }
 }
 

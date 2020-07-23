@@ -372,13 +372,13 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     const model: GetItemList = {
       userID: this.currentUser.userID,
       filter: this.itemsfilter,
-      specificItemID: -1,
+      specificItemID: this.focusItemID,
       rowStart: this.itemsrowStart,
       rowEnd: this.itemsrowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
     };
-    this.companyService.getItemList(model).then(
+    this.companyService.getItemjoinList(model).then(
       (res: ItemsListResponse) => {
         if (res.outcome.outcome === 'FAILURE') {
           if (displayGrowl) {
@@ -398,7 +398,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
         if (res.rowCount !== 0) {
           this.noitemData = false;
           this.itemsdataset = res;
-          this.itemsdraft = res.itemsLists;
+          this.items = res.itemsLists;
           this.itemsrowCount = res.rowCount;
           this.itemsshowingRecords = res.itemsLists.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
@@ -407,7 +407,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
         } else {
           this.noitemData = true;
         }
-        this.Finalitemlist();
+        // this.Finalitemlist();
       },
       msg => {
         this.notify.errorsmsg(
@@ -517,9 +517,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   Finalitemlist() {
-    console.log(this.items);
     this.items.splice(0, this.items.length);
-    console.log(this.items);
     let countitems = 0;
 
 

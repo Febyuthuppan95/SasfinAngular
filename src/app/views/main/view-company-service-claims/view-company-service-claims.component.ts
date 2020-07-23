@@ -36,6 +36,7 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UUID } from 'angular2-uuid';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
+import { CompanyOEMList, CompanyOEM } from '../view-company-list/view-company-oem-list/view-company-oem-list.component';
 
 @Component({
   selector: 'app-view-company-service-claims',
@@ -106,6 +107,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       serviceName: ''
     };
   }
+
   removable = true;
   @ViewChild(NotificationComponent, { static: false })
   private notify: NotificationComponent;
@@ -225,6 +227,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   loadingData = false;
   loadingImportData = false;
   focusImport: Import;
+
+  selectable = false;
   // Generate Company Service
   selectedCompanyServiceID = -1;
   selectedCompanyServiceIDControl = new FormControl(-1);
@@ -233,7 +237,11 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     companyServiceID: number,
     companyServiceClaimNumber: number,
     serviceName: string,
-    transactionID?: number
+    transactionID?: number,
+    status?: string;
+    serviceID?: number;
+    permitCount?: number;
+
   };
   claimForm = {
     exportStartDate: {
@@ -298,7 +306,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     this.loadCompanyPermits();
     this.loadCompanyServices();
 
+
   }
+
+
 
   submit522() {
     this.openCreate522Modal.nativeElement.click();
@@ -619,6 +630,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
     this.selectedCompanyServiceID = companyServiceID;
     this.ServiceClaim.serviceName = this.companyServiceList.find(x => x.componyServiceID === companyServiceID).serviceName;
+
     // console.log(this.ServiceClaim.serviceName);
 
   }
@@ -696,6 +708,8 @@ createCompanyServiceClaim() {
   // console.log(model);
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
+      this.ServiceClaim.companyServiceClaimNumber = res.companyServiceClaimID;
+      console.log(this.ServiceClaim);
       if (res.outcome.outcome === 'SUCCESS') {
         // console.log(this.ServiceClaim.serviceName);
         if (this.ServiceClaim.serviceName === '522') {
@@ -768,6 +782,40 @@ create522Transaction() {
     }
   );
 }
+// createCertificate() {
+//   const model = {
+//     requestParams: {
+//       userID: this.currentUser.userID,
+//       companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+//       periodYear: this.focusPeriodYear,
+//       quarterID: this.focusPeriodQuarter,
+//       oemCompanyID: this.focusOEMID
+//     },
+//     requestProcedure: 'CompanyServiceClaimParameterAdd'
+//   };
+//   this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`, model).then(
+//     (res: Outcome) => {
+//       if(res.outcome === 'SUCCESS') {
+//         this.closeCreateModal.nativeElement.click();
+//         this.notify.successmsg(
+//           'Success',
+//           `Claim Successfully Created`
+//         );
+//       } else {
+//         this.notify.errorsmsg(
+//           'Failure',
+//           'Could not create the claim'
+//         );
+//       }
+//     },
+//     msg => {
+//       this.notify.errorsmsg(
+//         'Server Error',
+//         'Something went wrong while trying to access the server.'
+//       );
+//     }
+//   );
+// }
 getTransactionID(): number {
   const model = {
     requestParams: {

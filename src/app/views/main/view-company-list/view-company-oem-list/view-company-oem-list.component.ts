@@ -548,6 +548,7 @@ export class CompanyOEM {
   CompanyOEMID: number;
   OEMCompanyName: string;
   OEMRefNum: string;
+  OEMCompanyID?: number;
 }
 export class CompanyOEMList {
   rowCount: number;
