@@ -336,7 +336,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    // console.log(obj);
+    console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;

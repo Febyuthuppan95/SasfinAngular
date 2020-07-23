@@ -470,6 +470,7 @@ export class SupplierC1 {
   CertificateNo: string;
   AttachmentStatusID: number;
   AttachmentStatus: string;
+  FilePath: string;
 }
 export class SupplierC1List {
   rowCount: number;
