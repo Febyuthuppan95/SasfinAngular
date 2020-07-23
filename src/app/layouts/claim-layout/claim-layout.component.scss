@@ -44,6 +44,10 @@ mat-table {
     }
 }
 
+tbody tr, td {
+    text-align: center;
+}
+
 .claim-snackbar-success {
     background: black;
     color: green;
