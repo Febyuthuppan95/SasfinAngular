@@ -162,7 +162,7 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
         this.dialogRef.close({state: true});
       },
       (msg) => {
-        this.dialogRef.close({state: false});
+        this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
       }
     );
     } else {
