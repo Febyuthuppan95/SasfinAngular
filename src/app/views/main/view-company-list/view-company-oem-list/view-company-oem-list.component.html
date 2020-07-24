@@ -44,10 +44,9 @@
               <div class="form-group">
                 <label class="control-label">OEM Name:</label>
                 <mat-form-field class="form-control" style="border: transparent !important; padding: 0;">
-                  <input [(ngModel)]="this.CompanySearch" type="text" (keyup)="CompanyBar()" placeholder="Company" aria-label="Number" matInput [formControl]="CompanyControl" [matAutocomplete]="companyeditAuto" required>
-                  <mat-autocomplete #companyeditAuto="matAutocomplete" >
-                    <mat-option *ngFor="let company of companiesList" [value]="company.name"
-                    (onSelectionChange)="selectedCompany(company.companyID, company.name)">
+                  <input type="text" placeholder="Company" aria-label="Number" matInput [formControl]="CompanyControl" [matAutocomplete]="companyeditAuto" required>
+                  <mat-autocomplete #companyeditAuto="matAutocomplete" [displayWith]="displayfn">
+                    <mat-option *ngFor="let company of companiesList" [value]="company">
                     {{company.name}}
                     </mat-option>
                   </mat-autocomplete>
@@ -93,7 +92,7 @@
                     <input [(ngModel)]="this.CompanySearch" type="text" (keyup)="CompanyBar()" placeholder="Company" aria-label="Number" matInput [formControl]="CompanyControl" [matAutocomplete]="companyAuto" required>
                     <mat-autocomplete #companyAuto="matAutocomplete" >
                       <mat-option *ngFor="let company of companiesList" [value]="company.name"
-                      (onSelectionChange)="selectedCompany(company.companyID, company.name)">
+                      (onSelectionChange)="selectedOEMCompany(company.companyID, company.name)">
                       {{company.name}}
                       </mat-option>
                     </mat-autocomplete>

@@ -379,10 +379,13 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: 'CompanyServiceClaimPemitsList'
     };
+    // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ListReadResponse) => {
+        // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.companyServiceClaimPermits = res.data;
+         // console.log(this.companyServiceClaimPermits);
         }
       },
       msg => {
@@ -524,6 +527,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   popClick(event, obj) {
     this.ServiceClaim = obj;
+    // console.log(event);
+    this.loadCompanyServiceClaimPermits();
     if (this.ServiceClaim.serviceName === '522') {
       this.ServiceClaim.transactionID = this.getTransactionID();
     }
@@ -538,6 +543,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   selectedRecord(obj: SelectedRecord) {
+    // console.log(obj);
+
     this.selectedRow = obj.index;
     this.popClick(obj.event, obj.record);
   }
@@ -709,7 +716,7 @@ createCompanyServiceClaim() {
   this.companyService.addCompanyServiceClaim(model).then(
     (res: AddComanyServiceClaimResponse) => {
       this.ServiceClaim.companyServiceClaimNumber = res.companyServiceClaimID;
-      console.log(this.ServiceClaim);
+     //  console.log(this.ServiceClaim);
       if (res.outcome.outcome === 'SUCCESS') {
         // console.log(this.ServiceClaim.serviceName);
         if (this.ServiceClaim.serviceName === '522') {
@@ -852,11 +859,12 @@ addCompanyServiceClaimPermits() {
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimPermit`, model).then(
       (res: Outcome) => {
+        console.log(res);
         if (res.outcome === 'SUCCESS') {
           successCount++;
         }
+        this.closePermitModal.nativeElement.click();
         if (successCount === this.permitslist.length) {
-          this.closePermitModal.nativeElement.click();
           this.loadServiceClaims(false);
           this.notify.successmsg(
             'Success',

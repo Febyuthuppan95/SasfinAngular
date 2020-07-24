@@ -269,7 +269,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   popClick(event, obj) {
-    (<HTMLInputElement>document.getElementById('editselect')).value = obj.doctypeID;
+    (document.getElementById('editselect') as HTMLInputElement).value = obj.doctypeID;
     this.captureInfo = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
