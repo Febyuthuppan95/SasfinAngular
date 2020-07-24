@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
+import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 
 @AutoUnsubscribe()
 @Component({
@@ -14,7 +15,7 @@ import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse
   templateUrl: './split-document.component.html',
   styleUrls: ['./split-document.component.scss']
 })
-export class SplitDocumentComponent implements OnInit, OnDestroy {
+export class SplitDocumentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private captureService: CaptureService, private companyService: CompanyService,
               private dialogRef: MatDialogRef<SplitDocumentComponent>,
@@ -30,6 +31,15 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   displayPreview = false;
   filePreview: ArrayBuffer | string;
   companyName: string;
+  pdfSRC: ArrayBuffer;
+  displayPDF = false;
+  page = 1;
+  zoom_to = 0.8;
+  rotation = 0;
+  shortcuts: ShortcutInput[] = [];
+  src: string;
+  originalSize: boolean = true;
+
   private fileReader = new FileReader();
 
   transactionTypes = [];
@@ -42,7 +52,46 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
     this.initTypes();
   }
-
+ngAfterViewInit() {
+  this.shortcuts.push(
+    {
+        key: 'alt + right',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.page++
+    },
+    {
+      key: 'alt + left',
+      preventDefault: true,
+      allowIn: [AllowIn.Textarea, AllowIn.Input],
+      command: e => this.page--
+    },
+    {
+      key: 'alt + up',
+      preventDefault: true,
+      allowIn: [AllowIn.Textarea, AllowIn.Input],
+      command: e =>  {
+        this.zoom_in();
+      }
+    },
+    {
+      key: 'alt + down',
+      preventDefault: true,
+      allowIn: [AllowIn.Textarea, AllowIn.Input],
+      command: e => {
+        this.zoom_out();
+      }
+    },
+    {
+      key: 'alt + r',
+      preventDefault: true,
+      allowIn: [AllowIn.Textarea, AllowIn.Input],
+      command: e => {
+        this.rotatePDF(this.rotation + 90);
+      }
+    },
+  );
+}
   initTypes() {
 
     const model = {
@@ -158,6 +207,25 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
   dismiss() {
     this.dialogRef.close(false);
+  }
+
+  
+  rotatePDF(deg: number) {
+    this.rotation = deg;
+  }
+
+  zoomChange(variant: number) {
+    this.zoom_to = this.zoom_to + variant;
+  }
+
+  zoom_in() {
+    this.zoom_to = this.zoom_to + 0.2;
+  }
+
+  zoom_out() {
+    if (this.zoom_to >= 0.4) {
+       this.zoom_to = this.zoom_to - 0.2;
+    }
   }
 
   ngOnDestroy() {}

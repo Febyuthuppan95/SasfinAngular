@@ -13,9 +13,43 @@
     <div style=" width: 58% ;overflow-y: auto; max-height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
         <app-pdf-viewer
         *ngIf="this.filePreview"
-        [pdf]="this.filePreview">
+        [pdf]="this.filePreview"
+        >
         </app-pdf-viewer>
     </div>
+<!--     
+  <div class="pdf-control-container col-7" *ngIf="this.displayPreview">
+    <div class="pdf-control">
+      <div class="row">
+        <div class="col-4 text-left">
+          <button class="btn btn-secondary btn-sm" matTooltip="Zoom out" matTooltipPosition="above" (click)="zoom_out()" [disabled]="this.zoom_to <= 0.4">
+            <span class="mdi mdi-minus"></span>
+          </button>
+          &nbsp;
+          <button class="btn btn-secondary btn-sm" matTooltip="Zoom in" matTooltipPosition="above" (click)="zoom_in()" [disabled]="this.zoom_to >= 1.6">
+            <span class="mdi mdi-plus"></span>
+          </button>
+        </div>
+        <div class="col-4">
+          <div class="text-center">
+            <button class="btn btn-secondary btn-sm" matTooltip="Previous Page" matTooltipPosition="above" (click)="pageChange(page - 1)" [disabled]="page === 1">
+              <span class="mdi mdi-arrow-left"></span>
+            </button>
+            &nbsp;
+              <span style="margin-right: 10px">{{page}}</span>
+            <button class="btn btn-secondary btn-sm" matTooltip="Next Page" matTooltipPosition="above" (click)="pageChange(page + 1)">
+              <span class="mdi mdi-arrow-right"></span>
+            </button>
+          </div>
+        </div>
+        <div class="col-4 text-right">
+          <button class="btn btn-secondary btn-sm" matTooltip="Rotate" matTooltipPosition="above" (click)="rotatePDF(rotation + 90)">
+            <span class="mdi mdi-rotate-left"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
     <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.displayPreview">
         <form class="bg-light" style="padding: 24px; width: 100%;">
             <div *ngIf="this.file !== undefined" class="split-pdf">
@@ -47,3 +81,4 @@
       </div>
   </div>
 </div>
+
