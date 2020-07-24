@@ -19,6 +19,14 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   zoom = 1;
   ready: boolean;
   shortcuts: ShortcutInput[] = [];
+  
+  pdfSRC: ArrayBuffer;
+  displayPDF = false;
+
+  zoom_to = 0.8;
+  rotation = 0;
+  src: string;
+  originalSize: boolean = true;
 
   ngOnInit(): void {
     if (this.pdf !== undefined) {
@@ -41,38 +49,69 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.shortcuts.push(
-        {
-          key: 'ctrl + right',
+      {
+          key: 'alt + right',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => this.page++
-        },
-        {
-          key: 'ctrl + left',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.page--
-        },
-        {
-          key: 'ctrl + up',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e =>  {
-            if (this.zoom < 2) {
-              this.zoom += 0.2;
-            }
-          }
-        },
-        {
-          key: 'ctrl + down',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            if (this.zoom !== this.minZoom) {
-              this.zoom -= 0.2;
-            }
-          }
-        },
+      },
+      {
+        key: 'alt + left',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.page--
+      },
+      {
+        key: 'alt + up',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e =>  {
+          this.zoom_in();
+        }
+      },
+      {
+        key: 'alt + down',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.zoom_out();
+        }
+      },
+      {
+        key: 'alt + r',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.rotatePDF(this.rotation + 90);
+        }
+      },
     );
   }
+  
+  pageChange(page: number) {
+    console.log(page);
+    if (page <= 0) {
+      page = 1;
+    }
+
+    this.page = page;
+  }
+  rotatePDF(deg: number) {
+    this.rotation = deg;
+  }
+
+  zoomChange(variant: number) {
+    this.zoom_to = this.zoom_to + variant;
+  }
+
+  zoom_in() {
+    this.zoom_to = this.zoom_to + 0.2;
+  }
+
+  zoom_out() {
+    if (this.zoom_to >= 0.4) {
+       this.zoom_to = this.zoom_to - 0.2;
+    }
+  }
 }
+

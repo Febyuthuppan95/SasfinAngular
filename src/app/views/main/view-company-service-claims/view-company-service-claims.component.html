@@ -31,25 +31,25 @@
 <app-modal-component></app-modal-component>
 
 <app-menu
-*ngIf="this.contextMenu"
-[contextShow]="this.contextMenu"
-[x]="this.contextMenuX"
-[y]="this.contextMenuY"
-(resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)"
-(reportscompanyService)="reportscompanyService($event)"
-(addClaimPermits)="openAddClaimPermits($event)"
-(submit522Claim) = "submit522($event)"
-[companyID]="this.companyID"
-[companyName]="this.companyName"
-[userID]="this.currentUser.userID"
-[transactionID]="this.ServiceClaim.transactionID"
-[companyServiceID]="this.ServiceClaim.companyServiceID"
-[status]="this.ServiceClaim.status"
-[companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber"
-[serviceID]=" this.ServiceClaim.serviceID"
-[serviceName]="this.ServiceClaim.serviceName"
-[permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
+  *ngIf="this.contextMenu"
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.selectedRow = -1; this.contextMenu = false">
+    <app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)"
+    (reportscompanyService)="reportscompanyService($event)"
+    (addClaimPermits)="openAddClaimPermits($event)"
+    (submit522Claim) = "submit522($event)"
+    [companyID]="this.companyID"
+    [companyName]="this.companyName"
+    [userID]="this.currentUser.userID"
+    [transactionID]="this.ServiceClaim.transactionID"
+    [companyServiceID]="this.ServiceClaim.companyServiceID"
+    [status]="this.ServiceClaim.status"
+    [companyServiceClaimID]="this.ServiceClaim.companyServiceClaimNumber"
+    [serviceID]=" this.ServiceClaim.serviceID"
+    [serviceName]="this.ServiceClaim.serviceName"
+    [permitCount]="this.ServiceClaim.permitCount"></app-context-menu-service-claims>
 </app-menu>
 
 
