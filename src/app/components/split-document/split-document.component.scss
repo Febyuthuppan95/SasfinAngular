@@ -12,3 +12,11 @@
   background: #057aff;
   transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
 }
+
+.fill-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
