@@ -233,6 +233,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
 
   loadCompanyOEMs() {
+    console.log('running');
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -250,6 +251,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMList(model).then(
       (res: CompanyOEMList) => {
+        console.log('res here ' + JSON.stringify(res));
         if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -299,6 +301,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
+        console.log(res);
         // console.log('res ' + JSON.stringify(res));
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
@@ -307,6 +310,7 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.notify.successmsg('SUCCESS', 'OEM successfully added');
           this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
         } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           this.closeaddModal.nativeElement.click();
           this.noData = false;
           // this.dataset = res;
@@ -363,6 +367,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMUpdate(model).then(
       (res: Outcome) => {
+        console.log('EDIT RES ' + JSON.stringify(res));
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
@@ -452,7 +457,7 @@ export class ViewCompanyOemListComponent implements OnInit {
     // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
-
+    console.log('here running');
     this.loadCompanyOEMs();
     // const page = this.pages[+pageNumber - 1];
     // this.rowStart = page.rowStart;
