@@ -29,7 +29,7 @@ export class DialogCreateItemsComponent implements OnInit {
     if (form.valid) {
       this.captureService.post({ request: form.value, procedure: 'ItemAdd' }).then(
         (res: any) => {
-          console.log(res);
+          // console.log(res);
           if (res.outcome) {
             this.dialogRef.close(res.data[0].createdID);
           } else {

@@ -309,6 +309,7 @@ private unsubscribe$ = new Subject<void>();
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
+          this.closeaddModal.nativeElement.click();
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadOEMQuarters();

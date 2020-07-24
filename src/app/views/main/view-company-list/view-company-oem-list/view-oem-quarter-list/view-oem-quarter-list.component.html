@@ -91,7 +91,7 @@
               <mat-form-field>
                 <mat-label>Quarter</mat-label>
                 <mat-select>
-                  <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
+                  <mat-option (onSelectionChange)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
                     {{quarter.Name}}
                   </mat-option>
                 </mat-select>
@@ -101,7 +101,7 @@
               <mat-form-field>
                   <mat-label>Year</mat-label>
                   <mat-select>
-                    <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
+                    <mat-option (onSelectionChange)="periodYear(year)" *ngFor="let year of years" [value]="year">
                       {{year}}
                     </mat-option>
                   </mat-select>

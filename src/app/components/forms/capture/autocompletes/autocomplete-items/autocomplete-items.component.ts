@@ -91,7 +91,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
 
     await this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        console.log(res);
+        // console.log(res);
 
         this.list = res.data;
         this.listTemp = res.data;
@@ -107,7 +107,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
     this.dialog.open(DialogCreateItemsComponent, {
       width: '512px'
     }).afterClosed().subscribe(async (id) => {
-      console.log(id);
+      // console.log(id);
 
       if (id) {
         this.control.setValue(id);

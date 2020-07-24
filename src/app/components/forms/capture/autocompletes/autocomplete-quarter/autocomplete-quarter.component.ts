@@ -91,7 +91,7 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
         this.list = res.data;
         this.listTemp = res.data;
 
-        console.log(res);
+        // console.log(res);
 
         if (setDefault) {
           const defaultValue = this.list.find(x => x.QuarterID === this.control.value);

@@ -218,7 +218,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.CompanyControl.valueChanges.subscribe((value) => {
       if (value) {
         if (value.companyID) {
-          console.log(value);
           this.selectedOEMCompany(value.companyID, value.name);
         } else {
           this.CompanySearch = value;
@@ -233,7 +232,6 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
 
   loadCompanyOEMs() {
-    console.log('running');
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -247,7 +245,6 @@ export class ViewCompanyOemListComponent implements OnInit {
       },
       requestProcedure: 'CompanyOEMList'
     };
-    // console.log(model);
     // company service api call
     this.companyService.companyOEMList(model).then(
       (res: CompanyOEMList) => {
@@ -301,7 +298,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
-        console.log(res);
         // console.log('res ' + JSON.stringify(res));
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
@@ -367,7 +363,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     // company service api call
     this.companyService.companyOEMUpdate(model).then(
       (res: Outcome) => {
-        console.log('EDIT RES ' + JSON.stringify(res));
         if (res.outcome === 'SUCCESS') {
           this.noData = true;
           this.showLoader = false;
@@ -444,8 +439,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     // this.countryID = country;
     // console.log(companyID);
     this.oemCompanyID = companyID;
-    console.log('here');
-    console.log(companyID);
     this.OEM.OEMCompanyName = name;
     // this.form.cooID.value = country;
   }
@@ -457,7 +450,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     // console.log(obj);
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
-    console.log('here running');
     this.loadCompanyOEMs();
     // const page = this.pages[+pageNumber - 1];
     // this.rowStart = page.rowStart;
@@ -531,7 +523,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
@@ -561,7 +552,6 @@ export class ViewCompanyOemListComponent implements OnInit {
     const target = this.companiesList.find(x => x.companyID === this.oemCompanyID);
     this.CompanyControl.setValue(target, { emitEvent: false });
 
-    console.log(target);
 
     this.openeditModal.nativeElement.click();
   }

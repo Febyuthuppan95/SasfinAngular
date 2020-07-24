@@ -384,7 +384,7 @@ loader = false;
   }
 
   updateLine(obj: InvoiceLine) {
-    console.log(obj);
+    // console.log(obj);
     if (obj.isPersist) {
       let requestModel = {};
       if (obj.isDeleted) {
