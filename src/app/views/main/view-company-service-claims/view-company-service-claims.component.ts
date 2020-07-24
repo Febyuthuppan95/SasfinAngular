@@ -385,6 +385,13 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.companyServiceClaimPermits = res.data;
+          console.log(res.data);
+          console.log(this.Permits);
+
+          this.companyServiceClaimPermits.forEach((item) => {
+
+          });
+
          // console.log(this.companyServiceClaimPermits);
         }
       },
@@ -902,7 +909,7 @@ loadCompanyPermits() {
 
       if (res.outcome.outcome === 'SUCCESS') {
        this.Permits = res.permits;
-       // console.log(this.Permits);
+       console.log(this.Permits);
       }
     },
     msg => {
