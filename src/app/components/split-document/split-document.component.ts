@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ApiService } from 'src/app/services/api.service';
@@ -19,7 +19,8 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
   constructor(private captureService: CaptureService, private companyService: CompanyService,
               private dialogRef: MatDialogRef<SplitDocumentComponent>,
               @Inject(MAT_DIALOG_DATA) private data: { userID: number, transactionID: number, transactionType: string },
-              private apiService: ApiService) { }
+              private apiService: ApiService,
+              private snackbar: MatSnackBar) { }
 
   sections: SplitPDFRequest[] = [];
   requestData = {
@@ -38,7 +39,6 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
     this.companyService.observeCompany().subscribe((data) => {
         this.companyName = data.companyName;
     });
-    console.log(this.data.transactionType);
 
     this.initTypes();
   }
@@ -110,34 +110,46 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
 
     if (this.sections.length === 0) {
       err++;
+      console.log(this.sections.length);
+
     } else if (this.file === undefined) {
       err++;
+      console.log(this.file);
+
     }
 
     this.requestData.sections.forEach((item) => {
       if (item.name === '' || item.name === null || !item.name) {
         err++;
+        console.log('name');
+
       }
 
       if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
         err++;
+        console.log('attachmentType');
+
       }
 
-      if (item.position === 0 || item.position === null || !item.position) {
-        err++;
-      }
+      // if (item.position === null || !item.position) {
+      //   err++;
+      //   console.log(item.position);
+      // }
 
       if (item.pages.start === 0 || item.pages.start === null || !item.pages.start) {
         err++;
+        console.log('start');
       }
 
       if (item.pages.end === 0 || item.pages.end === null || !item.pages.end) {
         err++;
+        console.log('end');
       }
     });
 
 
     console.log(this.requestData);
+    console.log(err);
 
     if (err === 0) {
     const formData = new FormData();
@@ -150,9 +162,11 @@ export class SplitDocumentComponent implements OnInit, OnDestroy {
         this.dialogRef.close({state: true});
       },
       (msg) => {
-        this.dialogRef.close({state: false});
+        this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
       }
     );
+    } else {
+      this.snackbar.open('There are errors', '', { duration: 3000 });
     }
   }
 
