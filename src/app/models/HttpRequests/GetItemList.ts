@@ -6,4 +6,5 @@ export class GetItemList {
   orderByDirection: string;
   rowStart: number;
   rowEnd: number;
+  isParent?: boolean;
 }

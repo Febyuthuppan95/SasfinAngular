@@ -305,7 +305,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
     this.updateitemsPagination();
 
-    this.loadItems(false);
+    this.loadItems(false, false);
   }
 
   searchBar() {
@@ -316,7 +316,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   searchitemsBar() {
     this.itemsrowStart = 1;
-    this.loadItems(false);
+    this.loadItems(false, false);
   }
 
   loadCompanyItemsList(displayGrowl?: boolean) {
@@ -367,7 +367,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       );
   }
 
-  loadItems(displayGrowl: boolean) {
+  loadItems(displayGrowl: boolean, isParent: boolean) {
     this.itemsrowEnd = +this.itemsrowStart + +this.itemsrowCountPerPage - 1;
     const model: GetItemList = {
       userID: this.currentUser.userID,
@@ -376,7 +376,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       rowStart: this.itemsrowStart,
       rowEnd: this.itemsrowEnd,
       orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
+      orderByDirection: this.orderDirection,
+      isParent
     };
     this.companyService.getItemjoinList(model).then(
       (res: ItemsListResponse) => {
@@ -394,7 +395,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage);
           }
         }
-
+        console.log(res);
         if (res.rowCount !== 0) {
           this.noitemData = false;
           this.itemsdataset = res;
@@ -557,7 +558,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   OpenGroup($event) {
-    this.loadItems(false);
+    this.loadItems(false, false);
     // this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -601,7 +602,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
     // this.Finalitemlist();
     // this.Finalitemparentslist();
-    this.loadItems(false);
+    this.loadItems(false, true);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddParentModal.nativeElement.click();

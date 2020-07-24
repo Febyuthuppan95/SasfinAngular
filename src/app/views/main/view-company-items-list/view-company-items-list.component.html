@@ -172,7 +172,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalContent">Add to Item Group</h5>
+        <h5 class="modal-title" id="modalContent">Add to Parent to Item</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -228,7 +228,7 @@
                     </tr>
                   </thead>
                   <tbody class="modal-list-rights" *ngIf="(!noitemData)">
-                    <tr *ngFor="let item of itemparents; let i=index" (click)="addtoParent(item.itemID)" class="right-list-row"  >
+                    <tr *ngFor="let item of items; let i=index" (click)="addtoParent(item.itemID)" class="right-list-row"  >
                       <td>{{item.item}}</td>
                       <td>{{item.description}}</td>
                       <td>{{item.tariff}}</td>
