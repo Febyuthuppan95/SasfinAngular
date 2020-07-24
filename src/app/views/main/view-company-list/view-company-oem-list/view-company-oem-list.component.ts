@@ -214,6 +214,17 @@ export class ViewCompanyOemListComponent implements OnInit {
       rowEnd: 15
     };
     this.pageChange(obj);
+
+    this.CompanyControl.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value.companyID) {
+          console.log(value);
+          this.selectedOEMCompany(value.companyID, value.name);
+        } else {
+          this.CompanySearch = value;
+        }
+      }
+    });
   }
 
   back() {
@@ -397,7 +408,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       userID: this.currentUser.userID,
       specificCompanyID: -1,
       rowStart: 1,
-      filter: this.CompanySearch,
+      filter: '',
       rowEnd: 100000000,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
@@ -424,7 +435,7 @@ export class ViewCompanyOemListComponent implements OnInit {
         }
       );
   }
-  selectedCompany(companyID: number, name: string) {
+  selectedOEMCompany(companyID: number, name: string) {
     // this.countryID = country;
     // console.log(companyID);
     this.oemCompanyID = companyID;
@@ -490,12 +501,17 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.loadCompanyOEMs();
   }
 
+  displayfn(item) {
+    return item ? item.name : '';
+  }
+
   popClick(event, oem) {
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.focusOEMID = oem.record.companyOEMID;
     this.focusOEMName = oem.record.OEMName;
     this.focusOEMRefNum = oem.record.OEMRefNum;
+
     // console.log(this.focusOEMRefNum);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -510,13 +526,16 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.selectedRow = -1;
   }
   setClickedRow(obj: SelectedRecord) {
-    // console.log(obj);
+    console.log(obj);
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
     this.focusOEMID = obj.record.CompanyOEMID;
+    this.oemCompanyID = obj.record.OEMCompanyID;
     this.focusOEMName = obj.record.OEMName;
     this.focusOEMRefNum = obj.record.OEMRefNum;
+
+
     // console.log(this.focusOEMID);
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -528,8 +547,16 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
 
   EditOEM($event) {
+    //  = null;
+    // this.OEM.OEMCompanyName = null;
+    // this.OEM.OEMRefNum = null;
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
+
+    const target = this.companiesList.find(x => x.companyID === this.oemCompanyID);
+    this.CompanyControl.setValue(target, { emitEvent: false });
+
+    console.log(target);
 
     this.openeditModal.nativeElement.click();
   }
