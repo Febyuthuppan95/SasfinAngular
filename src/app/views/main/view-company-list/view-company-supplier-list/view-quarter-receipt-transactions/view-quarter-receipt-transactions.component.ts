@@ -16,6 +16,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { DocumentService } from 'src/app/services/Document.Service';
 
 @Component({
   selector: 'app-view-quarter-receipt-transactions',
@@ -28,7 +29,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
               private userService: UserService,
               private themeService: ThemeService,
               public router: Router,
-              private apiService: ApiService) {
+              private apiService: ApiService,
+              private documentService: DocumentService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -86,6 +88,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   focusPeriodYear: number;
   focusQuarterID: number;
   focusOEMID: any;
+  fileUpload: File;
+  filePreview: string;
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
@@ -202,8 +206,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
 
-  @ViewChild('openaddModal', {static: true})
-  openaddModal: ElementRef;
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
 
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
@@ -352,6 +356,49 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       this.contextMenu = false;
     }
   }
+  addBulkImport() {
+    this.openAddModal.nativeElement.click();
+    
+  }
+  onFileChange(files: FileList) {
+    this.fileUpload = files.item(0);
+    this.filePreview = this.fileUpload.name;
+  }
+
+  saveBOMUpload() {
+    // Save
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyLocalReceiptID: this.focusLocalReceiptID, // this needs to get the actual bomID
+      },
+      requestProcedure: 'LocalReceiptUpload',
+    };
+    this.documentService.upload(this.fileUpload, model, 'bulk/localreceipts').then(
+      (res: Outcome) => {
+        // console.log('BOMUploadRes');
+        this.closeaddModal.nativeElement.click();
+        console.log('Response: ' + res);
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          
+        } else {
+          this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+        }
+        
+      },
+      (msg) => {
+        this.closeaddModal.nativeElement.click()
+        // nothing yet
+        console.log('Error: ' + msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
 }
 
 export class LocalReceipt {
@@ -367,3 +414,5 @@ export class LocalReceiptsList {
   data: LocalReceipt[];
   outcome: Outcome;
 }
+
+

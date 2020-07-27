@@ -65,41 +65,41 @@
   </div> -->
 
   <!--Add Modal-->
-<!-- <button class="hide" data-toggle="modal" data-target="#addOEM" #openaddModal></button>
-  <div class="modal fade" id="addOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <button class="hide" data-toggle="modal" data-target="#addBulk" #openAddModal></button>
+  <div class="modal fade" id="addBulk" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalContent">Add</h5>
+          <h5 class="modal-title" id="modalContent">Upload Local Receipts</h5>
           <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form >
-          <div class="modal-body">
+        <form>
+            <div class="modal-body">
               <div class="form-group">
-                  <label class="control-label">Supplier Name:</label>
-                  <input type="text" placeholder="Supplier Name" class="form-control"
-                  [(ngModel)]="SelectedReceipt.PeriodYear" [ngModelOptions]="{standalone: true}"  required/>
+                <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
               </div>
               <div class="form-group">
-                <label class="control-label">Reference No:</label>
-                <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="SelectedReceipt.QuarterID" [ngModelOptions]="{standalone: true}"  required/>
+                <label for="addBulkFile">
+                  <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+                </label>
+                <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+                <input id="addBulkFile" hidden #uploadFile type="file" (change)="onFileChange($event.target.files)" required>
               </div>
-        </div>
+          </div>
         <div class="modal-footer bg-dark">
-          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
-          <button type="button" (click)="AddLocalReceipt()"  class="btn btn-primary btn-sm">Save</button>
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+          <button type="submit" (click)="saveBulkUpload()" class="btn btn-primary btn-sm">Save</button>
         </div>
       </form>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-quarters-supply-context-menu  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
+    <app-quarters-supply-context-menu (bulkUploadOut)="addBulkImport()" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
   </div>
 
