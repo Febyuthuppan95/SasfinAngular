@@ -47,7 +47,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     serialNo: new FormControl(null, [Validators.required]),
     lrn: new FormControl(null, [Validators.required]),
     totalCustomsValue: new FormControl(0, [Validators.required]),
-    cpcID: new FormControl(null, [Validators.required]),
+    cpcID: new FormControl(-1, [Validators.required]),
     waybillNo: new FormControl(null, [Validators.required]),
     supplierRef: new FormControl(null, [Validators.required]),
     mrn: new FormControl(null, [Validators.required]),
@@ -293,47 +293,52 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     };
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
-      this.loader = false;
 
       if (res !== null) {
-      const response: any = res;
-      console.log(response);
-      response.userID = request.userID;
-      response.cpcID = response.cpc;
-      response.SAD500ID = request.specificID;
-      response.attachmentStatusID = response.statusID;
+        const response: any = res;
+        console.log(response);
+        response.userID = request.userID;
+        response.cpcID = response.cpc;
+        response.SAD500ID = request.specificID;
+        response.attachmentStatusID = response.statusID;
 
-      this.form.patchValue(response);
-      this.form.controls.userID.setValue(this.currentUser.userID);
-      this.errors = res.attachmentErrors.attachmentErrors;
+        this.form.patchValue(response);
+        this.form.controls.userID.setValue(this.currentUser.userID);
+        this.form.controls.cpcID.setValue(response.cpcID);
+        this.form.updateValueAndValidity();
+        this.loader = false;
+        console.log(this.form.value);
+        this.errors = res.attachmentErrors.attachmentErrors;
 
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-
-      if (res.attachmentErrors.attachmentErrors.length > 0) {
         Object.keys(this.form.controls).forEach(key => {
-          res.attachmentErrors.attachmentErrors.forEach((error) => {
-            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-              this.form.controls[key].setErrors({incorrect: true});
-              this.form.controls[key].markAsTouched();
+          if (key.indexOf('ODate') !== -1) {
+            if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+              this.form.controls[key].setValue(null);
             }
-          });
+          }
         });
-      }
 
-      this.form.updateValueAndValidity();
-      await this.loadLines();
-    } else {
-      this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
-    }
-    }, (err) => {
-      this.loader = false;
-    });
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          Object.keys(this.form.controls).forEach(key => {
+            res.attachmentErrors.attachmentErrors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                this.form.controls[key].setErrors({incorrect: true});
+                this.form.controls[key].markAsTouched();
+              }
+            });
+          });
+        }
+
+        this.form.updateValueAndValidity();
+
+        await this.loadLines();
+      } else {
+        this.loader = false;
+        this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
+      }
+      }, (err) => {
+        this.loader = false;
+      });
   }
 
   async loadLines() {

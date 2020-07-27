@@ -18,6 +18,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
               private apiService: ApiService) { }
 
   @Input() control: FormControl;
+  @Input() readonly defaultValue: number;
   @Input() appearance = 'fill';
 
   private currentUser = this.userService.getCurrentUser();
@@ -59,6 +60,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
+    console.log(this.defaultValue);
     this.isRequired = this.control.validator !== null;
 
     if (this.isRequired) {
