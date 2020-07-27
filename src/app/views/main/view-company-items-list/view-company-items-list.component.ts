@@ -165,6 +165,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   companyName: string;
   companyID: number;
 
+  isParent: boolean;
+
   ItemFile: File;
   filePreview: string;
 
@@ -305,18 +307,20 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
     this.updateitemsPagination();
 
-    this.loadItems(false, false);
+    this.loadItems(false, this.isParent);
   }
 
-  searchBar() {
+  searchBar(event) {
+    this.filter = event;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.loadCompanyItemsList();
   }
 
   searchitemsBar() {
+    console.log(this.itemsfilter);
     this.itemsrowStart = 1;
-    this.loadItems(false, false);
+    this.loadItems(false, this.isParent);
   }
 
   loadCompanyItemsList(displayGrowl?: boolean) {
@@ -558,7 +562,11 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   OpenGroup($event) {
-    this.loadItems(false, false);
+    this.itemsrowCount = 0;
+    this.itemsrowStart = 1;
+    this.itemsrowEnd = 5;
+    this.isParent = false;
+    this.loadItems(false, this.isParent);
     // this.Finalitemlist();
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
@@ -599,10 +607,13 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   }
 
   OpenParent($event) {
-
+    this.itemsrowCount = 0;
+    this.itemsrowStart = 1;
+    this.itemsrowEnd = 5;
     // this.Finalitemlist();
     // this.Finalitemparentslist();
-    this.loadItems(false, true);
+    this.isParent = true;
+    this.loadItems(false, this.isParent);
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openaddParentModal.nativeElement.click();
