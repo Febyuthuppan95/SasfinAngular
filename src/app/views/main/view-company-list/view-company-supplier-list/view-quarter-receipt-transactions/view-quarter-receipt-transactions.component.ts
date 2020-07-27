@@ -365,7 +365,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.filePreview = this.fileUpload.name;
   }
 
-  saveBOMUpload() {
+  saveBulkUpload() {
     // Save
     const model = {
       requestParams: {
