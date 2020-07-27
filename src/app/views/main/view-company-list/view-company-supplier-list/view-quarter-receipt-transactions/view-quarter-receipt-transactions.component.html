@@ -23,10 +23,10 @@
         (showingRecordsEvent)="recordsPerPageChange($event)"
         (addButtonEvent)="Add()"
         (searchEvent)="searchBar($event)"
-        (backButtonEvent)="router.navigate(['companies'])">
+        (backButtonEvent)="router.navigate(['companies', 'localreceipts'])">
       </app-table>
     </div>
-  </div> -->
+  </div>
 
   <!--Edit Modal-->
   <!-- <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
@@ -76,18 +76,18 @@
           </button>
         </div>
         <mat-tab-group #tabGroup>
-          <mat-tab label="Add Single"  > 
+          <mat-tab label="Add Single"  >
             <form>
               <div class="modal-body">
-               
+
                 <div class="form-group">
                   <input type="text" placeholder="Transaction Name" class="form-control"
                     [(ngModel)]="focusTransactionName" [ngModelOptions]="{standalone: true}" required/>
                 </div>
               </div>
-            </form> 
+            </form>
           </mat-tab>
-          <mat-tab label="Bulk Import"> 
+          <mat-tab label="Bulk Import">
             <form>
                 <div class="modal-body">
                   <div class="form-group">
@@ -101,7 +101,7 @@
                     <input id="addBulkFile" hidden #uploadFile type="file" (change)="onFileChange($event.target.files)" required>
                   </div>
               </div>
-          </form> 
+          </form>
         </mat-tab>
         </mat-tab-group>
         <div class="modal-footer bg-dark">
@@ -111,7 +111,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
