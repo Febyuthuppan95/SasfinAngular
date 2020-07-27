@@ -348,7 +348,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
         this.currentUser.userID,
         this.currentReceipt.Name
       ).then(
-        (res: Outcome) =>{
+        (res: Outcome) => {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeModal.nativeElement.click();
         },
