@@ -224,10 +224,10 @@ filePreview: string;
   @ViewChild('closeeditModal', {static: true})
   closeeditModal: ElementRef;
 
-  @ViewChild('openaddModal', {static: true})
+  @ViewChild('openAddModal', {static: true})
   openaddModal: ElementRef;
 
-  @ViewChild('closeaddModal', {static: true})
+  @ViewChild('closeAddModal', {static: true})
   closeaddModal: ElementRef;
   @ViewChild('openModal', {static: true})
   openModal: ElementRef;
@@ -324,7 +324,9 @@ filePreview: string;
   AddLocalReceipt() {
 
   }
-  Add() {}
+  Add() {
+    this.openaddModal.nativeElement.click();
+  }
 
   recordsPerPageChange($event) {
 
@@ -333,6 +335,28 @@ filePreview: string;
   onFileChange(files: FileList) {
     this.fileUpload = files.item(0);
     this.filePreview = this.fileUpload.name;
+  }
+  createAttachments() {
+    this.transactionService.uploadAttachment(
+      this.filePreview,
+      this.fileUpload,
+      'SC1',
+      this.currentReceipt.TransactionID,
+      this.currentUser.userID,
+      this.currentReceipt.Name
+    ).then(
+      (res: Outcome) => {
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeaddModal.nativeElement.click();
+      },
+      (msg) => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+        this.closeaddModal.nativeElement.click();
+    }
+    );
   }
   uploadAttachments() {
       this.transactionService.uploadLocalAttachment(

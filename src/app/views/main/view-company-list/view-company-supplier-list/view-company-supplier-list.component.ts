@@ -45,6 +45,14 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
 
+    quarters = [
+      {value: 1 , Name: 'Q1'},
+      {value: 2 , Name: 'Q2'},
+      {value: 3 , Name: 'Q3'},
+      {value: 4 , Name: 'Q4'}
+    ];
+    years = [];
+    now = new Date().getFullYear();
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
   rowStart: number;
@@ -194,7 +202,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   closeaddModal: ElementRef;
 
   ngOnInit() {
-
+    this.createYears();
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
@@ -272,7 +280,40 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   AddLocalReceipt() {
 
   }
-  Add() {}
+  Add() {
+    this.openaddModal.nativeElement.click();
+  }
+  AddSupplierQuarter() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyID: this.companyID,
+        periodYear: this.focusPeriodYear,
+        quarterID: this.focusQuarterID
+      },
+      requestProcedure: 'CompanyLocalReceiptAdd'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/companies/localreceipts/add`, model).then(
+      (res: Outcome) => {
+        console.log(res);
+        this.loadLocalReceipts();
+        this.closeaddModal.nativeElement.click();
+        this.notify.successmsg(
+          'SUCCESS',
+          res.outcomeMessage
+        );
+      
+      },
+      msg => {
+        this.closeaddModal.nativeElement.click();
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+
+      }
+    )
+  }
 
   recordsPerPageChange($event) {
 
@@ -338,6 +379,18 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
+  }
+  
+  createYears() {
+    for (let x = 0; x < 10; x++) {
+      this.years.push(this.now - x);
+    }
+  }
+  periodYear(year: number) {
+    this.focusPeriodYear = year;
+  }
+  periodQuarter(quarterID: number) {
+    this.focusQuarterID = quarterID;
   }
 }
 

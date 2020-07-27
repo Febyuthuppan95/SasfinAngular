@@ -77,20 +77,30 @@
         </div>
         <form >
           <div class="modal-body">
-              <div class="form-group">
-                  <label class="control-label">Supplier Name:</label>
-                  <input type="text" placeholder="Supplier Name" class="form-control"
-                  [(ngModel)]="SelectedReceipt.PeriodYear" [ngModelOptions]="{standalone: true}"  required/>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Reference No:</label>
-                <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="SelectedReceipt.QuarterID" [ngModelOptions]="{standalone: true}"  required/>
-              </div>
+            <div class="form-group">
+              <mat-form-field>
+                  <mat-label>Quarter</mat-label>
+                  <mat-select [(ngModel)]="this.focusQuarterID" name="quarter">
+                    <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
+                      {{quarter.Name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field>
+                <mat-label>Year</mat-label>
+                <mat-select [(ngModel)]="this.focusPeriodYear" name="year">
+                  <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
+                    {{year}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
-          <button type="button" (click)="AddLocalReceipt()"  class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="AddSupplierQuarter()"  class="btn btn-primary btn-sm">Save</button>
         </div>
       </form>
       </div>
