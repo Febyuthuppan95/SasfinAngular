@@ -22,6 +22,7 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   selectedTransaction: LocalReceipt;
 
   @Output() EditQuarterSupply = new EventEmitter<string>();
+  @Output() bulkUploadOut = new EventEmitter<string>();
   private unsubscribe$ = new Subject<void>();
   ngOnInit() {
     this.companyService.observerLocalTransaction()
@@ -44,6 +45,10 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   SMDReceipts() {
     this.companyService.setLocalTransaction(this.selectedTransaction);
     this.router.navigate(["companies", "localreceipts", "transactions", "smd"]);
+  }
+  BulkImport() {
+    this.companyService.setLocalTransaction(this.selectedTransaction);
+    this.bulkUploadOut.emit("1");
   }
 
 }
