@@ -25,6 +25,7 @@ import {DocumentService} from '../../../services/Document.Service';
 })
 export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
 
+
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
@@ -149,6 +150,8 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
   n31762 = '';
   n31702 = '';
 
+  itemID: number;
+
   alternateitems: AlternateItems[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
@@ -196,6 +199,7 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((obj: SelectedItem) => {
       this.groupID = obj.groupID;
+      this.itemID = obj.itemID;
       this.itemName = obj.itemName;
 
       if (this.groupID === '') {
@@ -213,7 +217,7 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
       userID: this.currentUser.userID,
       filter: this.filter,
       specificAlternateItemID: this.groupID,
-      specificItemID: -1,
+      specificItemID: this.itemID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,

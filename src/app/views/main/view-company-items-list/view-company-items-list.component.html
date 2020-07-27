@@ -63,7 +63,7 @@
 <button class="hide" data-toggle="modal" data-target="#addtogroup" #openaddGroupModal></button>
 <div class="modal fade" id="addtogroup" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: auto !important;">
       <div class="modal-header">
         <h5 class="modal-title" id="modalContent">Add to Item Group</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
@@ -170,7 +170,7 @@
 <button class="hide" data-toggle="modal" data-target="#addtoParent" #openaddParentModal></button>
 <div class="modal fade" id="addtoParent" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="width: auto !important;">
       <div class="modal-header">
         <h5 class="modal-title" id="modalContent">Add to Parent to Item</h5>
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
@@ -184,7 +184,7 @@
               <h5 class="control-label">Items list:</h5>
                 <input type="text"
                 class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-                placeholder="Search" (keyup)="searchitemsBar()" [(ngModel)]="itemsfilter" [ngModelOptions]="{standalone: true}" />
+                placeholder="Search" (keyup)="searchitemsBar($event)" [(ngModel)]="itemsfilter" [ngModelOptions]="{standalone: true}" />
 
                 <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
                   <thead>
