@@ -197,7 +197,28 @@ export class TransactionService {
       .then(res => resolve(res), msg => reject(msg));
     });
   }
+  public async uploadLocalAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string) {
+    const requestModel: any = {
+      name,
+      fileName: file.name,
+      type,
+      transactionID,
+      userID,
+      company
+    };
 
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('requestModel', JSON.stringify(requestModel));
+
+    return new Promise(async (resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/transactions/attachment/local/upload`;
+      await this.httpClient.post(apiURL, formData)
+      .toPromise()
+      .then(res => resolve(res), msg => reject(msg));
+    });
+  }
   /**
    * updateAttachment
    */

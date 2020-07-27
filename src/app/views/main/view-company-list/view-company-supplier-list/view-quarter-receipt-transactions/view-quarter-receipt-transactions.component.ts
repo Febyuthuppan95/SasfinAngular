@@ -17,6 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
+import { MatTabGroup } from '@angular/material';
+import { TransactionService } from 'src/app/services/Transaction.Service';
 
 @Component({
   selector: 'app-view-quarter-receipt-transactions',
@@ -30,7 +32,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
               private themeService: ThemeService,
               public router: Router,
               private apiService: ApiService,
-              private documentService: DocumentService) {
+              private documentService: DocumentService,
+              private transationService: TransactionService) {
       this.rowStart = 1;
       this.rowEnd = 15;
       this.rowCountPerPage = 15;
@@ -87,9 +90,15 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   focusLocalReceiptID: number;
   focusPeriodYear: number;
   focusQuarterID: number;
+  focusTransactionName: string;
   focusOEMID: any;
   fileUpload: File;
   filePreview: string;
+  selectedTabIndex = 0;
+  addedTransactionID = -1;
+
+  attachmentName ='';
+  attachment
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
@@ -209,8 +218,10 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   @ViewChild('openAddModal', {static: true})
   openAddModal: ElementRef;
 
-  @ViewChild('closeaddModal', {static: true})
+  @ViewChild('closeAddModal', {static: true})
   closeaddModal: ElementRef;
+
+  @ViewChild('tabGroup', {static: true}) tabGroup: MatTabGroup;
 
   ngOnInit() {
 
@@ -220,24 +231,38 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       this.currentTheme = theme;
     });
 
-    this.companyService.observeCompany()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((obj: SelectedCompany) => {
-      // console.log(obj);
-      if (obj !== null && obj !== undefined) {
-        this.companyID = obj.companyID;
-        this.companyName = obj.companyName;
-        this.loadTransactions();
-      } else {
-        this.companyID = 1;
-        this.loadTransactions();
-      }
-    });
-    // this.loadCompanyOEMs();
+    this.companyService.observeLocalReceipt().pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (res:CompanyLocalReceipt) => {
+        if(res !== null && res !== undefined) {
+          this.SelectedReceipt = res;
+          this.loadTransactions();
+        }
+      });
+    // this.companyService.observeCompany()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((obj: SelectedCompany) => {
+    //   console.log(obj);
+    //   if (obj !== null && obj !== undefined) {
+    //     this.companyID = obj.companyID;
+    //     this.companyName = obj.companyName;
+       
+    //   } else {
+    //     this.companyID = 1;
+       
+    //   }
+    // });
+    //this.loadCompanyOEMs();
     const obj: PaginationChange = {
       rowStart: 1,
       rowEnd: 15
     };
+    this.tabGroup.focusChange.subscribe(
+      (res: any) => {
+       
+        this.selectedTabIndex = res.index;
+        console.log(this.selectedTabIndex);
+      }
+    )
 
   }
   ngOnDestroy() {
@@ -291,7 +316,9 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   AddLocalReceipt() {
 
   }
-  Add() {}
+  currentTab(num) {
+    console.log(num);
+  }
 
   recordsPerPageChange($event) {
 
@@ -356,8 +383,9 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       this.contextMenu = false;
     }
   }
-  addBulkImport() {
+  Add() {
     this.openAddModal.nativeElement.click();
+    this.selectedTabIndex = 0;
     
   }
   onFileChange(files: FileList) {
@@ -366,38 +394,84 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   }
 
   saveBulkUpload() {
-    // Save
+    if(this.selectedTabIndex === 0) {
+      this.transationService.createdTransaction(
+        this.currentUser.userID,
+        this.SelectedReceipt.CompanyID,
+        3,
+        3,
+        this.focusTransactionName,
+      ).then(
+        (res: Outcome) => {
+          console.log(res);
+          this.addedTransactionID = res.createdID;
+          if(this.addedTransactionID > 0) {
+            this.createLocalReceipt();
+          } else {
+            this.closeaddModal.nativeElement.click();
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.notify.errorsmsg('Failure', 'Could not reach server');
+          this.closeaddModal.nativeElement.click();
+        }
+      );
+    } else {
+      // Save
+      const model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID, // this needs to get the actual bomID
+        },
+        requestProcedure: 'LocalReceiptUpload',
+      };
+      this.documentService.upload(this.fileUpload, model, 'bulk/localreceipts').then(
+        (res: Outcome) => {
+          // console.log('BOMUploadRes');
+          this.closeaddModal.nativeElement.click();
+          console.log('Response: ' + res);
+          if (res.outcome === 'SUCCESS') {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+          } else {
+            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+          }
+        },
+        (msg) => {
+          this.closeaddModal.nativeElement.click()
+          // nothing yet
+          console.log('Error: ' + msg);
+          this.showLoader = false;
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+        }
+      );
+    }
+  }
+  createLocalReceipt() {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        companyLocalReceiptID: this.focusLocalReceiptID, // this needs to get the actual bomID
+        companyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID, // this needs to get the actual bomID
+        transactionID: this.addedTransactionID
       },
-      requestProcedure: 'LocalReceiptUpload',
+      requestProcedure: 'LocalReceiptAdd',
     };
-    this.documentService.upload(this.fileUpload, model, 'bulk/localreceipts').then(
+    this.apiService.post(`${environment.ApiEndpoint}/transactions/localreceipts/add`, model).then(
       (res: Outcome) => {
-        // console.log('BOMUploadRes');
-        this.closeaddModal.nativeElement.click();
-        console.log('Response: ' + res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          
+          this.loadTransactions();
+          this.closeaddModal.nativeElement.click();
+         
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
-        
-      },
-      (msg) => {
-        this.closeaddModal.nativeElement.click()
-        // nothing yet
-        console.log('Error: ' + msg);
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
+       
       }
-    );
+    )
   }
 }
 

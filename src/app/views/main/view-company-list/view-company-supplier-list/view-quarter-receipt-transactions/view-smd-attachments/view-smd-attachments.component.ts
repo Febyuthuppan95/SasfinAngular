@@ -17,6 +17,7 @@ import { PaginationChange } from 'src/app/components/pagination/pagination.compo
 import { LocalReceipt } from '../view-quarter-receipt-transactions.component';
 import { CompanyLocalReceipt } from '../../view-company-supplier-list.component';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-smd-attachments',
@@ -99,6 +100,9 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
    AttachmentStatusID: -1,
    FilePath: ''
   };
+
+  fileUpload: File;
+  filePreview: string;
 
   tableHeader: TableHeader = {
     title: 'Supplier SMDs',
@@ -226,6 +230,11 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
 
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
+  @ViewChild('openModal', {static: true})
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', {static: true})
+  closeModal: ElementRef;
   currentReceipt: CompanyLocalReceipt;
   ngOnInit() {
 
@@ -322,6 +331,36 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
   recordsPerPageChange($event) {
 
   }
+  openUploadModal() {
+
+    this.openModal.nativeElement.click();
+  }
+  onFileChange(files: FileList) {
+    this.fileUpload = files.item(0);
+    this.filePreview = this.fileUpload.name;
+  }
+  uploadAttachments() {
+      this.transactionService.uploadLocalAttachment(
+        this.filePreview,
+        this.fileUpload,
+        'SMD',
+        this.currentReceipt.TransactionID,
+        this.currentUser.userID,
+        this.currentReceipt.Name
+      ).then(
+        (res: Outcome) =>{
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeModal.nativeElement.click();
+        },
+        (msg) => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+        this.closeModal.nativeElement.click();
+    }
+      );
+    }
   pageChange(obj: PaginationChange) {
     // console.log(obj);
     this.rowStart = obj.rowStart;

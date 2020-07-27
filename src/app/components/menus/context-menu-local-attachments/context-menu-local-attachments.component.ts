@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-context-menu-local-attachments',
@@ -18,11 +20,12 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
   @Input() y: number;
   @Input() currentTheme: string;
   @Input() docPath: string;
+  @Output() addAttachment = new EventEmitter<string>();
   currentTransaction
   ngOnInit() {
   }
   AddAttachment() {
-    
+    this.addAttachment.emit("1");
   }
   Capture() {
     console.log(this.docPath);

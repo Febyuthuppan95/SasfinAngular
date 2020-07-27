@@ -17,6 +17,7 @@ import { PaginationChange } from 'src/app/components/pagination/pagination.compo
 import { LocalReceipt } from '../view-quarter-receipt-transactions.component';
 import { CompanyLocalReceipt } from '../../view-company-supplier-list.component';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-c1-attachments',
@@ -90,6 +91,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
   focusOEMID: any;
   focusTransactionID: number;
 
+  focusAttachmenID: number;
   SelectedRecord: SupplierC1 = {
    TransactionID: -1,
    CompanyID: -1,
@@ -99,7 +101,8 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
    AttachmentStatusID: -1,
    FilePath: ''
   };
-
+fileUpload: File;
+filePreview: string;
   tableHeader: TableHeader = {
     title: 'Supplier C1s',
     addButton: {
@@ -226,6 +229,11 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeaddModal', {static: true})
   closeaddModal: ElementRef;
+  @ViewChild('openModal', {static: true})
+  openModal: ElementRef;
+
+  @ViewChild('closeModal', {static: true})
+  closeModal: ElementRef;
   currentReceipt: CompanyLocalReceipt;
   ngOnInit() {
 
@@ -285,7 +293,6 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: SupplierC1List) => {
-
        console.log(res);
         if (res.data.length === 0) {
           this.noData = true;
@@ -322,6 +329,33 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
   recordsPerPageChange($event) {
 
   }
+  
+  onFileChange(files: FileList) {
+    this.fileUpload = files.item(0);
+    this.filePreview = this.fileUpload.name;
+  }
+  uploadAttachments() {
+      this.transactionService.uploadLocalAttachment(
+        this.filePreview,
+        this.fileUpload,
+        'SC1',
+        this.currentReceipt.TransactionID,
+        this.currentUser.userID,
+        this.currentReceipt.Name
+      ).then(
+        (res: Outcome) => {
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
+            this.closeModal.nativeElement.click();
+        },
+        (msg) => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
+          this.closeModal.nativeElement.click();
+      }
+      );
+    }
   pageChange(obj: PaginationChange) {
     // console.log(obj);
     this.rowStart = obj.rowStart;
@@ -344,6 +378,10 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     //this.loadTransactions();
+  }
+  openUploadModal() {
+
+    this.openModal.nativeElement.click();
   }
 
   popClick(event, localReceipt) {
@@ -375,11 +413,12 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
     this.focusPeriodYear = obj.record.PeriodYear;
     this.SelectedRecord = obj.record;
     console.log(obj.record);
+    this.focusAttachmenID = obj.record.SupplierC1ID;
     this.transactionService.setCurrentAttachment({ 
-      transactionID: obj.record.TransactionID,
-      attachmentID: obj.record.SupplierC1ID,
-      docType: 'SC1',
-      transactionType: 'local'
+        transactionID: obj.record.TransactionID,
+        attachmentID: obj.record.SupplierC1ID,
+        docType: 'SC1',
+        transactionType: 'local'
       });
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);

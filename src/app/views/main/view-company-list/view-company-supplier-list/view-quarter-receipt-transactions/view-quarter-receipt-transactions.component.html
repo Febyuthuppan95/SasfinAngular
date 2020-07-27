@@ -75,27 +75,43 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
-            <div class="modal-body">
-              <div class="form-group">
-                <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
+        <mat-tab-group #tabGroup>
+          <mat-tab label="Add Single"  > 
+            <form>
+              <div class="modal-body">
+               
+                <div class="form-group">
+                  <input type="text" placeholder="Transaction Name" class="form-control"
+                    [(ngModel)]="focusTransactionName" [ngModelOptions]="{standalone: true}" required/>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="addBulkFile">
-                  <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-                </label>
-                <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
-                <input id="addBulkFile" hidden #uploadFile type="file" (change)="onFileChange($event.target.files)" required>
+            </form> 
+          </mat-tab>
+          <mat-tab label="Bulk Import"> 
+            <form>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
+                  </div>
+                  <div class="form-group">
+                    <label for="addBulkFile">
+                      <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+                    </label>
+                    <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+                    <input id="addBulkFile" hidden #uploadFile type="file" (change)="onFileChange($event.target.files)" required>
+                  </div>
               </div>
-          </div>
+          </form> 
+        </mat-tab>
+        </mat-tab-group>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
           <button type="submit" (click)="saveBulkUpload()" class="btn btn-primary btn-sm">Save</button>
         </div>
-      </form>
       </div>
     </div>
   </div>
+  
 
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>

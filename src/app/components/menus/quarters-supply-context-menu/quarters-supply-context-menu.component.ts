@@ -46,9 +46,5 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
     this.companyService.setLocalTransaction(this.selectedTransaction);
     this.router.navigate(["companies", "localreceipts", "transactions", "smd"]);
   }
-  BulkImport() {
-    this.companyService.setLocalTransaction(this.selectedTransaction);
-    this.bulkUploadOut.emit("1");
-  }
 
 }

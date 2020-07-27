@@ -358,6 +358,7 @@ export class CompanyLocalReceipt {
   CompanyID: number;
   CompanyLocalReceiptID: number;
   TransactionID?: number;
+  Name?: string;
 }
 export class CompanyLocalReceiptList {
   rowCount: number;
