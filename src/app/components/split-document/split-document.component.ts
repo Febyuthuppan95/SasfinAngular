@@ -41,6 +41,8 @@ export class SplitDocumentComponent implements OnInit, AfterViewInit, OnDestroy 
   src: string;
   originalSize: boolean = true;
 
+  processing = false;
+
   private fileReader = new FileReader();
 
   transactionTypes = [];
@@ -155,6 +157,8 @@ ngAfterViewInit() {
   }
 
   formSubmit() {
+    this.processing = true;
+
     let err = 0;
 
     if (this.sections.length === 0) {
@@ -208,13 +212,16 @@ ngAfterViewInit() {
 
     this.captureService.splitPDF(formData).then(
       (res) => {
+        this.processing = false;
         this.dialogRef.close({state: true});
       },
       (msg) => {
+        this.processing = false;
         this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
       }
     );
     } else {
+      this.processing = false;
       this.snackbar.open('There are errors', '', { duration: 3000 });
     }
   }
@@ -223,7 +230,7 @@ ngAfterViewInit() {
     this.dialogRef.close(false);
   }
 
-  
+
   rotatePDF(deg: number) {
     this.rotation = deg;
   }

@@ -76,10 +76,11 @@
             </div>
         </form>
         <div class="form-group text-right" style="padding: 24px">
-            <button class="btn btn-light btn-sm" (click)="dismiss()">Cancel</button>
-            <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm">Submit</button>
+            <button class="btn btn-light btn-sm" (click)="dismiss()" [disabled]="processing">Cancel</button>
+            <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm" [disabled]="processing">Submit</button>
           </div>
       </div>
   </div>
+  <div class="split-overlay" *ngIf="processing" ><mat-spinner></mat-spinner></div>
 </div>
 
