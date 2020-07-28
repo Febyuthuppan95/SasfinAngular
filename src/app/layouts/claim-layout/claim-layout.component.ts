@@ -1444,6 +1444,218 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         ];
         break;
       }
+      case 'SMD': {
+        this.headings = [
+          {
+            title: '#',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'companyoemquartersaleid',
+            order: {
+              enable: true,
+              tag: 'companyoemquartersaleid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'itemID',
+            order: {
+              enable: true,
+              tag: 'itemID'
+            },
+            position: 2
+          },
+          {
+            title: 'Product Name',
+            propertyName: 'productname',
+            order: {
+              enable: true,
+              tag: 'productname'
+            },
+            position: 3
+          },
+          {
+            title: 'Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 4
+          }
+        ];
+        this.headingsB = [
+          {
+            title: '',
+            propertyName: 'rownum',
+            order: {
+              enable: false,
+            },
+            position: 0
+          },
+          {
+            title: 'IDfirst',
+            propertyName: 'itemid',
+            order: {
+              enable: true,
+              tag: 'itemid'
+            },
+            position: 1
+          },
+          {
+            title: 'IDsecond',
+            propertyName: 'companyserviceclaimlinesmdid',
+            order: {
+              enable: true,
+              tag: 'companyserviceclaimlinesmdid'
+            },
+            position: 2
+          },
+          {
+            title: 'Component',
+            propertyName: 'component',
+            order: {
+              enable: true,
+              tag: 'component'
+            },
+            position: 3
+          },
+          {
+            title: 'Quarter ',
+            propertyName: 'quarterid',
+            order: {
+              enable: true,
+              tag: 'quarterid'
+            },
+            position: 4
+          },
+          {
+            title: 'Period Year',
+            propertyName: 'periodyear',
+            order: {
+              enable: true,
+              tag: 'periodyear'
+            },
+            position: 5
+          },
+          {
+            title: 'Quantity',
+            propertyName: 'quantity',
+            order: {
+              enable: true,
+              tag: 'quantity'
+            },
+            position: 6
+          },
+          {
+            title: 'Component Value',
+            propertyName: 'componentvalue',
+            order: {
+              enable: true,
+              tag: 'componentvalue'
+            },
+            position: 7
+          },
+          {
+            title: 'Raw Material Value',
+            propertyName: 'rawmaterialvalue',
+            order: {
+              enable: true,
+              tag: 'rawmaterialvalue'
+            },
+            position: 8
+          },
+          {
+            title: 'Aluminium',
+            propertyName: 'aluminium',
+            order: {
+              enable: true,
+              tag: 'aluminium'
+            },
+            position: 9
+          },
+          {
+            title: 'Brass',
+            propertyName: 'brass',
+            order: {
+              enable: true,
+              tag: 'brass'
+            },
+            position: 10
+          },
+          {
+            title: 'Leather',
+            propertyName: 'leather',
+            order: {
+              enable: true,
+              tag: 'leather'
+            },
+            position: 11
+          },
+          {
+            title: 'PGM',
+            propertyName: 'pgm',
+            order: {
+              enable: true,
+              tag: 'pgm'
+            },
+            position: 12
+          },
+          {
+            title: 'Flat Glass',
+            propertyName: 'flatglass',
+            order: {
+              enable: true,
+              tag: 'flatglass'
+            },
+            position: 13
+          },
+          {
+            title: 'Stainless Steel',
+            propertyName: 'stainlesssteel',
+            order: {
+              enable: true,
+              tag: 'stainlesssteel'
+            },
+            position: 14
+          },
+          {
+            title: 'Steel',
+            propertyName: 'steel',
+            order: {
+              enable: true,
+              tag: 'steel'
+            },
+            position: 15
+          },
+          {
+            title: 'Non-SMD Val',
+            propertyName: 'nonsmdvalue',
+            order: {
+              enable: true,
+              tag: 'nonsmdvalue'
+            },
+            position: 16
+          },
+          {
+            title: 'Failed',
+            propertyName: 'failed',
+            order: {
+              enable: true,
+              tag: 'failed'
+            },
+            position: 17
+          }
+        ];
+        break;
+      }
     }
 
   }
@@ -1670,6 +1882,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestParams: reqP,
       requestProcedure: `ImportsList${this.currentClaim.serviceName}`
     };
+    console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       async (res: any) => {
         if (res.outcome.outcome === 'SUCCESS') {
@@ -1752,7 +1965,45 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.updateBottomChild();
   }
   assignRowEvent($event) {
-    console.log($event);
+    this.loading = true;
+    const lineData = JSON.parse($event)
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        companyOEMQuarterSaleID: lineData.lineB,
+        isDeleted: true
+      },
+      requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/claimlines/update`,model).then(
+      (res:Outcome) => {
+        this.loading = false;
+        console.log(res);
+        if(res.outcome === 'SUCCESS') {
+          this.snackbar.open('Successfully Updated Product', res.outcome, {
+            duration: 3000,
+            panelClass: 'claim-snackbar-success',
+            horizontalPosition: 'center',
+          });
+          this.loadMainDataSet();
+        } else {
+          this.snackbar.open(res.outcomeMessage, res.outcome, {
+            duration: 3000,
+            panelClass: 'claim-snackbar-warning',
+            horizontalPosition: 'center',
+          });
+        }
+      },
+      msg => {
+        this.loading = false;
+        this.snackbar.open('An error occurred while performing action', 'FAILURE', {
+          duration: 3000,
+          panelClass: ['capture-snackbar-error'],
+          horizontalPosition: 'center',
+        });
+      }
+    );
   }
   /****** END IMPORTS *******/
   // Top Right Table
@@ -1789,16 +2040,27 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
-
+        this.loading = false;
         console.log(res);
         if(res.outcome.outcome === 'SUCCESS') {
           this.dataLinesAssigned = [];
-          this.loading = false;
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
+          this.snackbar.open(res.outcome.outcomeMessage, res.outcome.outcome, {
+            duration: 3000,
+            panelClass: ['capture-snackbar-success'],
+            horizontalPosition: 'center',
+          });
+        } else {
+          this.snackbar.open('No components were found', 'FAILURE', {
+            duration: 3000,
+            panelClass: ['capture-snackbar-warning'],
+            horizontalPosition: 'center',
+          });
         }
       },
       msg => {
+        this.loading = false;
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
           duration: 3000,
           panelClass: ['capture-snackbar-error'],

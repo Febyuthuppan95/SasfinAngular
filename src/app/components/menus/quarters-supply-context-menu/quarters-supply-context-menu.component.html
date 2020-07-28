@@ -1,7 +1,7 @@
 <div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}" style="cursor: pointer">
     <div class="card">
       <div class=" popBodyNav">
-        
+        <a (click)="Edit()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Edit</span></a>
         <a (click)="C1Receipts()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">View Supplier C1s</span></a>
         <a (click)="SMDReceipts()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">View Supplier SMDs</span></a>
         </div>

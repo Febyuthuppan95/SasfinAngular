@@ -91,6 +91,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   focusPeriodYear: number;
   focusQuarterID: number;
   focusTransactionName: string;
+  focusTransaction
   focusOEMID: any;
   fileUpload: File;
   filePreview: string;
@@ -105,7 +106,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     CompanyLocalReceiptID: -1,
     PeriodYear: -1,
     QuarterID: -1,
-    CompanyID: -1
+    CompanyID: -1,
+    TransactionID: -1
   };
 
   tableHeader: TableHeader = {
@@ -310,8 +312,47 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       }
     );
   }
-  EditLocalReceipt(flag: boolean) {
+  openEditTransaction() {
+    this.openeditModal.nativeElement.click();
+  }
+  EditLocalTransaction(flag: boolean) {
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID,
+        localReceiptID: -1,
+        transactionID: this.SelectedReceipt.TransactionID,
+        isDeleted: flag
+      },
+      requestProcedure: 'LocalReceiptUpdate'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/companies/localreceipts/update`, model).then(
+      (res:Outcome) => {
+        this.showLoader = false;
 
+        if(res.outcome === 'SUCCESS') {
+          this.closeeditModal.nativeElement.click();
+          this.loadTransactions();
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        } else {
+          this.notify.toastrwarning(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
   AddLocalReceipt() {
 
@@ -348,12 +389,13 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   }
 
   popClick(event, localReceipt) {
-    // console.log(localReceipt);
+    console.log(localReceipt);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
-    this.focusLocalReceiptID = localReceipt.localReceiptID;
-    this.focusQuarterID = localReceipt.QuarterID;
-    this.focusPeriodYear = localReceipt.PeriodYear;
+    // this.focusLocalReceiptID = localReceipt.CompanylocalReceiptID;
+    // this.focusQuarterID = localReceipt.QuarterID;
+    // this.focusPeriodYear = localReceipt.PeriodYear;
+    this.SelectedReceipt = localReceipt.record;
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;

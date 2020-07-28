@@ -29,7 +29,7 @@
   </div> -->
 
   <!--Edit Modal-->
-  <!-- <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
+  <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
   <div class="modal fade" id="editOEM" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -43,26 +43,21 @@
         <div class="modal-body">
             <div class="modal-body">
               <div class="form-group">
-                <label class="control-label">Period Year:</label>
+                <label class="control-label">Transaction Name:</label>
                 <input type="text" placeholder="Name" class="form-control"
-                [(ngModel)]="focusPeriodYear" [ngModelOptions]="{standalone: true}"  required/>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Quarter:</label>
-                <input type="text" placeholder="Registration No" class="form-control"
-                [(ngModel)]="focusQuarterID" [ngModelOptions]="{standalone: true}"  required/>
+                [(ngModel)]="this.SelectedReceipt.Name" [ngModelOptions]="{standalone: true}"  required/>
               </div>
             </div>
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
-          <button type="button" (click)="EditLocalReceipt(false)" class="btn btn-primary btn-sm">Save</button>
-          <button type="button" (click)="EditLocalReceipt(true)" class="btn btn-danger btn-sm">Delete</button>
+          <button type="button" (click)="EditLocalTransaction(false)" class="btn btn-primary btn-sm">Save</button>
+          <button type="button" (click)="EditLocalTransaction(true)" class="btn btn-danger btn-sm">Delete</button>
         </div>
       </form>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <!--Add Modal-->
   <button class="hide" data-toggle="modal" data-target="#addBulk" #openAddModal></button>
@@ -116,6 +111,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-quarters-supply-context-menu (bulkUploadOut)="addBulkImport()" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
+    <app-quarters-supply-context-menu (EditQuarterSupply)="openEditTransaction()" (bulkUploadOut)="addBulkImport()" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
   </div>
 

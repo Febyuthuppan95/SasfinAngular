@@ -35,7 +35,7 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   }
   Edit() {
     this.unsubscribe$.unsubscribe();
-    // this.EditQuarterSupply.emit(JSON.stringify(this.selectedOEM));
+    this.EditQuarterSupply.emit("1");
   }
   C1Receipts() {
     this.companyService.setLocalTransaction(this.selectedTransaction);

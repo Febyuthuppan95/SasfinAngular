@@ -274,8 +274,48 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       }
     );
   }
-  EditLocalReceipt(flag: boolean) {
+  openLocalReceiptEdit($event) {
 
+    this.openeditModal.nativeElement.click();
+  }
+  EditLocalReceipt(flag: boolean) {
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyLocalReceiptID: this.focusLocalReceiptID,
+        quarterID: this.focusQuarterID,
+        periodYear: this.focusPeriodYear,
+        isDeleted: flag
+      },
+      requestProcedure: 'CompanyLocalReceiptUpdate'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/oems/quarters/update`, model).then(
+      (res:Outcome) => {
+        this.showLoader = false;
+
+        if(res.outcome === 'SUCCESS') {
+          this.closeeditModal.nativeElement.click();
+          this.loadLocalReceipts();
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        } else {
+          this.notify.toastrwarning(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
   AddLocalReceipt() {
 
@@ -368,7 +408,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     // this.selectedRow = index;
     this.contextMenuX = obj.event.clientX + 3;
     this.contextMenuY = obj.event.clientY + 5;
-    this.focusLocalReceiptID = obj.record.localReceiptID;
+    this.focusLocalReceiptID = obj.record.CompanyLocalReceiptID;
     this.focusQuarterID = obj.record.QuarterID;
     this.focusPeriodYear = obj.record.PeriodYear;
     this.companyService.setLocalReceipt(obj.record);
