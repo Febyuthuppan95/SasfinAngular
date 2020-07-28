@@ -555,4 +555,5 @@ export class AttachmentType {
   name: string;
   description: string;
   value: number;
+  
 }

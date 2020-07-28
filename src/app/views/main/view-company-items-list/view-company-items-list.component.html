@@ -184,7 +184,7 @@
               <h5 class="control-label">Items list:</h5>
                 <input type="text"
                 class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto form-control-{{ currentTheme }}"
-                placeholder="Search" (keyup)="searchitemsBar($event)" [(ngModel)]="itemsfilter" [ngModelOptions]="{standalone: true}" />
+                placeholder="Search" (keyup)="searchitemsBar()" [(ngModel)]="itemsfilter" [ngModelOptions]="{standalone: true}" />
 
                 <table id="dtOrder" class="table table-hover table-striped table-{{ currentTheme }}">
                   <thead>
