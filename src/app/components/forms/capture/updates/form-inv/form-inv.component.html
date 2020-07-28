@@ -41,7 +41,7 @@
   </mat-card>
 </ng-container>
 
-<ng-container>
+<ng-container *ngIf="!loader">
   <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
     <div class="row">
       <div class="col-12">

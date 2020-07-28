@@ -227,16 +227,17 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.invoiceList(request).then(async (res: InvoiceGetResponse) => {
-      this.loader = false;
 
       if (res.invoices.length > 0) {
       const response: any = res.invoices[0];
+      console.log(response);
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
 
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
+      this.form.updateValueAndValidity();
 
       const invoiceDate = new Date(res.invoices[0].invoiceDate);
 
@@ -268,8 +269,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.form.updateValueAndValidity();
+      this.loader = false;
       await this.loadLines();
     } else {
+      this.loader = false;
       this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
     }
     }, (err) => {

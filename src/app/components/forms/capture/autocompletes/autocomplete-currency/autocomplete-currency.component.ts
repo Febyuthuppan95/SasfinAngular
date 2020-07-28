@@ -73,9 +73,11 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
       this.query.setValidators(null);
     }
 
+    console.log(this.control.value);
+
     if (this.control.value === null) {
       this.query.reset(null);
-      this.load(true);
+      this.load(false);
     } else {
       this.load(true);
     }
@@ -88,9 +90,11 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.list = res.currenciesList;
           this.listTemp = res.currenciesList;
 
-          if (setDefault) {
-            const defaultValue = this.listTemp.find(x => x.currencyID === this.control.value);
+          console.log(this.listTemp);
 
+          if (setDefault) {
+            const defaultValue = this.listTemp.find(x => x.currencyID == this.control.value);
+            console.log(defaultValue);
             if (defaultValue) {
               this.query.setValue(defaultValue, { emitEvent: false });
             }
