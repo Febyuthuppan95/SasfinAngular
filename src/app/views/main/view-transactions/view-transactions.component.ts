@@ -226,6 +226,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.transationService.typessList(this.transactionTypeRequest).then(
       (res: TransactionTypesResponse) => {
         this.transactionTypes = res.transactionTypes;
+        this.transactionTypes = this.transactionTypes.filter(x => x.name !== 'Local');
       },
       (msg) => {
         this.notify.errorsmsg(

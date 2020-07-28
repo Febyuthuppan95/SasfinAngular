@@ -111,6 +111,6 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-quarters-supply-context-menu (EditQuarterSupply)="openEditTransaction()" (bulkUploadOut)="addBulkImport()" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
+    <app-quarters-supply-context-menu (EditQuarterSupply)="EditLocalTransaction(true)" (bulkUploadOut)="addBulkImport()" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-quarters-supply-context-menu>
   </div>
 
