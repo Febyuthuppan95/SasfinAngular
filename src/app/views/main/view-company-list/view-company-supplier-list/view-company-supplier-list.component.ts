@@ -103,7 +103,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   };
 
   tableHeader: TableHeader = {
-    title: 'Quarterly Local Receipts',
+    title: 'Local Quarter Records',
     addButton: {
      enable: true,
     },
@@ -117,7 +117,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   };
   tableConfig: TableConfig = {
     header:  {
-      title: 'Quarterly Local Receipts',
+      title: 'Local Quarter Records',
       addButton: {
       enable: true,
       },
