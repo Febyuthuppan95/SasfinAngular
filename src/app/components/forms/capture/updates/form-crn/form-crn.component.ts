@@ -176,9 +176,9 @@ async load() {
   };
 
   await this.captureService.customsReleaseGet(requestModel).then(async (res: CRNList) => {
-    this.loader = false;
     if (res.customs.length > 0) {
       const response: any = res.customs[0];
+      console.log(response);
       response.customsReleaseID = res.customs[0].customReleaseID;
       response.attachmentStatusID = response.statusID;
       response.pccID = res.customs[0].pcc;
@@ -207,7 +207,9 @@ async load() {
       }
 
       this.form.updateValueAndValidity();
+      this.loader = false;
     } else {
+      this.loader = false;
       this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
     }
 
@@ -253,6 +255,8 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
     const requestModel: any = form.value;
     requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
     requestModel.userID = this.currentUser.userID;
+
+    console.log(requestModel);
 
     this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {

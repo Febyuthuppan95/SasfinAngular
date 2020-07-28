@@ -287,7 +287,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   loadCaptureInfo() {
-    const docTypeID = this.transactionTypes.find(x => x.name === this.attachmentType).value;
+    const docs = this.transactionTypes.find(x => x.name === this.attachmentType);
+    let docTypeID = -1;
+    if (docs) {
+       docTypeID = docs.value;
+    }
     const requestModel = {
       userID: this.userService.getCurrentUser().userID,
       companyID: this.company ? this.company.id : -1,
@@ -555,5 +559,5 @@ export class AttachmentType {
   name: string;
   description: string;
   value: number;
-  
+
 }

@@ -109,7 +109,7 @@
         <mat-label>
           Invoice No
         </mat-label>
-        <input matInput type="number" formControlName="invoiceNo">
+        <input matInput formControlName="invoiceNo">
         <mat-icon *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.invoiceNoOBit.value">OVERRIDE: {{form.controls.invoiceNoOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override">remove_circle</mat-icon>

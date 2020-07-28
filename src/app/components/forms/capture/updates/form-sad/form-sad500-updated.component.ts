@@ -30,8 +30,7 @@ import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-
   styleUrls: ['./form-sad500-updated.component.scss'],
 })
 export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewInit {
-  constructor(private transactionService: TransactionService,
-              private captureService: CaptureService,
+  constructor(private captureService: CaptureService,
               private userService: UserService,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
@@ -301,6 +300,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         response.cpcID = response.cpc;
         response.SAD500ID = request.specificID;
         response.attachmentStatusID = response.statusID;
+        response.referenceNo = response.rebateCode;
 
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
@@ -415,10 +415,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
       if (!this.isVOC) {
         delete requestModel.vocID;
-        delete requestModel.referenceNo;
         delete requestModel.reason;
         delete requestModel.originalID;
         delete requestModel.replacedByID;
+      }
+
+      if (!this.isExport) {
+        delete requestModel.referenceNo;
       }
 
       console.log(requestModel);

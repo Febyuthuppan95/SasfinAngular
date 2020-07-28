@@ -60,7 +60,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.defaultValue);
+    console.log(this.control.value);
     this.isRequired = this.control.validator !== null;
 
     if (this.isRequired) {

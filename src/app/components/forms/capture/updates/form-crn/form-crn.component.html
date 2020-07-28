@@ -9,7 +9,7 @@
 </div>
 <br>
 
-<form [formGroup]="form" (ngSubmit)="submit(form)">
+<form [formGroup]="form" (ngSubmit)="submit(form)" *ngIf="!loader">
   <div class="row">
     <div class="col-6">
       <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-mrn')">

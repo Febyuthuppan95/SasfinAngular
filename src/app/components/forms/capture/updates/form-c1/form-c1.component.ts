@@ -44,7 +44,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     TransactionID: new FormControl(null, [Validators.required]),
     CompanyID: new FormControl(null, [Validators.required]),
     // PeriodYear: new FormControl(null, [Validators.required]),
-    QuarterID: new FormControl(null, [Validators.required]),
+    // QuarterID: new FormControl(null, [Validators.required]),
     IsDeleted: new FormControl(0),
     AttachmentStatusID: new FormControl(null)
   });
