@@ -62,7 +62,9 @@
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
 <div class="col-6 bg-light" style="overflow-y: auto; padding-left: 30px;    padding-top: 64px;
 padding-bottom: 64px;">
-  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }"></div>
+  <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }">
+    <span class="mdi mdi-drag" style="position: absolute; right: 14px; top: 14px;"></span>
+  </div>
   <app-document-viewer [focus]="this.focusPDF"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">

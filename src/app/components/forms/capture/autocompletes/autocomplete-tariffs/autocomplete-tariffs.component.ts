@@ -107,7 +107,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.heading}.${item.itemNumber}, ${item.name}` : '';
+    return item ? `${item.heading}.${item.itemNumber}` : '';
   }
 
   ngOnDestroy(): void {}

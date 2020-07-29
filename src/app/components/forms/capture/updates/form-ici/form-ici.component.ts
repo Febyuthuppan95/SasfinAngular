@@ -77,6 +77,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   private keyboard: KeyboardShortcutsComponent;
 
   @Input() capture: any;
+  isExport = false;
 
   public init() {
       if (this.capture) {
@@ -84,6 +85,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
         this.transactionID = this.capture.transactionID;
         this.attachmentLabel = 'Clearing Instruction';
         this.transactionLabel = this.capture.transactionType;
+        this.isExport = this.capture.transactionType === 'Export' ? true : false;
         this.load();
       }
   }

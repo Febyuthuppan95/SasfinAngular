@@ -92,7 +92,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   currentUser: User;
   currentReaderPOS: { x: number, y: number } = {
     x: 0,
-    y: 0,
+    y: 64,
   };
   companyShowToggle: boolean;
   currentShortcutLabel: string = null;

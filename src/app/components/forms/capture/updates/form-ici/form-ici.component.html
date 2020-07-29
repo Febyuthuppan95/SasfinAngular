@@ -40,7 +40,7 @@
     <div class="col-12">
       <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-import-clearing-instruction-importers-code')">
         <mat-label>
-          Importers Code
+          {{ isExport ? 'Exporters' : 'Importers'}} Code
         </mat-label>
         <input matInput type="text" formControlName="importersCode" />
         <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
