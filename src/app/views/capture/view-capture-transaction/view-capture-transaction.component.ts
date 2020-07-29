@@ -40,11 +40,11 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
 
   ngOnInit() {
     // Testing
-    // this.transactionService.setCurrentAttachment({
-    //   transactionID: 2210,
-    //   attachmentID: 12,
-    //   docType: 'SC1', transactionType: 'Import', transactionName: 'Test'
-    // });
+    this.transactionService.setCurrentAttachment({
+      transactionID: 2210,
+      attachmentID: 12,
+      docType: 'SC1', transactionType: 'Import', transactionName: 'Test'
+    });
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
