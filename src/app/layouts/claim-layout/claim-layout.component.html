@@ -198,7 +198,7 @@
                     ></app-nested-table>
                 </mat-card>
             </div>
-            <div class="bottom-section row" *ngIf="this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD'">
+            <div class="bottom-section row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD')">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">OEM Products</button>
                     <app-nested-table *ngIf="!this.loading"
@@ -241,7 +241,7 @@
                 ></app-nested-table>
             </mat-card>
             </div>
-            <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')">
+            <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Product Components</button>
                 <app-nested-table *ngIf="!this.loading"

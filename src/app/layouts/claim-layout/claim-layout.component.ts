@@ -1332,6 +1332,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             },
             position: 2
           },
+          
           {
             title: 'Product Name',
             propertyName: 'productname',
@@ -1349,6 +1350,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               tag: 'quantity'
             },
             position: 4
+          },
+          {
+            title: 'Removed',
+            propertyName: 'stagingstatus',
+            order: {
+              enable: true,
+              tag: 'stagingstatus'
+            },
+            position: 5
           }
         ];
         this.headingsB = [
@@ -1489,6 +1499,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               tag: 'quantity'
             },
             position: 4
+          },
+          {
+            title: 'Removed',
+            propertyName: 'stagingstatus',
+            order: {
+              enable: true,
+              tag: 'stagingstatus'
+            },
+            position: 5
           }
         ];
         this.headingsB = [
@@ -1519,7 +1538,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 2
           },
           {
-            title: 'Component',
+            title: 'Comp',
             propertyName: 'component',
             order: {
               enable: true,
@@ -1537,7 +1556,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 4
           },
           {
-            title: 'Period Year',
+            title: 'Year',
             propertyName: 'periodyear',
             order: {
               enable: true,
@@ -1546,7 +1565,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 5
           },
           {
-            title: 'Quantity',
+            title: 'Qty',
             propertyName: 'quantity',
             order: {
               enable: true,
@@ -1555,7 +1574,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 6
           },
           {
-            title: 'Component Value',
+            title: 'Comp Value',
             propertyName: 'componentvalue',
             order: {
               enable: true,
@@ -1564,7 +1583,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 7
           },
           {
-            title: 'Raw Material Value',
+            title: 'Raw Mat Val',
             propertyName: 'rawmaterialvalue',
             order: {
               enable: true,
@@ -1573,7 +1592,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 8
           },
           {
-            title: 'Aluminium',
+            title: 'Al',
             propertyName: 'aluminium',
             order: {
               enable: true,
@@ -1618,7 +1637,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 13
           },
           {
-            title: 'Stainless Steel',
+            title: 'S.Steel',
             propertyName: 'stainlesssteel',
             order: {
               enable: true,
@@ -1872,6 +1891,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
   async loadMainDataSet() {
+    this.loading = true;
     const reqP = {
       userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID ,
@@ -1885,6 +1905,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       async (res: any) => {
+        this.data = [];
+        setTimeout(() => {
+          this.data = res.data;
+          this.pageA.length = res.rowCount;
+        }, 500);
+
         if (res.outcome.outcome === 'SUCCESS') {
           if(this.selectedA === null || this.selectedA === undefined) {
             if(this.currentClaim.serviceName === '538') {
@@ -1898,9 +1924,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
                 this.pageS.length = res.rowCount;
               }
            } else {
-             this.data = [];
-              this.data = res.data;
-              this.pageA.length = res.rowCount;
               this.snackbar.open('Successfully Retrieved Imports', res.outcome.outcome, {
                 duration: 3000,
                 panelClass: 'claim-snackbar-success',
@@ -1914,6 +1937,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
           // error
         }
+        this.loading = false;
       },
       msg => {
         this.snackbar.open('An error occurred while performing action', 'FAILURE', {
@@ -1971,14 +1995,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestParams: {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        companyOEMQuarterSaleID: lineData.lineB,
+        companyOEMQuarterSaleID: lineData.lineA,
         isDeleted: true
       },
       requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
-    };
+    };;
+    console.log(model)
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/claimlines/update`,model).then(
       (res:Outcome) => {
-        this.loading = false;
+       
         console.log(res);
         if(res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Updated Product', res.outcome, {
@@ -1987,6 +2012,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             horizontalPosition: 'center',
           });
           this.loadMainDataSet();
+          this.loadTopChild();
+          
+        
         } else {
           this.snackbar.open(res.outcomeMessage, res.outcome, {
             duration: 3000,
@@ -2017,7 +2045,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         requestParams: {
           userID: this.currentUser.userID,
           companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-          companyOEMQuarterSaleID: this.selectedB,
+          companyOEMQuarterSaleID: this.selectedA,
           rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
           rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
         },
@@ -2040,12 +2068,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
-        this.loading = false;
+   
         console.log(res);
-        if(res.outcome.outcome === 'SUCCESS') {
-          this.dataLinesAssigned = [];
+        this.dataLinesAssigned = [];
+        setTimeout(() => {
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
+        }, 500);
+        if(res.outcome.outcome === 'SUCCESS') {
           this.snackbar.open(res.outcome.outcomeMessage, res.outcome.outcome, {
             duration: 3000,
             panelClass: ['capture-snackbar-success'],
@@ -2058,6 +2088,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             horizontalPosition: 'center',
           });
         }
+        this.loading = false;
       },
       msg => {
         this.loading = false;

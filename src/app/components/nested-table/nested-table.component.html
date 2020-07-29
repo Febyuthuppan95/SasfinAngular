@@ -28,6 +28,12 @@
             <button mat-button color="warn" *ngIf="row.failed">
               FAILED
             </button>
+            <button mat-button color="warn" *ngIf="row.stagingstatus === 1">
+              REMOVED
+            </button>
+            <button mat-button color="primary" *ngIf="row.stagingstatus ===0">
+              INCLUDED
+            </button>
           </td>
         </ng-container>
 

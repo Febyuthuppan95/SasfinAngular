@@ -74,7 +74,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
     if ( this.parents.length > 0) {
       this.headings.forEach(x => {
-        if (x.title !== 'IDfirst' && x.title !== 'IDsecond' && x.title !== 'Failed') {
+        if (x.title !== 'IDfirst' && x.title !== 'IDsecond') {
           x.propertyName = x.propertyName.toLowerCase();
           this.columnsToDisplay.push(x.propertyName);
         }
@@ -110,7 +110,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
             // Push object to record array
             record.push(field);
           } else {
-
+            
           }
         });
         // Record populated, pushing to displayData
