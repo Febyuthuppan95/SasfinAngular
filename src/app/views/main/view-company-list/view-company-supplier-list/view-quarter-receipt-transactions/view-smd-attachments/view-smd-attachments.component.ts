@@ -352,6 +352,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
       this.currentReceipt.Name
     ).then(
       (res: Outcome) => {
+        this.loadAttachments();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeaddModal.nativeElement.click();
       },
@@ -374,6 +375,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
         this.currentReceipt.Name
       ).then(
         (res: Outcome) => {
+          this.loadAttachments();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeModal.nativeElement.click();
         },

@@ -346,6 +346,7 @@ filePreview: string;
       this.currentReceipt.Name
     ).then(
       (res: Outcome) => {
+        this.loadAttachments();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.closeaddModal.nativeElement.click();
       },
@@ -368,6 +369,7 @@ filePreview: string;
         this.currentReceipt.Name
       ).then(
         (res: Outcome) => {
+          this.loadAttachments();
             this.notify.successmsg(res.outcome, res.outcomeMessage);
             this.closeModal.nativeElement.click();
         },
