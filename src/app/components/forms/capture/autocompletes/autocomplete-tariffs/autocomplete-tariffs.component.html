@@ -9,6 +9,6 @@
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
   <mat-option *ngFor="let item of list" [value]="item">
-    {{item.heading}}.{{item.itemNumber}},&nbsp;{{item.name}}
+    {{item.heading}}.{{item.itemNumber}}
   </mat-option>
 </mat-autocomplete>
