@@ -275,7 +275,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        CompanyLocalReceiptID: this.companyID,
+        CompanyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID,
         rowStart: this.rowStart,
         filter: this.filter,
         rowEnd: this.rowEnd,
