@@ -35,8 +35,9 @@ constructor(private userService: UserService,
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
+      console.log(value);
       this.list = this.listTemp;
-
+  
       if (value) {
         if (value.EDIStatusID) {
           this.control.setValue(value.EDIStatusID);
@@ -44,7 +45,7 @@ constructor(private userService: UserService,
         } else {
           const query: string = value;
           if (query && query !== null) {
-            this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
+            this.list = this.list.filter(x => this.matchRuleShort(x.Name.toUpperCase(), `*${query.toUpperCase()}*`));
           }
 
           this.control.reset(null);

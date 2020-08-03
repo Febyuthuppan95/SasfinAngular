@@ -34,7 +34,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     replacedByLineID: new FormControl(null),
     lineNo: new FormControl(null, [Validators.required]),
     customsValue: new FormControl(null, [Validators.required]),
-    previousDeclaration: new FormControl(null, [Validators.required]),
+    previousDeclaration: new FormControl(null),
     quantity: new FormControl(null),
     duty: new FormControl(null),
     duties: new FormControl(null),

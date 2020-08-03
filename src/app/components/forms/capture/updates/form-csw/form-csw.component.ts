@@ -88,7 +88,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       customworksheetID: new FormControl(null),
       transactionID: new FormControl(null),
       waybillNo: new FormControl(null, [Validators.required]),
-      lrn: new FormControl(null, [Validators.required]),
+      lrn: new FormControl(null),
       fileRef: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
       isDeleted: new FormControl(0),
