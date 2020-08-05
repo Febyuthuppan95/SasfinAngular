@@ -33,6 +33,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
+      console.log(value);
       if (value) {
         if (value.id) {
           this.control.setValue(value.id);
@@ -107,7 +108,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.heading}.${item.itemNumber}` : '';
+    return item ? `${item.subHeading}.${item.itemNumber}` : '';
   }
 
   ngOnDestroy(): void {}

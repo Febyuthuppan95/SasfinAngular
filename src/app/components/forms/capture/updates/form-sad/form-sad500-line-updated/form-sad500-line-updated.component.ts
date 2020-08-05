@@ -109,7 +109,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     } else {
       this.sadLine500ID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
-      this.form.controls.sad500LineID.setValue(-1);
+      // this.form.controls.sad500LineID.setValue(-1);
     }
 
     // this.form.controls.duties.setValidators(this.isExport ? null : null);
@@ -201,9 +201,10 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       //   });
       // }
     } else {
+      console.log(this.form.controls);
       this.sadLine500ID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
-      this.form.controls.sad500LineID.setValue(-1);
+      // this.form.controls.sad500LineID.setValue(-1);
     }
 
     // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
@@ -240,8 +241,9 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 }
 
   submit(form: FormGroup) {
+    console.log(form);
     form.markAllAsTouched();
-
+    
     if (form.valid) {
       const line: any = form.value;
       line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
