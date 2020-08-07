@@ -275,6 +275,7 @@ import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
 import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
 import { AutocompleteQuarterComponent } from './components/forms/capture/autocompletes/autocomplete-quarter/autocomplete-quarter.component';
+import { TabDirective } from './directives/tab.directive';
 
 @NgModule({
   declarations: [
@@ -332,6 +333,7 @@ import { AutocompleteQuarterComponent } from './components/forms/capture/autocom
     FormCustomReleaseComponent,
     KeyHandlerDirective,
     ImageDirective,
+    TabDirective,
     ClickStopPropagation,
     ContextMenuAddressTypesComponent,
     ViewCaptureInfoComponent,
