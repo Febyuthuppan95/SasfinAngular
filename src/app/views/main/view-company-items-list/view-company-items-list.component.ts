@@ -671,34 +671,34 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `BOMItemAdd`
     };
-    // console.log(this.ItemFile, model, 'boms/items/upload');
-    // uncomment once testing is done
-    // this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
-    //   (res: Outcome) => {
-    //     // console.log('BOMUploadRes');
-    //     console.log('Response: ' + res);
-    //     if (res.outcome === 'SUCCESS') {
-    //       this.notify.successmsg(
-    //         res.outcome,
-    //         res.outcomeMessage);
-    //       this.loadCompanyItemsList(false);
-    //     } else {
-    //       this.notify.errorsmsg(
-    //         res.outcome,
-    //         res.outcomeMessage
-    //       );
-    //     }
-    //   },
-    //   (msg) => {
-    //     // nothing yet
-    //     console.log('Error: ' + msg);
-    //     this.showLoader = false;
-    //     this.notify.errorsmsg(
-    //       'Server Error',
-    //       'Something went wrong while trying to access the server.'
-    //     );
-    //   }
-    // );
+    console.log(this.ItemFile, model, 'boms/items/upload');
+   
+    this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
+      (res: Outcome) => {
+        // console.log('BOMUploadRes');
+        console.log('Response: ' + res);
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage);
+          this.loadCompanyItemsList(false);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        // nothing yet
+        console.log('Error: ' + msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
 }
