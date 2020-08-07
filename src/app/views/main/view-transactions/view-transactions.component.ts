@@ -129,7 +129,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   newTransaction = {
     name: '',
     transactionTypeID: -1,
-    transactionStatusID: -1
+    transactionStatusID: 3
   };
 
   transactionStatusRequest = {
@@ -239,6 +239,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   onTypeChange(id: number) {
     this.selectedType = id;
+    console.log(this.selectedType);
     this.typesDisable = true;
   }
 
@@ -457,16 +458,18 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
   }
 
   addTransaction() {
+    console.log(this.selectedType);
+    console.log(this.newTransaction);
     let errors = 0;
-    this.selectedStatus = 3;
+    this.selectedStatus = 3;// Always setting it to Capturable
 
     if (this.newTransaction.name === undefined || this.newTransaction.name === null) {
       errors++;
     }
 
-    if (this.selectedStatus <= 0 || this.selectedStatus === undefined) {
-      errors++;
-    }
+    // if (this.selectedStatus <= 0 || this.selectedStatus === undefined) {
+    //   errors++;
+    // }
 
     if (this.selectedType <= 0 || this.selectedStatus === undefined) {
       errors++;
@@ -477,7 +480,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
           this.currentUser.userID,
           this.companyID,
           this.selectedType,
-          this.selectedStatus,
+          this.selectedStatus, 
           this.newTransaction.name,
         ).then(
           (res: Outcome) => {
@@ -501,11 +504,11 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
 
   addTransactionModal() {
     this.newTransaction.name = null;
-    this.newTransaction.transactionStatusID = -1;
+    // this.newTransaction.transactionStatusID = 3;
     this.newTransaction.transactionTypeID = -1;
     this.typesDisable = false;
     this.statusDisable = false;
-    this.selectStatusControl.reset(0);
+    //this.selectStatusControl.reset(0);
     this.selectTypeControl.reset(0);
     this.selectEDIControl.reset(0);
 

@@ -14,20 +14,20 @@
       <div class="modal-body">
         <div class="form-group">
             <input type="text" placeholder="MRN" class="form-control"
-              [(ngModel)]="focusTransactionName" [ngModelOptions]="{standalone: true}" required/>
+              [(ngModel)]="newTransaction.name" [ngModelOptions]="{standalone: true}" required/>
         </div>
         <div class="form-group">
-            <select class="form-control" [selectedIndex]="this.selectedTypeIndex" [formControl]="selectTypeControl" (change)="onTypeChange($event.target.value)">
+            <select class="form-control" [selectedIndex]="this.selectedType" [formControl]="selectTypeControl" (change)="onTypeChange($event.target.value)">
               <option selected value="0" [disabled]="typesDisable">Select a transaction type</option>
               <option *ngFor="let type of transactionTypes" [value]="type.transactionTypeID">{{type.name}}</option>
             </select>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <select class="form-control" (change)="onStatusChange($event.target.value)" [formControl]="selectStatusControl" [selectedIndex]="this.selectedStatusIndex">
             <option selected value="0" [disabled]="statusDisable">Select a status type</option>
             <option *ngFor="let status of transactionStatus" [value]="status.transactionStatusID">{{status.name}}</option>
           </select>
-        </div>
+        </div> -->
       </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
