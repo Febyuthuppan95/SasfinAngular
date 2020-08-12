@@ -50,11 +50,7 @@
             Serial No
           </mat-label>
           <input matInput type="text" formControlName="serialNo" />
-          <mat-error *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
-          <mat-icon *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect" matSuffix (click)="overrideDialog('serialNo', 'SerialNo')" matTooltip="Override">remove_circle</mat-icon>
-          
+          <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -90,9 +86,6 @@
             Total Customs Value
           </mat-label>
           <input matInput type="number" formControlName="totalCustomsValue" />
-          <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
           <mat-error *ngIf="form.controls.totalCustomsValue.errors?.incorrect">{{getError('totalCustomsValue')}}</mat-error>
         </mat-form-field>
         <br /><br />
@@ -107,9 +100,6 @@
             Waybill No
           </mat-label>
           <input matInput type="text" formControlName="waybillNo" />
-          <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
           <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
@@ -120,9 +110,6 @@
             Supplier Ref
           </mat-label>
           <input matInput type="text" formControlName="supplierRef" />
-          <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
           <mat-error *ngIf="form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
         </mat-form-field>
         <br /><br />
