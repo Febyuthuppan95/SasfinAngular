@@ -178,7 +178,7 @@ export class SidebarComponent implements OnInit {
             this.showcurrencies = true;
           }
 
-          if (uRight.name === 'Companies' && +uRight.designationID !== 3) {
+          if (uRight.name === 'Companies') {
             this.showcompanies = true;
           }
 
