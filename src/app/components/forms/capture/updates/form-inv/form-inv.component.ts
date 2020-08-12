@@ -295,6 +295,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.captureService.invoiceLineList(requestModel).then(
       (res: InvoiceLinesResponse) => {
+        console.log(res);
+
         this.lines = res.lines;
         this.lines.forEach((line) => {
           line.isLocal = false;

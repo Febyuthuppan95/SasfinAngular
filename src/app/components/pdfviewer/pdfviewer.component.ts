@@ -1,8 +1,5 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input, OnChanges } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit, AfterViewInit, ViewChild, Input, OnChanges } from '@angular/core';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
-import { takeUntil } from 'rxjs/operators';
-import { PDFSource } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -19,7 +16,7 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   zoom = 1;
   ready: boolean;
   shortcuts: ShortcutInput[] = [];
-  
+
   pdfSRC: ArrayBuffer;
   displayPDF = false;
 
@@ -50,10 +47,10 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   ngAfterViewInit(): void {
     this.shortcuts.push(
       {
-          key: 'alt + right',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.page++
+        key: 'alt + right',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.page++
       },
       {
         key: 'alt + left',
@@ -87,7 +84,7 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
       },
     );
   }
-  
+
   pageChange(page: number) {
     console.log(page);
     if (page <= 0) {

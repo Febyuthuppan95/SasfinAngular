@@ -62,6 +62,10 @@
   z-index: 9999;
 }
 
+.reader-line:hover {
+  cursor: move;
+}
+
 .reader-line-dragger {
   position: absolute;
   top: 24px;

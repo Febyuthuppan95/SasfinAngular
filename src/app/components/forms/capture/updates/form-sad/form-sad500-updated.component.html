@@ -50,11 +50,7 @@
             Serial No
           </mat-label>
           <input matInput type="text" formControlName="serialNo" />
-          <mat-error *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
-          <mat-icon *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect" matSuffix (click)="overrideDialog('serialNo', 'SerialNo')" matTooltip="Override">remove_circle</mat-icon>
-          
+          <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
