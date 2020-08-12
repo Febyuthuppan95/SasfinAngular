@@ -74,6 +74,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     totalDutyOUserID: new FormControl(null),
     totalDutyODate: new FormControl(null),
     totalDutyOReason: new FormControl(null),
+    serialNoOBit: new FormControl(false),
+    serialNoOUserID: new FormControl(null),
+    serialNoODate: new FormControl(null),
+    serialNoOReason: new FormControl(null),
+    referenceNoOBit: new FormControl(false),
+    referenceNoOUserID: new FormControl(null),
+    referenceNoODate: new FormControl(null),
+    referenceNoOReason: new FormControl(null),
     isDeleted: new FormControl(0),
 
     // VOC
@@ -648,6 +656,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
   // @override methods
   overrideDialog(key, label) {
+
     this.dialog.open(DialogOverrideComponent, {
       width: '512px',
       data: {
