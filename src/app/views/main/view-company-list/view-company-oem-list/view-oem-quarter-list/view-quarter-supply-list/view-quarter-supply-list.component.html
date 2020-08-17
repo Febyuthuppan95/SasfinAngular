@@ -22,11 +22,12 @@
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
         (addButtonEvent)="Add()"
-        (searchEvent)="searchBar($event)">
+        (searchEvent)="searchBar($event)"
+        (backButtonEvent)="back()">
       </app-table>
     </div>
   </div>
-  
+
   <!--Edit Modal-->
   <button class="hide" data-toggle="modal" data-target="#editQuarterSupply" #openeditModal></button>
   <div class="modal fade" id="editQuarterSupply" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -70,7 +71,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--Add Modal-->
   <button class="hide" data-toggle="modal" data-target="#addOEMQuarter" #openaddModal></button>
   <div class="modal fade" id="addOEMQuarter" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -111,10 +112,9 @@
       </div>
     </div>
   </div>
-  
+
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
     <app-quarters-supply-context-menu (EditQuarterSupply)="EditSupply($event)"  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [supplyID]="this.selectedQuarterSupply.supplyID"></app-quarters-supply-context-menu>
   </div>
-  

@@ -91,15 +91,15 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   focusPeriodYear: number;
   focusQuarterID: number;
   focusTransactionName: string;
-  focusTransaction
+  focusTransaction;
   focusOEMID: any;
   fileUpload: File;
   filePreview: string;
   selectedTabIndex = 0;
   addedTransactionID = -1;
 
-  attachmentName ='';
-  attachment
+  attachmentName = '';
+  attachment;
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
@@ -247,10 +247,10 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     //   if (obj !== null && obj !== undefined) {
     //     this.companyID = obj.companyID;
     //     this.companyName = obj.companyName;
-       
+
     //   } else {
     //     this.companyID = 1;
-       
+
     //   }
     // });
     //this.loadCompanyOEMs();
@@ -260,7 +260,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     };
     this.tabGroup.focusChange.subscribe(
       (res: any) => {
-       
+
         this.selectedTabIndex = res.index;
         console.log(this.selectedTabIndex);
       }
@@ -428,7 +428,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   Add() {
     this.openAddModal.nativeElement.click();
     this.selectedTabIndex = 0;
-    
+
   }
   onFileChange(files: FileList) {
     this.fileUpload = files.item(0);
@@ -507,11 +507,11 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.loadTransactions();
           this.closeaddModal.nativeElement.click();
-         
+
         } else {
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
-       
+
       }
     )
   }
