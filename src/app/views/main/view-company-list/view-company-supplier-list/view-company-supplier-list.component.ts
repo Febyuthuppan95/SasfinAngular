@@ -211,6 +211,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
+    // tslint:disable-next-line: no-shadowed-variable
     .subscribe((obj: SelectedCompany) => {
       // console.log(obj);
       if (obj !== null && obj !== undefined) {
@@ -291,10 +292,10 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       requestProcedure: 'CompanyLocalReceiptUpdate'
     };
     this.apiService.post(`${environment.ApiEndpoint}/oems/quarters/update`, model).then(
-      (res:Outcome) => {
+      (res: Outcome) => {
         this.showLoader = false;
 
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.closeeditModal.nativeElement.click();
           this.loadLocalReceipts();
           this.notify.successmsg(
@@ -342,7 +343,6 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
           'SUCCESS',
           res.outcomeMessage
         );
-      
       },
       msg => {
         this.closeaddModal.nativeElement.click();
@@ -352,7 +352,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
         );
 
       }
-    )
+    );
   }
 
   recordsPerPageChange($event) {
@@ -420,7 +420,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
       this.contextMenu = false;
     }
   }
-  
+
   createYears() {
     for (let x = 0; x < 10; x++) {
       this.years.push(this.now - x);

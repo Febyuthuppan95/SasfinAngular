@@ -26,7 +26,7 @@
         (backButtonEvent)="router.navigate(['companies'])">
       </app-table>
     </div>
-  </div> 
+  </div>
 
   <!--Edit Modal-->
   <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
@@ -40,7 +40,29 @@
           </button>
         </div>
         <form>
-        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-group">
+              <mat-form-field>
+                  <mat-label>Quarter</mat-label>
+                  <mat-select [(ngModel)]="focusQuarterID" name="quarter">
+                    <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
+                      {{quarter.Name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field>
+                <mat-label>Year</mat-label>
+                <mat-select [(ngModel)]="focusPeriodYear" name="year">
+                  <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
+                    {{year}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
+        </div>
+        <!-- <div class="modal-body">
             <div class="modal-body">
               <div class="form-group">
                 <label class="control-label">Period Year:</label>
@@ -53,7 +75,7 @@
                 [(ngModel)]="focusQuarterID" [ngModelOptions]="{standalone: true}"  required/>
               </div>
             </div>
-        </div>
+        </div> -->
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
           <button type="button" (click)="EditLocalReceipt(false)" class="btn btn-primary btn-sm">Save</button>
