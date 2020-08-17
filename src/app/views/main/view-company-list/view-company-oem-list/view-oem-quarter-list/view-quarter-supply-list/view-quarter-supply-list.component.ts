@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SelectedCompanyOEM } from '../../view-company-oem-list.component';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Order, SelectedRecord, TableHeader, TableConfig, TableHeading } from 'src/app/models/Table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-quarter-supply-list',
@@ -23,6 +24,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
 
   constructor(private companyService: CompanyService,
               private userService: UserService,
+              public router: Router,
               private themeService: ThemeService) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -84,7 +86,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
      enable: true,
     },
     backButton: {
-      enable: false
+      enable: true
     },
     filters: {
       search: true,
@@ -231,12 +233,14 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     };
     this.companyService.companyOEMQuarterSupplyList(model).then(
       (res: OEMQuarterSupplyList) => {
-        // console.log(res);
+        console.log(res);
+        this.dataList = res.data;
+        console.log(this.dataList);
         if (res.outcome.outcome === 'SUCCESS') {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          // console.log(this.dataList);
+          console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -290,10 +294,16 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       }
     );
   }
+
+  back() {
+    this.router.navigate(['companies', 'oem', 'quarters']);
+  }
+
   EditQuarterSupply(deleted?: boolean) {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
+        companyOEMQuarterID: this.selectedCompanyOEM.companyOEMQuarterID,
         companyOEMQuarterSupplyID: this.selectedQuarterSupply.companyOEMQuarterSupplyID,
         productCode: this.selectedQuarterSupply.productCode,
         productDescription: this.selectedQuarterSupply.productDescription,
@@ -333,6 +343,12 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   searchBar(filter: string) {
     this.rowStart = 1;
     this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
+  }
+
+  recordsPerPageChange($event: number) {
+    this.rowStart = 1;
+    this.rowCountPerPage = $event;
+    this.loadSupplyList();
   }
   orderChange($event: Order) {
     this.orderBy = $event.orderBy;
@@ -388,6 +404,7 @@ export class OEMQuarterSupplyList {
 }
 export class SelectedOEMQuarterSupply {
   rowNum: number;
+  supplyID?: number;
   companyOEMQuarterSupplyID: number;
   productCode: string;
   productDescription: string;
