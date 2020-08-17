@@ -155,7 +155,7 @@
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
             <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()">Add to queue</button>
-            <input id="addBackgroundImage" hidden #inputFile type="file" (change)="onFileChange($event.target.files)" required>
+            <input id="addBackgroundImage" hidden #inputFile type="file" (change)="onFileChange($event.target.files)" required multiple>
         </div>
         <br>
         <br>
@@ -166,7 +166,7 @@
               <span class="float-right">{{attach.status}}</span>
                 <p>{{attach.name}}</p>
                 <small>{{attach.type}}</small><br/>
-                <small>{{attach.file.name}}</small>
+                <small *ngFor="let item of attach.file">{{item.name}}</small>
                 <br/>
                 <br/>
                 <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>

@@ -171,10 +171,10 @@ export class TransactionService {
   }
 
   // tslint:disable-next-line: max-line-length
-  public async uploadAttachment(name: string, file: File, type: string, transactionID: number, userID: number, company: string, sad500ID?: number, ediStatus?: number) {
+  public async uploadAttachment(name: string, files: File[], type: string, transactionID: number, userID: number, company: string, sad500ID?: number, ediStatus?: number) {
     const requestModel: any = {
       name,
-      fileName: file.name,
+      fileName: files[0].name,
       type,
       transactionID,
       userID,
@@ -187,7 +187,11 @@ export class TransactionService {
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i]);
+    }
+
     formData.append('requestModel', JSON.stringify(requestModel));
 
     return new Promise(async (resolve, reject) => {

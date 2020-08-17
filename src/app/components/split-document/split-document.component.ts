@@ -28,7 +28,7 @@ export class SplitDocumentComponent implements OnInit, AfterViewInit, OnDestroy 
     sections: this.sections
   };
 
-  file: File;
+  file: File[];
   displayPreview = false;
   filePreview: ArrayBuffer | string;
   companyName: string;
@@ -119,13 +119,14 @@ ngAfterViewInit() {
     );
   }
   addSection() {
-    console.log(this.requestData.sections.length);
     const curLength = this.requestData.sections.length;
+
     this.requestData.sections.push({
       position: curLength,
       pages: {
         start: 1,
         end: 2,
+        skip: -1
       },
       name: '',
       userID: this.data.userID,
@@ -137,11 +138,19 @@ ngAfterViewInit() {
     this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   }
 
+  removeSection(section): void {
+    this.requestData.sections.splice(this.requestData.sections.indexOf(section), 1);
+
+    this.requestData.sections.forEach((item, index) => {
+      item.position = index + 1;
+    });
+  }
+
   inputFileChange(files: File[]) {
-    this.file = files[0];
+    this.file = files;
 
     this.fileReader = new FileReader();
-    this.fileReader.readAsDataURL(this.file);
+    this.fileReader.readAsDataURL(this.file[0]);
     this.fileReader.onload = (e) => {
       this.filePreview = this.fileReader.result;
     };
@@ -184,11 +193,6 @@ ngAfterViewInit() {
 
       }
 
-      // if (item.position === null || !item.position) {
-      //   err++;
-      //   console.log(item.position);
-      // }
-
       if (item.pages.start === 0 || item.pages.start === null || !item.pages.start) {
         err++;
         console.log('start');
@@ -200,15 +204,14 @@ ngAfterViewInit() {
       }
     });
 
-
-    console.log(this.requestData);
-    console.log(err);
-
     if (err === 0) {
     const formData = new FormData();
     this.requestData.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
     formData.append('requestModel', JSON.stringify(this.requestData));
-    formData.append('file', this.file);
+
+    for (let i = 0; i < this.file.length; i++) {
+      formData.append('files', this.file[i]);
+    }
 
     this.captureService.splitPDF(formData).then(
       (res) => {
@@ -256,6 +259,7 @@ ngAfterViewInit() {
 export class Section {
   start: number;
   end: number;
+  skip: number;
 }
 
 export class SplitPDFRequest {

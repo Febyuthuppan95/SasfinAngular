@@ -28,7 +28,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   private isRequired = false;
 
   public list: any[] = [];
-  public query = new FormControl();
+  public query = new FormControl(null);
   public valueKeeper = new FormControl();
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
 
     this.isRequired = this.control.validator !== null;
 
-    this.load(true, '');
+    this.load(true, this.query.value === null ? '' : this.query.value);
 
     this.query.valueChanges.subscribe((value) => {
       this.list = this.listTemp;
@@ -76,7 +76,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       this.query.reset(null);
       this.load(true);
     } else {
-      this.load(true);
+      this.load(true, this.query.value === null ? '' : this.query.value);
     }
   }
 

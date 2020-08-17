@@ -24,7 +24,7 @@ constructor(private userService: UserService,
   private isRequired = false;
 
   public list: Company[] = [];
-  public query = new FormControl();
+  public query = new FormControl(null);
   public valueKeeper = new FormControl();
 
   ngOnInit() {
@@ -80,7 +80,7 @@ constructor(private userService: UserService,
       userID: this.currentUser.userID,
       specificCompanyID: -1,
       rowStart: 1,
-      filter: '',
+      filter: this.isNull(this.query.value),
       rowEnd: 10000,
       orderBy: '',
       orderByDirection: ''
@@ -114,6 +114,10 @@ constructor(private userService: UserService,
     if (this.list.length > 0) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  isNull(value) {
+    return value === null ? '' : value;
   }
 
   ngOnDestroy(): void {}

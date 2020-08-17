@@ -132,13 +132,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   transactionTypes = [];
   attachmentName: string;
   // tslint:disable-next-line: max-line-length
-  attachmentQueue: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500ID?: number, ediStatusID?: number }[] = [];
+  attachmentQueue: { name?: string, type?: string, file: File[], uploading?: boolean, status?: string, sad500ID?: number, ediStatusID?: number }[] = [];
   // tslint:disable-next-line: max-line-length
-  attachmentQueueDisplay: { name?: string, type?: string, file: File, uploading?: boolean, status?: string, sad500LineID?: number, ediStatusID?: number }[] = [];
+  attachmentQueueDisplay: { name?: string, type?: string, file: File[], uploading?: boolean, status?: string, sad500LineID?: number, ediStatusID?: number }[] = [];
   selectedTransactionType: number;
   selectedSAD500: number;
   selectedSAD500Line: number;
-  fileToUpload: File;
+  fileToUpload: File[];
   transactionType: string;
   currentAttachment = 0;
   uploading = false;
@@ -302,13 +302,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       .then(
         (res: TransactionFileListResponse) => {
           // console.log(res);
-          if (res.outcome.outcome === 'FAILURE') {
-            this.notify.errorsmsg(
+          if (res.outcome.outcome === 'SUCCESS') {
+            this.notify.successmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
           } else {
-            this.notify.successmsg(
+            this.notify.errorsmsg(
               res.outcome.outcome,
               res.outcome.outcomeMessage
             );
@@ -467,7 +467,14 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       attach.sad500ID,
       attach.ediStatusID
     ).then(
-      (res) => {
+      (res: any) => {
+        if (res != 200) {
+          this.notify.errorsmsg(
+            'ERROR',
+            'Failed to upload document'
+          );
+        }
+
           attach.uploading = false;
           attach.status = 'Complete';
           index++;
@@ -476,6 +483,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       (msg) => {
         attach.uploading = false;
         attach.status = 'Failed to upload';
+
+        this.notify.errorsmsg(
+          'ERROR',
+          msg
+        );
     }
     );
   }
@@ -505,11 +517,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.openModal.nativeElement.click();
   }
 
-  onFileChange(files: FileList) {
-    this.preview = files.item(0).name;
+  onFileChange(files: File[]) {
+    this.preview = files[0].name;
 
     this.attachmentQueue[this.currentAttachment] = {
-      file: files.item(0),
+      file: files,
     };
   }
 

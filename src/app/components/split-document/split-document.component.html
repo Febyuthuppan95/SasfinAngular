@@ -58,9 +58,12 @@
                 <button (click)="addSection()" class="btn btn-primary btn-sm">Add Section</button>
               </div>
               <div *ngFor="let section of this.requestData.sections; let i = index">
-                <div  class="form-group form-inline">
+                <button mat-button (click)="removeSection(section)">REMOVE</button>
+
+                <div class="form-group form-inline">
                   <input type="number" placeholder="Start" class="form-control form-control-sm" [value]="section.pages.start" [(ngModel)]="section.pages.start" [ngModelOptions]="{standalone: true}" required>
                   <input type="number" placeholder="End"  class="form-control form-control-sm" [value]="section.pages.end" [(ngModel)]="section.pages.end" [ngModelOptions]="{standalone: true}" required>
+                  <input type="number" placeholder="Skip"  class="form-control form-control-sm" [value]="section.pages.skip" [(ngModel)]="section.pages.skip" [ngModelOptions]="{standalone: true}" required>
                 </div>
                 <div class="form-group">
                     <input type="text" placeholder="Name" disabled="disabled"  class="form-control form-control-sm" [value]="section.name" [(ngModel)]="section.name" [ngModelOptions]="{standalone: true}" required>
