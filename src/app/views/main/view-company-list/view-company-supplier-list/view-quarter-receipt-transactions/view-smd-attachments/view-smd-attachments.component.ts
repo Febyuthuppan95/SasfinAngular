@@ -101,7 +101,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
    FilePath: ''
   };
 
-  fileUpload: File;
+  fileUpload: File[];
   filePreview: string;
 
   tableHeader: TableHeader = {
@@ -255,7 +255,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
     // this.companyService.observeCompany()
     // .pipe(takeUntil(this.unsubscribe$))
     // .subscribe((obj: SelectedCompany) => {
-      
+
     //   console.log(obj);
     //   if (obj !== null && obj !== undefined) {
     //     this.companyID = obj.companyID;
@@ -337,11 +337,11 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
 
     this.openModal.nativeElement.click();
   }
-  onFileChange(files: FileList) {
-    this.fileUpload = files.item(0);
-    this.filePreview = this.fileUpload.name;
+  onFileChange(files: File[]) {
+    this.fileUpload = files;
+    this.filePreview = this.fileUpload[0].name;
   }
-  
+
   createAttachments() {
     this.transactionService.uploadAttachment(
       this.filePreview,
@@ -368,7 +368,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
   uploadAttachments() {
       this.transactionService.uploadLocalAttachment(
         this.filePreview,
-        this.fileUpload,
+        this.fileUpload[0],
         'SMD',
         this.currentReceipt.TransactionID,
         this.currentUser.userID,
@@ -441,7 +441,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
     this.focusPeriodYear = obj.record.PeriodYear;
     this.SelectedRecord = obj.record;
     console.log(obj.record);
-    this.transactionService.setCurrentAttachment({ 
+    this.transactionService.setCurrentAttachment({
       transactionID: obj.record.TransactionID,
       attachmentID: obj.record.SupplierC1ID,
       docType: 'SMD',

@@ -254,7 +254,7 @@ filePreview: string;
     // this.companyService.observeCompany()
     // .pipe(takeUntil(this.unsubscribe$))
     // .subscribe((obj: SelectedCompany) => {
-      
+
     //   console.log(obj);
     //   if (obj !== null && obj !== undefined) {
     //     this.companyID = obj.companyID;
@@ -331,7 +331,7 @@ filePreview: string;
   recordsPerPageChange($event) {
 
   }
-  
+
   onFileChange(files: FileList) {
     this.fileUpload = files.item(0);
     this.filePreview = this.fileUpload.name;
@@ -339,7 +339,7 @@ filePreview: string;
   createAttachments() {
     this.transactionService.uploadAttachment(
       this.filePreview,
-      this.fileUpload,
+      this.fileUpload[0],
       'SC1',
       this.currentReceipt.TransactionID,
       this.currentUser.userID,
@@ -440,7 +440,7 @@ filePreview: string;
     this.SelectedRecord = obj.record;
     console.log(obj.record);
     this.focusAttachmenID = obj.record.SupplierC1ID;
-    this.transactionService.setCurrentAttachment({ 
+    this.transactionService.setCurrentAttachment({
         transactionID: obj.record.TransactionID,
         attachmentID: obj.record.SupplierC1ID,
         docType: 'SC1',
