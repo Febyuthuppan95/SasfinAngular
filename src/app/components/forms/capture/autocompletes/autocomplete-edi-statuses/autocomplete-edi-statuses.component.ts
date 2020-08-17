@@ -37,7 +37,7 @@ constructor(private userService: UserService,
     this.query.valueChanges.subscribe((value) => {
       console.log(value);
       this.list = this.listTemp;
-  
+
       if (value) {
         if (value.EDIStatusID) {
           this.control.setValue(value.EDIStatusID);
@@ -96,6 +96,12 @@ constructor(private userService: UserService,
 
   public displayFn(item: any): string {
     return item ? `${item.Name}` : '';
+  }
+
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
   }
 
   ngOnDestroy(): void {}

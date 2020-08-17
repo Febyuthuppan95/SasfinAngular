@@ -106,5 +106,11 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
     return item ? `${item.StartDay} ${item.StartMonth} - ${item.EndDay} ${item.EndMonth}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

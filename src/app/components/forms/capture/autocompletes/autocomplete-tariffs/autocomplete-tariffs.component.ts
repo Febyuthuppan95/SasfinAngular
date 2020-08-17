@@ -111,6 +111,12 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     return item ? `${item.subHeading}${item.itemNumber !== null ? '.' + item.itemNumber : ''}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 
 }

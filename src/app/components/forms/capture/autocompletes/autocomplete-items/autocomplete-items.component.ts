@@ -120,5 +120,11 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
     return item ? `${item.Tariff !== '' && item.Tariff !== null ? item.Tariff + ', ' : ''}${item.Name}, ${item.Description}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

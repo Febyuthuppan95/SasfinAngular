@@ -111,5 +111,11 @@ constructor(private userService: UserService,
     return item ? `${item.name}, ${item.description}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

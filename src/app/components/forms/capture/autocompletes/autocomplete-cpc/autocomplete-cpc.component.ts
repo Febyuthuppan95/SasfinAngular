@@ -109,5 +109,11 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
     return item ? `${item.CPC}` : '';
   }
 
+  focusOut() {
+    if (this.cpcList.length > 0) {
+      this.query.setValue(this.cpcList[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

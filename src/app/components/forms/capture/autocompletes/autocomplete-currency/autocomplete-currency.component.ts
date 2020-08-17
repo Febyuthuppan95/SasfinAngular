@@ -113,5 +113,11 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     return item ? `${item.code}, ${item.name}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }

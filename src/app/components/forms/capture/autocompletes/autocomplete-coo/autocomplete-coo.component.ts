@@ -128,5 +128,11 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
     return item ? `${item.code}, ${item.name}` : '';
   }
 
+  focusOut() {
+    if (this.list.length > 0) {
+      this.query.setValue(this.list[0]);
+    }
+  }
+
   ngOnDestroy(): void {}
 }
