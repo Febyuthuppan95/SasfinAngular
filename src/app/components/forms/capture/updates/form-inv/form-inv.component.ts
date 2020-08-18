@@ -327,6 +327,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           }  else {
               this.lines = [];
               this.newLine(true);
+      this.cancelLine();
+
           }
       });
   }
@@ -410,6 +412,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!target) {
       $event.isLocal = true;
       this.lines.push($event);
+      this.cancelLine();
+
       this.newLine(true);
 
       this.snackbar.open('Line added to queue', '', {duration: 3000});
@@ -420,6 +424,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.invoiceID = original.invoiceID;
 
       this.lines[this.lines.indexOf(target)] = $event;
+      this.cancelLine();
+
       this.newLine(true);
 
       this.snackbar.open('Line queued to update', '', {duration: 3000});

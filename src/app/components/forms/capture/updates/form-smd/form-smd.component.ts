@@ -252,6 +252,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.newLine(true);
+      this.cancelLine();
+
       });
   }
 

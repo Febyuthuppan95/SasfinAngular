@@ -392,6 +392,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         } else {
           this.lines = [];
           this.newLine(true);
+      this.cancelLine();
+
         }
       });
   }
@@ -547,6 +549,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     if (!target) {
       $event.isLocal = true;
       this.lines.push($event);
+      this.cancelLine();
 
       this.newLine(true);
       this.snackbar.open('Line added to queue', '', {duration: 3000});
@@ -563,13 +566,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       }
 
       this.lines[this.lines.indexOf(target)] = $event;
+      this.cancelLine();
 
       this.newLine(true);
 
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
-    // this.cancelLine();
   }
 
   async saveLineDuty(duties: any, callback) {
