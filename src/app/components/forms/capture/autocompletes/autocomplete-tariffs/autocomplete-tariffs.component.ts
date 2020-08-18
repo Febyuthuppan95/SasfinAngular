@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
 import { TariffService } from 'src/app/services/Tariff.service';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -12,16 +14,19 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 })
 export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private userService: UserService,
-              private tariffService: TariffService) { }
+              private tariffService: TariffService,
+              private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private isRequired = false;
 
   public list: any [] = [];
   public query = new FormControl('');
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -39,7 +44,9 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
           this.control.setValue(value.id);
           this.query.setErrors(null);
           this.control.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           this.load(false);
           this.control.reset(null);
           this.query.setErrors({ incorrect: true });
@@ -112,9 +119,18 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}

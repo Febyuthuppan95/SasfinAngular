@@ -57,23 +57,39 @@
               <div class="form-group text-right">
                 <button (click)="addSection()" class="btn btn-primary btn-sm">Add Section</button>
               </div>
-              <div *ngFor="let section of this.requestData.sections; let i = index">
-                <button mat-button (click)="removeSection(section)">REMOVE</button>
-
-                <div class="form-group form-inline">
-                  <input type="number" placeholder="Start" class="form-control form-control-sm" [value]="section.pages.start" [(ngModel)]="section.pages.start" [ngModelOptions]="{standalone: true}" required>
-                  <input type="number" placeholder="End"  class="form-control form-control-sm" [value]="section.pages.end" [(ngModel)]="section.pages.end" [ngModelOptions]="{standalone: true}" required>
-                  <input type="number" placeholder="Skip"  class="form-control form-control-sm" [value]="section.pages.skip" [(ngModel)]="section.pages.skip" [ngModelOptions]="{standalone: true}" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" placeholder="Name" disabled="disabled"  class="form-control form-control-sm" [value]="section.name" [(ngModel)]="section.name" [ngModelOptions]="{standalone: true}" required>
-                </div>
-              <div class="form-group">
-                <select class="form-control form-control-sm" (change)="typeChange(i, $event.target.value)">
-                  <option disabled selected>Please select a type</option>
-                  <option *ngFor="let type of this.transactionTypes; let x = index;"  [value]="x">{{type.description}}</option>
-                </select>
-              </div>
+              <div *ngFor="let section of requestData.sections; let i = index">
+                <ng-container *ngIf="section.control">
+                  <div class="text-right">
+                    <button mat-button (click)="removeSection(section)">REMOVE</button>
+                  </div>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Pages</mat-label>
+                    <input matInput type="text" placeholder="Pages eg. (1-3, 5)" [formControl]="section.control">
+                    <mat-hint>eg. (1-3, 5)</mat-hint>
+                    <mat-error *ngIf="section.control.hasError('required')">
+                      Pages is <strong>required, format: 1-3, 5</strong>
+                    </mat-error>
+                    <mat-error *ngIf="section.control.hasError('pattern')">
+                      Incorrect format <strong>eg. (1-3, 5)</strong>
+                    </mat-error>
+                    <mat-error *ngIf="section.control.hasError('format')">
+                      Incorrect Format <strong>make sure ranges are valid</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <br>
+                  <br>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Document Type</mat-label>
+                    <mat-select (selectionChange)="typeChange(i, $event.value)">
+                      <mat-option disabled selected>Please select a type</mat-option>
+                      <mat-option *ngFor="let type of this.transactionTypes; let x = index;" [value]="x">
+                        {{type.description}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <br>
+                  <br>
+                </ng-container>
               </div>
               <hr>
             </div>

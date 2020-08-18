@@ -166,7 +166,7 @@
               <span class="float-right">{{attach.status}}</span>
                 <p>{{attach.name}}</p>
                 <small>{{attach.type}}</small><br/>
-                <small *ngFor="let item of attach.file">{{item.name}}</small>
+                <small *ngFor="let item of attach.file">{{item.name}},&nbsp;</small>
                 <br/>
                 <br/>
                 <mat-progress-bar *ngIf="attach.uploading" mode="indeterminate" color="primary"></mat-progress-bar>

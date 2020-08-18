@@ -518,7 +518,11 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   onFileChange(files: File[]) {
-    this.preview = files[0].name;
+    this.preview = '';
+
+    for (let i = 0; i < files.length; i++) {
+      this.preview += `${files[i].name} `;
+    }
 
     this.attachmentQueue[this.currentAttachment] = {
       file: files,

@@ -2,6 +2,8 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { FormControl, Validators } from '@angular/forms';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -12,10 +14,12 @@ import { FormControl, Validators } from '@angular/forms';
 export class AutocompleteEdiStatusesComponent implements OnInit, OnChanges {
 
 constructor(private userService: UserService,
-            private captureService: CaptureService) { }
+            private captureService: CaptureService,
+            private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -24,6 +28,7 @@ constructor(private userService: UserService,
   public list: any[] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -42,7 +47,9 @@ constructor(private userService: UserService,
         if (value.EDIStatusID) {
           this.control.setValue(value.EDIStatusID);
           this.query.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
           if (query && query !== null) {
             this.list = this.list.filter(x => this.matchRuleShort(x.Name.toUpperCase(), `*${query.toUpperCase()}*`));
@@ -99,10 +106,17 @@ constructor(private userService: UserService,
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
   }
 
-  ngOnDestroy(): void {}
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
 }

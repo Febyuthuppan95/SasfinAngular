@@ -5,6 +5,8 @@ import { CountryItem } from 'src/app/models/HttpRequests/Locations';
 import { CompaniesListResponse, Company } from 'src/app/models/HttpResponses/CompaniesListResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { CompanyList } from 'src/app/models/HttpRequests/Company';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -14,10 +16,12 @@ import { CompanyList } from 'src/app/models/HttpRequests/Company';
 })
 export class AutocompleteCompaniesComponent implements OnInit, OnDestroy, OnChanges {
 constructor(private userService: UserService,
-            private companyService: CompanyService) { }
+            private companyService: CompanyService,
+            private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Company[] = [];
@@ -26,6 +30,7 @@ constructor(private userService: UserService,
   public list: Company[] = [];
   public query = new FormControl(null);
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -44,7 +49,9 @@ constructor(private userService: UserService,
           this.control.setValue(value.countryID);
           this.query.setErrors(null);
           this.control.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
           if (query && query !== null) {
             this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
@@ -111,9 +118,18 @@ constructor(private userService: UserService,
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   isNull(value) {

@@ -5,6 +5,8 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
 import { MatDialog } from '@angular/material';
 import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -15,11 +17,13 @@ import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/du
 export class AutocompleteDutyComponent implements OnInit, OnChanges, OnDestroy {
 constructor(private userService: UserService,
             private captureService: CaptureService,
-            private dialog: MatDialog) { }
+            private dialog: MatDialog,
+            private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() sad500LineID: number;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any [] = [];
@@ -181,6 +185,15 @@ constructor(private userService: UserService,
 
     this.assignedList.splice(this.assignedList.indexOf(duty), 1);
     this.control.setValue(this.assignedList);
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}

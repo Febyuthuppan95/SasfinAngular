@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -15,10 +17,12 @@ import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-inv
 export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
               private apiService: ApiService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -27,6 +31,7 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
   public list: any[] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -45,7 +50,9 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
           this.control.setValue(value.QuarterID);
           this.query.setErrors(null);
           this.control.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
           if (query && query !== null) {
             this.load(false, value);
@@ -107,9 +114,18 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}

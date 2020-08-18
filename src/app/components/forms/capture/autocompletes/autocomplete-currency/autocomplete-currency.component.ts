@@ -4,6 +4,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
 import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -13,10 +15,12 @@ import { Currency } from 'src/app/models/HttpResponses/Currency';
 })
 export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
-              private currencyService: CurrenciesService) { }
+              private currencyService: CurrenciesService,
+              private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Currency[] = [];
@@ -25,6 +29,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
   public list: Currency[] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -50,7 +55,9 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
         if (value.code) {
           this.control.setValue(value.currencyID);
           this.query.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
           if (query && query !== null) {
             // console.log(query);
@@ -72,8 +79,6 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     } else {
       this.query.setValidators(null);
     }
-
-    console.log(this.control.value);
 
     if (this.control.value === null) {
       this.query.reset(null);
@@ -114,9 +119,18 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}

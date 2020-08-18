@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { FormControl, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -15,11 +17,13 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 })
 export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
-              private apiService: ApiService) { }
+              private apiService: ApiService,
+              private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() readonly defaultValue: number;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private cpcListTemp: any [] = [];
@@ -28,6 +32,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   public cpcList: any [] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -45,7 +50,9 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
         if (value.CPCID) {
           this.control.setValue(value.CPCID);
           this.query.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
           if (query && query !== null) {
             // console.log(query);
@@ -110,9 +117,18 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   focusOut() {
-    if (this.cpcList.length > 0) {
+    if (this.cpcList.length > 0 && !this.selected) {
       this.query.setValue(this.cpcList[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}

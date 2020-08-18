@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { FormControl, Validators } from '@angular/forms';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,6 +41,8 @@ export class SplitDocumentComponent implements OnInit, AfterViewInit, OnDestroy 
   shortcuts: ShortcutInput[] = [];
   src: string;
   originalSize: boolean = true;
+
+  pageSequenceRegex = new RegExp(/^\s*\d+(?:-\d+)?\s*(?:,\s*\d+(?:-\d+)?\s*)*$/g);
 
   processing = false;
 
@@ -123,18 +126,19 @@ ngAfterViewInit() {
 
     this.requestData.sections.push({
       position: curLength,
-      pages: {
-        start: 1,
-        end: 2,
-        skip: -1
-      },
+      pages: [],
       name: '',
       userID: this.data.userID,
       transactionID: this.data.transactionID,
       attachmentType: '',
-      companyName: this.companyName
+      companyName: this.companyName,
+      control: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(new RegExp(/^\s*\d+(?:-\d+)?\s*(?:,\s*\d+(?:-\d+)?\s*)*$/g))
+      ]),
     });
 
+    this.requestData.sections[this.requestData.sections.length - 1].control.setErrors(null);
     this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   }
 
@@ -159,10 +163,8 @@ ngAfterViewInit() {
   }
 
   typeChange(index: number, value: number) {
-    console.log(value);
     this.requestData.sections[index].attachmentType = this.transactionTypes[value].name;
     this.requestData.sections[index].name = this.transactionTypes[value].description;
-    console.log(this.requestData.sections[index]);
   }
 
   formSubmit() {
@@ -177,52 +179,79 @@ ngAfterViewInit() {
     } else if (this.file === undefined) {
       err++;
       console.log(this.file);
-
     }
 
     this.requestData.sections.forEach((item) => {
       if (item.name === '' || item.name === null || !item.name) {
         err++;
         console.log('name');
-
       }
 
       if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
         err++;
         console.log('attachmentType');
-
       }
 
-      if (item.pages.start === 0 || item.pages.start === null || !item.pages.start) {
+      if (item.control.valid) {
+        const segments = item.control.value.split(',');
+
+        segments.forEach(element => {
+          if (element.indexOf('-') === -1) {
+            item.pages.push(+element.trim());
+          } else {
+            const range = element.split('-');
+
+            if (range.length === 2) {
+              if (range[0] < range[1]) {
+                for (let i = +range[0]; i <= +range[1]; i++) {
+                  item.pages.push(i);
+                }
+              } else {
+                  item.control.setErrors({ format : true });
+              }
+            } else {
+              item.control.setErrors({ format : true });
+            }
+          }
+        });
+
+        console.log(item.pages);
+      } else {
         err++;
-        console.log('start');
+        this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
       }
 
-      if (item.pages.end === 0 || item.pages.end === null || !item.pages.end) {
+      if (item.pages.length === 0) {
         err++;
-        console.log('end');
+        console.log('pages');
       }
     });
 
     if (err === 0) {
-    const formData = new FormData();
-    this.requestData.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
-    formData.append('requestModel', JSON.stringify(this.requestData));
+      const request = this.requestData;
 
-    for (let i = 0; i < this.file.length; i++) {
-      formData.append('files', this.file[i]);
-    }
+      request.sections.forEach((item) => {
+        delete item.control;
+      });
 
-    this.captureService.splitPDF(formData).then(
-      (res) => {
-        this.processing = false;
-        this.dialogRef.close({state: true});
-      },
-      (msg) => {
-        this.processing = false;
-        this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
+      const formData = new FormData();
+      request.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
+      formData.append('requestModel', JSON.stringify(request));
+
+      for (let i = 0; i < this.file.length; i++) {
+        formData.append('files', this.file[i]);
       }
-    );
+
+      this.captureService.splitPDF(formData).then(
+        (res) => {
+          this.processing = false;
+          this.dialogRef.close({state: true});
+        },
+        (msg) => {
+          this.processing = false;
+          this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
+        }
+      );
     } else {
       this.processing = false;
       this.snackbar.open('There are errors', '', { duration: 3000 });
@@ -264,10 +293,11 @@ export class Section {
 
 export class SplitPDFRequest {
     position: number;
-    pages: Section;
+    pages: number[];
     userID?: number;
     transactionID?: number;
     name?: string;
     attachmentType?: string;
     companyName: string;
+    control: FormControl;
 }

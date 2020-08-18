@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
 import { IncoTerm, IncoTermTypesReponse } from '../../form-invoice/form-invoice.component';
 import { CaptureService } from 'src/app/services/capture.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -12,10 +14,12 @@ import { CaptureService } from 'src/app/services/capture.service';
 })
 export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private userService: UserService,
-              private captureService: CaptureService) { }
+              private captureService: CaptureService,
+              private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
   @Input() appearance = 'fill';
+  @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: IncoTerm[] = [];
@@ -24,6 +28,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   public list: IncoTerm[] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -32,14 +37,13 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
 
     this.isRequired = this.control.validator !== null;
 
-    this.control.valueChanges.subscribe((val) => {
-      if (val === null) {
-        this.query.reset(null);
-        this.load(true);
-      } else {
-        this.load(true);
-      }
-    });
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
+
+    this.query.updateValueAndValidity();
 
     this.load(true);
 
@@ -51,8 +55,11 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
           this.control.setValue(value.incoTermTypeID);
           this.query.setErrors(null);
           this.control.setErrors(null);
+          this.selected = true;
         } else {
+          this.selected = false;
           const query: string = value;
+
           if (query && query !== null) {
             this.list = this.list.filter(x => this.matchRuleShort(x.name.toUpperCase(), `*${query.toUpperCase()}*`));
           }
@@ -112,9 +119,18 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   focusOut() {
-    if (this.list.length > 0) {
+    if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }
+  }
+
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
   }
 
   ngOnDestroy(): void {}
