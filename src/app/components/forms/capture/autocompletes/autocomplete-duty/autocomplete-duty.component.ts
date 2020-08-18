@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -7,6 +7,7 @@ import { MatDialog, MatAutocompleteTrigger } from '@angular/material';
 import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -25,6 +26,9 @@ constructor(private userService: UserService,
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
+  @ViewChild('dutyInput', { static: false })
+  dutyInput: ElementRef;
+
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any [] = [];
   private listMaster: any [] = [];
@@ -34,6 +38,7 @@ constructor(private userService: UserService,
   public query = new FormControl();
   private sad500LineIDTemp = -1;
   public selected = false;
+  private currentDialog: any;
 
   ngOnInit() {
     if (!this.control) {
@@ -43,11 +48,17 @@ constructor(private userService: UserService,
     this.load();
 
     this.query.valueChanges.subscribe((value) => {
-      this.list = this.listTemp;
-      const query: string = value;
+      if (value) {
+        if (value.dutyTaxTypeID) {
+          // Focus / Assign
+        } else {
+          this.list = this.listTemp;
+          const query: string = value;
 
-      if (query && query !== null && query !== '') {
-        this.list = this.list.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
+          if (query && query !== null && query !== '') {
+            this.list = this.list.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+        }
       }
     });
   }
@@ -160,10 +171,12 @@ constructor(private userService: UserService,
       label
     };
 
-    this.dialog.open(DutyAssignDialogComponent, {
+    this.currentDialog = this.dialog.open(DutyAssignDialogComponent, {
       data: assign,
       width: '256px'
-    }).afterClosed().subscribe((result: Duty) => {
+    }).afterClosed().pipe(
+      finalize(() => this.currentDialog = undefined)
+    ).subscribe((result: Duty) => {
       if (result !== undefined) {
         assign.value = result.duty;
         this.assignedList.push(assign);
@@ -171,6 +184,7 @@ constructor(private userService: UserService,
         this.list = this.listTemp;
         this.control.setValue(this.assignedList);
         this.query.reset('');
+        this.dutyInput.nativeElement.focus();
       }
     });
   }
@@ -189,7 +203,7 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '') && !this.currentDialog) {
       this.assignDuty(this.list[0].dutyTaxTypeID, this.list[0].code);
 
       trigger.closePanel();

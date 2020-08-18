@@ -404,7 +404,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!target) {
       $event.isLocal = true;
       this.lines.push($event);
-      this.refresh();
+      this.newLine(true);
+
       this.snackbar.open('Line added to queue', '', {duration: 3000});
     } else {
       $event.isLocal = false;
@@ -412,11 +413,12 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.customworksheetLineID = original.customworksheetLineID;
 
       this.lines[this.lines.indexOf(target)] = $event;
-      this.refresh();
+      this.newLine(true);
+
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
-    this.cancelLine();
+    // this.cancelLine();
   }
 
   async saveLines(lines: any[], callback) {

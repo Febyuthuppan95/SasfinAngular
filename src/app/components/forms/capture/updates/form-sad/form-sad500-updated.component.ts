@@ -454,6 +454,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
 
+            console.log(line);
+
             if (line.isLocal) {
               await this.captureService.sad500LineAdd(line).then((res: any) =>  {
                 console.log(res); sad500LineID = res.createdID; }, (msg) => console.log(JSON.stringify(msg)));
@@ -546,25 +548,28 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       $event.isLocal = true;
       this.lines.push($event);
 
-      this.refresh();
+      this.newLine(true);
       this.snackbar.open('Line added to queue', '', {duration: 3000});
     } else {
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
-      $event.specificSAD500LineID = original.specificSAD500LineID;
+      console.log(target);
+      $event.sad500LineID = target.sad500LineID;
+      $event.specificSAD500LineID = target.sad500LineID;
       $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
 
       if (this.isVOC) {
-        $event.originalLineID = original.specificSAD500LineID;
+        $event.originalLineID = target.sad500LineID;
       }
 
       this.lines[this.lines.indexOf(target)] = $event;
 
-      this.refresh();
+      this.newLine(true);
+
       this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
-    this.cancelLine();
+    // this.cancelLine();
   }
 
   async saveLineDuty(duties: any, callback) {
@@ -705,12 +710,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     }
   }
 
-  refresh() {
+  refresh(time?) {
     this.displayLines = false;
     this.loader = true;
     setTimeout(() => {
       this.displayLines = true;
       this.loader = false;
-    }, 500);
+    }, time ? time : 500);
   }
 }

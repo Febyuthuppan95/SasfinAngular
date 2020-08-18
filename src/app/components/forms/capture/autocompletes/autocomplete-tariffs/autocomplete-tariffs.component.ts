@@ -75,21 +75,24 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
       this.query.reset(null);
       this.load(true);
     } else {
-      this.load(true);
+      this.load(false);
+      this.load(true, true);
     }
   }
 
-  load(setDefault?: boolean) {
+  load(setDefault?: boolean, getSpecific?: boolean) {
     let filter = '';
 
     if (this.query.value && this.query.value !== null) {
       filter = this.query.value;
     }
 
+    console.log(this.control.value);
+
     this.tariffService
     .list({
       userID: this.currentUser.userID,
-      specificTariffID: -1,
+      specificTariffID: getSpecific ? this.control.value : -1,
       filter,
       rowStart: 1,
       rowEnd: 10,
@@ -111,11 +114,12 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         rowCount: number;
       }) => {
         this.list = res.tariffList;
-        // console.log(this.list);
 
         if (setDefault) {
           const defaultValue = this.list.find(x => x.id === this.control.value);
-          this.query.setValue(defaultValue, { emitEvent: false });
+          if (defaultValue) {
+            this.query.setValue(defaultValue, { emitEvent: false });
+          }
         }
       });
   }
