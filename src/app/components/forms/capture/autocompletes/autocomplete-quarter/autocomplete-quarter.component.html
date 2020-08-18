@@ -4,7 +4,7 @@
     </mat-label>
     <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
     <mat-hint>Start - End</mat-hint>
-  <mat-hint *ngIf="query.value"><button class="text-button" type="button" (click)="query.setValue(null)">Leave blank</button></mat-hint>
+
 
     <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
     <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
