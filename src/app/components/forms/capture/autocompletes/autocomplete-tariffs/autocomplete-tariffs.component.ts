@@ -35,6 +35,10 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
 
     this.isRequired = this.control.validator !== null;
 
+    if (this.control.value !== null) {
+      this.selected = true;
+    }
+
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
@@ -52,6 +56,8 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
           this.query.setErrors({ incorrect: true });
           this.control.setErrors({ incorrect: true });
         }
+      } else {
+        this.selected = false;
       }
     });
   }
@@ -118,9 +124,12 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     return item ? `${item.subHeading}${item.itemNumber !== null ? '.' + item.itemNumber : ''}` : '';
   }
 
-  focusOut() {
+  focusOut(trigger) {
     if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
+
+      trigger.closePanel();
+
     }
   }
 

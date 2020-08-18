@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -66,6 +66,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
+  @ViewChild('startForm', { static: false })
+  private startForm: ElementRef;
+
   @Input() capture: any;
 
   public init() {
@@ -87,7 +90,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       userID: new FormControl(null),
       customworksheetID: new FormControl(null),
       transactionID: new FormControl(null),
-      waybillNo: new FormControl(null, [Validators.required]),
+      waybillNo: new FormControl(null),
       lrn: new FormControl(null),
       fileRef: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
@@ -105,21 +108,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       fileRefODate: new FormControl(null),
       fileRefOReason: new FormControl(null),
     });
-
-    // this.transactionService.observerCurrentAttachment()
-    // .subscribe((capture: any) => {
-    //   if (capture) {
-    //     this.attachmentID = capture.attachmentID;
-    //     this.transactionID = capture.transactionID;
-    //     this.attachmentLabel = capture.docType;
-    //     this.transactionLabel = capture.transactionType;
-    //     this.isExport = capture.transactionType === 'Export' ? true : false;
-    //     this.load();
-    //   }
-    // });
-
-    // this.eventService.observeCaptureEvent()
-    // .subscribe((escalation?: boolean) => this.submit(this.form, escalation));
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
@@ -164,8 +152,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.activeLine = null;
-              this.activeIndex = -1;
+              this.displayLines = false;
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -175,7 +163,14 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             command: e => {
               this.activeLine = null;
               this.activeIndex = -1;
+              this.refresh();
             }
+          },
+          {
+            key: 'alt + k',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => this.eventService.focusForm.next(),
           },
           {
             key: 'alt + s',
@@ -284,7 +279,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.form.updateValueAndValidity();
         await this.loadLines();
-
+        setTimeout(() => this.startForm.nativeElement.focus(), 100);
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
       }

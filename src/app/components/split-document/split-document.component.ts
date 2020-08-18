@@ -136,9 +136,12 @@ ngAfterViewInit() {
         Validators.required,
         Validators.pattern(new RegExp(/^\s*\d+(?:-\d+)?\s*(?:,\s*\d+(?:-\d+)?\s*)*$/g))
       ]),
+      nameControl: new FormControl(null, [Validators.required]),
     });
 
-    this.requestData.sections[this.requestData.sections.length - 1].control.setErrors(null);
+    this.requestData.sections[this.requestData.sections.length - 1].control.markAsUntouched();
+    this.requestData.sections[this.requestData.sections.length - 1].nameControl.markAsUntouched();
+
     this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   }
 
@@ -192,6 +195,12 @@ ngAfterViewInit() {
         console.log('attachmentType');
       }
 
+      if (item.nameControl.valid) {
+        item.name = item.nameControl.value;
+      } else {
+        err++;
+      }
+
       if (item.control.valid) {
         const segments = item.control.value.split(',');
 
@@ -232,6 +241,7 @@ ngAfterViewInit() {
 
       request.sections.forEach((item) => {
         delete item.control;
+        delete item.nameControl;
       });
 
       const formData = new FormData();
@@ -300,4 +310,5 @@ export class SplitPDFRequest {
     attachmentType?: string;
     companyName: string;
     control: FormControl;
+    nameControl: FormControl;
 }

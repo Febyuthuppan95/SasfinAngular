@@ -40,6 +40,10 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
 
     this.isRequired = this.control.validator !== null;
 
+    if (this.control.value !== null) {
+      this.selected = true;
+    }
+
     this.load(true, '');
 
     this.query.valueChanges.subscribe((value) => {
@@ -62,6 +66,8 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
           this.query.setErrors({ incorrect: true });
           this.control.setErrors({ incorrect: true });
         }
+      } else {
+        this.selected = false;
       }
     });
   }
@@ -113,9 +119,12 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
     return item ? `${item.StartDay} ${item.StartMonth} - ${item.EndDay} ${item.EndMonth}` : '';
   }
 
-  focusOut() {
+  focusOut(trigger) {
     if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
+
+      trigger.closePanel();
+
     }
   }
 

@@ -49,7 +49,7 @@
           <mat-label>
             LRN
           </mat-label>
-          <input matInput type="text" formControlName="lrn" />
+          <input matInput type="text" formControlName="lrn" #startForm (focusin)="updateHelpContext('form-customs-worksheet-lrn')"/>
           <mat-icon *ngIf="form.controls.lrnOBit.value" matSuffix (click)="undoOverride('lrn')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.lrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.lrnOBit.value && form.controls.lrn.errors?.incorrect" matSuffix (click)="overrideDialog('lrn', 'LRN')" matTooltip="Override">remove_circle</mat-icon>
@@ -63,7 +63,7 @@
             Waybill No
           </mat-label>
           <input matInput type="text" formControlName="waybillNo" />
-          <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+          <mat-error *ngIf="form.controls.waybillNo.errors?.incorrect" (focusin)="updateHelpContext('form-customs-worksheet-waybill')">{{getError('waybillNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -72,7 +72,7 @@
           <mat-label>
             File Ref
           </mat-label>
-          <input matInput type="text" formControlName="fileRef" />
+          <input matInput type="text" formControlName="fileRef" (focusin)="updateHelpContext('form-customs-worksheet-fileref')" />
           <mat-icon *ngIf="form.controls.fileRefOBit.value" matSuffix (click)="undoOverride('fileRef')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.fileRefOBit.value">OVERRIDE: {{form.controls.fileRefOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect" matSuffix (click)="overrideDialog('fileRef', 'File Ref')" matTooltip="Override">remove_circle</mat-icon>

@@ -79,6 +79,15 @@
                   <br>
                   <br>
                   <mat-form-field appearance="fill">
+                    <mat-label>Attachment Name</mat-label>
+                    <input matInput type="text" [formControl]="section.nameControl">
+                    <mat-error *ngIf="section.control.hasError('required')">
+                      Attachment Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <br>
+                  <br>
+                  <mat-form-field appearance="fill">
                     <mat-label>Document Type</mat-label>
                     <mat-select (selectionChange)="typeChange(i, $event.value)">
                       <mat-option disabled selected>Please select a type</mat-option>

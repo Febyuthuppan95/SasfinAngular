@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input, ElementRef } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -65,6 +65,9 @@ private notify: NotificationComponent;
 @ViewChild(KeyboardShortcutsComponent, { static: true })
 private keyboard: KeyboardShortcutsComponent;
 
+@ViewChild('startForm', { static: false })
+private startForm: ElementRef;
+
 @Input() capture: any;
 
 public init() {
@@ -105,6 +108,15 @@ ngAfterViewInit(): void {
                 }
               });
             }
+          }
+        },
+
+        {
+          key: 'alt + m',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            setTimeout(() => this.startForm.nativeElement.focus());
           }
         },
         {
@@ -163,6 +175,8 @@ async load() {
     }
 
     this.form.updateValueAndValidity();
+    setTimeout(() => this.startForm.nativeElement.focus(), 100);
+
   } else {
     this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
   }

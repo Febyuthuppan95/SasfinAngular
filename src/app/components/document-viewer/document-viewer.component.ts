@@ -53,13 +53,13 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
             key: 'alt + right',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.page++
+            command: e => this.pageChange(this.page + 1)
         },
         {
           key: 'alt + left',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.page--
+          command: e => this.pageChange(this.page - 1)
         },
         {
           key: 'alt + up',
@@ -97,20 +97,28 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   rotatePDF(deg: number) {
+    const page = this.page;
     this.rotation = deg;
+    this.page = page;
   }
 
   zoomChange(variant: number) {
+    const page = this.page;
     this.zoom_to = this.zoom_to + variant;
+    this.page = page;
   }
 
   zoom_in() {
+    const page = this.page;
     this.zoom_to = this.zoom_to + 0.2;
+    this.page = page;
   }
 
   zoom_out() {
     if (this.zoom_to >= 0.4) {
-       this.zoom_to = this.zoom_to - 0.2;
+      const page = this.page;
+      this.zoom_to = this.zoom_to - 0.2;
+      this.page = page;
     }
   }
 

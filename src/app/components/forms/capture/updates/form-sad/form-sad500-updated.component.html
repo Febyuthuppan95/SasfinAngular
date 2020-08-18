@@ -49,7 +49,7 @@
           <mat-label>
             Serial No
           </mat-label>
-          <input matInput type="text" formControlName="serialNo" />
+          <input matInput type="text" formControlName="serialNo" #startForm (focusin)="updateHelpContext('form-sad500-serial-number')"/>
           <mat-error *ngIf="form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
@@ -59,7 +59,7 @@
           <mat-label>
             LRN
           </mat-label>
-          <input matInput type="text" formControlName="lrn" />
+          <input matInput type="text" formControlName="lrn" (focusin)="updateHelpContext('form-sad500-lrn')"/>
           <mat-icon *ngIf="form.controls.lrnOBit.value" matSuffix (click)="undoOverride('lrn')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.lrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.lrnOBit.value && form.controls.lrn.errors?.incorrect" matSuffix (click)="overrideDialog('lrn', 'LRN')" matTooltip="Override">remove_circle</mat-icon>
@@ -72,7 +72,7 @@
           <mat-label>
             Rebate Code
           </mat-label>
-          <input matInput type="text" formControlName="referenceNo" />
+          <input matInput type="text" formControlName="referenceNo" (focusin)="updateHelpContext('form-sad500-rebate-code')"/>
           <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
@@ -85,7 +85,7 @@
           <mat-label>
             Total Customs Value
           </mat-label>
-          <input matInput type="number" formControlName="totalCustomsValue" />
+          <input matInput type="number" formControlName="totalCustomsValue" (focusin)="updateHelpContext('form-sad500-total-customs-value')"/>
           <!-- <mat-icon *ngIf="form.controls.totalCustomsValueOBit.value" matSuffix (click)="undoOverride('totalCustomsValue')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.totalCustomsValueOBit.value">OVERRIDE: {{form.controls.totalCustomsValueOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.totalCustomsValueOBit.value && form.controls.totalCustomsValue.errors?.incorrect" matSuffix (click)="overrideDialog('totalCustomsValue', 'TotalCustomsValue')" matTooltip="Override">remove_circle</mat-icon>
@@ -94,7 +94,7 @@
         <br /><br />
       </div>
       <div class="col-6" (mouseover)="updateHelpContext('form-sad500-cpc')">
-        <ls-autocomplete-cpc [(control)]="form.controls.cpcID"></ls-autocomplete-cpc>
+        <ls-autocomplete-cpc [(control)]="form.controls.cpcID" [helpSlug]="'form-sad500-cpc'"></ls-autocomplete-cpc>
         <br /><br />
       </div>
       <div class="col-12">
@@ -102,7 +102,7 @@
           <mat-label>
             Waybill No
           </mat-label>
-          <input matInput type="text" formControlName="waybillNo" />
+          <input matInput type="text" formControlName="waybillNo" (focusin)="updateHelpContext('form-sad500-waybill-no')"/>
           <!-- <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
@@ -115,7 +115,7 @@
           <mat-label>
             Supplier Ref
           </mat-label>
-          <input matInput type="text" formControlName="supplierRef" />
+          <input matInput type="text" formControlName="supplierRef" (focusin)="updateHelpContext('form-sad500-file-or-supplier-ref')"/>
           <!-- <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
@@ -128,7 +128,7 @@
           <mat-label>
             MRN
           </mat-label>
-          <input matInput type="text" formControlName="mrn" (mouseover)="updateHelpContext('form-sad500-mrn')"/>
+          <input matInput type="text" formControlName="mrn" (focusin)="updateHelpContext('form-sad500-mrn')"/>
           <mat-icon *ngIf="form.controls.mrnOBit.value" matSuffix (click)="undoOverride('mrn')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.mrnOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect" matSuffix (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override">remove_circle</mat-icon>
@@ -141,7 +141,7 @@
           <mat-label>
             TIN Number
           </mat-label>
-          <input matInput type="text" formControlName="importersCode" />
+          <input matInput type="text" formControlName="importersCode" (focusin)="updateHelpContext('form-sad500-importersCode')"/>
           <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'TIN Number')" matTooltip="Override">remove_circle</mat-icon>
@@ -154,7 +154,7 @@
           <mat-label>
             File Ref
           </mat-label>
-          <input matInput type="text" formControlName="fileRef" />
+          <input matInput type="text" formControlName="fileRef" (focusin)="updateHelpContext('form-sad500-file-ref')"/>
           <mat-icon *ngIf="form.controls.fileRefOBit.value" matSuffix (click)="undoOverride('fileRef')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.fileRefOBit.value">OVERRIDE: {{form.controls.fileRefOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect" matSuffix (click)="overrideDialog('fileRef', 'File Ref')" matTooltip="Override">remove_circle</mat-icon>
@@ -167,7 +167,7 @@
           <mat-label>
             Total Duty
           </mat-label>
-          <input matInput type="number" formControlName="totalDuty" />
+          <input matInput type="number" formControlName="totalDuty" (focusin)="updateHelpContext('form-sad500-total-customs-duty')"/>
           <mat-icon *ngIf="form.controls.totalDutyOBit.value" matSuffix (click)="undoOverride('totalDuty')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.totalDutyOBit.value">OVERRIDE: {{form.controls.totalDutyOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.totalDutyOBit.value && form.controls.totalDuty.errors?.incorrect" matSuffix (click)="overrideDialog('totalDuty', 'Total Duty')" matTooltip="Override">remove_circle</mat-icon>
@@ -176,11 +176,11 @@
         <br /><br />
       </div>
       <div class="col-12" *ngIf="isVOC">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-sad500-voc-reason')">
           <mat-label>
             Reason for VOC
           </mat-label>
-          <textarea matInput type="text" formControlName="reason"></textarea>
+          <textarea matInput type="text" formControlName="reason" (focusin)="updateHelpContext('form-sad500-voc-reason')"></textarea>
         </mat-form-field>
         <br /><br />
       </div>

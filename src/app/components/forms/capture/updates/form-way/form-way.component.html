@@ -16,7 +16,7 @@
         <mat-label>
           Waybill No
         </mat-label>
-        <input matInput type="text" formControlName="waybillNo" />
+        <input matInput #startForm type="text" formControlName="waybillNo" (focusin)="updateHelpContext('form-waybill-no')"/>
         <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override">remove_circle</mat-icon>

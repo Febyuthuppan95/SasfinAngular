@@ -10,24 +10,12 @@
 
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')">
-      <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
-      <br><br>
-    </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-coo')">
-      <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
-      <br><br>
-    </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-item-code')">
-      <ls-autocomplete-items [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
-      <br><br>
-    </div>
     <div class="col-6">
       <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-invoice-line-quantity')">
         <mat-label>
           Quantity
         </mat-label>
-        <input matInput type="text" formControlName="quantity" (focusin)="updateHelpContext('form-invoice-line-quantity')">
+        <input matInput #startLineForm type="text" formControlName="quantity" (focusin)="updateHelpContext('form-invoice-line-quantity')">
         <mat-icon *ngIf="form.controls.quantityOBit.value" matSuffix (click)="undoOverride('quantity')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.quantityOBit.value">OVERRIDE: {{form.controls.quantityOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.quantityOBit.value && form.controls.quantity.errors?.incorrect" matSuffix (click)="overrideDialog('quantity', 'Line No')" matTooltip="Override">remove_circle</mat-icon>
@@ -46,6 +34,18 @@
         <mat-icon *ngIf="!form.controls.unitPriceOBit.value && form.controls.unitPrice.errors?.incorrect" matSuffix (click)="overrideDialog('unitPrice', 'Unit Price')" matTooltip="Override">remove_circle</mat-icon>
         <mat-error *ngIf="!form.controls.unitPriceOBit.value  && form.controls.unitPrice.errors?.incorrect">{{getError('unitPrice')}}</mat-error>
       </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')">
+      <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
+      <br><br>
+    </div>
+    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-coo')">
+      <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
+      <br><br>
+    </div>
+    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-item-code')">
+      <ls-autocomplete-items [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-12">

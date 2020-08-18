@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ViewChild, AfterViewInit, Output, EventEmitter, OnDestroy, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { MatSnackBar, MatDialog } from '@angular/material';
@@ -91,6 +91,9 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
+  @ViewChild('startLineForm', { static: false })
+  private startLineForm: ElementRef;
+
   ngOnInit() {
     if (this.data && this.data !== null) {
       this.data.sad500ID = this.data.SAD500ID;
@@ -115,8 +118,14 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     // this.form.controls.duties.setValidators(this.isExport ? null : null);
     // this.form.controls.duties.updateValueAndValidity();
 
+    setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
+
     this.eventService.submitLines.subscribe(() => {
       this.submit(this.form);
+    });
+
+    this.eventService.focusForm.subscribe(() => {
+      setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
   }
 
@@ -243,7 +252,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   submit(form: FormGroup) {
     console.log(form);
     form.markAllAsTouched();
-    
+
     if (form.valid) {
       const line: any = form.value;
       line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;

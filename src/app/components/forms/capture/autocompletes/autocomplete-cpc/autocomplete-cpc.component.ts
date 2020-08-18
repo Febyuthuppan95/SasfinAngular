@@ -41,6 +41,10 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
 
     this.isRequired = this.control.validator !== null;
 
+    if (this.control.value !== null) {
+      this.selected = true;
+    }
+
     this.loadCPC(true);
 
     this.query.valueChanges.subscribe((value) => {
@@ -62,6 +66,8 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
           this.control.reset(null);
           this.query.setErrors({ incorrect: true });
         }
+      } else {
+        this.selected = false;
       }
     });
   }
@@ -116,9 +122,11 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
     return item ? `${item.CPC}` : '';
   }
 
-  focusOut() {
+  focusOut(trigger) {
     if (this.cpcList.length > 0 && !this.selected) {
       this.query.setValue(this.cpcList[0]);
+      trigger.closePanel();
+
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -119,6 +119,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   @ViewChild('lineForm', { static: false })
   private lineForm: FormSad500LineUpdatedComponent;
 
+  @ViewChild('startForm', { static: false })
+  private startForm: ElementRef;
+
   @Input() capture: any;
 
   public init() {
@@ -189,8 +192,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.activeLine = null;
-              this.activeIndex = -1;
+              this.displayLines = false;
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -200,7 +203,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             command: e => {
               this.activeLine = null;
               this.activeIndex = -1;
+              this.refresh();
             }
+          },
+          {
+            key: 'alt + k',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => this.eventService.focusForm.next(),
           },
           {
             key: 'alt + s',
@@ -226,6 +236,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
               this.displayLines = !this.displayLines;
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -338,6 +349,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         }
 
         this.form.updateValueAndValidity();
+        setTimeout(() => this.startForm.nativeElement.focus(), 100);
 
         await this.loadLines();
       } else {

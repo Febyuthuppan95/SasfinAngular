@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/services/user.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -106,6 +106,9 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
+  @ViewChild('startLineForm', { static: false })
+  private startLineForm: ElementRef;
+
   ngOnInit() {
     if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
@@ -124,8 +127,14 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
     this.form.controls.duty.updateValueAndValidity();
 
+    setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
+
     this.eventService.submitLines.subscribe(() => {
       this.submit(this.form);
+    });
+
+    this.eventService.focusForm.subscribe(() => {
+      setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
   }
 

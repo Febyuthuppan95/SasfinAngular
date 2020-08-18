@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
@@ -76,6 +76,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
+  @ViewChild('startForm', { static: false })
+  private startForm: ElementRef;
+
   @Input() capture: any;
   isExport = false;
 
@@ -119,6 +122,14 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
                     });
                   }
                 }
+            }
+          },
+          {
+            key: 'alt + m',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -175,6 +186,8 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
         }
 
         this.form.updateValueAndValidity();
+      setTimeout(() => this.startForm.nativeElement.focus(), 100);
+
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
       }

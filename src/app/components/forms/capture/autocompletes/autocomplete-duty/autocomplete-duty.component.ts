@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { CaptureService } from 'src/app/services/capture.service';
 import { DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatAutocompleteTrigger } from '@angular/material';
 import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
@@ -33,6 +33,7 @@ constructor(private userService: UserService,
   public list: any [] = [];
   public query = new FormControl();
   private sad500LineIDTemp = -1;
+  public selected = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -185,6 +186,14 @@ constructor(private userService: UserService,
 
     this.assignedList.splice(this.assignedList.indexOf(duty), 1);
     this.control.setValue(this.assignedList);
+  }
+
+  focusOut(trigger) {
+    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+      this.assignDuty(this.list[0].dutyTaxTypeID, this.list[0].code);
+
+      trigger.closePanel();
+    }
   }
 
   updateHelpContext(slug: string) {

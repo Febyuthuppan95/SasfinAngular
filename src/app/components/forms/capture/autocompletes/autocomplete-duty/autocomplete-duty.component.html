@@ -3,7 +3,7 @@
   <mat-label>
     Duty Types
   </mat-label>
-  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusin)="updateHelpContext(helpSlug)">
+  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusin)="updateHelpContext(helpSlug)" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger">
   <mat-hint>Select a duty type and assign a duty value</mat-hint>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" (optionSelected)="assignDuty($event.option.value.dutyTaxTypeID, $event.option.value.code)" [displayWith]="displayFn">

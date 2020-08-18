@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserService } from 'src/app/services/user.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -79,6 +79,9 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() companyID: number;
   @Output() submission = new EventEmitter<any>();
 
+  @ViewChild('startLineForm', { static: false })
+  private startLineForm: ElementRef;
+
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
@@ -104,8 +107,14 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.form.controls.invoiceID.setValue(-1);
     }
 
+    setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
+
     this.eventService.submitLines.subscribe(() => {
       this.submit(this.form);
+    });
+
+    this.eventService.focusForm.subscribe(() => {
+      setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
   }
 
@@ -122,7 +131,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
           key: 'alt + k',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          // command: (e) => (this.focusDutiesQuery = !this.focusDutiesQuery),
+          command: (e) => setTimeout(() => this.startLineForm.nativeElement.focus(), 100),
         }
       );
     });

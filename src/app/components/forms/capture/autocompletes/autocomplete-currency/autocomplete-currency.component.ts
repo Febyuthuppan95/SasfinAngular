@@ -46,6 +46,10 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
 
     this.query.updateValueAndValidity();
 
+    if (this.control.value !== null) {
+      this.selected = true;
+    }
+
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
@@ -67,6 +71,8 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.control.reset(null);
           this.query.setErrors({ incorrect: true });
         }
+      } else {
+        this.selected = false;
       }
     });
   }
@@ -118,9 +124,11 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     return item ? `${item.code}, ${item.name}` : '';
   }
 
-  focusOut() {
+  focusOut(trigger) {
     if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
+      trigger.closePanel();
+
     }
   }
 

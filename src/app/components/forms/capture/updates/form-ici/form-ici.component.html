@@ -16,7 +16,7 @@
         <mat-label>
           Waybill No
         </mat-label>
-        <input matInput type="text" formControlName="waybillNo" />
+        <input matInput type="text" #startForm formControlName="waybillNo" (focusin)="updateHelpContext('form-import-clearing-instruction-waybill-no')"/>
         <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override">remove_circle</mat-icon>
@@ -29,7 +29,7 @@
         <mat-label>
           Supplier Ref
         </mat-label>
-        <input matInput type="text" formControlName="supplierRef" />
+        <input matInput type="text" formControlName="supplierRef" (focusin)="updateHelpContext('form-import-clearing-instruction-supplier-ref')" />
         <mat-icon *ngIf="form.controls.supplierRefOBit.value" matSuffix (click)="undoOverride('supplierRef')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.supplierRefOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.supplierRefOBit.value && form.controls.supplierRef.errors?.incorrect" matSuffix (click)="overrideDialog('supplierRef', 'Supplier Ref')" matTooltip="Override">remove_circle</mat-icon>
@@ -42,7 +42,7 @@
         <mat-label>
           {{ isExport ? 'Exporters' : 'Importers'}} Code
         </mat-label>
-        <input matInput type="text" formControlName="importersCode" />
+        <input matInput type="text" formControlName="importersCode" (focusin)="updateHelpContext('form-import-clearing-instruction-importers-code')"/>
         <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'Importers Code')" matTooltip="Override">remove_circle</mat-icon>

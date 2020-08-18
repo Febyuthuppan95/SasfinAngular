@@ -45,6 +45,10 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
 
     this.query.updateValueAndValidity();
 
+    if (this.control.value !== null) {
+      this.selected = true;
+    }
+
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
@@ -68,6 +72,8 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
           this.query.setErrors({ incorrect: true });
           this.control.setErrors({ incorrect: true });
         }
+      } else {
+        this.selected = false;
       }
     });
   }
@@ -118,7 +124,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
     return item ? `${item.name}` : '';
   }
 
-  focusOut() {
+  focusOut(trigger) {
     if (this.list.length > 0 && !this.selected) {
       this.query.setValue(this.list[0]);
     }

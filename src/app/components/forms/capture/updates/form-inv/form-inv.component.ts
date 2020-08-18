@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener, Input, ElementRef } from '@angular/core';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
@@ -58,6 +58,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('startForm', { static: false })
+  private startForm: ElementRef;
+
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
@@ -114,6 +117,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         this.paginationControl.setValue(1);
       }
     });
+
   }
 
   ngAfterViewInit(): void {
@@ -142,8 +146,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.activeLine = null;
-              this.activeIndex = -1;
+              this.displayLines = false;
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -153,7 +157,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             command: e => {
               this.activeLine = null;
               this.activeIndex = -1;
+              this.refresh();
             }
+          },
+          {
+            key: 'alt + k',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => this.eventService.focusForm.next(),
           },
           {
             key: 'alt + s',
@@ -179,6 +190,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
               this.displayLines = !this.displayLines;
+              setTimeout(() => this.startForm.nativeElement.focus());
             }
           },
           {
@@ -270,6 +282,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.updateValueAndValidity();
       this.loader = false;
+      setTimeout(() => this.startForm.nativeElement.focus(), 100);
       await this.loadLines();
     } else {
       this.loader = false;
@@ -430,7 +443,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length) {
+    if (this.activeIndex < this.lines.length - 1) {
       this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
