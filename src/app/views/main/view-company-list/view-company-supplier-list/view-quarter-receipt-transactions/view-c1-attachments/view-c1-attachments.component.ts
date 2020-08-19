@@ -10,6 +10,7 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { SupplierC1, SupplierC1List } from 'src/app/components/forms/capture/updates/form-c1/form-c1.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { Subject } from 'rxjs';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuLocalAttachmentsComponent } from 'src/app/components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -243,7 +244,7 @@ filePreview: string;
       this.currentTheme = theme;
     });
     this.companyService.observeLocalReceipt().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (res:CompanyLocalReceipt) => {
+      (res: CompanyLocalReceipt) => {
         console.log(res);
         if (res !== null && res !== undefined) {
           this.currentReceipt = res;
@@ -293,8 +294,9 @@ filePreview: string;
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: SupplierC1List) => {
+       console.log('res');
        console.log(res);
-        if (res.data.length === 0) {
+       if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
           this.dataList = [];
@@ -347,8 +349,8 @@ filePreview: string;
     ).then(
       (res: Outcome) => {
         this.loadAttachments();
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.closeaddModal.nativeElement.click();
+        this.notify.successmsg(res.outcome, res.outcomeMessage);
+        this.closeaddModal.nativeElement.click();
       },
       (msg) => {
         this.notify.errorsmsg(
@@ -370,8 +372,8 @@ filePreview: string;
       ).then(
         (res: Outcome) => {
           this.loadAttachments();
-            this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.closeModal.nativeElement.click();
+          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          this.closeModal.nativeElement.click();
         },
         (msg) => {
           this.notify.errorsmsg(

@@ -103,6 +103,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
+    LocalReceiptID: -1,
     CompanyLocalReceiptID: -1,
     PeriodYear: -1,
     QuarterID: -1,
@@ -234,8 +235,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     });
 
     this.companyService.observeLocalReceipt().pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (res:CompanyLocalReceipt) => {
-        if(res !== null && res !== undefined) {
+      (res: CompanyLocalReceipt) => {
+        if (res !== null && res !== undefined) {
           this.SelectedReceipt = res;
           this.loadTransactions();
         }
@@ -253,7 +254,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
 
     //   }
     // });
-    //this.loadCompanyOEMs();
+    // this.loadCompanyOEMs();
     const obj: PaginationChange = {
       rowStart: 1,
       rowEnd: 15
@@ -264,7 +265,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
         this.selectedTabIndex = res.index;
         console.log(this.selectedTabIndex);
       }
-    )
+    );
 
   }
   ngOnDestroy() {
@@ -296,6 +297,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
+          // console.log('dataList');
           // console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
@@ -321,17 +323,17 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       requestParams: {
         userID: this.currentUser.userID,
         companyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID,
-        localReceiptID: -1,
+        localReceiptID: this.SelectedReceipt.LocalReceiptID,
         transactionID: this.SelectedReceipt.TransactionID,
         isDeleted: flag
       },
       requestProcedure: 'LocalReceiptUpdate'
     };
     this.apiService.post(`${environment.ApiEndpoint}/companies/localreceipts/update`, model).then(
-      (res:Outcome) => {
+      (res: Outcome) => {
         this.showLoader = false;
 
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.closeeditModal.nativeElement.click();
           this.loadTransactions();
           this.notify.successmsg(

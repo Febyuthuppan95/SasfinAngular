@@ -96,6 +96,7 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
   SelectedReceipt: CompanyLocalReceipt = {
     RowNum: -1,
+    LocalReceiptID: -1,
     CompanyLocalReceiptID: -1,
     PeriodYear: -1,
     QuarterID: -1,
@@ -449,6 +450,7 @@ export class CompanyLocalReceipt {
   PeriodYear: number;
   QuarterID: number;
   CompanyID: number;
+  LocalReceiptID: number;
   CompanyLocalReceiptID: number;
   TransactionID?: number;
   Name?: string;
