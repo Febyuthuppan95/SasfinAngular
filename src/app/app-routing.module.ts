@@ -85,6 +85,7 @@ import { ViewCompanySupplierListComponent } from './views/main/view-company-list
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
 import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
+import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -481,6 +482,11 @@ const routes: Routes = [
             component: ViewCaptureTransactionComponent,
           },
         ],
+      },
+      {
+        path:
+          'documentpreview/:src',
+        component: DocumentWindowPreviewComponent,
       },
       {
         path: 'claim',
