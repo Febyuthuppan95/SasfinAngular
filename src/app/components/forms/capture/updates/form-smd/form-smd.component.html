@@ -49,7 +49,7 @@
           <mat-label>
             Certificate No
           </mat-label>
-          <input matInput type="text" formControlName="CertificateNo" />
+          <input matInput type="text" formControlName="CertificateNo" (focusin)="updateHelpContext('form-c1-period')" />
         </mat-form-field>
         <br /><br />
       </div>

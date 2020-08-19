@@ -3,11 +3,12 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { CaptureService } from 'src/app/services/capture.service';
 import { DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog, MatAutocompleteTrigger } from '@angular/material';
+import { MatDialog, MatAutocompleteTrigger, MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { finalize } from 'rxjs/operators';
+import { BottomSheetAssignDutyComponent } from './bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -19,6 +20,7 @@ export class AutocompleteDutyComponent implements OnInit, OnChanges, OnDestroy {
 constructor(private userService: UserService,
             private captureService: CaptureService,
             private dialog: MatDialog,
+            private bottomSheet: MatBottomSheet,
             private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
@@ -38,7 +40,7 @@ constructor(private userService: UserService,
   public query = new FormControl();
   private sad500LineIDTemp = -1;
   public selected = false;
-  private currentDialog: any;
+  private currentDialog: MatBottomSheetRef<BottomSheetAssignDutyComponent>;
 
   ngOnInit() {
     if (!this.control) {
@@ -171,10 +173,11 @@ constructor(private userService: UserService,
       label
     };
 
-    this.currentDialog = this.dialog.open(DutyAssignDialogComponent, {
+    this.currentDialog = this.bottomSheet.open(BottomSheetAssignDutyComponent, {
       data: assign,
-      width: '256px'
-    }).afterClosed().pipe(
+    });
+
+    this.currentDialog.afterDismissed().pipe(
       finalize(() => this.currentDialog = undefined)
     ).subscribe((result: Duty) => {
       if (result !== undefined) {
@@ -199,6 +202,12 @@ constructor(private userService: UserService,
     }
 
     this.assignedList.splice(this.assignedList.indexOf(duty), 1);
+    const removed = this.listTemp.find(x => x.dutyTaxTypeID === duty.dutyTaxTypeID);
+
+    if (removed) {
+      this.list.push(removed);
+    }
+
     this.control.setValue(this.assignedList);
   }
 
@@ -219,5 +228,9 @@ constructor(private userService: UserService,
     this.snackbarService.setHelpContext(newContext);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.currentDialog) {
+      this.currentDialog.dismiss();
+    }
+  }
 }

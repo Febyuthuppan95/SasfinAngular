@@ -276,6 +276,7 @@ import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view
 import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
 import { AutocompleteQuarterComponent } from './components/forms/capture/autocompletes/autocomplete-quarter/autocomplete-quarter.component';
 import { TabDirective } from './directives/tab.directive';
+import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 
 @NgModule({
   declarations: [
@@ -475,7 +476,8 @@ import { TabDirective } from './directives/tab.directive';
     ViewC1AttachmentsComponent,
     ViewSmdAttachmentsComponent,
     ContextMenuLocalAttachmentsComponent,
-    AutocompleteQuarterComponent
+    AutocompleteQuarterComponent,
+    BottomSheetAssignDutyComponent
   ],
   imports: [
     BrowserModule,
@@ -587,7 +589,8 @@ import { TabDirective } from './directives/tab.directive';
     EscalateBottomSheetComponent,
     FormC1Component,
     FormSmdComponent,
-    DialogCreateItemsComponent
+    DialogCreateItemsComponent,
+    BottomSheetAssignDutyComponent
   ]
 })
 export class AppModule { }
