@@ -17,7 +17,7 @@ export class DocumentWindowPreviewComponent implements OnInit {
   failedToLoad = false;
   page = 1;
   rotation = 0;
-  zoom = 1;
+  zoom = 0.8;
   ready: boolean;
   count = 0;
   src = '';

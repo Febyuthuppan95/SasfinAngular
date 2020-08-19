@@ -22,7 +22,7 @@
         </button>
       </div>
       <div class="col-4">
-        <div class="text-center">
+        <!-- <div class="text-center">
           <button class="btn btn-secondary btn-sm" matTooltip="Previous Page" matTooltipPosition="above" (click)="pageChange(page - 1)" [disabled]="page === 1">
             <span class="mdi mdi-arrow-left"></span>
           </button>
@@ -32,10 +32,10 @@
           <button class="btn btn-secondary btn-sm" matTooltip="Next Page" matTooltipPosition="above" (click)="pageChange(page + 1)">
             <span class="mdi mdi-arrow-right"></span>
           </button>
-        </div>
+        </div> -->
       </div>
       <div class="col-4 text-right">
-        <button class="btn btn-secondary btn-sm" matTooltip="Rotate" matTooltipPosition="above" (click)="rotatePDF(rotation + 90)">
+        <button style="padding-right: 18px;" class="btn btn-secondary btn-sm" matTooltip="Rotate" matTooltipPosition="above" (click)="rotatePDF(rotation + 90)">
           <span class="mdi mdi-rotate-left"></span>
         </button>
       </div>
