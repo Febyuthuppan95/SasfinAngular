@@ -212,7 +212,11 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '') && !this.currentDialog) {
+    if (this.currentDialog) {
+      this.currentDialog.instance.close();
+    }
+
+    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
       this.assignDuty(this.list[0].dutyTaxTypeID, this.list[0].code);
 
       trigger.closePanel();
@@ -231,6 +235,7 @@ constructor(private userService: UserService,
   ngOnDestroy(): void {
     if (this.currentDialog) {
       this.currentDialog.dismiss();
+      this.currentDialog = undefined;
     }
   }
 }
