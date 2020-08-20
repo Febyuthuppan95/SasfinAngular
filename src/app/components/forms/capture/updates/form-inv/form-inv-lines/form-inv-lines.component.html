@@ -11,7 +11,7 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-invoice-line-quantity')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Quantity
         </mat-label>
@@ -24,7 +24,7 @@
       <br><br>
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-invoice-line-unitprice')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Unit Price
         </mat-label>
@@ -36,20 +36,20 @@
       </mat-form-field>
       <br><br>
     </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-unitofmeasure')">
+    <div class="col-4" >
       <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-coo')">
+    <div class="col-4" >
       <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-invoice-line-item-code')">
+    <div class="col-4" >
       <ls-autocomplete-items [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-invoice-line-totallinevalue')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Total Line Value
         </mat-label>

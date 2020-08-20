@@ -12,7 +12,7 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-line-no')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Line No
         </mat-label>
@@ -21,7 +21,7 @@
       <br><br>
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-document-no')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Document No
         </mat-label>
@@ -30,7 +30,7 @@
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-document-line-no')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Document Line No
         </mat-label>
@@ -47,7 +47,7 @@
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-component-value')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Component Value
         </mat-label>
@@ -56,7 +56,7 @@
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-raw-material-value')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Raw Material Value
         </mat-label>
@@ -65,7 +65,7 @@
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-reference')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Reference
         </mat-label>
@@ -73,12 +73,12 @@
        </mat-form-field>
       <br><br>
     </div>
-    <!-- <div class="col-4" (mouseover)="updateHelpContext('form-c1-line-unit-of-measure')">
+    <!-- <div class="col-4" >
         <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID"></ls-autocomplete-units-of-measure>
         <br><br>
     </div> -->
     <div class="col-8">
-        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-line-total-cost')">
+        <mat-form-field appearance="fill" >
             <mat-label>
             Total Cost
             </mat-label>

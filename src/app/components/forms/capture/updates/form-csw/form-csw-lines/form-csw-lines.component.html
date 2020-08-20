@@ -11,7 +11,7 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-commonfactor')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Common Factor
         </mat-label>
@@ -24,7 +24,7 @@
       <br><br>
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-custval')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Customs Value
         </mat-label>
@@ -37,7 +37,7 @@
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           HS Quantity
         </mat-label>
@@ -50,7 +50,7 @@
       <br><br>
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-foreigninv')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Foreign Inv Value
         </mat-label>
@@ -63,7 +63,7 @@
       <br><br>
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-duty')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Duty
         </mat-label>
@@ -76,7 +76,7 @@
       <br><br>
     </div>
     <div class="col-4">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-supplyUnit')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Supply Unit
         </mat-label>
@@ -92,20 +92,20 @@
       <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-cws-line-uom'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>
-    <div class="col-12" (mouseover)="updateHelpContext('form-customs-worksheet-line-currency')">
+    <div class="col-12" >
       <ls-autocomplete-currency [(control)]="form.controls.currencyID" [helpSlug]="'form-customs-worksheet-line-currency'"></ls-autocomplete-currency>
       <br><br>
     </div>
-    <div class="col-12" (mouseover)="updateHelpContext('form-customs-worksheet-line-coo')">
+    <div class="col-12" >
       <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-customs-worksheet-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
-    <div class="col-12" (mouseover)="updateHelpContext('form-customs-worksheet-line-tariff-description')">
+    <div class="col-12" >
       <ls-autocomplete-tariffs [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
       <br><br>
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-customs-worksheet-line-invoiceno')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Invoice No
         </mat-label>
