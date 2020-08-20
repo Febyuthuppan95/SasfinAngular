@@ -104,7 +104,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
+            command: e => console.log('Deprecated')
           },
           {
             key: 'alt + s',

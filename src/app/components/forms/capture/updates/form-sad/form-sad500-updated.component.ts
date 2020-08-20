@@ -182,12 +182,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             command: e => this.prevLine()
           },
           {
-            key: 'alt + /',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
-          },
-          {
             key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],

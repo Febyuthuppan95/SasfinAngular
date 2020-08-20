@@ -126,7 +126,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
+            command: e => console.log('Deprecated')
           },
           {
             key: 'alt + m',

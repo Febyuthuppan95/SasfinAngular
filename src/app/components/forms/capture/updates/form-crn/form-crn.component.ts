@@ -135,7 +135,7 @@ ngAfterViewInit(): void {
           key: 'alt + /',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: () => alert('Focus form')
+          command: () => console.log('Deprecated')
         },
         {
           key: 'alt + s',
