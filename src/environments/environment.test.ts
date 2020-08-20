@@ -6,6 +6,7 @@ export const environment = {
   ApiBackgroundImages: 'http://lateral.solutions:7777/api/v1.0/public/images/background',
   ApiProfileImages: 'http://lateral.solutions:7777/api/v1.0/public/images/profile',
   ApiDocuments: 'http://lateral.solutions:7777/api/v1.0/public/document',
+  appRoute: 'http://lateral.solutions:8888',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',

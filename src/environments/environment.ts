@@ -14,6 +14,7 @@ export const environment = {
   ApiProfileImages: 'https://localhost:44397/api/v1.0/public/images/profile',
   ApiDocuments: 'https://localhost:44397/api/v1.0/public/document',
   WebSocketConnection: 'https://localhost:44397/api/v1.0/chat',
+  appRoute: 'http://localhost:4200',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',

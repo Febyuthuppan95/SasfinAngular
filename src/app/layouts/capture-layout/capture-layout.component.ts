@@ -463,7 +463,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   previewCapture(src: string, id: number) {
 
     const myWindow = window.open(
-      `http://localhost:4200/documentpreview/${btoa(src)}`,
+      `${environment.appRoute}/documentpreview/${btoa(src)}`,
       '_blank',
       'width=600, height=800'
     );
