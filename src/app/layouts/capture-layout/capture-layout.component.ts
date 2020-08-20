@@ -465,8 +465,11 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     const myWindow = window.open(
       `${environment.appRoute}/documentpreview/${btoa(src)}`,
       '_blank',
-      'width=600, height=800'
+      'width=600, height=800, noreferrer'
     );
+
+    myWindow.opener = null;
+
 
     // if (id !== this.attachmentID && this.openPreview) {
     //   this.inspectingPreview = false;

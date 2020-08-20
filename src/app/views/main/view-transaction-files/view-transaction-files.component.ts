@@ -687,8 +687,10 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     const myWindow = window.open(
       `${environment.appRoute}/documentpreview/${btoa(src)}`,
       '_blank',
-      'width=600, height=800'
+      'width=600, height=800, noreferrer'
     );
+
+    myWindow.opener = null;
   }
 
   ngOnDestroy(): void {
