@@ -126,6 +126,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       if (id) {
         this.control.setValue(id);
         await this.load(true);
+        this.selected = true;
       }
     });
   }
@@ -139,7 +140,10 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       this.query.setValue(this.list[0]);
 
       trigger.closePanel();
+    }
 
+    if (this.list.length === 0) {
+      this.createItem();
     }
   }
 

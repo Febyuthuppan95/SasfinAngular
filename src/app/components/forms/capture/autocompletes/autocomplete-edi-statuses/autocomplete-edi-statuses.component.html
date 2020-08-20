@@ -8,7 +8,7 @@
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
-  <mat-option *ngFor="let item of list" [value]="item">
+  <mat-option *ngFor="let item of list" [value]="item" (click)="selected = true;">
     {{item.Name}}
   </mat-option>
 </mat-autocomplete>

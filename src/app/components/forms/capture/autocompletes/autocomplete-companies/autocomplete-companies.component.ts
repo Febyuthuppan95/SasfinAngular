@@ -124,10 +124,12 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
+    setTimeout(() => {
     if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
       this.query.setValue(this.list[0]);
       trigger.closePanel();
     }
+  }, 100);
   }
 
   updateHelpContext(slug: string) {
