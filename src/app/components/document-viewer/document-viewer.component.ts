@@ -4,6 +4,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { PDFDocumentProxy, PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-document-viewer',
@@ -17,7 +18,12 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('pdfViewer', { static: false })
+  private pdfViewer: PdfViewerComponent;
+
   private unsubscribeTransaction$ = new Subject<void>();
+
+  evt: any = document.createEvent('MouseEvents');
 
   pdfSRC: ArrayBuffer;
   displayPDF = false;
@@ -29,6 +35,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   originalSize: boolean = true;
 
   ngOnInit() {
+    this.evt.initEvent('wheel', true, true);
+
     this.docService.observeActiveDocument()
     .pipe(takeUntil(this.unsubscribeTransaction$))
     .subscribe((fileName) => {
@@ -67,6 +75,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e =>  {
             this.zoom_in();
+
           }
         },
         {

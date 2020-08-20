@@ -49,8 +49,9 @@ constructor(private userService: UserService,
       this.list = this.listTemp;
 
       if (value) {
+        console.log(value);
         if (value.companyID) {
-          this.control.setValue(value.countryID);
+          this.control.setValue(value.companyID);
           this.query.setErrors(null);
           this.control.setErrors(null);
           this.selected = true;
