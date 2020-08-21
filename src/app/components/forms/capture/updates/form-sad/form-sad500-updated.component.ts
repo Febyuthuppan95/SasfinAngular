@@ -386,8 +386,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         } else {
           this.lines = [];
           this.newLine(true);
-      this.cancelLine();
-
         }
       });
   }

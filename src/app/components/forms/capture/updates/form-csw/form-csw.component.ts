@@ -316,8 +316,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         this.paginationControl.setValue(1, { emitEvent: false });
         } else {
           this.lines = [];
-      this.cancelLine();
-
           this.newLine(true);
         }
       });

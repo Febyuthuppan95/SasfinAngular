@@ -260,8 +260,6 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.lines = [];
           this.newLine(true);
-          this.cancelLine();
-
         }
       });
   }

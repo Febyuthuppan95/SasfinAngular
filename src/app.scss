@@ -800,3 +800,22 @@ body.scrolling::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:vertical:active {
   background: transparent;
 }
+
+.mat-option.mat-active {
+  background: rgba(77, 130, 255, 0.3) !important;
+
+}
+
+.mat-option:hover {
+  background: rgba(77, 130, 255, 0.3) !important;
+}
+
+.minimal-card {
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.key {
+  background: #d5d9e0;
+  border-radius: 5px;
+}

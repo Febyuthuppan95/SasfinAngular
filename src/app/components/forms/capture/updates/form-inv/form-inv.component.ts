@@ -321,14 +321,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         // tslint:disable-next-line: curly
         if (this.lines)
           if (this.lines.length > 0) {
-              this.activeIndex = 0;
-              this.activeLine = this.lines[this.activeIndex];
-              this.paginationControl.setValue(1, { emitEvent: false });
+            this.activeIndex = 0;
+            this.activeLine = this.lines[this.activeIndex];
+            this.paginationControl.setValue(1, { emitEvent: false });
           }  else {
-              this.lines = [];
-              this.newLine(true);
-      this.cancelLine();
-
+            this.lines = [];
+            this.newLine(true);
           }
       });
   }

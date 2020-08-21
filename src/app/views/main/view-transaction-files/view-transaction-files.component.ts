@@ -128,6 +128,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   selectedRow = -1;
 
   transactionID: number;
+  transactionName: string;
 
   transactionTypes = [];
   attachmentName: string;
@@ -174,8 +175,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.transactionID = data.transactionID;
         this.transactionType = data.transactionType;
         this.docType = data.docType;
+        this.transactionName = data.transactionName;
 
-        // console.log(data);
+        console.log(data);
       }
     });
 

@@ -249,11 +249,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
           this.paginationControl.setValue(1, { emitEvent: false });
         } else {
           this.lines = [];
+          this.newLine(true);
         }
-
-        this.newLine(true);
-        this.cancelLine();
-
       });
   }
 

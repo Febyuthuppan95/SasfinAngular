@@ -13,6 +13,9 @@
   <h1 class="capture-form-title text-dark">
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
     <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{attachmentLabel}}</span></span>
+    <ng-container *ngIf="lines">
+      <br><small>{{lines.length}} Total Lines</small>
+    </ng-container>
   </h1>
 </div>
 <br>
