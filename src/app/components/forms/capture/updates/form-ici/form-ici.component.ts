@@ -40,7 +40,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     userID: new FormControl(null),
     specificICIID: new FormControl(null),
     waybillNo: new FormControl(null),
-    supplierRef: new FormControl(null, [Validators.required]),
+    supplierRef: new FormControl(null),
     importersCode: new FormControl(null),
     attachmentStatusID: new FormControl(3),
     isDeleted: new FormControl(0),
