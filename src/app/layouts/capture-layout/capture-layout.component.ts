@@ -14,7 +14,6 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet, MatDialogConfig } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
@@ -34,6 +33,9 @@ import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @AutoUnsubscribe()
 @Component({

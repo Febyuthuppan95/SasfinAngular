@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatCheckboxModule, MatBottomSheetModule, MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MAT_BOTTOM_SHEET_DATA} from '@angular/material';
-import {MatButtonModule, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -34,13 +32,14 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redirect.component';
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
+import { MatButtonModule } from '@angular/material/button';
+import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
-    MatCheckboxModule,
-    MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
@@ -82,15 +81,13 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
       provide: MAT_BOTTOM_SHEET_DATA,
       useValue: {}
     },
-    { 
-      provide: OverlayContainer, 
+    {
+      provide: OverlayContainer,
       useClass: FullscreenOverlayContainer
     }
   ],
   exports: [
     BrowserAnimationsModule,
-    MatCheckboxModule,
-    MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,

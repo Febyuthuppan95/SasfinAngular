@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.Service';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dialog-create-items',

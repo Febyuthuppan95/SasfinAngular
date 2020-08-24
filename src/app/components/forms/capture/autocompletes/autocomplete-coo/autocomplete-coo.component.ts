@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ListCountriesRequest, CountriesListResponse, CountryItem } from 'src/app/models/HttpRequests/Locations';
 import { PlaceService } from 'src/app/services/Place.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 

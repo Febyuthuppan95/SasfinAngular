@@ -22,7 +22,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { CurrenciesListRequest } from 'src/app/models/HttpRequests/CurrenciesList';
 import { CustomWorksheetLine } from 'src/app/models/HttpResponses/CustomWorksheetLine';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-form-custom-worksheet-lines',

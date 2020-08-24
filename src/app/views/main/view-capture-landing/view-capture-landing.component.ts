@@ -7,7 +7,7 @@ import { UserIdleService } from 'angular-user-idle';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { CompanyService, SelectedCompany, SelectedCapture } from 'src/app/services/Company.Service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EventService } from 'src/app/services/event.service';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { takeUntil } from 'rxjs/operators';

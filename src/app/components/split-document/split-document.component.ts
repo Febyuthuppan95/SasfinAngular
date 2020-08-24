@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ApiService } from 'src/app/services/api.service';
@@ -9,6 +8,8 @@ import { ListReadResponse } from '../forms/capture/form-invoice/form-invoice-lin
 import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @AutoUnsubscribe()
 @Component({

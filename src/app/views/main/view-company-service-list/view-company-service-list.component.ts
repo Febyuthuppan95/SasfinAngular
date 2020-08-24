@@ -12,7 +12,7 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { Cities } from 'src/app/models/HttpResponses/CitiesResponse ';
 import { CitiesResponse } from 'src/app/models/HttpResponses/CitiesResponse ';
 import {FormControl} from '@angular/forms';
-import { MatAutocomplete } from '@angular/material';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 import { CompanyServiceResponse, CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { AddCompanyService } from 'src/app/models/HttpRequests/AddCompanyService';
 import { UpdateCompanyService } from 'src/app/models/HttpRequests/UpdateCompanyService';

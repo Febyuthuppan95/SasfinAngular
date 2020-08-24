@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventService } from 'src/app/services/event.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';

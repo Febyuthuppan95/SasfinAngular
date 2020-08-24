@@ -23,7 +23,7 @@ import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { GetServiceClaimReports } from 'src/app/models/HttpRequests/GetServiceClaimReports';
 import { ServiceClaimReportsListResponse, ServiceClaimReport } from 'src/app/models/HttpResponses/ServiceClaimReportsListResponse';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { PreviewReportComponent } from 'src/app/components/preview-report/preview-report.component';
 
 @Component({

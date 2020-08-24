@@ -19,7 +19,7 @@ import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeas
 import { UnitMeasureService } from 'src/app/services/Units.Service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UUID } from 'angular2-uuid';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Items, ItemsListResponse } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { ApiService } from 'src/app/services/api.service';

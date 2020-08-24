@@ -43,7 +43,8 @@ import { takeUntil } from 'rxjs/operators';
 import { CaptureService } from 'src/app/services/capture.service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 
 @Component({

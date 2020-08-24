@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, AfterViewInit, Input, Output, EventEmitter, ViewChild, OnDestroy, ElementRef } from '@angular/core';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user.Service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';

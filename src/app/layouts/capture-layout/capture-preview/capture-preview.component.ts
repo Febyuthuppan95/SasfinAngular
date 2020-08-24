@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Inject, ElementRef } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserIdleService } from 'angular-user-idle';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -60,7 +60,7 @@ export class CapturePreviewComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
-  
+
   rotatePDF(deg: number) {
     this.rotation = deg;
   }

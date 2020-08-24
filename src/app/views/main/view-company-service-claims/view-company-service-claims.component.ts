@@ -24,7 +24,6 @@ import { SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { NgbModalWindow } from '@ng-bootstrap/ng-bootstrap/modal/modal-window';
 import { R3ComponentMetadata } from '@angular/compiler';
-import { MatTableDataSource, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
 import { CompanyPermitsListResponse, Permit, ClaimPermit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
@@ -37,6 +36,8 @@ import { UUID } from 'angular2-uuid';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { CompanyOEMList, CompanyOEM } from '../view-company-list/view-company-oem-list/view-company-oem-list.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-view-company-service-claims',

@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
-import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   AllowIn,
   KeyboardShortcutsComponent,
@@ -40,6 +41,7 @@ import {
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { UUID } from 'angular2-uuid';
+import { MatTooltip } from '@angular/material/tooltip';
 @Component({
   selector: 'app-form-custom-worksheet',
   templateUrl: './form-custom-worksheet.component.html',

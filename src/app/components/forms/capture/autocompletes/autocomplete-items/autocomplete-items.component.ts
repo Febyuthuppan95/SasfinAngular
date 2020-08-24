@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogCreateItemsComponent } from './dialog-create-items/dialog-create-items.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
