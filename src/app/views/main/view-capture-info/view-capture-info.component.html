@@ -59,7 +59,7 @@
         <div class="form-group">
             <label class="control-label">Type:</label>
             <select id="editselect" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
-              <option *ngFor="let doctype of this.doctypeResponse.doctypes" [value]="doctype.doctypeID">{{doctype.name}}</option>
+              <option *ngFor="let doctype of this.doctypeResponse.data" [value]="doctype.doctypeID">{{doctype.name}}</option>
             </select>
           </div>
       </div>
@@ -92,7 +92,7 @@
         <div class="form-group">
           <select id = "mydropdown" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" >
             <option selected value="-1" >Please select a document type</option>
-            <option *ngFor="let doctype of doctypeResponse?.doctypes" [value]="doctype?.doctypeID">{{doctype?.name}}</option>
+            <option *ngFor="let doctype of doctypeResponse?.data" [value]="doctype?.doctypeID">{{doctype?.name}}</option>
           </select>
         </div>
       </div>
