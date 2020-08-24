@@ -278,6 +278,7 @@ import { AutocompleteQuarterComponent } from './components/forms/capture/autocom
 import { TabDirective } from './directives/tab.directive';
 import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
+import { FirebaseModule } from './modules/firebase/firebase.module';
 
 @NgModule({
   declarations: [
@@ -504,6 +505,7 @@ import { DocumentWindowPreviewComponent } from './components/document-window-pre
     KeyboardShortcutsModule,
     FormsModule,
     NgxDocViewerModule,
+    FirebaseModule
   ],
   providers: [
     CookieService,

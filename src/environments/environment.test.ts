@@ -21,6 +21,16 @@ export const environment = {
     companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5',
     localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d'
   },
+  firebase: {
+    apiKey: 'AIzaSyA-eGQMsoiNn30kqeVClYCYTkWr0SpAlb0',
+    authDomain: 'sasfingts.firebaseapp.com',
+    databaseURL: 'https://sasfingts.firebaseio.com',
+    projectId: 'sasfingts',
+    storageBucket: 'sasfingts.appspot.com',
+    messagingSenderId: '919526667324',
+    appId: '1:919526667324:web:a6cd295797c17aeba7bf39',
+    measurementId: 'G-S1QRVH7XLV'
+  },
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {

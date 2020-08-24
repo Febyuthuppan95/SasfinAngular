@@ -89,10 +89,6 @@ import { DocumentWindowPreviewComponent } from './components/document-window-pre
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
-  {
-    path: '',
-    component: AppComponent,
-    children: [
       {
         path: 'account',
         component: AccountComponent,
@@ -496,10 +492,8 @@ const routes: Routes = [
           { path: 'capture', component: ViewCompanyServiceClaimDataComponent },
         ],
       },
-      { path: 'unauthorized', component: ViewUnauthorizedComponent },
-    ],
-  },
-];
+      { path: 'unauthorized', component: ViewUnauthorizedComponent }
+    ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

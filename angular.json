@@ -35,7 +35,9 @@
                   "glob": "**/*",
                   "input": "/assets/images",
                   "output": "/assets/images/"
-                }
+                },
+              "src/manifest.json",
+              "src/firebase-messaging-sw.js"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

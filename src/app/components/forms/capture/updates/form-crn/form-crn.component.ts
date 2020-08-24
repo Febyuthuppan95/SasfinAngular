@@ -47,7 +47,7 @@ form = new FormGroup({
   serialNo: new FormControl(null, [Validators.required]),
   lrn: new FormControl(null, [Validators.required]),
   importersCode: new FormControl(null),
-  pccID: new FormControl(null, [Validators.required]),
+  pccID: new FormControl(null),
   fob: new FormControl(null),
   waybillNo: new FormControl(null, [Validators.required]),
   supplierRef: new FormControl(null),
