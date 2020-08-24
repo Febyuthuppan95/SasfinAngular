@@ -115,9 +115,15 @@
     </div>
   </div>
 
-<style>
+<style *ngIf="specialMouse">
   ::ng-deep body
 {
 cursor: url('./../../../assets/cursor.png'), url('./../../../assets/cursor.png'), auto;
+}
+</style>
+<style *ngIf="!specialMouse">
+  ::ng-deep body
+{
+cursor: default auto;
 }
 </style>

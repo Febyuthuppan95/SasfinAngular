@@ -113,6 +113,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentType: string;
   helpValue = false;
   escalated = false;
+  specialMouse = true;
   transactionTypes: AttachmentType[] = [];
 
   CaptureInfo: CaptureAttachment;
@@ -518,6 +519,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         // Nothing required
       }
     }
+
+    setTimeout(() => this.specialMouse = false);
   }
 
   submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {
