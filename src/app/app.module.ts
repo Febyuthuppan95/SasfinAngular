@@ -278,6 +278,8 @@ import { AutocompleteQuarterComponent } from './components/forms/capture/autocom
 import { TabDirective } from './directives/tab.directive';
 import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
+import { ContextMenuPermitTypesComponent } from './components/menus/context-menu-permit-types/context-menu-permit-types.component';
+import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
 
 @NgModule({
   declarations: [
@@ -479,7 +481,9 @@ import { DocumentWindowPreviewComponent } from './components/document-window-pre
     ContextMenuLocalAttachmentsComponent,
     AutocompleteQuarterComponent,
     BottomSheetAssignDutyComponent,
-    DocumentWindowPreviewComponent
+    DocumentWindowPreviewComponent,
+    ContextMenuPermitTypesComponent,
+    ViewCompanyPermitsListComponent
   ],
   imports: [
     BrowserModule,
