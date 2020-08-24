@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from '../notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -18,8 +18,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  @ViewChild('pdfViewer', { static: false })
-  private pdfViewer: PdfViewerComponent;
+  @ViewChild('pdfElement', { static: false })
+  private pdfElement: ElementRef;
 
   private unsubscribeTransaction$ = new Subject<void>();
 
@@ -33,6 +33,8 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   shortcuts: ShortcutInput[] = [];
   src: string;
   originalSize: boolean = true;
+  focus = false;
+  focusPDF = false;
 
   ngOnInit() {
     this.evt.initEvent('wheel', true, true);
@@ -92,6 +94,14 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             this.rotatePDF(this.rotation + 90);
+          }
+        },
+        {
+          key: 'alt + u',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusPDF = !this.focusPDF;
           }
         },
     );

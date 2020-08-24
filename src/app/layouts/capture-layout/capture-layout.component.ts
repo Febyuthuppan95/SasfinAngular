@@ -4,7 +4,7 @@ import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -39,7 +39,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
-  styleUrls: ['./capture-layout.component.scss']
+  styleUrls: ['./capture-layout.component.scss'],
 })
 export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -58,7 +58,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private chatService: ChatService,
               private snackBarMat: MatSnackBar,
               private escalationReason: MatBottomSheet,
-              private objectHelpService: ObjectHelpService) {}
+              private objectHelpService: ObjectHelpService,
+              private renderer2: Renderer2) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -171,9 +172,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.initTypes();
       this.loadAttachments();
     });
-
-    // get the help value
-    // this.helpValue  = this.themeService.observeHelpValue();
   }
 
   toggleReason(): void {
