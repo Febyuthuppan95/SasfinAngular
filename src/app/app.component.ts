@@ -16,11 +16,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.messagingService.requestPermission();
     this.subscription = this.messagingService.currentMessage.subscribe((msg) => {
-      console.log(msg);
 
       if (msg !== null) {
-        console.log('here');
-        this.matSnackbar.open(msg.notification.body, '', { duration: 3000 });
+        this.matSnackbar.open(`New notification! ${msg.notification.title}`, '', { duration: 3000, panelClass: 'snackbar-notification' });
       }
     });
   }

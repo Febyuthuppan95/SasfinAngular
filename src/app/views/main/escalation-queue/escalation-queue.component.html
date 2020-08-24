@@ -1,0 +1,45 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+    *ngIf="this.tableConfig.dataset"
+    [dataset]="this.tableConfig.dataset"
+    [headings]="this.tableConfig.headings"
+    [recordsPerPage]="this.tableConfig.recordsPerPage"
+    [rowStart]="this.tableConfig.rowStart"
+    [rowEnd]="this.tableConfig.rowEnd"
+    [rowCount]="this.tableConfig.rowCount"
+    [tableHeader]="this.tableConfig.header"
+    (backButtonEvent)="back()"
+    (showingRecordsEvent)="recordsPerPageChange($event)"
+    (searchEvent)="searchFilter($event)"
+    (pageChange)="pageChange($event)"
+    (selectedRecord)="selectedRecord($event)">
+    </app-table>
+  </div>
+</div>
+
+<app-menu
+  [contextShow]="contextMenu"
+  [x]="contextMenuX"
+  [y]="contextMenuY"
+  (resetContext)="contextMenu = false">
+  <app-menu-escalations
+    *ngIf="contextMenu && currentRecord.record"
+    (removeAttachment)="removeAttachment($event)"
+    (previewDocument)="previewDocument($event)"
+    [docPath]="currentRecord.record.TheFile"
+    [attachmentID]="currentRecord.record.TheID"
+    [transactionID]="currentRecord.record.TransactionID"
+    [transactionType]="currentRecord.record.AttachmentType"
+    [statusID]="currentRecord.record.StatusID"
+    [fileType]="currentRecord.record.AttachmentType"
+    [fileTypeID]="currentRecord.record.FileTypeID"
+    [reason]="currentRecord.record.Reason"></app-menu-escalations>
+</app-menu>
+
+<app-notification></app-notification>

@@ -35,6 +35,7 @@ import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overl
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSortModule,
     MatPaginatorModule,
     MatBottomSheetModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     // {
@@ -117,7 +119,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatCheckboxModule
   ],
   declarations: [ChatRedirectComponent]
 })

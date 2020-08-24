@@ -76,17 +76,16 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
 
   loadComponent() {
     this.captureForm.clear();
-
     switch (this.currentDoctype.toLocaleUpperCase()) {
       case 'SAD': {
         this.componentRef = this.componentService.generateComponent(FormSad500UpdatedComponent) as ComponentRef<FormSad500UpdatedComponent>;
         break;
       }
-      case 'CRN' : {
+      case 'CRN': {
         this.componentRef = this.componentService.generateComponent(FormCrnComponent) as ComponentRef<FormCrnComponent>;
         break;
       }
-      case 'CWS' : {
+      case 'CWS': {
         this.componentRef = this.componentService.generateComponent(FormCswComponent) as ComponentRef<FormCswComponent>;
         break;
       }

@@ -97,6 +97,7 @@ export class SidebarComponent implements OnInit {
   showlocations = false;
   showCapturer = true;
   showcapturequeue = true;
+  showescalations = true;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])

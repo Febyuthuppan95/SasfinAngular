@@ -279,6 +279,8 @@ import { TabDirective } from './directives/tab.directive';
 import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
 import { FirebaseModule } from './modules/firebase/firebase.module';
+import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
+import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
 
 @NgModule({
   declarations: [
@@ -480,7 +482,9 @@ import { FirebaseModule } from './modules/firebase/firebase.module';
     ContextMenuLocalAttachmentsComponent,
     AutocompleteQuarterComponent,
     BottomSheetAssignDutyComponent,
-    DocumentWindowPreviewComponent
+    DocumentWindowPreviewComponent,
+    EscalationQueueComponent,
+    MenuEscalationsComponent
   ],
   imports: [
     BrowserModule,
