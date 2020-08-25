@@ -59,6 +59,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       { title: 'Transaction', propertyName: 'Name', order: { enable: false } },
       { title: 'Type', propertyName: 'AttachmentType', order: { enable: false } },
       { title: 'Reason', propertyName: 'Reason', order: { enable: false } },
+      { title: 'Date', propertyName: 'Date', order: { enable: false } },
     ],
     rowStart: 1,
     rowEnd: 15,
@@ -103,7 +104,13 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        this.tableConfig.dataset = res.data;
+        const unfiltered = res.data;
+
+        unfiltered.forEach((el) => {
+          el.Date = new Date(el.Date).toLocaleString();
+        });
+
+        this.tableConfig.dataset = unfiltered;
         this.tableConfig.rowCount = res.rowCount;
       },
       (msg) => {
@@ -151,24 +158,23 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
 
   selectedRecord($event: SelectedRecord) {
     console.log($event);
-    this.currentRecord = $event.record;
-    const type = this.types.find(x => x.doctypeID === $event.record.FileTypeID);
+    this.currentRecord = $event;
     this.contextMenuX = $event.event.clientX + 3;
     this.contextMenuY = $event.event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
     this.contextMenu = true;
 
-    this.docService.loadDocumentToViewer($event.record.TheFile);
-    this.transactionService.setCurrentAttachment({
-      transactionID: $event.record.TransactionID,
-      attachmentID: $event.record.AttachmentID,
-      docType: $event.record.RealAttachmentType,
-      transactionType: 'Import',
-      issueID: $event.record.StatusID === 7 ? 1 : -1,
-      reason: $event.record.Reason
-    });
+    // this.docService.loadDocumentToViewer($event.record.TheFile);
+    // this.transactionService.setCurrentAttachment({
+    //   transactionID: $event.record.TransactionID,
+    //   attachmentID: $event.record.AttachmentID,
+    //   docType: $event.record.RealAttachmentType,
+    //   transactionType: 'Import',
+    //   issueID: $event.record.StatusID === 7 ? 1 : -1,
+    //   reason: $event.record.Reason
+    // });
 
-    this.router.navigate(['capture', 'transaction', 'attachment']);
+    // this.router.navigate(['capture', 'transaction', 'attachment']);
   }
 
   popClick(event) {
@@ -194,8 +200,10 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       },
       requestProcedure: 'AttachmentsUpdate'
     };
+
     this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
       (res: UpdateResponse) => {
+        this.showLoader = false;
         this.loadDataset();
       },
       msg => {

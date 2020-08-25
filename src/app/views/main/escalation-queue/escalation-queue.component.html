@@ -29,7 +29,7 @@
   [y]="contextMenuY"
   (resetContext)="contextMenu = false">
   <app-menu-escalations
-    *ngIf="contextMenu && currentRecord.record"
+    *ngIf="contextMenu === true"
     (removeAttachment)="removeAttachment($event)"
     (previewDocument)="previewDocument($event)"
     [docPath]="currentRecord.record.TheFile"
@@ -37,7 +37,7 @@
     [transactionID]="currentRecord.record.TransactionID"
     [transactionType]="currentRecord.record.AttachmentType"
     [statusID]="currentRecord.record.StatusID"
-    [fileType]="currentRecord.record.AttachmentType"
+    [fileType]="currentRecord.record.RealAttachmentType"
     [fileTypeID]="currentRecord.record.FileTypeID"
     [reason]="currentRecord.record.Reason"></app-menu-escalations>
 </app-menu>
