@@ -122,7 +122,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.subHeading}${item.itemNumber !== null ? '.' + item.itemNumber : ''}` : '';
+    return item ? `${item.subHeading}${item.itemNumber}` : '';
   }
 
   focusOut(trigger) {

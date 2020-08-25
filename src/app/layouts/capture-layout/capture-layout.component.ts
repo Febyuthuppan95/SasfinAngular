@@ -202,6 +202,23 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             command: e => this.companyInfo()
         },
         {
+          key: 'alt + d',
+          preventDefault: true,
+          allowIn: [AllowIn.Input, AllowIn.Textarea],
+          command: e => this.submitCapture(
+            false,
+            true,
+            false,
+            'Save Progress',
+            'The entered data will be stored, but not submitted for assessment')
+        },
+        {
+          key: 'alt + w',
+          preventDefault: true,
+          allowIn: [AllowIn.Input, AllowIn.Textarea],
+          command: e => this.toggelEscalate()
+        },
+        {
           key: 'alt + q',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],

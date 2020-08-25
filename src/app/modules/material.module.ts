@@ -34,9 +34,8 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material';
-
 
 @NgModule({
   imports: [
@@ -75,10 +74,7 @@ import { MatCheckboxModule } from '@angular/material';
     MatCheckboxModule
   ],
   providers: [
-    // {
-    //   provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
-    //   useValue: {hasBackdrop: false}
-    // },
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     {
       provide: MAT_BOTTOM_SHEET_DATA,
       useValue: {}
@@ -86,7 +82,7 @@ import { MatCheckboxModule } from '@angular/material';
     {
       provide: OverlayContainer,
       useClass: FullscreenOverlayContainer
-    }
+    },
   ],
   exports: [
     BrowserAnimationsModule,

@@ -56,6 +56,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
 
+  datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
