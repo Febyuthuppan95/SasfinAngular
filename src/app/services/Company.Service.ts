@@ -37,6 +37,8 @@ import { CompanyLocalReceipt } from '../views/main/view-company-list/view-compan
 // tslint:disable-next-line: max-line-length
 import { LocalReceipt } from '../views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 import { GetPermitTypes } from '../models/HttpRequests/GetPermitTypes';
+import { GetCompanyPRCCs } from '../models/HttpRequests/GetCompanyPRCCs';
+import { GetCompanyEPCs } from '../models/HttpRequests/GetCompanyEPCs';
 
 @Injectable({
   providedIn: 'root'
@@ -889,6 +891,40 @@ export class CompanyService {
     });
   }
 
+  public getCompanyPRCCs(model: GetCompanyPRCCs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PRCC`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyEPCs(model: GetCompanyEPCs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/EPC`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
    public getPermitImportTariffs(model: GetPermitImportTariffs) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/PermitImportTariffs`;
@@ -1375,7 +1411,7 @@ export class SelectedBOM {
 
 export class SelectedPermitType {
   permitTypeID: number;
-  companyID: number;
+  permitTypeName: string;
 }
 
 export class SelectedPermit {

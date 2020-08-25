@@ -3,10 +3,10 @@ import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
 import { ThemeService } from 'src/app/services/theme.Service.js';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
-import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedCompany, SelectedPermitType } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
-import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
+import { CompanyPermitsListResponse, Permit, PRCC, EPC, CompanyPRCCsListResponse, CompanyEPCsListResponse } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
 import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
@@ -14,6 +14,8 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { GetCompanyEPCs } from 'src/app/models/HttpRequests/GetCompanyEPCs';
+import { GetCompanyPRCCs } from 'src/app/models/HttpRequests/GetCompanyPRCCs';
 
 @Component({
   selector: 'app-view-company-permits-list',
@@ -50,16 +52,6 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  // @ViewChild('openeditModal', {static: true})
-  // openeditModal: ElementRef;
-
-  // @ViewChild('closeeditModal', {static: true})
-  // closeeditModal: ElementRef;
-
-  // @ViewChild('openRemoveModal', {static: true})
-  // openRemoveModal: ElementRef;
-  // @ViewChild('closeRemoveModal', {static: true})
-  // closeRemoveModal: ElementRef;
 
   Permit: {
     permitID: number;
@@ -163,7 +155,12 @@ export class ViewCompanyPermitsListComponent implements OnInit {
 
   selectedRow = -1;
 
+  PermitData: any[] = [];
+
   CompanyPermits: Permit[] = [];
+  CompanyPRCC: PRCC[] = [];
+  CompanyEPC: EPC[] = [];
+
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -194,6 +191,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   isAdmin: false;
   companyID = 0;
   companyName = '';
+  permitTypeID = 0;
+  permitTypeName = '';
 
 
   ngOnInit() {
@@ -207,7 +206,176 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       this.companyName = obj.companyName;
     });
 
-    this.loadCompanyPermits(true);
+    this.companyService.observePermitType().subscribe((obj: SelectedPermitType) => {
+      this.permitTypeID = obj.permitTypeID;
+      this.permitTypeName = obj.permitTypeName;
+    });
+
+    if (this.permitTypeID === 1) {
+
+      this.tableHeadings = [
+        {
+          title: '',
+          propertyName: 'rowNum',
+          order: {
+            enable: false,
+          }
+        },
+        {
+          title: 'Permit Code',
+          propertyName: 'permitCode',
+          order: {
+            enable: true,
+            tag: 'PermitCode'
+          }
+        },
+        {
+          title: 'Start Date',
+          propertyName: 'dateStart',
+          order: {
+            enable: true,
+            tag: 'DateStart'
+          }
+        },
+        {
+          title: 'End Date',
+          propertyName: 'dateEnd',
+          order: {
+            enable: true,
+            tag: 'DateEnd'
+          }
+        },
+        {
+          title: 'Import Start Date',
+          propertyName: 'importdateStart',
+          order: {
+            enable: true,
+            tag: 'ImportdateStart'
+          }
+        },
+        {
+          title: 'Import End Date',
+          propertyName: 'importdateEnd',
+          order: {
+            enable: true,
+            tag: 'ImportdateEnd'
+          }
+        },
+        {
+          title: 'Export Start Date',
+          propertyName: 'exportdateStart',
+          order: {
+            enable: true,
+            tag: 'ExportdateStart'
+          }
+        },
+        {
+          title: 'Export End Date',
+          propertyName: 'exportdateEnd',
+          order: {
+            enable: true,
+            tag: 'ExportdateEnd'
+          }
+        }
+      ];
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      this.tableHeadings = [
+        {
+          title: '',
+          propertyName: 'rowNum',
+          order: {
+            enable: false,
+          }
+        },
+        {
+          title: 'PRCC Number',
+          propertyName: 'prccNumber',
+          order: {
+            enable: true,
+            tag: 'PRCCNumber'
+          }
+        },
+        {
+          title: 'Custom Value',
+          propertyName: 'customValue',
+          order: {
+            enable: true,
+            tag: 'CustomValue'
+          }
+        },
+        {
+          title: 'Reg No',
+          propertyName: 'regNo',
+          order: {
+            enable: true,
+            tag: 'RegNo'
+          }
+        },
+        {
+          title: 'File No',
+          propertyName: 'fileNo',
+          order: {
+            enable: true,
+            tag: 'FileNo'
+          }
+        },
+        {
+          title: 'Start Date',
+          propertyName: 'startDate',
+          order: {
+            enable: true,
+            tag: 'StartDate'
+          }
+        },
+        {
+          title: 'End Date',
+          propertyName: 'endDate',
+          order: {
+            enable: true,
+            tag: 'EndDate'
+          }
+        },
+        {
+          title: 'Import Start Date',
+          propertyName: 'importStartDate',
+          order: {
+            enable: true,
+            tag: 'ImportStartDate'
+          }
+        },
+        {
+          title: 'Import End Date',
+          propertyName: 'importEndDate',
+          order: {
+            enable: true,
+            tag: 'ImportEndDate'
+          }
+        }
+      ];
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      this.tableHeadings = [
+        {
+          title: '',
+          propertyName: 'rowNum',
+          order: {
+            enable: false,
+          }
+        },
+        {
+          title: 'EPC Code',
+          propertyName: 'epcCode',
+          order: {
+            enable: true,
+            tag: 'EPCCode'
+          }
+        }
+      ];
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
   loadCompanyPermits(displayGrowl: boolean) {
@@ -233,6 +401,9 @@ export class ViewCompanyPermitsListComponent implements OnInit {
           }
         }
         this.CompanyPermits = res.permits;
+        this.PermitData = this.CompanyPermits;
+        console.log(this.PermitData);
+
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
@@ -241,7 +412,103 @@ export class ViewCompanyPermitsListComponent implements OnInit {
           this.rowCount = res.rowCount;
           this.showingRecords = res.permits.length;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.CompanyPermits.length - 1;
+          this.totalShowing = +this.rowStart + +this.PermitData.length - 1;
+        }
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadCompanyPRCCs(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetCompanyPRCCs = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      PRCCID: -1,
+      companyID: this.companyID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getCompanyPRCCs(model).then(
+      (res: CompanyPRCCsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
+        this.CompanyPRCC = res.prccs;
+        this.PermitData = this.CompanyPRCC;
+        console.log(this.PermitData);
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.prccs.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.PermitData.length - 1;
+        }
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadCompanyEPCs(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model: GetCompanyEPCs = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      EPCID: -1,
+      companyID: this.companyID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getCompanyEPCs(model).then(
+      (res: CompanyEPCsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          if (displayGrowl) {
+            this.notify.successmsg(
+              res.outcome.outcome,
+              res.outcome.outcomeMessage);
+          }
+        }
+        this.CompanyEPC = res.epcs;
+        this.PermitData = this.CompanyEPC;
+        console.log(this.PermitData);
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.epcs.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.PermitData.length - 1;
         }
 
       },
@@ -258,12 +525,30 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadCompanyPermits(false);
+    if (this.permitTypeID === 1) {
+      console.log('1');
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyPermits(false);
+    if (this.permitTypeID === 1) {
+      console.log('1');
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
 
@@ -276,19 +561,28 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadCompanyPermits(false);
+    if (this.permitTypeID === 1) {
+      console.log('1');
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
   popClick(event, obj) {
-    this.Permit = obj;
-    this.contextMenuX = event.clientX + 3;
-    this.contextMenuY = event.clientY + 5;
-    this.themeService.toggleContextMenu(!this.contextMenu);
-    this.contextMenu = true;
+    // this.Permit = obj;
+    // this.contextMenuX = event.clientX + 3;
+    // this.contextMenuY = event.clientY + 5;
+    // this.themeService.toggleContextMenu(!this.contextMenu);
+    // this.contextMenu = true;
   }
 
   back() {
-    this.router.navigate(['companies']);
+    this.router.navigate(['companies', 'permittypes']);
   }
 
   selectedRecord(obj: SelectedRecord) {
@@ -315,12 +609,30 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadCompanyPermits(true);
+    if (this.permitTypeID === 1) {
+      console.log('1');
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadCompanyPermits(false);
+    if (this.permitTypeID === 1) {
+      console.log('1');
+      this.loadCompanyPermits(true);
+    } else if (this.permitTypeID === 2) {
+      console.log('2');
+      this.loadCompanyPRCCs(true);
+    } else if (this.permitTypeID === 3) {
+      console.log(3);
+      this.loadCompanyEPCs(true);
+    }
   }
 
   // editItem(id: number) {

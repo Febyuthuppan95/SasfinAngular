@@ -12,7 +12,7 @@ export class ContextMenuPermitTypesComponent implements OnInit {
   constructor(private router: Router, private companyService: CompanyService) { }
 
   @Input() permitTypeID: number;
-  @Input() companyID: number;
+  @Input() permitTypeName: string;
   @Input() currentTheme: string;
 
   // @Output() EditCompony = new EventEmitter<string>();
@@ -20,7 +20,7 @@ export class ContextMenuPermitTypesComponent implements OnInit {
   ngOnInit() {}
 
   PermitsList() {
-    this.companyService.setPermitType({ permitTypeID: this.permitTypeID, companyID: this.companyID});
+    this.companyService.setPermitType({ permitTypeID: this.permitTypeID, permitTypeName: this.permitTypeName});
     this.router.navigate(['companies', 'permittypes', 'permits']);
   }
 }
