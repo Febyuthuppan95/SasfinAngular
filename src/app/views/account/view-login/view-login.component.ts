@@ -14,6 +14,8 @@ import { UserRightService } from 'src/app/services/UserRight.service';
 import { GetUserRightsList } from 'src/app/models/HttpRequests/UserRights';
 import { UserRightsListResponse } from 'src/app/models/HttpResponses/UserRightsListResponse';
 import { StorageService } from 'src/app/services/storage.service';
+import { ApiService } from 'src/app/services/api.service';
+import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 
 
 
@@ -33,7 +35,8 @@ export class ViewLoginComponent implements OnInit {
     private userService: UserService,
     private renderer: Renderer2,
     private userRightService: UserRightService,
-    private storageService: StorageService) { }
+    private storageService: StorageService,
+    private apiService: ApiService) { }
 
   @ViewChild('login', { static: true })
   elRefs: ElementRef;
@@ -83,10 +86,26 @@ export class ViewLoginComponent implements OnInit {
               (response: UserRightsListResponse) => {
                 this.storageService.save('rights', JSON.stringify(response.userRightsList));
 
-                if (res.designation !== 'Capturer') {
-                  this.router.navigate(['users']);
-                } else {
+                const user = this.userService.getCurrentUser();
+
+                const model = {
+                  requestParams: {
+                    UserID: res.userID,
+                    FirebaseToken: localStorage.getItem('firebase')
+                  },
+                  requestProcedure: 'UserToken'
+                };
+
+                this.apiService.post(`${environment.ApiEndpoint}/users/token`, model).then(
+                  (resp: UpdateResponse) => {},
+                );
+
+                if (res.designation === 'Capturer') {
                   this.router.navigate(['transaction/capturerlanding']);
+                } else if (res.designation === 'Consultant') {
+                  this.router.navigate(['escalations']);
+                } else {
+                  this.router.navigate(['users']);
                 }
             });
           } else {

@@ -16,6 +16,8 @@ import { Subject } from 'rxjs';
 import { Pagination } from 'src/app/models/Pagination';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.service';
+import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-view-capture-info',
@@ -30,7 +32,8 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private transactionService: TransactionService,
     private IMenuService: MenuService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
     ) {
       this.rowStart = 1;
       this.rowCountPerPage = 15;
@@ -142,7 +145,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     rowEnd: 15,
   };
 
-  doctypeResponse: DoctypeListResponse;
+  doctypeResponse: any;
 
   tableData = null;
   tableHeadings: TableHeading[] = [
@@ -373,16 +376,34 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   }
 
   loadDoctypes() {
-    this.transactionService.doctypeList(this.requestModelDoctypeList).then(
-      (res: DoctypeListResponse) => {
-          this.doctypeResponse = res;
-          console.log(this.doctypeResponse);
+    const model = {
+      // requestParams: {
+      //   userID: this.currentUser.userID,
+      //   transactionID: this.transactionID
+      // },
+      requestProcedure: 'FileTypesList'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: ListReadResponse) => {
+        this.doctypeResponse = res;
+        console.log(this.doctypeResponse);
       },
       (msg) => {
         console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot Reach Server');
       }
     );
+
+    // this.transactionService.doctypeList(this.requestModelDoctypeList).then(
+    //   (res: DoctypeListResponse) => {
+    //       this.doctypeResponse = res;
+    //       console.log(this.doctypeResponse);
+    //   },
+    //   (msg) => {
+    //     console.log(JSON.stringify(msg));
+    //     this.notify.errorsmsg('Failure', 'Cannot Reach Server');
+    //   }
+    // );
   }
 
   backToCompanies() {

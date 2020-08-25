@@ -1,6 +1,6 @@
 import { EscalateDialogComponent } from './../escalate-dialog/escalate-dialog.component';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
 @Component({

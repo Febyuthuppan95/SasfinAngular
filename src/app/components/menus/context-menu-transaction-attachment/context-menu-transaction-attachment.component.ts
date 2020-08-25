@@ -26,6 +26,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
   @Output() removeAttachment = new EventEmitter<string>();
+  @Output() previewDocument = new EventEmitter<string>();
 
   ngOnInit() {}
 
@@ -51,6 +52,9 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
       fileTypeID: this.fileTypeID,
       })
     );
+  }
+  preview() {
+    this.previewDocument.emit(this.docPath);
   }
 
 }

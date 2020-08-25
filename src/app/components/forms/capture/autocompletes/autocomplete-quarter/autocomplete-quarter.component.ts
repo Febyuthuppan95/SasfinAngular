@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ApiService } from 'src/app/services/api.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';

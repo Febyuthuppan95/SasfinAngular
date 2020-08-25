@@ -14,7 +14,8 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UUID } from 'angular2-uuid';
 import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { CompanyService } from 'src/app/services/Company.Service';
@@ -180,12 +181,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.prevLine()
-          },
-          {
-            key: 'alt + /',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
           },
           {
             key: 'alt + m',
@@ -392,8 +387,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         } else {
           this.lines = [];
           this.newLine(true);
-      this.cancelLine();
-
         }
       });
   }

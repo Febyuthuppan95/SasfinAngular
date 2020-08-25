@@ -4,7 +4,7 @@ import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
@@ -14,7 +14,6 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
-import { MatDialog, MatDialogRef, MatSnackBar, MatBottomSheetRef, MatBottomSheet, MatDialogConfig } from '@angular/material';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
 import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
@@ -34,12 +33,15 @@ import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @AutoUnsubscribe()
 @Component({
   selector: 'app-capture-layout',
   templateUrl: './capture-layout.component.html',
-  styleUrls: ['./capture-layout.component.scss']
+  styleUrls: ['./capture-layout.component.scss'],
 })
 export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -58,7 +60,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private chatService: ChatService,
               private snackBarMat: MatSnackBar,
               private escalationReason: MatBottomSheet,
-              private objectHelpService: ObjectHelpService) {}
+              private objectHelpService: ObjectHelpService,
+              private renderer2: Renderer2) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -112,6 +115,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   attachmentType: string;
   helpValue = false;
   escalated = false;
+  specialMouse = true;
   transactionTypes: AttachmentType[] = [];
 
   CaptureInfo: CaptureAttachment;
@@ -171,9 +175,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.initTypes();
       this.loadAttachments();
     });
-
-    // get the help value
-    // this.helpValue  = this.themeService.observeHelpValue();
   }
 
   toggleReason(): void {
@@ -199,6 +200,23 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.companyInfo()
+        },
+        {
+          key: 'alt + d',
+          preventDefault: true,
+          allowIn: [AllowIn.Input, AllowIn.Textarea],
+          command: e => this.submitCapture(
+            false,
+            true,
+            false,
+            'Save Progress',
+            'The entered data will be stored, but not submitted for assessment')
+        },
+        {
+          key: 'alt + w',
+          preventDefault: true,
+          allowIn: [AllowIn.Input, AllowIn.Textarea],
+          command: e => this.toggelEscalate()
         },
         {
           key: 'alt + q',
@@ -463,10 +481,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   previewCapture(src: string, id: number) {
 
     const myWindow = window.open(
-      `http://localhost:4200/documentpreview/${btoa(src)}`,
+      `${environment.appRoute}/documentpreview/${btoa(src)}`,
       '_blank',
-      'width=600, height=800'
+      'width=600, height=800, noreferrer'
     );
+
+    myWindow.opener = null;
+
 
     // if (id !== this.attachmentID && this.openPreview) {
     //   this.inspectingPreview = false;
@@ -517,6 +538,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         // Nothing required
       }
     }
+
+    setTimeout(() => this.specialMouse = false);
   }
 
   submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {

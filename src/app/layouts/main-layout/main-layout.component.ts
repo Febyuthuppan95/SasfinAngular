@@ -16,7 +16,7 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-main-layout',

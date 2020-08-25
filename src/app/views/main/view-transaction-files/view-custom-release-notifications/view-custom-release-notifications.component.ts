@@ -10,7 +10,7 @@ import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-custom-release-notifications',

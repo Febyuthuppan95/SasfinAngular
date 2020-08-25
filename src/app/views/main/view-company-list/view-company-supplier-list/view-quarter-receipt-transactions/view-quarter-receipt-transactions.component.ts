@@ -17,8 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { DocumentService } from 'src/app/services/Document.Service';
-import { MatTabGroup } from '@angular/material';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-view-quarter-receipt-transactions',

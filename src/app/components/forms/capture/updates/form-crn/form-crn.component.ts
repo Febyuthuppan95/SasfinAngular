@@ -5,7 +5,6 @@ import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -19,6 +18,8 @@ import { CRNList } from 'src/app/models/HttpResponses/CRNGet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @AutoUnsubscribe()
 @Component({
@@ -41,10 +42,10 @@ export class FormCrnComponent implements OnInit, AfterViewInit, OnDestroy {
 form = new FormGroup({
   userID: new FormControl(null),
   customsReleaseID: new FormControl(null, [Validators.required]),
-  fileRef: new FormControl(null),
+  fileRef: new FormControl(null, [Validators.required]),
   totalCustomsValue: new FormControl(null, [Validators.required]),
-  totalDuty: new FormControl(null),
-  serialNo: new FormControl(null),
+  totalDuty: new FormControl(null, [Validators.required]),
+  serialNo: new FormControl(null, [Validators.required]),
   lrn: new FormControl(null, [Validators.required]),
   importersCode: new FormControl(null),
   pccID: new FormControl(null),
@@ -135,7 +136,7 @@ ngAfterViewInit(): void {
           key: 'alt + /',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: () => alert('Focus form')
+          command: () => console.log('Deprecated')
         },
         {
           key: 'alt + s',

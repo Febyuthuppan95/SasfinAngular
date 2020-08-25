@@ -9,7 +9,8 @@ import { Outcome } from 'src/app/models/HttpResponses/Outcome';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SAD500LineCreateRequest, SAD500LineUpdateModel, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SPSAD500LineList, SAD500Line, SADLineCaptureThatSHOULDWorks } from 'src/app/models/HttpResponses/SAD500Line';
 import { AllowIn, KeyboardShortcutsComponent, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
@@ -24,6 +25,7 @@ import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { ListReadResponse } from '../form-invoice/form-invoice-lines/form-invoice-lines.component';
+import { MatTooltip } from '@angular/material/tooltip';
 @Component({
   selector: 'app-form-sad500',
   templateUrl: './form-sad500.component.html',

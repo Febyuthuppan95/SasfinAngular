@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
-import { MatTableDataSource, PageEvent } from '@angular/material';
 import { TableHeading } from 'src/app/models/Table';
 import { isNullOrUndefined } from 'util';
+import { PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-nested-table',
@@ -25,7 +26,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
   @Input() noDataError: string;
   @Input() isPageable: boolean;
   //@Input() config: MatTableConfig;
-  
+
   @Input() headings: TableHeading[];
   @Output() getChildrenEvent = new EventEmitter<number>();
   @Output() rowEvent = new EventEmitter<string>();
@@ -36,10 +37,10 @@ export class NestedTableComponent implements OnInit, OnChanges {
   displayData: any[] = [];
   parentDataSource =  new MatTableDataSource<Object>(this.parents);
   currentTheme: string;
-  
-  constructor(private themeService: ThemeService) 
+
+  constructor(private themeService: ThemeService)
   {
-     
+
 
   }
 
@@ -59,7 +60,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
       this.currentTheme = theme;
     });
     this.columnsToDisplay = [];
-    
+
     this.initTable();
 
   }
@@ -79,38 +80,38 @@ export class NestedTableComponent implements OnInit, OnChanges {
           this.columnsToDisplay.push(x.propertyName);
         }
       });
-   
+
       this.columnsToDisplay.push('action');
       console.log(this.columnsToDisplay);
       let field: object = null;
-      
+
       let objectKeys: string[];
       let objectValues: string[];
-   
+
       this.headings.forEach(obj => {
         obj.propertyName = obj.propertyName.toLowerCase();
       });
       this.parents.forEach((obj) => { // 8
         objectKeys = Object.keys(obj);
         objectValues = Object.values(obj);
-       
+
         let record: any[] = [];
         // Determine what values need to be displayed
         this.headings.forEach((heading) => { // 7 : 8x7 = 56
-      
+
           // if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== null
           // && objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
             if (objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] !== undefined) {
             // Create object for new record array
             field = {
               key: heading,
-              value: objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] === null 
+              value: objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)] === null
               ? "empty field" : objectValues[objectKeys.findIndex(x => x.toLowerCase() === heading.propertyName)]
             };
             // Push object to record array
             record.push(field);
           } else {
-            
+
           }
         });
         // Record populated, pushing to displayData
@@ -125,7 +126,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
     }
    console.log(this.displayData);
     this.loading = false;
-    
+
   }
   what($event, $even) {
     console.log($even);
@@ -160,7 +161,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
 }
 
 export class MatTableConfig {
-  //data 
+  //data
   data: any[];
   columns: MatTableColumn[];
   // Action Column

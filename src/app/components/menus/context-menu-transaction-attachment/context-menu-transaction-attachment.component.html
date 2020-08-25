@@ -1,10 +1,11 @@
 <div #popCont class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}" style="cursor: pointer">
   <div class="card">
     <div class=" popBodyNav">
+      <a *ngIf="this.statusID !== 5 && this.statusID !== 4 " (click)="preview()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Preview Document</span></a>
       <a *ngIf="this.statusID !== 5 && this.statusID !== 4 " (click)="capture()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Capture</span></a>
-      <a *ngIf="this.fileType === 'SAD500'" (click)="lines()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Lines</span></a>
+      <!-- <a *ngIf="this.fileType === 'SAD500'" (click)="lines()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Lines</span></a> -->
       <a class="nav-link ls-text-{{ currentTheme }}" (click)="remove()"><span class="menu-title">Remove</span></a>
-      <p style="padding: 12px;" *ngIf="this.statusID !== 1">No further actions available.</p>
+      <!-- <p style="padding: 12px;" *ngIf="this.statusID !== 1">No further actions available.</p> -->
     </div>
   </div>
 </div>

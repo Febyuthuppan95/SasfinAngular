@@ -2,7 +2,7 @@ import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { SnackBarComponent } from '../snack-bar/snack-bar.component';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Injectable({
@@ -20,18 +20,18 @@ export class NestedTableService implements OnInit, OnDestroy{
     // Observe current claim deets
      curService: number;
      curStoredProcedure: string;
-    
+
     ngOnInit(): void {
       // init subscriptions
       this.curService = 521;
-      
+
     }
 
     readData() {
 
     }
     readLines() {
-      
+
     }
     updateLine() {
 
@@ -43,5 +43,5 @@ export class NestedTableService implements OnInit, OnDestroy{
     ngOnDestroy(): void {
       // unsubscribe all observables
     }
-  
+
 }

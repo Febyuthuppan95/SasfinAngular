@@ -1,5 +1,3 @@
-
-
 // tslint:disable-next-line: max-line-length
 import { ContextMenuUserComponent } from './components/menus/context-menu-user/context-menu-user.component';
 import { DesignationService } from './services/Designation.service';
@@ -22,7 +20,6 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
 import { MaterialModule } from './modules/material.module';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -38,7 +35,10 @@ import { NotificationComponent } from './components/notification/notification.co
 import { LoaderComponent } from './components/loader/loader.component';
 import { ViewNotFoundComponent } from './views/errors/view-not-found/view-not-found.component';
 import { ViewUnauthorizedComponent } from './views/errors/view-unauthorized/view-unauthorized.component';
-import { ImageModalComponent, NgbdModalContent } from './components/image-modal/image-modal.component';
+import {
+  ImageModalComponent,
+  NgbdModalContent,
+} from './components/image-modal/image-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FloatingButtonComponent } from './components/floating-button/floating-button.component';
 import { EditDashboardStyleComponent } from './components/edit-dashboard-style/edit-dashboard-style.component';
@@ -259,7 +259,10 @@ import { FormSad500UpdatedComponent } from './components/forms/capture/updates/f
 import { FormSad500LineUpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-line-updated/form-sad500-line-updated.component';
 import { FormCswLinesComponent } from './components/forms/capture/updates/form-csw/form-csw-lines/form-csw-lines.component';
 import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
-import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
+import {
+  OverlayContainer,
+  FullscreenOverlayContainer,
+} from '@angular/cdk/overlay';
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
@@ -280,6 +283,11 @@ import { BottomSheetAssignDutyComponent } from './components/forms/capture/autoc
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
 import { ContextMenuPermitTypesComponent } from './components/menus/context-menu-permit-types/context-menu-permit-types.component';
 import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
+import { FirebaseModule } from './modules/firebase/firebase.module';
+import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
+import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
+import { TextMaskModule } from 'angular2-text-mask';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
@@ -483,7 +491,9 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     BottomSheetAssignDutyComponent,
     DocumentWindowPreviewComponent,
     ContextMenuPermitTypesComponent,
-    ViewCompanyPermitsListComponent
+    ViewCompanyPermitsListComponent,
+    EscalationQueueComponent,
+    MenuEscalationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -492,15 +502,13 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     ReactiveFormsModule,
     PdfViewerModule,
     NgxCurrencyModule,
-    UserIdleModule.forRoot({idle: 900, timeout: 12, ping: 5}),
-    ToastrModule.forRoot(
-      {
-        closeButton: false,
-        progressBar: true,
-        positionClass: 'toast-top-full-width',
-        timeOut: 3000
-      }
-    ),
+    UserIdleModule.forRoot({ idle: 900, timeout: 12, ping: 5 }),
+    ToastrModule.forRoot({
+      closeButton: false,
+      progressBar: true,
+      positionClass: 'toast-top-full-width',
+      timeOut: 3000,
+    }),
     NgbModule,
     NgxPaginationModule,
     MaterialModule,
@@ -508,6 +516,9 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     KeyboardShortcutsModule,
     FormsModule,
     NgxDocViewerModule,
+    FirebaseModule,
+    TextMaskModule,
+    PdfJsViewerModule
   ],
   providers: [
     CookieService,
@@ -537,13 +548,12 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     ChatService,
     CaptureService,
@@ -559,8 +569,8 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     DialogGuard,
     {
       provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
-      useValue: {hasBackdrop: false}
-    }
+      useValue: { hasBackdrop: false },
+    },
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -596,7 +606,7 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
     FormC1Component,
     FormSmdComponent,
     DialogCreateItemsComponent,
-    BottomSheetAssignDutyComponent
-  ]
+    BottomSheetAssignDutyComponent,
+  ],
 })
-export class AppModule { }
+export class AppModule {}

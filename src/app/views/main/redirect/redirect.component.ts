@@ -14,10 +14,12 @@ export class RedirectComponent implements OnInit {
   ngOnInit() {
     const currentUser = this.userService.getCurrentUser();
 
-    if (currentUser.designation !== 'Capturer') {
-      this.router.navigate(['users']);
-    } else {
+    if (currentUser.designation === 'Capturer') {
       this.router.navigate(['transaction/capturerlanding']);
+    } else if (currentUser.designation === 'Consultant') {
+      this.router.navigate(['escalations']);
+    } else {
+      this.router.navigate(['users']);
     }
   }
 

@@ -16,11 +16,11 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { SAD500ListResponse, SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
 import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD500Line';
 import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
-import { MatDialog } from '@angular/material';
 import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
 import { ApiService } from 'src/app/services/api.service';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -128,6 +128,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   selectedRow = -1;
 
   transactionID: number;
+  transactionName: string;
 
   transactionTypes = [];
   attachmentName: string;
@@ -174,8 +175,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.transactionID = data.transactionID;
         this.transactionType = data.transactionType;
         this.docType = data.docType;
+        this.transactionName = data.transactionName;
 
-        // console.log(data);
+        console.log(data);
       }
     });
 
@@ -681,6 +683,16 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.loadAttachments();
       }
     });
+  }
+
+  previewDocument(src: string) {
+    const myWindow = window.open(
+      `${environment.appRoute}/documentpreview/${btoa(src)}`,
+      '_blank',
+      'width=600, height=800, noreferrer'
+    );
+
+    myWindow.opener = null;
   }
 
   ngOnDestroy(): void {

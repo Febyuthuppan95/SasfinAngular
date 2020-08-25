@@ -17,7 +17,8 @@ import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-
 import { takeUntil } from 'rxjs/operators';
 import { ListUnitsOfMeasure } from 'src/app/models/HttpResponses/ListUnitsOfMeasure';
 import { Outcome } from 'src/app/models/HttpResponses/Outcome';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';

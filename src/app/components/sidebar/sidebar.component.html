@@ -90,6 +90,14 @@
     <span class="menu-title">Items</span>
   </a>
   </li>
+  <li *ngIf="showescalations" class="nav-item ls-btn-hover-{{ currentTheme }}"
+  (mouseover)="updateHelpContext('sidebar-escalations-link')"
+  matTooltip="Escalation Queue" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
+  <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/escalations" [routerLinkActive]="['active-item']">
+    <i class="mdi mdi-account-alert"></i>
+    <span class="menu-title">Escalation Queue</span>
+  </a>
+  </li>
   <li *ngIf="showcapturequeue" class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-capture-queue-link')"
   matTooltip="Capture Queue Overview" matTooltipPosition="above" [matTooltipDisabled]="!collapse">

@@ -6,6 +6,7 @@ export const environment = {
   ApiBackgroundImages: 'http://lateral.solutions:7777/api/v1.0/public/images/background',
   ApiProfileImages: 'http://lateral.solutions:7777/api/v1.0/public/images/profile',
   ApiDocuments: 'http://lateral.solutions:7777/api/v1.0/public/document',
+  appRoute: 'http://lateral.solutions:8888',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -19,6 +20,16 @@ export const environment = {
     companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209',
     companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5',
     localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d'
+  },
+  firebase: {
+    apiKey: 'AIzaSyA-eGQMsoiNn30kqeVClYCYTkWr0SpAlb0',
+    authDomain: 'sasfingts.firebaseapp.com',
+    databaseURL: 'https://sasfingts.firebaseio.com',
+    projectId: 'sasfingts',
+    storageBucket: 'sasfingts.appspot.com',
+    messagingSenderId: '919526667324',
+    appId: '1:919526667324:web:a6cd295797c17aeba7bf39',
+    measurementId: 'G-S1QRVH7XLV'
   },
   // We should consider doing this for api endpoints -- Ashton
   api: {

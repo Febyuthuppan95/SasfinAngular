@@ -5,7 +5,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -54,6 +55,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
+
+  datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -139,7 +142,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
+            command: e => console.log('Deprecated')
           },
           {
             key: 'alt + m',
@@ -321,14 +324,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         // tslint:disable-next-line: curly
         if (this.lines)
           if (this.lines.length > 0) {
-              this.activeIndex = 0;
-              this.activeLine = this.lines[this.activeIndex];
-              this.paginationControl.setValue(1, { emitEvent: false });
+            this.activeIndex = 0;
+            this.activeLine = this.lines[this.activeIndex];
+            this.paginationControl.setValue(1, { emitEvent: false });
           }  else {
-              this.lines = [];
-              this.newLine(true);
-      this.cancelLine();
-
+            this.lines = [];
+            this.newLine(true);
           }
       });
   }
@@ -344,6 +345,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
+
+      console.log(requestModel);
 
       await this.captureService.invoiceUpdate(requestModel).then(
         async (res: Outcome) => {

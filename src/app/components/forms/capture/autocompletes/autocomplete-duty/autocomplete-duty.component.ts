@@ -3,12 +3,13 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { CaptureService } from 'src/app/services/capture.service';
 import { DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { MatDialog, MatAutocompleteTrigger, MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { finalize } from 'rxjs/operators';
 import { BottomSheetAssignDutyComponent } from './bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -212,7 +213,11 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '') && !this.currentDialog) {
+    if (this.currentDialog) {
+      this.currentDialog.instance.close();
+    }
+
+    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
       this.assignDuty(this.list[0].dutyTaxTypeID, this.list[0].code);
 
       trigger.closePanel();
@@ -231,6 +236,7 @@ constructor(private userService: UserService,
   ngOnDestroy(): void {
     if (this.currentDialog) {
       this.currentDialog.dismiss();
+      this.currentDialog = undefined;
     }
   }
 }

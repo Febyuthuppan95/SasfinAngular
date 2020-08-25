@@ -13,6 +13,9 @@
   <h1 class="capture-form-title text-dark">
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
     <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
+    <ng-container *ngIf="lines">
+      <br><small>{{lines.length}} Total Lines</small>
+    </ng-container>
   </h1>
 </div>
 <br>
@@ -45,7 +48,7 @@
   <form [formGroup]="form" (ngSubmit)="submit(form)" [class.hide]="displayLines">
     <div class="row">
       <!-- <div class="col-6">
-        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-period')">
+        <mat-form-field appearance="fill" >
           <mat-label>
             Period Year
           </mat-label>
@@ -54,7 +57,7 @@
         <br /><br />
       </div>
       <div class="col-6">
-        <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-c1-supplier')">
+        <mat-form-field appearance="fill" >
           <mat-label>
            Supplier
           </mat-label>

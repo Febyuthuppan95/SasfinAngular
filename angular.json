@@ -35,7 +35,10 @@
                   "glob": "**/*",
                   "input": "/assets/images",
                   "output": "/assets/images/"
-                }
+                },
+                { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" },
+              "src/manifest.json",
+              "src/firebase-messaging-sw.js"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

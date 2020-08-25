@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PreviewReportOptions } from './preview-options';
 import { DocumentService } from 'src/app/services/Document.Service';
 
@@ -19,7 +19,7 @@ export class PreviewReportComponent implements OnInit {
 
   ngOnInit() {
     this.isReady = false;
-    
+
     this.docService.get(this.data.src).then(
       (res: string) => {
         this.src = res;

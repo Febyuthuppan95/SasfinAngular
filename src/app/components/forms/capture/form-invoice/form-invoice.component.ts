@@ -10,7 +10,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
 import { CaptureService } from 'src/app/services/capture.service';
-import { MatDialog, MatTooltip, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventService } from 'src/app/services/event.service';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
@@ -26,6 +27,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-form-invoice',

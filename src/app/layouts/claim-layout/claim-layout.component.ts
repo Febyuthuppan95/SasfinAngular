@@ -10,7 +10,6 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { environment } from 'src/environments/environment';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { SelectedCompany } from 'src/app/services/Cities.Service';
-import { PageEvent, MatSnackBar } from '@angular/material';
 import { ServicesService, SelectedCompanyClaim } from 'src/app/services/Services.Service';
 import { takeUntil, ignoreElements } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -18,6 +17,8 @@ import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
 import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { CompanyOEM, CompanyOEMList } from 'src/app/views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-claim-layout',
@@ -214,7 +215,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       },
       msg => {
         this.loading = false;
-  
+
       }
     );
   }
@@ -277,8 +278,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(this.currentClaim);
     if (this.currentClaim.serviceName === '538' && this.currentClaim.sad500ID < 1) {
       this.showMain = false;
-    } 
-    
+    }
+
   }
   async loadDataSets() {
     this.loading = true;
@@ -1332,7 +1333,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             },
             position: 2
           },
-          
+
           {
             title: 'Product Name',
             propertyName: 'productname',
@@ -1747,7 +1748,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
        if(res.rowCount > 0) {
         if(res.data[0].SAD500ID === 0) {
           this.showMain = false; // Show SAD0500's
-         
+
           // this.loadSADLineSet();
          } else {
           this.currentClaim.sad500ID = res.data[0].SAD500ID;
@@ -1964,7 +1965,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       this.loadBottomChild();
     }
     this.loadTopChild();
-   
+
   }
 
   /**
@@ -1974,7 +1975,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
    */
   rowEventB($event) {
     const lineData = JSON.parse($event);
-    
+
     this.selectedB = lineData.lineB; // Export cjid
 
     this.selectedC = lineData.lineC;
@@ -2003,7 +2004,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model)
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/claimlines/update`,model).then(
       (res:Outcome) => {
-       
+
         console.log(res);
         if(res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Updated Product', res.outcome, {
@@ -2013,8 +2014,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           });
           this.loadMainDataSet();
           this.loadTopChild();
-          
-        
+
+
         } else {
           this.snackbar.open(res.outcomeMessage, res.outcome, {
             duration: 3000,
@@ -2057,18 +2058,18 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           userID: this.currentUser.userID,
           companyServiceClaimID: this.currentClaim.companyServiceClaimID,
           captureJoinImportID: this.selectedA,
-  
+
           rowStart: this.pageB.pageIndex * this.pageB.pageSize + 1,
           rowEnd: (this.pageB.pageIndex * this.pageB.pageSize) + this.pageB.pageSize
         },
         requestProcedure: `CompanyServiceClaimLineList${this.currentClaim.serviceName}`
-  
+
       };
     }
     console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
-   
+
         console.log(res);
         this.dataLinesAssigned = [];
         setTimeout(() => {
@@ -2305,10 +2306,10 @@ let model = {};
             horizontalPosition: 'center',
           }).afterDismissed().subscribe(() =>{
             this.companyService.setClaimReport({
-              companyID: this.currentClaim.companyID, 
-              companyName: this.currentClaim.companyName, 
-              companyServiceID: this.currentClaim.serviceID, 
-              claimNumber: this.currentClaim.companyServiceClaimID, 
+              companyID: this.currentClaim.companyID,
+              companyName: this.currentClaim.companyName,
+              companyServiceID: this.currentClaim.serviceID,
+              claimNumber: this.currentClaim.companyServiceClaimID,
               serviceName: this.currentClaim.serviceName});
             this.router.navigate(['claim','reports']);
           });

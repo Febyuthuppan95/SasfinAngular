@@ -15,7 +15,7 @@ import { TariffListResponse, Tariff } from 'src/app/models/HttpResponses/TariffL
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TariffService } from 'src/app/services/Tariff.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { UploadProdatComponent } from './upload-prodat/upload-prodat.component';
 
 @Component({

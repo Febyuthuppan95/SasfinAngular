@@ -800,3 +800,37 @@ body.scrolling::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:vertical:active {
   background: transparent;
 }
+
+.mat-option.mat-active {
+  background: rgba(77, 130, 255, 0.3) !important;
+
+}
+
+.mat-option:hover {
+  background: rgba(77, 130, 255, 0.3) !important;
+}
+
+.minimal-card {
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.key {
+  background: #d5d9e0;
+  border-radius: 5px;
+}
+
+// body
+// {
+// cursor: url('/src/assets/pattern.png'), url('/src/assets/pattern.png'), auto;
+// }
+
+// body
+// {
+// cursor: url('./assets/pattern.png'), url('./assets/pattern.png'), auto;
+// }
+
+.snackbar-notification {
+  background: #4d83ff;
+  color: #fff;
+}

@@ -49,9 +49,9 @@ constructor(private userService: UserService,
 
       if (value) {
         if (value.EDIStatusID) {
+          this.selected = true;
           this.control.setValue(value.EDIStatusID);
           this.query.setErrors(null);
-          this.selected = true;
         } else {
           this.selected = false;
           const query: string = value;
@@ -112,11 +112,12 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
-      this.query.setValue(this.list[0]);
-      trigger.closePanel();
-
-    }
+    setTimeout(() => {
+      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+        this.query.setValue(this.list[0]);
+        trigger.closePanel();
+      }
+    }, 100);
   }
 
   updateHelpContext(slug: string) {

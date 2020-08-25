@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-import-clearing-instructions',

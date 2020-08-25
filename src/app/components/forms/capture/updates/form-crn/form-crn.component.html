@@ -12,7 +12,7 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)" *ngIf="!loader">
   <div class="row">
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-mrn')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           MRN
         </mat-label>
@@ -25,7 +25,7 @@
       <br /><br />
     </div>
     <div class="col-6">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-lrn')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           LRN
         </mat-label>
@@ -38,7 +38,7 @@
       <br /><br />
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-serialNo')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Serial No
         </mat-label>
@@ -51,7 +51,7 @@
       <br /><br />
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-importersCode')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Importers Code
         </mat-label>
@@ -64,7 +64,7 @@
       <br /><br />
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-waybillNo')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Waybill No
         </mat-label>
@@ -76,12 +76,12 @@
       </mat-form-field>
       <br /><br />
     </div>
-    <div class="col-4" (mouseover)="updateHelpContext('form-crn-pcc')">
+    <div class="col-4" >
       <ls-autocomplete-cpc [(control)]="form.controls.pccID" [helpSlug]="'form-crn-pcc'"></ls-autocomplete-cpc>
       <br /><br />
     </div>
     <div class="col-4">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-total-customs-value')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Total Customs Value
         </mat-label>
@@ -94,7 +94,7 @@
       <br /><br />
     </div>
     <div class="col-4">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-total-duty')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           Total Duty
         </mat-label>
@@ -107,7 +107,7 @@
       <br /><br />
     </div>
     <div class="col-12">
-      <mat-form-field appearance="fill" (mouseover)="updateHelpContext('form-cusrelease-file-ref')">
+      <mat-form-field appearance="fill" >
         <mat-label>
           File Reference
         </mat-label>
@@ -119,7 +119,7 @@
       </mat-form-field>
       <br /><br />
     </div>
-    <div class="col-12" (mouseover)="updateHelpContext('form-crn-edi-status')">
+    <div class="col-12" >
       <ls-autocomplete-edi-statuses [(control)]="form.controls.ediStatusID" [helpSlug]="'form-crn-edi-status'"></ls-autocomplete-edi-statuses>
       <br /><br />
     </div>

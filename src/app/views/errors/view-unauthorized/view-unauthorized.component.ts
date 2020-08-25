@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-view-unauthorized',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewUnauthorizedComponent implements OnInit {
 
-  constructor() { }
+  constructor(private user: UserService) { }
 
   ngOnInit() {
+  }
+
+  logOut() {
+    this.user.logout();
   }
 
 }

@@ -42,7 +42,6 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
-      console.log(value);
       if (value) {
         if (value.id) {
           this.control.setValue(value.id);
@@ -87,8 +86,6 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
       filter = this.query.value;
     }
 
-    console.log(this.control.value);
-
     this.tariffService
     .list({
       userID: this.currentUser.userID,
@@ -125,7 +122,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.subHeading}${item.itemNumber !== null ? '.' + item.itemNumber : ''}` : '';
+    return item ? `${item.subHeading}${item.itemNumber}` : '';
   }
 
   focusOut(trigger) {

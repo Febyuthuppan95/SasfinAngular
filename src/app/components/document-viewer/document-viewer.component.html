@@ -2,6 +2,10 @@
 
 <pdf-viewer
   *ngIf="this.displayPDF"
+  #pdfElement
+  [focus]="focusPDF"
+  (focusin)="focus = true;"
+  (focusout)="focus = false;"
   class="viewer"
   [(src)]="pdfSRC"
   [render-text]="true"
@@ -46,3 +50,14 @@
   </div>
 </div>
 <app-notification></app-notification>
+<!--
+<ng-container *ngIf="focus">
+  <div class="focus-container">
+    <p>PDF Has Focus</p>
+  </div>
+</ng-container>
+<ng-container *ngIf="!focus">
+  <div class="focus-container">
+    <p>PDF Does NOT Have Focus</p>
+  </div>
+</ng-container> -->

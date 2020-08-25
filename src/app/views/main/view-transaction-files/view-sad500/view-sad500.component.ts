@@ -12,7 +12,7 @@ import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
 import { Router } from '@angular/router';
 import { Subscription, Subject, Observable, interval, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogEscalationReasonComponent } from '../dialog-escalation-reason/dialog-escalation-reason.component';
 
 @Component({

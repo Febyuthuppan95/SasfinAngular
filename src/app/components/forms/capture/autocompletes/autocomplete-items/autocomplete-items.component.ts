@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogCreateItemsComponent } from './dialog-create-items/dialog-create-items.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
@@ -126,6 +126,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       if (id) {
         this.control.setValue(id);
         await this.load(true);
+        this.selected = true;
       }
     });
   }
@@ -139,7 +140,10 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       this.query.setValue(this.list[0]);
 
       trigger.closePanel();
+    }
 
+    if (this.list.length === 0) {
+      this.createItem();
     }
   }
 

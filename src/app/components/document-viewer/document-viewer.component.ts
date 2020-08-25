@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from '../notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
+import { PDFDocumentProxy, PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-document-viewer',
@@ -17,7 +18,12 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('pdfElement', { static: false })
+  private pdfElement: ElementRef;
+
   private unsubscribeTransaction$ = new Subject<void>();
+
+  evt: any = document.createEvent('MouseEvents');
 
   pdfSRC: ArrayBuffer;
   displayPDF = false;
@@ -27,8 +33,12 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   shortcuts: ShortcutInput[] = [];
   src: string;
   originalSize: boolean = true;
+  focus = false;
+  focusPDF = false;
 
   ngOnInit() {
+    this.evt.initEvent('wheel', true, true);
+
     this.docService.observeActiveDocument()
     .pipe(takeUntil(this.unsubscribeTransaction$))
     .subscribe((fileName) => {
@@ -67,6 +77,7 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e =>  {
             this.zoom_in();
+
           }
         },
         {
@@ -83,6 +94,14 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {
             this.rotatePDF(this.rotation + 90);
+          }
+        },
+        {
+          key: 'alt + u',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.focusPDF = !this.focusPDF;
           }
         },
     );

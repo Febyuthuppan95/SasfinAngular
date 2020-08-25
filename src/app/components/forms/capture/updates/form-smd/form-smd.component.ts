@@ -4,7 +4,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -119,7 +120,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
+            command: e => console.log('Deprecated')
           },
           {
             key: 'alt + m',
@@ -249,11 +250,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
           this.paginationControl.setValue(1, { emitEvent: false });
         } else {
           this.lines = [];
+          this.newLine(true);
         }
-
-        this.newLine(true);
-        this.cancelLine();
-
       });
   }
 

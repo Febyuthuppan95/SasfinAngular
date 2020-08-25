@@ -1,5 +1,5 @@
 import { CanActivateChild, CanActivate } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Injectable } from '@angular/core';
 
 @Injectable()

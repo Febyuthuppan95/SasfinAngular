@@ -6,7 +6,8 @@ import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
@@ -40,7 +41,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
     userID: new FormControl(null),
     specificICIID: new FormControl(null),
     waybillNo: new FormControl(null),
-    supplierRef: new FormControl(null, [Validators.required]),
+    supplierRef: new FormControl(null),
     importersCode: new FormControl(null),
     attachmentStatusID: new FormControl(3),
     isDeleted: new FormControl(0),
@@ -104,7 +105,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => alert('Focus form')
+            command: e => console.log('Deprecated')
           },
           {
             key: 'alt + s',
