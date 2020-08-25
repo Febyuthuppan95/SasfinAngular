@@ -86,11 +86,8 @@ import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-compa
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
 import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
-<<<<<<< HEAD
 import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
-=======
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
->>>>>>> e22888a4b82aeb69dd82b9b6c42d7201af75a5c0
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
