@@ -34,7 +34,11 @@ import { GetTariffList } from '../models/HttpRequests/GetTariffList';
 import { Outcome } from '../models/HttpResponses/DoctypeResponse';
 import { CompanyOEM, SelectedCompanyOEM } from '../views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 import { CompanyLocalReceipt } from '../views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
+// tslint:disable-next-line: max-line-length
 import { LocalReceipt } from '../views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
+import { GetPermitTypes } from '../models/HttpRequests/GetPermitTypes';
+import { GetCompanyPRCCs } from '../models/HttpRequests/GetCompanyPRCCs';
+import { GetCompanyEPCs } from '../models/HttpRequests/GetCompanyEPCs';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +54,8 @@ export class CompanyService {
     let sessionData2: SelectedItem = null;
     // BOM
     let sessionData3: SelectedBOM = null;
+    // PermitType
+    let sessionData10: SelectedPermitType = null;
     // Permit
     let sessionData4: SelectedPermit = null;
     // CompanyServiceClaimReport
@@ -67,7 +73,7 @@ export class CompanyService {
     if (sessionStorage.getItem(`${environment.Sessions.companyData}`) !== undefined || null) {
       sessionData = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyData}`));
     }
-    if(sessionStorage.getItem(`${environment.Sessions.companyOEMData}`)!== undefined || null) {
+    if (sessionStorage.getItem(`${environment.Sessions.companyOEMData}`) !== undefined || null) {
       sessionData7 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.companyOEMData}`));
     }
     // item
@@ -77,6 +83,10 @@ export class CompanyService {
     // BOM
     if (sessionStorage.getItem(`${environment.Sessions.BOMData}`) !== undefined || null) {
       sessionData3 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.BOMData}`));
+    }
+    // PermitType
+    if (sessionStorage.getItem(`${environment.Sessions.PermitTypeData}`) !== undefined || null) {
+      sessionData10 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.PermitTypeData}`));
     }
     // Permit
     if (sessionStorage.getItem(`${environment.Sessions.PermitData}`) !== undefined || null) {
@@ -106,6 +116,8 @@ export class CompanyService {
     this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
     // BOM
     this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
+    // PermitType
+    this.SelectedPermitType = new BehaviorSubject<SelectedPermitType>(sessionData10);
     // Permit
     this.SelectedPermit = new BehaviorSubject<SelectedPermit>(sessionData4);
     // CompanyServiceClaimReport
@@ -125,6 +137,8 @@ export class CompanyService {
   selectedItem: BehaviorSubject<SelectedItem>;
   // BOM
   SelectedBOM: BehaviorSubject<SelectedBOM>;
+  // PermitType
+  SelectedPermitType: BehaviorSubject<SelectedPermitType>;
   // Permit
   SelectedPermit: BehaviorSubject<SelectedPermit>;
   // CompanyServiceClaimReport
@@ -174,6 +188,11 @@ export class CompanyService {
     this.SelectedBOM.next(BOM);
     sessionStorage.setItem(`${environment.Sessions.BOMData}`, JSON.stringify(BOM));
   }
+  // PermitType
+  setPermitType(PermitType: SelectedPermitType) {
+    this.SelectedPermitType.next(PermitType);
+    sessionStorage.setItem(`${environment.Sessions.PermitData}`, JSON.stringify(PermitType));
+  }
   // Permit
   setPermit(Permit: SelectedPermit) {
     this.SelectedPermit.next(Permit);
@@ -215,6 +234,10 @@ export class CompanyService {
   observeBOM() {
     return this.SelectedBOM.asObservable();
   }
+   // PermitType
+   observePermitType() {
+    return this.SelectedPermitType.asObservable();
+  }
   // Permit
   observePermit() {
     return this.SelectedPermit.asObservable();
@@ -247,6 +270,10 @@ export class CompanyService {
   // BOM
   flushBOMSession() {
     sessionStorage.removeItem(`${environment.Sessions.BOMData}`);
+  }
+  // PermitType
+  flushPermitTypeSession() {
+    sessionStorage.removeItem(`${environment.Sessions.PermitTypeData}`);
   }
   // Permit
   flushPermitSession() {
@@ -830,9 +857,60 @@ export class CompanyService {
     });
   }
 
+  public getPermitTypes(model: GetPermitTypes) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PermitTypes`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
   public getCompanyPermits(model: GetCompanyPermits) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/Permits`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyPRCCs(model: GetCompanyPRCCs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/PRCC`;
+      this.httpClient
+        .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public getCompanyEPCs(model: GetCompanyEPCs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/EPC`;
       this.httpClient
         .post(apiURL, model)
         .toPromise()
@@ -1329,6 +1407,11 @@ export class SelectedItem {
 export class SelectedBOM {
   bomid: number;
   status: string;
+}
+
+export class SelectedPermitType {
+  permitTypeID: number;
+  permitTypeName: string;
 }
 
 export class SelectedPermit {

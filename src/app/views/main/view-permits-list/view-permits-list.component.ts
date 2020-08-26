@@ -14,6 +14,8 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
 import { CompanyPermitsListResponse, Permit } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
+import { GetPermitTypes } from 'src/app/models/HttpRequests/GetPermitTypes';
+import { PermitTypesListResponse, PermitType } from 'src/app/models/HttpResponses/PermitTypesListResponse';
 
 @Component({
   selector: 'app-view-permits-list',
@@ -61,20 +63,13 @@ export class ViewPermitsListComponent implements OnInit {
   // @ViewChild('closeRemoveModal', {static: true})
   // closeRemoveModal: ElementRef;
 
-  Permit: {
-    permitID: number;
-    permitCode: string;
-    permitReference: string;
-    dateStart: string;
-    dateEnd: string;
-    importdateStart: string;
-    importdateEnd: string;
-    exportdateStart: string;
-    exportdateEnd: string;
+  PermitType: {
+    permitTypeID: number;
+    permitName: string;
   };
 
   tableHeader: TableHeader = {
-    title: 'Permits',
+    title: `Permits`,
     addButton: {
      enable: false,
     },
@@ -96,13 +91,20 @@ export class ViewPermitsListComponent implements OnInit {
       }
     },
     {
-      title: 'Permit Code',
-      propertyName: 'permitCode',
+      title: 'permit Name',
+      propertyName: 'permitName',
       order: {
-        enable: true,
-        tag: 'PermitCode'
+        enable: false
       }
     },
+    // {
+    //   title: 'Permit Code',
+    //   propertyName: 'permitCode',
+    //   order: {
+    //     enable: true,
+    //     tag: 'PermitCode'
+    //   }
+    // },
     // {
     //   title: 'Permit Reference',
     //   propertyName: 'permitReference',
@@ -111,59 +113,60 @@ export class ViewPermitsListComponent implements OnInit {
     //     tag: 'PermitReference'
     //   }
     // },
-    {
-      title: 'Start Date',
-      propertyName: 'dateStart',
-      order: {
-        enable: true,
-        tag: 'DateStart'
-      }
-    },
-    {
-      title: 'End Date',
-      propertyName: 'dateEnd',
-      order: {
-        enable: true,
-        tag: 'DateEnd'
-      }
-    },
-    {
-      title: 'Import Start Date',
-      propertyName: 'importdateStart',
-      order: {
-        enable: true,
-        tag: 'ImportdateStart'
-      }
-    },
-    {
-      title: 'Import End Date',
-      propertyName: 'importdateEnd',
-      order: {
-        enable: true,
-        tag: 'ImportdateEnd'
-      }
-    },
-    {
-      title: 'Export Start Date',
-      propertyName: 'exportdateStart',
-      order: {
-        enable: true,
-        tag: 'ExportdateStart'
-      }
-    },
-    {
-      title: 'Export End Date',
-      propertyName: 'exportdateEnd',
-      order: {
-        enable: true,
-        tag: 'ExportdateEnd'
-      }
-    }
+    // {
+    //   title: 'Start Date',
+    //   propertyName: 'dateStart',
+    //   order: {
+    //     enable: true,
+    //     tag: 'DateStart'
+    //   }
+    // },
+    // {
+    //   title: 'End Date',
+    //   propertyName: 'dateEnd',
+    //   order: {
+    //     enable: true,
+    //     tag: 'DateEnd'
+    //   }
+    // },
+    // {
+    //   title: 'Import Start Date',
+    //   propertyName: 'importdateStart',
+    //   order: {
+    //     enable: true,
+    //     tag: 'ImportdateStart'
+    //   }
+    // },
+    // {
+    //   title: 'Import End Date',
+    //   propertyName: 'importdateEnd',
+    //   order: {
+    //     enable: true,
+    //     tag: 'ImportdateEnd'
+    //   }
+    // },
+    // {
+    //   title: 'Export Start Date',
+    //   propertyName: 'exportdateStart',
+    //   order: {
+    //     enable: true,
+    //     tag: 'ExportdateStart'
+    //   }
+    // },
+    // {
+    //   title: 'Export End Date',
+    //   propertyName: 'exportdateEnd',
+    //   order: {
+    //     enable: true,
+    //     tag: 'ExportdateEnd'
+    //   }
+    // }
   ];
 
   selectedRow = -1;
 
   CompanyPermits: Permit[] = [];
+  PermitTypes: PermitType[] = [];
 
   currentUser: User = this.userService.getCurrentUser();
   currentTheme: string;
@@ -205,26 +208,26 @@ export class ViewPermitsListComponent implements OnInit {
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
+
+      if (this.companyName !== '') {
+        this.tableHeader.title = `${this.companyName} - Permits`;
+      }
     });
 
-    this.loadCompanyPermits(true);
+    this.loadPermitTypes(true);
+    // this.loadCompanyPermits(true);
   }
 
-  loadCompanyPermits(displayGrowl: boolean) {
+  loadPermitTypes(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetCompanyPermits = {
+    const model: GetPermitTypes = {
       userID: this.currentUser.userID,
-      filter: this.filter,
-      permitID: -1,
-      companyID: this.companyID,
       rowStart: this.rowStart,
       rowEnd: this.rowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection
     };
-    this.companyService.getCompanyPermits(model).then(
-      (res: CompanyPermitsListResponse) => {
+    this.companyService.getPermitTypes(model).then(
+      (res: PermitTypesListResponse) => {
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -232,14 +235,14 @@ export class ViewPermitsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
-        this.CompanyPermits = res.permits;
+        this.PermitTypes = res.permitTypes;
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
           this.rowCount = res.rowCount;
-          this.showingRecords = res.permits.length;
+          this.showingRecords = res.permitTypes.length;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.CompanyPermits.length - 1;
         }
@@ -255,15 +258,60 @@ export class ViewPermitsListComponent implements OnInit {
     );
   }
 
+  // loadCompanyPermits(displayGrowl: boolean) {
+  //   this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+  //   this.showLoader = true;
+  //   const model: GetCompanyPermits = {
+  //     userID: this.currentUser.userID,
+  //     filter: this.filter,
+  //     permitID: -1,
+  //     companyID: this.companyID,
+  //     rowStart: this.rowStart,
+  //     rowEnd: this.rowEnd,
+  //     orderBy: this.orderBy,
+  //     orderByDirection: this.orderDirection
+  //   };
+  //   this.companyService.getCompanyPermits(model).then(
+  //     (res: CompanyPermitsListResponse) => {
+  //       if (res.outcome.outcome === 'SUCCESS') {
+  //         if (displayGrowl) {
+  //           this.notify.successmsg(
+  //             res.outcome.outcome,
+  //             res.outcome.outcomeMessage);
+  //         }
+  //       }
+  //       this.CompanyPermits = res.permits;
+  //       if (res.rowCount === 0) {
+  //         this.noData = true;
+  //         this.showLoader = false;
+  //       } else {
+  //         this.noData = false;
+  //         this.rowCount = res.rowCount;
+  //         this.showingRecords = res.permits.length;
+  //         this.showLoader = false;
+  //         this.totalShowing = +this.rowStart + +this.CompanyPermits.length - 1;
+  //       }
+
+  //     },
+  //     msg => {
+  //       this.showLoader = false;
+  //       this.notify.errorsmsg(
+  //         'Server Error',
+  //         'Something went wrong while trying to access the server.'
+  //       );
+  //     }
+  //   );
+  // }
+
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadCompanyPermits(false);
+    this.loadPermitTypes(false);
   }
 
   searchBar() {
     this.rowStart = 1;
-    this.loadCompanyPermits(false);
+    this.loadPermitTypes(false);
   }
 
 
@@ -276,11 +324,11 @@ export class ViewPermitsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadCompanyPermits(false);
+    this.loadPermitTypes(false);
   }
 
   popClick(event, obj) {
-    this.Permit = obj;
+    this.PermitType = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -315,131 +363,13 @@ export class ViewPermitsListComponent implements OnInit {
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadCompanyPermits(true);
+    this.loadPermitTypes(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadCompanyPermits(false);
+    this.loadPermitTypes(false);
   }
-
-  // editItem(id: number) {
-  //   this.loadServices(false);
-
-
-  //   this.themeService.toggleContextMenu(false);
-  //   this.contextMenu = false;
-  //   this.itemID = this.Item.itemID;
-  //   this.item = this.Item.item;
-  //   this.description = this.Item.description;
-  //   this.tariff = this.Item.tariff;
-  //   this.type = this.Item.type;
-  //   this.mIDP = this.Item.mIDP;
-  //   this.pI = this.Item.pI;
-  //   this.vulnerable = this.Item.vulnerable;
-  //   this.openeditModal.nativeElement.click();
-  // }
-  // removeItem(id: number) {
-  //   this.themeService.toggleContextMenu(false);
-  //   this.contextMenu = false;
-  //   this.itemID = this.Item.itemID;
-  //   this.openRemoveModal.nativeElement.click();
-  // }
-
-  // UpdateItem(deleted: boolean) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.itemID,
-  //     item: this.item,
-  //     description: this.description,
-  //     tariff: this.tariff,
-  //     type: this.type,
-  //     mIDP: this.mIDP,
-  //     pI: this.pI,
-  //     vulnerable: this.vulnerable,
-  //     service: '',
-  //     isDeleted: deleted
-  //   };
-  //   this.companyService.itemupdate(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // addNewservice(id, name) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     serviceID: id,
-  //     itemID: this.itemID
-  //   };
-
-  //   this.companyService.itemserviceadd(requestModel).then(
-  //     (res: AddItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // removeservice(id, name) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemServiceID: id,
-  //     itemID: this.itemID
-  //   };
-
-  //   this.companyService.itemserviceupdate(requestModel).then(
-  //     (res: UpdateItemServiceResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //       this.loadItems(false);
-  //       this.loadServices(false);
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // removeItemValue(id: number) {
-  //   const requestModel = {
-  //     userID: this.currentUser.userID,
-  //     itemID: this.Item.itemID,
-  //     isDeleted: 1
-  //   };
-
-  //   this.companyService.RemoveItemList(requestModel).then(
-  //     (res: UpdateItemResponse) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //         this.loadItems(false);
-  //       } else {
-  //         this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-  //       }
-  //     },
-  //     (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-  //   );
-  // }
-
-  // onVulnerablestateChange(state: string) {
-  //   this.vulnerable = state;
-  // }
-
 }
 
 

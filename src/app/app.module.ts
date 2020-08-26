@@ -281,6 +281,8 @@ import { AutocompleteQuarterComponent } from './components/forms/capture/autocom
 import { TabDirective } from './directives/tab.directive';
 import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
+import { ContextMenuPermitTypesComponent } from './components/menus/context-menu-permit-types/context-menu-permit-types.component';
+import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
 import { FirebaseModule } from './modules/firebase/firebase.module';
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
 import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
@@ -489,6 +491,8 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
     AutocompleteQuarterComponent,
     BottomSheetAssignDutyComponent,
     DocumentWindowPreviewComponent,
+    ContextMenuPermitTypesComponent,
+    ViewCompanyPermitsListComponent,
     EscalationQueueComponent,
     MenuEscalationsComponent,
   ],

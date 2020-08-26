@@ -66,7 +66,7 @@ export class CompaniesContextMenuComponent implements OnInit {
   }
   companyPermits() {
     this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-    this.router.navigate(['companies', 'permits']);
+    this.router.navigate(['companies', 'permittypes']);
   }
 
   ServiceClaims() {

@@ -6,6 +6,18 @@ export class CompanyPermitsListResponse {
   rowCount: number;
 }
 
+export class CompanyPRCCsListResponse {
+  outcome: Outcome;
+  prccs: PRCC[];
+  rowCount: number;
+}
+
+export class CompanyEPCsListResponse {
+  outcome: Outcome;
+  epcs: EPC[];
+  rowCount: number;
+}
+
 export class Permit {
   rowNum: number;
   permitID: number;
@@ -17,6 +29,25 @@ export class Permit {
   importdateEnd: string;
   exportdateStart: string;
   exportdateEnd: string;
+}
+
+export class PRCC {
+  rowNum: number;
+  prccID: number;
+  prccNumber: string;
+  customValue: string;
+  regNo: string;
+  fileNo: string;
+  startDate: string;
+  endDate: string;
+  importStartDate: string;
+  importEndDate: string;
+}
+
+export class EPC {
+  rowNum: number;
+  epcID: number;
+  epcCode: string;
 }
 
 export class ClaimPermit {

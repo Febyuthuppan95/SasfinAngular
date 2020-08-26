@@ -389,7 +389,7 @@ filePreview: string;
     this.rowStart = obj.rowStart;
     this.rowEnd = obj.rowEnd;
 
-    //this.loadTransactions();
+    // this.loadTransactions();
   }
 
   searchBar($event) {
@@ -397,7 +397,7 @@ filePreview: string;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
     this.filter = $event;
-    //this.loadTransactions();
+    // this.loadTransactions();
   }
 
   orderChange($event: Order) {
@@ -405,7 +405,7 @@ filePreview: string;
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    //this.loadTransactions();
+    // this.loadTransactions();
   }
   openUploadModal() {
 
