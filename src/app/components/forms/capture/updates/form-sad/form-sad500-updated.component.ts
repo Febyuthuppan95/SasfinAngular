@@ -50,7 +50,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     cpcID: new FormControl(-1, [Validators.required]),
     waybillNo: new FormControl(null, [Validators.required]),
     supplierRef: new FormControl(null, [Validators.required]),
-    mrn: new FormControl(null, [Validators.required, Validators.pattern(/^([a-zA-Z]{3}(19|20)\d(0[0-9]|1[012])\d(0[1-9]|[12][0-9]|3[01])[a-zA-Z0-9]{6})/g)]),
+    mrn: new FormControl(null, [Validators.required]),
     attachmentStatusID: new FormControl(null),
     importersCode: new FormControl(null, [Validators.required]),
     fileRef: new FormControl(null, [Validators.required]),
@@ -486,8 +486,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
-            }
+              if (this.currentUser.designation === 'Consultant') {
+                this.router.navigate(['escalations']);
+              } else {
+                this.router.navigateByUrl('transaction/capturerlanding');
+              }            }
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }

@@ -1,13 +1,13 @@
 export const environment = {
   production: false,
-  AssetRoute: 'http://sasfin.lateral.solutions/assets/dist',
-  ImageRoute: 'http://sasfin.lateral.solutions/assets/dist/images',
-  ApiEndpoint: 'http://sasfinapi.lateral.solutions/api/v1.0',
-  ApiBackgroundImages: 'http://sasfinapi.lateral.solutions/api/v1.0/public/images/background',
-  ApiProfileImages: 'http://sasfinapi.lateral.solutions/api/v1.0/public/images/profile',
-  ApiDocuments: 'http://sasfinapi.lateral.solutions/api/v1.0/public/document',
-  WebSocketConnection: 'http://sasfinapi.lateral.solutions/api/v1.0/chat',
-  appRoute: 'http://sasfin.lateral.solutions',
+  AssetRoute: 'https://sasfin.lateral.solutions/assets/dist',
+  ImageRoute: 'https://sasfin.lateral.solutions/assets/dist/images',
+  ApiEndpoint: 'https://sasfinapi.lateral.solutions/api/v1.0',
+  ApiBackgroundImages: 'https://sasfinapi.lateral.solutions/api/v1.0/public/images/background',
+  ApiProfileImages: 'https://sasfinapi.lateral.solutions/api/v1.0/public/images/profile',
+  ApiDocuments: 'https://sasfinapi.lateral.solutions/api/v1.0/public/document',
+  WebSocketConnection: 'https://sasfinapi.lateral.solutions/api/v1.0/chat',
+  appRoute: 'https://sasfin.lateral.solutions',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -37,11 +37,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'http://sasfinapi.lateral.solutions/api/v1.0/users/list',
-      create: 'http://sasfinapi.lateral.solutions/api/v1.0/users/add',
-      update: 'http://sasfinapi.lateral.solutions/api/v1.0/users/update',
-      upload: 'http://sasfinapi.solutions/api/v1.0/users/upload',
-      hub: 'http://sasfinapi.lateral.solutions/api/Communication/Hub'
+      list: 'https://sasfinapi.lateral.solutions/api/v1.0/users/list',
+      create: 'https://sasfinapi.lateral.solutions/api/v1.0/users/add',
+      update: 'https://sasfinapi.lateral.solutions/api/v1.0/users/update',
+      upload: 'https://sasfinapi.solutions/api/v1.0/users/upload',
+      hub: 'https://sasfinapi.lateral.solutions/api/Communication/Hub'
     }
   }
 };

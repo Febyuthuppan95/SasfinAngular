@@ -87,6 +87,7 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
   };
   help = true;
   dialogOpen = false;
+  errors: any[] = [];
 
   ngOnInit() {
     // this.themeService.observeTheme()
@@ -184,8 +185,11 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
           if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(res.outcome, res.outcomeMessage);
           this.companyService.setCapture({ capturestate: true });
-          this.router.navigateByUrl('transaction/capturerlanding');
-        } else {
+          if (this.currentUser.designation === 'Consultant') {
+            this.router.navigate(['escalations']);
+          } else {
+            this.router.navigateByUrl('transaction/capturerlanding');
+          }        } else {
         this.notify.errorsmsg(res.outcome, res.outcomeMessage);
         }
       },
@@ -248,6 +252,8 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
               }
             });
         }
+
+        this.errors = res.attachmentErrors.attachmentErrors;
       }
       },
       (msg) => {

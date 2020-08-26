@@ -473,13 +473,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   companyInfo() {
     this.companyShowToggle = !this.companyShowToggle;
   }
-  PDFScrollDown() {
-  }
-  PDFScrollUp() {
-  }
 
   previewCapture(src: string, id: number) {
-
     const myWindow = window.open(
       `${environment.appRoute}/documentpreview/${btoa(src)}`,
       '_blank',
@@ -487,24 +482,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     );
 
     myWindow.opener = null;
-
-
-    // if (id !== this.attachmentID && this.openPreview) {
-    //   this.inspectingPreview = false;
-    //   this.openPreview = false;
-
-    //   const previewDialog = this.dialog.open(CapturePreviewComponent, {
-    //     data: { src },
-    //     width: '50%',
-    //     height: '80%'
-    //   });
-
-    //   previewDialog.afterClosed().subscribe(() => {
-    //     this.inspectingPreview = false;
-    //     this.openPreview = true;
-    //   });
-
-    // }
   }
 
   moreAttachments() {
@@ -556,22 +533,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
         if (status) {
           this.eventService.triggerCaptureEvent(isEscalation, saveProgress, escalationResolved);
-         }
+        }
       });
     }
   }
-  //   if (!this.dialogOpen) {
-  //     this.dialogOpen = true;
-
-  //     this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
-  //       this.dialogOpen = false;
-
-  //       if (status) {
-  //         this.eventService.triggerCaptureEvent();
-  //       }
-  //     });
-  //   }
-  // }
 
   toggleChat() {
     this.showChat = !this.showChat;

@@ -358,8 +358,11 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
               this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
-            }
+              if (this.currentUser.designation === 'Consultant') {
+                this.router.navigate(['escalations']);
+              } else {
+                this.router.navigateByUrl('transaction/capturerlanding');
+              }            }
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
