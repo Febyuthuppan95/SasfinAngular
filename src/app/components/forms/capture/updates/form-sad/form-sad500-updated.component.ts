@@ -50,7 +50,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     cpcID: new FormControl(-1, [Validators.required]),
     waybillNo: new FormControl(null, [Validators.required]),
     supplierRef: new FormControl(null, [Validators.required]),
-    mrn: new FormControl(null, [Validators.required]),
+    mrn: new FormControl(null, [Validators.required, Validators.pattern(/^([a-zA-Z]{3}(19|20)\d(0[0-9]|1[012])\d(0[1-9]|[12][0-9]|3[01])[a-zA-Z0-9]{6})/g)]),
     attachmentStatusID: new FormControl(null),
     importersCode: new FormControl(null, [Validators.required]),
     fileRef: new FormControl(null, [Validators.required]),
@@ -398,7 +398,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress) {
+    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;

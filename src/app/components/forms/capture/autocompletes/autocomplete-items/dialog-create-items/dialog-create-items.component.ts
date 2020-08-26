@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.Service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-dialog-create-items',
@@ -13,7 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DialogCreateItemsComponent implements OnInit {
 
   constructor(private captureService: CaptureService, private userService: UserService,
-              private dialogRef: MatDialogRef<DialogCreateItemsComponent>, private snackbar: MatSnackBar) { }
+              private dialogRef: MatDialogRef<DialogCreateItemsComponent>, private snackbar: MatSnackBar,
+              private snackbarService: HelpSnackbar) { }
 
   currentUser = this.userService.getCurrentUser();
 
@@ -41,4 +44,12 @@ export class DialogCreateItemsComponent implements OnInit {
     }
   }
 
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
 }

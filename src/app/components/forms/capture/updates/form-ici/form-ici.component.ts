@@ -230,7 +230,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if (form.valid || escalation || saveProgress) {
+    if (form.valid || escalation || saveProgress || escalationResolved) {
       const requestModel: any = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;

@@ -47,6 +47,7 @@
     "ngx-currency": "^2.2.1",
     "ngx-image-compress": "^8.0.4",
     "ngx-keyboard-shortcuts": "^1.0.1",
+    "ngx-mask": "^10.0.1",
     "ngx-pagination": "^4.0.0",
     "ngx-toastr": "^10.2.0",
     "polyfills": "^2.1.1",

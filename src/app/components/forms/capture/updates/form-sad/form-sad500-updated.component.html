@@ -136,6 +136,8 @@
           <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.mrnOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect" matSuffix (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override">remove_circle</mat-icon>
           <mat-error *ngIf="!form.controls.mrnOBit.value && form.controls.mrn.errors?.incorrect">{{getError('mrn')}}</mat-error>
+          <mat-error *ngIf="form.get('mrn').hasError('required')">This field is required</mat-error>
+          <mat-error *ngIf="form.get('mrn').hasError('pattern')">Starts with 3 Letters, a valid Date (20201212) and is 18 characters long</mat-error>
         </mat-form-field>
         <br /><br />
       </div>

@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit {
   showlocations = false;
   showCapturer = true;
   showcapturequeue = true;
-  showescalations = true;
+  showescalations = false;
 
   innerWidth: any;
   @HostListener('window:resize', ['$event'])
@@ -179,8 +179,12 @@ export class SidebarComponent implements OnInit {
             this.showcurrencies = true;
           }
 
-          if (uRight.name === 'Companies') {
+          if (uRight.name === 'Attachments') {
             this.showcompanies = true;
+          }
+
+          if (uRight.name === 'Companies') {
+            this.showescalations = true;
           }
 
           if (uRight.name === 'CompanyAddInfoTypes' && +uRight.designationID !== 3) {

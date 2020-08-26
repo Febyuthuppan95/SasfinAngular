@@ -1,18 +1,18 @@
 <h3 mat-dialog-title>Create Item</h3>
 <div mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="submit(form)">
-    <ls-autocomplete-tariffs [control]="form.controls.tariffID"></ls-autocomplete-tariffs>
+    <ls-autocomplete-tariffs [control]="form.controls.tariffID" [helpSlug]="'item-add-tariff'"></ls-autocomplete-tariffs>
     <br>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name">
+      <input matInput formControlName="name" (focusin)="updateHelpContext('item-add-name')">
     </mat-form-field>
     <br>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
+      <textarea matInput formControlName="description" (focusin)="updateHelpContext('item-add-description')"></textarea>
     </mat-form-field>
     <br>
     <br>

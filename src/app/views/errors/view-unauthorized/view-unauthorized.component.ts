@@ -10,9 +10,11 @@ import { UserService } from 'src/app/services/user.Service';
 export class ViewUnauthorizedComponent implements OnInit {
 
   constructor(private user: UserService) { }
+  loggedIn = this.user.isLoggedIn();
 
   ngOnInit() {
   }
+
 
   logOut() {
     this.user.logout();

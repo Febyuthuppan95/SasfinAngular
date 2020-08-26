@@ -259,7 +259,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress) {
+    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const request = form.value;
       // tslint:disable-next-line: max-line-length
       request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));

@@ -1,5 +1,5 @@
 <div class="center-container">
   <h1>Unauthorized</h1>
   <button mat-raised-button [routerLink]="['/']">Home</button>
-  <button mat-raised-button (click)="logOut()">Log out</button>
+  <button mat-raised-button (click)="logOut()" *ngIf="loggedIn">Log out</button>
 </div>

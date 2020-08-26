@@ -78,7 +78,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.load();
     }
   }
-
+  // Validators.pattern('[12]\d{3}/(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])')
   public submissionEvent =
     (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved)
 
@@ -90,7 +90,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       companyID: new FormControl(null),
       currencyID: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
-      invoiceDate: new FormControl(new Date(), [Validators.required]),
+      invoiceDate: new FormControl(null, [Validators.required]),
       incoTermTypeID: new FormControl(null),
       cooID: new FormControl(null),
       isDeleted: new FormControl(0),
@@ -120,7 +120,6 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         this.paginationControl.setValue(1);
       }
     });
-
   }
 
   ngAfterViewInit(): void {
@@ -341,7 +340,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress) {
+    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
