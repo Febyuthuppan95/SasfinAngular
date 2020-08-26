@@ -288,7 +288,6 @@ import { EscalationQueueComponent } from './views/main/escalation-queue/escalati
 import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -520,7 +519,6 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
     FirebaseModule,
     TextMaskModule,
     PdfJsViewerModule,
-    NgxMaskModule.forRoot(),
   ],
   providers: [
     CookieService,
