@@ -315,15 +315,13 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
               this.load();
             } else {
               this.notify.successmsg('SC1 Submitted', res.outcomeMessage);
-              this.companyService.setCapture({ capturestate: true });
               if (this.currentUser.designation === 'Consultant') {
                 this.router.navigate(['escalations']);
               } else {
-                if (this.currentUser.designation === 'Consultant') {
-                  this.router.navigate(['escalations']);
-                } else {
-                  this.router.navigateByUrl('transaction/capturerlanding');
-                }              }            }
+                this.companyService.setCapture({ capturestate: true });
+                this.router.navigateByUrl('transaction/capturerlanding');
+              }
+            }
           } else {
             this.notify.errorsmsg('Failed to submit SC1', res.outcomeMessage);
           }

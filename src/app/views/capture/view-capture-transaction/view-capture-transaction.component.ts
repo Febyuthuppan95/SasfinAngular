@@ -22,6 +22,7 @@ import { FormSmdComponent } from 'src/app/components/forms/capture/updates/form-
   styleUrls: ['./view-capture-transaction.component.scss']
 })
 export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, OnDestroy {
+
   @ViewChild('captureForm', { read: ViewContainerRef, static: false })
   captureForm: ViewContainerRef;
 

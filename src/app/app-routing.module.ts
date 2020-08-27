@@ -482,15 +482,19 @@ const routes: Routes = [
         component: CaptureLayoutComponent,
         canActivateChild: [DialogGuard],
         children: [
+          // {
+          //   path: 'transaction/attachment',
+          //   component: ViewCaptureTransactionComponent,
+          // },
           {
-            path: 'transaction/attachment',
+            path: 'transaction/attachment/:source',
             component: ViewCaptureTransactionComponent,
           },
-          {
-            path:
-              'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
-            component: ViewCaptureTransactionComponent,
-          },
+          // {
+          //   path:
+          //     'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+          //   component: ViewCaptureTransactionComponent,
+          // },
         ],
       },
       {

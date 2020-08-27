@@ -29,9 +29,9 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
   }
   Capture() {
     console.log(this.docPath);
-      this.docService.loadDocumentToViewer(this.docPath);
-      // tslint:disable-next-line: max-line-length
-      // this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
-      this.router.navigate(['capture', 'transaction', 'attachment']);
+    this.docService.loadDocumentToViewer(this.docPath);
+    // tslint:disable-next-line: max-line-length
+    // this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
+    this.router.navigate(['capture', 'transaction', 'attachment', btoa(this.docPath)]);
   }
 }

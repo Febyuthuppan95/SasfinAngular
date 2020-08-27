@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from '../notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { PDFDocumentProxy, PdfViewerComponent } from 'ng2-pdf-viewer';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-document-viewer',
@@ -13,7 +14,7 @@ import { PDFDocumentProxy, PdfViewerComponent } from 'ng2-pdf-viewer';
 })
 export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private docService: DocumentService) { }
+  constructor(private docService: DocumentService, private route: ActivatedRoute) { }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -36,8 +37,36 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
   focus = false;
   focusPDF = false;
 
+  @Input() source: any;
+
   ngOnInit() {
     this.evt.initEvent('wheel', true, true);
+
+    if (this.source) {
+      this.docService.get(atob(this.source)).then(
+        (res: ArrayBuffer) => {
+          this.pdfSRC = res;
+          this.displayPDF = true;
+        },
+        (msg) => {}
+      );
+    }
+
+    this.route.params.subscribe((param) => {
+      if (param) {
+        console.log(param);
+        if (param.source) {
+          console.log(atob(param.source));
+          this.docService.get(atob(param.source)).then(
+            (res: ArrayBuffer) => {
+              this.pdfSRC = res;
+              this.displayPDF = true;
+            },
+            (msg) => {}
+          );
+        }
+      }
+    });
 
     this.docService.observeActiveDocument()
     .pipe(takeUntil(this.unsubscribeTransaction$))

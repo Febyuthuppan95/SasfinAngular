@@ -9,7 +9,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/HttpResponses/User';
 import { UserService } from 'src/app/services/user.Service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
@@ -56,7 +56,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private dialog: MatDialog,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
-              private channelService: ChannelService,
+              private route: ActivatedRoute,
               private chatService: ChatService,
               private snackBarMat: MatSnackBar,
               private escalationReason: MatBottomSheet,
@@ -135,11 +135,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   bottomSheet;
 
+  PDFSource: any;
+
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
-    // this.companyService.setCapture({ capturestate: true});
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
+
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((result: string) => {
@@ -147,11 +149,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         this.currentBackground = `${environment.ApiBackgroundImages}/${result}`;
       }
     });
+
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((theme) => {
       this.currentTheme = theme;
     });
+
     this.companyService.observeCompany()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data: SelectedCompany) => {
@@ -162,6 +166,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         };
       }
     });
+
     this.themeService.setToggleValue(true);
     this.transactionService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
@@ -174,6 +179,15 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       this.escalated = obj.issueID > 0 ? true : false;
       this.initTypes();
       this.loadAttachments();
+    });
+
+    this.route.params.subscribe((param) => {
+      if (param) {
+        console.log(param);
+        if (param.source) {
+          this.PDFSource = param.source;
+        }
+      }
     });
   }
 

@@ -235,12 +235,13 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
             this.load();
           } else {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
-            this.companyService.setCapture({ capturestate: true });
             if (this.currentUser.designation === 'Consultant') {
               this.router.navigate(['escalations']);
             } else {
+              this.companyService.setCapture({ capturestate: true });
               this.router.navigateByUrl('transaction/capturerlanding');
-            }          }
+            }
+          }
       } else {
         this.notify.errorsmsg(res.outcome, res.outcomeMessage);
       }
