@@ -315,8 +315,13 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
               res.outcome.outcomeMessage
             );
           }
+          const pre_processed = res.attachments;
+          pre_processed.forEach((item) => {
+            item.dateCreated = new Date(item.dateCreated).toLocaleString();
+            item.dateEdited = new Date(item.dateEdited).toLocaleString();
+          });
 
-          this.dataList = res.attachments;
+          this.dataList = pre_processed;
 
           if (this.transactionType === 'Export') {
             this.dataList.forEach((item) => {

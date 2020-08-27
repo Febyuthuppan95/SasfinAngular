@@ -21,4 +21,7 @@ export class TransactionFile {
   issueID?: number;
   resolved?: boolean;
   reason?: string;
+  capturer?: string;
+  dateCreated?: string;
+  dateEdited?: string;
 }

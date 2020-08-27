@@ -58,6 +58,21 @@
                 </span>
               </button>
             </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}">
+                <p class="headerText">Capturer</p>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}">
+                <p class="headerText">Date Created</p>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}">
+                <p class="headerText">Date Edited</p>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody *ngIf="(!noData)">
@@ -66,6 +81,9 @@
             <td>{{file.name}}</td>
             <td>{{file.fileType}}</td>
             <td>{{file.status}}</td>
+            <td>{{file.capturer}}</td>
+            <td>{{file.dateCreated}}</td>
+            <td>{{file.dateEdited}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
