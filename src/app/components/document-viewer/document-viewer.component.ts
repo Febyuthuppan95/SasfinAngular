@@ -68,22 +68,22 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
 
-    this.docService.observeActiveDocument()
-    .pipe(takeUntil(this.unsubscribeTransaction$))
-    .subscribe((fileName) => {
-      if (fileName !== null || undefined) {
-        // console.log(fileName);
-        this.docService.get(fileName).then(
-          (res: ArrayBuffer) => {
-            this.pdfSRC = res;
-            this.displayPDF = true;
-          },
-          (msg) => {}
-        );
-      } else {
-        this.notify.errorsmsg('Failure', 'No PDF was selected.');
-      }
-    });
+    // this.docService.observeActiveDocument()
+    // .pipe(takeUntil(this.unsubscribeTransaction$))
+    // .subscribe((fileName) => {
+    //   if (fileName !== null || undefined) {
+    //     // console.log(fileName);
+    //     this.docService.get(fileName).then(
+    //       (res: ArrayBuffer) => {
+    //         this.pdfSRC = res;
+    //         this.displayPDF = true;
+    //       },
+    //       (msg) => {}
+    //     );
+    //   } else {
+    //     this.notify.errorsmsg('Failure', 'No PDF was selected.');
+    //   }
+    // });
   }
 
   ngAfterViewInit(): void {

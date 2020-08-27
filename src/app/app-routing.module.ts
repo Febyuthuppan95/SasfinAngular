@@ -478,24 +478,44 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'capture',
+        path: 'capture/transaction/attachment/:source',
         component: CaptureLayoutComponent,
         canActivateChild: [DialogGuard],
-        children: [
-          // {
-          //   path: 'transaction/attachment',
-          //   component: ViewCaptureTransactionComponent,
-          // },
-          {
-            path: 'transaction/attachment/:source',
-            component: ViewCaptureTransactionComponent,
-          },
-          // {
-          //   path:
-          //     'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
-          //   component: ViewCaptureTransactionComponent,
-          // },
-        ],
+        // children: [
+        //   // {
+        //   //   path: 'transaction/attachment',
+        //   //   component: ViewCaptureTransactionComponent,
+        //   // },
+        //   {
+        //     path: 'transaction/attachment/:source',
+        //     component: ViewCaptureTransactionComponent,
+        //   },
+        //   // {
+        //   //   path:
+        //   //     'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+        //   //   component: ViewCaptureTransactionComponent,
+        //   // },
+        // ],
+      },
+      {
+        path: 'capture/transaction/attachment/:source/:attachmentType/:attachmentID/:transactionID/:transactionType/:escalated/:reason',
+        component: CaptureLayoutComponent,
+        canActivateChild: [DialogGuard],
+        // children: [
+        //   // {
+        //   //   path: 'transaction/attachment',
+        //   //   component: ViewCaptureTransactionComponent,
+        //   // },
+        //   {
+        //     path: 'transaction/attachment/:source',
+        //     component: ViewCaptureTransactionComponent,
+        //   },
+        //   // {
+        //   //   path:
+        //   //     'transaction/attachment/:transactionId/:attachmentId/:docType/:transactionName',
+        //   //   component: ViewCaptureTransactionComponent,
+        //   // },
+        // ],
       },
       {
         path:

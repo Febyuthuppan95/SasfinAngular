@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit, OnDestroy, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, AfterViewInit, OnDestroy, ComponentRef, Input } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { ComponentService } from 'src/app/services/ComponentLoader.service';
@@ -27,15 +27,15 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
   captureForm: ViewContainerRef;
 
   constructor(private themeService: ThemeService,
-              private transactionService: TransactionService,
               private componentService: ComponentService,
               private eventService: EventService) { }
 
   currentTheme: string;
-  currentDoctype: string;
   captureFormComponent: any = null;
-  capture: any;
   componentRef: ComponentRef<any>;
+
+  @Input() capture: any;
+  @Input() currentDoctype: string;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -53,12 +53,12 @@ export class ViewCaptureTransactionComponent implements OnInit, AfterViewInit, O
       this.currentTheme = theme;
     });
 
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((data) => {
-      this.currentDoctype = data.docType;
-      this.capture = data;
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe((data) => {
+    //   this.currentDoctype = data.docType;
+    //   this.capture = data;
+    // });
 
     this.eventService.observeCaptureEvent()
     .pipe(takeUntil(this.unsubscribe$))

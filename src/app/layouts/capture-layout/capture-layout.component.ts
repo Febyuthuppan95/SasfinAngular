@@ -137,6 +137,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   PDFSource: any;
 
+  captureData: any;
+  currentDoctype: string;
+
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
     this.companyShowToggle = false;
@@ -168,24 +171,44 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     });
 
     this.themeService.setToggleValue(true);
-    this.transactionService.observerCurrentAttachment()
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe (obj => {
-      this.transactionID = obj.transactionID;
-      this.attachmentID = obj.attachmentID;
-      this.attachmentType = obj.docType;
-      this.transactionType = obj.transactionType;
-      this.reason = `${obj.reason}`;
-      this.escalated = obj.issueID > 0 ? true : false;
-      this.initTypes();
-      this.loadAttachments();
-    });
+    // this.transactionService.observerCurrentAttachment()
+    // .pipe(takeUntil(this.unsubscribe$))
+    // .subscribe (obj => {
+    //   this.transactionID = obj.transactionID;
+    //   this.attachmentID = obj.attachmentID;
+    //   this.attachmentType = obj.docType;
+    //   this.transactionType = obj.transactionType;
+    //   this.reason = `${obj.reason}`;
+    //   this.escalated = obj.issueID > 0 ? true : false;
+    //   this.initTypes();
+    //   this.loadAttachments();
+    // });
 
     this.route.params.subscribe((param) => {
       if (param) {
         console.log(param);
         if (param.source) {
           this.PDFSource = param.source;
+        }
+
+        if (param.attachmentID) {
+          this.transactionID = +atob(param.transactionID);
+          this.attachmentID = +atob(param.attachmentID);
+          this.attachmentType = atob(param.attachmentType);
+          this.transactionType = atob(param.transactionType);
+          this.reason = `${atob(param.reason)}`;
+          this.escalated = +atob(param.escalated) > 0 ? true : false;
+          this.initTypes();
+          this.loadAttachments();
+
+          this.captureData = {
+            attachmentID: +atob(param.attachmentID),
+            transactionType: atob(param.transactionType),
+            docType: atob(param.attachmentType),
+            transactionID: +atob(param.transactionID),
+          };
+
+          this.currentDoctype = atob(param.attachmentType);
         }
       }
     });
