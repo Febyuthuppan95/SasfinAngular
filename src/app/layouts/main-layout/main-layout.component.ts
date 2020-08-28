@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -26,7 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MainLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private themeService: ThemeService,
-    private cookieService: CookieService,
+    private event: EventService,
     private IMenuService: MenuService,
     private userIdle: UserIdleService,
     private userService: UserService,
@@ -74,6 +75,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     const toggleHelpObserver = this.themeService.toggleHelp();
+    this.event.mouseChange.next(false);
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))

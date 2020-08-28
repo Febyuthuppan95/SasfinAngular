@@ -7,6 +7,7 @@ export class EventService {
 
   public submitLines = new Subject<void>();
   public focusForm = new Subject<void>();
+  public mouseChange = new Subject<boolean>();
 
   public observeCaptureEvent = () => this.submitCapture.asObservable();
   public triggerCaptureEvent = (escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) =>

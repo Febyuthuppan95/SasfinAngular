@@ -197,3 +197,5 @@
 <ng-container *ngIf="displayLines && !loader">
   <app-form-sad500-line-updated [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport" #lineForm></app-form-sad500-line-updated>
 </ng-container>
+
+<app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

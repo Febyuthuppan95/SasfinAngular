@@ -3,7 +3,6 @@ import { Outcome } from './../../models/HttpResponses/DoctypeResponse';
 import { ChatIssueCreateReponse } from './../../modules/chat/models/responses';
 import { ChatConversationIssue } from './../../modules/chat/models/requests';
 import { ChatService } from './../../modules/chat/services/chat.service';
-import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from 'src/environments/environment';
@@ -15,7 +14,6 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionFileListResponse, TransactionFile } from 'src/app/models/HttpResponses/TransactionFileListModel';
 import { CapturePreviewComponent } from './capture-preview/capture-preview.component';
-import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 import { ShortcutInput, AllowIn, KeyboardShortcutsComponent } from 'ng-keyboard-shortcuts';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -36,6 +34,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -49,7 +48,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private userService: UserService,
               private apiService: ApiService,
               private router: Router,
-              private docService: DocumentService,
               private userIdle: UserIdleService,
               private transactionService: TransactionService,
               private companyService: CompanyService,
@@ -61,7 +59,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private snackBarMat: MatSnackBar,
               private escalationReason: MatBottomSheet,
               private objectHelpService: ObjectHelpService,
-              private renderer2: Renderer2) {}
+              private event: EventService) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -144,6 +142,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.objectHelpService.toggleHelp(true);
     this.companyShowToggle = false;
     this.currentUser = this.userService.getCurrentUser();
+    this.event.mouseChange.next(true);
 
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))

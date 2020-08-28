@@ -1,0 +1,22 @@
+$width: 256px;
+
+.error-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: -256px;
+  width: $width;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+  background: rgb(255, 66, 66);
+  color: #fff;
+  overflow-y: auto;
+}
+
+.error-sidebar-open {
+  right: 0;
+  transition: cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+}
+
+.error-container {
+  padding: 12px;
+}
