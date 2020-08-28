@@ -322,6 +322,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           });
 
           this.dataList = pre_processed;
+          console.log('dataList');
+          console.log(this.dataList);
 
           if (this.transactionType === 'Export') {
             this.dataList.forEach((item) => {
@@ -538,10 +540,28 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   onTypeSelect(id: number) {
     // console.log(id);
+    let hasSAD = false;
 
     if (this.transactionTypes[id].name === 'VOC') {
-      this.isVOC = true;
-      this.loadSAD500s();
+      if ( this.dataList.length > 0) {
+        this.dataList.forEach((item) => {
+          if (item.fileTypeID === 2) {
+            hasSAD = true;
+          }
+        });
+      }
+      console.log('HasSAD');
+      console.log(hasSAD);
+
+      if (hasSAD) {
+        this.isVOC = true;
+        this.loadSAD500s();
+      } else {
+        this.selectAttachmentType.reset(-1);
+        this.notify.toastrwarning('INFO', 'There are now SAD500 attachments found for a VOC to be added');
+        this.isVOC = false;
+      }
+
     } else {
       this.isVOC = false;
     }
