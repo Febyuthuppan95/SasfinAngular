@@ -177,7 +177,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
         this.docType = data.docType;
         this.transactionName = data.transactionName;
 
-        console.log(data);
       }
     });
 
@@ -322,8 +321,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           });
 
           this.dataList = pre_processed;
-          console.log('dataList');
-          console.log(this.dataList);
 
           if (this.transactionType === 'Export') {
             this.dataList.forEach((item) => {
@@ -484,10 +481,10 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           );
         }
 
-          attach.uploading = false;
-          attach.status = 'Complete';
-          index++;
-          this.iterateAttachments(index);
+        attach.uploading = false;
+        attach.status = 'Complete';
+        index++;
+        this.iterateAttachments(index);
       },
       (msg) => {
         attach.uploading = false;
@@ -550,8 +547,6 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           }
         });
       }
-      console.log('HasSAD');
-      console.log(hasSAD);
 
       if (hasSAD) {
         this.isVOC = true;

@@ -352,7 +352,7 @@ $peachThemeText: #121212;
 .contextmenu{
   position: absolute;
   z-index: 99999999999 !important;
-
+  // max-height: 140px;
 }
 .contextmenu .card {
   border:2px solid #4d83ff;
@@ -360,7 +360,32 @@ $peachThemeText: #121212;
   background-color: #4d83ff;
   color: #fff;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+  // max-height: 140px;
+  // overflow-y: auto;
 }
+
+// ::-webkit-scrollbar {
+//   width: 5px !important;
+// }
+
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   box-shadow: inset 0 0 5px #4d83ff !important;
+//   border-radius: 10px !important;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: #dddfe06b !important;
+//   border-radius: 10px !important;
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #dddfe06b !important;
+// }
+
 .contextOverlay {
   position: fixed !important;
   display: block !important;
