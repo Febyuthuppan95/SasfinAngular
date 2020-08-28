@@ -65,7 +65,11 @@
   <app-document-viewer [focus]="this.focusPDF" [(source)]="PDFSource"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">
-  <router-outlet></router-outlet>
+  <!-- <router-outlet></router-outlet> -->
+  <app-view-capture-transaction
+    *ngIf="captureData && currentDoctype"
+    [(capture)]="captureData"
+    [(currentDoctype)]="currentDoctype"></app-view-capture-transaction>
   <div class="company-container" [ngClass]="{'show-company-container': this.companyShowToggle}">
     <div class="company-info shadow text-left" *ngIf="this.companyInfoList !== undefined">
       <div *ngFor="let info of this.companyInfoList.captureInfo" class="info-item">

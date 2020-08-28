@@ -19,6 +19,7 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { InvoiceGetResponse, InvoiceLinesResponse } from 'src/app/models/HttpResponses/Invoices';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { DateService } from 'src/app/services/tools/date.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -35,7 +36,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private dateService: DateService) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -344,6 +346,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
+      requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
 
       console.log(requestModel);
 

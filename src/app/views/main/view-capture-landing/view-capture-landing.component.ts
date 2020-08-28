@@ -133,7 +133,17 @@ private notify: NotificationComponent;
           });
 
           this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-          this.router.navigate(['capture', 'transaction', 'attachment', btoa(this.docPath)]);
+          this.router.navigate([
+            'capture',
+            'transaction',
+            'attachment',
+            btoa(this.docPath),
+            btoa(this.fileType),
+            btoa(this.attachmentID.toString()),
+            btoa(this.transactionID.toString()),
+            btoa(this.transactionType),
+            btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
+            btoa(res.captureattachment.reason)]);
           this.loading = false;
         } else {
           this.notify.toastrwarning('Information', 'No attachments to capture');

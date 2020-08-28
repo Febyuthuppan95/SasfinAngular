@@ -19,7 +19,7 @@ export class MessagingService {
     this.angularFireMessaging.requestToken.subscribe((token) => {
       localStorage.setItem('firebase', token);
 
-      if (this.userService.isLoggedIn()) {
+      if (this.userService.isLoggedIn() && token !== null) {
         const user = this.userService.getCurrentUser();
 
         const model = {
