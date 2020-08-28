@@ -209,17 +209,21 @@ import { ContextMenuCompanyContactsComponent } from './components/menus/context-
 import { ChannelService } from './modules/chat/services/channel.service';
 import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
+// tslint:disable-next-line: max-line-length
 import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
 import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceClaimDataComponent } from './views/main/view-company-service-claims/view-company-service-claim-data/view-company-service-claim-data.component';
 import { ErrorInterceptor } from './helpers/error.helper';
 import { UploadProdatComponent } from './views/main/view-tariffs-list/upload-prodat/upload-prodat.component';
 import { PreviewReportsComponent } from './views/reports/preview-reports/preview-reports.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { ViewCompanyOemListComponent } from './views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewOemQuarterListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-oem-quarter-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewQuarterSupplyListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-supply-list/view-quarter-supply-list.component';
 import { FormOemQuarterSupplyComponent } from './components/forms/company-oem/form-oem-quarter-supply/form-oem-quarter-supply.component';
 import { CompanyOemContextMenuComponent } from './components/menus/company-oem-context-menu/company-oem-context-menu.component';
@@ -232,15 +236,22 @@ import { StorageService } from './services/storage.service';
 import { RightGuard } from './guards/right.guard';
 import { RedirectComponent } from './views/main/redirect/redirect.component';
 import { ViewTransactionCheckingComponent } from './views/main/view-transaction-checking/view-transaction-checking.component';
+// tslint:disable-next-line: max-line-length
 import { DialogEscalationReasonComponent } from './views/main/view-transaction-files/dialog-escalation-reason/dialog-escalation-reason.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyBomsItemsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyBomsItemgroupsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyBomsItemsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-items-list/view-company-boms-items-errors-list/view-company-boms-items-errors-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyBomsItemgroupsErrorsListComponent } from './views/main/view-company-boms/view-company-boms-itemgroups-list/view-company-boms-itemgroups-errors-list/view-company-boms-itemgroups-errors-list.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyBomsLinesErrorListComponent } from './views/main/view-company-boms/view-company-boms-lines-error-list/view-company-boms-lines-error-list.component';
 import { AutocompleteCPCComponent } from './components/forms/capture/autocompletes/autocomplete-cpc/autocomplete-cpc.component';
 import { AutocompleteCooComponent } from './components/forms/capture/autocompletes/autocomplete-coo/autocomplete-coo.component';
 import { AutocompleteTariffsComponent } from './components/forms/capture/autocompletes/autocomplete-tariffs/autocomplete-tariffs.component';
+// tslint:disable-next-line: max-line-length
 import { AutocompleteUnitsOfMeasureComponent } from './components/forms/capture/autocompletes/autocomplete-units-of-measure/autocomplete-units-of-measure.component';
 import { AutocompleteDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/autocomplete-duty.component';
 import { DialogOverrideComponent } from './components/forms/capture/dialog-override/dialog-override.component';
@@ -250,38 +261,49 @@ import { FormCrnComponent } from './components/forms/capture/updates/form-crn/fo
 import { FormWayComponent } from './components/forms/capture/updates/form-way/form-way.component';
 import { FormCswComponent } from './components/forms/capture/updates/form-csw/form-csw.component';
 import { FormInvComponent } from './components/forms/capture/updates/form-inv/form-inv.component';
+// tslint:disable-next-line: max-line-length
 import { AutocompleteEdiStatusesComponent } from './components/forms/capture/autocompletes/autocomplete-edi-statuses/autocomplete-edi-statuses.component';
 import { FormInvLinesComponent } from './components/forms/capture/updates/form-inv/form-inv-lines/form-inv-lines.component';
+// tslint:disable-next-line: max-line-length
 import { AutocompleteCurrencyComponent } from './components/forms/capture/autocompletes/autocomplete-currency/autocomplete-currency.component';
 import { AutocompleteIncoComponent } from './components/forms/capture/autocompletes/autocomplete-inco/autocomplete-inco.component';
 import { AutocompleteItemsComponent } from './components/forms/capture/autocompletes/autocomplete-items/autocomplete-items.component';
 import { FormSad500UpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-updated.component';
+// tslint:disable-next-line: max-line-length
 import { FormSad500LineUpdatedComponent } from './components/forms/capture/updates/form-sad/form-sad500-line-updated/form-sad500-line-updated.component';
 import { FormCswLinesComponent } from './components/forms/capture/updates/form-csw/form-csw-lines/form-csw-lines.component';
 import { MAT_BOTTOM_SHEET_DEFAULT_OPTIONS } from '@angular/material/bottom-sheet';
-import {
-  OverlayContainer,
-  FullscreenOverlayContainer,
-} from '@angular/cdk/overlay';
+import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanySupplierListComponent } from './views/main/view-company-list/view-company-supplier-list/view-company-supplier-list.component';
+// tslint:disable-next-line: max-line-length
 import { CompanySupplierContextMenuComponent } from './components/menus/company-supplier-context-menu/company-supplier-context-menu.component';
+// tslint:disable-next-line: max-line-length
 import { ViewQuarterReceiptTransactionsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 import { SpinningLoaderComponent } from './components/spinning-loader/spinning-loader.component';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuQuarterTransactionsComponent } from './components/menus/context-menu-quarter-transactions/context-menu-quarter-transactions.component';
 import { FormC1Component } from './components/forms/capture/updates/form-c1/form-c1.component';
 import { FormSmdComponent } from './components/forms/capture/updates/form-smd/form-smd.component';
 import { FormC1LinesComponent } from './components/forms/capture/updates/form-c1/form-c1-lines/form-c1-lines.component';
 import { FormSmdLinesComponent } from './components/forms/capture/updates/form-smd/form-smd-lines/form-smd-lines.component';
+// tslint:disable-next-line: max-line-length
 import { AutocompleteCompaniesComponent } from './components/forms/capture/autocompletes/autocomplete-companies/autocomplete-companies.component';
+// tslint:disable-next-line: max-line-length
 import { DialogCreateItemsComponent } from './components/forms/capture/autocompletes/autocomplete-items/dialog-create-items/dialog-create-items.component';
+// tslint:disable-next-line: max-line-length
 import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-c1-attachments/view-c1-attachments.component';
+// tslint:disable-next-line: max-line-length
 import { ViewSmdAttachmentsComponent } from './views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-smd-attachments/view-smd-attachments.component';
+// tslint:disable-next-line: max-line-length
 import { ContextMenuLocalAttachmentsComponent } from './components/menus/context-menu-local-attachments/context-menu-local-attachments.component';
 import { AutocompleteQuarterComponent } from './components/forms/capture/autocompletes/autocomplete-quarter/autocomplete-quarter.component';
 import { TabDirective } from './directives/tab.directive';
+// tslint:disable-next-line: max-line-length
 import { BottomSheetAssignDutyComponent } from './components/forms/capture/autocompletes/autocomplete-duty/bottom-sheet-assign-duty/bottom-sheet-assign-duty.component';
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
 import { ContextMenuPermitTypesComponent } from './components/menus/context-menu-permit-types/context-menu-permit-types.component';
+// tslint:disable-next-line: max-line-length
 import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
 import { FirebaseModule } from './modules/firebase/firebase.module';
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
