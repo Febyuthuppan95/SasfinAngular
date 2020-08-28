@@ -288,6 +288,8 @@ import { EscalationQueueComponent } from './views/main/escalation-queue/escalati
 import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { CaptureErrorsComponent } from './views/capture/capture-errors/capture-errors.component';
+import { DateService } from './services/tools/date.service';
 
 @NgModule({
   declarations: [
@@ -494,6 +496,7 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
     ViewCompanyPermitsListComponent,
     EscalationQueueComponent,
     MenuEscalationsComponent,
+    CaptureErrorsComponent,
   ],
   imports: [
     BrowserModule,
@@ -571,6 +574,7 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
       provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
       useValue: { hasBackdrop: false },
     },
+    DateService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

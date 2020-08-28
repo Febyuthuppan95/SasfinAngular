@@ -28,6 +28,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { ItemsListResponse, Items } from 'src/app/models/HttpResponses/ItemsListResponse';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { DateService } from 'src/app/services/tools/date.service';
 
 @Component({
   selector: 'app-form-invoice',
@@ -37,11 +38,17 @@ import { MatTooltip } from '@angular/material/tooltip';
 export class FormInvoiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-constructor(private themeService: ThemeService, private userService: UserService, private transactionService: TransactionService,
-            private router: Router, private captureService: CaptureService, private dialog: MatDialog,
-            private eventService: EventService, private currencyService: CurrenciesService, private companyService: CompanyService,
-            private snackbar: MatSnackBar, private snackbarService: HelpSnackbar,
-            private placeService: PlaceService, private objectHelpService: ObjectHelpService) { }
+constructor(private userService: UserService,
+            private router: Router,
+            private captureService: CaptureService,
+            private dialog: MatDialog,
+            private currencyService: CurrenciesService,
+            private companyService: CompanyService,
+            private snackbar: MatSnackBar,
+            private snackbarService: HelpSnackbar,
+            private placeService: PlaceService,
+            private objectHelpService: ObjectHelpService,
+            private dateService: DateService) { }
 
 shortcuts: ShortcutInput[] = [];
 
@@ -348,7 +355,7 @@ loader = false;
             currencyID: this.form.currencyID.value,
             attachmentStatusID: escalation ? 7 : 3,
             cooID: this.form.cooID.value,
-            invoiceDate: this.form.invoiceDate.value,
+            invoiceDate: this.dateService.getUTC(this.form.invoiceDate.value),
             incoTermTypeID: this.form.incoType.value,
             isDeleted: 0,
 
