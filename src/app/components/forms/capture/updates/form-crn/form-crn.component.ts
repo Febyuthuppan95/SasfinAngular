@@ -100,6 +100,7 @@ public errors: any[] = [];
 public shortcuts: ShortcutInput[];
 public help = false;
 public loader = true;
+public showErrors = false;
 
 private attachmentID: number;
 private transactionID: number;
@@ -171,6 +172,14 @@ ngAfterViewInit(): void {
             command: () => {
               this.toggelHelpBar();
             }
+        },
+        {
+          key: 'alt + t',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.showErrors = !this.showErrors;
+          }
         }];
   });
 }

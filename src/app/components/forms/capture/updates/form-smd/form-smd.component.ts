@@ -46,6 +46,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
+  public lineErrors: any[] = [];
   public activeLine: any;
   public activeIndex = 0;
   public displayLines = false;
@@ -56,6 +57,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
   public isExport = false;
   public paginationControl = new FormControl(1);
   public loader = true;
+  public showErrors = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -182,6 +184,14 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.displayLines) {
                   this.eventService.submitLines.next();
                 }
+              }
+            },
+            {
+              key: 'alt + t',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.showErrors = !this.showErrors;
               }
             }];
     });

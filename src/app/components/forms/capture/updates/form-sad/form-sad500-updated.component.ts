@@ -94,6 +94,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
+  public lineErrors: any[] = [];
   public activeLine: any;
   public activeIndex = 0;
   public displayLines = false;
@@ -104,6 +105,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   public isExport = false;
   public paginationControl = new FormControl(1);
   public loader = true;
+  public showErrors = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -251,6 +253,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
                   this.eventService.submitLines.next();
                 }
               }
+            },
+            {
+              key: 'alt + t',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.showErrors = !this.showErrors;
+              }
             }];
     });
   }
@@ -372,6 +382,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
         this.lines = res.lines;
+        this.lineErrors = res.attachmentErrors.attachmentErrors;
+
         this.lines.forEach((line) => {
           line.isLocal = false;
           line.specificSAD500LineID = line.sad500LineID;

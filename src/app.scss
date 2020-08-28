@@ -834,3 +834,11 @@ body.scrolling::-webkit-scrollbar-thumb,
   background: #4d83ff;
   color: #fff;
 }
+
+.customCursor {
+  cursor: url('./assets/cursor.png'), auto !important;
+}
+
+.defaultCursor {
+  cursor: default !important;
+}

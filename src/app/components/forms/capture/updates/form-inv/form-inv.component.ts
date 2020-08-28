@@ -52,6 +52,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public companyID: number;
   public paginationControl = new FormControl(1);
   public loader = true;
+  public showErrors = false;
+  public lineErrors: any[] = [];
 
   private attachmentID: number;
   private transactionID: number;
@@ -213,6 +215,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (this.displayLines) {
                   this.eventService.submitLines.next();
                 }
+              }
+            },
+            {
+              key: 'alt + t',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.showErrors = !this.showErrors;
               }
             }];
     });

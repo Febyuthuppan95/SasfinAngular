@@ -9,9 +9,16 @@ export class CaptureErrorsComponent implements OnInit {
 
   constructor() { }
 
-  @Input() errors: any;
+  @Input() errors: any = [];
+  @Input() lines: any = [];
+  @Input() lineErrors: any = [];
+  @Input() open = false;
 
   ngOnInit() {
+    console.log(this.open);
+    console.log(this.lines);
+    console.log(this.errors);
+    console.log(this.lineErrors);
   }
 
 }

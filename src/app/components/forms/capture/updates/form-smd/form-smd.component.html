@@ -69,3 +69,4 @@
   <app-form-smd-lines [(data)]="activeLine" [(companyID)]="form.controls.companyID" (submission)="queueLine($event)" #lineForm></app-form-smd-lines>
 </ng-container>
 
+<app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

@@ -45,7 +45,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public form: FormGroup;
   public attachmentLabel: string;
   public transactionLabel: string;
-  public lines: any[];
+  public lines: any[] = [];
+  public lineErrors: any[] = [];
   public activeLine: any;
   public activeIndex = 0;
   public displayLines = false;
@@ -55,6 +56,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public isExport = false;
   public paginationControl = new FormControl(1);
   public loader = true;
+  public showErrors = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -216,7 +218,15 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.eventService.submitLines.next();
               }
             }
-          }];
+          },
+            {
+              key: 'alt + t',
+              preventDefault: true,
+              allowIn: [AllowIn.Textarea, AllowIn.Input],
+              command: e => {
+                this.showErrors = !this.showErrors;
+              }
+            }];
     });
   }
 
@@ -305,6 +315,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       (res: CustomWorksheetLinesResponse) => {
         if (res.lines.length > 0) {
         this.lines = res.lines;
+        this.lineErrors = res.attachmentErrors.attachmentErrors;
+
         this.lines.forEach((line) => {
           line.isLocal = false;
           line.customWorksheetID = this.form.controls.customworksheetID.value;

@@ -65,6 +65,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   public shortcuts: ShortcutInput[];
   public help = false;
   public loader = true;
+  public showErrors = false;
 
   private attachmentID: number;
   private transactionID: number;
@@ -140,6 +141,14 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
               command: e => {
                 this.toggelHelpBar();
               }
+          },
+          {
+            key: 'alt + t',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              this.showErrors = !this.showErrors;
+            }
           }];
     });
   }
