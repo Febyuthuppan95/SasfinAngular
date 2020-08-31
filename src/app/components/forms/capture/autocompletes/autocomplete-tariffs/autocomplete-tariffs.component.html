@@ -3,12 +3,12 @@
     Tariff
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
-  <mat-hint>ItemNumber</mat-hint>
+  <mat-hint>Sub Heading / Item Number</mat-hint>
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn" >
   <mat-option *ngFor="let item of list" [value]="item">
-    {{item.itemNumber || ""}}
+    {{item.subHeading == '' ? item.itemNumber: item.subHeading}}{{item.subHeading.length < 8 && item.subHeading != '' ? '.00' : ''}}
   </mat-option>
 </mat-autocomplete>

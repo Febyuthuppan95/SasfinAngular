@@ -47,7 +47,7 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   settings: SnackbarModel;
   focus: SnackbarModel;
-  enabled: boolean;
+  enabled: boolean = true;
   currentUser: User = this.userService.getCurrentUser();
   // objectHelpList: GetObjectHelpResponse[];
   objectHelpDictionary: Map<string, string>;
@@ -96,8 +96,6 @@ export class SnackBarComponent implements OnInit, OnDestroy {
       if (allow) {
         this.settings.display = false;
       }
-
-      this.enabled = allow;
     });
   }
 

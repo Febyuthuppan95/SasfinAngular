@@ -312,6 +312,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CaptureErrorsComponent } from './views/capture/capture-errors/capture-errors.component';
 import { DateService } from './services/tools/date.service';
+import { OverrideComponent } from './components/forms/capture/override/override.component';
 
 @NgModule({
   declarations: [
@@ -519,6 +520,7 @@ import { DateService } from './services/tools/date.service';
     EscalationQueueComponent,
     MenuEscalationsComponent,
     CaptureErrorsComponent,
+    OverrideComponent,
   ],
   imports: [
     BrowserModule,
