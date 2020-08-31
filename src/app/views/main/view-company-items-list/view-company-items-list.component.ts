@@ -667,6 +667,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
+        BOMID: -1,
         companyID: this.companyID
       },
       requestProcedure: `BOMItemAdd`
