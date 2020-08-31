@@ -16,7 +16,7 @@
         <mat-label>
           Line No
         </mat-label>
-        <input matInput type="text" formControlName="LineNo">
+        <input matInput type="text" formControlName="LineNo" (focusin)="updateHelpContext('form-c1-line-no')">
       </mat-form-field>
       <br><br>
     </div>
@@ -25,7 +25,7 @@
         <mat-label>
           Document No
         </mat-label>
-        <input matInput type="number" formControlName="DocumentNo">
+        <input matInput type="number" formControlName="DocumentNo" (focusin)="updateHelpContext('form-c1-line-doc')">
       </mat-form-field>
       <br><br>
     </div>
@@ -34,16 +34,16 @@
         <mat-label>
           Document Line No
         </mat-label>
-        <input matInput type="text" formControlName="DocumentLineNo">
+        <input matInput type="text" formControlName="DocumentLineNo" (focusin)="updateHelpContext('form-c1-line-doc-no')">
       </mat-form-field>
       <br><br>
     </div>
     <div class="col-6">
-      <ls-autocomplete-items [companyID]="companyID" [control]="form.controls.ItemID"></ls-autocomplete-items>
+      <ls-autocomplete-items [companyID]="companyID" [control]="form.controls.ItemID" [helpSlug]="'c1-line-item'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6">
-      <ls-autocomplete-items [companyID]="companyID" [control]="form.controls.SupplierItemID" [label]="'Supplier Items'"></ls-autocomplete-items>
+      <ls-autocomplete-items [companyID]="companyID" [control]="form.controls.SupplierItemID" [label]="'Supplier Items'" [helpSlug]="'c1-line-supplier'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-12">
@@ -51,7 +51,7 @@
         <mat-label>
           Component Value
         </mat-label>
-          <input matInput type="text" formControlName="ComponentValue">
+          <input matInput type="text" formControlName="ComponentValue" (focusin)="updateHelpContext('form-c1-line-component-value')">
        </mat-form-field>
       <br><br>
     </div>
@@ -60,7 +60,7 @@
         <mat-label>
           Raw Material Value
         </mat-label>
-          <input matInput type="text" formControlName="RawMaterialValue">
+          <input matInput type="text" formControlName="RawMaterialValue" (focusin)="updateHelpContext('form-c1-line-raw')">
        </mat-form-field>
       <br><br>
     </div>
@@ -69,7 +69,7 @@
         <mat-label>
           Reference
         </mat-label>
-          <input matInput type="text" formControlName="Reference">
+          <input matInput type="text" formControlName="Reference" (focusin)="updateHelpContext('form-c1-line-reference')">
        </mat-form-field>
       <br><br>
     </div>
@@ -82,7 +82,7 @@
             <mat-label>
             Total Cost
             </mat-label>
-            <input matInput type="number" formControlName="TotalCost">
+            <input matInput type="number" formControlName="TotalCost" (focusin)="updateHelpContext('form-c1-line-total')">
         </mat-form-field>
         <br><br>
     </div>

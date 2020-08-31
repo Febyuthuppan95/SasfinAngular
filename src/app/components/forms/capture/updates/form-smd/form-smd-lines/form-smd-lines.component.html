@@ -12,11 +12,11 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6" >
-      <ls-autocomplete-items [label]="'Items'" [(control)]="form.controls.ItemID" [companyID]="companyID"></ls-autocomplete-items>
+      <ls-autocomplete-items [label]="'Items'" [(control)]="form.controls.ItemID" [companyID]="companyID" [helpSlug]="'smd-line-items'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6" >
-      <ls-autocomplete-items [label]="'Supplier Items'" [(control)]="form.controls.SupplierItemID" [companyID]="companyID"></ls-autocomplete-items>
+      <ls-autocomplete-items [label]="'Supplier Items'" [(control)]="form.controls.SupplierItemID" [companyID]="companyID" [helpSlug]="'smd-line-supplier-items'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6">
@@ -24,13 +24,13 @@
         <mat-label>
           Line No
         </mat-label>
-        <input matInput type="text" formControlName="LineNo">
+        <input matInput type="text" formControlName="LineNo" (focusin)="updateHelpContext('smd-line-line-no')">
       </mat-form-field>
       <br><br>
     </div>
 
     <div class="col-6" >
-        <ls-autocomplete-units-of-measure [(control)]="form.controls.UnitOfMeasureID"></ls-autocomplete-units-of-measure>
+        <ls-autocomplete-units-of-measure [(control)]="form.controls.UnitOfMeasureID" [helpSlug]="'smd-line-unit'"></ls-autocomplete-units-of-measure>
         <br><br>
     </div>
 
@@ -40,7 +40,7 @@
         <mat-label>
           Non-SMD Value
         </mat-label>
-          <input matInput type="text" formControlName="NonSMDValue">
+          <input matInput type="text" formControlName="NonSMDValue" (focusin)="updateHelpContext('smd-line-non-value')">
        </mat-form-field>
       <br><br>
     </div>
@@ -51,7 +51,7 @@
         <mat-label>
           Aluminium
         </mat-label>
-          <input matInput type="text" formControlName="Aluminium">
+          <input matInput type="text" formControlName="Aluminium" (focusin)="updateHelpContext('smd-line-al')">
        </mat-form-field>
       <br><br>
     </div>
@@ -62,7 +62,7 @@
         <mat-label>
           Brass
         </mat-label>
-          <input matInput type="text" formControlName="Brass">
+          <input matInput type="text" formControlName="Brass" (focusin)="updateHelpContext('smd-line-brass')">
        </mat-form-field>
       <br><br>
     </div>
@@ -73,7 +73,7 @@
         <mat-label>
           Leather
         </mat-label>
-          <input matInput type="text" formControlName="Leather">
+          <input matInput type="text" formControlName="Leather" (focusin)="updateHelpContext('smd-line-leather')">
        </mat-form-field>
       <br><br>
     </div>
@@ -84,7 +84,7 @@
         <mat-label>
           PGM
         </mat-label>
-          <input matInput type="text" formControlName="PGM">
+          <input matInput type="text" formControlName="PGM" (focusin)="updateHelpContext('smd-line-pgm')">
        </mat-form-field>
       <br><br>
     </div>
@@ -94,7 +94,7 @@
         <mat-label>
           Flat Glass
         </mat-label>
-          <input matInput type="text" formControlName="FlatGlass">
+          <input matInput type="text" formControlName="FlatGlass" (focusin)="updateHelpContext('smd-line-flatglass')">
        </mat-form-field>
       <br><br>
     </div>
@@ -104,7 +104,7 @@
         <mat-label>
           Stainless Steel
         </mat-label>
-          <input matInput type="text" formControlName="StainlessSteel">
+          <input matInput type="text" formControlName="StainlessSteel" (focusin)="updateHelpContext('smd-line-stainless')">
        </mat-form-field>
       <br><br>
     </div>
@@ -114,7 +114,7 @@
         <mat-label>
           Steel
         </mat-label>
-          <input matInput type="text" formControlName="Steel">
+          <input matInput type="text" formControlName="Steel" (focusin)="updateHelpContext('smd-line-steel')">
        </mat-form-field>
       <br><br>
     </div>
@@ -124,7 +124,7 @@
         <mat-label>
           Reference
         </mat-label>
-          <input matInput type="text" formControlName="Reference">
+          <input matInput type="text" formControlName="Reference" (focusin)="updateHelpContext('smd-line-reference')">
        </mat-form-field>
       <br><br>
     </div>
