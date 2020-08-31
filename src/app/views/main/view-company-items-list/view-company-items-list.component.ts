@@ -672,7 +672,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       requestProcedure: `BOMItemAdd`
     };
     console.log(this.ItemFile, model, 'boms/items/upload');
-   
+
     this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
       (res: Outcome) => {
         // console.log('BOMUploadRes');
