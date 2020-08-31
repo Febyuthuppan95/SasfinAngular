@@ -17,10 +17,10 @@
           Waybill No
         </mat-label>
         <input matInput #startForm type="text" formControlName="waybillNo" (focusin)="updateHelpContext('form-waybill-no')"/>
-        <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
+        <!-- <button *ngIf="form.controls.waybillNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('waybillNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+        <button *ngIf="form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error> -->
       </mat-form-field>
       <br /><br />
     </div>

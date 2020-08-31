@@ -275,18 +275,18 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
 
-        this.errors = res.attachmentErrors.attachmentErrors;
+        // this.errors = res.attachmentErrors.attachmentErrors;
 
-        if (res.attachmentErrors.attachmentErrors.length > 0) {
-          Object.keys(this.form.controls).forEach(key => {
-            res.attachmentErrors.attachmentErrors.forEach((error) => {
-              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-                this.form.controls[key].setErrors({incorrect: true});
-                this.form.controls[key].markAsTouched();
-              }
-            });
-          });
-        }
+        // if (res.attachmentErrors.attachmentErrors.length > 0) {
+        //   Object.keys(this.form.controls).forEach(key => {
+        //     res.attachmentErrors.attachmentErrors.forEach((error) => {
+        //       if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+        //         this.form.controls[key].setErrors({incorrect: true});
+        //         this.form.controls[key].markAsTouched();
+        //       }
+        //     });
+        //   });
+        // }
 
         this.form.updateValueAndValidity();
         await this.loadLines();

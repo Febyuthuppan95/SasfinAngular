@@ -174,7 +174,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
-        this.errors = res.attachmentErrors.attachmentErrors;
+        // this.errors = res.attachmentErrors.attachmentErrors;
 
         Object.keys(this.form.controls).forEach(key => {
           if (key.indexOf('ODate') !== -1) {
@@ -184,19 +184,19 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
           }
         });
 
-        if (res.attachmentErrors.attachmentErrors.length > 0) {
-          Object.keys(this.form.controls).forEach(key => {
-            res.attachmentErrors.attachmentErrors.forEach((error) => {
-              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-                this.form.controls[key].setErrors({incorrect: true});
-                this.form.controls[key].markAsTouched();
-              }
-            });
-          });
-        }
+        // if (res.attachmentErrors.attachmentErrors.length > 0) {
+        //   Object.keys(this.form.controls).forEach(key => {
+        //     res.attachmentErrors.attachmentErrors.forEach((error) => {
+        //       if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+        //         this.form.controls[key].setErrors({incorrect: true});
+        //         this.form.controls[key].markAsTouched();
+        //       }
+        //     });
+        //   });
+        // }
 
         this.form.updateValueAndValidity();
-      setTimeout(() => this.startForm.nativeElement.focus(), 100);
+        setTimeout(() => this.startForm.nativeElement.focus(), 100);
 
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });

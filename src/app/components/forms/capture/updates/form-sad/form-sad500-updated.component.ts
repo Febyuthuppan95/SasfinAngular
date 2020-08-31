@@ -321,7 +321,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         const response: any = res;
         console.log(response);
         response.userID = request.userID;
-        response.cpcID = response.cpc;
+        response.cpcID = +response.cpc;
         response.SAD500ID = request.specificID;
         response.attachmentStatusID = response.statusID;
         response.referenceNo = response.rebateCode;

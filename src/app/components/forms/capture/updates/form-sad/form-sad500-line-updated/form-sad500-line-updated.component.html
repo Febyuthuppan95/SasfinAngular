@@ -16,10 +16,10 @@
           Line No
         </mat-label>
         <input matInput type="text" formControlName="lineNo" #startLineForm (focusin)="updateHelpContext('form-sad500-line-line-no')">
-        <mat-icon *ngIf="form.controls.lineNoOBit.value" matSuffix (click)="undoOverride('lineNo')" matTooltip="Remove Override">clear</mat-icon>
+        <!-- <mat-icon *ngIf="form.controls.lineNoOBit.value" matSuffix (click)="undoOverride('lineNo')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.lineNoOBit.value">OVERRIDE: {{form.controls.lineNoOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.lineNoOBit.value && form.controls.lineNo.errors?.incorrect" matSuffix (click)="overrideDialog('lineNo', 'Line No')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.lineNoOBit.value  && form.controls.lineNo.errors?.incorrect">{{getError('lineNo')}}</mat-error>
+        <mat-error *ngIf="!form.controls.lineNoOBit.value  && form.controls.lineNo.errors?.incorrect">{{getError('lineNo')}}</mat-error> -->
       </mat-form-field>
       <br><br>
     </div>
@@ -54,10 +54,10 @@
           Previous Declaration
         </mat-label>
         <input matInput type="text" formControlName="previousDeclaration" (focusin)="updateHelpContext('form-sad500-line-previous-declaration')">
-        <mat-icon *ngIf="form.controls.previousDeclarationOBit.value" matSuffix (click)="undoOverride('previousDeclaration')" matTooltip="Remove Override">clear</mat-icon>
+        <!-- <mat-icon *ngIf="form.controls.previousDeclarationOBit.value" matSuffix (click)="undoOverride('previousDeclaration')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.previousDeclarationOBit.value">OVERRIDE: {{form.controls.previousDeclarationOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.previousDeclarationOBit.value && form.controls.previousDeclaration.errors?.incorrect" matSuffix (click)="overrideDialog('previousDeclaration', 'Previous Declaration')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.previousDeclarationOBit.value  && form.controls.previousDeclaration.errors?.incorrect">{{getError('previousDeclaration')}}</mat-error>
+        <mat-error *ngIf="!form.controls.previousDeclarationOBit.value  && form.controls.previousDeclaration.errors?.incorrect">{{getError('previousDeclaration')}}</mat-error> -->
       </mat-form-field>
       <br><br>
     </div>
@@ -76,10 +76,10 @@
           Supply Unit
         </mat-label>
         <input matInput type="number" formControlName="supplyUnit" (focusin)="updateHelpContext('form-sad500-line-supply-unit')">
-        <mat-icon *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override">clear</mat-icon>
+        <!-- <mat-icon *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.supplyUnitOBit.value">OVERRIDE: {{form.controls.supplyUnitOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.supplyUnitOBit.value && form.controls.supplyUnit.errors?.incorrect" matSuffix (click)="overrideDialog('supplyUnit', 'Supply Unit')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.supplyUnitOBit.value  && form.controls.supplyUnit.errors?.incorrect">{{getError('supplyUnit')}}</mat-error>
+        <mat-error *ngIf="!form.controls.supplyUnitOBit.value  && form.controls.supplyUnit.errors?.incorrect">{{getError('supplyUnit')}}</mat-error> -->
       </mat-form-field>
       <br><br>
     </div>
