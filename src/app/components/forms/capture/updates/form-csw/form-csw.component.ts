@@ -275,18 +275,18 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
 
-        // this.errors = res.attachmentErrors.attachmentErrors;
+        this.errors = res.attachmentErrors.attachmentErrors;
 
-        // if (res.attachmentErrors.attachmentErrors.length > 0) {
-        //   Object.keys(this.form.controls).forEach(key => {
-        //     res.attachmentErrors.attachmentErrors.forEach((error) => {
-        //       if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-        //         this.form.controls[key].setErrors({incorrect: true});
-        //         this.form.controls[key].markAsTouched();
-        //       }
-        //     });
-        //   });
-        // }
+        if (res.attachmentErrors.attachmentErrors.length > 0) {
+          Object.keys(this.form.controls).forEach(key => {
+            res.attachmentErrors.attachmentErrors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                this.form.controls[key].setErrors({incorrect: true});
+                this.form.controls[key].markAsTouched();
+              }
+            });
+          });
+        }
 
         this.form.updateValueAndValidity();
         await this.loadLines();
@@ -340,8 +340,24 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
+    let pass = false;
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+    if (form.controls.waybillNo.value) {
+      pass = true;
+    }
+
+    if (form.controls.fileRef.value) {
+      pass = true;
+    }
+
+    if (form.controls.lrn.value) {
+      pass = true;
+    }
+
+    // Check at least one of the fields are valid
+    if (!pass) {
+      this.snackbar.open('At least one field must be entered', '', {duration: 3000});
+    } else if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
       // tslint:disable-next-line: max-line-length
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));

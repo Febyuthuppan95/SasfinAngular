@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { FormControl, Validators } from '@angular/forms';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { Subject } from 'rxjs';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -20,6 +21,14 @@ constructor(private userService: UserService,
   @Input() control: FormControl;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+
+  @Input() hasOverride = false;
+  @Input() tagOverride = '';
+  @Input() titleOverride = '';
+  @Input() reasonOverride = '';
+  @Input() errorOverride = '';
+  @Output() undoOverride = new Subject<string>();
+  @Output() override = new Subject<any>();
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -60,7 +69,7 @@ constructor(private userService: UserService,
           }
 
           this.control.reset(null);
-          this.query.setErrors({ incorrect: true });
+          this.query.setErrors({ optionNotSelected: true });
         }
       } else {
         this.selected = false;

@@ -42,7 +42,7 @@ form = new FormGroup({
   waybillNo: new FormControl(null, [Validators.required]),
   attachmentStatusID: new FormControl(null),
   isDeleted: new FormControl(0),
-  waybillNoOBit: new FormControl(true),
+  waybillNoOBit: new FormControl(null),
   waybillNoOUserID: new FormControl(null),
   waybillNoODate: new FormControl(null),
   waybillNoOReason: new FormControl(null),

@@ -41,11 +41,11 @@ export class FormCrnComponent implements OnInit, AfterViewInit, OnDestroy {
 
 form = new FormGroup({
   userID: new FormControl(null),
-  customsReleaseID: new FormControl(null, [Validators.required]),
-  fileRef: new FormControl(null, [Validators.required]),
+  customsReleaseID: new FormControl(null),
+  fileRef: new FormControl(null),
   totalCustomsValue: new FormControl(null, [Validators.required]),
-  totalDuty: new FormControl(null, [Validators.required]),
-  serialNo: new FormControl(null, [Validators.required]),
+  totalDuty: new FormControl(null),
+  serialNo: new FormControl(null),
   lrn: new FormControl(null, [Validators.required]),
   importersCode: new FormControl(null),
   pccID: new FormControl(null),
