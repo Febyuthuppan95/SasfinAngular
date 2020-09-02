@@ -21,13 +21,12 @@
         (pageChange)="pageChange($event)"
         (showingRecordsEvent)="recordsPerPageChange($event)"
         (searchEvent)="searchBar($event)"
-        (addButtonEvent)="addButton()"
         (backButtonEvent)="backToCompanies()">
       </app-table>
     </div>
   </div>
 
-<button class="hide" data-toggle="modal" data-target="#addItem" #openAddModal></button>
+<!-- <button class="hide" data-toggle="modal" data-target="#addItem" #openAddModal></button>
 <div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -46,7 +45,7 @@
             <label for="addItemFile">
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
-            <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+             --<button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> --
             <input id="addItemFile" hidden #itemFile type="file" (change)="onFileChange($event.target.files)" required>
           </div>
         </div>
@@ -57,7 +56,7 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
   <!--Add Modal group-->
 <button class="hide" data-toggle="modal" data-target="#addtogroup" #openaddGroupModal></button>

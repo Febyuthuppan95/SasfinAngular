@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../services/Company.Service';
 import {UserService} from '../../../../services/User.Service';
 import {ThemeService} from '../../../../services/Theme.Service';
@@ -16,6 +16,7 @@ import {User} from '../../../../models/HttpResponses/User';
 import {NotificationComponent} from '../../../../components/notification/notification.component';
 import {ApiService} from '../../../../services/api.service';
 import {environment} from '../../../../../environments/environment';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-company-boms-items-list',
@@ -23,6 +24,9 @@ import {environment} from '../../../../../environments/environment';
   styleUrls: ['./view-company-boms-items-list.component.scss']
 })
 export class ViewCompanyBomsItemsListComponent implements OnInit {
+  ItemFile: File;
+  filePreview: any;
+  companyID: any;
 
   constructor(
     private companyService: CompanyService,
@@ -35,6 +39,15 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     // tslint:disable-next-line:no-shadowed-variable
     private ApiService: ApiService,
   ) { }
+
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
+
+  @ViewChild('itemFile', { static: false })
+  bomFile: ElementRef;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -151,15 +164,15 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
 
     this.loadItems(true);
 
-    // this.companyService
-    //   .observeBOM()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((obj: SelectedBOM) => {
-    //     if (obj !== undefined) {
-    //       this.bomid = obj.bomid;
-    //       this.bomstatus = obj.status;
-    //     }
-    //   });
+    this.companyService
+      .observeBOM()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((obj: SelectedBOM) => {
+        if (obj !== undefined) {
+          this.bomid = obj.bomid;
+          this.bomstatus = obj.status;
+        }
+      });
   }
 
   loadItems(displayGrowl: boolean) {
@@ -231,12 +244,56 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   }
 
   add() {
-    // Render modal
-    // this.filePreview = null;
-    // console.log(this.bomFile);
-    // this.bomFile.nativeElement.value = '';
-    // this.BomFile = null;
-    // this.openAddModal.nativeElement.click();
+    this.openAddModal.nativeElement.click();
+  }
+
+  onFileChange(files: FileList) {
+    this.ItemFile = files.item(0);
+    this.filePreview = this.ItemFile.name;
+  }
+
+  saveItemUpload() {
+    // Save
+    console.log('save');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        BOMID: this.bomid,
+        companyID: this.companyID
+      },
+      requestProcedure: `BOMItemAdd`
+    };
+    console.log(this.ItemFile, model, 'boms/items/upload');
+
+    this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
+      (res: Outcome) => {
+        console.log('BOMUploadRes');
+        console.log(res);
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage);
+          this.loadItems(true);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        // nothing yet
+        console.log('Error: ' + msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+  loadCompanyItemsList(arg0: boolean) {
+    throw new Error("Method not implemented.");
   }
 
 }
