@@ -10,8 +10,8 @@
           <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Check List <i
               class="mdi  mdi-checkbox-multiple-marked menu-icon"></i> </h4>
         </div>
-        
-      
+
+
       </div>
         <br />
         <div class="filters" >
@@ -28,9 +28,9 @@
                    placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
           </form>
         </div>
-   
-      
-    
+
+
+
       <br />
       <div class="row" *ngIf="this.observedTransaction">
         <div class="col-md-12">
@@ -39,9 +39,9 @@
           </h5>
         </div>
       </div>
-  
+
       <br /> <br />
-  
+
       <h4 *ngIf="!this.CaptureJoins">No Customs Workshet Lines found for this transaction</h4>
       <div *ngIf="this.CaptureJoins !== null">
         <mat-accordion *ngFor="let Cust of CustomWorksheetLines">
@@ -61,7 +61,7 @@
                   <hr style="border-top: 2px solid #0099ff;" />
                   <app-nested-table *ngIf="this.AssignedInvoiceLines.length > 0"
                   [action_icon]="'edit'"
-                  [parents] = "this.AssignedInvoiceLines" 
+                  [parents] = "this.AssignedInvoiceLines"
                   [isPageable]="'false'"
                   [headings]="this.invoiceHeadings"
                   (rowEvent)="InvoiceEvent($event)"
@@ -77,7 +77,7 @@
                   <hr style="border-top: 2px solid #0099ff;" />
                   <app-nested-table *ngIf="this.AssignedInvoiceLines.length > 0"
                   [action_icon]="'edit'"
-                  [parents] = "this.AssignedInvoiceLines" 
+                  [parents] = "this.AssignedInvoiceLines"
                   [isPageable]="'false'"
                   [headings]="this.invoiceHeadings"
                   (rowEvent)="InvoiceEvent($event)"
@@ -112,16 +112,16 @@
     <p class="ls-text-{{ currentTheme }}" *ngIf="this.CaptureJoins !== null">Showing {{ rowStart }} to {{ +rowStart + +showingRecords - 1 }} of
       {{ rowCount }}</p>
 
-      
+
 </div>
 <button class="hide" data-toggle="modal" data-target="#tables" #trigger></button>
 <!-- <div mat-dialog class="modal fade" aria-labelledby="modalContent" aria-hidden="true" id="tables">
   <div mat-dialog-content>
     <div class="row">
-      <div class="col-sm-6"> 
+      <div class="col-sm-6">
         <mat-card>Table here</mat-card>
       </div>
-      <div class="col-sm-6"> 
+      <div class="col-sm-6">
         <mat-card>Table here</mat-card>
       </div>
     </div>
@@ -141,7 +141,7 @@
           <div class="col-sm-6"> <!--Left Table-->
             <app-nested-table *ngIf="this.AssignedLines.length > 0"
               [action_icon]="'edit'"
-              [parents] = "this.AssignedLines" 
+              [parents] = "this.AssignedLines"
               [isPageable]="'false'"
               [headings]="this.AssignedHeadings"
               (rowEvent)="InvoiceEvent($event)"
@@ -152,7 +152,7 @@
           <div class="col-sm-6"> <!--Right Table-->
             <app-nested-table *ngIf="this.AvailableLines.length > 0"
               [action_icon]="'edit'"
-              [parents] = "this.AvailableLines" 
+              [parents] = "this.AvailableLines"
               [isPageable]="'false'"
               [headings]="this.AvailableHeadings"
               (rowEvent)="InvoiceEvent($event)"

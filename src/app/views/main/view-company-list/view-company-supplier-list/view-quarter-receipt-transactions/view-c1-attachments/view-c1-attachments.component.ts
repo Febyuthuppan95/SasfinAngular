@@ -294,7 +294,7 @@ filePreview: string;
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: SupplierC1List) => {
-       console.log('res');
+       console.log('res1');
        console.log(res);
        if (res.data.length === 0) {
           this.noData = true;
