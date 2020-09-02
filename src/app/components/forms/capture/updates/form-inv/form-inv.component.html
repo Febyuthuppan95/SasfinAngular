@@ -53,10 +53,10 @@
             Invoice No
           </mat-label>
           <input matInput #startForm type="text" formControlName="invoiceNo" (focusin)="updateHelpContext('form-invoice-invoice-no')"/>
-          <!-- <mat-icon *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-icon *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override">clear</mat-icon>
           <mat-hint *ngIf="form.controls.invoiceNoOBit.value">OVERRIDE: {{form.controls.invoiceNoOReason.value}}</mat-hint>
           <mat-icon *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override">remove_circle</mat-icon>
-          <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error> -->
+          <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>

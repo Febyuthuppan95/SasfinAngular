@@ -219,14 +219,24 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               }
             }
           },
-            {
-              key: 'alt + t',
-              preventDefault: true,
-              allowIn: [AllowIn.Textarea, AllowIn.Input],
-              command: e => {
-                this.showErrors = !this.showErrors;
+          {
+            key: 'alt + c',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              if (this.displayLines) {
+                this.cancelLine();
               }
-            }];
+            }
+          },
+          {
+            key: 'alt + t',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => {
+              this.showErrors = !this.showErrors;
+            }
+          }];
     });
   }
 
