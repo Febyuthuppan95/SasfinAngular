@@ -45,10 +45,10 @@
           Serial No
         </mat-label>
         <input matInput type="text" formControlName="serialNo" (focusin)="updateHelpContext('form-cusrelease-serialNo')"/>
-        <!-- <mat-icon *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override">clear</mat-icon>
+        <button *ngIf="form.controls.serialNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('serialNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect" matSuffix (click)="overrideDialog('serialNo', 'serialNo')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error> -->
+        <button *ngIf="form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('serialNo', 'Serial No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
@@ -58,10 +58,11 @@
           Importers Code
         </mat-label>
         <input matInput type="text" formControlName="importersCode" (focusin)="updateHelpContext('form-cusrelease-importersCode')"/>
-        <!-- <mat-icon *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override">clear</mat-icon>
+        <button *ngIf="form.controls.importersCodeOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('importersCode')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'importersCode')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error> -->
+        <button *ngIf="form.controls.importersCodeOBit.value  && form.controls.importersCode.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('importersCode', 'Importers Code')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
@@ -71,10 +72,10 @@
           Waybill No
         </mat-label>
         <input matInput type="text" formControlName="waybillNo" (focusin)="updateHelpContext('form-cusrelease-waybillNo')" />
-        <!-- <mat-icon *ngIf="form.controls.waybillNoOBit.value" matSuffix (click)="undoOverride('waybillNo')" matTooltip="Remove Override">clear</mat-icon>
+        <button *ngIf="form.controls.waybillNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('waybillNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.waybillNoOBit.value">OVERRIDE: {{form.controls.waybillNoOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.waybillNoOBit.value && form.controls.waybillNo.errors?.incorrect" matSuffix (click)="overrideDialog('waybillNo', 'waybillNo')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error> -->
+        <button *ngIf="form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('waybillNo', 'Waybill No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.waybillNoOBit.value  && form.controls.waybillNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
@@ -101,10 +102,10 @@
           Total Duty
         </mat-label>
         <input matInput type="text" formControlName="totalDuty" (focusin)="updateHelpContext('form-cusrelease-total-duty')"/>
-        <!-- <mat-icon *ngIf="form.controls.totalDutyOBit.value" matSuffix (click)="undoOverride('totalDuty')" matTooltip="Remove Override">clear</mat-icon>
+        <button *ngIf="form.controls.totalDutyOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('totalDuty')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.totalDutyOBit.value">OVERRIDE: {{form.controls.totalDutyOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.totalDutyOBit.value && form.controls.totalDuty.errors?.incorrect" matSuffix (click)="overrideDialog('totalDuty', 'Total Duty')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.totalDutyOBit.value  && form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error> -->
+        <button *ngIf="form.controls.totalDutyOBit.value  && form.controls.totalDuty.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('totalDuty', 'Total Duty')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.totalDutyOBit.value  && form.controls.totalDuty.errors?.incorrect">{{getError('totalDuty')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
@@ -114,15 +115,18 @@
           File Reference
         </mat-label>
         <input matInput type="text" formControlName="fileRef" (focusin)="updateHelpContext('form-cusrelease-file-ref')"/>
-        <!-- <mat-icon *ngIf="form.controls.fileRefOBit.value" matSuffix (click)="undoOverride('fileRef')" matTooltip="Remove Override">clear</mat-icon>
+        <button *ngIf="form.controls.fileRefOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('fileRef')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.fileRefOBit.value">OVERRIDE: {{form.controls.fileRefOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.fileRefOBit.value && form.controls.fileRef.errors?.incorrect" matSuffix (click)="overrideDialog('fileRef', 'File Reference')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.fileRefOBit.value  && form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error> -->
+        <button *ngIf="form.controls.fileRefOBit.value  && form.controls.fileRef.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('fileRef', 'File Reference')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.fileRefOBit.value  && form.controls.fileRef.errors?.incorrect">{{getError('fileRef')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
     <div class="col-12" >
-      <ls-autocomplete-edi-statuses [(control)]="form.controls.ediStatusID" [helpSlug]="'form-crn-edi-status'"></ls-autocomplete-edi-statuses>
+      <ls-autocomplete-edi-statuses
+        [(control)]="form.controls.ediStatusID"
+        [helpSlug]="'form-crn-edi-status'">
+      </ls-autocomplete-edi-statuses>
       <br /><br />
     </div>
   </div>

@@ -22,6 +22,7 @@ constructor(private userService: UserService,
   @Input() control: FormControl;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+  @Input() title = 'Companies';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Company[] = [];

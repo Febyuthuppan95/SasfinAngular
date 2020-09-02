@@ -71,6 +71,41 @@
         <br /><br />
         <!-- [specialCharacters]="[ '/' ]" mask="99/99/9999" -->
       </div>
+      <div class="col-6">
+        <mat-form-field appearance="fill" >
+          <mat-label>
+            Freight Cost
+          </mat-label>
+          <input matInput type="number" formControlName="freightCost" (focusin)="updateHelpContext('form-invoice-freightCost')"/>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="fill" >
+          <mat-label>
+            Insurance Cost
+          </mat-label>
+          <input matInput type="number" formControlName="insuranceCost" (focusin)="updateHelpContext('form-invoice-insuranceCost')"/>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="fill" >
+          <mat-label>
+            Bank Charges
+          </mat-label>
+          <input matInput type="number" formControlName="bankCharges" (focusin)="updateHelpContext('form-invoice-bankCharges')"/>
+        </mat-form-field>
+        <br /><br />
+      </div>
+      <div class="col-6" >
+        <ls-autocomplete-companies [(control)]="form.controls.seededCompanyID" [title]="'Seeded Company'" [helpSlug]="'form-invoice-seededCompanyID'"></ls-autocomplete-companies>
+        <br /><br />
+      </div>
+      <div class="col-12" >
+        <mat-checkbox formControlName="pop">POP</mat-checkbox>
+        <br /><br />
+      </div>
       <div class="col-12" >
         <ls-autocomplete-currency [(control)]="form.controls.currencyID" [helpSlug]="'form-invoice-unit-of-measure'"></ls-autocomplete-currency>
         <br /><br />
