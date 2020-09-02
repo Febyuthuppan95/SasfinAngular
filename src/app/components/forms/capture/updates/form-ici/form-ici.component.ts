@@ -174,7 +174,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
-        // this.errors = res.attachmentErrors.attachmentErrors;
+        this.errors = res.attachmentErrors.attachmentErrors;
 
         Object.keys(this.form.controls).forEach(key => {
           if (key.indexOf('ODate') !== -1) {

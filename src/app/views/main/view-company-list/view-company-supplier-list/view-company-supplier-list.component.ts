@@ -323,6 +323,8 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
   }
   Add() {
+    this.focusQuarterID = null;
+    this.focusPeriodYear = null;
     this.openaddModal.nativeElement.click();
   }
   AddSupplierQuarter() {

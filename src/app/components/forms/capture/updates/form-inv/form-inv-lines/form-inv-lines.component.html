@@ -36,6 +36,19 @@
       </mat-form-field>
       <br><br>
     </div>
+    <div class="col-4">
+      <mat-form-field appearance="fill" >
+        <mat-label>
+          Common Factor
+        </mat-label>
+        <input matInput type="text" formControlName="commonFactor" (focusin)="updateHelpContext('form-invoice-line-common-factor')">
+        <!-- <mat-icon *ngIf="form.controls.unitPriceOBit.value" matSuffix (click)="undoOverride('unitPrice')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.unitPriceOBit.value">OVERRIDE: {{form.controls.unitPriceOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.unitPriceOBit.value && form.controls.unitPrice.errors?.incorrect" matSuffix (click)="overrideDialog('unitPrice', 'Unit Price')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.unitPriceOBit.value  && form.controls.unitPrice.errors?.incorrect">{{getError('unitPrice')}}</mat-error> -->
+      </mat-form-field>
+      <br><br>
+    </div>
     <div class="col-4" >
       <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
       <br><br>
@@ -44,11 +57,11 @@
       <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
-    <div class="col-4" >
+    <div class="col-6" >
       <ls-autocomplete-items [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
       <br><br>
     </div>
-    <div class="col-12">
+    <div class="col-6">
       <mat-form-field appearance="fill" >
         <mat-label>
           Total Line Value

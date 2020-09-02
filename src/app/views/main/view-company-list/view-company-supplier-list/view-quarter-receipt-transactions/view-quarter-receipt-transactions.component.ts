@@ -285,7 +285,8 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       },
       requestProcedure: 'LocalReciptsList'
     };
-    // console.log(model);
+    console.log('model yes');
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: CompanyLocalReceiptList) => {
         // console.log(res);
@@ -438,7 +439,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
   }
 
   saveBulkUpload() {
-    if(this.selectedTabIndex === 0) {
+    if (this.selectedTabIndex === 0) {
       this.transationService.createdTransaction(
         this.currentUser.userID,
         this.SelectedReceipt.CompanyID,
@@ -449,7 +450,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
         (res: Outcome) => {
           console.log(res);
           this.addedTransactionID = res.createdID;
-          if(this.addedTransactionID > 0) {
+          if (this.addedTransactionID > 0) {
             this.createLocalReceipt();
           } else {
             this.closeaddModal.nativeElement.click();
@@ -482,7 +483,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
           }
         },
         (msg) => {
-          this.closeaddModal.nativeElement.click()
+          this.closeaddModal.nativeElement.click();
           // nothing yet
           console.log('Error: ' + msg);
           this.showLoader = false;
@@ -515,7 +516,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
         }
 
       }
-    )
+    );
   }
 }
 

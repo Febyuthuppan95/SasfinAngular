@@ -3,6 +3,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SelectedCompanyOEM } from 'src/app/views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
+// tslint:disable-next-line: max-line-length
 import { LocalReceipt } from 'src/app/views/main/view-company-list/view-company-supplier-list/view-quarter-receipt-transactions/view-quarter-receipt-transactions.component';
 import { Router } from '@angular/router';
 
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class QuartersSupplyContextMenuComponent implements OnInit {
 
-  constructor(private companyService: CompanyService,private router: Router) { }
+  constructor(private companyService: CompanyService, private router: Router) { }
   @Input() currentTheme: string;
   @Input() supplyID: number;
 
@@ -22,7 +23,7 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   selectedTransaction: LocalReceipt;
 
   @Output() EditQuarterSupply = new EventEmitter<string>();
-  @Output() bulkUploadOut = new EventEmitter<string>();
+  // @Output() bulkUploadOut = new EventEmitter<string>();
   private unsubscribe$ = new Subject<void>();
   ngOnInit() {
     this.companyService.observerLocalTransaction()
@@ -35,16 +36,16 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   }
   Edit() {
     this.unsubscribe$.unsubscribe();
-    this.EditQuarterSupply.emit("1");
+    this.EditQuarterSupply.emit('1');
   }
   C1Receipts() {
     this.companyService.setLocalTransaction(this.selectedTransaction);
-    this.router.navigate(["companies", "localreceipts", "transactions", "c1"]);
-    
+    this.router.navigate(['companies', 'localreceipts', 'transactions', 'c1']);
+
   }
   SMDReceipts() {
     this.companyService.setLocalTransaction(this.selectedTransaction);
-    this.router.navigate(["companies", "localreceipts", "transactions", "smd"]);
+    this.router.navigate(['companies', 'localreceipts', 'transactions', 'smd']);
   }
 
 }
