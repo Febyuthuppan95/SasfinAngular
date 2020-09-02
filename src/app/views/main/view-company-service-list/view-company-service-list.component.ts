@@ -34,6 +34,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./view-company-service-list.component.scss']
 })
 export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
+  isSuccess: boolean;
   constructor(
     private companyService: CompanyService,
     private userService: UserService,
@@ -257,28 +258,25 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
 
     this.companyService.service(model).then(
         (res: CompanyServiceResponse) => {
-          if (res.outcome.outcome === 'SUCCESS') {
-            this.notify.successmsg(
-              res.outcome.outcome,
-              res.outcome.outcomeMessage
-            );
-          }
-
+          console.log(res);
           this.rowCount = res.rowCount;
           this.dataList = res.services;
+          if (res.outcome.outcome !== 'FAILURE') {
 
-          if (res.rowCount === 0) {
-            this.noData = true;
-            this.showLoader = false;
-          } else {
-            this.noData = false;
-            this.dataset = res;
-            this.showLoader = false;
-            this.showingRecords = res.services.length;
-            this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
-            this.paginateData();
+            if (res.rowCount > 0) {
+              this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+              this.noData = false;
+              this.dataset = res;
+              this.showLoader = false;
+              this.showingRecords = res.services.length;
+              this.totalShowing = +this.rowStart + +this.dataset.services.length - 1;
+              this.paginateData();
+            } else {
+              this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+              this.noData = true;
+              this.showLoader = false;
+            }
           }
-
           this.loadServices(false);
           this.loadUsers();
         },
@@ -336,6 +334,9 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
   }
 
   async loadServices(displayGrowl: boolean) {
+
+    this.isSuccess = false;
+
     const model: GetServiceLList = {
       filter: this.filter,
       userID: this.currentUser.userID,
@@ -348,28 +349,33 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     };
 
     await this.ServiceService
-    .getServiceList(model)
-    .then(
+    .getServiceList(model).then(
       (res: ServiceListResponse) => {
           this.serviceslist = res.serviceses;
+          if (res.outcome.outcome !== 'FAILURE') {
+            this.isSuccess = true;
 
-          if (!this.tempLoaded) {
-            this.serviceslisttemp = res.serviceses;
+            if (!this.tempLoaded) {
+              this.serviceslisttemp = res.serviceses;
+            }
+
+            this.dataList.forEach(Cservice => {
+              this.serviceslist.forEach((service, index) => {
+                  if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
+                    this.serviceslist.splice(index, 1);
+
+                    if (!this.tempLoaded) {
+                      this.serviceslisttemp.splice(index, 1);
+                    }
+                  }
+                });
+            });
+
+            this.tempLoaded = true;
+          } else {
+            this.isSuccess = false;
           }
 
-          this.dataList.forEach(Cservice => {
-            this.serviceslist.forEach((service, index) => {
-                if (service.serviceID === Cservice.serviceID && service.serviceID !== this.focusServiceID) {
-                  this.serviceslist.splice(index, 1);
-
-                  if (!this.tempLoaded) {
-                    this.serviceslisttemp.splice(index, 1);
-                  }
-                }
-              });
-          });
-
-          this.tempLoaded = true;
       }
     );
   }
@@ -492,10 +498,19 @@ export class ContextCompanyServiceListComponent implements OnInit, OnDestroy {
     if (this.serviceslist.length > 0) {
       this.openaddModal.nativeElement.click();
     } else {
-      this.notify.toastrwarning(
-        'Information',
-        'All Services already added to the company'
-      );
+      console.log('1');
+      if (this.isSuccess) {
+        console.log('2');
+        this.notify.toastrwarning(
+          'Information',
+          'All Services already added to the company'
+        );
+      } else {
+        this.notify.errorsmsg(
+          'FAILURE',
+          'Access denied'
+        );
+      }
     }
   }
 

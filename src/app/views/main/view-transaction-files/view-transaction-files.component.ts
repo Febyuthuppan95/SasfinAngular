@@ -171,6 +171,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.transationService.observerCurrentAttachment()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((data) => {
+      console.log(data);
       if (data !== null || data !== undefined) {
         this.transactionID = data.transactionID;
         this.transactionType = data.transactionType;
@@ -444,8 +445,20 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   uploadAttachments() {
-    if (this.attachmentQueue.length !== 0) {
-      this.iterateAttachments(0);
+    let isVOCSADSelected = true;
+    if (this.isVOC) {
+      if (this.selectedSAD500 === 0 || this.selectedSAD500 === null  || this.selectedSAD500 === undefined) {
+        isVOCSADSelected = false;
+      }
+
+    }
+
+    if (isVOCSADSelected) {
+      if (this.attachmentQueue.length !== 0) {
+        this.iterateAttachments(0);
+      }
+    } else {
+      this.notify.toastrwarning('Warning', 'Please Select an SAD500 attachment');
     }
   }
 
@@ -515,6 +528,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.selectSAD500LinesControl.reset(-1);
     this.inputFile.nativeElement.value = '';
     this.currentAttachment = 0;
+    this.isVOC = false;
+    this.selectedSAD500 = null;
     this.loadAttachments();
   }
 
@@ -620,6 +635,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   loadSAD500s() {
+    console.log('trans');
+    console.log(this.transactionID);
     this.captureService.sad500List({
       userID: this.currentUser.userID,
       filter: '',

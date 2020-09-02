@@ -56,7 +56,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
     orderBy: 'Name',
     orderByDirection: 'ASC',
     rowStart: 1,
-    rowEnd: 300,
+    rowEnd: 300000,
     userID: 3,
   };
 
@@ -94,6 +94,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         this.dataset = res;
         this.dataResult = this.placeService.getCountries(this.dataset);
+        // this.notify.successmsg('SUCCESS', res.outcome.outcomeMessage);
       },
       (msg) => {
         this.showLoader = false;
@@ -182,6 +183,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
   /* END Delete Handlers from context menu */
 
   addLocation() {
+    // tslint:disable-next-line: deprecation
     event.preventDefault();
     let errors = 0;
 
@@ -190,7 +192,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
       this.notify.toastrwarning('Warning', 'Please enter the name field');
     }
 
-    const lettersOnly = new RegExp('^[a-zA-Z]+$');
+    const lettersOnly = new RegExp('^[a-zA-Z]|[^ ]+$');
 
     if (!lettersOnly.test(this.newLocationName)) {
       errors++;
@@ -209,6 +211,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
             if (res.outcome === 'SUCCESS') {
               this.newLocationName = '';
               this.addModalClose.nativeElement.click();
+              this.notify.successmsg('SUCCESS', res.outcomeMessage);
               this.loadData();
             } else {
               this.notify.toastrwarning(res.outcome, res.outcomeMessage);
@@ -230,6 +233,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
             if (res.outcome === 'SUCCESS') {
               this.newLocationName = '';
               this.addModalClose.nativeElement.click();
+              this.notify.successmsg('SUCCESS', res.outcomeMessage);
               this.loadData();
             } else {
               this.notify.errorsmsg('FAILURE', 'Could not add Location');
@@ -251,6 +255,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
             if (res.outcome === 'SUCCESS') {
               this.newLocationName = '';
               this.addModalClose.nativeElement.click();
+              this.notify.successmsg('SUCCESS', res.outcomeMessage);
               this.loadData();
             } else {
               this.notify.errorsmsg('FAILURE', 'Could not add Location');
@@ -278,6 +283,7 @@ export class ViewPlacesComponent implements OnInit, OnDestroy {
           if (res.outcome === 'SUCCESS') {
             this.newLocationName = '';
             this.deleteModalClose.nativeElement.click();
+            this.notify.successmsg('SUCCESS', res.outcomeMessage);
             this.loadData();
           } else {
             alert('Error Updating');

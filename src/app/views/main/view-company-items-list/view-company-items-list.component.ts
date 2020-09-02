@@ -172,7 +172,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   tableHeader: TableHeader = {
     title: 'Items',
-    addButton: { enable: true, },
+    addButton: { enable: false, },
     backButton: { enable: true },
     filters: {
       search: true,
@@ -656,50 +656,50 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  addButton(): void {
-    this.openAddModal.nativeElement.click();
-  }
+  // addButton(): void {
+  //   this.openAddModal.nativeElement.click();
+  // }
 
 
-  saveItemUpload() {
-    // Save
-    console.log('save');
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        BOMID: -1,
-        companyID: this.companyID
-      },
-      requestProcedure: `BOMItemAdd`
-    };
-    console.log(this.ItemFile, model, 'boms/items/upload');
+  // saveItemUpload() {
+  //   // Save
+  //   console.log('save');
+  //   const model = {
+  //     requestParams: {
+  //       userID: this.currentUser.userID,
+  //       BOMID: -1,
+  //       companyID: this.companyID
+  //     },
+  //     requestProcedure: `BOMItemAdd`
+  //   };
+  //   console.log(this.ItemFile, model, 'boms/items/upload');
 
-    this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
-      (res: Outcome) => {
-        // console.log('BOMUploadRes');
-        console.log('Response: ' + res);
-        if (res.outcome === 'SUCCESS') {
-          this.notify.successmsg(
-            res.outcome,
-            res.outcomeMessage);
-          this.loadCompanyItemsList(false);
-        } else {
-          this.notify.errorsmsg(
-            res.outcome,
-            res.outcomeMessage
-          );
-        }
-      },
-      (msg) => {
-        // nothing yet
-        console.log('Error: ' + msg);
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-  }
+  //   this.IDocumentService.upload(this.ItemFile, model, 'boms/items/upload').then(
+  //     (res: Outcome) => {
+  //       // console.log('BOMUploadRes');
+  //       console.log('Response: ' + res);
+  //       if (res.outcome === 'SUCCESS') {
+  //         this.notify.successmsg(
+  //           res.outcome,
+  //           res.outcomeMessage);
+  //         this.loadCompanyItemsList(false);
+  //       } else {
+  //         this.notify.errorsmsg(
+  //           res.outcome,
+  //           res.outcomeMessage
+  //         );
+  //       }
+  //     },
+  //     (msg) => {
+  //       // nothing yet
+  //       console.log('Error: ' + msg);
+  //       this.showLoader = false;
+  //       this.notify.errorsmsg(
+  //         'Server Error',
+  //         'Something went wrong while trying to access the server.'
+  //       );
+  //     }
+  //   );
+  // }
 
 }
