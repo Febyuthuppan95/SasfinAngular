@@ -354,7 +354,6 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
   add() {
     // Render modal
     this.filePreview = null;
-    console.log(this.bomFile);
     this.bomFile.nativeElement.value = '';
     this.BomFile = null;
     this.openAddModal.nativeElement.click();

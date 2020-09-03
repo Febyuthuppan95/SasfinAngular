@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../services/Company.Service';
 import {UserService} from '../../../../services/User.Service';
 import {ThemeService} from '../../../../services/Theme.Service';
@@ -15,6 +15,7 @@ import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/HttpResponses/User';
 import {NotificationComponent} from '../../../../components/notification/notification.component';
 import {ApiService} from '../../../../services/api.service';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 @Component({
   selector: 'app-view-company-boms-itemgroups-list',
@@ -38,25 +39,27 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
+  @ViewChild('openAddModal', {static: true})
+  openAddModal: ElementRef;
+
+  @ViewChild('closeAddModal', {static: true})
+  closeAddModal: ElementRef;
+
+  @ViewChild('itemFile', { static: false })
+  bomFile: ElementRef;
+
   private unsubscribe$ = new Subject<void>();
   bomid = -1;
   bomstatus = '';
   currentTheme: string;
 
-  // Item: {
-  //   itemID: number;
-  //   item: string;
-  //   description: string;
-  //   tariff: number;
-  //   type: string;
-  //   mIDP: string;
-  //   pI: string;
-  //   vulnerable: string;
-  // };
+  ItemFile: File;
+  filePreview: any;
+  companyID: any;
   tableHeader: TableHeader = {
     title: 'BOM Item Groups',
     addButton: {
-      enable: false,
+      enable: true,
     },
     backButton: {
       enable: true,
@@ -224,12 +227,53 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   }
 
   add() {
-    // Render modal
-    // this.filePreview = null;
-    // console.log(this.bomFile);
-    // this.bomFile.nativeElement.value = '';
-    // this.BomFile = null;
-    // this.openAddModal.nativeElement.click();
+    this.openAddModal.nativeElement.click();
+  }
+
+  onFileChange(files: FileList) {
+    this.ItemFile = files.item(0);
+    this.filePreview = this.ItemFile.name;
+  }
+
+  saveItemUpload() {
+    // Save
+    console.log('save');
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        BOMID: this.bomid,
+        companyID: this.companyID
+      },
+      requestProcedure: `BOMItemAdd`
+    };
+    console.log(this.ItemFile, model, 'boms/itemGroups/upload');
+
+    this.IDocumentService.upload(this.ItemFile, model, 'boms/itemGroups/upload').then(
+      (res: Outcome) => {
+        console.log('BOMUploadRes');
+        console.log(res);
+        if (res.outcome === 'SUCCESS') {
+          this.notify.successmsg(
+            res.outcome,
+            res.outcomeMessage);
+          this.loadItemGroups(true);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        // nothing yet
+        console.log('Error: ' + msg);
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
 }

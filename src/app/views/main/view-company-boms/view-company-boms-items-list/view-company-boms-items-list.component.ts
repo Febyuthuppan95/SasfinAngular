@@ -24,9 +24,7 @@ import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
   styleUrls: ['./view-company-boms-items-list.component.scss']
 })
 export class ViewCompanyBomsItemsListComponent implements OnInit {
-  ItemFile: File;
-  filePreview: any;
-  companyID: any;
+
 
   constructor(
     private companyService: CompanyService,
@@ -57,16 +55,9 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   bomstatus = '';
   currentTheme: string;
 
-  // Item: {
-  //   itemID: number,
-  //   item: string,
-  //   description: string,
-  //   tariffID: number,
-  //   tariff: string,
-  //   typeID: number,
-  //   type: string,
-  //   vulnerable: string,
-  // };
+  ItemFile: File;
+  filePreview: any;
+  companyID: any;
   tableHeader: TableHeader = {
     title: 'BOM Items',
     addButton: {
@@ -162,8 +153,6 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
         this.currentTheme = theme;
       });
 
-    this.loadItems(true);
-
     this.companyService
       .observeBOM()
       .pipe(takeUntil(this.unsubscribe$))
@@ -172,7 +161,9 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
           this.bomid = obj.bomid;
           this.bomstatus = obj.status;
         }
-      });
+    });
+
+    this.loadItems(true);
   }
 
   loadItems(displayGrowl: boolean) {
@@ -181,6 +172,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     const model = {
       requestParams: {
         UserID: this.currentUser.userID,
+        bomId: this.bomid,
         ItemID: -1
       },
       requestProcedure: `CompanyItemsList`
