@@ -16,7 +16,9 @@ import { Subject } from 'rxjs';
 import { CaptureAttachmentResponse, CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmentResponse';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { AttachmentStatsResponse } from 'src/app/models/HttpResponses/AttachmentStatsResponse';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-view-capture-landing',
   templateUrl: './view-capture-landing.component.html',
@@ -29,17 +31,11 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private router: Router,
               private docService: DocumentService,
-              private userIdle: UserIdleService,
               private transactionService: TransactionService,
-              private companyService: CompanyService,
-              private dialog: MatDialog,
-              private snackbarService: HelpSnackbar,
-              private eventService: EventService) { }
+              private companyService: CompanyService) { }
 
-@ViewChild(NotificationComponent, { static: false })
-private notify: NotificationComponent;
-
-
+  @ViewChild(NotificationComponent, { static: false })
+  private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -61,6 +57,8 @@ private notify: NotificationComponent;
   ATBC: number;
   Inc: number;
   ERR: number;
+
+  showLoader = false;
 
   start = false;
   loading = false;
@@ -86,24 +84,21 @@ private notify: NotificationComponent;
     .subscribe((obj: SelectedCapture) => {
       if (obj !== null) {
         this.start = obj.capturestate;
-        // console.log(this.start + ', ' + obj.capturestate);
         if (this.start) {
-          // if (obj.token !== this.tmpCompanyToken) {
             this.loadNextAttachment();
-          //   this.tmpCompanyToken = obj.token;
-          // }
         }
       }
     });
 
-    if (this.start) {
-      this.loadNextAttachment();
-    }
+    // if (this.start) {
+    //   this.loadNextAttachment();
+    // }
 
     this.loadAttachmentStats();
   }
 
-  loadNextAttachment() {
+  async loadNextAttachment() {
+    setTimeout(() => { this.showLoader = true; });
     const model = {
       captureID: this.currentUser.userID,
     };
@@ -133,26 +128,31 @@ private notify: NotificationComponent;
           });
 
           this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
-          this.router.navigate([
-            'capture',
-            'transaction',
-            'attachment',
-            btoa(this.docPath),
-            btoa(this.fileType),
-            btoa(this.attachmentID.toString()),
-            btoa(this.transactionID.toString()),
-            btoa(this.transactionType),
-            btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
-            btoa(res.captureattachment.reason)]);
-          this.loading = false;
+
+          setTimeout(() => {
+            this.router.navigate([
+              'capture',
+              'transaction',
+              'attachment',
+              btoa(this.docPath),
+              btoa(this.fileType),
+              btoa(this.attachmentID.toString()),
+              btoa(this.transactionID.toString()),
+              btoa(this.transactionType),
+              btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
+              btoa(res.captureattachment.reason)]);
+
+            this.showLoader = false;
+            this.loading = false;
+          }, 500);
         } else {
           this.notify.toastrwarning('Information', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
         }
-
       },
       msg => {
         this.loading = false;
+        setTimeout(() => { this.showLoader = false; });
       }
     );
   }

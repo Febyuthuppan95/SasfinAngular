@@ -1,10 +1,10 @@
-<button mat-button (click)="close();" style="float: right;"><span class="mdi mdi-close"></span></button>
+<button mat-button (click)="close();" style="float: right;" tabIndex="3"><span class="mdi mdi-close"></span></button>
 <h1 mat-dialog-title>Assign Duty Value</h1>
 <div mat-dialog-content>
   <mat-form-field style="width: 100%;">
-      <input matInput placeholder="Duty Value" #dutyInput [(ngModel)]="data.duty" [ngModelOptions]="{standalone: true}"/>
+      <input tabIndex="1" matInput placeholder="Duty Value" #dutyInput [(ngModel)]="data.duty" [ngModelOptions]="{standalone: true}"/>
   </mat-form-field>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="close(data);">Assign</button>
+    <button mat-raised-button color="primary" (click)="close(data);" tabIndex="2">Assign</button>
   </div>
 </div>

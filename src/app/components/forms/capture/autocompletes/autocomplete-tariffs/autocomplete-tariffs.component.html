@@ -9,6 +9,10 @@
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn" >
   <mat-option *ngFor="let item of list" [value]="item">
-    {{item.subHeading == '' ? item.itemNumber: item.subHeading}}{{item.subHeading.length < 8 && item.subHeading != '' ? '.00' : ''}}
+    {{item.subHeading == '' ? item.itemNumber: item.subHeading}}
+
+    <ng-container *ngIf="item.subHeading">
+      {{item.subHeading.length < 8 && item.subHeading != '' ? '.00' : ''}}
+    </ng-container>
   </mat-option>
 </mat-autocomplete>

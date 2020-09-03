@@ -465,6 +465,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
+          console.log(res);
+
           await this.saveLines(this.lines, async (line) => {
             let sad500LineID = line.specificSAD500LineID;
             line.isDeleted = 0;
