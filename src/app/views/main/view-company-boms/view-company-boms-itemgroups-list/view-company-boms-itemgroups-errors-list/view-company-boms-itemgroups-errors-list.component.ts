@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../../services/Company.Service';
 import {UserService} from '../../../../../services/User.Service';
 import {ThemeService} from '../../../../../services/Theme.Service';
@@ -10,6 +10,10 @@ import {Subject} from 'rxjs';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../../models/Table';
 import {BOMLine} from '../../../../../models/HttpResponses/BOMsLinesResponse';
 import {takeUntil} from 'rxjs/operators';
+import {ApiService} from '../../../../../services/api.service';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { User } from 'src/app/models/HttpResponses/User';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-company-boms-itemgroups-errors-list',
@@ -17,6 +21,7 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./view-company-boms-itemgroups-errors-list.component.scss']
 })
 export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
+  groups: any;
 
   constructor(
     private companyService: CompanyService,
@@ -26,6 +31,7 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
     private router: Router,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
+    private ApiService: ApiService,
   ) { }
 
   private unsubscribe$ = new Subject<void>();
@@ -33,20 +39,10 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
   bomstatus = '';
   currentTheme: string;
 
-  // Item: {
-  //   itemID: number;
-  //   item: string;
-  //   description: string;
-  //   tariff: number;
-  //   type: string;
-  //   mIDP: string;
-  //   pI: string;
-  //   vulnerable: string;
-  // };
   tableHeader: TableHeader = {
-    title: 'BOM Items',
+    title: 'BOM Group Errors',
     addButton: {
-      enable: true,
+      enable: false,
     },
     backButton: {
       enable: true,
@@ -65,60 +61,58 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
       },
     },
     {
-      title: 'Item',
-      propertyName: 'Item',
+      title: 'Row Number',
+      propertyName: 'RowNumber',
       order: {
         enable: true,
-        tag: 'Item',
+        tag: 'RowNumber',
       },
     },
     {
-      title: 'Description',
-      propertyName: 'Description',
+      title: 'Supplier Code',
+      propertyName: 'SupplierCode',
       order: {
         enable: true,
-        tag: 'Description',
+        tag: 'SupplierCode',
       },
     },
     {
-      title: 'Tariff',
-      propertyName: 'Tariff',
+      title: 'Item Code',
+      propertyName: 'ItemCode',
       order: {
         enable: true,
-        tag: 'Tariff',
+        tag: 'ItemCode',
       },
     },
     {
-      title: 'Type',
-      propertyName: 'Type',
+      title: 'Supplier Item Code',
+      propertyName: 'SupplierItemCode',
       order: {
         enable: true,
-        tag: 'Type',
-      },
-    },
-    {
-      title: 'Vulnerable',
-      propertyName: 'Vulnerable',
-      order: {
-        enable: true,
-        tag: 'Vulnerable',
+        tag: 'SupplierItemCode',
       },
     },
   ];
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
+
   BOMLines: BOMLine[] = [];
+  currentUser: User = this.userService.getCurrentUser();
   // table vars - every page
-  showLoader = false;
+  showLoader = true;
   recordsPerPage = 15;
-  rowStart: number;
-  rowEnd: number;
+  rowStart: number = 1;
+  rowEnd: number = 15;
+  orderBy: string = '';
+  orderByDirection: '';
   rowCount: number;
-  orderBy: string;
   orderDirection: string;
   selectedRow = -1;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
-  rowCountPerPage: number;
+  rowCountPerPage: number = 15;
   filter: string;
 
   ngOnInit() {
@@ -137,8 +131,46 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
           this.bomid = obj.bomid;
           this.bomstatus = obj.status;
         }
-      });
+    });
+    this.loadItemerrors(true);
   }
+
+  loadItemerrors(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        UserID: this.currentUser.userID,
+        bomId: this.bomid,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+      },
+      requestProcedure: `BOMGroupErrorsList`
+    };
+
+    console.log(model);
+
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
+
+      this.groups = res.data;
+      console.log(this.groups);
+
+      if (res.rowCount === 0) {
+        this.showLoader = false;
+      } else {
+        this.rowCount = res.rowCount;
+        this.showLoader = false;
+      }
+    },
+      msg => {
+      this.notify.errorsmsg(
+        'Server Error',
+        'Something went wrong while trying to access the server.'
+      );
+      });
+    this.showLoader = false;
+  }
+
 
   // table methods
   back() {
@@ -163,24 +195,24 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   add() {

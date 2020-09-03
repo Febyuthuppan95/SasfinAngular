@@ -162,8 +162,6 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
         this.currentTheme = theme;
       });
 
-    this.loadItems(true);
-
     this.companyService
       .observeBOM()
       .pipe(takeUntil(this.unsubscribe$))
@@ -172,7 +170,9 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
           this.bomid = obj.bomid;
           this.bomstatus = obj.status;
         }
-      });
+    });
+
+    this.loadItems(true);
   }
 
   loadItems(displayGrowl: boolean) {
@@ -181,6 +181,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
     const model = {
       requestParams: {
         UserID: this.currentUser.userID,
+        bomId: this.bomid,
         ItemID: -1
       },
       requestProcedure: `CompanyItemsList`

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../../services/Company.Service';
 import {UserService} from '../../../../../services/User.Service';
 import {ThemeService} from '../../../../../services/Theme.Service';
@@ -10,6 +10,12 @@ import {Subject} from 'rxjs';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../../models/Table';
 import {BOMLine} from '../../../../../models/HttpResponses/BOMsLinesResponse';
 import {takeUntil} from 'rxjs/operators';
+import { User } from 'src/app/models/HttpResponses/User';
+import {ApiService} from '../../../../../services/api.Service';
+import {environment} from '../../../../../../environments/environment';
+import { NotificationComponent } from 'src/app/components/notification/notification.component';
+
+
 
 @Component({
   selector: 'app-view-company-boms-items-errors-list',
@@ -17,6 +23,7 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./view-company-boms-items-errors-list.component.scss']
 })
 export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
+  items: any;
 
   constructor(
     private companyService: CompanyService,
@@ -26,6 +33,7 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
     private router: Router,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
+    private ApiService: ApiService,
   ) { }
 
   private unsubscribe$ = new Subject<void>();
@@ -44,9 +52,9 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
   //   vulnerable: string;
   // };
   tableHeader: TableHeader = {
-    title: 'BOM Items',
+    title: 'BOM Items Errors',
     addButton: {
-      enable: true,
+      enable: false,
     },
     backButton: {
       enable: true,
@@ -65,60 +73,66 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
       },
     },
     {
-      title: 'Item',
-      propertyName: 'Item',
+      title: 'Row Number',
+      propertyName: 'RowNumber',
       order: {
         enable: true,
-        tag: 'Item',
+        tag: 'RowNumber',
       },
     },
     {
-      title: 'Description',
-      propertyName: 'Description',
+      title: 'Tariff Code',
+      propertyName: 'TariffCode',
       order: {
         enable: true,
-        tag: 'Description',
+        tag: 'TariffCode',
       },
     },
     {
-      title: 'Tariff',
-      propertyName: 'Tariff',
+      title: 'Item Class',
+      propertyName: 'ItemClass',
       order: {
         enable: true,
-        tag: 'Tariff',
+        tag: 'ItemClass',
       },
     },
     {
-      title: 'Type',
-      propertyName: 'Type',
+      title: 'Item Type',
+      propertyName: 'ItemType',
       order: {
         enable: true,
-        tag: 'Type',
+        tag: 'ItemType',
       },
     },
     {
-      title: 'Vulnerable',
-      propertyName: 'Vulnerable',
+      title: 'Usage Type',
+      propertyName: 'UsageType',
       order: {
         enable: true,
-        tag: 'Vulnerable',
+        tag: 'UsageType',
       },
     },
   ];
+
+  @ViewChild(NotificationComponent, { static: true })
+  private notify: NotificationComponent;
+
   BOMLines: BOMLine[] = [];
+  currentUser: User = this.userService.getCurrentUser();
   // table vars - every page
-  showLoader = false;
+  showLoader = true;
   recordsPerPage = 15;
-  rowStart: number;
-  rowEnd: number;
+  rowStart: number = 1;
+  rowEnd: number = 15;
+  orderBy: string = '';
+  orderByDirection: '';
   rowCount: number;
-  orderBy: string;
   orderDirection: string;
   selectedRow = -1;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
-  rowCountPerPage: number;
+  rowCountPerPage: number = 15;
   filter: string;
 
   ngOnInit() {
@@ -137,8 +151,45 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
           this.bomid = obj.bomid;
           this.bomstatus = obj.status;
         }
-      });
+    });
+    this.loadItemerrors(true);
   }
+
+  loadItemerrors(displayGrowl: boolean) {
+    this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+    this.showLoader = true;
+    const model = {
+      requestParams: {
+        UserID: this.currentUser.userID,
+        bomId: this.bomid,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+      },
+      requestProcedure: `BOMItemErrorsList`
+    };
+
+    console.log(model);
+
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
+
+      this.items = res.data;
+
+      if (res.rowCount === 0) {
+        this.showLoader = false;
+      } else {
+        this.rowCount = res.rowCount;
+        this.showLoader = false;
+      }
+    },
+      msg => {
+      this.notify.errorsmsg(
+        'Server Error',
+        'Something went wrong while trying to access the server.'
+      );
+      });
+    this.showLoader = false;
+  }
+
 
   // table methods
   back() {
@@ -163,24 +214,24 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   recordsPerPageChange(recordsPerPage: number) {
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    // this.loadBOMLines(false); //reload data
+    this.loadItemerrors(true);
   }
 
   add() {
