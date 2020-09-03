@@ -308,11 +308,11 @@ import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/
 import { FirebaseModule } from './modules/firebase/firebase.module';
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
 import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-escalations/menu-escalations.component';
-import { TextMaskModule } from 'angular2-text-mask';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CaptureErrorsComponent } from './views/capture/capture-errors/capture-errors.component';
 import { DateService } from './services/tools/date.service';
 import { OverrideComponent } from './components/forms/capture/override/override.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -544,7 +544,6 @@ import { OverrideComponent } from './components/forms/capture/override/override.
     FormsModule,
     NgxDocViewerModule,
     FirebaseModule,
-    TextMaskModule,
     PdfJsViewerModule,
   ],
   providers: [
@@ -598,7 +597,8 @@ import { OverrideComponent } from './components/forms/capture/override/override.
       provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS,
       useValue: { hasBackdrop: false },
     },
-    DateService
+    DateService,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [
