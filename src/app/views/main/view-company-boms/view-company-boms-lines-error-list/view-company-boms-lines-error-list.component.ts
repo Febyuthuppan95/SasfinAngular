@@ -173,7 +173,7 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
       requestProcedure: `BOMLineErrorsList`
     };
 
-    console.log(model);
+
 
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 

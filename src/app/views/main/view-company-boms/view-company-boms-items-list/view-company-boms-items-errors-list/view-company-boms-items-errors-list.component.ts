@@ -168,8 +168,6 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
       requestProcedure: `BOMItemErrorsList`
     };
 
-    console.log(model);
-
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.items = res.data;

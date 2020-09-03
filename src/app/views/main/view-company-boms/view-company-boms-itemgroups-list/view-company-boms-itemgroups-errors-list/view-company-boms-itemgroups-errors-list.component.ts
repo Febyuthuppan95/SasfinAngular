@@ -148,12 +148,9 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
       requestProcedure: `BOMGroupErrorsList`
     };
 
-    console.log(model);
-
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.groups = res.data;
-      console.log(this.groups);
 
       if (res.rowCount === 0) {
         this.showLoader = false;
