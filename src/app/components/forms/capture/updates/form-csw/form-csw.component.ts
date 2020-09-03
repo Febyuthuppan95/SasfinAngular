@@ -533,7 +533,12 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   cancelLine() {
     this.activeLine = null;
     this.activeIndex = 0;
-    this.activeLine = this.lines[this.activeIndex];
+    if (this.lines) {
+      if (this.lines.length > 0) {
+        this.activeLine = this.lines[this.activeIndex];
+      }
+    }
+
     this.refresh();
   }
 

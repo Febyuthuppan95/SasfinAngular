@@ -140,7 +140,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
-    this.companyShowToggle = false;
+    this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
     this.event.mouseChange.next(true);
 

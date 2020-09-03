@@ -686,7 +686,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   cancelLine() {
     this.activeLine = null;
     this.activeIndex = 0;
-    this.activeLine = this.lines[this.activeIndex];
+    if (this.lines) {
+      if (this.lines.length > 0) {
+        this.activeLine = this.lines[this.activeIndex];
+      }
+    }
 
     this.refresh();
   }
