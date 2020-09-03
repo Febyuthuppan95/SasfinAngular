@@ -313,6 +313,7 @@ import { CaptureErrorsComponent } from './views/capture/capture-errors/capture-e
 import { DateService } from './services/tools/date.service';
 import { OverrideComponent } from './components/forms/capture/override/override.component';
 import { DatePipe } from '@angular/common';
+import {NgxMaskModule} from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -545,6 +546,7 @@ import { DatePipe } from '@angular/common';
     NgxDocViewerModule,
     FirebaseModule,
     PdfJsViewerModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     CookieService,

@@ -29,10 +29,10 @@
           Unit Price
         </mat-label>
         <input matInput type="text" formControlName="unitPrice" (focusin)="updateHelpContext('form-invoice-line-unitprice')">
-        <mat-icon *ngIf="form.controls.unitPriceOBit.value" matSuffix (click)="undoOverride('unitPrice')" matTooltip="Remove Override">clear</mat-icon>
+        <!-- <mat-icon *ngIf="form.controls.unitPriceOBit.value" matSuffix (click)="undoOverride('unitPrice')" matTooltip="Remove Override">clear</mat-icon>
         <mat-hint *ngIf="form.controls.unitPriceOBit.value">OVERRIDE: {{form.controls.unitPriceOReason.value}}</mat-hint>
         <mat-icon *ngIf="!form.controls.unitPriceOBit.value && form.controls.unitPrice.errors?.incorrect" matSuffix (click)="overrideDialog('unitPrice', 'Unit Price')" matTooltip="Override">remove_circle</mat-icon>
-        <mat-error *ngIf="!form.controls.unitPriceOBit.value  && form.controls.unitPrice.errors?.incorrect">{{getError('unitPrice')}}</mat-error>
+        <mat-error *ngIf="!form.controls.unitPriceOBit.value  && form.controls.unitPrice.errors?.incorrect">{{getError('unitPrice')}}</mat-error> -->
       </mat-form-field>
       <br><br>
     </div>
@@ -42,10 +42,15 @@
           Common Factor
         </mat-label>
         <input matInput type="text" formControlName="commonFactor" (focusin)="updateHelpContext('form-invoice-line-common-factor')">
+        <mat-icon *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override">clear</mat-icon>
+        <mat-hint *ngIf="form.controls.commonFactorOBit.value">OVERRIDE: {{form.controls.unitPriceOReason.value}}</mat-hint>
+        <mat-icon *ngIf="!form.controls.commonFactorOBit.value && form.controls.commonFactor.errors?.incorrect" matSuffix (click)="overrideDialog('commonFactor', 'Common Factor')" matTooltip="Override">remove_circle</mat-icon>
+        <mat-error *ngIf="!form.controls.commonFactorOBit.value  && form.controls.commonFactor.errors?.incorrect">{{getError('commonFactor')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
-    <div class="col-4" >
+    <div class="col-4">
+      <!-- UOM Override -->
       <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>

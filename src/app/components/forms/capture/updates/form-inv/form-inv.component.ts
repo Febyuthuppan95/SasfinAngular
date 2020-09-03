@@ -54,6 +54,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public loader = true;
   public showErrors = false;
   public lineErrors: any[] = [];
+  public invoiceDate = new FormControl();
 
   private attachmentID: number;
   private transactionID: number;
@@ -131,6 +132,16 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       } else {
         this.paginationControl.setValue(1);
+      }
+    });
+
+    this.invoiceDate.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value.length === 8) {
+          this.form.controls.invoiceDate.setValue(new Date(`${value[4]}${value[5]}/${value[6]}${value[7]}/${value[0]}${value[1]}${value[2]}${value[3]}`));
+
+          console.log(this.form.controls.invoiceDate.value);
+        }
       }
     });
   }
@@ -291,6 +302,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.form.controls.invoiceDate.setValue(invoiceDate);
+      this.invoiceDate.setValue(`${invoiceDate.getFullYear()}${invoiceDate.getMonth().toString().length === 1 ? '0' + invoiceDate.getMonth() + 1 : invoiceDate.getMonth() + 1}${invoiceDate.getDate()}`, { emitEvent: false });
 
       this.errors = res.attachmentErrors.attachmentErrors;
 
