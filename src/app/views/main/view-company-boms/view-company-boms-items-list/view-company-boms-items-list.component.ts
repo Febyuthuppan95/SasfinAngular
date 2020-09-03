@@ -24,9 +24,7 @@ import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
   styleUrls: ['./view-company-boms-items-list.component.scss']
 })
 export class ViewCompanyBomsItemsListComponent implements OnInit {
-  ItemFile: File;
-  filePreview: any;
-  companyID: any;
+
 
   constructor(
     private companyService: CompanyService,
@@ -57,16 +55,9 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   bomstatus = '';
   currentTheme: string;
 
-  // Item: {
-  //   itemID: number,
-  //   item: string,
-  //   description: string,
-  //   tariffID: number,
-  //   tariff: string,
-  //   typeID: number,
-  //   type: string,
-  //   vulnerable: string,
-  // };
+  ItemFile: File;
+  filePreview: any;
+  companyID: any;
   tableHeader: TableHeader = {
     title: 'BOM Items',
     addButton: {
