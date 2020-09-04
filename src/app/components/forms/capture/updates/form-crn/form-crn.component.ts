@@ -266,7 +266,7 @@ findInvalidControls(form: FormGroup) {
 }
 
 getError(key: string): string {
-  return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription;
+  return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
 }
 
 async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
