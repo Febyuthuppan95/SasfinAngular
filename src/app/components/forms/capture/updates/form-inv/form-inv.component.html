@@ -111,7 +111,17 @@
       </div>
       <div class="col-12" >
         <!-- Override -->
-        <ls-autocomplete-currency [(control)]="form.controls.currencyID" [helpSlug]="'form-invoice-unit-of-measure'"></ls-autocomplete-currency>
+        <ls-autocomplete-currency
+          [(control)]="form.controls.currencyID"
+          [helpSlug]="'form-invoice-unit-of-measure'"
+          [hasOverride]="true"
+          [tagOverride]="'currencyID'"
+          [titleOverride]="'Currency'"
+          [(reasonOverride)]="form.controls.currencyIDOReason.value"
+          [errorOverride]="getError('currencyID')"
+          (undoOverride)="undoOverride($event)"
+          (override)="overrideDialog($event.tag, $event.title)">
+        </ls-autocomplete-currency>
         <br /><br />
       </div>
       <div class="col-12" >

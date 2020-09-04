@@ -112,6 +112,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       invoiceNoOUserID: new FormControl(null),
       invoiceNoODate: new FormControl(null),
       invoiceNoOReason: new FormControl(null),
+      currencyIDOBit: new FormControl(null),
+      currencyIDOUserID: new FormControl(null),
+      currencyIDODate: new FormControl(null),
+      currencyIDOReason: new FormControl(null),
     });
 
     this.companyService.observeCompany()

@@ -1,14 +1,52 @@
-<mat-form-field [appearance]="appearance">
-  <mat-label>
-    Currency
-  </mat-label>
-  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
 
-  <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
-  <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
-</mat-form-field>
-<mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
-  <mat-option *ngFor="let item of list" [value]="item">
-    {{item.code}}, {{item.name}}
-  </mat-option>
-</mat-autocomplete>
+<ng-container *ngIf="!hasOverride">
+  <mat-form-field [appearance]="appearance">
+    <mat-label>
+      Currency
+    </mat-label>
+    <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
+    <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
+    <mat-error *ngIf="query.hasError('optionNotSelected')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
+  </mat-form-field>
+  <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let item of list" [value]="item">
+      {{item.code}}, {{item.name}}
+    </mat-option>
+  </mat-autocomplete>
+</ng-container>
+
+<ng-container *ngIf="hasOverride">
+  <mat-form-field [appearance]="appearance">
+    <mat-label>
+      Currency
+    </mat-label>
+    <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
+    <mat-error *ngIf="query.hasError('incorrect') || errorOverride">{{errorOverride}}</mat-error>
+    <mat-hint *ngIf="control.value && reasonOverride">OVERRIDE: {{reasonOverride}}</mat-hint>
+    <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
+    <mat-error *ngIf="query.hasError('optionNotSelected')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
+    <button
+    *ngIf="control.value && reasonOverride"
+    type="button"
+    matSuffix
+    mat-icon-button
+    (click)="undoOverride.next(tagOverride); trigger.closePanel();"
+    matTooltip="Remove Override">
+    <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      *ngIf="errorOverride && !reasonOverride"
+      type="button"
+      matSuffix
+      mat-icon-button
+      (click)="override.next({ tag: tagOverride, title: titleOverride }); trigger.closePanel();"
+      matTooltip="Override">
+      <mat-icon>remove_circle</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn" #panel>
+    <mat-option *ngFor="let item of list" [value]="item">
+      {{item.code}}, {{item.name}}
+    </mat-option>
+  </mat-autocomplete>
+</ng-container>

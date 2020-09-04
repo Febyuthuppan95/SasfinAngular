@@ -83,6 +83,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     referenceNoOUserID: new FormControl(null),
     referenceNoODate: new FormControl(null),
     referenceNoOReason: new FormControl(null),
+    supplierRefOBit: new FormControl(false),
+    supplierRefOUserID: new FormControl(null),
+    supplierRefODate: new FormControl(null),
+    supplierRefOReason: new FormControl(null),
     isDeleted: new FormControl(0),
 
     // VOC
