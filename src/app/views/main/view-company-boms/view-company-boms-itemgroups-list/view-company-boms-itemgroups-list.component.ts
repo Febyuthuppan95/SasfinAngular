@@ -145,18 +145,20 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((theme) => {
         this.currentTheme = theme;
-      });
+    });
 
+    this.companyService
+    .observeBOM()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((obj: SelectedBOM) => {
+      if (obj !== undefined) {
+        this.bomid = obj.bomid;
+        this.bomstatus = obj.status;
+      }
+    });
+    console.log('this.bomid');
+    console.log(this.bomid);
     this.loadItemGroups(true);
-    // this.companyService
-    //   .observeBOM()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((obj: SelectedBOM) => {
-    //     if (obj !== undefined) {
-    //       this.bomid = obj.bomid;
-    //       this.bomstatus = obj.status;
-    //     }
-    //   });
   }
 
   loadItemGroups(displayGrowl: boolean) {
@@ -244,7 +246,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
         BOMID: this.bomid,
         companyID: this.companyID
       },
-      requestProcedure: `BOMItemAdd`
+      requestProcedure: `BOMItemGroupAdd`
     };
     console.log(this.ItemFile, model, 'boms/itemGroups/upload');
 
