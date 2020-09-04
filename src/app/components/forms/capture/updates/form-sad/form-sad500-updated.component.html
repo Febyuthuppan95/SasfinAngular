@@ -124,9 +124,9 @@
             Supplier Ref
           </mat-label>
           <input matInput type="text" formControlName="supplierRef" (focusin)="updateHelpContext('form-sad500-file-or-supplier-ref')"/>
-          <mat-icon *ngIf="form.controls.referenceNoOBit.value" matSuffix (click)="undoOverride('referenceNo')" matTooltip="Remove Override">clear</mat-icon>
-          <mat-hint *ngIf="form.controls.referenceNoOBit.value">OVERRIDE: {{form.controls.referenceNoOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.referenceNoOBit.value && form.controls.referenceNo.errors?.incorrect" matSuffix (click)="overrideDialog('referenceNo', 'ReferenceNo')" matTooltip="Override">remove_circle</mat-icon>
+          <mat-icon *ngIf="form.controls.supplierRefOBit.value" matSuffix (click)="undoOverride('supplierRef')" matTooltip="Remove Override">clear</mat-icon>
+          <mat-hint *ngIf="form.controls.supplierRefOBit.value">OVERRIDE: {{form.controls.supplierRefOReason.value}}</mat-hint>
+          <mat-icon *ngIf="!form.controls.supplierRefOBit.value && form.controls.supplierRef.errors?.incorrect" matSuffix (click)="overrideDialog('supplierRef', 'Supplier Ref')" matTooltip="Override">remove_circle</mat-icon>
           <mat-error *ngIf="form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
         </mat-form-field>
         <br /><br />

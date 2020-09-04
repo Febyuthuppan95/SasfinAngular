@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, Output } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
 import { ListCurrencies } from 'src/app/models/HttpResponses/ListCurrencies';
@@ -6,6 +6,7 @@ import { CurrenciesService } from 'src/app/services/Currencies.Service';
 import { Currency } from 'src/app/models/HttpResponses/Currency';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { Subject } from 'rxjs';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -21,6 +22,14 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
   @Input() control: FormControl;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+
+  @Input() hasOverride = false;
+  @Input() tagOverride = '';
+  @Input() titleOverride = '';
+  @Input() reasonOverride = '';
+  @Input() errorOverride = '';
+  @Output() undoOverride = new Subject<string>();
+  @Output() override = new Subject<any>();
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Currency[] = [];
@@ -69,12 +78,18 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           }
 
           this.control.reset(null);
-          this.query.setErrors({ incorrect: true });
+          this.query.setErrors({ optionNotSelected: true });
         }
       } else {
         this.selected = false;
       }
     });
+
+    if (this.errorOverride) {
+      this.query.setErrors({ incorrect: true });
+    }
+
+    console.log(this.errorOverride);
   }
 
   ngOnChanges() {
@@ -92,6 +107,12 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     } else {
       this.load(true);
     }
+
+    if (this.errorOverride) {
+      this.query.setErrors({ incorrect: true });
+    }
+
+    console.log(this.errorOverride);
   }
 
   load(setDefault?: boolean) {
