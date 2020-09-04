@@ -277,7 +277,8 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     );
   }
   openLocalReceiptEdit($event) {
-
+    this.focusQuarterID = null;
+    this.focusPeriodYear = null;
     this.openeditModal.nativeElement.click();
   }
   EditLocalReceipt(flag: boolean) {
@@ -303,6 +304,9 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
             res.outcome,
             res.outcomeMessage
           );
+
+          this.focusQuarterID = null;
+          this.focusPeriodYear = null;
         } else {
           this.notify.toastrwarning(
             res.outcome,
@@ -316,17 +320,22 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
+
+        this.focusQuarterID = null;
+        this.focusPeriodYear = null;
       }
     );
   }
   AddLocalReceipt() {
 
   }
+
   Add() {
     this.focusQuarterID = null;
     this.focusPeriodYear = null;
     this.openaddModal.nativeElement.click();
   }
+
   AddSupplierQuarter() {
     const model = {
       requestParams: {
@@ -346,9 +355,11 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
           'SUCCESS',
           res.outcomeMessage
         );
+
+        this.focusQuarterID = null;
+        this.focusPeriodYear = null;
       },
       msg => {
-        this.closeaddModal.nativeElement.click();
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
