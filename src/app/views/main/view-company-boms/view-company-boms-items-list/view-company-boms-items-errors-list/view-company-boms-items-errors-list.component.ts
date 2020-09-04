@@ -152,6 +152,7 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
           this.bomstatus = obj.status;
         }
     });
+
     this.loadItemerrors(true);
   }
 

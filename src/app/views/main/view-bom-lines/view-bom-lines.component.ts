@@ -223,9 +223,10 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         if (obj !== undefined) {
           this.bomid = obj.bomid;
           this.bomstatus = obj.status;
-          this.loadBOMLines(true);
         }
-      });
+    });
+
+    this.loadBOMLines(true);
   }
 
   loadBOMLines(displayGrowl: boolean) {
@@ -243,6 +244,9 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
       requestProcedure: `BOMLineList`,
     };
+
+    console.log('model');
+    console.log(model);
     this.ApiService.post(
       `${environment.ApiEndpoint}/companies/BomLines`,
       model
