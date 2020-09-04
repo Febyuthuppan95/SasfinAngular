@@ -18,10 +18,11 @@
           <strong>Line #{{i + 1}}</strong><br>
           <mat-card *ngFor="let error of item.errors">
             <mat-card-content>
-              <small><strong>{{item.fieldName}}</strong></small>
-              <p>{{item.errorDescription}}</p>
+              <small><strong>{{error.fieldName}}</strong></small>
+              <p>{{error.errorDescription}}</p>
             </mat-card-content>
           </mat-card>
+          <br>
         </ng-container>
       </ng-container>
     </ng-container>

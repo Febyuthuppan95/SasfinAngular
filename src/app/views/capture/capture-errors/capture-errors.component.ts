@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-capture-errors',
   templateUrl: './capture-errors.component.html',
   styleUrls: ['./capture-errors.component.scss']
 })
-export class CaptureErrorsComponent implements OnInit {
+export class CaptureErrorsComponent implements OnInit, OnChanges {
 
   constructor() { }
 
@@ -15,9 +15,10 @@ export class CaptureErrorsComponent implements OnInit {
   @Input() open = false;
 
   ngOnInit() {
-    console.log(this.open);
-    console.log(this.lines);
-    console.log(this.errors);
+    console.log(this.lineErrors);
+  }
+
+  ngOnChanges() {
     console.log(this.lineErrors);
   }
 

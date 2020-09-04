@@ -391,16 +391,19 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
-        this.lines = res.lines;
+        const pre_processed_lines: any[] = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
+        console.log(this.lineErrors);
 
-        this.lines.forEach((line) => {
+        pre_processed_lines.forEach((line) => {
           line.isLocal = false;
           line.specificSAD500LineID = line.sad500LineID;
           line.sad500ID = this.form.controls.SAD500ID.value;
           line.uniqueIdentifier = UUID.UUID();
           line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
         });
+
+        this.lines = pre_processed_lines;
 
         if (this.lines.length > 0) {
           this.activeIndex = 0;
