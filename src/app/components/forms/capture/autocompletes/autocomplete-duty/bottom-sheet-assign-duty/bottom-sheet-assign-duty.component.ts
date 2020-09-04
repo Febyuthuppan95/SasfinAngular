@@ -34,6 +34,8 @@ export class BottomSheetAssignDutyComponent implements OnInit, AfterViewInit {
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
+    this.duty.nativeElement.focus();
+    this.duty.nativeElement.focus();
   }
 
   close(data?) {
