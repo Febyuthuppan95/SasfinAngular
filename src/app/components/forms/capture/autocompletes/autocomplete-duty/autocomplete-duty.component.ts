@@ -54,6 +54,14 @@ constructor(private userService: UserService,
       if (value) {
         if (value.dutyTaxTypeID) {
           // Focus / Assign
+
+          this.list = this.listTemp;
+          const query: string = value.code;
+
+          if (query && query !== null && query !== '') {
+            this.list = this.list.filter(x => this.matchRuleShort(x.code.toUpperCase(), `*${query.toUpperCase()}*`));
+          }
+
         } else {
           this.list = this.listTemp;
           const query: string = value;
@@ -173,10 +181,14 @@ constructor(private userService: UserService,
       value: null,
       label
     };
-
+    if (this.currentDialog) {
+      this.currentDialog.instance.close();
+    }
     this.currentDialog = this.bottomSheet.open(BottomSheetAssignDutyComponent, {
       data: assign,
     });
+
+
 
     this.currentDialog.afterDismissed().pipe(
       finalize(() => this.currentDialog = undefined)
