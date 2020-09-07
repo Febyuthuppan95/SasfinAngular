@@ -55,4 +55,22 @@ export class HelpGlossaryService {
         );
     });
   }
+
+  public create(request: any): any {
+    const requestModel = JSON.parse(JSON.stringify(request));
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/helpglossary/create`;
+      this.httpClient
+        .post(apiURL, requestModel)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
 }

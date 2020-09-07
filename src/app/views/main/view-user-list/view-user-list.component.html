@@ -64,6 +64,16 @@
           <input type="text" placeholder="Extension" class="form-control"
           [(ngModel)]="this.Extension" [ngModelOptions]="{standalone: true}"  required/>
         </div>
+        <div class="form-group" style="position: relative;">
+          <label class="control-label">Password:</label>
+          <input [type]="typePassword ? 'password' : 'text'" placeholder="Password" class="form-control"
+          [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}"  required autocomplete="new-password"/>
+          <div class="input-container">
+            <span>
+              <i class="{{typePassword ? 'mdi mdi-eye text-primary': 'mdi mdi-eye-off text-primary'}}" (click)="togglePassword()"></i>
+            </span>
+          </div>
+        </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>
             <select class="form-control" [selectedIndex]="selectedDesignationIndex" (change)="onDesignationChange($event.target.value)">
@@ -112,7 +122,7 @@
       <div class="modal-body">
           <div class="form-group">
               <label class="control-label">Employee Number:</label>
-              <input type="text" placeholder="Employee Number" maxlength="5"  class="form-control"
+              <input type="text" placeholder="Employee Number" class="form-control"
               [(ngModel)]="this.EmployeeNumb" [ngModelOptions]="{standalone: true}"  required/>
             </div>
         <div class="form-group">
@@ -135,15 +145,15 @@
           <input type="text" placeholder="Extension" class="form-control"
           [(ngModel)]="this.Extension" [ngModelOptions]="{standalone: true}"  required/>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="position: relative;">
           <label class="control-label">Password:</label>
-          <input type="password" placeholder="Password" class="form-control"
-          [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}"  required/>
-        </div>
-        <div class="form-group">
-          <label class="control-label">Confirm Password:</label>
-          <input type="password" placeholder="Confirm Password" class="form-control"
-          [(ngModel)]="this.confirmpassword" [ngModelOptions]="{standalone: true}"  required/>
+          <input [type]="typePassword ? 'password' : 'text'" placeholder="Password" class="form-control"
+          [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}"  required autocomplete="new-password"/>
+          <div class="input-container">
+            <span>
+              <i class="{{typePassword ? 'mdi mdi-eye text-primary': 'mdi mdi-eye-off text-primary'}}" (click)="togglePassword()"></i>
+            </span>
+          </div>
         </div>
         <div class="form-group">
             <label class="control-label">Designation:</label>

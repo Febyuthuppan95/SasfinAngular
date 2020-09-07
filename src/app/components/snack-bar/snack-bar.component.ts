@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, OnChanges } from '@angular/core';
 import { NotificationComponent } from '../notification/notification.component';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -14,14 +14,15 @@ import { takeUntil } from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {log} from 'util';
 import { StorageService } from 'src/app/services/storage.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
-
+@AutoUnsubscribe()
 @Component({
   selector: 'app-snack-bar',
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss']
 })
-export class SnackBarComponent implements OnInit, OnDestroy {
+export class SnackBarComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private helpSnackbarService: HelpSnackbar,
     private objectHelpService: ObjectHelpService,
@@ -53,12 +54,13 @@ export class SnackBarComponent implements OnInit, OnDestroy {
   objectHelpDictionary: Map<string, string>;
 
   ngOnInit() {
-
-    this.canEdit = this.checkRight('HelpGlossary');
+    console.log(this.currentUser.designation.toLowerCase());
+    this.canEdit = this.currentUser.designation.toLowerCase() === 'admin' || this.currentUser.designation.toLowerCase() === 'consultant';
 
     this.helpSnackbarService.observeHelpContext()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((context: SnackbarModel) => {
+      this.canEdit = this.currentUser.designation.toLowerCase() === 'admin' || this.currentUser.designation.toLowerCase() === 'consultant';
       this.settings.display = context.display;
 
       if (context.slug !== undefined) {
@@ -93,10 +95,16 @@ export class SnackBarComponent implements OnInit, OnDestroy {
     this.objectHelpService.observeAllow()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((allow: boolean) => {
+      this.canEdit = this.currentUser.designation.toLowerCase() === 'admin' || this.currentUser.designation.toLowerCase() === 'consultant';
+
       if (allow) {
         this.settings.display = false;
       }
     });
+  }
+
+  ngOnChanges() {
+    this.canEdit = this.currentUser.designation.toLowerCase() === 'admin' || this.currentUser.designation.toLowerCase() === 'consultant';
   }
 
   private checkRight(right: string) {

@@ -66,13 +66,8 @@
         <mat-form-field appearance="fill">
           <mat-label>Invoice Date</mat-label>
           <input matInput [formControl]="invoiceDate" (focusin)="updateHelpContext('form-invoice-invoicedate')" mask="0000/00/00">
-          <!-- <input matInput formControlName="invoiceDate" [matDatepicker]="picker" (focusin)="updateHelpContext('form-invoice-invoicedate')" > -->
-          <!-- <mat-error *ngIf="form.controls.invoiceDate.hasError('pattern')">Date format must be YYYY-MM-DD</mat-error>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker> -->
         </mat-form-field>
         <br /><br />
-        <!-- [specialCharacters]="[ '/' ]" mask="99/99/9999" -->
       </div>
       <div class="col-6">
         <mat-form-field appearance="fill" >

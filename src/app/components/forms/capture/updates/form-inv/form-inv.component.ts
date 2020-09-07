@@ -299,15 +299,18 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
       this.form.updateValueAndValidity();
 
-      const invoiceDate = new Date(res.invoices[0].invoiceDate);
+      const invoiceDate = this.dateService.getUTC(new Date(res.invoices[0].invoiceDate));
 
       if (invoiceDate.getFullYear() < 2000) {
         invoiceDate.setFullYear(2020);
       }
 
       this.form.controls.invoiceDate.setValue(invoiceDate);
-      this.invoiceDate.setValue(`${invoiceDate.getFullYear()}${invoiceDate.getMonth().toString().length === 1 ? '0' + invoiceDate.getMonth() + 1 : invoiceDate.getMonth() + 1}${invoiceDate.getDate()}`, { emitEvent: false });
+      this.invoiceDate.setValue(
+        `${invoiceDate.getFullYear()}-${this.leadingZero(invoiceDate.getMonth() + 1)}-${this.leadingZero(invoiceDate.getDate())}`
+        , { emitEvent: false });
 
+      console.log(`${invoiceDate.getFullYear()}-${this.leadingZero(invoiceDate.getMonth())}-${this.leadingZero(invoiceDate.getDate())}`);
       this.errors = res.attachmentErrors.attachmentErrors;
 
       Object.keys(this.form.controls).forEach(key => {
@@ -340,6 +343,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     }, (err) => {
       this.loader = false;
     });
+  }
+
+  leadingZero(num: number): string {
+    if (num < 10) {
+      return `0${num}`;
+    }
+
+    return `${num}`;
   }
 
   async loadLines() {

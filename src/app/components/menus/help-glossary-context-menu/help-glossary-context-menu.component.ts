@@ -17,12 +17,21 @@ export class HelpGlossaryContextMenuComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() editHelpItem = new EventEmitter<string>();
+  @Output() deleteHelpItem = new EventEmitter<string>();
 
   ngOnInit() {
   }
 
   edit() {
     this.editHelpItem.emit(JSON.stringify({
+      helpGlossaryId: this.helpId,
+      name: this.helpName,
+      description: this.helpDescription
+    }));
+  }
+
+  delete() {
+    this.deleteHelpItem.emit(JSON.stringify({
       helpGlossaryId: this.helpId,
       name: this.helpName,
       description: this.helpDescription

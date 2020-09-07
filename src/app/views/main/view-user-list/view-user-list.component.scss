@@ -127,3 +127,20 @@ tr.active {
   }
 }
 
+
+.input-container{
+  // position: relative;
+  // display: inline;
+
+  position: absolute;
+  right: 10px;
+  top: 24px;
+  z-index: 99999;
+}
+
+.input-container span {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+  z-index: 99999;
+}

@@ -84,6 +84,8 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
+  public typePassword = true;
+
   tableHeader: TableHeader = {
     title: 'Users',
     addButton: {
@@ -193,7 +195,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
   ProfileImage = '';
   selectedUserID = -1;
   password = null;
-  confirmpassword = null;
   EmployeeNumb = null;
 
   statusList: Status[];
@@ -339,6 +340,10 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
       );
   }
 
+  togglePassword() {
+    this.typePassword = !this.typePassword;
+  }
+
   inspectUserImage(src: string) {
     const options = new ImageModalOptions();
     options.width = '';
@@ -428,6 +433,7 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
+    this.password = null;
   }
 
   addNewUser() {
@@ -435,7 +441,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     this.selectedSurName = null;
     this.selectedEmail = null;
     this.password = null;
-    this.confirmpassword = null;
     this.selectedDesignation = null;
     this.ProfileImage = null;
     this.EmployeeNumb = null;
@@ -488,9 +493,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     if (this.password === null || this.password === undefined || this.password === '') {
       errors++;
     }
-    if (this.confirmpassword === null || this.confirmpassword === undefined  || this.confirmpassword === '') {
-      errors++;
-    }
     if (this.selectedDesignation === null || this.selectedDesignation === undefined && this.selectedDesignation === -1) {
       errors++;
     }
@@ -503,7 +505,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     if (!emailCheck) {
       errors++;
     }
-
 
     const requestModelTest: AddUserRequest = {
       userID: this.currentUser.userID,
@@ -520,7 +521,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
     const validateResponse = this.validateService.model(requestModelTest);
 
     if (errors === 0) {
-      if (this.password === this.confirmpassword) {
         const requestModel: AddUserRequest = {
           userID: this.currentUser.userID,
           empNo: this.EmployeeNumb,
@@ -560,9 +560,6 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
             this.notify.errorsmsg('Failure', 'User not Added');
           }
         );
-      } else {
-        this.notify.errorsmsg('Failure', 'Passwords do not match!');
-      }
     } else {
       if (errors === 1 && !emailCheck) {
         this.notify.toastrwarning('Warning', 'User email needs to be in the correct format');
@@ -631,6 +628,10 @@ export class ViewUserListComponent implements OnInit, OnDestroy {
         profileImage: ImageName,
         extension: this.Extension
       };
+
+      if (this.password !== null && this.password !== undefined && this.password !== '') {
+        requestModel.newPassword = this.password;
+      }
 
       this.userService.UserUpdate(requestModel).then(
         (res: {outcome: Outcome}) => {

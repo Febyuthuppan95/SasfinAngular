@@ -314,6 +314,7 @@ import { DateService } from './services/tools/date.service';
 import { OverrideComponent } from './components/forms/capture/override/override.component';
 import { DatePipe } from '@angular/common';
 import {NgxMaskModule} from 'ngx-mask';
+import { CreateHelpComponent } from './views/main/view-help-glossary/create-help/create-help.component';
 
 @NgModule({
   declarations: [
@@ -522,6 +523,7 @@ import {NgxMaskModule} from 'ngx-mask';
     MenuEscalationsComponent,
     CaptureErrorsComponent,
     OverrideComponent,
+    CreateHelpComponent,
   ],
   imports: [
     BrowserModule,
@@ -637,6 +639,7 @@ import {NgxMaskModule} from 'ngx-mask';
     FormSmdComponent,
     DialogCreateItemsComponent,
     BottomSheetAssignDutyComponent,
+    CreateHelpComponent
   ],
 })
 export class AppModule {}

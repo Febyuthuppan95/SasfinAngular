@@ -8,7 +8,11 @@
     <br />
     <button class="btn btn-filter btn-filter-{{ currentTheme }} float-right" (click)="toggleFilters()"><i
         class="mdi mdi-filter"></i> &nbsp;Filters</button>
-    <h4 class="card-title ls-text-{{ currentTheme }}">Help Glossary</h4>
+    <h4 class="card-title ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">Help Glossary</h4>
+    <span style="margin-left:10px;">
+      <button (click)="create()" class="btn-add btn"><i class="mdi mdi-plus"></i></button>
+    </span>
+    <br />
     <br />
     <div class="filters" [ngClass]="(displayFilter)? 'filters-show': ''">
       <form class="form-inline">
@@ -124,5 +128,5 @@
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-<app-help-glossary-context-menu (editHelpItem)="editHelp($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [helpId]="focusHelp" [helpName]="focusHelpName" [helpDescription]="focusDescription"></app-help-glossary-context-menu>
+<app-help-glossary-context-menu (editHelpItem)="editHelp($event)" (deleteHelpItem)="deleteHelp($event)" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [helpId]="focusHelp" [helpName]="focusHelpName" [helpDescription]="focusDescription"></app-help-glossary-context-menu>
 </div>

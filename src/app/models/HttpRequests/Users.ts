@@ -9,6 +9,7 @@ export class UpdateUserRequest {
   specificStatusID: number;
   profileImage: string;
   extension: string;
+  newPassword?: string;
 }
 
 export class GetUserList {

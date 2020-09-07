@@ -15,6 +15,8 @@ import { UpdateHelpGlossary } from 'src/app/models/HttpRequests/UpdateHelpGlossa
 import { UpdateHelpGlossaryResponse } from 'src/app/models/HttpResponses/UpdateHelpGlossaryResponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { CreateHelpComponent } from './create-help/create-help.component';
 
 @Component({
   selector: 'app-view-help-glossary',
@@ -27,6 +29,7 @@ export class ViewHelpGlossaryComponent implements OnInit, OnDestroy {
     private helpGlossaryService: HelpGlossaryService,
     private userService: UserService,
     private themeService: ThemeService,
+    private matDialog: MatDialog,
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -281,6 +284,16 @@ export class ViewHelpGlossaryComponent implements OnInit, OnDestroy {
     }
   }
 
+  create() {
+    this.matDialog.open(CreateHelpComponent, {
+      width: '512px'
+    }).afterClosed().subscribe((status) => {
+      if (status) {
+        this.loadHelpGlossary();
+      }
+    });
+  }
+
   popOff() {
     this.contextMenu = false;
     this.selectedRow = -1;
@@ -293,6 +306,22 @@ export class ViewHelpGlossaryComponent implements OnInit, OnDestroy {
     this.themeService.toggleContextMenu(false);
     this.contextMenu = false;
     this.openModal.nativeElement.click();
+  }
+
+  async deleteHelp() {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+
+    this.helpGlossaryService.update({
+      userID: this.currentUser.userID,
+      helpGlossaryID: this.focusHelp,
+      isDeleted: true
+    }).then(
+      (res) => {
+        this.loadHelpGlossary();
+      },
+      (msg) => {}
+    );
   }
 
   updateGlossary() {

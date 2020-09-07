@@ -50,7 +50,7 @@
     </mat-toolbar>
     <mat-progress-bar mode="indeterminate"  *ngIf="loading" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
     <div class="row">
-        <div [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') 
+        <div [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')
         ? 'col-sm-5':'col-sm-7'">
             <div class="top-section row">
                 <mat-card class="offset-sm-1 col-sm-11">
@@ -80,7 +80,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                           
+
                             <div class="row" *ngIf="this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD'">
                                 <mat-form-field class="col-md-5">
                                     <mat-label>Quarter</mat-label>
@@ -118,7 +118,7 @@
                                             {{oem.OEMCompanyName}}
                                           </mat-option>
                                         </mat-autocomplete>
-                                    
+
                                   </mat-form-field>
                             </div>
                             <div class="row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD'">
@@ -220,8 +220,8 @@
                 </mat-card>
             </div>
         </div>
-        <div class="data-lines " 
-        [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') 
+        <div class="data-lines "
+        [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')
         ? 'col-sm-7':'col-sm-5'">
             <div class="top-section-right row" *ngIf="(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD')">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
@@ -278,3 +278,4 @@
         </div>
     </div>
 </div>
+<app-snack-bar></app-snack-bar>
