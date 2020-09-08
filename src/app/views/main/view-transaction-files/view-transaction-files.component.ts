@@ -445,21 +445,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   uploadAttachments() {
-    let isVOCSADSelected = true;
-    if (this.isVOC) {
-      if (this.selectedSAD500 === 0 || this.selectedSAD500 === null  || this.selectedSAD500 === undefined) {
-        isVOCSADSelected = false;
-      }
-
-    }
-
-    if (isVOCSADSelected) {
       if (this.attachmentQueue.length !== 0) {
         this.iterateAttachments(0);
       }
-    } else {
-      this.notify.toastrwarning('Warning', 'Please Select an SAD500 attachment');
-    }
   }
 
   iterateAttachments(index) {
@@ -607,6 +595,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     } else if (this.transactionTypes[this.selectedTransactionType] === undefined) {
       errors++;
       this.notify.toastrwarning('Warning', 'Please select an attachment type');
+    } else if (this.isVOC) {
+      if (this.selectedSAD500 === 0 || this.selectedSAD500 === null  || this.selectedSAD500 === undefined) {
+        errors++;
+        this.notify.toastrwarning('Warning', 'Please Select an SAD500 attachment');
+      }
+
     }
 
     if (errors === 0) {
@@ -627,6 +621,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       this.preview = null;
       this.attachmentTypeIndex = 0;
       this.selectedSAD500Line = -1;
+      this.isVOC = false;
       this.selectAttachmentType.reset(-1);
       this.selectSAD500Control.reset(-1);
       this.selectSAD500LinesControl.reset(-1);

@@ -45,8 +45,8 @@ export class NestedTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.headings);
-    console.log(this.parents);
+    // console.log(this.headings);
+    // console.log(this.parents);
     // console.log(this.isPageable);
     // console.log(this.displayData);
     // console.log(this.paginator);
