@@ -139,7 +139,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-6"> <!--Left Table-->
-            <app-nested-table *ngIf="this.AssignedLines.length > 0"
+            <app-nested-table
               [action_icon]="'edit'"
               [parents] = "this.AssignedLines"
               [isPageable]="'false'"
@@ -150,7 +150,7 @@
               ></app-nested-table>
           </div>
           <div class="col-sm-6"> <!--Right Table-->
-            <app-nested-table *ngIf="this.AvailableLines.length > 0"
+            <app-nested-table
               [action_icon]="'edit'"
               [parents] = "this.AvailableLines"
               [isPageable]="'false'"

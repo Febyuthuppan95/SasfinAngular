@@ -37,6 +37,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
  rowEnd = 15;
  filter = '';
  orderBy = '';
+ disabled = false;
  orderByDirection = '';
   displayFilter = '';
  pages: Pagination[];
