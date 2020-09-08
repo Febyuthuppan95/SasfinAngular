@@ -23,6 +23,7 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/CustomWorksheetLine';
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -504,6 +505,14 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!norefresh) {
       this.refresh();
     }
+  }
+
+  deleteLinePrompt() {
+    this.dialog.open(DeletelineDialogComponent).afterClosed().subscribe( (status: boolean) => {
+      if (status) {
+        this.deleteLine();
+      }
+    });
   }
 
   async deleteLine() {
