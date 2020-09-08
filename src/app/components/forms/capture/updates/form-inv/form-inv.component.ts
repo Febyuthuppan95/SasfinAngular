@@ -20,6 +20,7 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { InvoiceGetResponse, InvoiceLinesResponse } from 'src/app/models/HttpResponses/Invoices';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { DateService } from 'src/app/services/tools/date.service';
+import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -537,6 +538,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!norefresh) {
       this.refresh();
     }
+  }
+
+  deleteLinePrompt() {
+    this.dialog.open(DeletelineDialogComponent).afterClosed().subscribe( (status: boolean) => {
+      if (status) {
+        this.deleteLine();
+      }
+    });
   }
 
   async deleteLine() {
