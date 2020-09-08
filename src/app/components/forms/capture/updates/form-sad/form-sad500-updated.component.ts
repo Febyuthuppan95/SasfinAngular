@@ -23,6 +23,8 @@ import { Router } from '@angular/router';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
 import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-sad500-line-updated.component';
+import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
+import {subscribeOn} from 'rxjs/operators';
 
 @AutoUnsubscribe()
 @Component({
@@ -654,6 +656,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     if (!norefresh) {
       this.refresh();
     }
+  }
+
+  deleteLinePrompt() {
+    this.dialog.open(DeletelineDialogComponent).afterClosed().subscribe( (status: boolean) => {
+      if (status) {
+        this.deleteLine();
+      }
+    });
   }
 
   async deleteLine() {

@@ -315,6 +315,7 @@ import { OverrideComponent } from './components/forms/capture/override/override.
 import { DatePipe } from '@angular/common';
 import {NgxMaskModule} from 'ngx-mask';
 import { CreateHelpComponent } from './views/main/view-help-glossary/create-help/create-help.component';
+import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 
 @NgModule({
   declarations: [
@@ -524,6 +525,7 @@ import { CreateHelpComponent } from './views/main/view-help-glossary/create-help
     CaptureErrorsComponent,
     OverrideComponent,
     CreateHelpComponent,
+    DeletelineDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -639,7 +641,8 @@ import { CreateHelpComponent } from './views/main/view-help-glossary/create-help
     FormSmdComponent,
     DialogCreateItemsComponent,
     BottomSheetAssignDutyComponent,
-    CreateHelpComponent
+    CreateHelpComponent,
+    DeletelineDialogComponent
   ],
 })
 export class AppModule {}
