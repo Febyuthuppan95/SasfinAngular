@@ -21,6 +21,7 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { UUID } from 'angular2-uuid';
+import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 
 @Component({
   selector: 'app-form-c1',
@@ -420,6 +421,14 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     if (!norefresh) {
       this.refresh();
     }
+  }
+
+  deleteLinePrompt() {
+    this.dialog.open(DeletelineDialogComponent).afterClosed().subscribe( (status: boolean) => {
+      if (status) {
+        this.deleteLine();
+      }
+    });
   }
 
   async deleteLine() {
