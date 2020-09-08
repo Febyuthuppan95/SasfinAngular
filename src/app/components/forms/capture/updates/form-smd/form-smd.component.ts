@@ -16,6 +16,7 @@ import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dia
 import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { UUID } from 'angular2-uuid';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 
 @Component({
   selector: 'app-form-smd',
@@ -417,6 +418,14 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!norefresh) {
       this.refresh();
     }
+  }
+
+  deleteLinePrompt() {
+    this.dialog.open(DeletelineDialogComponent).afterClosed().subscribe( (status: boolean) => {
+      if (status) {
+        this.deleteLine();
+      }
+    });
   }
 
   async deleteLine() {
