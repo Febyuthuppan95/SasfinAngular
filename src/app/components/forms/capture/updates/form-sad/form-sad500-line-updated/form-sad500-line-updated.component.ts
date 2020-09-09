@@ -177,6 +177,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
+      console.log(this.data);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {

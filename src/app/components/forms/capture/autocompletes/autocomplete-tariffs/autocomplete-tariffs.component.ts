@@ -32,6 +32,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     if (!this.control) {
       this.control = new FormControl();
     }
+    console.log(this.control.value);
 
     this.isRequired = this.control.validator !== null;
 
@@ -123,7 +124,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
 
   public displayFn(item: any): string {
     console.log(item);
-    return item ? `${item.subHeading == null ? item.itemNumber: item.subHeading}${item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}` : '';
+    return item ? `${item.subHeading == null ? item.itemNumber : item.subHeading}${item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}` : '';
   }
 
   focusOut(trigger) {

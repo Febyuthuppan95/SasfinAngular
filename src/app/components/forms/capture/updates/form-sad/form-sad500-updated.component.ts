@@ -349,6 +349,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
         this.form.controls.cpcID.setValue(response.cpcID);
+        console.log(response.cpcID);
+        console.log(this.form.controls);
         this.form.updateValueAndValidity();
         this.loader = false;
         console.log(this.form.value);
@@ -401,6 +403,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        console.log(res);
         const pre_processed_lines: any[] = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
         console.log(this.lineErrors);
