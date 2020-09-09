@@ -40,7 +40,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     custVal: new FormControl(null, [Validators.required]),
     duty: new FormControl(null, [Validators.required]),
     prodCode: new FormControl(null),
-    supplyUnit: new FormControl(null, [Validators.required]),
+    supplyUnit: new FormControl(null),
     isDeleted: new FormControl(null),
     cooOBit: new FormControl(null),
     cooOUserID: new FormControl(null),
