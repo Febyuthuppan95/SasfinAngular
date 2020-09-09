@@ -108,6 +108,14 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           }
         }
       });
+
+      // null checking quantity field
+      if (this.data.quantity === -1) {
+        this.data.quantity = null;
+        this.form.controls.quantity.setValue(null);
+      }
+
+      console.log(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
     } else {
@@ -186,6 +194,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           }
         }
       });
+
+      // null checking quantity field
+      if (this.data.quantity === -1) {
+        this.data.quantity = null;
+        this.form.controls.quantity.setValue(null);
+      }
 
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;

@@ -842,3 +842,7 @@ body.scrolling::-webkit-scrollbar-thumb,
 .defaultCursor {
   cursor: default !important;
 }
+
+.transparentCursor {
+  cursor: none !important;
+}

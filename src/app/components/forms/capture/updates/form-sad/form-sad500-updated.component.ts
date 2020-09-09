@@ -349,11 +349,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
         this.form.controls.cpcID.setValue(response.cpcID);
-        console.log(response.cpcID);
-        console.log(this.form.controls);
-        this.form.updateValueAndValidity();
-        this.loader = false;
+        console.log(`CPC ID: ${response.cpcID}`);
         console.log(this.form.value);
+        this.form.updateValueAndValidity();
         this.errors = res.attachmentErrors.attachmentErrors;
 
         Object.keys(this.form.controls).forEach(key => {
@@ -376,7 +374,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         }
 
         this.form.updateValueAndValidity();
-        setTimeout(() => this.startForm.nativeElement.focus(), 100);
+        setTimeout(() => {
+          this.loader = false;
+          setTimeout(() => this.startForm.nativeElement.focus(), 100);
+        }, 200);
 
         await this.loadLines();
       } else {
@@ -522,6 +523,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.displayLines = false;
               this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);

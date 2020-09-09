@@ -137,12 +137,13 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
 
   captureData: any;
   currentDoctype: string;
+  cursor = -1;
 
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
     this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
-    this.event.mouseChange.next(true);
+    this.event.mouseChange.next(this.cursor);
 
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
@@ -237,6 +238,20 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.companyInfo()
         },
+        {
+          key: 'alt + b',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            if (this.cursor === -1) {
+              this.cursor = 2;
+            } else {
+              this.cursor = -1;
+            }
+
+            this.event.mouseChange.next(this.cursor);
+          }
+      },
         {
           key: 'alt + d',
           preventDefault: true,
