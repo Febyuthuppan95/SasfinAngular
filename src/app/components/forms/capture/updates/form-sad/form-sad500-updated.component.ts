@@ -742,6 +742,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.form.controls[`${key}OBit`].setValue(true);
     this.form.controls[`${key}OReason`].setValue(reason);
     this.form.controls[key].setErrors(null);
+    this.form.updateValueAndValidity();
   }
 
   undoOverride(key: string) {
