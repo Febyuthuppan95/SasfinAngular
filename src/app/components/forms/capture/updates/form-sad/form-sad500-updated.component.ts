@@ -670,6 +670,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     const targetLine = this.lines[this.activeIndex];
     targetLine.isDeleted = 1;
     targetLine.saD500ID = this.form.controls.SAD500ID.value;
+    targetLine.userID = this.currentUser.userID;
 
     if (!targetLine.isLocal) {
       await this.captureService.sad500LineUpdate(targetLine);
