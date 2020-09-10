@@ -167,6 +167,18 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             command: e => this.prevLine()
           },
           {
+            key: 'alt + c',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.cancelLine()
+          },
+          {
+            key: 'alt + v',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.deleteLinePrompt()
+          },
+          {
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
