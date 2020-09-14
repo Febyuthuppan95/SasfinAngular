@@ -56,6 +56,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     attachmentStatusID: new FormControl(null),
     importersCode: new FormControl(null, [Validators.required]),
     fileRef: new FormControl(null),
+    containerNumbers: new FormControl(null),
+    transAtArrival: new FormControl(null),
     totalDuty: new FormControl(0),
     lrnOBit: new FormControl(false),
     lrnOUserID: new FormControl(null),
@@ -93,6 +95,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     waybillNoOUserID: new FormControl(null),
     waybillNoODate: new FormControl(null),
     waybillNoOReason: new FormControl(null),
+    transAtArrivalOBit: new FormControl(false),
+    transrAtArrivalOUserID: new FormControl(null),
+    transoAtArrivalODate: new FormControl(null),
+    transAtArrivalOReason: new FormControl(null),
+    containerNumbersOBit: new FormControl(false),
+    containerNumbersOUserID: new FormControl(null),
+    containerNumbersODate: new FormControl(null),
+    containerNumbersOReason: new FormControl(null),
     isDeleted: new FormControl(0),
 
     // VOC
@@ -159,6 +169,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       }
     }
   }
+
   public submissionEvent = (escalation, saveProgress, escalationResolved) => this.submit(this.form, escalation, saveProgress, escalationResolved);
 
   ngOnInit() {

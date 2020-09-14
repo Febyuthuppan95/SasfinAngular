@@ -46,6 +46,16 @@ form = new FormGroup({
   waybillNoOUserID: new FormControl(null),
   waybillNoODate: new FormControl(null),
   waybillNoOReason: new FormControl(null),
+  transAtArrival: new FormControl(null),
+  transAtArrivalOUserID: new FormControl(null),
+  transAtArrivalODate: new FormControl(null),
+  transAtArrivalOBit: new FormControl(null),
+  transAtArrivalOReason: new FormControl(null),
+  containerNo: new FormControl(null),
+  containerNoOBit: new FormControl(null),
+  containerNoUserID: new FormControl(null),
+  containerNoODate: new FormControl(null),
+  containerNoOReason: new FormControl(null),
 });
 
 public attachmentLabel: string;
