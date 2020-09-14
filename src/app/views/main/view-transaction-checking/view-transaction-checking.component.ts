@@ -221,6 +221,7 @@ export class ViewTransactionCheckingComponent implements OnInit {
   AvailableHeadings: TableHeading[] = [];
   AssignedHeadings: TableHeading[] = [];
   AssignedInvoiceLines: InvoiceLine[] = [];
+  AssignedSADLines: SAD500Line[] = [];
 
 
 
@@ -278,25 +279,17 @@ private unsubscribe = new Subject<void>();
       },
       requestProcedure: 'CaptureJoinsList'
     };
-    // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        // console.log(res);
+        console.log('CaptureJoinsList');
+        console.log(res);
+        this.CaptureJoins = res.data;
         if (res.rowCount > 0) {
-
-          // Populate Key List List
-          this.CaptureJoins = res.data;
           this.showingRecords = this.CaptureJoins.length;
           this.rowCount = res.rowCount;
-          // Track the current Custom Worksheet
           this.customWorksheetID = this.CaptureJoins[0].CustomWorksheetID;
-          // console.log(this.customWorksheetID);
-          // Get
           this.loading = false;
-          // this.notify.successmsg(
-          //   res.outcome.outcome,
-          //   res.outcome.outcomeMessage
-          // );
+
           this.getCustomWorksheetLines();
         } else {
 
@@ -327,7 +320,8 @@ private unsubscribe = new Subject<void>();
     };
     this.apiService.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       (res: ListReadResponse) => {
-        // console.log(res.data);
+        console.log('res.data');
+        console.log(res.data);
         this.CustomWorksheetLines = res.data;
         this.loading = false;
       },
@@ -340,66 +334,113 @@ private unsubscribe = new Subject<void>();
   joinLines() {
 
   }
-  async getAssignedInvoiceLines(custID: number) {
-    if (custID > 0) {
-      this.AssignedInvoiceLines = [];
-      // console.log(custID);
-      let arr: CaptureJoin[] = [];
-      arr = this.CaptureJoins.filter(x => x.CustomWorksheetLineID.toLocaleString().localeCompare(custID.toLocaleString()));
-      if (arr.length > 0 ) {
-       this.AssignedInvoiceLines = await this.getInvoiceLineInfo(arr);
-       this.childrenLoaded = true;
-      }
-    }
-  }
-  getInvoiceLineInfo(lines: CaptureJoin[]): InvoiceLine[] {
-      let invoices: InvoiceLine[] = [];
+  // async getAssignedInvoiceLines(custID: number) {
+  //   if (custID > 0) {
+  //     this.AssignedInvoiceLines = [];
+  //     // console.log(custID);
+  //     let arr: CaptureJoin[] = [];
+  //     arr = this.CaptureJoins.filter(x => x.CustomWorksheetLineID.toLocaleString().localeCompare(custID.toLocaleString()));
+  //     if (arr.length > 0 ) {
+  //      this.AssignedInvoiceLines = await this.getInvoiceLineInfo(arr);
+  //      this.childrenLoaded = true;
+  //     }
+  //   }
+  // }
+  // getInvoiceLineInfo(lines: CaptureJoin[]): InvoiceLine[] {
+  //     let invoices: InvoiceLine[] = [];
+
+  //     this.loading = true;
+  //     lines.forEach(x => {
+  //       const model = {
+  //         userID: this.currentUser.userID,
+  //         invoiceLineID: x.InvoiceLineID,
+  //         invoiceID: x.InvoiceID,
+  //         transactionID: this.observedTransaction.transactionID,
+  //         rowStart: this.rowStart,
+  //         rowEnd: this.rowEnd,
+  //         orderBy: '',
+  //         orderByDirection: ''
+  //       };
+  //       this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
+  //         (res: InvoiceLineRead) => {
+  //           this.loading = false;
+  //           // console.log(res);
+  //           if (res.lines.length > 0) {
+  //             invoices.push(res.lines[0]);
+  //             // console.log(this.AssignedInvoiceLines);
+  //           }
+  //         },
+  //         msg => {
+  //           this.loading = false;
+  //         }
+  //       );
+  //     });
+  //     // console.log(invoices);
+
+  //     return invoices;
+  // }
+
+  // async getAssignedInvoiceLines(custID: number) {
+  //   if (custID > 0) {
+  //     this.AssignedInvoiceLines = [];
+  //     // console.log(custID);
+  //     let arr: CaptureJoin[] = [];
+  //     arr = this.CaptureJoins.filter(x => x.CustomWorksheetLineID.toLocaleString().localeCompare(custID.toLocaleString()));
+  //     if (arr.length > 0 ) {
+  //      this.AssignedInvoiceLines = await this.getInvoiceLineInfo(arr);
+  //      this.childrenLoaded = true;
+  //     }
+  //   }
+  // }
+  getInvoiceLineInfo(invoiceid: number, invoicelineid: number) {
 
       this.loading = true;
-      lines.forEach(x => {
-        const model = {
-          userID: this.currentUser.userID,
-          invoiceLineID: x.InvoiceLineID,
-          invoiceID: x.InvoiceID,
-          transactionID: this.observedTransaction.transactionID,
-          rowStart: this.rowStart,
-          rowEnd: this.rowEnd,
-          orderBy: '',
-          orderByDirection: ''
-        };
-        this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
-          (res: InvoiceLineRead) => {
-            this.loading = false;
-            // console.log(res);
-            if (res.lines.length > 0) {
-              invoices.push(res.lines[0]);
-              // console.log(this.AssignedInvoiceLines);
-            }
-          },
-          msg => {
-            this.loading = false;
+      const model = {
+        userID: this.currentUser.userID,
+        invoiceLineID: invoicelineid,
+        invoiceID: invoiceid,
+        transactionID: this.observedTransaction.transactionID,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+        orderBy: '',
+        orderByDirection: ''
+      };
+      this.apiService.post(`${environment.ApiEndpoint}/capture/invoice/lines`, model).then(
+        (res: InvoiceLineRead) => {
+          this.loading = false;
+          console.log(res);
+          this.AssignedInvoiceLines = res.lines;
+          if (res.lines.length > 0) {
+
           }
-        );
-      });
+        },
+        msg => {
+          this.loading = false;
+        }
+      );
+
       // console.log(invoices);
 
-      return invoices;
   }
 
-  getSADLineInfo() {
+  getSADLineInfo(SAD500ID: number, SAD500LineID: number) {
     this.loading = true;
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        sadLineID: 1,
+        SAD500LineID,
+        SAD500ID,
         rowStart: this.rowStart,
         rowEnd: this.rowEnd
       },
-      requestProcedure: 'InvoiceLinesList'
+      requestProcedure: 'SAD500LineList'
     };
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: ListReadResponse) => {
-        this.AvailableInvoiceLines = res.data;
+        this.AssignedSADLines = res.data;
+        console.log('this.AssignedSADLines');
+        console.log(this.AssignedSADLines);
         this.loading = false;
       },
       msg => {
@@ -486,11 +527,11 @@ private unsubscribe = new Subject<void>();
   }
 
   // Expansion Events
-  focusWorksheet(cust: CustomWorksheetLine) {
-    // console.log(cust);
-    this.step = cust.RowNum;
-    // console.log(this.step);
-    this.getAssignedInvoiceLines(cust.CustomWorksheetID);
+  focusWorksheet(capture: any) {
+    console.log('capture');
+    console.log(capture);
+    this.getInvoiceLineInfo(capture.InvoiceID, capture.InvoiceLineID);
+    this.getSADLineInfo(capture.SAD500ID, capture.SAD500LineID);
   }
 
   // Datatable Events
@@ -508,6 +549,8 @@ export class CaptureJoin {
   SAD500LineID: number;
   SADID: number;
   CustomWorksheetLineID: number;
+  HSQuantity: number;
+  InvoiceNo: string;
   CustomWorksheetID: number;
   TransactionID: number;
 }
@@ -542,6 +585,7 @@ export class CustomWorksheetLine {
   CustomWorksheetLineID: number;
   CaptureJoinID: number;
   HSQuantity: number;
+  InvoiceNo: string;
   ForeignInv: number;
   CustVal: number;
   Duty: number;

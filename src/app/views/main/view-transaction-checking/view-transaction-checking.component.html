@@ -44,15 +44,15 @@
 
       <h4 *ngIf="!this.CaptureJoins">No Customs Workshet Lines found for this transaction</h4>
       <div *ngIf="this.CaptureJoins !== null">
-        <mat-accordion *ngFor="let Cust of CustomWorksheetLines">
-            <mat-expansion-panel id="expansion-panel-0" [expanded]="this.step === Cust.RowNum" (opened)="focusWorksheet(Cust)"
+        <mat-accordion *ngFor="let Capture of CaptureJoins">
+            <mat-expansion-panel id="expansion-panel-0" [expanded]="this.step === Capture.RowNum" (opened)="focusWorksheet(Capture)"
             style="margin-bottom: 20px !important; padding: 0 1px 1px !important;">
             <mat-expansion-panel-header>
-              <label class="col-md-2 text-center"><i class="mdi mdi-file-document"></i>Custom Worksheet ID: {{Cust.CustomWorksheetID}}</label>
-              <label class="col-md-2 text-center">Custom Worksheet Line ID: {{Cust.CustomWorksheetLineID}}</label>
-              <label class="col-md-2 text-center">Invoice No: {{Cust.InvoiceNo}}</label>
-              <label class="col-md-2 text-center">Product Code: {{Cust.ProdCode}}</label>
-              <label class="col-md-2 text-center"> HS Quantity: {{Cust.HSQuantity}}</label>
+              <label class="col-md-2 text-center"><i class="mdi mdi-file-document"></i>Custom Worksheet ID: {{Capture.CustomWorksheetID}}</label>
+              <label class="col-md-2 text-center">Custom Worksheet Line ID: {{Capture.CustomWorksheetLineID}}</label>
+              <label class="col-md-2 text-center">Invoice No: {{Capture.InvoiceNo}}</label>
+              <!-- <label class="col-md-2 text-center">Product Code: {{Capture.ProdCode}}</label> -->
+              <label class="col-md-2 text-center"> HS Quantity: {{Capture.HSQuantity}}</label>
                 <!-- <h4> <i class="mdi mdi-file-document"></i> Customs Worksheet Line:  - {{Cust.CustomWorksheetLineID}} </h4> -->
             </mat-expansion-panel-header>
             <div class="row" style="margin-right:10px !important; margin-left:4px !important;">
@@ -77,9 +77,9 @@
                   <hr style="border-top: 2px solid #0099ff;" />
                   <app-nested-table *ngIf="this.AssignedInvoiceLines.length > 0"
                   [action_icon]="'edit'"
-                  [parents] = "this.AssignedInvoiceLines"
+                  [parents] = "this.AssignedSADLines"
                   [isPageable]="'false'"
-                  [headings]="this.invoiceHeadings"
+                  [headings]="this.sad500Headings"
                   (rowEvent)="InvoiceEvent($event)"
                   [noDataError] ="'No Invoices Assigned'"
                   [action_toolip]="'Edit Relationship'"
