@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  AfterViewInit,
+  ElementRef,
+  Input,
+} from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { NotificationComponent } from '../notification/notification.component';
 import { takeUntil } from 'rxjs/operators';
@@ -10,11 +18,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-document-viewer',
   templateUrl: './document-viewer.component.html',
-  styleUrls: ['./document-viewer.component.scss']
+  styleUrls: ['./document-viewer.component.scss'],
 })
-export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit {
-
-  constructor(private docService: DocumentService, private route: ActivatedRoute) { }
+export class DocumentViewerComponent
+  implements OnInit, OnDestroy, AfterViewInit {
+  constructor(
+    private docService: DocumentService,
+    private route: ActivatedRoute
+  ) {}
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -88,51 +99,61 @@ export class DocumentViewerComponent implements OnInit, OnDestroy, AfterViewInit
 
   ngAfterViewInit(): void {
     this.shortcuts.push(
-        {
-            key: 'alt + right',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.pageChange(this.page + 1)
+      {
+        key: 'alt + right',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => this.pageChange(this.page + 1),
+      },
+      {
+        key: 'alt + left',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => this.pageChange(this.page - 1),
+      },
+      {
+        key: 'alt + up',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => {
+          this.zoom_in();
         },
-        {
-          key: 'alt + left',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.pageChange(this.page - 1)
+      },
+      {
+        key: 'alt + down',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => {
+          this.zoom_out();
         },
-        {
-          key: 'alt + up',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e =>  {
-            this.zoom_in();
+      },
+      {
+        key: 'alt + r',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => {
+          this.rotatePDF(this.rotation + 90);
+        },
+      },
+      {
+        key: 'alt + u',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => {
+          this.focusPDF = !this.focusPDF;
+        },
+      },
+      {
+        key: 'alt + b',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: (e) => {
+          const pdf = document.getElementById('pdf');
+          pdf.focus();
 
-          }
+          this.focusPDF = !this.focusPDF;
         },
-        {
-          key: 'alt + down',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.zoom_out();
-          }
-        },
-        {
-          key: 'alt + r',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.rotatePDF(this.rotation + 90);
-          }
-        },
-        {
-          key: 'alt + u',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.focusPDF = !this.focusPDF;
-          }
-        },
+      }
     );
   }
 

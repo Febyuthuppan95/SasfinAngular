@@ -1,11 +1,10 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
 <pdf-viewer
+  id="pdf"
   *ngIf="this.displayPDF"
   #pdfElement
   [focus]="focusPDF"
-  (focusin)="focus = true;"
-  (focusout)="focus = false;"
   class="viewer"
   [(src)]="pdfSRC"
   [render-text]="true"
