@@ -30,12 +30,18 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.event.mouseChange.subscribe((mouse) => {
-      if (mouse) {
+      if (mouse === 1) {
+        body.classList.remove('transparentCursor');
+        body.classList.remove('customCursor');
+        body.classList.add('defaultCursor');
+      } else if (mouse === 2) {
         body.classList.remove('defaultCursor');
+        body.classList.remove('transparentCursor');
         body.classList.add('customCursor');
       } else {
         body.classList.remove('customCursor');
-        body.classList.add('defaultCursor');
+        body.classList.remove('defaultCursor');
+        body.classList.add('transparentCursor');
       }
     });
   }

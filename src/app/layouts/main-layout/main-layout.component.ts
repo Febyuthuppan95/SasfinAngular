@@ -75,7 +75,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     const toggleHelpObserver = this.themeService.toggleHelp();
-    this.event.mouseChange.next(false);
+    this.event.mouseChange.next(1);
 
     this.themeService.observeTheme()
     .pipe(takeUntil(this.unsubscribe$))

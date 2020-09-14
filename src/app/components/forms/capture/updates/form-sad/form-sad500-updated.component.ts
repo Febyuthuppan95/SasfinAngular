@@ -195,6 +195,18 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             command: e => this.prevLine()
           },
           {
+            key: 'alt + c',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.cancelLine()
+          },
+          {
+            key: 'alt + v',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.deleteLinePrompt()
+          },
+          {
             key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
@@ -349,9 +361,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
         this.form.controls.cpcID.setValue(response.cpcID);
-        this.form.updateValueAndValidity();
-        this.loader = false;
+        console.log(`CPC ID: ${response.cpcID}`);
         console.log(this.form.value);
+        this.form.updateValueAndValidity();
         this.errors = res.attachmentErrors.attachmentErrors;
 
         Object.keys(this.form.controls).forEach(key => {
@@ -374,7 +386,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         }
 
         this.form.updateValueAndValidity();
-        setTimeout(() => this.startForm.nativeElement.focus(), 100);
+        setTimeout(() => {
+          this.loader = false;
+          setTimeout(() => this.startForm.nativeElement.focus(), 100);
+        }, 200);
 
         await this.loadLines();
       } else {
@@ -401,6 +416,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
+        console.log(res);
         const pre_processed_lines: any[] = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
         console.log(this.lineErrors);
@@ -519,6 +535,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.displayLines = false;
               this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
@@ -670,6 +687,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     const targetLine = this.lines[this.activeIndex];
     targetLine.isDeleted = 1;
     targetLine.saD500ID = this.form.controls.SAD500ID.value;
+    targetLine.userID = this.currentUser.userID;
 
     if (!targetLine.isLocal) {
       await this.captureService.sad500LineUpdate(targetLine);
@@ -741,6 +759,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.form.controls[`${key}OBit`].setValue(true);
     this.form.controls[`${key}OReason`].setValue(reason);
     this.form.controls[key].setErrors(null);
+    this.form.updateValueAndValidity();
   }
 
   undoOverride(key: string) {

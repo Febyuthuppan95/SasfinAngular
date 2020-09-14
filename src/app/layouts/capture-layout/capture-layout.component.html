@@ -62,7 +62,7 @@
   <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }">
     <span class="mdi mdi-drag" style="position: absolute; right: 14px; top: 1px;"></span>
   </div>
-  <app-document-viewer [focus]="this.focusPDF" [(source)]="PDFSource"></app-document-viewer>
+  <app-document-viewer [focus]="this.focusPDF" #pdfviewer [(source)]="PDFSource"></app-document-viewer>
 </div>
 <div class="col-6 capture-right tile justify-items-center align-items-center" style="padding: 48px 0;overflow-y: auto;">
   <app-view-capture-transaction

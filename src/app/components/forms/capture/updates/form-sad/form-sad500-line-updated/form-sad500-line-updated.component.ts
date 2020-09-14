@@ -36,10 +36,10 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     lineNo: new FormControl(null, [Validators.required]),
     customsValue: new FormControl(null, [Validators.required]),
     previousDeclaration: new FormControl(null),
-    quantity: new FormControl(null, [Validators.required]),
+    quantity: new FormControl(null),
     duty: new FormControl(null),
     duties: new FormControl(null),
-    supplyUnit: new FormControl(null),
+    supplyUnit: new FormControl(null, [Validators.required]),
     lineNoOBit: new FormControl(false),
     lineNoOUserID: new FormControl(null),
     lineNoODate: new FormControl(new Date()),
@@ -108,6 +108,14 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           }
         }
       });
+
+      // null checking quantity field
+      if (this.data.quantity === -1) {
+        this.data.quantity = null;
+        this.form.controls.quantity.setValue(null);
+      }
+
+      console.log(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
     } else {
@@ -177,6 +185,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
+      console.log(this.data);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
@@ -185,6 +194,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           }
         }
       });
+
+      // null checking quantity field
+      if (this.data.quantity === -1) {
+        this.data.quantity = null;
+        this.form.controls.quantity.setValue(null);
+      }
 
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
