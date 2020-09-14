@@ -643,9 +643,6 @@ export class FormCustomWorksheetLinesComponent implements OnInit, OnChanges, Aft
         (res: { tariffList: {id: number, itemNumber: string; heading: string; tariffCode: number; subHeading: string; checkDigit: string; name: string; duty: string; hsUnit: string; }[], outcome: Outcome, rowCount: number }) => {
           this.tariffs = res.tariffList;
           this.tariffsTemp = res.tariffList;
-        },
-        (msg) => {
-          console.log(JSON.stringify(msg));
         }
       );
     }

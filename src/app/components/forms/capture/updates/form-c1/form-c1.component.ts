@@ -288,12 +288,8 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
       request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       request.userID = this.currentUser.userID;
 
-      console.log(request);
-
       await this.captureService.post({ request, procedure: 'SupplierC1Update' }).then(
         async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
-          console.log(res);
-
           await this.saveLines(this.lines, async (line) => {
             const lineRequest = line;
             delete lineRequest.RowNum;

@@ -194,7 +194,6 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
         }
       },
         (msg) => {
-          console.log(JSON.stringify(msg));
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
@@ -255,9 +254,6 @@ export class FormImportClearingInstructionComponent implements OnInit, AfterView
 
         this.errors = res.attachmentErrors.attachmentErrors;
       }
-      },
-      (msg) => {
-        console.log(msg);
       }
     );
   }

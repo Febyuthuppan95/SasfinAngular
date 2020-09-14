@@ -455,9 +455,6 @@ loader = false;
           this.initfilterCurrency();
           }
         }
-      },
-      (msg) => {
-        console.log(msg);
       }
     );
   }
@@ -585,12 +582,7 @@ loader = false;
           (res: { outcome: string; outcomeMessage: string; createdID: number }) => {
             if (res.outcome === 'SUCCESS') {
                 this.nextLineAsync();
-            } else {
-              console.log('Line not saved');
             }
-          },
-          (msg) => {
-            console.log('Client Error');
           }
         );
       } else {
@@ -649,9 +641,6 @@ loader = false;
             this.initfilterCompanies();
           }
         }
-      },
-      (msg) => {
-        console.log(msg);
       }
     );
   }

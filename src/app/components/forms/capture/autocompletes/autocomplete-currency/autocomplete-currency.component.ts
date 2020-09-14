@@ -88,8 +88,6 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     if (this.errorOverride) {
       this.query.setErrors({ incorrect: true });
     }
-
-    console.log(this.errorOverride);
   }
 
   ngOnChanges() {
@@ -111,8 +109,6 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
     if (this.errorOverride) {
       this.query.setErrors({ incorrect: true });
     }
-
-    console.log(this.errorOverride);
   }
 
   load(setDefault?: boolean) {
@@ -122,11 +118,8 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.list = res.currenciesList;
           this.listTemp = res.currenciesList;
 
-          console.log(this.listTemp);
-
           if (setDefault) {
             const defaultValue = this.listTemp.find(x => x.currencyID == this.control.value);
-            console.log(defaultValue);
             if (defaultValue) {
               this.query.setValue(defaultValue, { emitEvent: false });
             }

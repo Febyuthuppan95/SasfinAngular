@@ -386,7 +386,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
 
-      console.log(requestModel);
 
       await this.captureService.customWorksheetUpdate(requestModel).then(
         async (res: Outcome) => {
@@ -396,10 +395,13 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             line.customsWorksheetID = this.attachmentID;
 
             if (line.isLocal) {
-              await this.captureService.customWorksheetLineAdd(line);
-            } else {
-              await this.captureService.customWorksheetLineUpdate(line);
+              await this.captureService.customWorksheetLineAdd(line).then((res) => console.log(res),
+              (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
             }
+            // else {
+            //   await this.captureService.customWorksheetLineUpdate(line).then((res) => console.log(res),
+            //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+            // }
           });
 
           if (res.outcome === 'SUCCESS') {
@@ -418,8 +420,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
-        },
-        (msg) => console.log(JSON.stringify(msg))
+        }
       );
     } else {
       this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
@@ -442,7 +443,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // [Line Controls]
-  queueLine($event: any) {
+  async queueLine($event: any) {
     console.log($event);
     let target = null;
 
@@ -469,13 +470,20 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
       $event.customworksheetLineID = original.customworksheetLineID;
+      $event.isDeleted = 0;
+      $event.userID = this.currentUser.userID;
+      $event.customsWorksheetID = this.attachmentID;
+      await this.captureService.customWorksheetLineUpdate($event).then((res) => console.log(res),
+      (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
 
       this.lines[this.lines.indexOf(target)] = $event;
-      this.cancelLine();
+      // this.cancelLine();
 
-      this.newLine(true);
+      // this.newLine(true);
 
-      this.snackbar.open('Line queued to update', '', {duration: 3000});
+      this.refresh();
+
+      // this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
     // this.cancelLine();

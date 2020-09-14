@@ -59,7 +59,6 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
           this.selected = false;
           const query: string = value;
           if (query && query !== null) {
-            // console.log(query);
             this.cpcList = this.cpcList.filter(x => this.matchRuleShort(x.CPC.toUpperCase(), `*${query.toUpperCase()}*`));
           }
 

@@ -199,7 +199,6 @@ async load() {
   await this.captureService.customsReleaseGet(requestModel).then(async (res: CRNList) => {
     if (res.customs.length > 0) {
       const response: any = res.customs[0];
-      console.log(response);
       response.customsReleaseID = res.customs[0].customReleaseID;
       response.attachmentStatusID = response.statusID;
       response.pccID = res.customs[0].pcc;
@@ -277,8 +276,6 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
     requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
     requestModel.userID = this.currentUser.userID;
 
-    console.log(requestModel);
-
     this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
@@ -301,7 +298,6 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
         }
     },
       (msg) => {
-        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
@@ -312,7 +308,6 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
 }
 
 ngOnDestroy(): void {
-  console.log('Destroyed CRN');
   this.$unsubscribe.complete();
 }
 

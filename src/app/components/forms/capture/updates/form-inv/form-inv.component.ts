@@ -427,10 +427,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             line.userID = this.currentUser.userID;
 
             if (line.isLocal) {
-              await this.captureService.invoiceLineAdd(line);
-            } else {
-              await this.captureService.invoiceLineUpdate(line);
+              await this.captureService.invoiceLineAdd(line).then((res) => console.log(res),
+                (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
             }
+
+            // else {
+            //   await this.captureService.invoiceLineUpdate(line).then((res) => console.log(res),
+            //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+            // }
           });
 
           if (res.outcome === 'SUCCESS') {
@@ -473,7 +477,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // [Line Controls]
-  queueLine($event: any) {
+  async queueLine($event: any) {
     let target = null;
     console.log($event);
 
@@ -501,12 +505,21 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.invoiceLineID = original.invoiceLineID;
       $event.invoiceID = original.invoiceID;
 
+      $event.isDeleted = 0;
+      $event.invoiceID = this.form.controls.invoiceID.value;
+      $event.userID = this.currentUser.userID;
+
+      await this.captureService.invoiceLineUpdate($event).then((res) => console.log(res),
+      (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+
       this.lines[this.lines.indexOf(target)] = $event;
-      this.cancelLine();
+      // this.cancelLine();
 
-      this.newLine(true);
+      // this.newLine(true);
 
-      this.snackbar.open('Line queued to update', '', {duration: 3000});
+      this.refresh();
+
+      // this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
 
     // this.cancelLine();

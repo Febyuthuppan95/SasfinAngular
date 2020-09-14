@@ -594,12 +594,10 @@ dialogOpen = false;
           }
         },
         (msg) => {
-          console.log(JSON.stringify(msg));
           this.notify.errorsmsg('Failure', 'Cannot reach server');
         }
       );
     } else {
-      // console.log(this.SADForm.valid);
       this.findInvalidControls(this.SADForm);
 
       if (this.LinesValid && !this.SADForm.valid) {
@@ -660,7 +658,6 @@ dialogOpen = false;
         }
       },
       (msg) => {
-        console.log(JSON.stringify(msg));
         this.notify.errorsmsg('Failure', 'Cannot reach server');
       }
     );
@@ -801,9 +798,6 @@ dialogOpen = false;
         if (this.lines > -1) {
             this.focusLineData = this.sad500CreatedLines[this.lines - 1];
         }
-      },
-      (msg) => {
-        console.log(JSON.stringify(msg));
       }
     );
   }

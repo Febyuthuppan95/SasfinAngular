@@ -65,9 +65,7 @@ export class DocumentViewerComponent
 
     this.route.params.subscribe((param) => {
       if (param) {
-        console.log(param);
         if (param.source) {
-          console.log(atob(param.source));
           this.docService.get(atob(param.source)).then(
             (res: ArrayBuffer) => {
               this.pdfSRC = res;

@@ -501,11 +501,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         delete requestModel.referenceNo;
       }
 
-      console.log(requestModel);
-
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
-          console.log(res);
 
           await this.saveLines(this.lines, async (line) => {
             let sad500LineID = line.specificSAD500LineID;
@@ -513,19 +510,15 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
             line.userID = this.currentUser.userID;
 
-            console.log(line);
-
             if (line.isLocal) {
               await this.captureService.sad500LineAdd(line).then((res: any) =>  {
-                console.log(res); sad500LineID = res.createdID; }, (msg) => console.log(JSON.stringify(msg)));
-            } else {
-              await this.captureService.sad500LineUpdate(line).then((res) => console.log(res), (msg) => console.log(JSON.stringify(msg)));
+                console.log(res); sad500LineID = res.createdID; },
+                (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
             }
 
             if (line.duties && sad500LineID !== null && sad500LineID) {
               const duties = line.duties.filter(x => x.isLocal === true);
 
-              console.log(duties);
               await this.saveLineDuty(duties, async (duty) => {
                 const dutyRequest = {
                   userID: this.currentUser.userID,
@@ -534,14 +527,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
                   value: duty.value
                 };
 
-                // tslint:disable-next-line: max-line-length
-                await this.captureService.sad500LineDutyAdd(dutyRequest)
-                .then(
-                  (res) => console.log(res),
-                  (msg) => console.log(JSON.stringify(msg)));
+                await this.captureService.sad500LineDutyAdd(dutyRequest);
               });
-            }
-          });
+          }
+        });
 
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
@@ -560,25 +549,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           } else {
             this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
-        },
-        (msg) => console.log(JSON.stringify(msg))
+        }
       );
     } else {
       this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
       this.findInvalidControls(form);
     }
   }
-
-  // async updateErrors(errors: AttachmentError[]): Promise<void> {
-  //   await this.captureService.updateAttachmentErrors({
-  //     userID: this.currentUser.userID,
-  //     attachmentErrors: errors.map(x => {
-  //       return {
-  //         attachmentErrorID: x.attachmentErrorID
-  //       };
-  //      })
-  //   });
-  // }
 
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
@@ -595,7 +572,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   // [Line Controls]
-  queueLine($event: any) {
+  async queueLine($event: any) {
     let target = null;
 
     if (this.lines) {
@@ -618,7 +595,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     } else {
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
-      console.log(target);
+
       $event.sad500LineID = target.sad500LineID;
       $event.specificSAD500LineID = target.sad500LineID;
       $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
@@ -627,12 +604,19 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         $event.originalLineID = target.sad500LineID;
       }
 
+      $event.isDeleted = 0;
+      $event.sad500ID = this.isVOC ? this.originalSAD500ID : this.form.controls.SAD500ID.value;
+      $event.userID = this.currentUser.userID;
+
+      await this.captureService.sad500LineUpdate($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
+              (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+
       this.lines[this.lines.indexOf(target)] = $event;
-      this.cancelLine();
+      // this.cancelLine();
 
-      this.newLine(true);
+      // this.newLine(true);
 
-      this.snackbar.open('Line queued to update', '', {duration: 3000});
+      this.refresh();
     }
 
   }

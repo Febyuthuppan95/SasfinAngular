@@ -53,7 +53,6 @@ constructor(private userService: UserService,
     this.load(true);
 
     this.query.valueChanges.subscribe((value) => {
-      console.log(value);
       this.list = this.listTemp;
 
       if (value) {
