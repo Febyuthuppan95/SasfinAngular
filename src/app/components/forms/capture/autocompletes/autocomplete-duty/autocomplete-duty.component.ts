@@ -197,7 +197,7 @@ constructor(private userService: UserService,
         assign.value = result.duty;
         this.assignedList.push(assign);
         // this.listTemp = this.listTemp.filter(x => x.dutyTaxTypeID !== duty);
-        // this.list = this.listTemp;
+        this.list = this.listTemp;
         this.control.setValue(this.assignedList);
         this.query.reset('');
         this.dutyInput.nativeElement.focus();

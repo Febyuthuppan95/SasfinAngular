@@ -35,6 +35,7 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { EscalateDialogComponent } from './escalate-dialog/escalate-dialog.component';
+import {Location} from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -59,7 +60,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               private snackBarMat: MatSnackBar,
               private escalationReason: MatBottomSheet,
               private objectHelpService: ObjectHelpService,
-              private event: EventService) {}
+              private event: EventService,
+              private location: Location) {}
 
   shortcuts: ShortcutInput[] = [];
   showChat = false;
@@ -531,7 +533,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
       if (status) {
         this.companyService.setCapture({ capturestate: false});
-        this.router.navigate(['transaction/capturerlanding']);
+        // this.router.navigate(['transaction/capturerlanding']);
+        this.location.back();
       }
     });
   }
