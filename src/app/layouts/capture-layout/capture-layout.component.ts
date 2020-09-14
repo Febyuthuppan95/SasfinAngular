@@ -69,6 +69,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('openModal', { static: true })
   openModal: ElementRef;
 
+  @ViewChild('pdfviewer', { static: true })
+  pdfviewer: ElementRef;
+
   @ViewChild('closeModal', { static: true })
   closeModal: ElementRef;
 
@@ -238,8 +241,19 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => this.companyInfo()
         },
+      {
+        key: 'alt + k',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+           if (!this.focusPDF) { this.focusPDF = true; }
+           setTimeout(() => {
+            this.pdfviewer.nativeElement.focus();
+          });
+        }
+      },
         {
-          key: 'alt + b',
+          key: 'alt + ;',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
           command: e => {

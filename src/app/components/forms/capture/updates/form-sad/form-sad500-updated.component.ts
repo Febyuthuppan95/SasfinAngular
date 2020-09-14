@@ -195,6 +195,18 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             command: e => this.prevLine()
           },
           {
+            key: 'alt + c',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.cancelLine()
+          },
+          {
+            key: 'alt + v',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: e => this.deleteLinePrompt()
+          },
+          {
             key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
