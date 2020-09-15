@@ -59,49 +59,38 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     containerNumbers: new FormControl(null),
     transAtArrival: new FormControl(null),
     totalDuty: new FormControl(0),
+
     lrnOBit: new FormControl(false),
-    lrnOUserID: new FormControl(null),
-    lrnODate: new FormControl(null),
     lrnOReason: new FormControl(null),
+
     mrnOBit: new FormControl(false),
-    mrnOUserID: new FormControl(null),
-    mrnODate: new FormControl(null),
     mrnOReason: new FormControl(null),
+
     importersCodeOBit: new FormControl(false),
-    importersCodeOUserID: new FormControl(null),
-    importersCodeODate: new FormControl(null),
     importersCodeOReason: new FormControl(null),
+
     fileRefOBit: new FormControl(false),
-    fileRefOUserID: new FormControl(null),
-    fileRefODate: new FormControl(null),
     fileRefOReason: new FormControl(null),
+
     totalDutyOBit: new FormControl(false),
-    totalDutyOUserID: new FormControl(null),
-    totalDutyODate: new FormControl(null),
     totalDutyOReason: new FormControl(null),
+
+    totalCustomsValueOBit: new FormControl(false),
+    totalCustomsValueOReason: new FormControl(null),
+
     serialNoOBit: new FormControl(false),
-    serialNoOUserID: new FormControl(null),
-    serialNoODate: new FormControl(null),
     serialNoOReason: new FormControl(null),
-    referenceNoOBit: new FormControl(false),
-    referenceNoOUserID: new FormControl(null),
-    referenceNoODate: new FormControl(null),
-    referenceNoOReason: new FormControl(null),
+
     supplierRefOBit: new FormControl(false),
-    supplierRefOUserID: new FormControl(null),
-    supplierRefODate: new FormControl(null),
     supplierRefOReason: new FormControl(null),
+
     waybillNoOBit: new FormControl(false),
-    waybillNoOUserID: new FormControl(null),
-    waybillNoODate: new FormControl(null),
     waybillNoOReason: new FormControl(null),
+
     transAtArrivalOBit: new FormControl(false),
-    transrAtArrivalOUserID: new FormControl(null),
-    transoAtArrivalODate: new FormControl(null),
     transAtArrivalOReason: new FormControl(null),
+
     containerNumbersOBit: new FormControl(false),
-    containerNumbersOUserID: new FormControl(null),
-    containerNumbersODate: new FormControl(null),
     containerNumbersOReason: new FormControl(null),
     isDeleted: new FormControl(0),
 
@@ -749,8 +738,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   override(key: string, reason: string) {
-    this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
-    this.form.controls[`${key}ODate`].setValue(new Date());
     this.form.controls[`${key}OBit`].setValue(true);
     this.form.controls[`${key}OReason`].setValue(reason);
     this.form.controls[key].setErrors(null);
@@ -758,8 +745,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   undoOverride(key: string) {
-    this.form.controls[`${key}OUserID`].setValue(null);
-    this.form.controls[`${key}ODate`].setValue(new Date());
     this.form.controls[`${key}OBit`].setValue(false);
     this.form.controls[`${key}OReason`].setValue(null);
 

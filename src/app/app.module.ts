@@ -89,7 +89,6 @@ import { ViewCompanyContactsComponent } from './views/main/view-company-contacts
 import { ContextMenuCompanyInfoComponent } from './components/menus/context-menu-company-info/context-menu-company-info.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { CompanyService } from './services/Company.Service';
-import { FormCustomReleaseComponent } from './components/forms/capture/form-custom-release/form-custom-release.component';
 import { AddressTypesService } from './services/AddressTypes.Service';
 import { ContextMenuAddressTypesComponent } from './components/menus/context-menu-address-types/context-menu-address-types.component';
 import { KeyHandlerDirective } from './directives/key-handler.directive';
@@ -113,9 +112,6 @@ import { ContextTariffsListComponent } from './views/main/view-tariffs-list/view
 import { ContextItemsListComponent } from './views/main/view-items-list/view-items-list.component';
 import { ContextCompanyItemsListComponent } from './views/main/view-company-items-list/view-company-items-list.component';
 import { ViewItemTypesListComponent } from './views/main/view-item-types-list/view-item-types-list.component';
-// tslint:disable-next-line: max-line-length
-import { FormImportClearingInstructionComponent } from './components/forms/capture/form-import-clearing-instruction/form-import-clearing-instruction.component';
-import { FormSAD500Component } from './components/forms/capture/form-sad500/form-sad500.component';
 import { ChatService } from './modules/chat/services/chat.service';
 import { ChatConversationListComponent } from './modules/chat/components/chat-conversation-list/chat-conversation-list.component';
 import { ChatContactListComponent } from './modules/chat/components/chat-contact-list/chat-contact-list.component';
@@ -140,11 +136,8 @@ import { CapturePreviewComponent } from './layouts/capture-layout/capture-previe
 import { ApiService } from './services/api.service';
 import { CaptureService } from './services/capture.service';
 import { Sad500LinesComponent } from './views/main/sad500-lines/sad500-lines.component';
-import { FormSAD500LineComponent } from './components/forms/capture/form-sad500/form-sad500-line/form-sad500-line.component';
 import { Sad500LinePreviewComponent } from './components/dialogs/sad500-line-preview/sad500-line-preview.component';
 import { FocusDirective } from './directives/focus.directive';
-import { FormInvoiceComponent } from './components/forms/capture/form-invoice/form-invoice.component';
-import { FormVOCComponent } from './components/forms/capture/form-voc/form-voc.component';
 import { ContextMenuSADLinesComponent } from './components/menus/context-menu-sadlines/context-menu-sadlines.component';
 import { ContextMenuItemsGroupComponent } from './components/menus/context-menu-items-group/context-menu-items-group.component';
 // tslint:disable-next-line: max-line-length
@@ -175,19 +168,14 @@ import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-i
 import { ContextMenuPermitsComponent } from './components/menus/context-menu-permits/context-menu-permits.component';
 import { ViewReportQueuesListComponent } from './views/main/view-reportQueues-list/view-reportQueues-list.component';
 import { ReportsService } from './services/Reports.Service';
-import { FormInvoiceLinesComponent } from './components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { QuitDialogComponent } from './layouts/capture-layout/quit-dialog/quit-dialog.component';
 import { SubmitDialogComponent } from './layouts/capture-layout/submit-dialog/submit-dialog.component';
-
 import { ViewCompanyServiceClaimsComponent } from './views/main/view-company-service-claims/view-company-service-claims.component';
 import { ContextMenuServiceClaimsComponent } from './components/menus/context-menu-service-claims/context-menu-service-claims.component';
-
-import { FormWaybillComponent } from './components/forms/capture/form-waybill/form-waybill.component';
 // tslint:disable-next-line: max-line-length
 import { ViewCompanyServiceclaimReportComponent } from './views/main/view-company-serviceclaim-report/view-company-serviceclaim-report.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyServiceclaimReportComponent } from './components/menus/context-menu-company-serviceclaim-report/context-menu-company-serviceclaim-report.component';
-
 import { ContextMenuTariffsComponent } from './views/main/view-tariffs-list/context-menu-tariffs/context-menu-tariffs.component';
 import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 import { AttachmentDialogComponent } from './layouts/capture-layout/attachment-dialog/attachment-dialog.component';
@@ -201,17 +189,12 @@ import { SplitDocumentComponent } from './components/split-document/split-docume
 import { ViewCheckingScreenComponent } from './views/main/view-checking-screen/view-checking-screen.component';
 import { CheckListRequest } from './models/HttpRequests/CheckListRequest';
 import { CheckListService } from './services/CheckList.Service';
-import { FormCustomWorksheetComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet.component';
-// tslint:disable-next-line: max-line-length
-import { FormCustomWorksheetLinesComponent } from './components/forms/capture/form-custom-worksheet/form-custom-worksheet-lines/form-custom-worksheet-lines.component';
 // tslint:disable-next-line: max-line-length
 import { ContextMenuCompanyContactsComponent } from './components/menus/context-menu-company-contacts/context-menu-company-contacts.component';
 import { ChannelService } from './modules/chat/services/channel.service';
 import { EscalateDialogComponent } from './layouts/capture-layout/escalate-dialog/escalate-dialog.component';
 import { EscalateBottomSheetComponent } from './layouts/capture-layout/escalate-bottom-sheet/escalate-bottom-sheet.component';
 // tslint:disable-next-line: max-line-length
-import { DutyAssignDialogComponent } from './components/forms/capture/form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
-import { FormVocLineComponent } from './components/forms/capture/form-voc/form-voc-line/form-voc-line.component';
 import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ContextMenuCaptureQueueComponent } from './components/menus/context-menu-capture-queue/context-menu-capture-queue.component';
 // tslint:disable-next-line: max-line-length
@@ -311,7 +294,6 @@ import { MenuEscalationsComponent } from './views/main/escalation-queue/menu-esc
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CaptureErrorsComponent } from './views/capture/capture-errors/capture-errors.component';
 import { DateService } from './services/tools/date.service';
-import { OverrideComponent } from './components/forms/capture/override/override.component';
 import { DatePipe } from '@angular/common';
 import {NgxMaskModule} from 'ngx-mask';
 import { CreateHelpComponent } from './views/main/view-help-glossary/create-help/create-help.component';
@@ -370,7 +352,6 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     ViewCompanyAddressesComponent,
     ViewCompanyContactsComponent,
     ContextMenuCompanyInfoComponent,
-    FormCustomReleaseComponent,
     KeyHandlerDirective,
     ImageDirective,
     TabDirective,
@@ -392,8 +373,6 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     ContextItemsListComponent,
     ContextCompanyItemsListComponent,
     ViewItemTypesListComponent,
-    FormImportClearingInstructionComponent,
-    FormSAD500Component,
     ChatConversationListComponent,
     ChatContactListComponent,
     ChatConversationTileComponent,
@@ -409,11 +388,8 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     ViewAlternateItemsComponent,
     CapturePreviewComponent,
     Sad500LinesComponent,
-    FormSAD500LineComponent,
     Sad500LinePreviewComponent,
     FocusDirective,
-    FormInvoiceComponent,
-    FormVOCComponent,
     ContextMenuSADLinesComponent,
     ContextMenuItemsGroupComponent,
     ViewImportClearingInstructionsComponent,
@@ -442,24 +418,18 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     ViewDutyTaxTypesComponent,
     AttachmentDialogComponent,
     PDFViewerComponent,
-    FormInvoiceLinesComponent,
     QuitDialogComponent,
     SubmitDialogComponent,
-    FormWaybillComponent,
     ViewCompanyServiceclaimReportComponent,
     ContextMenuCompanyServiceclaimReportComponent,
     PreviewReportComponent,
     ContextMenuCompanyContactsComponent,
     ChatConversationComponent,
     ViewCheckingScreenComponent,
-    FormCustomWorksheetComponent,
-    FormCustomWorksheetLinesComponent,
     SplitDocumentComponent,
     ViewCaptureLandingComponent,
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
-    DutyAssignDialogComponent,
-    FormVocLineComponent,
     ViewCaptureQueueOverviewComponent,
     ContextMenuCaptureQueueComponent,
     ViewCompanyServiceClaimDataComponent,
@@ -523,7 +493,6 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     EscalationQueueComponent,
     MenuEscalationsComponent,
     CaptureErrorsComponent,
-    OverrideComponent,
     CreateHelpComponent,
     DeletelineDialogComponent,
   ],
@@ -612,21 +581,13 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     CapturePreviewComponent,
     Sad500LinePreviewComponent,
     ImagePreviewDialogComponent,
-    FormSAD500Component,
-    FormImportClearingInstructionComponent,
-    FormCustomReleaseComponent,
     AttachmentDialogComponent,
     PreviewReportComponent,
-    FormInvoiceComponent,
     QuitDialogComponent,
     SubmitDialogComponent,
-    FormVOCComponent,
-    FormWaybillComponent,
-    FormCustomWorksheetComponent,
     SplitDocumentComponent,
     EscalateDialogComponent,
     EscalateBottomSheetComponent,
-    DutyAssignDialogComponent,
     UploadProdatComponent,
     DialogEscalationReasonComponent,
     FormSad500UpdatedComponent,

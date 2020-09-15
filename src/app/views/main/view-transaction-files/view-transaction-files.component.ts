@@ -18,7 +18,6 @@ import { SPSAD500LineList, SAD500Line } from 'src/app/models/HttpResponses/SAD50
 import { SelectedCompany, CompanyService } from 'src/app/services/Company.Service';
 import { SplitDocumentComponent } from 'src/app/components/split-document/split-document.component';
 import { ApiService } from 'src/app/services/api.service';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -216,7 +215,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       requestProcedure: 'DoctypesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         res.data.forEach(x => {
           this.transactionTypes.push({
             name: x.Name,

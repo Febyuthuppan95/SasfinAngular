@@ -1,4 +1,0 @@
-<button *ngIf="control.value" type="button"  matSuffix mat-icon-button (click)="undoOverride.next(tag)" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
-<mat-hint *ngIf="control.value">OVERRIDE: {{reason}}</mat-hint>
-<button *ngIf="control.value  && hasError" type="button"  matSuffix mat-icon-button (click)="override.next({ tag: 'waybillNo', title: 'Waybill No'})" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-<mat-error *ngIf="!control.value  && hasError">{{error}}</mat-error>

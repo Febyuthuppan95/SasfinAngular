@@ -3,7 +3,6 @@ import { UserService } from 'src/app/services/user.Service';
 import { FormControl } from '@angular/forms';
 import { CaptureService } from 'src/app/services/capture.service';
 import { DutyListResponse, Duty } from 'src/app/models/HttpRequests/SAD500Line';
-import { DutyAssignDialogComponent } from '../../form-sad500/form-sad500-line/duty-assign-dialog/duty-assign-dialog.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { finalize } from 'rxjs/operators';

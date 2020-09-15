@@ -13,7 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
-import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { UUID } from 'angular2-uuid';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
@@ -230,7 +230,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.post({ request: requestParams, procedure: 'SupplierSMDList' }).then(
-      async (res: ListReadResponse) => {
+      async (res: any) => {
       this.loader = false;
       console.log(res);
 
@@ -258,7 +258,7 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.post({ request: model.requestParams, procedure: model.requestProcedure }).then(
-      async (res: ListReadResponse) => {
+      async (res: any) => {
         console.log(res);
         this.lines = res.data;
         this.lines.forEach((line) => {

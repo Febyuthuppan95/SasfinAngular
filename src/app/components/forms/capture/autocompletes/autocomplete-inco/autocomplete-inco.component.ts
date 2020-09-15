@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
-import { IncoTerm, IncoTermTypesReponse } from '../../form-invoice/form-invoice.component';
 import { CaptureService } from 'src/app/services/capture.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
@@ -22,10 +21,10 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   @Input() helpSlug = 'default';
 
   private currentUser = this.userService.getCurrentUser();
-  private listTemp: IncoTerm[] = [];
+  private listTemp: any[] = [];
   private isRequired = false;
 
-  public list: IncoTerm[] = [];
+  public list: any[] = [];
   public query = new FormControl();
   public valueKeeper = new FormControl();
   public selected = false;
@@ -101,7 +100,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
       userID: this.currentUser.userID
     };
     this.captureService.incoTermTypeList(model).then(
-      (res: IncoTermTypesReponse) => {
+      (res: any) => {
         if (res.termTypes.length > 0) {
           this.list = res.termTypes;
           this.listTemp = res.termTypes;
@@ -120,7 +119,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
     return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 
-  public displayFn(item: IncoTerm): string {
+  public displayFn(item: any): string {
     return item ? `${item.name}` : '';
   }
 

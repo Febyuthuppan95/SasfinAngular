@@ -16,7 +16,7 @@ import { FormC1LinesComponent } from './form-c1-lines/form-c1-lines.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
-import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
@@ -227,7 +227,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.post({ request: requestParams, procedure: 'SupplierC1List' }).then(
-      async (res: ListReadResponse) => {
+      async (res: any) => {
       this.loader = false;
 
       if (res.data !== null) {
@@ -259,7 +259,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
     };
 
     this.captureService.post({ request: model.requestParams, procedure: model.requestProcedure }).then(
-      async (res: ListReadResponse) => {
+      async (res: any) => {
         this.lines = res.data;
         this.lines.forEach((line) => {
           line.isLocal = false;

@@ -4,7 +4,6 @@ import { CompanyService } from 'src/app/services/Company.Service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
-import { ListReadResponse } from '../forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { CompService } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { FormControl, Validators } from '@angular/forms';
@@ -108,7 +107,7 @@ ngAfterViewInit() {
       requestProcedure: 'DoctypesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         console.log(res);
         res.data.forEach(x => {
             this.transactionTypes.push({

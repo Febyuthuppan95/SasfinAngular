@@ -13,7 +13,7 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { takeUntil } from 'rxjs/operators';
 import { SAD500ListResponse } from 'src/app/models/HttpResponses/SAD500Get';
 import { DialogEscalationReasonComponent } from '../view-transaction-files/dialog-escalation-reason/dialog-escalation-reason.component';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
@@ -104,7 +104,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       requestProcedure: 'EscalationList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         const unfiltered = res.data;
 
         unfiltered.forEach((el) => {
@@ -125,7 +125,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       requestProcedure: 'FileTypesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.types = res.data;
       },
       (msg) => {

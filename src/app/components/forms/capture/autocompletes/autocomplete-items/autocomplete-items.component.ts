@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
-import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -104,9 +103,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
     };
 
     await this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
-        // console.log(res);
-
+      (res: any) => {
         this.list = res.data;
         this.listTemp = res.data;
 

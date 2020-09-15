@@ -2,7 +2,6 @@ import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
-import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { FormControl, Validators } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -99,7 +98,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
       requestProcedure: 'CPCList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         if (res.rowCount > 0 )  {
           this.cpcList = res.data;
           this.cpcListTemp = res.data;

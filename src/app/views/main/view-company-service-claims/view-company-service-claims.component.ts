@@ -33,7 +33,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UUID } from 'angular2-uuid';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { CompanyOEMList, CompanyOEM } from '../view-company-list/view-company-oem-list/view-company-oem-list.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -357,7 +357,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.loadCompanyServiceClaimPermits();
       },
       msg => {
@@ -382,7 +382,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         // console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           this.companyServiceClaimPermits = res.data;
@@ -840,7 +840,7 @@ getTransactionID(): number {
     requestProcedure: 'CompanyServiceClaimParametersList'
   };
   this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-    (res: ListReadResponse) => {
+    (res: any) => {
       return res.data[0].TransactionID;
     }
   );

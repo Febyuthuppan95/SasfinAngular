@@ -9,7 +9,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Transaction } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Pagination } from 'src/app/models/Pagination';
 import { TableHeading } from 'src/app/models/Table';
@@ -280,7 +279,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'CaptureJoinsList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         console.log('CaptureJoinsList');
         console.log(res);
         this.CaptureJoins = res.data;
@@ -319,7 +318,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'CustomWorksheetLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/checking/read`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         console.log('res.data');
         console.log(res.data);
         this.CustomWorksheetLines = res.data;
@@ -437,7 +436,7 @@ private unsubscribe = new Subject<void>();
     };
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.AssignedSADLines = res.data;
         console.log('this.AssignedSADLines');
         console.log(this.AssignedSADLines);
@@ -460,7 +459,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'TransactionInvoiceLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.AvailableInvoiceLines = res.data;
         this.loading = false;
       },
@@ -482,7 +481,7 @@ private unsubscribe = new Subject<void>();
       requestProcedure: 'TransactionSADLinesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.AvailableSAD500Lines = res.data;
         this.loading = false;
       },

@@ -15,7 +15,7 @@ import { takeUntil, ignoreElements } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { Router } from '@angular/router';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { CompanyOEM, CompanyOEMList } from 'src/app/views/main/view-company-list/view-company-oem-list/view-company-oem-list.component';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -1693,7 +1693,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
 
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         console.log(res);
         let objectKeys: string[];
         let objectValues: string[];
@@ -1743,7 +1743,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
 
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
        console.log(res);
        if(res.rowCount > 0) {
         if(res.data[0].SAD500ID === 0) {

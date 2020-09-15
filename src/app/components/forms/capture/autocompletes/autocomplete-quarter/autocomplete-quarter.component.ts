@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { ListReadResponse } from '../../form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 
@@ -100,7 +100,7 @@ export class AutocompleteQuarterComponent implements OnInit, OnDestroy, OnChange
     };
 
     await this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.list = res.data;
         this.listTemp = res.data;
 

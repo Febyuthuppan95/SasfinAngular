@@ -28,7 +28,7 @@ import { CaptureAttachment } from 'src/app/models/HttpResponses/CaptureAttachmen
 import { DocumentService } from 'src/app/services/Document.Service';
 import { SnackBarComponent } from 'src/app/components/snack-bar/snack-bar.component';
 import { ApiService } from 'src/app/services/api.service';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
@@ -357,7 +357,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
       requestProcedure: 'DoctypesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         res.data.forEach(x => {
           this.transactionTypes.push({
             name: x.Name,

@@ -43,18 +43,12 @@ form = new FormGroup({
   attachmentStatusID: new FormControl(null),
   isDeleted: new FormControl(0),
   waybillNoOBit: new FormControl(null),
-  waybillNoOUserID: new FormControl(null),
-  waybillNoODate: new FormControl(null),
   waybillNoOReason: new FormControl(null),
   transAtArrival: new FormControl(null),
-  transAtArrivalOUserID: new FormControl(null),
-  transAtArrivalODate: new FormControl(null),
   transAtArrivalOBit: new FormControl(null),
   transAtArrivalOReason: new FormControl(null),
   containerNo: new FormControl(null),
   containerNoOBit: new FormControl(null),
-  containerNoUserID: new FormControl(null),
-  containerNoODate: new FormControl(null),
   containerNoOReason: new FormControl(null),
 });
 
@@ -101,12 +95,6 @@ ngAfterViewInit(): void {
   setTimeout(() => {
       this.shortcuts = [
         {
-          key: 'alt + /',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => console.log('Deprecated')
-        },
-        {
           key: 'alt + s',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
@@ -122,7 +110,6 @@ ngAfterViewInit(): void {
             }
           }
         },
-
         {
           key: 'alt + m',
           preventDefault: true,
@@ -303,16 +290,12 @@ overrideDialog(key: string, label) {
 }
 
 override(key: string, reason: string) {
-  this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
-  this.form.controls[`${key}ODate`].setValue(new Date());
   this.form.controls[`${key}OBit`].setValue(true);
   this.form.controls[`${key}OReason`].setValue(reason);
   this.form.controls[key].setErrors(null);
 }
 
 undoOverride(key: string) {
-  this.form.controls[`${key}OUserID`].setValue(null);
-  this.form.controls[`${key}ODate`].setValue(new Date());
   this.form.controls[`${key}OBit`].setValue(false);
   this.form.controls[`${key}OReason`].setValue(null);
 

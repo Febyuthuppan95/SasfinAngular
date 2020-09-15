@@ -23,23 +23,6 @@
   </div>
 </div>
 
-<button class="hide" data-toggle="modal" data-target="#addLine" #addModal></button>
-<div class="modal fade" id="addLine" tabindex="-1" role="dialog" aria-labelledby="uploadBackgroundLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="uploadBackgroundLabel">Edit SAD500 Line</h5>
-        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" #closeAddModal>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-form-sad500-line [updateSAD500Line]="this.currentRecord" (updateSADLine)="update($event)"></app-form-sad500-line>
-      </div>
-    </div>
-  </div>
-</div>
-
 <button class="hide" data-toggle="modal" data-target="#deleteLine" #deleteModal></button>
 <div class="modal fade" id="deleteLine" tabindex="-1" role="dialog" aria-labelledby="deleteLine" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -67,6 +50,6 @@
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"
   (resetContext)="this.recordIndex = -1; this.contextMenuEnable = false;">
-  <app-context-menu-sadlines (editEvent)="addModal.click();" (deleteEvent)="deleteModal.click();"></app-context-menu-sadlines>
+  <app-context-menu-sadlines (deleteEvent)="deleteModal.click();"></app-context-menu-sadlines>
 </app-menu>
 <app-notification></app-notification>

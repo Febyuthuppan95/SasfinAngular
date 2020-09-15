@@ -16,7 +16,7 @@ import { Subject } from 'rxjs';
 import { Pagination } from 'src/app/models/Pagination';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.service';
-import { ListReadResponse } from 'src/app/components/forms/capture/form-invoice/form-invoice-lines/form-invoice-lines.component';
+
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -384,7 +384,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       requestProcedure: 'FileTypesList'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: ListReadResponse) => {
+      (res: any) => {
         this.doctypeResponse = res;
         console.log(this.doctypeResponse);
       },
