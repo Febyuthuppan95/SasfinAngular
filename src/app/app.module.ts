@@ -298,6 +298,7 @@ import { DatePipe } from '@angular/common';
 import {NgxMaskModule} from 'ngx-mask';
 import { CreateHelpComponent } from './views/main/view-help-glossary/create-help/create-help.component';
 import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
+import { HelpDirective } from './directives/help.directive';
 
 @NgModule({
   declarations: [
@@ -355,6 +356,7 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
     KeyHandlerDirective,
     ImageDirective,
     TabDirective,
+    HelpDirective,
     ClickStopPropagation,
     ContextMenuAddressTypesComponent,
     ViewCaptureInfoComponent,

@@ -304,8 +304,10 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
           Object.keys(this.form.controls).forEach(key => {
             res.attachmentErrors.attachmentErrors.forEach((error) => {
               if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-                this.form.controls[key].setErrors({incorrect: true});
-                this.form.controls[key].markAsTouched();
+                if (!this.form.controls[`${key}OBit`].value) {
+                  this.form.controls[key].setErrors({incorrect: true});
+                  this.form.controls[key].markAsTouched();
+                }
               }
             });
           });
@@ -606,8 +608,10 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.errors.length > 0) {
       this.errors.forEach((error) => {
         if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-          this.form.controls[key].setErrors({incorrect: true});
-          this.form.controls[key].markAsTouched();
+          if (!this.form.controls[`${key}OBit`].value) {
+            this.form.controls[key].setErrors({incorrect: true});
+            this.form.controls[key].markAsTouched();
+          }
         }
       });
     }

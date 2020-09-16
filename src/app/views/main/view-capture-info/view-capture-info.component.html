@@ -54,11 +54,11 @@
       <div class="form-group">
           <label class="control-label">Information:</label>
           <input type="text" placeholder="Information" class="form-control"
-            [(ngModel)]="this.captureInfo.info" [ngModelOptions]="{standalone: true}" required/>
+            [(ngModel)]="this.captureInfo.info" [ngModelOptions]="{standalone: true}" required help slug="captureInfo"/>
         </div>
         <div class="form-group">
             <label class="control-label">Type:</label>
-            <select id="editselect" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
+            <select id="editselect" help="'doctypeSelectedIndex'" class="form-control" [selectedIndex]="doctypeSelectedIndex" (change)="onDoctypeChange($event.target.value)" *ngIf="this.doctypeResponse !== undefined">
               <option *ngFor="let doctype of this.doctypeResponse.data" [value]="doctype.doctypeID">{{doctype.name}}</option>
             </select>
           </div>

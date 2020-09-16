@@ -97,4 +97,4 @@
   <app-form-csw-lines [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-csw-lines>
 </ng-container>
 
-<app-capture-errors [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>
+<app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

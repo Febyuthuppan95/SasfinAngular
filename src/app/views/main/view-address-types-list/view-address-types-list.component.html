@@ -108,7 +108,7 @@
         <div class="modal-body">
         <div class="form-group">
             <input type="text" placeholder="Address Type" class="form-control"
-              [(ngModel)]="this.focusAddressTypeName" [ngModelOptions]="{standalone: true}" required/>
+              [(ngModel)]="this.focusAddressTypeName" [ngModelOptions]="{standalone: true}" required help="'focusAddressTypeName'" />
           </div>
         </div>
         <div class="modal-footer bg-dark">
@@ -134,7 +134,7 @@
       <form (submit)="addAddressType($event)">
       <div class="modal-body">
       <div class="form-group">
-          <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newAddressTypeName" [ngModelOptions]="{standalone: true}" required/>
+          <input type="text" placeholder="Name" class="form-control" [(ngModel)]="this.newAddressTypeName" [ngModelOptions]="{standalone: true}" required help="'newAddressTypeName'"/>
         </div>
       </div>
       <div class="modal-footer bg-dark">

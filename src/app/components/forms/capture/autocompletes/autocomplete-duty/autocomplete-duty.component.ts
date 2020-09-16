@@ -214,12 +214,6 @@ constructor(private userService: UserService,
     }
 
     this.assignedList.splice(this.assignedList.indexOf(duty), 1);
-    const removed = this.listTemp.find(x => x.dutyTaxTypeID === duty.dutyTaxTypeID);
-
-    if (removed) {
-      this.list.push(removed);
-    }
-
     this.control.setValue(this.assignedList);
   }
 
