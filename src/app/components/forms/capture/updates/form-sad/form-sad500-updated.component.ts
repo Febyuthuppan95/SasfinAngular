@@ -21,10 +21,8 @@ import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
-import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
 import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-sad500-line-updated.component';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
-import {subscribeOn} from 'rxjs/operators';
 
 @AutoUnsubscribe()
 @Component({
@@ -601,10 +599,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
 
       this.lines[this.lines.indexOf(target)] = $event;
-      // this.cancelLine();
-
-      // this.newLine(true);
-
+      this.activeLine = $event;
       this.refresh();
     }
 

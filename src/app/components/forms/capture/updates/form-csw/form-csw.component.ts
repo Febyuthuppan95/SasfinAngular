@@ -477,6 +477,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
 
       this.lines[this.lines.indexOf(target)] = $event;
+      this.activeLine = $event;
+
       // this.cancelLine();
 
       // this.newLine(true);

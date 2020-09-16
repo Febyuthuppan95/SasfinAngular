@@ -34,11 +34,11 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     cooID: new FormControl(null),
     tariffID: new FormControl(null),
     invoiceNo: new FormControl(null),
-    commonFactor: new FormControl(null, [Validators.required]),
+    commonFactor: new FormControl(null), // @required
     hsQuantity: new FormControl(null),
-    foreignInv: new FormControl(null, [Validators.required]),
-    custVal: new FormControl(null, [Validators.required]),
-    duty: new FormControl(null, [Validators.required]),
+    foreignInv: new FormControl(null), // @required
+    custVal: new FormControl(null), // @required
+    duty: new FormControl(null), // @required
     prodCode: new FormControl(null),
     supplyUnit: new FormControl(null),
     isDeleted: new FormControl(null),

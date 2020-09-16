@@ -41,10 +41,11 @@ export class ViewCaptureQueueOverviewComponent implements OnInit {
       { title: 'Pending', propertyName: 'pending', order: { enable: false } },
       { title: 'Awaiting Upload', propertyName: 'uploading', order: { enable: false } },
       { title: 'Capturable', propertyName: 'capturable', order: { enable: false } },
-      { title: 'In Capture', propertyName: 'incapture', order: { enable: false } },
+      { title: 'In Capture', propertyName: 'inCapture', order: { enable: false } },
       { title: 'Awaiting Assessment', propertyName: 'unassessed', order: { enable: false } },
       { title: 'In Assessment', propertyName: 'assessing', order: { enable: false } },
-      { title: 'Assessment Failed', propertyName: 'assessFailed', order: { enable: false } }
+      { title: 'Assessment Failed', propertyName: 'assessFailed', order: { enable: false } },
+      { title: 'Assessment Success', propertyName: 'assessSuccess', order: { enable: false } },
     ],
     rowStart: 1,
     rowEnd: 15,

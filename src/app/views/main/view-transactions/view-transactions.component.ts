@@ -226,7 +226,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     this.transationService.typessList(this.transactionTypeRequest).then(
       (res: TransactionTypesResponse) => {
         this.transactionTypes = res.transactionTypes;
-        this.transactionTypes = this.transactionTypes.filter(x => x.name !== 'Local');
+        this.transactionTypes = this.transactionTypes.filter(x => x.name !== 'Local receipt' && x.name !== 'Local Invoice');
       },
       (msg) => {
         this.notify.errorsmsg(
@@ -480,7 +480,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
           this.currentUser.userID,
           this.companyID,
           this.selectedType,
-          this.selectedStatus, 
+          this.selectedStatus,
           this.newTransaction.name,
         ).then(
           (res: Outcome) => {
