@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { DialogOverrideComponent } from '../../dialog-override/dialog-override.component';
 import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-sad500-line-updated.component';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -39,14 +40,15 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private location: Location) {}
 
   public form = new FormGroup({
     userID: new FormControl(null),
     SAD500ID: new FormControl(null),
     serialNo: new FormControl(null, [Validators.required]),
     lrn: new FormControl(null, [Validators.required]),
-    totalCustomsValue: new FormControl(0, [Validators.required]),
+    totalCustomsValue: new FormControl(null, [Validators.required]),
     cpcID: new FormControl(-1, [Validators.required]),
     waybillNo: new FormControl(null, [Validators.required]),
     supplierRef: new FormControl(null),
@@ -56,7 +58,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     fileRef: new FormControl(null),
     containerNumbers: new FormControl(null),
     transAtArrival: new FormControl(null),
-    totalDuty: new FormControl(0),
+    totalDuty: new FormControl(null),
 
     lrnOBit: new FormControl(false),
     lrnOReason: new FormControl(null),
@@ -381,6 +383,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
                   this.form.controls[key].markAsTouched();
                 }
               }
+
+              if (error.fieldName.toUpperCase() == 'IMPORTERCODE') {
+                this.form.controls.importersCode.setErrors({
+                  incorrect: true,
+                });
+                this.form.controls.importersCode.markAsTouched();
+              }
             });
           });
         }
@@ -531,8 +540,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               if (this.currentUser.designation === 'Consultant') {
                 this.router.navigate(['escalations']);
               } else {
-                this.companyService.setCapture({ capturestate: true });
-                this.router.navigateByUrl('transaction/capturerlanding');
+                this.location.back();
               }
             }
           } else {
@@ -622,7 +630,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   prevLine() {
     if (this.activeIndex >= 1) {
       this.activeIndex--;
-      this.lineForm.resetForm();
+      if (this.lineForm) {
+        this.lineForm.resetForm();
+      }
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
@@ -634,7 +644,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   nextLine() {
     if (this.activeIndex < (this.lines ? this.lines.length : 0)) {
       this.activeIndex++;
-      this.lineForm.resetForm();
+      if (this.lineForm) {
+        this.lineForm.resetForm();
+      }
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 

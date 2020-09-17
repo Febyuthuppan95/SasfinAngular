@@ -19,6 +19,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { AttachmentError } from 'src/app/models/HttpResponses/AttachmentErrorResponse';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -34,7 +35,8 @@ export class FormWayComponent implements OnInit, AfterViewInit, OnDestroy {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private location: Location) {}
 
 form = new FormGroup({
   userID: new FormControl(null),
@@ -246,8 +248,7 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
             if (this.currentUser.designation === 'Consultant') {
               this.router.navigate(['escalations']);
             } else {
-              this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
+              this.location.back();
             }
           }
       } else {

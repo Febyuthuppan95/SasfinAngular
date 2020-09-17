@@ -14,15 +14,17 @@
       <br>
       <p>Capture Line Errors</p>
       <ng-container *ngFor="let item of lines; let i = index">
-        <ng-container *ngIf="item.errors.length > 0">
-          <strong>Line #{{i + 1}}</strong><br>
-          <mat-card *ngFor="let error of item.errors">
-            <mat-card-content>
-              <small><strong>{{error.fieldName}}</strong></small>
-              <p>{{error.errorDescription}}</p>
-            </mat-card-content>
-          </mat-card>
-          <br>
+        <ng-container *ngIf="item.errors">
+          <ng-container *ngIf="item.errors.length > 0">
+            <strong>Line #{{i + 1}}</strong><br>
+            <mat-card *ngFor="let error of item.errors">
+              <mat-card-content>
+                <small><strong>{{error.fieldName}}</strong></small>
+                <p>{{error.errorDescription}}</p>
+              </mat-card-content>
+            </mat-card>
+            <br>
+          </ng-container>
         </ng-container>
       </ng-container>
     </ng-container>

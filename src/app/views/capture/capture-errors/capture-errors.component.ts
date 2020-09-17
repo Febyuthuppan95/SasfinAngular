@@ -14,12 +14,8 @@ export class CaptureErrorsComponent implements OnInit, OnChanges {
   @Input() lineErrors: any = [];
   @Input() open = false;
 
-  ngOnInit() {
-    console.log(this.lineErrors);
-  }
+  ngOnInit() {}
 
-  ngOnChanges() {
-    console.log(this.lineErrors);
-  }
+  ngOnChanges() {}
 
 }

@@ -24,6 +24,7 @@ import { CustomWorksheetLinesResponse } from 'src/app/models/HttpResponses/Custo
 import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/CustomsWorksheet';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -41,7 +42,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private location: Location) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -342,11 +344,13 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         this.lines = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
 
+        console.log(res.attachmentErrors);
+
         this.lines.forEach((line) => {
           line.isLocal = false;
           line.customWorksheetID = this.form.controls.customworksheetID.value;
           line.uniqueIdentifier = UUID.UUID();
-          line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
+          line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.customWorksheetLineID);
         });
 
         this.activeIndex = 0;
@@ -360,6 +364,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getError(key: string): string {
+    console.log(this.errors);
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
   }
 
@@ -415,8 +420,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.currentUser.designation === 'Consultant') {
                 this.router.navigate(['escalations']);
               } else {
-                this.companyService.setCapture({ capturestate: true });
-                this.router.navigateByUrl('transaction/capturerlanding');
+                this.location.back();
               }
             }
           } else {

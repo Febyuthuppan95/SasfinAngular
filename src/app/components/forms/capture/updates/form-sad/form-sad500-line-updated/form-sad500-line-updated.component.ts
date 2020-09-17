@@ -40,34 +40,43 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     duty: new FormControl(null),
     duties: new FormControl(null),
     supplyUnit: new FormControl(null, [Validators.required]),
+
     lineNoOBit: new FormControl(false),
     lineNoOUserID: new FormControl(null),
     lineNoODate: new FormControl(new Date()),
     lineNoOReason: new FormControl(null),
+    lineNoError: new FormControl(null),
+
     customsValueOBit: new FormControl(false),
     customsValueOUserID: new FormControl(null),
     customsValueODate: new FormControl(new Date()),
     customsValueOReason: new FormControl(null),
+    customsValueError: new FormControl(null),
+
     quantityOBit: new FormControl(false),
     quantityOUserID: new FormControl(null),
     quantityODate: new FormControl(new Date()),
     quantityOReason: new FormControl(null),
+    quantityError: new FormControl(null),
+
     previousDeclarationOBit: new FormControl(false),
     previousDeclarationOUserID: new FormControl(null),
     previousDeclarationODate: new FormControl(new Date()),
     previousDeclarationOReason: new FormControl(null),
+    previousDeclarationError: new FormControl(null),
+
     dutyOBit: new FormControl(false),
     dutyOUserID: new FormControl(null),
     dutyODate: new FormControl(new Date()),
     dutyOReason: new FormControl(null),
-    vatOBit: new FormControl(false),
-    vatOUserID: new FormControl(null),
-    vatODate: new FormControl(new Date()),
-    vatOReason: new FormControl(null),
+    dutyError: new FormControl(null),
+
     supplyUnitOBit: new FormControl(false),
     supplyUnitOUserID: new FormControl(null),
     supplyUnitODate: new FormControl(new Date()),
     supplyUnitOReason: new FormControl(null),
+    supplyUnitError: new FormControl(null),
+
     sad500ID: new FormControl(null),
     isDeleted: new FormControl(0),
     uniqueIdentifier: new FormControl(),
@@ -118,6 +127,54 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       console.log(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
+
+      if (this.errors) {
+        if (this.errors.length > 0) {
+          Object.keys(this.form.controls).forEach(key => {
+            this.errors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                if (!this.form.controls[`${key}OBit`].value) {
+                  this.form.controls[key].markAsTouched();
+                  this.form.controls[key].setErrors({incorrect: true});
+                }
+              }
+
+              if (error.fieldName.toUpperCase() == 'CUSTOMS VALUE') {
+                this.form.controls.customsValue.markAsTouched();
+                this.form.controls.customsValue.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('CUSTOMS VALUE');
+                this.form.controls.customsValueError.setValue(error);
+              }
+
+              if (error.fieldName.toUpperCase() == 'SUPPLY UNIT') {
+                this.form.controls.supplyUnit.markAsTouched();
+                this.form.controls.supplyUnit.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('SUPPLY UNIT');
+                this.form.controls.supplyUnitError.setValue(error);
+              }
+
+              if (error.fieldName.toUpperCase() == 'DUTY') {
+                // this.form.controls.duty.markAsTouched();
+                // this.form.controls.duty.setErrors({
+                //   incorrect: true,
+                // });
+
+                const error = this.getError('duty');
+                this.form.controls.dutyError.setValue(error);
+              }
+            });
+          });
+
+          this.form.updateValueAndValidity();
+        }
+      }
+
     } else {
       this.sadLine500ID = -1;
       this.form.controls.specificSAD500LineID.setValue(-1);
@@ -179,61 +236,61 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   }
 
   ngOnChanges() {
-    this.form.reset();
+    // this.form.reset();
 
-    if (this.data && this.data !== null) {
-      this.data.sad500ID = this.data.SAD500ID;
-      this.data.specificSAD500LineID = this.data.specificSAD500LineID;
-      this.form.patchValue(this.data);
-      console.log(this.data);
+    // if (this.data && this.data !== null) {
+    //   this.data.sad500ID = this.data.SAD500ID;
+    //   this.data.specificSAD500LineID = this.data.specificSAD500LineID;
+    //   this.form.patchValue(this.data);
+    //   console.log(this.data);
 
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
+    //   Object.keys(this.form.controls).forEach(key => {
+    //     if (key.indexOf('ODate') !== -1) {
+    //       if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+    //         this.form.controls[key].setValue(null);
+    //       }
+    //     }
+    //   });
 
-      // null checking quantity field
-      if (this.data.quantity === -1) {
-        this.data.quantity = null;
-        this.form.controls.quantity.setValue(null);
-      }
+    //   // null checking quantity field
+    //   if (this.data.quantity === -1) {
+    //     this.data.quantity = null;
+    //     this.form.controls.quantity.setValue(null);
+    //   }
 
-      this.form.controls.duties.setValue(this.data.duties);
-      this.errors = this.data.errors;
-      this.sadLine500ID = this.data.sad500LineID;
+    //   this.form.controls.duties.setValue(this.data.duties);
+    //   this.errors = this.data.errors;
+    //   this.sadLine500ID = this.data.sad500LineID;
 
-      // if (this.errors.length > 0) {
-      //   Object.keys(this.form.controls).forEach(key => {
-      //     this.errors.forEach((error) => {
-      //       let field = error.fieldName.toUpperCase();
+    //   // if (this.errors.length > 0) {
+    //   //   Object.keys(this.form.controls).forEach(key => {
+    //   //     this.errors.forEach((error) => {
+    //   //       let field = error.fieldName.toUpperCase();
 
-      //       if (field === 'TARIFF') {
-      //         field = 'TARIFFID';
-      //       }
+    //   //       if (field === 'TARIFF') {
+    //   //         field = 'TARIFFID';
+    //   //       }
 
-      //       if (field === 'COUNTRY OF ORGIN') {
-      //         field = 'COOID';
-      //       }
+    //   //       if (field === 'COUNTRY OF ORGIN') {
+    //   //         field = 'COOID';
+    //   //       }
 
-      //       if (key.toUpperCase() === field) {
-      //         this.form.controls[key].setErrors({incorrect: true});
-      //         this.form.controls[key].markAsTouched();
-      //       }
-      //     });
-      //   });
-      // }
-    } else {
-      console.log(this.form.controls);
-      this.sadLine500ID = -1;
-      this.form.controls.specificSAD500LineID.setValue(-1);
-      // this.form.controls.sad500LineID.setValue(-1);
-    }
+    //   //       if (key.toUpperCase() === field) {
+    //   //         this.form.controls[key].setErrors({incorrect: true});
+    //   //         this.form.controls[key].markAsTouched();
+    //   //       }
+    //   //     });
+    //   //   });
+    //   // }
+    // } else {
+    //   console.log(this.form.controls);
+    //   this.sadLine500ID = -1;
+    //   this.form.controls.specificSAD500LineID.setValue(-1);
+    //   // this.form.controls.sad500LineID.setValue(-1);
+    // }
 
-    // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
-    this.form.updateValueAndValidity();
+    // // this.form.controls.duties.setValidators(this.isExport ? null : [Validators.required]);
+    // this.form.updateValueAndValidity();
   }
 
   public resetForm() {
@@ -250,7 +307,9 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   }
 
   getError(key: string): string {
-    return this.errors.find(x => x.fieldName === key).errorDescription;
+    console.log(this.errors);
+    console.log(this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()));
+    return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
   }
 
   public findInvalidControls(form: FormGroup) {

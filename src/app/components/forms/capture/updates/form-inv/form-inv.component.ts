@@ -21,6 +21,7 @@ import { InvoiceGetResponse, InvoiceLinesResponse } from 'src/app/models/HttpRes
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { DateService } from 'src/app/services/tools/date.service';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -38,7 +39,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
               private router: Router,
-              private dateService: DateService) {}
+              private dateService: DateService,
+              private location: Location) {}
 
   public form: FormGroup;
   public attachmentLabel: string;
@@ -448,8 +450,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.currentUser.designation === 'Consultant') {
                 this.router.navigate(['escalations']);
               } else {
-                this.companyService.setCapture({ capturestate: true });
-                this.router.navigateByUrl('transaction/capturerlanding');
+                this.location.back();
               }
             }
           } else {

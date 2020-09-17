@@ -46,7 +46,7 @@
         <button type="button" *ngIf="form.controls.importersCodeOBit.value"  matSuffix mat-icon-button (click)="undoOverride('importersCode')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
         <button *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('importersCode', isExport ? 'Exporters' : 'Importers' + 'Code')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+        <mat-error *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect">{{getError('importerCode')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>

@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -37,7 +38,8 @@ export class FormCrnComponent implements OnInit, AfterViewInit, OnDestroy {
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
               private companyService: CompanyService,
-              private router: Router) {}
+              private router: Router,
+              private location: Location) {}
 
 form = new FormGroup({
   userID: new FormControl(null),
@@ -56,39 +58,51 @@ form = new FormGroup({
   ediStatusID: new FormControl(null, [Validators.required]),
   attachmentStatusID: new FormControl(null),
   isDeleted: new FormControl(0),
-  serialNoOBit: new FormControl(null),
+
+  serialNoOBit: new FormControl(false),
   serialNoOUserID: new FormControl(null),
   serialNoODate: new FormControl(null),
   serialNoOReason: new FormControl(null),
-  lrnOBit: new FormControl(null),
+
+  lrnOBit: new FormControl(false),
   lrnOUserID: new FormControl(null),
   lrnODate: new FormControl(null),
   lrnOReason: new FormControl(null),
-  importersCodeOBit: new FormControl(null),
+  lrnError: new FormControl(null),
+
+  importersCodeOBit: new FormControl(false),
   importersCodeOUserID: new FormControl(null),
   importersCodeODate: new FormControl(null),
   importersCodeOReason: new FormControl(null),
-  fobOBit: new FormControl(null),
+  importersCodeError: new FormControl(null),
+
+  fobOBit: new FormControl(false),
   fobOUserID: new FormControl(null),
   fobODate: new FormControl(null),
   fobOReason: new FormControl(null),
-  waybillNoOBit: new FormControl(null),
+
+  waybillNoOBit: new FormControl(false),
   waybillNoOUserID: new FormControl(null),
   waybillNoODate: new FormControl(null),
   waybillNoOReason: new FormControl(null),
-  fileRefOBit: new FormControl(null),
+
+  fileRefOBit: new FormControl(false),
   fileRefOUserID: new FormControl(null),
   fileRefODate: new FormControl(null),
   fileRefOReason: new FormControl(null),
-  totalCustomsValueOBit: new FormControl(null),
+  fileRefError: new FormControl(null),
+
+  totalCustomsValueOBit: new FormControl(false),
   totalCustomsValueOUserID: new FormControl(null),
   totalCustomsValueODate: new FormControl(null),
   totalCustomsValueOReason: new FormControl(null),
-  totalDutyOBit: new FormControl(null),
+
+  totalDutyOBit: new FormControl(false),
   totalDutyOUserID: new FormControl(null),
   totalDutyODate: new FormControl(null),
   totalDutyOReason: new FormControl(null),
-  mrnOBit: new FormControl(null),
+
+  mrnOBit: new FormControl(false),
   mrnOUserID: new FormControl(null),
   mrnODate: new FormControl(null),
   mrnOReason: new FormControl(null),
@@ -206,6 +220,7 @@ async load() {
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);
       this.errors = res.attachmentErrors.attachmentErrors;
+      console.log(this.errors);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
@@ -215,21 +230,39 @@ async load() {
         }
       });
 
-      if (res.attachmentErrors.attachmentErrors.length > 0) {
-        Object.keys(this.form.controls).forEach(key => {
-          res.attachmentErrors.attachmentErrors.forEach((error) => {
-            if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-              if (!this.form.controls[`${key}OBit`].value) {
-                this.form.controls[key].setErrors({incorrect: true});
-                this.form.controls[key].markAsTouched();
-              }
-            }
-          });
-        });
-      }
-
       this.form.updateValueAndValidity();
-      this.loader = false;
+
+      Object.keys(this.form.controls).forEach(key => {
+        this.errors.forEach((error) => {
+          if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+            if (!this.form.controls[`${key}OBit`].value) {
+              this.form.controls[key].setErrors({incorrect: true});
+              this.form.controls[key].markAsTouched();
+            }
+          }
+
+          if (error.fieldName.toUpperCase() == 'IMPORTERCODE') {
+            this.form.controls.importersCode.setErrors({incorrect: true});
+            this.form.controls.importersCode.markAsTouched();
+            this.form.controls.importersCodeError.setValue(this.getError('importercode'));
+
+          }
+
+          if (error.fieldName.toUpperCase() == 'FILEREF') {
+            this.form.controls.fileRef.setErrors({incorrect: true});
+            this.form.controls.fileRef.markAsTouched();
+            this.form.controls.fileRefError.setValue(this.getError('fileRef'));
+          }
+
+          if (error.fieldName.toUpperCase() == 'LRN') {
+            this.form.controls.lrn.setErrors({incorrect: true});
+            this.form.controls.lrn.markAsTouched();
+            this.form.controls.lrnError.setValue(this.getError('lrn'));
+          }
+        });
+      });
+
+      setTimeout(() => this.loader = false, 100);
     } else {
       this.loader = false;
       this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
@@ -290,8 +323,7 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
             if (this.currentUser.designation === 'Consultant') {
               this.router.navigate(['escalations']);
             } else {
-              this.companyService.setCapture({ capturestate: true });
-              this.router.navigateByUrl('transaction/capturerlanding');
+              this.location.back();
             }
           }
 

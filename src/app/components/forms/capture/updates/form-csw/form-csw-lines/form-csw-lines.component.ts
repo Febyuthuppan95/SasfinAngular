@@ -42,50 +42,61 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     prodCode: new FormControl(null),
     supplyUnit: new FormControl(null),
     isDeleted: new FormControl(null),
+
     cooOBit: new FormControl(null),
     cooOUserID: new FormControl(null),
     cooODate: new FormControl(null),
     cooOReason: new FormControl(null),
+    cooError: new FormControl(null),
+
     tariffHeadingOBit: new FormControl(null),
     tariffHeadingOUserID: new FormControl(null),
     tariffHeadingODate: new FormControl(null),
     tariffHeadingOReason: new FormControl(null),
+    tariffHeadingError: new FormControl(null),
+
     hsQuantityOBit: new FormControl(null),
     hsQuantityOUserID: new FormControl(null),
     hsQuantityODate: new FormControl(null),
     hsQuantityOReason: new FormControl(null),
+    hsQuantityError: new FormControl(null),
+
     foreignInvOBit: new FormControl(null),
     foreignInvOUserID: new FormControl(null),
     foreignInvODate: new FormControl(null),
     foreignInvOReason: new FormControl(null),
+    foreignInvError: new FormControl(null),
+
     custValOBit: new FormControl(null),
     custValOUserID: new FormControl(null),
     custValODate: new FormControl(null),
     custValOReason: new FormControl(null),
+    custValError: new FormControl(null),
+
     dutyOBit: new FormControl(null),
     dutyOUserID: new FormControl(null),
     dutyODate: new FormControl(null),
     dutyOReason: new FormControl(null),
+    dutyError: new FormControl(null),
+
     commonFactorOBit: new FormControl(null),
     commonFactorOUserID: new FormControl(null),
     commonFactorODate: new FormControl(null),
     commonFactorOReason: new FormControl(null),
+    commonFactorError: new FormControl(null),
+
     invoiceNoOBit: new FormControl(null),
     invoiceNoOUserID: new FormControl(null),
     invooiceNoODate: new FormControl(null),
     invoiceNoOReason: new FormControl(null),
-    prodCodeOBit: new FormControl(null),
-    prodCodeOUserID: new FormControl(null),
-    prodCodeODate: new FormControl(null),
-    prodCodeOReason: new FormControl(null),
-    vatOBit: new FormControl(null),
-    vatOUserID: new FormControl(null),
-    vatODate: new FormControl(null),
-    vatOReason: new FormControl(null),
+    invoiceNoError: new FormControl(null),
+
     supplyUnitOBit: new FormControl(null),
     supplyUnitOUserID: new FormControl(null),
     supplyUnitODate: new FormControl(null),
     supplyUnitOReason: new FormControl(null),
+    supplyUnitError: new FormControl(null),
+
     uniqueIdentifier: new FormControl(),
   });
 
@@ -97,6 +108,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   public displayLines = false;
   public errors: any[] = [];
   public shortcuts: any[] = [];
+  public loader = false;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -111,8 +123,12 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   private startLineForm: ElementRef;
 
   ngOnInit() {
+    this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
+    this.form.controls.duty.updateValueAndValidity();
+
     if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
+
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
           if (this.form.controls[key].value !== null || this.form.controls[key].value) {
@@ -120,13 +136,73 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
           }
         }
       });
+
+      console.log(this.form.value);
       this.errors = this.data.errors;
+
+      if (this.errors) {
+        if (this.errors.length > 0) {
+          this.loader = true;
+
+          Object.keys(this.form.controls).forEach(key => {
+            this.errors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                if (!this.form.controls[`${key}OBit`].value) {
+                  this.form.controls[key].markAsTouched();
+                  this.form.controls[key].setErrors({incorrect: true});
+                }
+              }
+
+              if (error.fieldName.toUpperCase() == 'CUSTOMS VALUE') {
+                this.form.controls.custVal.markAsTouched();
+                this.form.controls.custVal.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('CUSTOMS VALUE');
+                this.form.controls.custValError.setValue(error);
+              }
+
+              if (error.fieldName.toUpperCase() == 'SUPPLY UNIT') {
+                this.form.controls.supplyUnit.markAsTouched();
+                this.form.controls.supplyUnit.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('SUPPLY UNIT');
+                this.form.controls.supplyUnitError.setValue(error);
+              }
+
+              if (error.fieldName.toUpperCase() == 'FOREIGN INV') {
+                this.form.controls.foreignInv.markAsTouched();
+                this.form.controls.foreignInv.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('FOREIGN INV');
+                this.form.controls.foreignInvError.setValue(error);
+              }
+
+              if (error.fieldName.toUpperCase() == 'DUTY') {
+                this.form.controls.duty.markAsTouched();
+                this.form.controls.duty.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('duty');
+                this.form.controls.dutyError.setValue(error);
+              }
+            });
+          });
+
+          this.form.updateValueAndValidity();
+        }
+      }
+
+      setTimeout(() => this.loader = false, 100);
     } else {
       this.form.controls.customWorksheetLineID.setValue(-1);
     }
-
-    this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
-    this.form.controls.duty.updateValueAndValidity();
 
     setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
 
@@ -137,6 +213,8 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     this.eventService.focusForm.subscribe(() => {
       setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
+
+    this.form.valueChanges.subscribe((e) => console.log(e));
   }
 
   ngAfterViewInit(): void {
@@ -159,24 +237,27 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   ngOnChanges() {
-    this.form.reset();
+    // this.form.reset();
 
-    if (this.data && this.data !== null) {
-      this.form.patchValue(this.data);
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
-      this.errors = this.data.errors;
-    } else {
-      this.form.controls.customWorksheetLineID.setValue(-1);
-    }
+    // if (this.data && this.data !== null) {
+    //   this.form.patchValue(this.data);
+    //   Object.keys(this.form.controls).forEach(key => {
+    //     if (key.indexOf('ODate') !== -1) {
+    //       if (this.form.controls[key].value !== null || this.form.controls[key].value) {
+    //         this.form.controls[key].setValue(null);
+    //       }
+    //     }
+    //   });
+    //   this.errors = this.data.errors;
+    //   console.log(this.data.errors);
 
-    this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
-    this.form.controls.duty.updateValueAndValidity();
+    //   this.checkErrors();
+    // } else {
+    //   this.form.controls.customWorksheetLineID.setValue(-1);
+    // }
+
+    // this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
+    // this.form.controls.duty.updateValueAndValidity();
   }
 
   updateHelpContext(slug: string) {
@@ -189,7 +270,9 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   getError(key: string): string {
-    return this.errors.find(x => x.fieldName === key).errorDescription;
+    console.log(this.errors);
+    console.log(this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()));
+    return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
   }
 
   public findInvalidControls(form: FormGroup) {

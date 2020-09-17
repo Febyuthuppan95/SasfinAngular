@@ -6,6 +6,7 @@
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusin)="updateHelpContext(helpSlug)" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" #dutyInput>
   <mat-hint>Select a duty type and assign a duty value</mat-hint>
+  <ng-template></ng-template>
 </mat-form-field>
 <mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn">
   <mat-option *ngFor="let item of list" [value]="item">

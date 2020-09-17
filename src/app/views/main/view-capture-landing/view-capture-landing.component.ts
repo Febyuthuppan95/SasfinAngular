@@ -148,6 +148,8 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
         } else {
           this.notify.toastrwarning('Information', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
+          this.showLoader = false;
+          this.loading = false;
         }
       },
       msg => {

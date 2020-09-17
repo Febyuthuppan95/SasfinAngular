@@ -16,9 +16,9 @@
           Common Factor
         </mat-label>
         <input matInput type="text" formControlName="commonFactor" #startLineForm (focusin)="updateHelpContext('form-customs-worksheet-line-commonfactor')" #startLineForm>
-        <button type="button" *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.commonFactorOBit.value">OVERRIDE: {{form.controls.commonFactorOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.commonFactorOBit.value && form.controls.commonFactor.errors?.incorrect" matSuffix (click)="overrideDialog('commonFactor', 'Common Factor')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="!form.controls.commonFactorOBit.value && form.controls.commonFactor.errors?.incorrect" matSuffix (click)="overrideDialog('commonFactor', 'Common Factor')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.commonFactorOBit.value  && form.controls.commonFactor.errors?.incorrect">{{getError('commonFactor')}}</mat-error>
       </mat-form-field>
       <br><br>
@@ -29,10 +29,10 @@
           Customs Value
         </mat-label>
         <input matInput type="text" formControlName="custVal" (focusin)="updateHelpContext('form-customs-worksheet-line-custval')">
-        <button type="button" *ngIf="form.controls.custValOBit.value" matSuffix (click)="undoOverride('custVal')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.custValOBit.value" matSuffix (click)="undoOverride('custVal')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.custValOBit.value">OVERRIDE: {{form.controls.custValOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.custValOBit.value && form.controls.custVal.errors?.incorrect" matSuffix (click)="overrideDialog('custVal', 'Customs Value')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.custValOBit.value  && form.controls.custVal.errors?.incorrect">{{getError('custVal')}}</mat-error>
+        <button *ngIf="form.controls.custValError.value && !form.controls.custValOBit.value" mat-icon-button type="button" matSuffix (click)="overrideDialog('custVal', 'Customs Value')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="form.controls.custValError.value && !form.controls.custValOBit.value">{{form.controls.custValError.value}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -42,9 +42,9 @@
           Quantity
         </mat-label>
         <input matInput type="text" formControlName="hsQuantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
-        <button type="button" *ngIf="form.controls.hsQuantityOBit.value" matSuffix (click)="undoOverride('hsQuantity')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.hsQuantityOBit.value" matSuffix (click)="undoOverride('hsQuantity')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.hsQuantityOBit.value">OVERRIDE: {{form.controls.hsQuantityOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantity.errors?.incorrect" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantity.errors?.incorrect" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantity.errors?.incorrect">{{getError('hsQuantity')}}</mat-error>
       </mat-form-field>
       <br><br>
@@ -55,10 +55,10 @@
           Foreign Inv Value
         </mat-label>
         <input matInput type="number" formControlName="foreignInv" (focusin)="updateHelpContext('form-customs-worksheet-line-foreigninv')">
-        <button type="button" *ngIf="form.controls.foreignInvOBit.value" matSuffix (click)="undoOverride('foreignInv')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.foreignInvOBit.value" matSuffix (click)="undoOverride('foreignInv')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.foreignInvOBit.value">OVERRIDE: {{form.controls.foreignInvOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.foreignInvOBit.value && form.controls.foreignInv.errors?.incorrect" matSuffix (click)="overrideDialog('foreignInv', 'foreignInv')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.foreignInvOBit.value  && form.controls.foreignInv.errors?.incorrect">{{getError('foreignInv')}}</mat-error>
+        <button mat-icon-button type="button" *ngIf="!form.controls.foreignInvOBit.value && form.controls.foreignInvError.value" matSuffix (click)="overrideDialog('foreignInv', 'foreignInv')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.foreignInvOBit.value  && form.controls.foreignInvError.value">{{getError('foreign Inv')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -68,10 +68,10 @@
           Duty
         </mat-label>
         <input matInput type="number" formControlName="duty" (focusin)="updateHelpContext('form-customs-worksheet-line-duty')">
-        <button type="button" *ngIf="form.controls.dutyOBit.value" matSuffix (click)="undoOverride('duty')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.dutyOBit.value" matSuffix (click)="undoOverride('duty')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.dutyOBit.value">OVERRIDE: {{form.controls.dutyOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.dutyOBit.value && form.controls.duty.errors?.incorrect" matSuffix (click)="overrideDialog('duty', 'Duty')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.dutyOBit.value  && form.controls.duty.errors?.incorrect">{{getError('duty')}}</mat-error>
+        <button *ngIf="form.controls.dutyError.value && !form.controls.dutyOBit.value" mat-icon-button type="button" matSuffix (click)="overrideDialog('duty', 'Duty')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="form.controls.dutyError.value && !form.controls.dutyOBit.value">{{form.controls.dutyError.value}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -80,11 +80,11 @@
         <mat-label>
           Supply Unit
         </mat-label>
-        <input matInput type="number" formControlName="supplyUnit" (focusin)="updateHelpContext('form-customs-worksheet-line-supplyUnit')">
-        <button type="button" *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <input matInput formControlName="supplyUnit" (focusin)="updateHelpContext('form-customs-worksheet-line-supplyUnit')">
+        <button mat-icon-button type="button" *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.supplyUnitOBit.value">OVERRIDE: {{form.controls.supplyUnitOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.supplyUnitOBit.value && form.controls.supplyUnit.errors?.incorrect" matSuffix (click)="overrideDialog('supplyUnit', 'supplyUnit')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.supplyUnitOBit.value  && form.controls.supplyUnit.errors?.incorrect">{{getError('supplyUnit')}}</mat-error>
+        <button *ngIf="form.controls.supplyUnitError.value && !form.controls.supplyUnitOBit.value" mat-icon-button type="button" matSuffix (click)="overrideDialog('supplyUnit', 'Supply Unit')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="form.controls.supplyUnitError.value && !form.controls.supplyUnitOBit.value">{{form.controls.supplyUnitError.value}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -111,12 +111,13 @@
           Invoice No
         </mat-label>
         <input matInput formControlName="invoiceNo" (focusin)="updateHelpContext('form-customs-worksheet-line-invoiceno')">
-        <button type="button" *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.invoiceNoOBit.value">OVERRIDE: {{form.controls.invoiceNoOReason.value}}</mat-hint>
-        <button type="button" *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <button mat-icon-button type="button" *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
   </div>
 </form>
+<loader *ngIf="loader"></loader>

@@ -55,7 +55,7 @@
             Serial No
           </mat-label>
           <input matInput type="text" formControlName="serialNo" #startForm (focusin)="updateHelpContext('form-sad500-serial-number')"/>
-          <button type="button" *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+          <button mat-icon-button *ngIf="form.controls.serialNoOBit.value" matSuffix (click)="undoOverride('serialNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
           <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
           <button type="button" *ngIf="!form.controls.serialNoOBit.value && form.controls.serialNo.errors?.incorrect" matSuffix (click)="overrideDialog('serialNo', 'SerialNo')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
           <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
@@ -150,8 +150,10 @@
           <input matInput type="text" formControlName="importersCode" (focusin)="updateHelpContext('form-sad500-importersCode')"/>
           <button type="button" *ngIf="form.controls.importersCodeOBit.value" matSuffix (click)="undoOverride('importersCode')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
           <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
-          <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'TIN Number')" matTooltip="Override">remove_circle</mat-icon>
-          <mat-error *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect">{{getError('importersCode')}}</mat-error>
+          <button  (click)="overrideDialog('importersCode', 'TIN Number')" matSuffix type="button" mat-icon-button *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" >
+            <mat-icon matTooltip="Override">remove_circle</mat-icon>
+          </button>
+          <mat-error *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect">{{getError('importerCode')}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
