@@ -1,3 +1,3 @@
 git pull
-ng b -c test
-cp -i web.config ./dist/source/
+ng b -c test -op dist/source/test
+cp -i web.config ./dist/source/test/
