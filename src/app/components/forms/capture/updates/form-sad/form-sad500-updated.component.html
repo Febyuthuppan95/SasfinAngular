@@ -14,7 +14,7 @@
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
     <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
     <ng-container *ngIf="lines">
-      <br><small>{{lines.length}} Total Lines</small>
+      <br><small>{{lines ? lines.length : 0}} Total Lines</small>
     </ng-container>
   </h1>
 </div>
@@ -31,9 +31,9 @@
         </ng-container>
         <p *ngIf="!lines" style="font-size: 16px;">No Invoice Lines Added</p>
         <p *ngIf="lines">
-          <button tabindex="-1" (click)="prevLine()" *ngIf="lines.length !== 0 || lines.length !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines.length === 1 || activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
-          <button tabindex="-1" (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines.length !== 0 || lines.length !== 0" [disabled]="(lines.length === 1 && activeIndex <= 0) || (this.activeIndex >= this.lines.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
-          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line <input tabindex="-1" type="number" [max]="lines.length - 1" [min]="1" step="1" matInput class="pagination-input" [formControl]="paginationControl" /> of {{ lines.length }}</span>
+          <button tabindex="-1" (click)="prevLine()" *ngIf="lines ? lines.length : 0 !== 0 || lines ? lines.length : 0 !== 0" style="margin-top: 12px; margin-bottom: 12px;" mat-button [disabled]="lines ? lines.length : 0 === 1 || activeIndex <= 0"><span class="mdi mdi-chevron-left"></span></button>
+          <button tabindex="-1" (click)="nextLine()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="lines ? lines.length : 0 !== 0 || lines ? lines.length : 0 !== 0" [disabled]="(lines ? lines.length : 0 === 1 && activeIndex <= 0) || (this.activeIndex >= (lines ? lines.length : 0)- 1)"><span class="mdi mdi-chevron-right"></span></button>
+          <span class="badge badge-transparent" *ngIf="activeIndex > -1">Line <input tabindex="-1" type="number" [max]="lines ? lines.length : 0 - 1" [min]="1" step="1" matInput class="pagination-input" [formControl]="paginationControl" /> of {{ lines ? lines.length : 0 }}</span>
           <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
         &nbsp;
         <!-- &nbsp;<span>{{lineState}}</span> -->

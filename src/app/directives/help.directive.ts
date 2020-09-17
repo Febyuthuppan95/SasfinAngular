@@ -15,8 +15,6 @@ export class HelpDirective {
 
     @HostListener('focusin')
     setHelp = (): void => {
-      console.log(this.slug);
-
       this.help.setHelpContext({
         display: true,
         slug: this.slug

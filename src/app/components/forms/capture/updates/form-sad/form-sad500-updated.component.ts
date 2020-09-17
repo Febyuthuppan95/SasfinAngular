@@ -162,7 +162,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   ngOnInit() {
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
-        if (value > this.lines.length) {
+        if (value > this.lines ? this.lines.length : -1) {
           value = this.lines.length;
           this.paginationControl.setValue(this.lines.length);
         } else if (value <= 0) {
@@ -372,7 +372,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           }
         });
 
-        if (res.attachmentErrors.attachmentErrors.length > 0) {
+        if (res.attachmentErrors.attachmentErrors ? res.attachmentErrors.attachmentErrors.length : 0 > 0) {
           Object.keys(this.form.controls).forEach(key => {
             res.attachmentErrors.attachmentErrors.forEach((error) => {
               if (key.toUpperCase() === error.fieldName.toUpperCase()) {
@@ -431,7 +431,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
         this.lines = pre_processed_lines;
 
-        if (this.lines.length > 0) {
+        if (this.lines ? this.lines.length : 0 > 0) {
           this.activeIndex = 0;
           this.activeLine = this.lines[this.activeIndex];
           this.paginationControl.setValue(1, { emitEvent: false });
@@ -449,7 +449,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+    if ((form.valid && this.lines ? this.lines.length : 0 > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
@@ -608,13 +608,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   async saveLineDuty(duties: any, callback) {
-    for (let index = 0; index < duties.length; index++) {
+    for (let index = 0; index < (duties ? duties.length : 0); index++) {
       await callback(duties[index], index, duties);
     }
   }
 
   async saveLines(lines: any[], callback) {
-    for (let index = 0; index < lines.length; index++) {
+    for (let index = 0; index < (lines ? lines.length : 0); index++) {
       await callback(lines[index], index, lines);
     }
   }
@@ -632,7 +632,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length) {
+    if (this.activeIndex < (this.lines ? this.lines.length : 0)) {
       this.activeIndex++;
       this.lineForm.resetForm();
       this.activeLine = this.lines[this.activeIndex];
@@ -674,7 +674,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       await this.captureService.sad500LineUpdate(targetLine);
     }
 
-    if (this.lines.length === 1) {
+    if ((this.lines ? this.lines.length : 0) === 1) {
       this.lines = [];
       this.activeLine = null;
       this.activeIndex = -1;
@@ -745,7 +745,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.form.controls[`${key}OBit`].setValue(false);
     this.form.controls[`${key}OReason`].setValue(null);
 
-    if (this.errors.length > 0) {
+    if (this.errors ? this.errors.length > 0 : false) {
       this.errors.forEach((error) => {
         if (key.toUpperCase() === error.fieldName.toUpperCase()) {
           this.form.controls[key].setErrors({incorrect: true});
