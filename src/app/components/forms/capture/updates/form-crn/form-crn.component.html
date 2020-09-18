@@ -18,7 +18,7 @@
         </mat-label>
         <input matInput type="text" formControlName="mrn" #startForm (focusin)="updateHelpContext('form-cusrelease-mrn')" />
         <button *ngIf="form.controls.mrnOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('mrn')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
-        <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.lrnOReason.value}}</mat-hint>
+        <mat-hint *ngIf="form.controls.mrnOBit.value">OVERRIDE: {{form.controls.mrnOReason.value}}</mat-hint>
         <button *ngIf="!form.controls.mrnOBit.value && form.controls.mrnError.value" type="button" matSuffix mat-icon-button (click)="overrideDialog('mrn', 'MRN')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.mrnOBit.value && form.controls.mrnError.value">{{form.controls.mrnError.value}}</mat-error>
         <mat-error *ngIf="form.get('mrn').hasError('required')">This field is required</mat-error>
