@@ -42,38 +42,26 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     supplyUnit: new FormControl(null, [Validators.required]),
 
     lineNoOBit: new FormControl(false),
-    lineNoOUserID: new FormControl(null),
-    lineNoODate: new FormControl(new Date()),
     lineNoOReason: new FormControl(null),
     lineNoError: new FormControl(null),
 
     customsValueOBit: new FormControl(false),
-    customsValueOUserID: new FormControl(null),
-    customsValueODate: new FormControl(new Date()),
     customsValueOReason: new FormControl(null),
     customsValueError: new FormControl(null),
 
     quantityOBit: new FormControl(false),
-    quantityOUserID: new FormControl(null),
-    quantityODate: new FormControl(new Date()),
     quantityOReason: new FormControl(null),
     quantityError: new FormControl(null),
 
     previousDeclarationOBit: new FormControl(false),
-    previousDeclarationOUserID: new FormControl(null),
-    previousDeclarationODate: new FormControl(new Date()),
     previousDeclarationOReason: new FormControl(null),
     previousDeclarationError: new FormControl(null),
 
     dutyOBit: new FormControl(false),
-    dutyOUserID: new FormControl(null),
-    dutyODate: new FormControl(new Date()),
     dutyOReason: new FormControl(null),
     dutyError: new FormControl(null),
 
     supplyUnitOBit: new FormControl(false),
-    supplyUnitOUserID: new FormControl(null),
-    supplyUnitODate: new FormControl(new Date()),
     supplyUnitOReason: new FormControl(null),
     supplyUnitError: new FormControl(null),
 
@@ -110,21 +98,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.specificSAD500LineID = this.data.sad500LineID;
       this.sadLine500ID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data);
-      Object.keys(this.form.controls).forEach(key => {
-        if (key.indexOf('ODate') !== -1) {
-          if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-            this.form.controls[key].setValue(null);
-          }
-        }
-      });
 
-      // null checking quantity field
       if (this.data.quantity === -1) {
         this.data.quantity = null;
         this.form.controls.quantity.setValue(null);
       }
 
-      console.log(this.data);
       this.form.controls.duties.setValue(this.data.duties);
       this.errors = this.data.errors;
 

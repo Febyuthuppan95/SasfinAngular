@@ -1,13 +1,10 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Input, ElementRef } from '@angular/core';
-import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
-import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
-import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
@@ -34,24 +31,31 @@ export class FormWayComponent implements OnInit, AfterViewInit, OnDestroy {
               private objectHelpService: ObjectHelpService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
-              private companyService: CompanyService,
               private router: Router,
               private location: Location) {}
 
 form = new FormGroup({
+  // Form Fields
   userID: new FormControl(null),
   waybillID: new FormControl(null),
   waybillNo: new FormControl(null, [Validators.required]),
+  transAtArrival: new FormControl(null),
+  containerNo: new FormControl(null),
   attachmentStatusID: new FormControl(null),
   isDeleted: new FormControl(0),
+
+  // Override Properties
   waybillNoOBit: new FormControl(null),
   waybillNoOReason: new FormControl(null),
-  transAtArrival: new FormControl(null),
+  waybillNoError: new FormControl(null),
+
   transAtArrivalOBit: new FormControl(null),
   transAtArrivalOReason: new FormControl(null),
-  containerNo: new FormControl(null),
+  transAtArrivalError: new FormControl(null),
+
   containerNoOBit: new FormControl(null),
   containerNoOReason: new FormControl(null),
+  containerNoError: new FormControl(null),
 });
 
 public attachmentLabel: string;
@@ -164,14 +168,6 @@ async load() {
     this.form.controls.userID.setValue(this.currentUser.userID);
     this.errors = res.attachmentErrors.attachmentErrors;
 
-    Object.keys(this.form.controls).forEach(key => {
-      if (key.indexOf('ODate') !== -1) {
-        if (this.form.controls[key].value !== null || this.form.controls[key].value) {
-          this.form.controls[key].setValue(null);
-        }
-      }
-    });
-
     if (res.attachmentErrors.attachmentErrors.length > 0) {
       Object.keys(this.form.controls).forEach(key => {
         res.attachmentErrors.attachmentErrors.forEach((error) => {
@@ -223,6 +219,7 @@ findInvalidControls(form: FormGroup) {
 }
 
 getError(key: string): string {
+  // tslint:disable-next-line: max-line-length
   return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
 }
 
@@ -265,17 +262,6 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
     this.findInvalidControls(form);
   }
 }
-
-// async updateErrors(errors: AttachmentError[]): Promise<void> {
-//   await this.captureService.updateAttachmentErrors({
-//     userID: this.currentUser.userID,
-//     attachmentErrors: errors.map(x => {
-//       return {
-//         attachmentErrorID: x.attachmentErrorID
-//       };
-//      })
-//   });
-// }
 
 ngOnDestroy(): void {}
 
