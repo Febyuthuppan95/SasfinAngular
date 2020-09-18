@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>Go to line</h3>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Line #</mat-label>
+    <input matInput type="number" [formControl]="control" min="1" [max]="max" />
+  </mat-form-field>
+  <br>
+  <button mat-raised-button class="bg-primary text-light" (click)="submit()">Submit</button>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

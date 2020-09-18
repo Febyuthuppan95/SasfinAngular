@@ -299,6 +299,7 @@ import {NgxMaskModule} from 'ngx-mask';
 import { CreateHelpComponent } from './views/main/view-help-glossary/create-help/create-help.component';
 import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 import { HelpDirective } from './directives/help.directive';
+import { DialogGotoLineComponent } from './components/forms/capture/dialog-goto-line/dialog-goto-line.component';
 
 @NgModule({
   declarations: [
@@ -497,6 +498,7 @@ import { HelpDirective } from './directives/help.directive';
     CaptureErrorsComponent,
     CreateHelpComponent,
     DeletelineDialogComponent,
+    DialogGotoLineComponent,
   ],
   imports: [
     BrowserModule,
@@ -605,7 +607,8 @@ import { HelpDirective } from './directives/help.directive';
     DialogCreateItemsComponent,
     BottomSheetAssignDutyComponent,
     CreateHelpComponent,
-    DeletelineDialogComponent
+    DeletelineDialogComponent,
+    DialogGotoLineComponent
   ],
 })
 export class AppModule {}

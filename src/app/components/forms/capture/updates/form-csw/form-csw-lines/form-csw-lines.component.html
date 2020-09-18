@@ -44,8 +44,8 @@
         <input matInput type="text" formControlName="hsQuantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
         <button mat-icon-button type="button" *ngIf="form.controls.hsQuantityOBit.value" matSuffix (click)="undoOverride('hsQuantity')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.hsQuantityOBit.value">OVERRIDE: {{form.controls.hsQuantityOReason.value}}</mat-hint>
-        <button mat-icon-button type="button" *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantity.errors?.incorrect" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantity.errors?.incorrect">{{getError('hsQuantity')}}</mat-error>
+        <button mat-icon-button type="button" *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantityError.value" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantityError.value">{{form.controls.hsQuantityError.value}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>

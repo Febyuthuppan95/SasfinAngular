@@ -22,6 +22,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { DateService } from 'src/app/services/tools/date.service';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 import { Location } from '@angular/common';
+import { DialogGotoLineComponent } from '../../dialog-goto-line/dialog-goto-line.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -92,25 +93,23 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.form = new FormGroup({
+      // Form Fields
       userID: new FormControl(null),
       invoiceID: new FormControl(null),
       invoiceNo: new FormControl(null, [Validators.required]),
       companyID: new FormControl(null, [Validators.required]),
-
-      // Additions
       seededCompanyID: new FormControl(null),
       freightCost: new FormControl(null),
       insuranceCost: new FormControl(null),
       bankCharges: new FormControl(null),
       pop: new FormControl(false),
-      // END Additions
-
       currencyID: new FormControl(null, [Validators.required]),
       attachmentStatusID: new FormControl(null),
       invoiceDate: new FormControl(null, [Validators.required]),
       incoTermTypeID: new FormControl(null),
       cooID: new FormControl(null),
       isDeleted: new FormControl(0),
+
       invoiceNoOBit: new FormControl(null),
       invoiceNoOUserID: new FormControl(null),
       invoiceNoODate: new FormControl(null),
@@ -236,6 +235,24 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             command: e => {
               this.displayLines = !this.displayLines;
               setTimeout(() => this.startForm.nativeElement.focus());
+            }
+          },
+          {
+            key: 'alt + j',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => {
+              this.dialog.open(DialogGotoLineComponent, {
+                data: this.lines ? this.lines.length : 0,
+                width: '256'
+              }).afterClosed().subscribe((num: number) => {
+                if (num) {
+                  this.activeIndex = num - 1;
+                  this.activeLine = this.lines[this.activeIndex];
+                  this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+                  this.refresh();
+                }
+              });
             }
           },
           {

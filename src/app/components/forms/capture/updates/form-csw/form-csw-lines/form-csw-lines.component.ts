@@ -192,6 +192,16 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
                 const error = this.getError('duty');
                 this.form.controls.dutyError.setValue(error);
               }
+
+              if (error.fieldName.toUpperCase() == 'QUANTITY') {
+                this.form.controls.hsQuantity.markAsTouched();
+                this.form.controls.hsQuantity.setErrors({
+                  incorrect: true,
+                });
+
+                const error = this.getError('duty');
+                this.form.controls.hsQuantityError.setValue(error);
+              }
             });
           });
 

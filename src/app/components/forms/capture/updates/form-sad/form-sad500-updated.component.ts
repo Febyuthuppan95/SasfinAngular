@@ -24,6 +24,7 @@ import { DialogOverrideComponent } from '../../dialog-override/dialog-override.c
 import { FormSad500LineUpdatedComponent } from './form-sad500-line-updated/form-sad500-line-updated.component';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 import { Location } from '@angular/common';
+import { DialogGotoLineComponent } from '../../dialog-goto-line/dialog-goto-line.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -213,6 +214,24 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             command: e => {
               this.displayLines = false;
               setTimeout(() => this.startForm.nativeElement.focus());
+            }
+          },
+          {
+            key: 'alt + j',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => {
+              this.dialog.open(DialogGotoLineComponent, {
+                data: this.lines ? this.lines.length : 0,
+                width: '256'
+              }).afterClosed().subscribe((num: number) => {
+                if (num) {
+                  this.activeIndex = num - 1;
+                  this.activeLine = this.lines[this.activeIndex];
+                  this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+                  this.refresh();
+                }
+              });
             }
           },
           {

@@ -25,6 +25,7 @@ import { CustomsWorksheetListResponse } from 'src/app/models/HttpResponses/Custo
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import {DeletelineDialogComponent} from '../../../../../layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 import { Location } from '@angular/common';
+import { DialogGotoLineComponent } from '../../dialog-goto-line/dialog-goto-line.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -189,6 +190,24 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: (e) => this.eventService.focusForm.next(),
+          },
+          {
+            key: 'alt + j',
+            preventDefault: true,
+            allowIn: [AllowIn.Textarea, AllowIn.Input],
+            command: (e) => {
+              this.dialog.open(DialogGotoLineComponent, {
+                data: this.lines ? this.lines.length : 0,
+                width: '256'
+              }).afterClosed().subscribe((num: number) => {
+                if (num) {
+                  this.activeIndex = num - 1;
+                  this.activeLine = this.lines[this.activeIndex];
+                  this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+                  this.refresh();
+                }
+              });
+            }
           },
           {
             key: 'alt + s',
