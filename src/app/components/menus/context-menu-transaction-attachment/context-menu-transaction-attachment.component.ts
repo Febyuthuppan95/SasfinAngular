@@ -31,11 +31,6 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   ngOnInit() {}
 
   capture() {
-    if (this.statusID !== 5 && this.statusID !== 4) {
-      // this.docService.loadDocumentToViewer(this.docPath);
-      // tslint:disable-next-line: max-line-length
-      // this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
-      // tslint:disable-next-line: max-line-length
       this.router.navigate([
         'capture',
         'transaction',
@@ -47,7 +42,6 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
         btoa(this.transactionType),
         btoa(this.statusID === 7 ? '1' : '-1'),
         btoa(this.reason)]);
-    }
   }
 
   lines() {

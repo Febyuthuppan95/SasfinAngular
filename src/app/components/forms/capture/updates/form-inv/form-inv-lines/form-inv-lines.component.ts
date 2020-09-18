@@ -221,15 +221,15 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     }
 
     override(key: string, reason: string) {
-      this.form.controls[`${key}OUserID`].setValue(this.currentUser.userID);
-      this.form.controls[`${key}ODate`].setValue(new Date());
+
+
       this.form.controls[`${key}OBit`].setValue(true);
       this.form.controls[`${key}OReason`].setValue(reason);
     }
 
     undoOverride(key: string) {
-      this.form.controls[`${key}OUserID`].setValue(null);
-      this.form.controls[`${key}ODate`].setValue(new Date());
+
+
       this.form.controls[`${key}OBit`].setValue(false);
       this.form.controls[`${key}OReason`].setValue(null);
     }
