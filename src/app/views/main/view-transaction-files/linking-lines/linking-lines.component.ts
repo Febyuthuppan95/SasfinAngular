@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { ApiService } from 'src/app/services/api.service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -18,7 +19,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   constructor(
     private transationService: TransactionService,
     private capture: CaptureService,
-    private user: UserService) { }
+    private user: UserService,
+    private api: ApiService) { }
 
   public transaction: string;
   public transactionType: string;
@@ -26,6 +28,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
 
   public control = new FormControl();
   public currentSAD: any;
+  public currentSADLine: any;
   public currentLinks: any[] = [];
 
   public invoiceTotal = 0;
@@ -52,6 +55,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     }
   }
 
+  dropInSAD(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
+
   ngOnInit() {
     this.transationService.observerCurrentAttachment()
     .subscribe((data) => {
@@ -66,7 +80,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
 
     this.control.valueChanges.subscribe((value) => {
       if (value) {
-        this.currentSAD = value;
+        this.currentSADLine = value;
         this.currentLinks = [];
         this.invLines = this.invLinesTemp;
         this.cwsLines = this.cwsLinesTemp;
@@ -75,13 +89,14 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   }
 
   async init() {
-    await this.attachmentsList();
+    await this.loadAttachments();
     await this.loadSADLines();
     await this.loadInvoiceLines();
     await this.loadWorksheetLines();
+    await this.loadCaptureJoins();
   }
 
-  async attachmentsList() {
+  async loadAttachments() {
     const model = {
       filter: '',
       userID: this.currentUser.userID,
@@ -115,18 +130,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
         });
   }
 
-  previewCapture(src: string, id: number) {
-    const myWindow = window.open(
-      `${environment.appRoute}/documentpreview/${btoa(src)}`,
-      '_blank',
-      'width=600, height=800, noreferrer'
-    );
-
-    myWindow.opener = null;
-  }
-
   async loadSADLines() {
-    const sad500s: any = await this.capture.sad500Get({
+    this.currentSAD = await this.capture.sad500Get({
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
       specificID: -1,
@@ -134,7 +139,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     });
 
     await this.capture.sad500LineList({
-      sad500ID: sad500s.customReleaseID,
+      sad500ID: this.currentSAD.customReleaseID,
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
       specificSAD500LineID: -1,
@@ -209,6 +214,69 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
         console.log(res);
       }
     );
+  }
+
+  async loadCaptureJoins() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+        rowStart: 1,
+        rowEnd: 1000,
+        orderBy: '',
+        orderByDirection: ''
+      },
+      requestProcedure: 'CaptureJoinsList'
+    };
+
+    this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
+      (res: any) => {
+        console.log('res.data');
+        console.log(res.data);
+      },
+    );
+  }
+
+  async addJoin(request) {
+    request.transactionID = this.transactionID;
+    request.userID = this.currentUser.userID;
+    request.SAD500LineID = this.currentSADLine.sad500LineID;
+
+    await this.api.post(`${environment.ApiEndpoint}/checking/add`, {
+      requestParams: request,
+      requestProcedure: 'CaptureJoinAdd'
+    }).then(
+      (res: any) => {
+        console.log('res');
+        console.log(res);
+      },
+    );
+  }
+
+  async removeJoin(request) {
+    request.userID = this.currentUser.userID;
+    request.SAD500LineID = this.currentSADLine.sad500LineID;
+    request.isDeleted = 0;
+
+    await this.api.post(`${environment.ApiEndpoint}/checking/update`, {
+      requestParams: request,
+      requestProcedure: 'CaptureJoinsUpdate'
+    }).then(
+      (res: any) => {
+        console.log('res');
+        console.log(res);
+      },
+    );
+  }
+
+  previewCapture(src: string, id: number) {
+    const myWindow = window.open(
+      `${environment.appRoute}/documentpreview/${btoa(src)}`,
+      '_blank',
+      'width=600, height=800, noreferrer'
+    );
+
+    myWindow.opener = null;
   }
 
   ngOnDestroy(): void {}

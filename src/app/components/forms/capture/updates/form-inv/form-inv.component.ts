@@ -44,6 +44,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               private location: Location) {}
 
   public form: FormGroup;
+  public temporaryForm: FormGroup;
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -93,7 +94,6 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      // Form Fields
       userID: new FormControl(null),
       invoiceID: new FormControl(null),
       invoiceNo: new FormControl(null, [Validators.required]),
@@ -120,6 +120,21 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       currencyIDOReason: new FormControl(null),
     });
 
+    this.temporaryForm = new FormGroup({
+      invoiceID: new FormControl(null),
+      invoiceNo: new FormControl(null, [Validators.required]),
+      companyID: new FormControl(null, [Validators.required]),
+      seededCompanyID: new FormControl(null),
+      freightCost: new FormControl(null),
+      insuranceCost: new FormControl(null),
+      bankCharges: new FormControl(null),
+      pop: new FormControl(false),
+      currencyID: new FormControl(null, [Validators.required]),
+      invoiceDate: new FormControl(null, [Validators.required]),
+      incoTermTypeID: new FormControl(null),
+      cooID: new FormControl(null),
+    });
+
     this.companyService.observeCompany()
       .subscribe(res => {
         this.companyID = res.companyID;
@@ -144,9 +159,49 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     this.invoiceDate.valueChanges.subscribe((value) => {
       if (value) {
         if (value.length === 8) {
+          // tslint:disable-next-line: max-line-length
           this.form.controls.invoiceDate.setValue(new Date(`${value[4]}${value[5]}/${value[6]}${value[7]}/${value[0]}${value[1]}${value[2]}${value[3]}`));
-
           console.log(this.form.controls.invoiceDate.value);
+        }
+      }
+    });
+
+    this.form.controls.invoiceNo.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value !== this.temporaryForm.controls.invoiceNo.value) {
+          this.form.controls.invoiceNo.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.invoiceNo.setErrors(null);
+        }
+      }
+    });
+
+    this.form.controls.companyID.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value !== this.temporaryForm.controls.companyID.value) {
+          this.form.controls.companyID.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.companyID.setErrors(null);
+        }
+      }
+    });
+
+    this.form.controls.currencyID.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value !== this.temporaryForm.controls.currencyID.value) {
+          this.form.controls.currencyID.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.currencyID.setErrors(null);
+        }
+      }
+    });
+
+    this.form.controls.invoiceDate.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value !== this.temporaryForm.controls.invoiceDate.value) {
+          this.form.controls.invoiceDate.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.invoiceDate.setErrors(null);
         }
       }
     });
@@ -326,10 +381,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
 
-      this.form.patchValue(response);
-      this.form.controls.userID.setValue(this.currentUser.userID);
-      this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
+      this.form.patchValue(response, { emitEvent: false });
+      this.form.controls.userID.setValue(this.currentUser.userID, { emitEvent: false });
+      this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID, { emitEvent: false });
       this.form.updateValueAndValidity();
+
+      this.temporaryForm.patchValue(response);
+      this.temporaryForm.controls.userID.setValue(this.currentUser.userID);
+      this.temporaryForm.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
+      this.temporaryForm.updateValueAndValidity();
 
       const invoiceDate = this.dateService.getUTC(new Date(res.invoices[0].invoiceDate));
 
