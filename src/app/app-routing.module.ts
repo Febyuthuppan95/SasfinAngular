@@ -88,6 +88,7 @@ import { ViewC1AttachmentsComponent } from './views/main/view-company-list/view-
 import { DocumentWindowPreviewComponent } from './components/document-window-preview/document-window-preview.component';
 import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
+import { LinkingLinesComponent } from './views/main/view-transaction-files/linking-lines/linking-lines.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -442,6 +443,12 @@ const routes: Routes = [
             path: 'transaction/invoices',
             component: ViewInvoicesComponent,
             data: { right: 'Transactions' },
+            canActivate: [RightGuard],
+          },
+          {
+            path: 'transaction/linking',
+            component: LinkingLinesComponent,
+            data: { right: 'Capture' },
             canActivate: [RightGuard],
           },
           {

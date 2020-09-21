@@ -76,6 +76,14 @@ export class ContextMenuTransactionComponent implements OnInit {
     // transaction/checklist
   }
 
+  viewLinking() {
+    // tslint:disable-next-line: max-line-length
+    this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '', transactionType: this.transactionType, transactionName: this.transactionName });
+    this.router.navigate(['transaction', 'linking']);
+
+    // transaction/checklist
+  }
+
   readyForAssessment() {
     this.transactionService.sendForAssessment({userID: this.currentUser.userID, transactionID: this.transactionID, statusID: 5}).then(
       (res: Outcome) => {

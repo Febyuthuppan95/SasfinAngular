@@ -300,6 +300,7 @@ import { CreateHelpComponent } from './views/main/view-help-glossary/create-help
 import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-dialog/deleteline-dialog.component';
 import { HelpDirective } from './directives/help.directive';
 import { DialogGotoLineComponent } from './components/forms/capture/dialog-goto-line/dialog-goto-line.component';
+import { LinkingLinesComponent } from './views/main/view-transaction-files/linking-lines/linking-lines.component';
 
 @NgModule({
   declarations: [
@@ -499,6 +500,7 @@ import { DialogGotoLineComponent } from './components/forms/capture/dialog-goto-
     CreateHelpComponent,
     DeletelineDialogComponent,
     DialogGotoLineComponent,
+    LinkingLinesComponent,
   ],
   imports: [
     BrowserModule,

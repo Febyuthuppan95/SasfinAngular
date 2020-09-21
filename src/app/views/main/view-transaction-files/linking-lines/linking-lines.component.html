@@ -1,0 +1,92 @@
+<mat-card>
+  <mat-card-content>
+    <div class="row">
+      <div class="col-12">
+        <p class="text-muted">Linking Lines</p>
+        <h3>{{transaction}}</h3>
+        <br>
+      </div>
+      <div class="col-12">
+        <button *ngFor="let item of attachments" tabindex="-1" mat-mini-fab
+          style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
+          [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
+          matTooltipPosition="after"
+          (click)="previewCapture(item.file, item.itemmentID)">{{ item.fileType[0] }}
+        </button>
+        <br>
+      </div>
+      <div class="col-3">
+        <div class="example-container">
+          <h4>Custom Worksheet Lines</h4>
+          <div
+            cdkDropList
+            #cwsList="cdkDropList"
+            [cdkDropListData]="cwsLines"
+            [cdkDropListConnectedTo]="[sadline]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of cwsLines; let i = index" cdkDrag>
+              <p>
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="example-container">
+          <h4>Invoice Lines</h4>
+          <div
+            cdkDropList
+            #invoiceList="cdkDropList"
+            [cdkDropListData]="invLines"
+            [cdkDropListConnectedTo]="[sadline]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of invLines" cdkDrag>
+              <p>
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <h4>SAD500 Line</h4>
+        <div class="example-container">
+          <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>SAD Lines</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let line of sadLines" [value]="line">
+                Line No {{line.lineNo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            cdkDropList
+            #sadline="cdkDropList"
+            [cdkDropListData]="currentLinks"
+            [cdkDropListConnectedTo]="[invoiceList, cwsList]"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
+              <p>
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+

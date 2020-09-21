@@ -36,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { MatCheckboxModule } from '@angular/material';
     MatPaginatorModule,
     MatBottomSheetModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
@@ -116,7 +118,8 @@ import { MatCheckboxModule } from '@angular/material';
     MatSortModule,
     MatPaginatorModule,
     MatBottomSheetModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   declarations: [ChatRedirectComponent]
 })
