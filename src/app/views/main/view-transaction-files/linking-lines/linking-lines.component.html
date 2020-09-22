@@ -58,10 +58,10 @@
           </mat-card>
           <br>
           <hr>
-          <mat-card class="bg-warning">
+          <mat-card *ngIf="warning" class="bg-warning">
             <mat-card-content>
-              <h5>Warning</h5>
-              <p>This is an example of a warning card</p>
+              <h5>{{warning.title}}</h5>
+              <p>{{warning.msg}}</p>
             </mat-card-content>
           </mat-card>
           <br>

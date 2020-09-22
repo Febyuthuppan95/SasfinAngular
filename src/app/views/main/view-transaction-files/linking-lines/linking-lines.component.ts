@@ -56,6 +56,8 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
   public sadInvTotalValue = 0;
   public sadCwsTotalValue = 0;
 
+  public warning: any;
+
   private currentUser: any = this.user.getCurrentUser();
   // tslint:disable-next-line: max-line-length
   public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
@@ -491,6 +493,15 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       },
     );
+  }
+
+  async evaluate() {
+    this.warning = undefined;
+
+    this.warning = {
+      title: 'test',
+      msg: 'warning message'
+    };
   }
 
   ngOnDestroy(): void {}
