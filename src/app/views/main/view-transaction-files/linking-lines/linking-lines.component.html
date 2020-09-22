@@ -1,12 +1,21 @@
-<mat-card>
+<mat-card style="background: #fafafa;">
   <mat-card-content>
     <div class="row">
       <div class="col-12">
-        <p class="text-muted">Linking Lines</p>
+        <div style="float: right">
+          <ng-container *ngIf="!consultant">
+            <button #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="submitToConsultant(); submitButton.disabled = true;">Submit to Consultant</button>
+          </ng-container>
+          <ng-container *ngIf="consultant">
+            <button #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="approve(); submitButton.disabled = true;">Approve</button>
+          </ng-container>
+        </div>
+        <button mat-icon-button [routerLink]="['/companies/transactions']"><mat-icon>arrow_back</mat-icon></button><p class="text-muted" style="display: inline-block;">Linking Lines</p>
         <h3>{{transaction}}</h3>
         <br>
       </div>
       <div class="col-12">
+        <p>Transaction Documents</p>
         <button *ngFor="let item of attachments" tabindex="-1" mat-mini-fab
           style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
           [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
@@ -15,9 +24,111 @@
         </button>
         <br>
       </div>
-      <div class="col-3">
+      <div class="col-6">
         <div class="example-container">
-          <h4>Custom Worksheet Lines</h4>
+          <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>SAD Lines</mat-label>
+            <mat-select [formControl]="control">
+              <mat-option *ngFor="let line of sadLines" [value]="line">
+                Line No {{line.lineNo}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <mat-card *ngIf="currentSADLine">
+            <mat-card-content>
+              <div class="row">
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Tariff</strong> {{currentSADLine.tariff}} <br>
+                    <strong>Customs Value</strong> {{currentSADLine.customsValue}} <br>
+                    <strong>Previous Declaration</strong> {{currentSADLine.previousDeclaration}} <br>
+                    <strong>Quantity</strong> {{currentSADLine.quantity}}
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Country of Origin</strong> {{currentSADLine.country ? currentSADLine.country.Name : '-'}} <br>
+                    <strong>Supply Unit</strong> {{currentSADLine.supplyUnit}} <br>
+                    <strong>Unit Of Measure</strong> {{currentSADLine.unit ? currentSADLine.unit.Description : '-'}} <br>
+                  </p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <hr>
+          <mat-card class="bg-warning">
+            <mat-card-content>
+              <h5>Warning</h5>
+              <p>This is an example of a warning card</p>
+            </mat-card-content>
+          </mat-card>
+          <br>
+          <div
+            cdkDropList
+            #sadline="cdkDropList"
+            [cdkDropListData]="currentLinks"
+            [cdkDropListConnectedTo]="[invoiceList, cwsList]"
+            class="example-list"
+            (cdkDropListDropped)="dropInSAD($event)">
+            <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
+              <ng-container *ngIf="item.type === 'cws'">
+                <div class="row">
+                  <div class="col-12">
+                    <p style="width: 100%;"><span style="color: rgb(96, 11, 255)"><strong>Customs Worksheet Line</strong></span></p>
+                  </div>
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                      <strong>Customs Value</strong> {{item.custVal}} <br>
+                      <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                      <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+                      <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+                      <strong>Customs Value</strong> {{item.custVal}} <br>
+                      <strong>Currency</strong> {{item.currency}} <br>
+                      <strong>Duty</strong> {{item.duty}} <br>
+                      <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                    </p>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="item.type === 'inv'">
+                <div class="row">
+                  <div class="col-12">
+                    <p style="width: 100%;"><span style="color: rgb(0, 167, 28)"><strong>Invoice Line</strong></span></p>
+                  </div>
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                      <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                      <strong>Product Code</strong> {{item.prodCode}} <br>
+                      <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                      <strong>Item Value</strong> {{item.itemValue}} <br>
+                      <strong>Quantity</strong> {{item.quantity}} <br>
+                    </p>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <br>
+        <div class="example-container">
+          <h4>Custom Worksheet <span style="color: rgb(96, 11, 255)">Lines</span></h4>
+          <!-- <p>Total Value <strong>{{cwsTotalValue}}</strong></p> -->
           <div
             cdkDropList
             #cwsList="cdkDropList"
@@ -26,19 +137,35 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let item of cwsLines; let i = index" cdkDrag>
-              <p>
-                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
-                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
-                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-              </p>
+              <div class="row">
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                    <strong>Customs Value</strong> {{item.custVal}} <br>
+                    <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                    <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+                    <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+                    <strong>Customs Value</strong> {{item.custVal}} <br>
+                    <strong>Currency</strong> {{item.currency}} <br>
+                    <strong>Duty</strong> {{item.duty}} <br>
+                    <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-3">
+        <br>
         <div class="example-container">
-          <h4>Invoice Lines</h4>
+          <h4>Invoice <span style="color: rgb(0, 167, 28)">Lines</span></h4>
+          <!-- <p>Total Value <strong>{{invTotalValue}}</strong></p> -->
           <div
             cdkDropList
             #invoiceList="cdkDropList"
@@ -47,41 +174,23 @@
             class="example-list"
             (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let item of invLines" cdkDrag>
-              <p>
-                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
-                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
-                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <h4>SAD500 Line</h4>
-        <div class="example-container">
-          <mat-form-field appearance="fill" style="width: 100%">
-            <mat-label>SAD Lines</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let line of sadLines" [value]="line">
-                Line No {{line.lineNo}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <div
-            cdkDropList
-            #sadline="cdkDropList"
-            [cdkDropListData]="currentLinks"
-            [cdkDropListConnectedTo]="[invoiceList, cwsList]"
-            class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
-              <p>
-                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
-                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
-                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-              </p>
+              <div class="row">
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                    <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                    <strong>Product Code</strong> {{item.prodCode}} <br>
+                    <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                    <strong>Item Value</strong> {{item.itemValue}} <br>
+                    <strong>Quantity</strong> {{item.quantity}} <br>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

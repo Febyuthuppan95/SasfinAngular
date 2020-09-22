@@ -54,7 +54,6 @@ export class SnackBarComponent implements OnInit, OnChanges, OnDestroy {
   objectHelpDictionary: Map<string, string>;
 
   ngOnInit() {
-    console.log(this.currentUser.designation.toLowerCase());
     this.canEdit = this.currentUser.designation.toLowerCase() === 'admin' || this.currentUser.designation.toLowerCase() === 'consultant';
 
     this.helpSnackbarService.observeHelpContext()

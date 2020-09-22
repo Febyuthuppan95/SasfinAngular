@@ -31,7 +31,6 @@ export class NavbarComponent implements OnInit {
   @Output() offcanvas = new EventEmitter<string>();
 
   ngOnInit() {
-    console.log(localStorage.getItem('notify'));
     if (localStorage.getItem('notify') !== null) {
       this.notifications = JSON.parse(localStorage.getItem('notify'));
 

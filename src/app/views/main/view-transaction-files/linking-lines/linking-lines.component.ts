@@ -1,6 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
 import { ApiService } from 'src/app/services/api.service';
@@ -15,12 +17,14 @@ import { environment } from 'src/environments/environment';
   templateUrl: './linking-lines.component.html',
   styleUrls: ['./linking-lines.component.scss']
 })
-export class LinkingLinesComponent implements OnInit, OnDestroy {
+export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private transationService: TransactionService,
     private capture: CaptureService,
     private user: UserService,
-    private api: ApiService) { }
+    private api: ApiService,
+    private router: Router,
+    private snackbar: MatSnackBar) { }
 
   public transaction: string;
   public transactionType: string;
@@ -31,9 +35,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   public currentSADLine: any;
   public currentLinks: any[] = [];
 
-  public invoiceTotal = 0;
-  public cwsTotal = 0;
-
   public sadLines: any[] = [];
   public invLines: any[] = [];
   public cwsLines: any[] = [];
@@ -41,10 +42,25 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   public invLinesTemp: any[] = [];
   public cwsLinesTemp: any[] = [];
   public attachments: any[] = [];
+  public captureJoins: any[] = [];
+  public allCaptureJoins: any[] = [];
+
+  public units: any[] = [];
+  public countries: any[] =[];
+  public items: any[] = [];
+
+  public cwsTotalValue = 0;
+  public invTotalValue = 0;
+
+  public sadTotalValue = 0;
+  public sadInvTotalValue = 0;
+  public sadCwsTotalValue = 0;
 
   private currentUser: any = this.user.getCurrentUser();
+  // tslint:disable-next-line: max-line-length
+  public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -52,10 +68,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
+
+      this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
     }
   }
 
-  dropInSAD(event: CdkDragDrop<string[]>) {
+  dropInSAD(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -63,10 +81,16 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
+
+      if (event.container.data[event.currentIndex].invoiceLineID) {
+        this.addJoin({ invoiceLineID: event.container.data[event.currentIndex].invoiceLineID });
+      } else {
+        this.addJoin({ customWorksheetLineID: event.container.data[event.currentIndex].customWorksheetLineID});
+      }
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.transationService.observerCurrentAttachment()
     .subscribe((data) => {
       if (data) {
@@ -82,18 +106,65 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       if (value) {
         this.currentSADLine = value;
         this.currentLinks = [];
-        this.invLines = this.invLinesTemp;
-        this.cwsLines = this.cwsLinesTemp;
+
+        this.loadCaptureJoins();
       }
     });
   }
 
+  ngAfterViewInit(): void {}
+
   async init() {
+    await this.loadUnits();
+    await this.loadCountry();
+    await this.loadItems();
+
     await this.loadAttachments();
-    await this.loadSADLines();
-    await this.loadInvoiceLines();
-    await this.loadWorksheetLines();
-    await this.loadCaptureJoins();
+  }
+
+  async loadUnits() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'UnitOfMeasuresList'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.units = res.data;
+    });
+  }
+
+  async loadCountry() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'CountriesList'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.countries = res.data;
+    });
+  }
+
+  async loadItems() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'ItemsList'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.items = res.data;
+    });
   }
 
   async loadAttachments() {
@@ -108,10 +179,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       orderByDirection: ''
     };
 
-    this.transationService
+    await this.transationService
       .listAttatchments(model)
       .then(
-        (res: TransactionFileListResponse) => {
+        async (res: TransactionFileListResponse) => {
           this.attachments = res.attachments;
 
           this.attachments.forEach((attach) => {
@@ -127,6 +198,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
               attach.statusID === 9 ? attach.tooltip = 'Override Capture' : console.log() ;
             }
           });
+
+          await this.loadSADLines();
         });
   }
 
@@ -148,9 +221,19 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       orderByDirection: '',
       rowStart: 1,
       rowEnd: 1000000 }).then(
-      (res: any) => {
-        this.sadLines = res.lines;
+      async (res: any) => {
+        this.sadLinesTemp = res.lines;
+        console.log(this.sadLinesTemp);
+        await this.iterate(this.sadLinesTemp, async (el) => {
+          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+          el.country = this.countries.find(x => x.CountryID == el.cooID);
+        });
+
+        this.sadLines = this.sadLinesTemp;
         this.control.setValue(this.sadLines[0]);
+        this.control.updateValueAndValidity();
+
+        await this.loadInvoiceLines();
       }
     );
   }
@@ -168,10 +251,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       rowEnd: 1000,
     });
 
-    console.log(header);
-
     await this.capture.invoiceLineList({
       invoiceID: header.invoices[0].invoiceID,
+      invoiceLineID: -1,
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
       filter:  '',
@@ -179,11 +261,59 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       orderByDirection: '',
       rowStart: 1,
       rowEnd: 1000000 }).then(
-      (res: any) => {
-        this.invLines = res.lines;
-        console.log(res);
+      async (res: any) => {
+        this.invLinesTemp = res.lines;
+
+        await this.iterate(this.invLinesTemp, (el) => {
+          el.type = 'inv';
+          el.items = this.items.find(x => x.ItemID == el.itemID);
+        });
+
+        this.invLines = this.invLinesTemp;
+
+        await this.loadWorksheetLines();
       }
     );
+  }
+
+  async totalValues() {
+    let invValue = 0;
+
+    await this.iterate(this.invLines, (el) => {
+      if (!isNaN(+el.totalLineValue)) {
+        invValue += +el.totalLineValue;
+      }
+    });
+
+    this.invTotalValue = invValue;
+
+    let cwsValue = 0;
+
+    await this.iterate(this.cwsLines, (el) => {
+      if (!isNaN(+el.custVal)) {
+        cwsValue += +el.custVal;
+      }
+    });
+
+    this.cwsTotalValue = cwsValue;
+
+    let sadcwsValue = 0;
+    let sadinvValue = 0;
+
+    await this.iterate(this.currentLinks, (el) => {
+      if (el.type === 'cws') {
+        if (!isNaN(+el.custVal)) {
+          sadcwsValue += +el.custVal;
+        }
+      } else if (el.type === 'inv') {
+        if (!isNaN(+el.totalLineValue)) {
+          sadinvValue += +el.totalLineValue;
+        }
+      }
+    });
+
+    this.sadCwsTotalValue = sadcwsValue;
+    this.sadInvTotalValue = sadinvValue;
   }
 
   async loadWorksheetLines() {
@@ -198,8 +328,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       orderByDirection: '',
     });
 
-    console.log(header);
-
     await this.capture.customWorksheetLineList({
       userID: this.currentUser.userID,
       customsWorksheetID: header.customsWorksheets[0].customWorksheetID,
@@ -209,9 +337,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       orderByDirection: '',
       filter: '',
       transactionID: this.transactionID, }).then(
-      (res: any) => {
-        this.cwsLines = res.lines;
-        console.log(res);
+      async (res: any) => {
+        this.cwsLinesTemp = res.lines;
+
+        await this.iterate(this.cwsLinesTemp, async (el) => {
+          el.type = 'cws';
+          el.country = this.countries.find(x => x.CountryID == el.cooID);
+        });
+
+        this.cwsLines = this.cwsLinesTemp;
+
+        await this.loadCaptureJoins();
       }
     );
   }
@@ -220,6 +356,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
+        transactionID: this.transactionID,
         filter: '',
         rowStart: 1,
         rowEnd: 1000,
@@ -229,10 +366,38 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       requestProcedure: 'CaptureJoinsList'
     };
 
-    this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
-      (res: any) => {
-        console.log('res.data');
-        console.log(res.data);
+    await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
+      async (res: any) => {
+        this.allCaptureJoins = res.data;
+        this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
+        this.currentLinks = [];
+
+        this.cwsLines = this.cwsLinesTemp;
+        this.invLines = this.invLinesTemp;
+
+        await this.iterate(this.captureJoins, async (el) => {
+          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID !== el.CustomWorksheetLineID);
+          this.invLines = this.invLines.filter(x => x.invoiceLineID !== el.InvoiceLineID);
+
+
+          if (this.currentSADLine) {
+            const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+
+            if (toAdd) {
+              toAdd.captureJoinID = el.CaptureJoinID;
+              this.currentLinks.push(toAdd);
+            }
+
+            const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+
+            if (invoiceToAdd) {
+              invoiceToAdd.captureJoinID = el.CaptureJoinID;
+              this.currentLinks.push(invoiceToAdd);
+            }
+          }
+        });
+
+        await this.totalValues();
       },
     );
   }
@@ -242,13 +407,16 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     request.userID = this.currentUser.userID;
     request.SAD500LineID = this.currentSADLine.sad500LineID;
 
-    await this.api.post(`${environment.ApiEndpoint}/checking/add`, {
-      requestParams: request,
-      requestProcedure: 'CaptureJoinAdd'
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request,
+      procedure: 'CaptureJoinAdd'
     }).then(
       (res: any) => {
-        console.log('res');
-        console.log(res);
+        if (res.outcome) {
+          this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+        }
+
+        this.loadCaptureJoins();
       },
     );
   }
@@ -256,17 +424,26 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   async removeJoin(request) {
     request.userID = this.currentUser.userID;
     request.SAD500LineID = this.currentSADLine.sad500LineID;
-    request.isDeleted = 0;
+    request.isDeleted = 1;
 
-    await this.api.post(`${environment.ApiEndpoint}/checking/update`, {
-      requestParams: request,
-      requestProcedure: 'CaptureJoinsUpdate'
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request,
+      procedure: 'CaptureJoinUpdate'
     }).then(
       (res: any) => {
-        console.log('res');
-        console.log(res);
+        if (res.outcome) {
+          this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
+        }
+
+        this.loadCaptureJoins();
       },
     );
+  }
+
+  async iterate(list, callback) {
+    for (let i = 0; i < list.length; i++) {
+      await callback(list[i]);
+    }
   }
 
   previewCapture(src: string, id: number) {
@@ -277,6 +454,43 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     );
 
     myWindow.opener = null;
+  }
+
+  async approve() {
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request: {
+        transactionID: this.transactionID,
+      },
+      procedure: 'TransactionReady'
+    }).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.snackbar.open('Transaction set to "Ready"', '', { duration: 3000 });
+          setTimeout(() => {
+            this.router.navigate(['companies', 'transactions']);
+          }, 2000);
+        }
+      },
+    );
+  }
+
+  async submitToConsultant() {
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request: {
+        transactionID: this.transactionID,
+        userID: this.currentUser.userID,
+      },
+      procedure: 'LinkingComplete'
+    }).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.snackbar.open('Notification Sent to Consultant', '', { duration: 3000 });
+          setTimeout(() => {
+            this.router.navigate(['companies', 'transactions']);
+          }, 2000);
+        }
+      },
+    );
   }
 
   ngOnDestroy(): void {}
