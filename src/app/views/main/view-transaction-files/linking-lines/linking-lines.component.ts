@@ -378,6 +378,9 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
           this.cwsLines = this.cwsLinesTemp;
           this.invLines = this.invLinesTemp;
 
+          console.log(this.allCaptureJoins);
+          console.log(this.captureJoins);
+
           await this.iterate(this.captureJoins, async (el) => {
             this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID !== el.CustomWorksheetLineID);
             this.invLines = this.invLines.filter(x => x.invoiceLineID !== el.InvoiceLineID);
@@ -400,10 +403,11 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
 
+
           await this.totalValues();
         },
       );
-    }, 500);
+    });
   }
 
   async addJoin(request) {
