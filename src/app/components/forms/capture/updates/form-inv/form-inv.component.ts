@@ -387,8 +387,6 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.updateValueAndValidity();
 
       this.temporaryForm.patchValue(response);
-      this.temporaryForm.controls.userID.setValue(this.currentUser.userID);
-      this.temporaryForm.controls.attachmentStatusID.setValue(res.invoices[0].statusID);
       this.temporaryForm.updateValueAndValidity();
 
       const invoiceDate = this.dateService.getUTC(new Date(res.invoices[0].invoiceDate));
