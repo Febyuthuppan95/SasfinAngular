@@ -57,21 +57,39 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   public sadCwsTotalValue = 0;
 
   public warning: any;
+  public loading = false;
 
   private currentUser: any = this.user.getCurrentUser();
   // tslint:disable-next-line: max-line-length
   public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
 
-  drop(event: CdkDragDrop<any[]>) {
+  dropCWS(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+      if (event.previousContainer.data[event.previousIndex].type === 'cws') {
+        transferArrayItem(event.previousContainer.data,
+                          event.container.data,
+                          event.previousIndex,
+                          event.currentIndex);
 
-      this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
+        this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
+      } else { this.snackbar.open('Item must be CWS', 'OK', { duration: 3000 }); }
+    }
+  }
+
+  dropINV(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      if (event.previousContainer.data[event.previousIndex].type === 'inv') {
+        transferArrayItem(event.previousContainer.data,
+                          event.container.data,
+                          event.previousIndex,
+                          event.currentIndex);
+
+        this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
+      } else { this.snackbar.open('Item must be INV', 'OK', { duration: 3000 }); }
     }
   }
 
@@ -85,9 +103,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
                         event.currentIndex);
 
       if (event.container.data[event.currentIndex].invoiceLineID) {
-        this.addJoin({ invoiceLineID: event.container.data[event.currentIndex].invoiceLineID });
+        this.addJoin({ invoiceLineID: event.container.data[event.currentIndex].invoiceLineID }, event.currentIndex);
       } else {
-        this.addJoin({ customWorksheetLineID: event.container.data[event.currentIndex].customWorksheetLineID});
+        this.addJoin({ customWorksheetLineID: event.container.data[event.currentIndex].customWorksheetLineID}, event.currentIndex);
       }
     }
   }
@@ -115,11 +133,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   }
 
   async init() {
+    this.loading = true;
     await this.loadUnits();
     await this.loadCountry();
     await this.loadItems();
 
     await this.loadAttachments();
+    this.loading = false;
   }
 
   async loadUnits() {
@@ -240,6 +260,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   }
 
   async loadInvoiceLines() {
+    this.loading = true;
+
     const header: any = await this.capture.invoiceList({
       invoiceID: -1,
       userID: this.currentUser.userID,
@@ -268,6 +290,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
         await this.iterate(this.invLinesTemp, (el) => {
           el.type = 'inv';
           el.items = this.items.find(x => x.ItemID == el.itemID);
+          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
         });
 
         this.invLines = this.invLinesTemp;
@@ -344,6 +367,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
         await this.iterate(this.cwsLinesTemp, async (el) => {
           el.type = 'cws';
           el.country = this.countries.find(x => x.CountryID == el.cooID);
+          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
         });
 
         this.cwsLines = this.cwsLinesTemp;
@@ -404,6 +428,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
           }
         });
 
+        this.loading = false;
         console.log(this.currentLinks);
         await this.totalValues();
     });
@@ -424,7 +449,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     return found;
   }
 
-  async addJoin(request) {
+  async addJoin(request, index) {
     request.transactionID = this.transactionID;
     request.userID = this.currentUser.userID;
     request.SAD500LineID = this.currentSADLine.sad500LineID;
@@ -434,11 +459,14 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       procedure: 'CaptureJoinAdd'
     }).then(
       (res: any) => {
+        console.log(res);
         if (res.outcome) {
           this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+
+          this.currentLinks[index].captureJoinID = +res.outcomeMessage;
         }
 
-        this.loadInvoiceLines();
+        // this.loadInvoiceLines();
       },
     );
   }
@@ -457,7 +485,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
           this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
         }
 
-        this.loadInvoiceLines();
+        // this.loadInvoiceLines();
       },
     );
   }

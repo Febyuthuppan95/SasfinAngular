@@ -43,14 +43,13 @@
                   <strong>Tariff</strong> {{currentSADLine.tariff}} <br>
                   <strong>Customs Value</strong> {{currentSADLine.customsValue}} <br>
                   <strong>Country of Origin</strong> {{currentSADLine.country ? currentSADLine.country.Name : '-'}}
-
                 </p>
               </div>
               <div class="col-4">
                 <p style="width: 100%;">
                   <strong>Previous Declaration</strong> {{currentSADLine.previousDeclaration}} <br>
                   <strong>Quantity</strong> {{currentSADLine.quantity}} <br>
-                  <strong>Country of Origin</strong> {{currentSADLine.country ? currentSADLine.country.Name : '-'}}
+                  <strong>Unit Of Measure</strong> {{currentSADLine.unit ? currentSADLine.unit.Description : '-'}}
                 </p>
               </div>
               <div class="col-4">
@@ -80,6 +79,7 @@
             [cdkDropListConnectedTo]="[invoiceList, cwsList]"
             class="example-list"
             (cdkDropListDropped)="dropInSAD($event)">
+            <ng-container *ngIf="!loading">
             <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
               <ng-container *ngIf="item.type === 'cws'">
                 <div class="row">
@@ -102,6 +102,7 @@
                       <strong>Currency</strong> {{item.currency}} <br>
                       <strong>Duty</strong> {{item.duty}} <br>
                       <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                      <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
                     </p>
                   </div>
                 </div>
@@ -122,13 +123,18 @@
                   <div class="col-6">
                     <p style="width: 100%;">
                       <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-                      <strong>Item Value</strong> {{item.itemValue}} <br>
                       <strong>Quantity</strong> {{item.quantity}} <br>
+                      <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                      <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
                     </p>
                   </div>
                 </div>
               </ng-container>
             </div>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <loader></loader>
+          </ng-container>
           </div>
         </div>
       </div>
@@ -141,7 +147,8 @@
             [cdkDropListData]="cwsLines"
             [cdkDropListConnectedTo]="[sadline]"
             class="example-list"
-            (cdkDropListDropped)="drop($event)">
+            (cdkDropListDropped)="dropCWS($event)">
+            <ng-container *ngIf="!loading">
             <div class="example-box" *ngFor="let item of cwsLines; let i = index" cdkDrag>
               <div class="row">
                 <div class="col-6">
@@ -160,10 +167,15 @@
                     <strong>Currency</strong> {{item.currency}} <br>
                     <strong>Duty</strong> {{item.duty}} <br>
                     <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                    <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
                   </p>
                 </div>
               </div>
             </div>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <loader></loader>
+          </ng-container>
           </div>
         </div>
       </div>
@@ -176,26 +188,32 @@
             [cdkDropListData]="invLines"
             [cdkDropListConnectedTo]="[sadline]"
             class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of invLines" cdkDrag>
-              <div class="row">
-                <div class="col-6">
-                  <p style="width: 100%;">
-                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                    <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                    <strong>Product Code</strong> {{item.prodCode}} <br>
-                    <strong>Unit Price</strong> {{item.unitPrice}} <br>
-                  </p>
-                </div>
-                <div class="col-6">
-                  <p style="width: 100%;">
-                    <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-                    <strong>Item Value</strong> {{item.itemValue}} <br>
-                    <strong>Quantity</strong> {{item.quantity}} <br>
-                  </p>
+            (cdkDropListDropped)="dropINV($event)">
+            <ng-container *ngIf="!loading">
+              <div class="example-box" *ngFor="let item of invLines" cdkDrag>
+                <div class="row">
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                      <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                      <strong>Product Code</strong> {{item.prodCode}} <br>
+                      <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p style="width: 100%;">
+                      <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                      <strong>Quantity</strong> {{item.quantity}} <br>
+                      <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                      <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ng-container>
+            <ng-container *ngIf="loading">
+              <loader></loader>
+            </ng-container>
           </div>
         </div>
       </div>
