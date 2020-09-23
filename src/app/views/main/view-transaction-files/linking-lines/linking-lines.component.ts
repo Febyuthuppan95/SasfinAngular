@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './linking-lines.component.html',
   styleUrls: ['./linking-lines.component.scss']
 })
-export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LinkingLinesComponent implements OnInit, OnDestroy {
   constructor(
     private transationService: TransactionService,
     private capture: CaptureService,
@@ -30,7 +30,7 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
   public transactionType: string;
   public transactionID: number;
 
-  public control = new FormControl();
+  public control = new FormControl(undefined);
   public currentSAD: any;
   public currentSADLine: any;
   public currentLinks: any[] = [];
@@ -108,13 +108,11 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
       if (value) {
         this.currentSADLine = value;
         this.currentLinks = [];
-
+        console.log('CONTROL CHANGED');
         this.loadCaptureJoins();
       }
     });
   }
-
-  ngAfterViewInit(): void {}
 
   async init() {
     await this.loadUnits();
@@ -225,15 +223,16 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
       rowEnd: 1000000 }).then(
       async (res: any) => {
         this.sadLinesTemp = res.lines;
-        console.log(this.sadLinesTemp);
+
         await this.iterate(this.sadLinesTemp, async (el) => {
           el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
           el.country = this.countries.find(x => x.CountryID == el.cooID);
         });
 
         this.sadLines = this.sadLinesTemp;
-        this.control.setValue(this.sadLines[0]);
-        this.control.updateValueAndValidity();
+        this.control.setValue(this.sadLines[0], { emitEvent: false });
+        this.currentSADLine = this.sadLines[0];
+        this.currentLinks = [];
 
         await this.loadInvoiceLines();
       }
@@ -355,6 +354,9 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async loadCaptureJoins() {
+    console.log('LOADING CAPTURE JOINS============================');
+    this.currentLinks = [];
+
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -368,46 +370,58 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
       requestProcedure: 'CaptureJoinsList'
     };
 
-    setTimeout(async () => {
-      await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
-        async (res: any) => {
-          this.allCaptureJoins = res.data;
-          this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
-          this.currentLinks = [];
+    await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
+      async (res: any) => {
+        this.allCaptureJoins = res.data;
+        this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
 
-          this.cwsLines = this.cwsLinesTemp;
-          this.invLines = this.invLinesTemp;
+        this.cwsLines = this.cwsLinesTemp;
+        this.invLines = this.invLinesTemp;
 
-          console.log(this.allCaptureJoins);
-          console.log(this.captureJoins);
+        await this.iterate(this.captureJoins, async (el) => {
+          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
+          this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
 
-          await this.iterate(this.captureJoins, async (el) => {
-            this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != +el.CustomWorksheetLineID);
-            this.invLines = this.invLines.filter(x => x.invoiceLineID != +el.InvoiceLineID);
-
-
-            if (this.currentSADLine) {
-              const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == +el.CustomWorksheetLineID);
+          if (this.currentSADLine) {
+            if (el.CustomWorksheetLineID !== null) {
+              const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
 
               if (toAdd) {
+                console.log(toAdd);
                 toAdd.captureJoinID = el.CaptureJoinID;
                 this.currentLinks.push(toAdd);
               }
+            }
 
-              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == +el.InvoiceLineID);
+            if (el.InvoiceLineID !== null) {
+              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
 
               if (invoiceToAdd) {
                 invoiceToAdd.captureJoinID = el.CaptureJoinID;
                 this.currentLinks.push(invoiceToAdd);
               }
             }
-          });
+          }
+        });
 
-
-          await this.totalValues();
-        },
-      );
+        console.log(this.currentLinks);
+        await this.totalValues();
     });
+  }
+
+  findCustomsWorksheetLine(array, value) {
+    let found;
+
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < array.length; i++) {
+      console.log(`${array[i].customWorksheetLineID} == ${value}`);
+      // tslint:disable-next-line: triple-equals
+      if (array[i].customWorksheetLineID == value) {
+        found = array[i];
+      }
+    }
+
+    return found;
   }
 
   async addJoin(request) {
@@ -424,7 +438,7 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
           this.snackbar.open('Line linked', 'OK', { duration: 3000 });
         }
 
-        this.loadCaptureJoins();
+        this.loadInvoiceLines();
       },
     );
   }
@@ -443,7 +457,7 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
           this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
         }
 
-        this.loadCaptureJoins();
+        this.loadInvoiceLines();
       },
     );
   }
