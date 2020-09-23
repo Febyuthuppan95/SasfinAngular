@@ -382,19 +382,19 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log(this.captureJoins);
 
           await this.iterate(this.captureJoins, async (el) => {
-            this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID !== el.CustomWorksheetLineID);
-            this.invLines = this.invLines.filter(x => x.invoiceLineID !== el.InvoiceLineID);
+            this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != +el.CustomWorksheetLineID);
+            this.invLines = this.invLines.filter(x => x.invoiceLineID != +el.InvoiceLineID);
 
 
             if (this.currentSADLine) {
-              const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+              const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == +el.CustomWorksheetLineID);
 
               if (toAdd) {
                 toAdd.captureJoinID = el.CaptureJoinID;
                 this.currentLinks.push(toAdd);
               }
 
-              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == +el.InvoiceLineID);
 
               if (invoiceToAdd) {
                 invoiceToAdd.captureJoinID = el.CaptureJoinID;
