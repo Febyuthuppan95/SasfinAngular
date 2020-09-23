@@ -61,6 +61,7 @@
             <mat-icon>remove_circle</mat-icon>
           </button>
           <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
+          <mat-error *ngIf="form.controls.invoiceNo.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.invoiceNo.value}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>

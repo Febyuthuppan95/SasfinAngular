@@ -168,7 +168,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.invoiceNo.valueChanges.subscribe((value) => {
-      if (value) {
+      if (value && this.form.controls.qaUserID.value !== -1) {
         if (value !== this.temporaryForm.controls.invoiceNo.value) {
           this.form.controls.invoiceNo.setErrors({ noMatch: true });
         } else {
@@ -177,28 +177,28 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.form.controls.companyID.valueChanges.subscribe((value) => {
-      if (value) {
-        if (value !== this.temporaryForm.controls.companyID.value) {
-          this.form.controls.companyID.setErrors({ noMatch: true });
-        } else {
-          this.form.controls.companyID.setErrors(null);
-        }
-      }
-    });
+    // this.form.controls.companyID.valueChanges.subscribe((value) => {
+    //   if (value && this.form.controls.qaUserID.value !== -1) {
+    //     if (value !== this.temporaryForm.controls.companyID.value) {
+    //       this.form.controls.companyID.setErrors({ noMatch: true });
+    //     } else {
+    //       this.form.controls.companyID.setErrors(null);
+    //     }
+    //   }
+    // });
 
-    this.form.controls.currencyID.valueChanges.subscribe((value) => {
-      if (value) {
-        if (value !== this.temporaryForm.controls.currencyID.value) {
-          this.form.controls.currencyID.setErrors({ noMatch: true });
-        } else {
-          this.form.controls.currencyID.setErrors(null);
-        }
-      }
-    });
+    // this.form.controls.currencyID.valueChanges.subscribe((value) => {
+    //   if (value && this.form.controls.qaUserID.value !== -1) {
+    //     if (value !== this.temporaryForm.controls.currencyID.value) {
+    //       this.form.controls.currencyID.setErrors({ noMatch: true });
+    //     } else {
+    //       this.form.controls.currencyID.setErrors(null);
+    //     }
+    //   }
+    // });
 
     this.form.controls.invoiceDate.valueChanges.subscribe((value) => {
-      if (value) {
+      if (value && this.form.controls.qaUserID.value !== -1) {
         if (value !== this.temporaryForm.controls.invoiceDate.value) {
           this.form.controls.invoiceDate.setErrors({ noMatch: true });
         } else {
@@ -485,7 +485,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getError(key: string): string {
-    return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
+    return this.errors.find(x =>
+      x.fieldName.toUpperCase() === key.toUpperCase()) ?
+      this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
   }
 
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
@@ -493,7 +495,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+      requestModel.attachmentStatusID =
+      escalation ? 7 :
+        (escalationResolved ? 8 :
+          (saveProgress && requestModel.attachmentStatusID === 7 ? 7 :
+            (saveProgress && this.form.controls.qaUserID.value !== -1 ? 11 :
+              saveProgress && this.form.controls.qaUserID.value === -1 ? 2 :
+              this.form.controls.qaUserID.value !== -1 ? 11 : 3)));
+
       requestModel.userID = this.currentUser.userID;
       requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
 
