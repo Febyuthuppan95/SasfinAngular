@@ -368,40 +368,42 @@ export class LinkingLinesComponent implements OnInit, AfterViewInit, OnDestroy {
       requestProcedure: 'CaptureJoinsList'
     };
 
-    await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
-      async (res: any) => {
-        this.allCaptureJoins = res.data;
-        this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
-        this.currentLinks = [];
+    setTimeout(async () => {
+      await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
+        async (res: any) => {
+          this.allCaptureJoins = res.data;
+          this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
+          this.currentLinks = [];
 
-        this.cwsLines = this.cwsLinesTemp;
-        this.invLines = this.invLinesTemp;
+          this.cwsLines = this.cwsLinesTemp;
+          this.invLines = this.invLinesTemp;
 
-        await this.iterate(this.captureJoins, async (el) => {
-          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID !== el.CustomWorksheetLineID);
-          this.invLines = this.invLines.filter(x => x.invoiceLineID !== el.InvoiceLineID);
+          await this.iterate(this.captureJoins, async (el) => {
+            this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID !== el.CustomWorksheetLineID);
+            this.invLines = this.invLines.filter(x => x.invoiceLineID !== el.InvoiceLineID);
 
 
-          if (this.currentSADLine) {
-            const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+            if (this.currentSADLine) {
+              const toAdd = this.cwsLinesTemp.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
-            if (toAdd) {
-              toAdd.captureJoinID = el.CaptureJoinID;
-              this.currentLinks.push(toAdd);
+              if (toAdd) {
+                toAdd.captureJoinID = el.CaptureJoinID;
+                this.currentLinks.push(toAdd);
+              }
+
+              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+
+              if (invoiceToAdd) {
+                invoiceToAdd.captureJoinID = el.CaptureJoinID;
+                this.currentLinks.push(invoiceToAdd);
+              }
             }
+          });
 
-            const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
-
-            if (invoiceToAdd) {
-              invoiceToAdd.captureJoinID = el.CaptureJoinID;
-              this.currentLinks.push(invoiceToAdd);
-            }
-          }
-        });
-
-        await this.totalValues();
-      },
-    );
+          await this.totalValues();
+        },
+      );
+    }, 500);
   }
 
   async addJoin(request) {
