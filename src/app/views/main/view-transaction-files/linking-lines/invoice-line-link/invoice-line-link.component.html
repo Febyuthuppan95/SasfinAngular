@@ -1,5 +1,8 @@
 <h3 mat-dialog-title>Invoice Lines</h3>
 <div mat-dialog-content>
+  <ng-container *ngIf="currentLinks.length > 0">
+    <h5>Linked Lines</h5>
+  </ng-container>
   <ng-container *ngFor="let item of currentLinks; let i = index">
     <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%;">
       <mat-card class="linked">
@@ -30,7 +33,9 @@
     </button>
     <br>
   </ng-container>
-  <br>
+  <ng-container *ngIf="currentLinks.length > 0">
+    <h5>Available Lines</h5>
+  </ng-container>
   <ng-container *ngFor="let item of lines; let i = index">
     <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%;">
       <mat-card>
