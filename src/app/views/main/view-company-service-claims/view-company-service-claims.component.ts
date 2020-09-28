@@ -173,6 +173,14 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       }
     },
     {
+      title: 'User Claim Number',
+      propertyName: 'userClaimNumber',
+      order: {
+        enable: true,
+        tag: 'UserClaimNumber'
+      }
+    },
+    {
       title: 'Company Service Claim Number',
       propertyName: 'companyServiceClaimNumber',
       order: {
@@ -234,6 +242,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   selectedCompanyServiceID = -1;
   selectedCompanyServiceIDControl = new FormControl(-1);
   selectedClaimDate: Date = new Date();
+  ClaimNumber: string;
   ServiceClaim: {
     companyServiceID: number,
     companyServiceClaimNumber: number,
@@ -475,7 +484,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.getCompanyServiceClaims(model).then(
       (res: CompanyServiceClaimsListResponse) => {
-        // console.log(res);
+        console.log('res');
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -718,6 +728,7 @@ createCompanyServiceClaim() {
   const model = {
     userID: this.currentUser.userID,
     companyServiceID: this.selectedCompanyServiceID,
+    claimNumber: this.ClaimNumber,
     claimDate: this.selectedClaimDate || null
   };
   // console.log(model);

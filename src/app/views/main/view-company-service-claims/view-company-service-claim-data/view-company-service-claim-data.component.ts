@@ -19,9 +19,9 @@ export class ViewCompanyServiceClaimDataComponent implements OnInit {
 
   ) { }
 
-  columnsToDisplay = ["rowNum", "itemName", "itemID"];
+  columnsToDisplay = ['rowNum', 'itemName', 'itemID'];
   data: Import[] = [];
-  dataLines: Export[] = []
+  dataLines: Export[] = [];
   headings: TableHeading[] = [
     {
       title: '',
@@ -52,49 +52,50 @@ export class ViewCompanyServiceClaimDataComponent implements OnInit {
       {
         rowNum: 1,
         itemID: 2,
-        prodName: "Prod 1",
+        prodName: 'Prod 1',
         expQuantity: 200,
         totQuantity: 300,
         quantityPer: 2,
         cjid: 3,
         availExportQuantity: 100,
         exportDate: new Date(),
-        mrn: "mrn - 2-00200020-pp"
+        mrn: 'mrn - 2-00200020-pp'
       },
       {
         rowNum: 1,
         itemID: 2,
-        prodName: "Prod 1",
+        prodName: 'Prod 1',
         expQuantity: 200,
         totQuantity: 300,
         quantityPer: 2,
         cjid: 3,
         availExportQuantity: 100,
         exportDate: new Date(),
-        mrn: "mrn - 2-00200020-pp"
+        mrn: 'mrn - 2-00200020-pp'
       },
       {
         rowNum: 1,
         itemID: 2,
-        prodName: "Prod 1",
+        prodName: 'Prod 1',
         expQuantity: 200,
         totQuantity: 300,
         quantityPer: 2,
         cjid: 3,
         availExportQuantity: 100,
         exportDate: new Date(),
-        mrn: "mrn - 2-00200020-pp"
-      },{
+        mrn: 'mrn - 2-00200020-pp'
+      },
+      {
         rowNum: 1,
         itemID: 2,
-        prodName: "Prod 1",
+        prodName: 'Prod 1',
         expQuantity: 200,
         totQuantity: 300,
         quantityPer: 2,
         cjid: 3,
         availExportQuantity: 100,
         exportDate: new Date(),
-        mrn: "mrn - 2-00200020-pp"
+        mrn: 'mrn - 2-00200020-pp'
       }
     );
     this.data.push(
@@ -147,7 +148,6 @@ export class ViewCompanyServiceClaimDataComponent implements OnInit {
         importDate: new Date()
       }
     );
-    
   }
 
 }
