@@ -127,7 +127,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
         this.currentSADLine = value;
         this.currentLinks = [];
         console.log('CONTROL CHANGED');
-        this.loadCaptureJoins();
+        this.loadInvoiceLines();
       }
     });
   }
