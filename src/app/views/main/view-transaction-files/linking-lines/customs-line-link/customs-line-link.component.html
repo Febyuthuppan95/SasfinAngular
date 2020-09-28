@@ -1,0 +1,27 @@
+<h3 mat-dialog-title>Customs Worksheet Lines</h3>
+<div mat-dialog-content>
+  <ng-container *ngFor="let item of currentLinks">
+    <mat-card>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-6">
+            <p style="width: 100%;">
+              <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+              <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+              <strong>Product Code</strong> {{item.prodCode}} <br>
+              <strong>Unit Price</strong> {{item.unitPrice}} <br>
+            </p>
+          </div>
+          <div class="col-6">
+            <p style="width: 100%;">
+              <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+              <strong>Quantity</strong> {{item.quantity}} <br>
+              <strong>Common Factor</strong> {{item.commonFactor}} <br>
+              <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>

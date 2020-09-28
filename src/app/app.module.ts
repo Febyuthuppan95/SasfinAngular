@@ -301,6 +301,10 @@ import { DeletelineDialogComponent } from './layouts/capture-layout/deleteline-d
 import { HelpDirective } from './directives/help.directive';
 import { DialogGotoLineComponent } from './components/forms/capture/dialog-goto-line/dialog-goto-line.component';
 import { LinkingLinesComponent } from './views/main/view-transaction-files/linking-lines/linking-lines.component';
+import { CheckingQueueComponent } from './views/main/checking-queue/checking-queue.component';
+import { InvoiceLineLinkComponent } from './views/main/view-transaction-files/linking-lines/invoice-line-link/invoice-line-link.component';
+import { CustomsLineLinkComponent } from './views/main/view-transaction-files/linking-lines/customs-line-link/customs-line-link.component';
+import { ApproveDialogComponent } from './views/main/view-transaction-files/linking-lines/approve-dialog/approve-dialog.component';
 
 @NgModule({
   declarations: [
@@ -501,6 +505,10 @@ import { LinkingLinesComponent } from './views/main/view-transaction-files/linki
     DeletelineDialogComponent,
     DialogGotoLineComponent,
     LinkingLinesComponent,
+    CheckingQueueComponent,
+    InvoiceLineLinkComponent,
+    CustomsLineLinkComponent,
+    ApproveDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -610,7 +618,10 @@ import { LinkingLinesComponent } from './views/main/view-transaction-files/linki
     BottomSheetAssignDutyComponent,
     CreateHelpComponent,
     DeletelineDialogComponent,
-    DialogGotoLineComponent
+    DialogGotoLineComponent,
+    InvoiceLineLinkComponent,
+    CustomsLineLinkComponent,
+    ApproveDialogComponent
   ],
 })
 export class AppModule {}

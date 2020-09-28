@@ -13,8 +13,6 @@
         <button mat-icon-button [routerLink]="['/companies/transactions']"><mat-icon>arrow_back</mat-icon></button><h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
         <br>
         <br>
-      </div>
-      <div class="col-12">
         <p>Transaction Documents</p>
         <button *ngFor="let item of attachments" tabindex="-1" mat-raised-button
           style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
@@ -24,6 +22,66 @@
         </button>
         <br>
         <br>
+      </div>
+      <div class="col-12">
+        <ng-container *ngFor="let item of sadLines; let i = index;">
+          <button
+          mat-button [matMenuTriggerFor]="menu"
+          style="width: 100%; padding: 0; margin: 0;">
+          <mat-card>
+            <mat-card-content>
+              <div class="row">
+                <div class="col-12">
+                  <h3 class="text-left">Line {{i+1}}</h3>
+                </div>
+                <div class="col-4">
+                  <p class="text-left" style="width: 100%;">
+                    <strong>Tariff</strong> {{item.tariff}} <br>
+                    <strong>Customs Value</strong> {{item.customsValue}} <br>
+                    <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}}
+                  </p>
+                </div>
+                <div class="col-4">
+                  <p class="text-left" style="width: 100%;">
+                    <strong>Previous Declaration</strong> {{item.previousDeclaration}} <br>
+                    <strong>Quantity</strong> {{item.quantity}} <br>
+                    <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+                  </p>
+                </div>
+                <div class="col-4">
+                  <p class="text-left" style="width: 100%;">
+                    <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+                  </p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="_invoiceLinkDialog(i);">Invoice Lines</button>
+          <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
+        </mat-menu>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+<!-- OLD -->
+<!-- <div class="col-12">
+        <p>Transaction Documents</p>
+        <button *ngFor="let item of attachments" tabindex="-1" mat-raised-button
+          style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
+          [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
+          matTooltipPosition="after"
+          (click)="previewCapture(item.file, item.itemmentID)"><mat-icon>insert_drive_file</mat-icon>&nbsp;{{ item.fileType }}
+        </button>
+        <br>
+        <br>
+
         <mat-form-field appearance="fill" style="width: 100%">
           <mat-label>SAD Lines</mat-label>
           <mat-select [formControl]="control">
@@ -61,8 +119,10 @@
           </mat-card-content>
         </mat-card>
         <br>
-      </div>
-      <div class="col-6">
+
+
+      </div> -->
+      <!-- <div class="col-6">
         <div class="example-container">
           <mat-card *ngIf="warning" class="bg-warning">
             <mat-card-content>
@@ -136,8 +196,8 @@
           </ng-container>
           </div>
         </div>
-      </div>
-      <div class="col-3">
+      </div> -->
+      <!-- <div class="col-3">
         <div class="example-container" style="border-color: rgb(96, 11, 255);">
           <h4>Custom Worksheet <span style="color: rgb(96, 11, 255)">Lines</span></h4>
           <div
@@ -177,8 +237,8 @@
           </ng-container>
           </div>
         </div>
-      </div>
-      <div class="col-3">
+      </div> -->
+      <!-- <div class="col-3">
         <div class="example-container" style="border-color: rgb(0, 167, 28);">
           <h4>Invoice <span style="color: rgb(0, 167, 28)">Lines</span></h4>
           <div
@@ -215,8 +275,4 @@
             </ng-container>
           </div>
         </div>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
-
+      </div> -->

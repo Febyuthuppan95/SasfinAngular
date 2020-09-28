@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
@@ -10,6 +10,8 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { environment } from 'src/environments/environment';
+import { CustomsLineLinkComponent } from './customs-line-link/customs-line-link.component';
+import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,7 +26,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     private user: UserService,
     private api: ApiService,
     private router: Router,
-    private snackbar: MatSnackBar) { }
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog) { }
 
   public transaction: string;
   public transactionType: string;
@@ -46,7 +49,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
   public allCaptureJoins: any[] = [];
 
   public units: any[] = [];
-  public countries: any[] =[];
+  public countries: any[] = [];
   public items: any[] = [];
 
   public cwsTotalValue = 0;
@@ -397,36 +400,36 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       async (res: any) => {
         this.allCaptureJoins = res.data;
-        this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
+        // this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
 
-        this.cwsLines = this.cwsLinesTemp;
-        this.invLines = this.invLinesTemp;
+        // this.cwsLines = this.cwsLinesTemp;
+        // this.invLines = this.invLinesTemp;
 
-        await this.iterate(this.captureJoins, async (el) => {
-          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
-          this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
+        // await this.iterate(this.captureJoins, async (el) => {
+        //   this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
+        //   this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
 
-          if (this.currentSADLine) {
-            if (el.CustomWorksheetLineID !== null) {
-              const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
+        //   if (this.currentSADLine) {
+        //     if (el.CustomWorksheetLineID !== null) {
+        //       const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
 
-              if (toAdd) {
-                console.log(toAdd);
-                toAdd.captureJoinID = el.CaptureJoinID;
-                this.currentLinks.push(toAdd);
-              }
-            }
+        //       if (toAdd) {
+        //         console.log(toAdd);
+        //         toAdd.captureJoinID = el.CaptureJoinID;
+        //         this.currentLinks.push(toAdd);
+        //       }
+        //     }
 
-            if (el.InvoiceLineID !== null) {
-              const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+        //     if (el.InvoiceLineID !== null) {
+        //       const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
 
-              if (invoiceToAdd) {
-                invoiceToAdd.captureJoinID = el.CaptureJoinID;
-                this.currentLinks.push(invoiceToAdd);
-              }
-            }
-          }
-        });
+        //       if (invoiceToAdd) {
+        //         invoiceToAdd.captureJoinID = el.CaptureJoinID;
+        //         this.currentLinks.push(invoiceToAdd);
+        //       }
+        //     }
+        //   }
+        // });
 
         this.loading = false;
         console.log(this.currentLinks);
@@ -550,6 +553,84 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
       title: 'test',
       msg: 'warning message'
     };
+  }
+
+  _invoiceLinkDialog(index: number) {
+    const currentLinks = this.getCurrentLinks(this.sadLines[index], 'inv');
+    console.log(currentLinks);
+
+    this.dialog.open(InvoiceLineLinkComponent, {
+      width: '860px',
+      data: {
+        currentLine: this.sadLines[index],
+        joins: this.captureJoins,
+        transactionID: this.transactionID,
+        lines: this.invLines,
+        currentLinks,
+        currentUser: this.currentUser,
+      }
+    }).afterClosed().subscribe(() => {
+      this.loadInvoiceLines();
+    });
+  }
+
+  _customsLinkDialog(index: number) {
+    const currentLinks = this.getCurrentLinks(this.sadLines[index], 'cws');
+    console.log(currentLinks);
+
+    this.dialog.open(CustomsLineLinkComponent, {
+      width: '860px',
+      data: {
+        currentLine: this.sadLines[index],
+        transactionID: this.transactionID,
+        joins: this.captureJoins,
+        lines: this.cwsLines,
+        currentLinks,
+        currentUser: this.currentUser,
+      }
+    }).afterClosed().subscribe(() => {
+      this.loadInvoiceLines();
+    });
+  }
+
+  getCurrentLinks(currentSADLine: any, type: string): any[] {
+    const currentLinks = [];
+    const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
+    console.log(this.allCaptureJoins);
+    this.cwsLines = this.cwsLinesTemp;
+    this.invLines = this.invLinesTemp;
+
+    captureJoins.forEach((el) => {
+      this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
+      this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
+
+
+
+      if (this.currentSADLine) {
+        if (el.CustomWorksheetLineID !== null) {
+          const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
+
+          if (toAdd && type === 'cws') {
+            console.log(toAdd);
+            toAdd.captureJoinID = el.CaptureJoinID;
+            toAdd.type = 'cws';
+            currentLinks.push(toAdd);
+          }
+        }
+
+        if (el.InvoiceLineID !== null && type === 'inv') {
+          const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+
+          if (invoiceToAdd) {
+            invoiceToAdd.captureJoinID = el.CaptureJoinID;
+            invoiceToAdd.type = 'inv';
+            currentLinks.push(invoiceToAdd);
+          }
+        }
+      }
+    });
+
+    return currentLinks;
   }
 
   ngOnDestroy(): void {}
