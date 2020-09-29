@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -72,8 +72,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   shortcuts: ShortcutInput[] = [];
 
-  @ViewChildren('lines') lines: any;
-  @ViewChildren('documents') documents: any;
+  @ViewChildren('lines') lines: QueryList<ElementRef>;
+  @ViewChildren('documents') documents: QueryList<ElementRef>;
 
   // dropCWS(event: CdkDragDrop<any[]>) {
   //   if (event.previousContainer === event.container) {
@@ -151,14 +151,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              const lineElements = this.lines.map(para => {
-                console.log('Paras: ', para.nativeElement);
-                return para.nativeElement;
-              });
-
-              if (lineElements.length > 0) {
-                lineElements[0].focus();
-              }
+              this.lines.first.nativeElement.focus();
             }
         },
         {
@@ -166,14 +159,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              const lineElements = this.documents.map(para => {
-                console.log('Paras: ', para.nativeElement);
-                return para.nativeElement;
-              });
-
-              if (lineElements.length > 0) {
-                lineElements[0].focus();
-              }
+              this.documents.first.nativeElement.focus();
             }
         },
     );
