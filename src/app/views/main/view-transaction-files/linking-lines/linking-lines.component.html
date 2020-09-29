@@ -1,3 +1,5 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
 <mat-card style="background: #fafafa;">
   <mat-card-content>
     <div class="row">
@@ -14,7 +16,7 @@
         <br>
         <br>
         <p>Transaction Documents</p>
-        <button *ngFor="let item of attachments" tabindex="-1" mat-raised-button
+        <button *ngFor="let item of attachments" mat-raised-button #documents
           style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
           [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
           matTooltipPosition="after"
@@ -26,6 +28,7 @@
       <div class="col-12">
         <ng-container *ngFor="let item of sadLines; let i = index;">
           <button
+          #lines
           mat-button [matMenuTriggerFor]="menu"
           style="width: 100%; padding: 0; margin: 0;">
           <mat-card>
