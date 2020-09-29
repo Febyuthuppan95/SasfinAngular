@@ -50,7 +50,7 @@
     </mat-toolbar>
     <mat-progress-bar mode="indeterminate"  *ngIf="loading" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
     <div class="row">
-        <div [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')
+        <div [ngClass]="(this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')
         ? 'col-sm-5':'col-sm-7'">
             <div class="top-section row">
                 <mat-card class="offset-sm-1 col-sm-11">
@@ -71,17 +71,17 @@
                                     <mat-datepicker-toggle matSuffix [for]="exportEndDate"></mat-datepicker-toggle>
                                     <mat-datepicker #exportEndDate></mat-datepicker>
                                 </mat-form-field>
-                                <mat-form-field class="offset-md-1 col-md-2">
-                                    <mat-label>Extension Days</mat-label>
-                                    <mat-select required formControlName="ExtensionDays">
-                                    <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
-                                        {{day.value}}
-                                    </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                              <mat-form-field class="offset-md-1 col-md-2">
+                                  <mat-label>Extension Days</mat-label>
+                                  <mat-select required formControlName="ExtensionDays">
+                                  <mat-option *ngFor="let day of extensionDays" [value]="day.value" >
+                                      {{day.value}}
+                                  </mat-option>
+                                  </mat-select>
+                              </mat-form-field>
                             </div>
 
-                            <div class="row" *ngIf="this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD'">
+                            <div class="row" *ngIf="this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD'">
                                 <mat-form-field class="col-md-5">
                                     <mat-label>Quarter</mat-label>
                                     <mat-select formControlName="QuarterID" (selectionChange)="periodQuarter($event.value)">
@@ -121,7 +121,7 @@
 
                                   </mat-form-field>
                             </div>
-                            <div class="row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD'">
+                            <div class="row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI'">
                                 <mat-form-field class="col-md-4">
                                     <mat-label>Lookback Days</mat-label>
                                     <mat-select required formControlName="LookBackDays" >
@@ -153,6 +153,35 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                            <div class="row" *ngIf="this.currentClaim.serviceName === 'PI'">
+                              <mat-form-field class="col-md-9">
+                                <mat-label>PI Claim Types</mat-label>
+                                <mat-select required formControlName="PIClaimType">
+                                    <mat-option [value]="1">test 1</mat-option>
+                                    <mat-option [value]="2">test 2</mat-option>
+                                    <mat-option [value]="3">test 3</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <mat-form-field class="col-md-5" >
+                                <mat-label>Start Date:</mat-label>
+                                <input required matInput [matDatepicker]="StartDate" formControlName="StartDate">
+                                <mat-datepicker-toggle matSuffix [for]="StartDate"></mat-datepicker-toggle>
+                                <mat-datepicker #StartDate></mat-datepicker>
+                              </mat-form-field>
+                              <mat-form-field class="col-md-4" >
+                                <mat-label>End Date:</mat-label>
+                                <input required matInput [matDatepicker]="EndDate" formControlName="EndDate">
+                                <mat-datepicker-toggle matSuffix [for]="EndDate"></mat-datepicker-toggle>
+                                <mat-datepicker #EndDate></mat-datepicker>
+                              </mat-form-field>
+                              <div class="col-md-12 radiobtns" >
+                                <mat-label>PI Options:</mat-label> <br><br>
+                                <mat-radio-group required matInput aria-label="Select an option" formControlName="PIOptions">
+                                  <mat-radio-button value="1">Use Captured Values</mat-radio-button>
+                                  <mat-radio-button value="2">Use Finalised SMD Certificated</mat-radio-button>
+                                </mat-radio-group>
+                              </div>
+                            </div>
                             <div class="row">
                                 <!-- <div class="col-sm-10 text-right"> <button id="submitButton" *ngIf="this.importComponents"  mat-raised-button color="primary" (click)="updateClaimStatus()">Submit Claim</button></div> -->
                                 <div class="col-sm-1 "><button mat-raised-button color="primary" (click)="updateClaimParams()">Generate</button></div>
@@ -180,7 +209,7 @@
                     ></app-nested-table>
                 </mat-card>
             </div>
-            <div class="bottom-section row" *ngIf="this.showMain && (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD')">
+            <div class="bottom-section row" *ngIf="this.showMain && (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI')">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">{{this.importLabel}}</button>
                     <app-nested-table *ngIf="!this.loading"
@@ -198,9 +227,10 @@
                     ></app-nested-table>
                 </mat-card>
             </div>
-            <div class="bottom-section row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD')">
+            <div class="bottom-section row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI' )">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
-                    <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">OEM Products</button>
+                    <button *ngIf="this.currentClaim.serviceName !== 'PI'" class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">OEM Products</button>
+                    <button *ngIf="this.currentClaim.serviceName === 'PI'" class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Products</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
                     [second_icon]="'rule'"
@@ -221,9 +251,9 @@
             </div>
         </div>
         <div class="data-lines "
-        [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')
+        [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')
         ? 'col-sm-7':'col-sm-5'">
-            <div class="top-section-right row" *ngIf="(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD')">
+            <div class="top-section-right row" *ngIf="(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI')">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Assigned Exports</button>
                 <app-nested-table *ngIf="!this.loading"
@@ -241,7 +271,7 @@
                 ></app-nested-table>
             </mat-card>
             </div>
-            <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD')">
+            <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Product Components</button>
                 <app-nested-table *ngIf="!this.loading"
@@ -257,7 +287,7 @@
                 ></app-nested-table>
             </mat-card>
             </div>
-            <div class="bottom-section-right row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD'">
+            <div class="bottom-section-right row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI'">
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="warn"  style="font-size: 1.2rem;">Available Exports</button>
                     <app-nested-table *ngIf="!this.loading"
