@@ -9,14 +9,15 @@ export class CompanyServiceClaimsListResponse {
 export class CompanyServiceClaim {
   rowNum: number;
   companyServiceClaimNumber: number;
+  userClaimNumber: string;
   companyServiceID: number;
   serviceName: string;
   exportStartDate: Date | string;
   exportEndDate: Date | string;
   claimDate: Date | string;
-  extensionDays:number;
-  lookBackDays:number;
+  extensionDays: number;
+  lookBackDays: number;
   serviceID: number;
   permitCount: number;
-  status: string
+  status: string;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+// tslint:disable-next-line: max-line-length
 import { Import, Export, ClaimImportComponents } from 'src/app/views/main/view-company-service-claims/view-company-service-claims.component';
 import { TableHeading } from 'src/app/models/Table';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -29,15 +30,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
 
   pageEvent: PageEvent;
-  dataS: ClaimSAD500[] =[];
-  data: any[] =[];
+  dataS: ClaimSAD500[] = [];
+  data: any[] = [];
   showMain: boolean = false;
-  headings: TableHeading[] =[];
-  dataLinesAvailable: any[] = []
-  headingsB: TableHeading[]=[];
+  headings: TableHeading[] = [];
+  dataLinesAvailable: any[] = [];
+  headingsB: TableHeading[] = [];
   dataLinesAssigned: any[] = [];
-  headingsC: TableHeading[]= [];
-  headingsS: TableHeading[]= [];
+  headingsC: TableHeading[] = [];
+  headingsS: TableHeading[] = [];
   docPreview = false;
   claimRequestParams: FormGroup;
 
@@ -49,7 +50,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     {value: 4 , Name: 'Q4'}
   ];
   years = [];
-  oemList: CompanyOEM[] =[];
+  oemList: CompanyOEM[] = [];
   now = new Date().getFullYear();
   focusPeriodYear: number;
   focusPeriodQuarter: number;
@@ -112,7 +113,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   filterS = true;
   filterB = false;
   loading = false;
-  importLabel = "Available Imports";
+  importLabel = 'Available Imports';
   // User
   currentUser: User;
   currentClaim: SelectedCompanyClaim;
@@ -138,7 +139,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     length: 0,
     pageSize: 5,
     pageIndex: 0
-  }
+  };
   constructor(private formBuilder: FormBuilder,
               private apiService: ApiService,
               private userService: UserService,
@@ -169,14 +170,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         {value: 23},
         {value: 24},
         {value: 25}
-        )
+        );
      }
 
   private unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
     this.claimService.observeCompany()
-    .pipe(takeUntil(this.unsubscribe$)).subscribe((res)=> {
+    .pipe(takeUntil(this.unsubscribe$)).subscribe((res) => {
       console.log(res);
       this.currentClaim = res;
       this.currentUser = this.userService.getCurrentUser();
@@ -200,7 +201,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         companyID: this.currentClaim.companyID,
         companyOEMID: -1,
         rowStart: 1,
-        filter: (this.oemControl.value === null || this.oemControl.value === undefined) ? "" : this.oemControl.value,
+        filter: (this.oemControl.value === null || this.oemControl.value === undefined) ? '' : this.oemControl.value,
         rowEnd: 5,
       },
       requestProcedure: 'CompanyOEMList'
@@ -247,7 +248,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
       (res: Outcome) => {
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Reset Claim', res.outcome, {
             duration: 3000,
             panelClass: ['claim-snackbar-success'],
@@ -291,7 +292,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
   /****** PARAMS *******/
   initClaimForm() {
-    switch(this.currentClaim.serviceName) {
+    switch (this.currentClaim.serviceName) {
       case '521': {
         this.claimRequestParams = this.formBuilder.group({
           LookBackDays: ['', { validators: [Validators.required] , updateOn: 'blur'}],
@@ -325,15 +326,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         });
         break;
       }
-      case 'C1' :{
+      case 'C1' : {
         this.claimRequestParams = this.formBuilder.group({
           LookbackPeriod: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           PeriodYear: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           QuarterID: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           OEMCompanyID: ['', { validators: [Validators.required] , updateOn: 'blur'}]
         });
+        break;
       }
-      case 'SMD' :{
+      case 'SMD' : {
         this.claimRequestParams = this.formBuilder.group({
           LookbackPeriod: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           PeriodYear: ['', { validators: [Validators.required] , updateOn: 'blur'}],
@@ -350,7 +352,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.initClaimFormData();
   }
   initTableHeaders() {
-    switch(this.currentClaim.serviceName) {
+    switch (this.currentClaim.serviceName) {
       case '521': {
         this.headings = [
           {
@@ -580,7 +582,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 8
           }
         ];
-        this.importLabel = "Available Imports";
+        this.importLabel = 'Available Imports';
         break;
       }
       case '536': {
@@ -1125,7 +1127,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 7
           }
         ];
-        this.importLabel = "Available SAD500 Lines";
+        this.importLabel = 'Available SAD500 Lines';
         break;
       }
       case '522': {
@@ -1702,7 +1704,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           objectKeys = Object.keys(obj);
           objectValues = Object.values(obj);
 
-          objectKeys.forEach((element: string, i:number) => {
+          objectKeys.forEach((element: string, i: number) => {
             if (this.claimRequestParams.get(element) !== null
             && this.claimRequestParams.get(element) !== undefined) {
                 if (element === 'ClaimDate') {
@@ -1714,8 +1716,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
           });
         });
-        this.loading =false;
-        if(this.currentClaim.serviceName !== '521') {
+        this.loading = false;
+        if (this.currentClaim.serviceName !== '521') {
           this.loadClaimParams();
         } else {
           this.loadMainDataSet();
@@ -1725,13 +1727,13 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
       },
       msg => {
-        this.loading =false;
-        //snackbaa
+        this.loading = false;
+        // snackbaa
       }
     );
   }
   async loadClaimParams() {
-    this.loading =true;
+    this.loading = true;
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1745,28 +1747,28 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
        console.log(res);
-       if(res.rowCount > 0) {
-        if(res.data[0].SAD500ID === 0) {
+       if (res.rowCount > 0) {
+        if (res.data[0].SAD500ID === 0) {
           this.showMain = false; // Show SAD0500's
 
           // this.loadSADLineSet();
          } else {
           this.currentClaim.sad500ID = res.data[0].SAD500ID;
           let objectKeys: string[];
-        let objectValues: string[];
-        res.data.forEach(obj => {
+          let objectValues: string[];
+          res.data.forEach(obj => {
 
-          objectKeys = Object.keys(obj);
-          objectValues = Object.values(obj);
+            objectKeys = Object.keys(obj);
+            objectValues = Object.values(obj);
 
-          objectKeys.forEach((element: string, i:number) => {
-            if (this.claimRequestParams.get(element) !== null
-            && this.claimRequestParams.get(element) !== undefined) {
-              this.claimRequestParams.get(element).setValue(objectValues[i]);
-            }
+            objectKeys.forEach((element: string, i: number) => {
+              if (this.claimRequestParams.get(element) !== null
+              && this.claimRequestParams.get(element) !== undefined) {
+                this.claimRequestParams.get(element).setValue(objectValues[i]);
+              }
 
+            });
           });
-        });
           console.log(this.currentClaim);
           this.showMain = true; // Show SAD500 Lines
          }
@@ -1775,25 +1777,25 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
 
         // Get objects and values from res
-        this.loading = false;
+       this.loading = false;
       },
       msg => {
-        this.loading =false;
-        //snackbaa
+        this.loading = false;
+        // snackbaa
       }
     );
   }
   updateClaimParams() {
     console.log('Updating claim params..');
-    if(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD') {
+    if (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD') {
       this.update538Params();
     } else {
       const model = {
         requestParams: {
           userID: this.currentUser.userID,
           lookbackDays: this.claimRequestParams.get('LookBackDays') ? this.claimRequestParams.get('LookBackDays').value : null,
-          extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value: null,
-          exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value: null,
+          extensionDays: this.claimRequestParams.get('ExtensionDays') ? this.claimRequestParams.get('ExtensionDays').value : null,
+          exportStartDate: this.claimRequestParams.get('ExportStartDate') ? this.claimRequestParams.get('ExportStartDate').value : null,
           exportEndDate: this.claimRequestParams.get('ExportEndDate') ? this.claimRequestParams.get('ExportEndDate').value : null,
           claimDate: this.claimRequestParams.get('ClaimDate') ? this.claimRequestParams.get('ClaimDate').value : null,
           companyServiceClaimID: this.currentClaim.companyServiceClaimID,
@@ -1802,9 +1804,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         requestProcedure: `CompanyServiceClaimsUpdate`
       };
       console.log(model);
-      this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`,model).then(
-        (res : UpdateResponse ) => {
-          if(this.currentClaim.serviceName === '538') {
+      this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`, model).then(
+        (res: UpdateResponse ) => {
+          if (this.currentClaim.serviceName === '538') {
             this.update538Params();
           }
           console.log(res);
@@ -1820,7 +1822,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        dutyPercentage:this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
+        dutyPercentage: this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
         sad500ID: this.currentClaim.sad500ID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         companyID: this.currentClaim.companyID,
@@ -1832,14 +1834,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       requestProcedure: `CompanyServiceClaimParametersUpdate`
     };
     console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`,model).then(
-      (res : UpdateResponse ) => {
-        this.snackbar.open('Successfully updated claim parameters','SUCCESS', {
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`, model).then(
+      (res: UpdateResponse ) => {
+        this.snackbar.open('Successfully updated claim parameters', 'SUCCESS', {
           duration: 3000,
           panelClass: 'claim-snackbar-success',
           horizontalPosition: 'center',
         });
-        if(this.currentClaim.sad500ID > 0) {
+        if (this.currentClaim.sad500ID > 0) {
           this.loadSADLineSet();
         } else {
           this.loadMainDataSet();
@@ -1913,10 +1915,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         }, 500);
 
         if (res.outcome.outcome === 'SUCCESS') {
-          if(this.selectedA === null || this.selectedA === undefined) {
-            if(this.currentClaim.serviceName === '538') {
+          if (this.selectedA === null || this.selectedA === undefined) {
+            if (this.currentClaim.serviceName === '538') {
               console.log(this.showMain);
-              if(this.showMain) {
+              if (this.showMain) {
                 await this.loadSADLineSet(); // there is an SAD500ID
               } else {
                 // No ID, still need to selected
@@ -1956,12 +1958,12 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.update538Params();
   }
   rowEventA($event) {
-    const lineData = JSON.parse($event)
+    const lineData = JSON.parse($event);
     this.selectedA = lineData.lineA; // cjid
     this.selectedB = lineData.lineB; // itemID
     this.selectedC = lineData.lineD; // Import Avail Quatity
     console.log(lineData);
-    if(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
+    if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
       this.loadBottomChild();
     }
     this.loadTopChild();
@@ -1983,7 +1985,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
 
   rowEventC($event) {
-    const lineData = JSON.parse($event)
+    const lineData = JSON.parse($event);
     console.log(lineData);
     this.selectedB = lineData.lineB; // Export List CJID
     this.selectedD = lineData.lineD; // Export Line Quantity
@@ -1991,7 +1993,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   assignRowEvent($event) {
     this.loading = true;
-    const lineData = JSON.parse($event)
+    const lineData = JSON.parse($event);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -2000,13 +2002,13 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         isDeleted: true
       },
       requestProcedure: `CompanyServiceClaimLineUpdate${this.currentClaim.serviceName}`
-    };;
-    console.log(model)
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/claimlines/update`,model).then(
-      (res:Outcome) => {
+    };
+    console.log(model);
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/claimlines/update`, model).then(
+      (res: Outcome) => {
 
         console.log(res);
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Updated Product', res.outcome, {
             duration: 3000,
             panelClass: 'claim-snackbar-success',
@@ -2076,7 +2078,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.dataLinesAssigned = res.data;
           this.pageB.length = res.rowCount;
         }, 500);
-        if(res.outcome.outcome === 'SUCCESS') {
+        if (res.outcome.outcome === 'SUCCESS') {
           this.snackbar.open(res.outcome.outcomeMessage, res.outcome.outcome, {
             duration: 3000,
             panelClass: ['capture-snackbar-success'],
@@ -2115,7 +2117,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/line`, model).then(
       (res: Outcome) => {
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Unassigned', res.outcome, {
             duration: 3000,
             panelClass: ['claim-snackbar-success'],
@@ -2140,7 +2142,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     let model = {};
-    if(this.currentClaim.serviceName === '538') {
+    if (this.currentClaim.serviceName === '538') {
       model = {
         requestParams: {
           userID: this.currentUser.userID,
@@ -2163,11 +2165,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         requestProcedure: `ExportsList${this.currentClaim.serviceName}`
       };
     }
-   console.log(model);
+    console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: ReadResponse) => {
         console.log(res);
-        if(res.outcome.outcome === 'SUCCESS') {
+        if (res.outcome.outcome === 'SUCCESS') {
           this.loading = false;
           this.dataLinesAvailable = [];
           this.dataLinesAvailable = res.data;
@@ -2190,7 +2192,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.loading = true;
     let model = null;
     console.log(this.currentClaim.serviceName);
-    switch(this.currentClaim.serviceName) {
+    switch (this.currentClaim.serviceName) {
       case '521': {
         model = {
           requestParams: {
@@ -2256,7 +2258,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/create`, model).then(
       (res: Outcome) => {
         console.log(res);
-        if(res.outcome === 'SUCCESS') {
+        if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Successfully Assigned', res.outcome, {
             duration: 3000,
             panelClass: ['claim-snackbar-success'],
@@ -2278,7 +2280,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   }
   async updateClaimLines() {
 let model = {};
-    if(this.currentClaim.serviceName === '521') {
+if (this.currentClaim.serviceName === '521') {
       model = {
         requestParams: {
           userID: this.currentUser.userID,
@@ -2296,22 +2298,22 @@ let model = {};
         requestProcedure: `CompanyServiceClaimLineUsed${this.currentClaim.serviceName}`
       };
     }
-    this.loading = true;
-    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+this.loading = true;
+await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Claim Submitted and sent for reporting. Please wait to be redirected..', res.outcome, {
             duration: 3000,
             panelClass: ['claim-snackbar-success'],
             horizontalPosition: 'center',
-          }).afterDismissed().subscribe(() =>{
+          }).afterDismissed().subscribe(() => {
             this.companyService.setClaimReport({
               companyID: this.currentClaim.companyID,
               companyName: this.currentClaim.companyName,
               companyServiceID: this.currentClaim.serviceID,
               claimNumber: this.currentClaim.companyServiceClaimID,
               serviceName: this.currentClaim.serviceName});
-            this.router.navigate(['claim','reports']);
+            this.router.navigate(['claim', 'reports']);
           });
         } else {
           this.snackbar.open(res.outcomeMessage, res.outcome, {
@@ -2327,7 +2329,7 @@ let model = {};
   }
   async updateClaimStatus() {
     this.loading = true;
-    const model ={
+    const model = {
       requestParams: {
         userID: this.currentUser.userID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
@@ -2342,8 +2344,8 @@ let model = {};
             duration: 3000,
             panelClass: ['claim-snackbar-success'],
             horizontalPosition: 'center',
-          }).afterDismissed().subscribe( () =>{
-            this.router.navigate(['claim','reports']);
+          }).afterDismissed().subscribe( () => {
+            this.router.navigate(['claim', 'reports']);
           });
         } else {
           this.snackbar.open(res.outcomeMessage, res.outcome, {
