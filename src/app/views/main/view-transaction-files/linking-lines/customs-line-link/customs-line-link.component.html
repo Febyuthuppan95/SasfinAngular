@@ -1,27 +1,69 @@
 <h3 mat-dialog-title>Customs Worksheet Lines</h3>
 <div mat-dialog-content>
-  <ng-container *ngFor="let item of currentLinks">
-    <mat-card>
-      <mat-card-content>
-        <div class="row">
-          <div class="col-6">
-            <p style="width: 100%;">
-              <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-              <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-              <strong>Product Code</strong> {{item.prodCode}} <br>
-              <strong>Unit Price</strong> {{item.unitPrice}} <br>
-            </p>
-          </div>
-          <div class="col-6">
-            <p style="width: 100%;">
-              <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-              <strong>Quantity</strong> {{item.quantity}} <br>
-              <strong>Common Factor</strong> {{item.commonFactor}} <br>
-              <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
-            </p>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <ng-container *ngIf="currentLinks.length > 0">
+    <h5>Linked Lines</h5>
   </ng-container>
+  <ng-container *ngFor="let item of currentLinks; let i = index">
+    <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%;">
+      <mat-card class="linked">
+        <mat-card-content>
+          <div class="row">
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+                <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+              </p>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>Currency</strong> {{item.currency}} <br>
+                <strong>Duty</strong> {{item.duty}} <br>
+                <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </button>
+    <br>
+  </ng-container>
+  <ng-container *ngIf="lines.length > 0">
+    <h5>Available Lines</h5>
+  </ng-container>
+  <ng-container *ngFor="let item of lines; let i = index">
+    <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%;">
+      <mat-card>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+                <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+              </p>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>Currency</strong> {{item.currency}} <br>
+                <strong>Duty</strong> {{item.duty}} <br>
+                <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </button>
+  </ng-container>
+  <br>
 </div>

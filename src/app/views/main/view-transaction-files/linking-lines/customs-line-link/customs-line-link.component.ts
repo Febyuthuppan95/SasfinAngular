@@ -16,48 +16,58 @@ export class CustomsLineLinkComponent implements OnInit {
     private snackbar: MatSnackBar,
     private api: ApiService) { }
 
-  public currentLinks: any[] = [];
+    public currentLinks: any[] = [];
+    public lines: any[] = [];
 
-  ngOnInit() {
-    this.currentLinks = this.data.currentLinks;
-  }
+    ngOnInit() {
+      this.currentLinks = this.data.currentLinks;
+      this.lines = this.data.lines;
+    }
 
-  async addJoin(request, index) {
-    request.transactionID = this.data.transactionID;
-    request.userID = this.data.currentUser.userID;
-    request.SAD500LineID = this.data.currentSADLine.sad500LineID;
+    async addJoin(index) {
+      const request: any = {};
+      const customsLine = this.lines[index];
+      console.log(customsLine);
+      request.transactionID = this.data.transactionID;
+      request.userID = this.data.currentUser.userID;
+      request.SAD500LineID = this.data.currentLine.sad500LineID;
+      request.customWorksheetLineID = customsLine.customWorksheetLineID;
 
-    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-      request,
-      procedure: 'CaptureJoinAdd'
-    }).then(
-      (res: any) => {
-        console.log(res);
-        if (res.outcome) {
-          this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+      await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request,
+        procedure: 'CaptureJoinAdd'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            const item = this.lines.splice(index, 1)[0];
+            item.captureJoinID = +res.outcomeMessage;
+            this.currentLinks.push(item);
+            this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+          }
+        },
+      );
+    }
 
-          this.data.currentLinks[index].captureJoinID = +res.outcomeMessage;
-        }
-      },
-    );
-  }
+    async removeJoin(index) {
+      const currentLink = this.currentLinks[index]
+      const request: any = {};
 
-  async removeJoin(request) {
-    request.userID = this.data.currentUser.userID;
-    request.SAD500LineID = this.data.currentSADLine.sad500LineID;
-    request.isDeleted = 1;
+      request.userID = this.data.currentUser.userID;
+      request.SAD500LineID = this.data.currentLine.sad500LineID;
+      request.isDeleted = 1;
+      request.captureJoinID = currentLink.captureJoinID;
 
-    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-      request,
-      procedure: 'CaptureJoinUpdate'
-    }).then(
-      (res: any) => {
-        if (res.outcome) {
-          this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
-        }
-      },
-    );
-  }
-
-
+      await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request,
+        procedure: 'CaptureJoinUpdate'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            const removed = this.currentLinks.splice(index, 1)[0];
+            this.lines.push(removed);
+            this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
+          }
+        },
+      );
+    }
 }

@@ -400,39 +400,15 @@ export class LinkingLinesComponent implements OnInit, OnDestroy {
     await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       async (res: any) => {
         this.allCaptureJoins = res.data;
-        // this.captureJoins = this.allCaptureJoins.filter(x => x.SAD500LineID == this.currentSADLine.sad500LineID);
+        this.cwsLines = this.cwsLinesTemp;
+        this.invLines = this.invLinesTemp;
 
-        // this.cwsLines = this.cwsLinesTemp;
-        // this.invLines = this.invLinesTemp;
-
-        // await this.iterate(this.captureJoins, async (el) => {
-        //   this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
-        //   this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
-
-        //   if (this.currentSADLine) {
-        //     if (el.CustomWorksheetLineID !== null) {
-        //       const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
-
-        //       if (toAdd) {
-        //         console.log(toAdd);
-        //         toAdd.captureJoinID = el.CaptureJoinID;
-        //         this.currentLinks.push(toAdd);
-        //       }
-        //     }
-
-        //     if (el.InvoiceLineID !== null) {
-        //       const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
-
-        //       if (invoiceToAdd) {
-        //         invoiceToAdd.captureJoinID = el.CaptureJoinID;
-        //         this.currentLinks.push(invoiceToAdd);
-        //       }
-        //     }
-        //   }
-        // });
+        await this.iterate(this.allCaptureJoins, async (el) => {
+          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
+          this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
+        });
 
         this.loading = false;
-        console.log(this.currentLinks);
         await this.totalValues();
     });
   }

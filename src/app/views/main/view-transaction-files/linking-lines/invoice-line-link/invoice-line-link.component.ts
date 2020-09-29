@@ -33,8 +33,6 @@ export class InvoiceLineLinkComponent implements OnInit {
     request.SAD500LineID = this.data.currentLine.sad500LineID;
     request.invoiceLineID = invoiceLine.invoiceLineID;
 
-    console.log(request);
-
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
       request,
       procedure: 'CaptureJoinAdd'
@@ -66,8 +64,6 @@ export class InvoiceLineLinkComponent implements OnInit {
       procedure: 'CaptureJoinUpdate'
     }).then(
       (res: any) => {
-        console.log(res);
-
         if (res.outcome) {
           const removed = this.currentLinks.splice(index, 1)[0];
           this.lines.push(removed);
