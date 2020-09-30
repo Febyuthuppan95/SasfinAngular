@@ -69,6 +69,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Invoice Date</mat-label>
           <input matInput [formControl]="invoiceDate" (focusin)="updateHelpContext('form-invoice-invoicedate')" mask="0000/00/00">
+          <mat-error *ngIf="form.controls.invoiceDate.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.invoiceDate.value}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -140,7 +141,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-inv-lines [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID"></app-form-inv-lines>
+  <app-form-inv-lines [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID" [(isQA)]="isQA"></app-form-inv-lines>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

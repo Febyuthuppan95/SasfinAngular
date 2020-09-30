@@ -66,6 +66,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   private currentUser = this.userService.getCurrentUser();
   private dialogOpen = false;
 
+  public isQA = false;
+
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
 
   @ViewChild(NotificationComponent, { static: true })
@@ -406,6 +408,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.form.updateValueAndValidity();
+      this.isQA = this.form.controls.qaUserID.value !== -1;
+
+      if (this.isQA) {
+        this.form.controls.invoiceNo.reset();
+        this.form.controls.invoiceDate.reset();
+      }
+
+      console.log(`======= QA USER ID ${this.isQA} =======`);
       this.loader = false;
       setTimeout(() => this.startForm.nativeElement.focus(), 100);
       await this.loadLines();

@@ -69,6 +69,18 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     uniqueIdentifier: new FormControl(),
   });
 
+  public tempForm = new FormGroup({
+    itemID: new FormControl(null, [Validators.required]),
+    unitOfMeasureID: new FormControl(null),
+    cooID: new FormControl(null),
+    prodCode: new FormControl(null),
+    commonFactor: new FormControl(null),
+    quantity: new FormControl(null, [Validators.required]),
+    itemValue: new FormControl(null),
+    unitPrice: new FormControl(null, [Validators.required]),
+    totalLineValue: new FormControl(null, [Validators.required]),
+  });
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -83,6 +95,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
   @Input() data: any;
   @Input() companyID: number;
+  @Input() isQA = false;
   @Output() submission = new EventEmitter<any>();
 
   @ViewChild('startLineForm', { static: false })
@@ -97,6 +110,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;
       this.form.patchValue(this.data);
+      this.tempForm.patchValue(this.data);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
@@ -107,6 +121,14 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       });
 
       this.errors = this.data.errors;
+
+      if (this.isQA) {
+        this.form.controls.commonFactor.reset();
+        this.form.controls.quantity.reset();
+        this.form.controls.unitPrice.reset();
+        this.form.controls.totalLineValue.reset();
+      }
+
     } else {
       this.invoiceID = -1;
       this.form.controls.invoiceLineID.setValue(-1);
@@ -122,6 +144,41 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     this.eventService.focusForm.subscribe(() => {
       setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
+
+    // QA Recapture
+    if (this.isQA) {
+      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('commonFactor', value);
+        }
+      });
+
+      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('quantity', value);
+        }
+      });
+
+      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('totalLineValue', value);
+        }
+      });
+
+      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('unitPrice', value);
+        }
+      });
+    }
+  }
+
+  markAsNoMatch(key, value) {
+    if (value !== this.tempForm.controls[key].value) {
+      this.form.controls[key].setErrors({ noMatch: true });
+    } else {
+      this.form.controls[key].setErrors(null);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -151,6 +208,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.data.invoiceLineID = this.data.invoiceLineID;
       this.invoiceID = this.data.invoiceID;
       this.form.patchValue(this.data);
+      this.tempForm.patchValue(this.data);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
@@ -159,6 +217,13 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
           }
         }
       });
+
+      if (this.isQA) {
+        this.form.controls.commonFactor.reset();
+        this.form.controls.quantity.reset();
+        this.form.controls.unitPrice.reset();
+        this.form.controls.totalLineValue.reset();
+      }
 
       this.errors = this.data.errors;
     } else {
