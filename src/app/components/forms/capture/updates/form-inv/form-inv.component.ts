@@ -500,7 +500,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       } else if (this.form.controls.qaUserID.value !== -1) {
         if (saveProgress) {
           requestModel.attachmentStatusID = 11;
-        } else if (!escalation && !escalationResolved) {
+        } else {
           requestModel.attachmentStatusID = 3;
         }
       }
