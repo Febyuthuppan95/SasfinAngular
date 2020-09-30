@@ -17,7 +17,7 @@
                 <button tabindex="-1" #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="approve(); submitButton.disabled = true;">Approve</button>
               </ng-container>
             </div>
-            <button tabindex="-1" mat-icon-button [routerLink]="['/companies/transactions']"><mat-icon>arrow_back</mat-icon></button><h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
+            <h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
             <br>
             <br>
             <p>Transaction Documents</p>
@@ -33,7 +33,7 @@
             <br>
           </div>
           <div class="col-12">
-            <button id="startLine" mat-button>TAB from here (ALT + L)</button>
+            <button id="startLine" mat-button style="opacity: 0;">TAB from here (ALT + L)</button>
             <ng-container *ngFor="let item of sadLines; let i = index;">
               <button
               #lines
