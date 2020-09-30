@@ -1,7 +1,7 @@
 .main {
     background-color: whitesmoke;
     height: 100vh;
-   
+
 }
 .settings {
     top: 40px;
@@ -20,7 +20,7 @@ mat-table {
 .top-section {
     margin-top: 20px;
     margin-bottom: 20px;
-    max-height: 20vh;
+    max-height: 38vh;
 }
 .top-section-right {
     margin-top: 20px;
@@ -58,4 +58,12 @@ tbody tr, td {
     color: red;
     text-align: center;
   }
+
+  .radiobtns {
+    margin-bottom: 10px;
+  }
+
+  .mat-radio-button {
+    margin-right: 30px;
+}
 

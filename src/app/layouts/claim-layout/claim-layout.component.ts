@@ -40,6 +40,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   headingsC: TableHeading[] = [];
   headingsS: TableHeading[] = [];
   docPreview = false;
+  PiClaim = true;
   claimRequestParams: FormGroup;
 
 
@@ -342,6 +343,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           QuarterID: ['', { validators: [Validators.required] , updateOn: 'blur'}],
           OEMCompanyID: ['', { validators: [Validators.required] , updateOn: 'blur'}]
         });
+        break;
+      }
+      case 'PI' : {
+        this.claimRequestParams = this.formBuilder.group({
+          StartDate: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          EndDate: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          PIClaimType: ['', { validators: [Validators.required] , updateOn: 'blur'}],
+          PIOptions: ['', { validators: [Validators.required] , updateOn: 'blur'}]
+        });
+        break;
       }
     }
     this.pageEvent = {
@@ -1789,6 +1800,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log('Updating claim params..');
     if (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD') {
       this.update538Params();
+    } else if (this.currentClaim.serviceName === 'PI') {
+      console.log('PI..');
+      this.updatePIParams();
     } else {
       const model = {
         requestParams: {
@@ -1857,6 +1871,45 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
+  updatePIParams() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        // dutyPercentage: this.claimRequestParams.get('Duty') ? this.claimRequestParams.get('Duty').value : null,
+        // sad500ID: this.currentClaim.sad500ID,
+        companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+        companyID: this.currentClaim.companyID,
+        PIStartDate: this.claimRequestParams.get('StartDate') ? this.claimRequestParams.get('StartDate').value : null,
+        PIEndDate: this.claimRequestParams.get('EndDate') ? this.claimRequestParams.get('EndDate').value : null,
+        PIOption: this.claimRequestParams.get('PIOptions').value,
+        PIClaimType: this.claimRequestParams.get('PIClaimType') ? this.claimRequestParams.get('PIClaimType').value : null,
+      },
+      requestProcedure: `CompanyServiceClaimParametersUpdate`
+    };
+    console.log('PI model');
+    console.log(model);
+    // this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/538/update`, model).then(
+    //   (res: UpdateResponse ) => {
+    //     this.snackbar.open('Successfully updated claim parameters', 'SUCCESS', {
+    //       duration: 3000,
+    //       panelClass: 'claim-snackbar-success',
+    //       horizontalPosition: 'center',
+    //     });
+    //     if (this.currentClaim.sad500ID > 0) {
+    //       this.loadSADLineSet();
+    //     } else {
+    //       this.loadMainDataSet();
+    //     }
+
+
+    //     console.log(res);
+
+    //   },
+    //   msg => {
+    //     console.log('error');
+    //   }
+    // );
+  }
   /****** END PARAMS *******/
 
   /****** IMPORTS *******/
