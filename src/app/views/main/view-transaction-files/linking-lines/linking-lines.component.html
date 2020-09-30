@@ -1,70 +1,80 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 
-<mat-card style="background: #fafafa;">
+<mat-card style="background: #fafafa;" class="cover">
   <mat-card-content>
     <div class="row">
-      <div class="col-12">
-        <div style="float: right">
-          <ng-container *ngIf="!consultant">
-            <button #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="submitToConsultant(); submitButton.disabled = true;">Submit to Consultant</button>
-          </ng-container>
-          <ng-container *ngIf="consultant">
-            <button #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="approve(); submitButton.disabled = true;">Approve</button>
-          </ng-container>
-        </div>
-        <button mat-icon-button [routerLink]="['/companies/transactions']"><mat-icon>arrow_back</mat-icon></button><h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
-        <br>
-        <br>
-        <p>Transaction Documents</p>
-        <button *ngFor="let item of attachments" mat-raised-button #documents
-          style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
-          [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
-          matTooltipPosition="after"
-          (click)="previewCapture(item.file, item.itemmentID)"><mat-icon>insert_drive_file</mat-icon>&nbsp;{{ item.fileType }}
-        </button>
-        <br>
-        <br>
+      <div class="col-6">
+        <app-document-viewer *ngIf="currentPDFSource" #pdfviewer [(source)]="currentPDFSource"></app-document-viewer>
       </div>
-      <div class="col-12">
-        <ng-container *ngFor="let item of sadLines; let i = index;">
-          <button
-          #lines
-          mat-button [matMenuTriggerFor]="menu"
-          style="width: 100%; padding: 0; margin: 0;">
-          <mat-card>
-            <mat-card-content>
-              <div class="row">
-                <div class="col-12">
-                  <h3 class="text-left">Line {{i+1}}</h3>
-                </div>
-                <div class="col-4">
-                  <p class="text-left" style="width: 100%;">
-                    <strong>Tariff</strong> {{item.tariff}} <br>
-                    <strong>Customs Value</strong> {{item.customsValue}} <br>
-                    <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}}
-                  </p>
-                </div>
-                <div class="col-4">
-                  <p class="text-left" style="width: 100%;">
-                    <strong>Previous Declaration</strong> {{item.previousDeclaration}} <br>
-                    <strong>Quantity</strong> {{item.quantity}} <br>
-                    <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
-                  </p>
-                </div>
-                <div class="col-4">
-                  <p class="text-left" style="width: 100%;">
-                    <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
-                  </p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="_invoiceLinkDialog(i);">Invoice Lines</button>
-          <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
-        </mat-menu>
-        </ng-container>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-12">
+            <div style="float: right">
+              <ng-container *ngIf="!consultant">
+                <button tabindex="-1" #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="submitToConsultant(); submitButton.disabled = true;">Submit to Consultant</button>
+              </ng-container>
+              <ng-container *ngIf="consultant">
+                <button tabindex="-1" #submitButton mat-button class="bg-primary text-light" style="margin-right: 10px;" (click)="approve(); submitButton.disabled = true;">Approve</button>
+              </ng-container>
+            </div>
+            <button tabindex="-1" mat-icon-button [routerLink]="['/companies/transactions']"><mat-icon>arrow_back</mat-icon></button><h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
+            <br>
+            <br>
+            <p>Transaction Documents</p>
+            <button *ngFor="let item of attachments; let i = index" mat-raised-button #documents
+            tabindex="-1"
+              style="cursor: pointer;margin-bottom: 24px;margin-right: 24px"
+              [ngClass]="{'bg-success': currentPDFIndex === i}"
+              [matTooltip]="item.name + ' (' + item.fileType + ')' + ' - ' + item.tooltip"
+              matTooltipPosition="after"
+              (click)="previewCapture(item.file, item.itemmentID)"><mat-icon>insert_drive_file</mat-icon>&nbsp;{{ item.fileType }}
+            </button>
+            <br>
+            <br>
+          </div>
+          <div class="col-12">
+            <button id="startLine" mat-button>TAB from here (ALT + L)</button>
+            <ng-container *ngFor="let item of sadLines; let i = index;">
+              <button
+              #lines
+              mat-button [matMenuTriggerFor]="menu"
+              style="width: 100%; padding: 0; margin: 0;">
+              <mat-card>
+                <mat-card-content>
+                  <div class="row">
+                    <div class="col-12">
+                      <h3 class="text-left">Line {{i+1}}</h3>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-left" style="width: 100%;">
+                        <strong>Tariff</strong> {{item.tariff}} <br>
+                        <strong>Customs Value</strong> {{item.customsValue}} <br>
+                        <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}}
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-left" style="width: 100%;">
+                        <strong>Previous Declaration</strong> {{item.previousDeclaration}} <br>
+                        <strong>Quantity</strong> {{item.quantity}} <br>
+                        <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+                      </p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-left" style="width: 100%;">
+                        <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+                      </p>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="_invoiceLinkDialog(i);">Invoice Lines</button>
+              <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
+            </mat-menu>
+            </ng-container>
+          </div>
+        </div>
       </div>
     </div>
   </mat-card-content>

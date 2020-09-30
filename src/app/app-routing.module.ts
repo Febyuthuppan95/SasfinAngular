@@ -89,6 +89,7 @@ import { DocumentWindowPreviewComponent } from './components/document-window-pre
 import { ViewCompanyPermitsListComponent } from './views/main/view-permits-list/view-company-permits-list/view-company-permits-list.component';
 import { EscalationQueueComponent } from './views/main/escalation-queue/escalation-queue.component';
 import { LinkingLinesComponent } from './views/main/view-transaction-files/linking-lines/linking-lines.component';
+import { CheckingQueueComponent } from './views/main/checking-queue/checking-queue.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -446,12 +447,6 @@ const routes: Routes = [
             canActivate: [RightGuard],
           },
           {
-            path: 'transaction/linking',
-            component: LinkingLinesComponent,
-            data: { right: 'Capture' },
-            canActivate: [RightGuard],
-          },
-          {
             path: 'escalations',
             component: EscalationQueueComponent,
             data: { right: 'Attachments' },
@@ -482,7 +477,19 @@ const routes: Routes = [
             data: { right: 'Tariffs' },
             canActivate: [RightGuard],
           },
+          {
+            path: 'transaction-linking/queue',
+            component: CheckingQueueComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          }
         ],
+      },
+      {
+        path: 'transaction/linking',
+        component: LinkingLinesComponent,
+        data: { right: 'Capture' },
+        canActivate: [RightGuard],
       },
       {
         path: 'capture/transaction/attachment/:source',

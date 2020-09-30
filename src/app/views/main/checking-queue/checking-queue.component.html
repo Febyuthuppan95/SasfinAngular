@@ -1,1 +1,37 @@
-<p>checking-queue works!</p>
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+    *ngIf="this.tableConfig.dataset"
+    [dataset]="this.tableConfig.dataset"
+    [headings]="this.tableConfig.headings"
+    [recordsPerPage]="this.tableConfig.recordsPerPage"
+    [rowStart]="this.tableConfig.rowStart"
+    [rowEnd]="this.tableConfig.rowEnd"
+    [rowCount]="this.tableConfig.rowCount"
+    [tableHeader]="this.tableConfig.header"
+    (showingRecordsEvent)="recordsPerPageChange($event)"
+    (searchEvent)="searchFilter($event)"
+    (pageChange)="pageChange($event)"
+    (selectedRecord)="selectedRecord($event)">
+    </app-table>
+  </div>
+</div>
+
+<app-menu
+  [contextShow]="contextMenu"
+  [x]="contextMenuX"
+  [y]="contextMenuY"
+  (resetContext)="contextMenu = false">
+  <app-menu-linking
+    *ngIf="contextMenu === true"
+    [transactionID]="currentRecord.record.TransactionID"
+    [transactionType]="currentRecord.record.Type"
+    [transactionName]="currentRecord.record.Name"></app-menu-linking>
+</app-menu>
+
+<app-notification></app-notification>

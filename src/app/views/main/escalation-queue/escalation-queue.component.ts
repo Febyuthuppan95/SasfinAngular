@@ -28,9 +28,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
   constructor(private themeService: ThemeService,
               private apiService: ApiService,
               private userService: UserService,
-              private router: Router,
-              private docService: DocumentService,
-              private transactionService: TransactionService) { }
+              private router: Router) { }
 
   currentTheme: string;
   currentUser = this.userService.getCurrentUser();

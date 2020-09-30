@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.Service';
 import { environment } from 'src/environments/environment';
 import { CustomsLineLinkComponent } from './customs-line-link/customs-line-link.component';
 import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.component';
+import { Location } from '@angular/common';
 
 @AutoUnsubscribe()
 @Component({
@@ -28,7 +29,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     private api: ApiService,
     private router: Router,
     private snackbar: MatSnackBar,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private location: Location,
+    private render: Renderer2) { }
 
   public transaction: string;
   public transactionType: string;
@@ -53,6 +56,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public countries: any[] = [];
   public items: any[] = [];
 
+  public currentPDFSource: string;
+  public currentPDFIndex: number;
+
   // public cwsTotalValue = 0;
   // public invTotalValue = 0;
 
@@ -72,8 +78,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   shortcuts: ShortcutInput[] = [];
 
-  @ViewChildren('lines') lines: QueryList<ElementRef>;
-  @ViewChildren('documents') documents: QueryList<ElementRef>;
+  @ViewChild('startLines', { static: false }) firstLine: any;
 
   // dropCWS(event: CdkDragDrop<any[]>) {
   //   if (event.previousContainer === event.container) {
@@ -151,16 +156,55 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.lines.first.nativeElement.focus();
+              const element = this.render.selectRootElement('#startLine');
+              setTimeout(() => element.focus(), 0);
             }
         },
         {
-            key: 'alt + k',
+            key: 'alt + .',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.documents.first.nativeElement.focus();
+              // Next Document
+              if (this.currentPDFIndex + 1 < this.attachments.length) {
+                this.currentPDFIndex++;
+                this.currentPDFSource = undefined;
+                setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
+              }
             }
+        },
+        {
+          key: 'alt + ,',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+              // Previous Document
+              if (this.currentPDFIndex - 1 >= 0) {
+                this.currentPDFIndex--;
+                this.currentPDFSource = undefined;
+                setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
+              }
+          }
+      },
+        {
+          key: 'alt + q',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.location.back();
+          }
+        },
+        {
+          key: 'alt + s',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            if (this.consultant) {
+              this.approve();
+            } else {
+              this.submitToConsultant();
+            }
+          }
         },
     );
 
@@ -253,6 +297,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               attach.statusID === 9 ? attach.tooltip = 'Override Capture' : console.log() ;
             }
           });
+
+          this.currentPDFIndex = 0;
+          this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
 
           await this.loadSADLines();
         });
