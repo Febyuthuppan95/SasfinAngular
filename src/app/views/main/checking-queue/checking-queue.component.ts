@@ -86,7 +86,7 @@ export class CheckingQueueComponent implements OnInit, OnDestroy {
 
   loadDataset() {
     const model = {
-      request: {},
+      request: { userID: this.currentUser.userID },
       procedure: 'TransactionLinking'
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
