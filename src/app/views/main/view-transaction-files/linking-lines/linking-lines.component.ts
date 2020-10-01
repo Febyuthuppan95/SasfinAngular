@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { CustomsLineLinkComponent } from './customs-line-link/customs-line-link.component';
 import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.component';
 import { Location } from '@angular/common';
+import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -198,7 +199,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
-          this.location.back();
+          this.dialog.open(DialogConfirmationComponent, {
+            data: {
+              title: 'Quit',
+              message: 'Are you sure you want to quit?'
+            },
+            width: '512px'
+          }).afterClosed().subscribe((state) => {
+            if (state) {
+              this.location.back();
+            }
+          });
         }
       },
       {
@@ -207,9 +218,29 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
           if (this.consultant) {
-            this.approve();
+            this.dialog.open(DialogConfirmationComponent, {
+              data: {
+                title: 'Approve',
+                message: 'Are you sure you want to approve this transaction?'
+              },
+              width: '512px'
+            }).afterClosed().subscribe((state) => {
+              if (state) {
+                this.approve();
+              }
+            });
           } else {
-            this.submitToConsultant();
+            this.dialog.open(DialogConfirmationComponent, {
+              data: {
+                title: 'Submit to Consultant',
+                message: 'Are you sure you want to submit this transaction to a consultant?'
+              },
+              width: '512px'
+            }).afterClosed().subscribe((state) => {
+              if (state) {
+                this.submitToConsultant();
+              }
+            });
           }
         }
       },
