@@ -58,6 +58,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public currentPDFSource: string;
   public currentPDFIndex: number;
+  public showHelp = false;
 
   // public cwsTotalValue = 0;
   // public invTotalValue = 0;
@@ -161,17 +162,23 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         },
         {
-            key: 'alt + .',
-            preventDefault: true,
-            allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
-              // Next Document
-              if (this.currentPDFIndex + 1 < this.attachments.length) {
-                this.currentPDFIndex++;
-                this.currentPDFSource = undefined;
-                setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
-              }
+          key: 'alt + .',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            // Next Document
+            if (this.currentPDFIndex + 1 < this.attachments.length) {
+              this.currentPDFIndex++;
+              this.currentPDFSource = undefined;
+              setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
             }
+          }
+        },
+        {
+          key: 'alt + h',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.showHelp = !this.showHelp
         },
         {
           key: 'alt + ,',
@@ -186,26 +193,26 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               }
           }
       },
-        {
-          key: 'alt + q',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            this.location.back();
+      {
+        key: 'alt + q',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.location.back();
+        }
+      },
+      {
+        key: 'alt + s',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          if (this.consultant) {
+            this.approve();
+          } else {
+            this.submitToConsultant();
           }
-        },
-        {
-          key: 'alt + s',
-          preventDefault: true,
-          allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => {
-            if (this.consultant) {
-              this.approve();
-            } else {
-              this.submitToConsultant();
-            }
-          }
-        },
+        }
+      },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));

@@ -31,9 +31,10 @@
             </button>
             <br>
             <br>
+            <h3>SAD500 Lines</h3>
           </div>
           <div class="col-12">
-            <button id="startLine" mat-button style="opacity: 0;">TAB from here (ALT + L)</button>
+            <button id="startLine" mat-button style="opacity: 0;"></button>
             <ng-container *ngFor="let item of sadLines; let i = index;">
               <button
               #lines
@@ -73,6 +74,7 @@
               <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
             </mat-menu>
             <br>
+            <br>
             </ng-container>
           </div>
         </div>
@@ -81,8 +83,11 @@
   </mat-card-content>
 </mat-card>
 
-
-
+<div class="shortcutView" *ngIf="this.showHelp">
+  <div class="overlay" (click)="this.showHelp = false;">
+    <img src="assets/svg/keyboard-shortcuts/Linking.png" />
+  </div>
+</div>
 
 <!-- OLD -->
 <!-- <div class="col-12">
@@ -136,123 +141,123 @@
 
 
       </div> -->
-      <!-- <div class="col-6">
-        <div class="example-container">
-          <mat-card *ngIf="warning" class="bg-warning">
-            <mat-card-content>
-              <h5>{{warning.title}}</h5>
-              <p>{{warning.msg}}</p>
-            </mat-card-content>
-          </mat-card>
-          <h4><span style="color: rgb(172, 0, 0);">SAD500</span> Container</h4>
-          <div
-            cdkDropList
-            #sadline="cdkDropList"
-            [cdkDropListData]="currentLinks"
-            [cdkDropListConnectedTo]="[invoiceList, cwsList]"
-            class="example-list"
-            (cdkDropListDropped)="dropInSAD($event)">
-            <ng-container *ngIf="!loading">
-            <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
-              <ng-container *ngIf="item.type === 'cws'">
-                <div class="row">
-                  <div class="col-12">
-                    <p style="width: 100%;"><span style="color: rgb(96, 11, 255)"><strong>Customs Worksheet Line</strong></span></p>
-                  </div>
-                  <div class="col-6">
-                    <p style="width: 100%;">
-                      <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                      <strong>Customs Value</strong> {{item.custVal}} <br>
-                      <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
-                      <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-                      <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
-                    </p>
-                  </div>
-                  <div class="col-6">
-                    <p style="width: 100%;">
-                      <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
-                      <strong>Customs Value</strong> {{item.custVal}} <br>
-                      <strong>Currency</strong> {{item.currency}} <br>
-                      <strong>Duty</strong> {{item.duty}} <br>
-                      <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                      <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
-                    </p>
-                  </div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="item.type === 'inv'">
-                <div class="row">
-                  <div class="col-12">
-                    <p style="width: 100%;"><span style="color: rgb(0, 167, 28)"><strong>Invoice Line</strong></span></p>
-                  </div>
-                  <div class="col-6">
-                    <p style="width: 100%;">
-                      <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                      <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                      <strong>Product Code</strong> {{item.prodCode}} <br>
-                      <strong>Unit Price</strong> {{item.unitPrice}} <br>
-                    </p>
-                  </div>
-                  <div class="col-6">
-                    <p style="width: 100%;">
-                      <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-                      <strong>Quantity</strong> {{item.quantity}} <br>
-                      <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                      <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
-                    </p>
-                  </div>
-                </div>
-              </ng-container>
+<!-- <div class="col-6">
+  <div class="example-container">
+    <mat-card *ngIf="warning" class="bg-warning">
+      <mat-card-content>
+        <h5>{{warning.title}}</h5>
+        <p>{{warning.msg}}</p>
+      </mat-card-content>
+    </mat-card>
+    <h4><span style="color: rgb(172, 0, 0);">SAD500</span> Container</h4>
+    <div
+      cdkDropList
+      #sadline="cdkDropList"
+      [cdkDropListData]="currentLinks"
+      [cdkDropListConnectedTo]="[invoiceList, cwsList]"
+      class="example-list"
+      (cdkDropListDropped)="dropInSAD($event)">
+      <ng-container *ngIf="!loading">
+      <div class="example-box" *ngFor="let item of currentLinks" cdkDrag>
+        <ng-container *ngIf="item.type === 'cws'">
+          <div class="row">
+            <div class="col-12">
+              <p style="width: 100%;"><span style="color: rgb(96, 11, 255)"><strong>Customs Worksheet Line</strong></span></p>
             </div>
-          </ng-container>
-          <ng-container *ngIf="loading">
-            <loader></loader>
-          </ng-container>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+                <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+              </p>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+                <strong>Customs Value</strong> {{item.custVal}} <br>
+                <strong>Currency</strong> {{item.currency}} <br>
+                <strong>Duty</strong> {{item.duty}} <br>
+                <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+              </p>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="item.type === 'inv'">
+          <div class="row">
+            <div class="col-12">
+              <p style="width: 100%;"><span style="color: rgb(0, 167, 28)"><strong>Invoice Line</strong></span></p>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                <strong>Product Code</strong> {{item.prodCode}} <br>
+                <strong>Unit Price</strong> {{item.unitPrice}} <br>
+              </p>
+            </div>
+            <div class="col-6">
+              <p style="width: 100%;">
+                <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                <strong>Quantity</strong> {{item.quantity}} <br>
+                <strong>Common Factor</strong> {{item.commonFactor}} <br>
+                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+              </p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="loading">
+      <loader></loader>
+    </ng-container>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="col-3">
+  <div class="example-container" style="border-color: rgb(96, 11, 255);">
+    <h4>Custom Worksheet <span style="color: rgb(96, 11, 255)">Lines</span></h4>
+    <div
+      cdkDropList
+      #cwsList="cdkDropList"
+      [cdkDropListData]="cwsLines"
+      [cdkDropListConnectedTo]="[sadline]"
+      class="example-list"
+      (cdkDropListDropped)="dropCWS($event)">
+      <ng-container *ngIf="!loading">
+      <div class="example-box" *ngFor="let item of cwsLines; let i = index" cdkDrag>
+        <div class="row">
+          <div class="col-6">
+            <p style="width: 100%;">
+              <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+              <strong>Customs Value</strong> {{item.custVal}} <br>
+              <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+              <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
+              <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
+            </p>
+          </div>
+          <div class="col-6">
+            <p style="width: 100%;">
+              <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
+              <strong>Customs Value</strong> {{item.custVal}} <br>
+              <strong>Currency</strong> {{item.currency}} <br>
+              <strong>Duty</strong> {{item.duty}} <br>
+              <strong>Common Factor</strong> {{item.commonFactor}} <br>
+              <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
+            </p>
           </div>
         </div>
-      </div> -->
-      <!-- <div class="col-3">
-        <div class="example-container" style="border-color: rgb(96, 11, 255);">
-          <h4>Custom Worksheet <span style="color: rgb(96, 11, 255)">Lines</span></h4>
-          <div
-            cdkDropList
-            #cwsList="cdkDropList"
-            [cdkDropListData]="cwsLines"
-            [cdkDropListConnectedTo]="[sadline]"
-            class="example-list"
-            (cdkDropListDropped)="dropCWS($event)">
-            <ng-container *ngIf="!loading">
-            <div class="example-box" *ngFor="let item of cwsLines; let i = index" cdkDrag>
-              <div class="row">
-                <div class="col-6">
-                  <p style="width: 100%;">
-                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                    <strong>Customs Value</strong> {{item.custVal}} <br>
-                    <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
-                    <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-                    <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
-                  </p>
-                </div>
-                <div class="col-6">
-                  <p style="width: 100%;">
-                    <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
-                    <strong>Customs Value</strong> {{item.custVal}} <br>
-                    <strong>Currency</strong> {{item.currency}} <br>
-                    <strong>Duty</strong> {{item.duty}} <br>
-                    <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                    <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <ng-container *ngIf="loading">
-            <loader></loader>
-          </ng-container>
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class="col-3">
+      </div>
+    </ng-container>
+    <ng-container *ngIf="loading">
+      <loader></loader>
+    </ng-container>
+    </div>
+  </div>
+</div> -->
+<!-- <div class="col-3">
         <div class="example-container" style="border-color: rgb(0, 167, 28);">
           <h4>Invoice <span style="color: rgb(0, 167, 28)">Lines</span></h4>
           <div
