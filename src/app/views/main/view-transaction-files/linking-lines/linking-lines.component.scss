@@ -61,3 +61,13 @@
   bottom: 0 !important;
   overflow-y: auto !important;
 }
+
+.shortcutView .overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: inherit;
+  background: rgba($color: #000000, $alpha: 0.5);
+}
