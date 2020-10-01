@@ -45,6 +45,7 @@ export class CheckingQueueComponent implements OnInit, OnDestroy {
     headings: [
       { title: 'Transaction', propertyName: 'Name', order: { enable: false } },
       { title: 'Type', propertyName: 'Type', order: { enable: false } },
+      { title: 'Status', propertyName: 'Status', order: { enable: false } },
       { title: 'Created', propertyName: 'Date', order: { enable: false } },
       { title: 'Edited', propertyName: 'Edited', order: { enable: false } },
     ],

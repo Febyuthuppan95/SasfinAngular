@@ -411,8 +411,20 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isQA = this.form.controls.qaUserID.value !== -1;
 
       if (this.isQA) {
+        this.invoiceDate.reset();
+
         this.form.controls.invoiceNo.reset();
         this.form.controls.invoiceDate.reset();
+        this.form.controls.freightCost.reset();
+        this.form.controls.insuranceCost.reset();
+        this.form.controls.bankCharges.reset();
+        this.form.controls.pop.reset();
+
+        this.form.controls.incoTermTypeID.reset();
+        this.form.controls.cooID.reset();
+        this.form.controls.currencyID.reset();
+        this.form.controls.seededCompanyID.reset();
+        this.form.controls.companyID.reset();
       }
 
       console.log(`======= QA USER ID ${this.isQA} =======`);
@@ -482,6 +494,16 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
+
+    const keys = Object.keys(form.controls);
+
+    keys.forEach((key) => {
+      if (form.controls[key].hasError('noMatch')) {
+        form.controls[key].setErrors(null);
+      }
+    });
+
+    form.updateValueAndValidity();
 
     if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
@@ -583,6 +605,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!target) {
       $event.isLocal = true;
+      $event.qaComplete = true;
       this.lines.push($event);
       this.cancelLine();
 
@@ -594,6 +617,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const original = this.lines[this.lines.indexOf(target)];
       $event.invoiceLineID = original.invoiceLineID;
       $event.invoiceID = original.invoiceID;
+      $event.qaComplete = true;
 
       $event.isDeleted = 0;
       $event.invoiceID = this.form.controls.invoiceID.value;

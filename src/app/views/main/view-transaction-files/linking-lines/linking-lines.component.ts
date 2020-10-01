@@ -2,7 +2,6 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
 import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
@@ -28,7 +27,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     private capture: CaptureService,
     private user: UserService,
     private api: ApiService,
-    private router: Router,
     private snackbar: MatSnackBar,
     private dialog: MatDialog,
     private location: Location,
@@ -37,11 +35,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public transaction: string;
   public transactionType: string;
   public transactionID: number;
-
-  // public control = new FormControl(undefined);
   public currentSAD: any;
-  // public currentSADLine: any;
-  // public currentLinks: any[] = [];
 
   public sadLines: any[] = [];
   public invLines: any[] = [];
@@ -61,13 +55,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public currentPDFIndex: number;
   public showHelp = false;
 
-  // public cwsTotalValue = 0;
-  // public invTotalValue = 0;
-
-  // public sadTotalValue = 0;
-  // public sadInvTotalValue = 0;
-  // public sadCwsTotalValue = 0;
-
   public warning: any;
   public loading = false;
 
@@ -82,53 +69,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('startLines', { static: false }) firstLine: any;
 
-  // dropCWS(event: CdkDragDrop<any[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     if (event.previousContainer.data[event.previousIndex].type === 'cws') {
-  //       transferArrayItem(event.previousContainer.data,
-  //                         event.container.data,
-  //                         event.previousIndex,
-  //                         event.currentIndex);
-
-  //       this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
-  //     } else { this.snackbar.open('Item must be CWS', 'OK', { duration: 3000 }); }
-  //   }
-  // }
-
-  // dropINV(event: CdkDragDrop<any[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     if (event.previousContainer.data[event.previousIndex].type === 'inv') {
-  //       transferArrayItem(event.previousContainer.data,
-  //                         event.container.data,
-  //                         event.previousIndex,
-  //                         event.currentIndex);
-
-  //       this.removeJoin({ captureJoinID: event.container.data[event.currentIndex].captureJoinID });
-  //     } else { this.snackbar.open('Item must be INV', 'OK', { duration: 3000 }); }
-  //   }
-  // }
-
-  // dropInSAD(event: CdkDragDrop<any[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     transferArrayItem(event.previousContainer.data,
-  //                       event.container.data,
-  //                       event.previousIndex,
-  //                       event.currentIndex);
-
-  //     if (event.container.data[event.currentIndex].invoiceLineID) {
-  //       this.addJoin({ invoiceLineID: event.container.data[event.currentIndex].invoiceLineID }, event.currentIndex);
-  //     } else {
-  //       this.addJoin({ customWorksheetLineID: event.container.data[event.currentIndex].customWorksheetLineID}, event.currentIndex);
-  //     }
-  //   }
-  // }
-
   ngOnInit(): void {
     this.transationService.observerCurrentAttachment()
     .subscribe((data) => {
@@ -140,15 +80,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.init();
       }
     });
-
-    // this.control.valueChanges.subscribe((value) => {
-    //   if (value) {
-    //     this.currentSADLine = value;
-    //     this.currentLinks = [];
-    //     console.log('CONTROL CHANGED');
-    //     this.loadInvoiceLines();
-    //   }
-    // });
   }
 
   ngAfterViewInit(): void {
@@ -416,46 +347,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  // async totalValues() {
-  //   let invValue = 0;
-
-  //   await this.iterate(this.invLines, (el) => {
-  //     if (!isNaN(+el.totalLineValue)) {
-  //       invValue += +el.totalLineValue;
-  //     }
-  //   });
-
-  //   this.invTotalValue = invValue;
-
-  //   let cwsValue = 0;
-
-  //   await this.iterate(this.cwsLines, (el) => {
-  //     if (!isNaN(+el.custVal)) {
-  //       cwsValue += +el.custVal;
-  //     }
-  //   });
-
-  //   this.cwsTotalValue = cwsValue;
-
-  //   let sadcwsValue = 0;
-  //   let sadinvValue = 0;
-
-  //   await this.iterate(this.currentLinks, (el) => {
-  //     if (el.type === 'cws') {
-  //       if (!isNaN(+el.custVal)) {
-  //         sadcwsValue += +el.custVal;
-  //       }
-  //     } else if (el.type === 'inv') {
-  //       if (!isNaN(+el.totalLineValue)) {
-  //         sadinvValue += +el.totalLineValue;
-  //       }
-  //     }
-  //   });
-
-  //   this.sadCwsTotalValue = sadcwsValue;
-  //   this.sadInvTotalValue = sadinvValue;
-  // }
-
   async loadWorksheetLines() {
     const header: any = await this.capture.customWorksheetList({
       customsWorksheetID: -1,
@@ -541,43 +432,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     return found;
   }
 
-  // async addJoin(request, index) {
-  //   request.transactionID = this.transactionID;
-  //   request.userID = this.currentUser.userID;
-  //   request.SAD500LineID = this.currentSADLine.sad500LineID;
-
-  //   await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-  //     request,
-  //     procedure: 'CaptureJoinAdd'
-  //   }).then(
-  //     (res: any) => {
-  //       console.log(res);
-  //       if (res.outcome) {
-  //         this.snackbar.open('Line linked', 'OK', { duration: 3000 });
-
-  //         this.currentLinks[index].captureJoinID = +res.outcomeMessage;
-  //       }
-  //     },
-  //   );
-  // }
-
-  // async removeJoin(request) {
-  //   request.userID = this.currentUser.userID;
-  //   request.SAD500LineID = this.currentSADLine.sad500LineID;
-  //   request.isDeleted = 1;
-
-  //   await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-  //     request,
-  //     procedure: 'CaptureJoinUpdate'
-  //   }).then(
-  //     (res: any) => {
-  //       if (res.outcome) {
-  //         this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
-  //       }
-  //     },
-  //   );
-  // }
-
   async iterate(list, callback) {
     for (let i = 0; i < list.length; i++) {
       await callback(list[i]);
@@ -604,9 +458,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       (res: any) => {
         if (res.outcome) {
           this.snackbar.open('Transaction set to "Ready"', '', { duration: 3000 });
-          setTimeout(() => {
-            this.router.navigate(['companies', 'transactions']);
-          }, 2000);
+          this.location.back();
         }
       },
     );
@@ -623,22 +475,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       (res: any) => {
         if (res.outcome) {
           this.snackbar.open('Notification Sent to Consultant', '', { duration: 3000 });
-          setTimeout(() => {
-            this.router.navigate(['companies', 'transactions']);
-          }, 2000);
+          this.location.back();
         }
       },
     );
   }
-
-  // async evaluate() {
-  //   this.warning = undefined;
-
-  //   this.warning = {
-  //     title: 'test',
-  //     msg: 'warning message'
-  //   };
-  // }
 
   _invoiceLinkDialog(index: number) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'inv');
@@ -685,9 +526,14 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cwsLines = this.cwsLinesTemp;
     this.invLines = this.invLinesTemp;
 
+    this.allCaptureJoins.forEach((el) => {
+      this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
+      this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
+    });
+
     captureJoins.forEach((el) => {
       this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
-      this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID)
+      this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
 
       if (currentSADLine) {
         if (el.CustomWorksheetLineID !== null) {

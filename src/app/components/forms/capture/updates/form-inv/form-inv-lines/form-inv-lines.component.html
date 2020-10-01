@@ -20,7 +20,7 @@
         <mat-hint *ngIf="form.controls.quantityOBit.value">OVERRIDE: {{form.controls.quantityOReason.value}}</mat-hint>
         <button type="button" *ngIf="!form.controls.quantityOBit.value && form.controls.quantity.errors?.incorrect" matSuffix (click)="overrideDialog('quantity', 'Line No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.quantityOBit.value  && form.controls.quantity.errors?.incorrect">{{getError('quantity')}}</mat-error>
-       <mat-error *ngIf="form.controls.quantity.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.quantity.value}}</mat-error>
+        <mat-error *ngIf="form.controls.quantity.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.quantity.value}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
@@ -45,7 +45,7 @@
           Common Factor
         </mat-label>
         <input matInput type="text" formControlName="commonFactor" (focusin)="updateHelpContext('form-invoice-line-common-factor')">
-       <mat-error *ngIf="form.controls.commonFactor.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.commonFactor.value}}</mat-error>
+        <mat-error *ngIf="form.controls.commonFactor.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.commonFactor.value}}</mat-error>
 
 <!--        <mat-icon *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override">clear</mat-icon>-->
 <!--        <mat-hint *ngIf="form.controls.commonFactorOBit.value">OVERRIDE: {{form.controls.unitPriceOReason.value}}</mat-hint>-->

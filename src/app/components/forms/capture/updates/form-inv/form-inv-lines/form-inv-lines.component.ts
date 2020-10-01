@@ -122,11 +122,14 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
       this.errors = this.data.errors;
 
-      if (this.isQA) {
+      if (this.isQA && !this.data.qaComplete) {
         this.form.controls.commonFactor.reset();
         this.form.controls.quantity.reset();
         this.form.controls.unitPrice.reset();
         this.form.controls.totalLineValue.reset();
+        this.form.controls.unitOfMeasureID.reset();
+        this.form.controls.itemID.reset();
+        this.form.controls.cooID.reset();
       }
 
     } else {
@@ -146,26 +149,26 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     });
 
     // QA Recapture
-    if (this.isQA) {
+    if (this.isQA && !this.data.qaComplete) {
       this.form.controls.commonFactor.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('commonFactor', value);
         }
       });
 
-      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+      this.form.controls.quantity.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('quantity', value);
         }
       });
 
-      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+      this.form.controls.totalLineValue.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('totalLineValue', value);
         }
       });
 
-      this.form.controls.commonFactor.valueChanges.subscribe((value) => {
+      this.form.controls.unitPrice.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('unitPrice', value);
         }
@@ -218,11 +221,14 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         }
       });
 
-      if (this.isQA) {
+      if (this.isQA && !this.data.qaComplete) {
         this.form.controls.commonFactor.reset();
         this.form.controls.quantity.reset();
         this.form.controls.unitPrice.reset();
         this.form.controls.totalLineValue.reset();
+        this.form.controls.unitOfMeasureID.reset();
+        this.form.controls.itemID.reset();
+        this.form.controls.cooID.reset();
       }
 
       this.errors = this.data.errors;
@@ -251,6 +257,16 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
   submit(form: FormGroup) {
     form.markAllAsTouched();
+
+    const keys = Object.keys(form.controls);
+
+    keys.forEach((key) => {
+      if (form.controls[key].hasError('noMatch')) {
+        form.controls[key].setErrors(null);
+      }
+    });
+
+    form.updateValueAndValidity();
 
     if (form.valid) {
       const line: any = form.value;
