@@ -313,6 +313,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     if (form.valid) {
       const line: any = form.value;
       line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
+      this.unsavedChanges = false;
       this.submission.emit(line);
     } else {
       this.findInvalidControls(form);
