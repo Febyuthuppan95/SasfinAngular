@@ -15,6 +15,12 @@ import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.
 import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 
+enum TotalStatus {
+  Passed,
+  Failed,
+  None
+}
+
 @AutoUnsubscribe()
 @Component({
   selector: 'app-linking-lines',
@@ -36,6 +42,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public transactionType: string;
   public transactionID: number;
   public currentSAD: any;
+  public totalStatuses = TotalStatus;
 
   public sadLines: any[] = [];
   public invLines: any[] = [];
@@ -252,6 +259,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       .then(
         async (res: TransactionFileListResponse) => {
           this.attachments = res.attachments;
+          console.log(this.attachments);
 
           this.attachments.forEach((attach) => {
             if (attach !== undefined) {
@@ -266,6 +274,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               attach.statusID === 9 ? attach.tooltip = 'Override Capture' : console.log() ;
             }
           });
+
+          this.attachments = this.attachments
+            .filter(x => x.fileTypeID === 2 || x.fileTypeID === 5 || x.fileTypeID === 7);
 
           this.currentPDFIndex = 0;
           this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
@@ -413,7 +424,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         });
 
         this.loading = false;
-        // await this.totalValues();
+        this.evaluate();
     });
   }
 
@@ -433,6 +444,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async iterate(list, callback) {
+    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < list.length; i++) {
       await callback(list[i]);
     }
@@ -515,7 +527,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         currentUser: this.currentUser,
       }
     }).afterClosed().subscribe(() => {
-      this.loadInvoiceLines();
+      this.loadWorksheetLines();
     });
   }
 
@@ -562,5 +574,36 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     return currentLinks;
   }
 
+  evaluate() {
+    this.sadLines.forEach(item => {
+      let cwsCustomsValue = 0;
+
+      const linkedCWS = this.getCurrentLinks(item, 'cws');
+      const linkedINV = this.getCurrentLinks(item, 'inv');
+
+      linkedCWS.forEach(cws => {
+        cwsCustomsValue += +cws.custVal;
+      });
+
+      linkedINV.forEach(cws => {
+
+      });
+
+      item.runningCustomsValue = cwsCustomsValue;
+      item.runningCustomsValueStatus = this.getTotalStatus(item.customsValue, cwsCustomsValue);
+    });
+  }
+
+  getTotalStatus(parent, child) {
+    if (parent === child) {
+      return TotalStatus.Passed;
+    } else if (child > parent) {
+      return TotalStatus.Failed;
+    }
+
+    return TotalStatus.None;
+  }
+
   ngOnDestroy(): void {}
 }
+

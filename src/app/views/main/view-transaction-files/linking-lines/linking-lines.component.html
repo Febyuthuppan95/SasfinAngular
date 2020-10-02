@@ -6,7 +6,7 @@
       <div class="col-6 pdf-viewer-cont" style="">
         <app-document-viewer *ngIf="currentPDFSource" #pdfviewer [(source)]="currentPDFSource"></app-document-viewer>
       </div>
-      <div class="col-6">
+      <div class="col-6" style="padding: 12px;">
         <div class="row">
           <div class="col-12">
             <h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
@@ -36,7 +36,19 @@
                 <mat-card-content>
                   <div class="row">
                     <div class="col-12">
+                      <mat-chip-list aria-label="runningTotals" style="float: right;">
+                        <mat-chip [ngClass]="{'bg-success': item.runningCustomsValueStatus === totalStatuses.Passed, 'bg-danger': item.runningCustomsValueStatus === totalStatuses.Failed}">
+                          Customs Value&nbsp;
+                          <strong>{{item.runningCustomsValue}}</strong>&nbsp;
+                          <mat-icon>
+                            {{ item.runningCustomsValueStatus === totalStatuses.Passed ? 'check' : '' }}
+                            {{ item.runningCustomsValueStatus === totalStatuses.Failed ? 'close' : '' }}
+                            {{ item.runningCustomsValueStatus === totalStatuses.None ? 'info' : '' }}
+                          </mat-icon>
+                        </mat-chip>
+                      </mat-chip-list>
                       <h3 class="text-left">Line {{i+1}}</h3>
+                      <br>
                     </div>
                     <div class="col-4">
                       <p class="text-left" style="width: 100%;">
