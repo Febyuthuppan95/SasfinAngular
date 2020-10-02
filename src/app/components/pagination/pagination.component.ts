@@ -84,8 +84,8 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   pageChange(pageNumber: number) {
     const page = this.pages[+pageNumber - 1];
-    this.rowStart = page.rowStart;
-    this.rowEnd = page.rowEnd;
+    this.rowStart = page ? page.rowStart : 1;
+    this.rowEnd = page ? page.rowEnd : 15;
     this.activePage = +pageNumber;
     this.prevPage = +this.activePage - 1;
     this.nextPage = +this.activePage + 1;

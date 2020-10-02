@@ -39,7 +39,7 @@
     <br>
   </div>
 
-<table class="table table-hover table-striped table-{{ currentTheme }}">
+<table *ngIf="(this.dataset !== undefined && this.dataset !== null && this.dataset.length !== 0)" class="table table-hover table-striped table-{{ currentTheme }}">
   <thead>
     <tr>
       <th *ngFor="let heading of headings" scope="col" [ngClass]="{'col-row-num': heading.propertyName === 'rowNum'}">
@@ -53,7 +53,7 @@
       </th>
     </tr>
   </thead>
-  <tbody *ngIf="(this.dataset !== undefined || this.dataset !== null || this.dataset.length !== 0)">
+  <tbody>
     <tr *ngFor="let record of this.displayData; let i=index" class="userRecord" [class.active]="i == this.selectedRow" (click)="recordChangeEvent($event, this.dataset[i], i)">
       <td *ngFor="let item of this.record; let x = index" scope="col">
         <span *ngIf="this.headings[x].styleType !== undefined && this.headings[x].styleType === 'badge'" class="badge" [ngClass]="{'badge-success': item.value === this.headings[x].style.pos, 'badge-danger': item.value === this.headings[x].style.neg}">
@@ -69,14 +69,13 @@
       </td>
     </tr>
   </tbody>
-  <tbody class="tbodyPop" *ngIf="(this.dataset === undefined || this.dataset === null || this.dataset.length === 0)">
+  <!-- <tbody *ngIf="(this.dataset === undefined || this.dataset === null || this.dataset.length === 0)">
     <tr>
-      <td scope="col"></td>
-      <td scope="col">No data to display..</td>
-      <td scope="col"></td>
+      <td scope="col" *ngFor="let item of headings"></td>
     </tr>
-  </tbody>
+  </tbody> -->
 </table>
+<p *ngIf="(this.dataset === undefined || this.dataset === null || this.dataset.length === 0)">No data</p>
 <app-pagination
   *ngIf="this.paginate"
   [currentTheme]="currentTheme"
