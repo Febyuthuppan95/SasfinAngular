@@ -32,7 +32,7 @@
         <input matInput type="text" formControlName="supplierRef" (focusin)="updateHelpContext('form-import-clearing-instruction-supplier-ref')" />
         <button type="button" *ngIf="form.controls.supplierRefOBit.value"  matSuffix mat-icon-button (click)="undoOverride('supplierRef')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.supplierRefOBit.value">OVERRIDE: {{form.controls.supplierRefOReason.value}}</mat-hint>
-        <button *ngIf="!form.controls.supplierRef.value && form.controls.supplierRef.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('supplierRef', 'Supplier Ref')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <button *ngIf="!form.controls.supplierRefOBit.value && form.controls.supplierRef.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('supplierRef', 'Supplier Ref')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.supplierRefOBit.value && form.controls.supplierRef.errors?.incorrect">{{getError('supplierRef')}}</mat-error>
       </mat-form-field>
       <br /><br />
