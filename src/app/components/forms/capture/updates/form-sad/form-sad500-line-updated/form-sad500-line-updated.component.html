@@ -7,7 +7,15 @@
   <button mat-raised-button class="bg-primary text-light" (click)="submit(form)">Queue Update</button>
 </ng-container>
 <br><br>
-
+<ng-container *ngIf="unsavedChanges">
+  <mat-card class="bg-warning">
+    <mat-card-content>
+      <p><strong>WARNING</strong> You have unsaved changes</p>
+      <small>When finished press <strong>ALT + A</strong> to save changes</small>
+    </mat-card-content>
+  </mat-card>
+  <br><br>
+</ng-container>
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6">

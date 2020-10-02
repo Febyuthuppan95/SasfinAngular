@@ -79,6 +79,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   public errors: any[] = [];
   public shortcuts: any[] = [];
   public sadLine500ID = -1;
+  public unsavedChanges = false;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -172,6 +173,8 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     this.eventService.focusForm.subscribe(() => {
       setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
+
+    this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
   }
 
   ngAfterViewInit(): void {

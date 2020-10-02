@@ -90,6 +90,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   public errors: any[] = [];
   public shortcuts: any[] = [];
   public invoiceID = -1;
+  public unsavedChanges = false;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -174,6 +175,8 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         }
       });
     }
+
+    this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
   }
 
   markAsNoMatch(key, value) {

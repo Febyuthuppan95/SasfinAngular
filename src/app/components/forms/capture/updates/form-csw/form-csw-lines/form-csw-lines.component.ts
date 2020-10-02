@@ -18,7 +18,6 @@ import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
   styleUrls: ['./form-csw-lines.component.scss']
 })
 export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-
   constructor(private snackbar: MatSnackBar,
               private dialog: MatDialog,
               private userService: UserService,
@@ -109,6 +108,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   public errors: any[] = [];
   public shortcuts: any[] = [];
   public loader = false;
+  public unsavedChanges = false;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -125,6 +125,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   ngOnInit() {
     this.form.controls.duty.setValidators(this.isExport ? null : [Validators.required]);
     this.form.controls.duty.updateValueAndValidity();
+    this.unsavedChanges = false;
 
     if (this.data && this.data !== null) {
       this.form.patchValue(this.data);
@@ -224,7 +225,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
       setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
 
-    this.form.valueChanges.subscribe((e) => console.log(e));
+    this.form.valueChanges.subscribe((e) => this.unsavedChanges = true);
   }
 
   ngAfterViewInit(): void {

@@ -3,7 +3,7 @@
 <mat-card style="background: #fafafa;" class="cover">
   <mat-card-content>
     <div class="row">
-      <div class="col-6" style="overflow-y: auto; padding-top: 64px; padding-bottom: 64px;">
+      <div class="col-6 pdf-viewer-cont" style="">
         <app-document-viewer *ngIf="currentPDFSource" #pdfviewer [(source)]="currentPDFSource"></app-document-viewer>
       </div>
       <div class="col-6">
