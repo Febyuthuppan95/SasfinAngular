@@ -98,14 +98,14 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       this.data.sad500ID = this.data.SAD500ID;
       this.data.specificSAD500LineID = this.data.sad500LineID;
       this.sadLine500ID = this.data.specificSAD500LineID;
-      this.form.patchValue(this.data);
+      this.form.patchValue(this.data, { emitEvent: false });
 
       if (this.data.quantity === -1) {
         this.data.quantity = null;
-        this.form.controls.quantity.setValue(null);
+        this.form.controls.quantity.setValue(null, { emitEvent: false });
       }
 
-      this.form.controls.duties.setValue(this.data.duties);
+      this.form.controls.duties.setValue(this.data.duties, { emitEvent: false });
       this.errors = this.data.errors;
 
       if (this.errors) {
@@ -126,7 +126,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
                 });
 
                 const error = this.getError('CUSTOMS VALUE');
-                this.form.controls.customsValueError.setValue(error);
+                this.form.controls.customsValueError.setValue(error, { emitEvent: false });
               }
 
               if (error.fieldName.toUpperCase() == 'SUPPLY UNIT') {
@@ -136,7 +136,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
                 });
 
                 const error = this.getError('SUPPLY UNIT');
-                this.form.controls.supplyUnitError.setValue(error);
+                this.form.controls.supplyUnitError.setValue(error, { emitEvent: false });
               }
 
               if (error.fieldName.toUpperCase() == 'DUTY') {
@@ -146,7 +146,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
                 // });
 
                 const error = this.getError('duty');
-                this.form.controls.dutyError.setValue(error);
+                this.form.controls.dutyError.setValue(error, { emitEvent: false });
               }
             });
           });
@@ -157,7 +157,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
     } else {
       this.sadLine500ID = -1;
-      this.form.controls.specificSAD500LineID.setValue(-1);
+      this.form.controls.specificSAD500LineID.setValue(-1, { emitEvent: false });
       // this.form.controls.sad500LineID.setValue(-1);
     }
 
@@ -174,7 +174,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
       setTimeout(() => this.startLineForm.nativeElement.focus(), 100);
     });
 
-    this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
+    setTimeout(() => this.form.valueChanges.subscribe(() => this.unsavedChanges = true), 1000);
   }
 
   ngAfterViewInit(): void {
