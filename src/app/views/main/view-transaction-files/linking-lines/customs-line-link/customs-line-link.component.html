@@ -3,13 +3,19 @@
   <ng-container *ngIf="currentLinks.length > 0">
     <h5>Linked Lines ({{currentLinks.length}})</h5>
   </ng-container>
+  <div style="padding: 0 20px 0 0px;">
   <ng-container *ngFor="let item of currentLinks; let i = index">
-    <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%;">
+    <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
       <mat-card class="linked">
         <mat-card-content>
+          <button tabindex="-1" mat-mini-fab color="primary" style="
+          position: absolute;
+          left: -20px;
+          top: 30%;
+          bottom: 50%;">{{i+1}}</button>
           <div class="row">
             <div class="col-12">
-              <p style="width: 100%;">
+              <p style="width: 100%; margin-left: 24px;">
                 <strong>HS Quantity</strong> {{item.hsQuantity == -1 ? '0' : item.hsQuantity}} <br>
                 <strong>Total Customs Value</strong> {{item.custVal}} <br>
                 <strong>Customs Duty</strong> {{item.duty}} <br>
@@ -21,18 +27,24 @@
       </mat-card>
     </button>
     <br>
+    <br>
   </ng-container>
   <ng-container *ngIf="lines.length > 0">
     <br>
     <h5>Available Lines ({{lines.length}})</h5>
   </ng-container>
   <ng-container *ngFor="let item of lines; let i = index">
-    <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%;">
+    <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
       <mat-card>
         <mat-card-content>
+          <button tabindex="-1" mat-mini-fab color="accent" style="
+          position: absolute;
+          left: -20px;
+          top: 30%;
+          bottom: 50%;">{{i+1}}</button>
           <div class="row">
             <div class="col-12">
-              <p style="width: 100%;">
+              <p style="width: 100%; margin-left: 24px;">
                 <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
                 <strong>Total Customs Value</strong> {{item.custVal}} <br>
                 <strong>Customs Duty</strong> {{item.duty}} <br>
@@ -43,6 +55,9 @@
         </mat-card-content>
       </mat-card>
     </button>
+    <br>
+    <br>
   </ng-container>
-  <br>
+  </div>
+    <br>
 </div>
