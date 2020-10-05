@@ -47,8 +47,8 @@
         <input matInput type="text" formControlName="serialNo" (focusin)="updateHelpContext('form-cusrelease-serialNo')"/>
         <button *ngIf="form.controls.serialNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('serialNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.serialNoOBit.value">OVERRIDE: {{form.controls.serialNoOReason.value}}</mat-hint>
-        <button *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('serialNo', 'Serial No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNo.errors?.incorrect">{{getError('serialNo')}}</mat-error>
+        <button *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNoError.value" type="button"  matSuffix mat-icon-button (click)="overrideDialog('serialNo', 'Serial No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.serialNoOBit.value  && form.controls.serialNoError.value">{{form.controls.serialNoError.value}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>

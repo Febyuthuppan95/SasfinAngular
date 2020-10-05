@@ -255,7 +255,8 @@ async load() {
           if (error.fieldName.toUpperCase() === 'SERIALNO') {
             this.form.controls.serialNo.setErrors({incorrect: true});
             this.form.controls.serialNo.markAsTouched();
-            this.form.controls.serialNoError.setValue(this.getError('serialNo'));
+            const error = this.getError('serialNo');
+            this.form.controls.serialNoError.setValue(error);
           }
         });
       });
