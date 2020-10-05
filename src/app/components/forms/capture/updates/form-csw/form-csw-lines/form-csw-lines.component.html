@@ -121,8 +121,8 @@
         <input matInput formControlName="invoiceNo" (focusin)="updateHelpContext('form-customs-worksheet-line-invoiceno')">
         <button mat-icon-button type="button" *ngIf="form.controls.invoiceNoOBit.value" matSuffix (click)="undoOverride('invoiceNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.invoiceNoOBit.value">OVERRIDE: {{form.controls.invoiceNoOReason.value}}</mat-hint>
-        <button mat-icon-button type="button" *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.errors?.incorrect" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
+        <button mat-icon-button type="button" *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNoError.value" matSuffix (click)="overrideDialog('invoiceNo', 'Invoice No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
+        <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNoError.value">{{getError('invoiceNo')}}</mat-error>
       </mat-form-field>
       <br><br>
     </div>
