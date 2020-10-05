@@ -77,3 +77,24 @@
   padding-bottom: 64px;
   height: 100vh;
 }
+
+.reader-line {
+  background: rgba($color: #fff130, $alpha: 0.3);
+  border-bottom: #fff130 2px solid;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 50%;
+  padding: 10px 24px;
+  z-index: 9999;
+}
+
+.reader-line:hover {
+  cursor: move;
+}
+
+.reader-line-dragger {
+  position: absolute;
+  top: 8px;
+  right: 24px;
+}

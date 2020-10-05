@@ -1,7 +1,7 @@
 <h3 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane">Invoice Lines</h3>
 <div mat-dialog-content>
   <ng-container *ngIf="currentLinks.length > 0">
-    <h5>Linked Lines</h5>
+    <h5>Linked Lines ({{currentLinks.length}})</h5>
   </ng-container>
   <ng-container *ngFor="let item of currentLinks; let i = index">
     <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%;">
@@ -18,7 +18,7 @@
             <div class="col-6">
               <p style="width: 100%;">
                 <strong>Unit Price</strong> {{item.unitPrice}} <br>
-                <strong>Quantity</strong> {{item.quantity}} <br>
+                <strong>Quantity</strong> {{item.quantity == -1 ? '0' : item.quantity}} <br>
               </p>
             </div>
           </div>
@@ -30,7 +30,7 @@
   </ng-container>
   <ng-container *ngIf="lines.length > 0">
     <br>
-    <h5>Available Lines</h5>
+    <h5>Available Lines ({{lines.length}})</h5>
   </ng-container>
   <ng-container *ngFor="let item of lines; let i = index">
     <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%;">

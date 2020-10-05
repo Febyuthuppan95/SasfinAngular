@@ -42,6 +42,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public transactionType: string;
   public transactionID: number;
   public currentSAD: any;
+  public currentINV: any;
+  public currentCWS: any;
   public totalStatuses = TotalStatus;
 
   public sadLines: any[] = [];
@@ -68,6 +70,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   private currentUser: any = this.user.getCurrentUser();
   // tslint:disable-next-line: max-line-length
   public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
+
+  currentReaderPOS: { x: number, y: number } = {
+    x: 0,
+    y: 64,
+  };
 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
@@ -182,6 +189,30 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       },
+      {
+        key: 'alt + 2',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+      },
+      {
+        key: 'alt + [',
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.currentReaderPOS.y = this.currentReaderPOS.y + 15,
+      },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+        key: 'alt + 8',
+      },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
+        key: 'alt + ]',
+      },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -204,21 +235,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         filter: '',
       },
       requestProcedure: 'UnitOfMeasuresList'
-    };
-
-    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: any) => {
-        this.units = res.data;
-    });
-  }
-
-  async loadCurrencies() {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        filter: '',
-      },
-      requestProcedure: 'CurrenciesList'
     };
 
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
@@ -334,7 +350,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   async loadInvoiceLines() {
     this.loading = true;
 
-    const header: any = await this.capture.invoiceList({
+    this.currentINV = await this.capture.invoiceList({
       invoiceID: -1,
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
@@ -347,7 +363,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     await this.capture.invoiceLineList({
-      invoiceID: header.invoices[0].invoiceID,
+      invoiceID: this.currentINV.invoices[0].invoiceID,
       invoiceLineID: -1,
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
@@ -358,7 +374,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       rowEnd: 1000000 }).then(
       async (res: any) => {
         this.invLinesTemp = res.lines;
-        console.log(res.lines);
 
         await this.iterate(this.invLinesTemp, (el) => {
           el.type = 'inv';
@@ -375,7 +390,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async loadWorksheetLines() {
-    const header: any = await this.capture.customWorksheetList({
+    this.currentCWS = await this.capture.customWorksheetList({
       customsWorksheetID: -1,
       userID: this.currentUser.userID,
       transactionID: this.transactionID,
@@ -386,9 +401,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       orderByDirection: '',
     });
 
+    console.log(this.currentCWS);
+
     await this.capture.customWorksheetLineList({
       userID: this.currentUser.userID,
-      customsWorksheetID: header.customsWorksheets[0].customWorksheetID,
+      customsWorksheetID: this.currentCWS.customsWorksheets[0].customWorksheetID,
       rowStart: 1,
       rowEnd: 1000,
       orderBy: '',
@@ -430,11 +447,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.allCaptureJoins = res.data;
         this.cwsLines = this.cwsLinesTemp;
         this.invLines = this.invLinesTemp;
-
-        await this.iterate(this.allCaptureJoins, async (el) => {
-          this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
-          this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
-        });
 
         this.loading = false;
         this.evaluate();
@@ -542,6 +554,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   getCurrentLinks(currentSADLine: any, type: string): any[] {
     const currentLinks = [];
     const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
+
+    console.log(captureJoins);
+    console.log(this.cwsLines);
+    console.log(this.invLines);
 
     this.cwsLines = this.cwsLinesTemp;
     this.invLines = this.invLinesTemp;
