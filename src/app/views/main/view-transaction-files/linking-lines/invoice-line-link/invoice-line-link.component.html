@@ -10,18 +10,16 @@
           <div class="row">
             <div class="col-6">
               <p style="width: 100%;">
+                <!-- <strong>Currency</strong> {{item.currency}} <br> -->
                 <strong>Invoice No</strong> {{item.invoiceNo}} <br>
                 <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                <strong>Product Code</strong> {{item.prodCode}} <br>
-                <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
               </p>
             </div>
             <div class="col-6">
               <p style="width: 100%;">
-                <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                <strong>Unit Price</strong> {{item.unitPrice}} <br>
                 <strong>Quantity</strong> {{item.quantity}} <br>
-                <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
               </p>
             </div>
           </div>
@@ -42,18 +40,16 @@
           <div class="row">
             <div class="col-6">
               <p style="width: 100%;">
+                <!-- <strong>Currency</strong> {{item.currency}} <br> -->
                 <strong>Invoice No</strong> {{item.invoiceNo}} <br>
                 <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                <strong>Product Code</strong> {{item.prodCode}} <br>
-                <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
               </p>
             </div>
             <div class="col-6">
               <p style="width: 100%;">
-                <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                <strong>Unit Price</strong> {{item.unitPrice}} <br>
                 <strong>Quantity</strong> {{item.quantity}} <br>
-                <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
               </p>
             </div>
           </div>

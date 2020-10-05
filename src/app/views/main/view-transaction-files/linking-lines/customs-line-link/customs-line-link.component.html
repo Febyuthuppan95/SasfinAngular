@@ -8,23 +8,12 @@
       <mat-card class="linked">
         <mat-card-content>
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <p style="width: 100%;">
-                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
                 <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Total Customs Value</strong> {{item.custVal}} <br>
+                <strong>Customs Duty</strong> {{item.duty}} <br>
                 <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-                <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
-              </p>
-            </div>
-            <div class="col-6">
-              <p style="width: 100%;">
-                <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
-                <strong>Currency</strong> {{item.currency}} <br>
-                <strong>Duty</strong> {{item.duty}} <br>
-                <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
               </p>
             </div>
           </div>
@@ -42,23 +31,12 @@
       <mat-card>
         <mat-card-content>
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <p style="width: 100%;">
-                <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
                 <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
+                <strong>Total Customs Value</strong> {{item.custVal}} <br>
+                <strong>Customs Duty</strong> {{item.duty}} <br>
                 <strong>Foreign Inv</strong> {{item.foreignInv}} <br>
-                <strong>Supply Unit</strong> {{item.supplyUnit}} <br>
-              </p>
-            </div>
-            <div class="col-6">
-              <p style="width: 100%;">
-                <strong>Country of Origin</strong> {{item.country ? item.country.Name : '-'}} <br>
-                <strong>Customs Value</strong> {{item.custVal}} <br>
-                <strong>Currency</strong> {{item.currency}} <br>
-                <strong>Duty</strong> {{item.duty}} <br>
-                <strong>Common Factor</strong> {{item.commonFactor}} <br>
-                <strong>Unit Of Measure</strong> {{item.unit ? item.unit.Description : '-'}}
               </p>
             </div>
           </div>

@@ -212,6 +212,21 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  async loadCurrencies() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'CurrenciesList'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.units = res.data;
+    });
+  }
+
   async loadCountry() {
     const model = {
       requestParams: {
@@ -259,7 +274,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       .then(
         async (res: TransactionFileListResponse) => {
           this.attachments = res.attachments;
-          console.log(this.attachments);
 
           this.attachments.forEach((attach) => {
             if (attach !== undefined) {
@@ -344,11 +358,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       rowEnd: 1000000 }).then(
       async (res: any) => {
         this.invLinesTemp = res.lines;
+        console.log(res.lines);
 
         await this.iterate(this.invLinesTemp, (el) => {
           el.type = 'inv';
           el.items = this.items.find(x => x.ItemID == el.itemID);
           el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+          el.currency = 'this';
         });
 
         this.invLines = this.invLinesTemp;
@@ -396,9 +412,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async loadCaptureJoins() {
-    console.log('LOADING CAPTURE JOINS============================');
-    // this.currentLinks = [];
-
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -431,10 +444,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   findCustomsWorksheetLine(array, value) {
     let found;
 
-    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < array.length; i++) {
-      console.log(`${array[i].customWorksheetLineID} == ${value}`);
-      // tslint:disable-next-line: triple-equals
       if (array[i].customWorksheetLineID == value) {
         found = array[i];
       }
@@ -495,7 +505,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   _invoiceLinkDialog(index: number) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'inv');
-    console.log(currentLinks);
 
     this.dialog.open(InvoiceLineLinkComponent, {
       width: '860px',
@@ -514,7 +523,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   _customsLinkDialog(index: number) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'cws');
-    console.log(currentLinks);
 
     this.dialog.open(CustomsLineLinkComponent, {
       width: '860px',
@@ -534,7 +542,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   getCurrentLinks(currentSADLine: any, type: string): any[] {
     const currentLinks = [];
     const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
-    console.log(this.allCaptureJoins);
+
     this.cwsLines = this.cwsLinesTemp;
     this.invLines = this.invLinesTemp;
 
@@ -552,7 +560,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
 
           if (toAdd && type === 'cws') {
-            console.log(toAdd);
             toAdd.captureJoinID = el.CaptureJoinID;
             toAdd.type = 'cws';
             currentLinks.push(toAdd);
