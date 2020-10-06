@@ -180,11 +180,13 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   }
 
   markAsNoMatch(key, value) {
-    if (value !== this.tempForm.controls[key].value) {
+    if (value != this.tempForm.controls[key].value) {
       this.form.controls[key].setErrors({ noMatch: true });
     } else {
       this.form.controls[key].setErrors(null);
     }
+
+    this.form.controls[key].updateValueAndValidity();
   }
 
   ngAfterViewInit(): void {
