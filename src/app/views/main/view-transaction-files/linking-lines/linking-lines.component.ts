@@ -14,6 +14,7 @@ import { CustomsLineLinkComponent } from './customs-line-link/customs-line-link.
 import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.component';
 import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
+import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
 
 enum TotalStatus {
   Passed,
@@ -177,8 +178,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             this.dialog.open(DialogConfirmationComponent, {
               data: {
-                title: 'Submit to Consultant',
-                message: 'Are you sure you want to submit this transaction to a consultant?'
+                title: 'Submit',
+                message: 'Are you sure you want to submit this transaction?'
               },
               width: '512px'
             }).afterClosed().subscribe((state) => {
@@ -448,6 +449,15 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cwsLines = this.cwsLinesTemp;
         this.invLines = this.invLinesTemp;
 
+        await this.iterate(this.sadLines, async (item) =>  {
+          const exists = this.allCaptureJoins.find(x => x.SAD500LineID == item.sad500LineID && x.CustomsValueOBit);
+
+          if (exists) {
+            item.OBit = true;
+            item.OReason = exists.CustomsValueOReason;
+          }
+        });
+
         this.loading = false;
         this.evaluate();
     });
@@ -599,12 +609,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         cwsCustomsValue += +cws.custVal;
       });
 
-      linkedINV.forEach(cws => {
+      linkedINV.forEach(inv => {
 
       });
 
       item.runningCustomsValue = cwsCustomsValue;
-      item.runningCustomsValueStatus = this.getTotalStatus(item.customsValue, cwsCustomsValue);
+      item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue, cwsCustomsValue);
     });
   }
 
@@ -616,6 +626,74 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     return TotalStatus.None;
+  }
+
+  customsValueChip(item: any) {
+    if (item.runningCustomsValueStatus === this.totalStatuses.Failed || item.runningCustomsValueStatus === this.totalStatuses.None) {
+      this.overrideDialog(item, 'Customs Value Running Total');
+    }
+  }
+
+  overrideDialog(sad500Line: any, label) {
+    this.dialog.open(DialogOverrideComponent, {
+      width: '512px',
+      data: {
+        label
+      }
+    }).afterClosed().subscribe((val) => {
+      if (val) {
+        this.override(sad500Line, val);
+      }
+    });
+  }
+
+  override(sad500Line: any, reason: string) {
+    sad500Line.OBit = true;
+    sad500Line.OReason = reason;
+
+    sad500Line.runningCustomsValueStatus = this.totalStatuses.Passed;
+
+    this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request: {
+        sad500LineID: sad500Line.sad500LineID,
+        customsValue: true,
+        customsValueOBit: sad500Line.OBit,
+        customsValueOReason: sad500Line.OReason,
+      },
+      procedure: 'OverrideSAD500LineLinking'
+    }).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.snackbar.open('SAD500 Line Overridden', '', { duration: 3000 });
+        } else {
+          this.snackbar.open('Could not override SAD500 Line', '', { duration: 3000 });
+          this.undoOverride(sad500Line);
+        }
+      },
+    );
+  }
+
+  undoOverride(sad500Line: any) {
+    sad500Line.OBit = false;
+    sad500Line.OReason = null;
+
+    this.evaluate();
+
+    this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+      request: {
+        sad500LineID: sad500Line.sad500LineID,
+        customsValue: true,
+        customsValueOBit: sad500Line.OBit,
+        customsValueOReason: sad500Line.OReason,
+      },
+      procedure: 'OverrideSAD500LineLinking'
+    }).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.snackbar.open('SAD500 Line Overridden Undone', '', { duration: 3000 });
+        }
+      },
+    );
   }
 
   ngOnDestroy(): void {}

@@ -9,7 +9,7 @@
         </div>
         <app-document-viewer *ngIf="currentPDFSource" #pdfviewer [(source)]="currentPDFSource"></app-document-viewer>
       </div>
-      <div class="col-6" style="padding: 12px;">
+      <div class="col-6" style="padding: 12px; height: 100vh; overflow-y: auto;">
         <div class="row">
           <div class="col-12">
             <h3 class="text-muted" style="display: inline-block;">{{transaction}}</h3>
@@ -39,8 +39,10 @@
                   <mat-card-content>
                     <div class="row">
                       <div class="col-12">
-                        <mat-chip-list tabindex="-1" aria-label="runningTotals" style="float: right;">
-                          <mat-chip tabindex="-1" [ngClass]="{'bg-success': item.runningCustomsValueStatus === totalStatuses.Passed, 'bg-danger': item.runningCustomsValueStatus === totalStatuses.Failed, 'bg-warning': item.runningCustomsValueStatus === totalStatuses.None}">
+                        <mat-chip-list aria-label="runningTotals" style="float: right;">
+                          <mat-chip
+                          [ngClass]="{'bg-success': item.runningCustomsValueStatus === totalStatuses.Passed, 'bg-danger': item.runningCustomsValueStatus === totalStatuses.Failed, 'bg-warning': item.runningCustomsValueStatus === totalStatuses.None}"
+                          [matTooltip]="item.OBit ? item.OReason : item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None ? 'Running total does not equal target' : 'Running total equals target'">
                             Customs Value&nbsp;
                             <strong>{{item.runningCustomsValue}}</strong>&nbsp;
                             <mat-icon>
@@ -67,6 +69,14 @@
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="_invoiceLinkDialog(i);">Invoice Lines</button>
               <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
+              <ng-container *ngIf="item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None">
+                <hr>
+                <button mat-menu-item (click)="customsValueChip(item);">Override Customs Value</button>
+              </ng-container>
+              <ng-container *ngIf="item.runningCustomsValueStatus === totalStatuses.Passed && item.OBit">
+                <hr>
+                <button mat-menu-item (click)="undoOverride(item);">Undo Override Customs Value</button>
+              </ng-container>
             </mat-menu>
             <br>
             <br>

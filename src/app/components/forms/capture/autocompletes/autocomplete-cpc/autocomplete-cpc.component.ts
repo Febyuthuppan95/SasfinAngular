@@ -82,7 +82,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
 
     if (this.control.value === null) {
       this.query.reset(null);
-      this.loadCPC(true);
+      this.loadCPC(false);
     } else {
       this.loadCPC(true);
     }
