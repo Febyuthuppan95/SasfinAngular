@@ -149,6 +149,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     this.companyShowToggle = true;
     this.currentUser = this.userService.getCurrentUser();
     this.event.mouseChange.next(this.cursor);
+    this.requestFullscreen();
 
     this.themeService.observeBackground()
     .pipe(takeUntil(this.unsubscribe$))
@@ -217,6 +218,42 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         }
       }
     });
+  }
+
+  requestFullscreen() {
+    const el = document.documentElement as HTMLElement & {
+      mozRequestFullScreen(): Promise<void>;
+      webkitRequestFullscreen(): Promise<void>;
+      msRequestFullscreen(): Promise<void>;
+    };
+
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.mozRequestFullScreen) { /* Firefox */
+      el.mozRequestFullScreen();
+    } else if (el.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+      el.webkitRequestFullscreen();
+    } else if (el.msRequestFullscreen) { /* IE/Edge */
+      el.msRequestFullscreen();
+    }
+  }
+
+  exitFullscreen() {
+    const el = document as Document & {
+      mozCancelFullScreen(): Promise<void>;
+      webkitExitFullscreen(): Promise<void>;
+      msExitFullscreen(): Promise<void>;
+    };
+
+    if (el.exitFullscreen) {
+      el.exitFullscreen();
+    } else if (el.mozCancelFullScreen) { /* Firefox */
+      el.mozCancelFullScreen();
+    } else if (el.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      el.webkitExitFullscreen();
+    } else if (el.msExitFullscreen) { /* IE/Edge */
+      el.msExitFullscreen();
+    }
   }
 
   toggleReason(): void {
@@ -585,6 +622,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     setTimeout(() => this.specialMouse = false);
+
+    this.exitFullscreen();
   }
 
   submitCapture(isEscalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean, title?: string, desc?: string) {

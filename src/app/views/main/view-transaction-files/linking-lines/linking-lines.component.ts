@@ -87,6 +87,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('startLines', { static: false }) firstLine: any;
 
   ngOnInit(): void {
+    this.requestFullscreen();
+
     this.transationService.observerCurrentAttachment()
     .subscribe((data) => {
       if (data) {
@@ -97,6 +99,42 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.init();
       }
     });
+  }
+
+  requestFullscreen() {
+    const el = document.documentElement as HTMLElement & {
+      mozRequestFullScreen(): Promise<void>;
+      webkitRequestFullscreen(): Promise<void>;
+      msRequestFullscreen(): Promise<void>;
+    };
+
+    if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.mozRequestFullScreen) { /* Firefox */
+      el.mozRequestFullScreen();
+    } else if (el.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+      el.webkitRequestFullscreen();
+    } else if (el.msRequestFullscreen) { /* IE/Edge */
+      el.msRequestFullscreen();
+    }
+  }
+
+  exitFullscreen() {
+    const el = document as Document & {
+      mozCancelFullScreen(): Promise<void>;
+      webkitExitFullscreen(): Promise<void>;
+      msExitFullscreen(): Promise<void>;
+    };
+
+    if (el.exitFullscreen) {
+      el.exitFullscreen();
+    } else if (el.mozCancelFullScreen) { /* Firefox */
+      el.mozCancelFullScreen();
+    } else if (el.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+      el.webkitExitFullscreen();
+    } else if (el.msExitFullscreen) { /* IE/Edge */
+      el.msExitFullscreen();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -434,6 +472,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       filter: '',
       transactionID: this.transactionID, }).then(
       async (res: any) => {
+        console.log(res);
+
         this.cwsLinesTemp = res.lines;
 
         await this.iterate(this.cwsLinesTemp, async (el) => {
@@ -754,6 +794,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.exitFullscreen();
+  }
 }
 
