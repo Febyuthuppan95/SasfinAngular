@@ -3,12 +3,8 @@ import { User } from 'src/app/models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { Router } from '@angular/router';
-import { UserIdleService } from 'angular-user-idle';
 import { TransactionService } from 'src/app/services/Transaction.Service';
-import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
-import { CompanyService, SelectedCompany, SelectedCapture } from 'src/app/services/Company.Service';
-import { MatDialog } from '@angular/material/dialog';
-import { EventService } from 'src/app/services/event.service';
+import { CompanyService, SelectedCapture } from 'src/app/services/Company.Service';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -25,8 +21,6 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./view-capture-landing.component.scss']
 })
 export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
-
-
   constructor(private themeService: ThemeService,
               private userService: UserService,
               private router: Router,
@@ -116,35 +110,52 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
           this.companyID = res.captureattachment.companyID;
           this.companyName = res.captureattachment.companyName;
           this.transactionType = res.captureattachment.transactionType;
-          this.docService.loadDocumentToViewer(this.docPath);
 
-          this.transactionService.setCurrentAttachment({
-            transactionID: this.transactionID,
-            attachmentID: this.attachmentID,
-            docType: this.fileType,
-            transactionType: this.transactionType,
-            issueID: res.captureattachment.issueID,
-            reason: res.captureattachment.reason
-          });
+          if (res.captureattachment.filetype.toUpperCase() === 'LINKING') { // FILETYPE === 'LINKING'
+            this.transactionService.setCurrentAttachment({
+              transactionID: this.transactionID, // TRANSACTION ID
+              attachmentID: -1,
+              docType: '',
+              transactionType: this.transactionType, // TRANSACTION TYPE
+              transactionName: this.companyName, // TRANSACTION NAME
+            });
 
-          this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+            this.router.navigate(['transaction', 'linking']);
 
-          setTimeout(() => {
-            this.router.navigate([
-              'capture',
-              'transaction',
-              'attachment',
-              btoa(this.docPath),
-              btoa(this.fileType),
-              btoa(this.attachmentID.toString()),
-              btoa(this.transactionID.toString()),
-              btoa(this.transactionType),
-              btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
-              btoa(res.captureattachment.reason)]);
+          } else {
+            this.docService.loadDocumentToViewer(this.docPath);
 
-            this.showLoader = false;
-            this.loading = false;
-          }, 500);
+            this.transactionService.setCurrentAttachment({
+              transactionID: this.transactionID,
+              attachmentID: this.attachmentID,
+              docType: this.fileType,
+              transactionType: this.transactionType,
+              issueID: res.captureattachment.issueID,
+              reason: res.captureattachment.reason
+            });
+
+            this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });
+
+            setTimeout(() => {
+              this.router.navigate([
+                'capture',
+                'transaction',
+                'attachment',
+                btoa(this.docPath),
+                btoa(this.fileType),
+                btoa(this.attachmentID.toString()),
+                btoa(this.transactionID.toString()),
+                btoa(this.transactionType),
+                btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
+                btoa(res.captureattachment.reason)]);
+
+              this.showLoader = false;
+              this.loading = false;
+            }, 500);
+          }
+
+          this.fileType = res.captureattachment.filetype;
+
         } else {
           this.notify.toastrwarning('Information', 'No attachments to capture');
           this.companyService.setCapture({ capturestate: false});
@@ -152,7 +163,7 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       },
-      msg => {
+      () => {
         this.loading = false;
         setTimeout(() => { this.showLoader = false; });
       }
@@ -174,7 +185,7 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
         this.Inc = res.inc;
         this.ERR = res.err;
       },
-      msg => {
+      () => {
         this.loading = false;
       }
     );
