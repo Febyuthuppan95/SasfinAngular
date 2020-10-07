@@ -15,6 +15,7 @@ import { InvoiceLineLinkComponent } from './invoice-line-link/invoice-line-link.
 import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
+import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
 
 enum TotalStatus {
   Passed,
@@ -62,6 +63,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public items: any[] = [];
 
   public currentPDFSource: string;
+  public currentAttachment: any;
   public currentPDFIndex: number;
   public showHelp = false;
 
@@ -117,8 +119,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             if (this.currentPDFIndex + 1 < this.attachments.length) {
               this.currentPDFIndex++;
               this.currentPDFSource = undefined;
-              setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
-            }
+              setTimeout(() => {
+                this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file);
+                this.currentAttachment = this.attachments[this.currentPDFIndex]
+              });            }
           }
         },
         {
@@ -136,7 +140,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               if (this.currentPDFIndex - 1 >= 0) {
                 this.currentPDFIndex--;
                 this.currentPDFSource = undefined;
-                setTimeout(() => this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file));
+                setTimeout(() => {
+                  this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file);
+                  this.currentAttachment = this.attachments[this.currentPDFIndex]
+                });
               }
           }
       },
@@ -214,6 +221,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
         key: 'alt + ]',
       },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          const id = +this.currentAttachment.attachmentID;
+          const type = this.currentAttachment.fileType;
+
+          this._returnAttachmentDialog(type, id);
+        },
+        key: 'alt + b',
+      },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -290,6 +308,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       .listAttatchments(model)
       .then(
         async (res: TransactionFileListResponse) => {
+          console.log(res.attachments);
           this.attachments = res.attachments;
 
           this.attachments.forEach((attach) => {
@@ -310,6 +329,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             .filter(x => x.fileTypeID === 2 || x.fileTypeID === 5 || x.fileTypeID === 7);
 
           this.currentPDFIndex = 0;
+          this.currentAttachment = this.attachments[this.currentPDFIndex];
           this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
 
           await this.loadSADLines();
@@ -632,6 +652,38 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     if (item.runningCustomsValueStatus === this.totalStatuses.Failed || item.runningCustomsValueStatus === this.totalStatuses.None) {
       this.overrideDialog(item, 'Customs Value Running Total');
     }
+  }
+
+  _returnAttachmentDialog(type, id) {
+    this.dialog.open(DialogReturnAttachmentComponent, {
+      width: '512px',
+      data: {
+        label: type
+      }
+    }).afterClosed().subscribe((val) => {
+      if (val) {
+        this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+          request: {
+            sad500ID: type == 'SAD500' ? id : -1,
+            customsWorksheetID: type == 'Custom Worksheet' ? id : -1,
+            invoiceID: type == 'Invoice' ? id : -1,
+            transactionID: this.transactionID,
+            userID: this.currentUser.userID,
+            reason: val
+          },
+          procedure: 'ReturnAttachment'
+        }).then(
+          (res: any) => {
+            if (res.outcome) {
+              this.snackbar.open('Attachment returned', '', { duration: 3000 });
+              this.location.back();
+            } else {
+              this.snackbar.open('Failure: Could not return attachment', '', { duration: 3000 });
+            }
+          },
+        );
+      }
+    });
   }
 
   overrideDialog(sad500Line: any, label) {

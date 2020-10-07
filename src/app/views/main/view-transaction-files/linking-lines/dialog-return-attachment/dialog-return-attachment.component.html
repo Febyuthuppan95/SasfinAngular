@@ -1,0 +1,11 @@
+<h3 mat-dialog-title>Return Attachment</h3>
+<p mat-dialog-title>{{data.label}}</p>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Reason</mat-label>
+    <textarea matInput [formControl]="reason" cols="30" rows="10"></textarea>
+  </mat-form-field>
+  <br>
+  <button mat-raised-button class="bg-primary text-light" (click)="submit(reason)">Submit</button>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

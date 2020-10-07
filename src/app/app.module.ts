@@ -304,10 +304,9 @@ import { LinkingLinesComponent } from './views/main/view-transaction-files/linki
 import { CheckingQueueComponent } from './views/main/checking-queue/checking-queue.component';
 import { InvoiceLineLinkComponent } from './views/main/view-transaction-files/linking-lines/invoice-line-link/invoice-line-link.component';
 import { CustomsLineLinkComponent } from './views/main/view-transaction-files/linking-lines/customs-line-link/customs-line-link.component';
-import { ApproveDialogComponent } from './views/main/view-transaction-files/linking-lines/approve-dialog/approve-dialog.component';
 import { MenuLinkingComponent } from './views/main/checking-queue/menu-linking/menu-linking.component';
 import { DialogConfirmationComponent } from './views/main/view-transaction-files/linking-lines/dialog-confirmation/dialog-confirmation.component';
-import { DialogReturnCaptureComponent } from './views/main/view-transaction-files/linking-lines/dialog-return-capture/dialog-return-capture.component';
+import { DialogReturnAttachmentComponent } from './views/main/view-transaction-files/linking-lines/dialog-return-attachment/dialog-return-attachment.component';
 
 @NgModule({
   declarations: [
@@ -511,10 +510,9 @@ import { DialogReturnCaptureComponent } from './views/main/view-transaction-file
     CheckingQueueComponent,
     InvoiceLineLinkComponent,
     CustomsLineLinkComponent,
-    ApproveDialogComponent,
     MenuLinkingComponent,
     DialogConfirmationComponent,
-    DialogReturnCaptureComponent
+    DialogReturnAttachmentComponent
   ],
   imports: [
     BrowserModule,
@@ -627,9 +625,8 @@ import { DialogReturnCaptureComponent } from './views/main/view-transaction-file
     DialogGotoLineComponent,
     InvoiceLineLinkComponent,
     CustomsLineLinkComponent,
-    ApproveDialogComponent,
     DialogConfirmationComponent,
-    DialogReturnCaptureComponent
+    DialogReturnAttachmentComponent
   ],
 })
 export class AppModule {}
