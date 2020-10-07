@@ -664,9 +664,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then(
       (res: any) => {
         if (res.outcome) {
-          this.snackbar.open('SAD500 Line Overridden', '', { duration: 3000 });
+          this.snackbar.open('Overridden: Customs Value', '', { duration: 3000 });
         } else {
-          this.snackbar.open('Could not override SAD500 Line', '', { duration: 3000 });
+          this.snackbar.open('Failure: Could not override SAD500 Line', '', { duration: 3000 });
           this.undoOverride(sad500Line);
         }
       },
@@ -690,7 +690,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then(
       (res: any) => {
         if (res.outcome) {
-          this.snackbar.open('SAD500 Line Overridden Undone', '', { duration: 3000 });
+          this.snackbar.open('Undo: Customs Value Override', '', { duration: 3000 });
         }
       },
     );
