@@ -662,18 +662,24 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }).afterClosed().subscribe((val) => {
       if (val) {
+        const request = {
+          sad500ID: type == 'SAD500' ? id : -1,
+          customsWorksheetID: type == 'Custom Worksheet' ? id : -1,
+          invoiceID: type == 'Invoice' ? id : -1,
+          transactionID: this.transactionID,
+          userID: this.currentUser.userID,
+          reason: val
+        };
+
+        console.log(request);
+
         this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-          request: {
-            sad500ID: type == 'SAD500' ? id : -1,
-            customsWorksheetID: type == 'Custom Worksheet' ? id : -1,
-            invoiceID: type == 'Invoice' ? id : -1,
-            transactionID: this.transactionID,
-            userID: this.currentUser.userID,
-            reason: val
-          },
+          request,
           procedure: 'ReturnAttachment'
         }).then(
           (res: any) => {
+            console.log(res);
+
             if (res.outcome) {
               this.snackbar.open('Attachment returned', '', { duration: 3000 });
               this.location.back();
