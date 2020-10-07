@@ -578,7 +578,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then(
       (res: any) => {
         if (res.outcome) {
-          this.snackbar.open('Notification Sent to Consultant', '', { duration: 3000 });
+          this.snackbar.open('Lines Linked', '', { duration: 3000 });
           this.location.back();
         }
       },
