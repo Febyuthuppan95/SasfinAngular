@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="row" [style.backgroundImage]="'url(' + currentBackground + ')'">
-<div class="col-6 bg-light" style="overflow-y: auto; padding-top: 64px; padding-bottom: 64px;">
+<div #pdfWrapper id="pdfWrapper" class="col-6 bg-light" style="overflow: scroll; white-space: nowrap; padding-top: 64px; padding-bottom: 64px; height: 100vh;">
   <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }">
     <span class="mdi mdi-drag" style="position: absolute; right: 14px; top: 1px;"></span>
   </div>

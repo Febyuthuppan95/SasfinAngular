@@ -88,8 +88,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild(KeyboardShortcutsComponent, { static: true })
   private keyboard: KeyboardShortcutsComponent;
 
-
-
   private unsubscribe$ = new Subject<void>();
 
   count = 0;
@@ -143,6 +141,10 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   captureData: any;
   currentDoctype: string;
   cursor = -1;
+
+  private pdfWrapper: HTMLElement;
+  private scrollTop = 0;
+  private scrollLeft = 0;
 
   ngOnInit() {
     this.objectHelpService.toggleHelp(true);
@@ -273,6 +275,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
+    this.requestFullscreen();
+
     this.shortcuts.push(
         {
             key: 'alt + i',
@@ -377,9 +381,68 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           command: e => this.currentReaderPOS.y = this.currentReaderPOS.y - 15,
           key: 'alt + ]',
         },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.scrollTop += 48;
+
+            const total = this.scrollTop + this.pdfWrapper.clientHeight;
+
+            if (total > this.pdfWrapper.scrollHeight) {
+              this.scrollTop = (this.pdfWrapper.scrollHeight - this.pdfWrapper.clientHeight);
+            }
+
+            this.pdfWrapper.scrollTo({ top: this.scrollTop, behavior: 'smooth' });
+
+          },
+          key: 'alt + 3',
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.scrollTop -= 48;
+
+            if (this.scrollTop <= 0) { this.scrollTop = 0; }
+
+            this.pdfWrapper.scrollTo({ top: this.scrollTop, behavior: 'smooth' });
+          },
+          key: 'alt + 9',
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.scrollLeft += 48;
+
+            const total = this.scrollLeft + this.pdfWrapper.clientWidth;
+
+            if (total > this.pdfWrapper.scrollWidth) {
+              this.scrollLeft = (this.pdfWrapper.scrollWidth - this.pdfWrapper.clientWidth);
+            }
+
+            this.pdfWrapper.scrollTo({ left: this.scrollLeft, behavior: 'smooth' });
+          },
+          key: 'alt + 6',
+        },
+        {
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => {
+            this.scrollLeft -= 48;
+
+            if (this.scrollLeft <= 0) { this.scrollLeft = 0; }
+
+            this.pdfWrapper.scrollTo({ left: this.scrollLeft, behavior: 'smooth' });
+          },
+          key: 'alt + 4',
+        },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
+
+    this.pdfWrapper = document.getElementById('pdfWrapper');
   }
 
   goBack() {
@@ -524,6 +587,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               this.attachmentID === attach.attachmentID ? attach.tooltip += ' - Current' : console.log() ;
             }
           });
+
+          console.log(this.pdfWrapper.scrollHeight);
         });
   }
 

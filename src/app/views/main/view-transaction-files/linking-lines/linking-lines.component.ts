@@ -70,6 +70,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public warning: any;
   public loading = false;
 
+  private pdfWrapper: HTMLElement;
+  private scrollTop = 0;
+  private scrollLeft = 0;
+
   private currentUser: any = this.user.getCurrentUser();
   // tslint:disable-next-line: max-line-length
   public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
@@ -87,8 +91,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('startLines', { static: false }) firstLine: any;
 
   ngOnInit(): void {
-    this.requestFullscreen();
-
     this.transationService.observerCurrentAttachment()
     .subscribe((data) => {
       if (data) {
@@ -138,6 +140,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.requestFullscreen();
+
     this.shortcuts.push(
         {
             key: 'alt + l',
@@ -270,9 +274,68 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         key: 'alt + b',
       },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.scrollTop += 24;
+
+          const total = this.scrollTop + this.pdfWrapper.clientHeight;
+
+          if (total > this.pdfWrapper.scrollHeight) {
+            this.scrollTop = (this.pdfWrapper.scrollHeight - this.pdfWrapper.clientHeight);
+          }
+
+          this.pdfWrapper.scrollTo({ top: this.scrollTop, behavior: 'smooth' });
+
+        },
+        key: 'alt + 3',
+      },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.scrollTop -= 24;
+
+          if (this.scrollTop <= 0) { this.scrollTop = 0; }
+
+          this.pdfWrapper.scrollTo({ top: this.scrollTop, behavior: 'smooth' });
+        },
+        key: 'alt + 9',
+      },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.scrollLeft += 24;
+
+          const total = this.scrollLeft + this.pdfWrapper.clientWidth;
+
+          if (total > this.pdfWrapper.scrollWidth) {
+            this.scrollLeft = (this.pdfWrapper.scrollWidth - this.pdfWrapper.clientWidth);
+          }
+
+          this.pdfWrapper.scrollTo({ left: this.scrollLeft, behavior: 'smooth' });
+
+        },
+        key: 'alt + 4',
+      },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.scrollLeft -= 24;
+
+          if (this.scrollLeft <= 0) { this.scrollLeft = 0; }
+
+          this.pdfWrapper.scrollTo({ left: this.scrollLeft, behavior: 'smooth' });
+        },
+        key: 'alt + 6',
+      },
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
+    this.pdfWrapper = document.getElementById('pdfWrapper');
   }
 
   async init() {

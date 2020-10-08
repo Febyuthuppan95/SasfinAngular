@@ -3,7 +3,7 @@
 <mat-card style="background: #fafafa;" class="cover">
   <mat-card-content>
     <div class="row">
-      <div class="col-6 pdf-viewer-cont">
+      <div class="col-6 pdf-viewer-cont" id="pdfWrapper">
         <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }">
           <span class="mdi mdi-drag" style="position: absolute; right: 14px; top: 1px;"></span>
         </div>
