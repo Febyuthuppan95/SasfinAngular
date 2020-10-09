@@ -111,7 +111,9 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
           this.companyName = res.captureattachment.companyName;
           this.transactionType = res.captureattachment.transactionType;
 
-          if (res.captureattachment.filetype.toUpperCase() === 'LINKING') { // FILETYPE === 'LINKING'
+          // TRANSACTION ID 13 LINKING LINES GO TO CONSULTANT
+
+          if (res.captureattachment.fileTypeID === 22) { // FILETYPE === 'LINKING'
             this.transactionService.setCurrentAttachment({
               transactionID: this.transactionID, // TRANSACTION ID
               attachmentID: -1,

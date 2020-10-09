@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Input, ElementRef } from '@angular/core';
-import { TransactionService } from 'src/app/services/Transaction.Service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { UserService } from 'src/app/services/user.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
@@ -7,15 +6,11 @@ import { EventService } from 'src/app/services/event.service';
 import { ObjectHelpService } from 'src/app/services/ObjectHelp.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
+import { ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
-import { VOCListResponse } from 'src/app/models/HttpResponses/VOC';
-import { SAD500Get } from 'src/app/models/HttpResponses/SAD500Get';
-import { SPSAD500LineList } from 'src/app/models/HttpResponses/SAD500Line';
 import { UUID } from 'angular2-uuid';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -34,15 +29,13 @@ import { DialogGotoLineComponent } from '../../dialog-goto-line/dialog-goto-line
   styleUrls: ['./form-csw.component.scss']
 })
 export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
-  constructor(private transactionService: TransactionService,
-              private captureService: CaptureService,
+  constructor(private captureService: CaptureService,
               private userService: UserService,
               private snackbarService: HelpSnackbar,
               private eventService: EventService,
               private objectHelpService: ObjectHelpService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar,
-              private companyService: CompanyService,
               private router: Router,
               private location: Location) {}
 
@@ -70,8 +63,6 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  @ViewChild(KeyboardShortcutsComponent, { static: true })
-  private keyboard: KeyboardShortcutsComponent;
 
   @ViewChild('startForm', { static: false })
   private startForm: ElementRef;
@@ -86,6 +77,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       this.transactionLabel = this.capture.transactionType;
       this.isExport = this.capture.transactionType === 'Export' ? true : false;
       this.load();
+    } else {
+      this.snackbar.open('Capture data not correctly received, please refresh', '', { duration: 10000 });
     }
   }
 
@@ -118,9 +111,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.paginationControl.valueChanges.subscribe((value) => {
       if (value && value !== null && value == '') {
-        if (value > this.lines.length) {
-          value = this.lines.length;
-          this.paginationControl.setValue(this.lines.length);
+        if (value > (this.lines ? this.lines.length : 0)) {
+          value = (this.lines ? this.lines.length : 0);
+          this.paginationControl.setValue((this.lines ? this.lines.length : 0));
         } else if (value <= 0) {
           this.paginationControl.setValue(1);
         } else {
@@ -140,37 +133,37 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + .',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.nextLine()
+            command: () => this.nextLine()
           },
           {
             key: 'alt + ,',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.prevLine()
+            command: () => this.prevLine()
           },
           {
             key: 'alt + c',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.cancelLine()
+            command: () => this.cancelLine()
           },
           {
             key: 'alt + v',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.deleteLinePrompt()
+            command: () => this.deleteLinePrompt()
           },
           {
             key: 'alt + /',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => console.log('Deprecated')
+            command: () => console.log('Deprecated')
           },
           {
             key: 'alt + m',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               this.displayLines = false;
               setTimeout(() => this.startForm.nativeElement.focus());
             }
@@ -179,7 +172,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + n',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               this.activeLine = null;
               this.activeIndex = -1;
               this.refresh();
@@ -189,15 +182,15 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + k',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: (e) => this.eventService.focusForm.next(),
+            command: () => this.eventService.focusForm.next(),
           },
           {
             key: 'alt + j',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: (e) => {
+            command: () => {
               this.dialog.open(DialogGotoLineComponent, {
-                data: this.lines ? this.lines.length : 0,
+                data: this.lines ? (this.lines ? this.lines.length : 0) : 0,
                 width: '256'
               }).afterClosed().subscribe((num: number) => {
                 if (num) {
@@ -213,7 +206,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + s',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
                 {
                   if (!this.dialogOpen) {
                     this.dialogOpen = true;
@@ -231,7 +224,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + l',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               this.displayLines = !this.displayLines;
             }
           },
@@ -239,7 +232,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
               key: 'ctrl + alt + h',
               preventDefault: true,
               allowIn: [AllowIn.Textarea, AllowIn.Input],
-              command: e => {
+              command: () => {
                 this.toggelHelpBar();
               }
           },
@@ -247,7 +240,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + a',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               if (this.displayLines) {
                 this.eventService.submitLines.next();
               }
@@ -257,7 +250,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + c',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               if (this.displayLines) {
                 this.cancelLine();
               }
@@ -267,7 +260,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + t',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => {
+            command: () => {
               this.showErrors = !this.showErrors;
             }
           }];
@@ -340,7 +333,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.snackbar.open('Failed to retrieve capture data', '', { duration: 3000 });
       }
-    }, (err) => {
+    }, () => {
       this.loader = false;
     });
   }
@@ -406,7 +399,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     // Check at least one of the fields are valid
     if (!pass) {
       this.snackbar.open('At least one field must be entered', '', {duration: 3000});
-    } else if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+    } else if ((form.valid && (this.lines ? this.lines.length : 0) > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
       // tslint:disable-next-line: max-line-length
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
@@ -422,7 +415,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
             if (line.isLocal) {
               await this.captureService.customWorksheetLineAdd(line).then((res) => console.log(res),
-              (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
+              () => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
             }
             // else {
             //   await this.captureService.customWorksheetLineUpdate(line).then((res) => console.log(res),
@@ -473,7 +466,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     let target = null;
 
     if (this.lines) {
-      if (this.lines.length > 0) {
+      if ((this.lines ? this.lines.length : 0) > 0) {
         target = this.lines.find(x => x.uniqueIdentifier === $event.uniqueIdentifier);
       }
     } else {
@@ -499,7 +492,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.userID = this.currentUser.userID;
       $event.customsWorksheetID = this.attachmentID;
       await this.captureService.customWorksheetLineUpdate($event).then((res) => console.log(res),
-      (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+      (msg) => this.snackbar.open('Failed to update line ' + msg, '', { duration: 3000 }));
 
       this.lines[this.lines.indexOf(target)] = $event;
       this.activeLine = $event;
@@ -532,11 +525,14 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length) {
-      this.activeIndex++;
+    this.activeIndex++;
+
+    if (this.activeIndex < (this.lines ? this.lines.length : 0)) {
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
       this.refresh();
+    } else {
+      this.activeIndex--;
     }
   }
 
@@ -571,7 +567,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       await this.captureService.customWorksheetLineUpdate(targetLine);
     }
 
-    if (this.lines.length === 1) {
+    if ((this.lines ? this.lines.length : 0) === 1) {
       this.lines = [];
       this.activeLine = null;
       this.activeIndex = -1;
@@ -590,7 +586,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activeLine = null;
     this.activeIndex = 0;
     if (this.lines) {
-      if (this.lines.length > 0) {
+      if ((this.lines ? this.lines.length : 0) > 0) {
         this.activeLine = this.lines[this.activeIndex];
       }
     }

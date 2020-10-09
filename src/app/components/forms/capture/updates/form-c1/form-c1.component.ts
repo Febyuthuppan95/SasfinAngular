@@ -408,12 +408,14 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   }
 
   nextLine() {
+    this.activeIndex++;
+
     if (this.activeIndex < this.lines.length) {
-      this.activeIndex++;
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
-
       this.refresh();
+    } else {
+      this.activeIndex--;
     }
   }
 

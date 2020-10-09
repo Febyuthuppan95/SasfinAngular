@@ -661,15 +661,20 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   nextLine() {
+    this.activeIndex++;
+
     if (this.activeIndex < (this.lines ? this.lines.length : 0)) {
-      this.activeIndex++;
+
       if (this.lineForm) {
         this.lineForm.resetForm();
       }
+
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
       this.refresh();
+    } else {
+      this.activeIndex--;
     }
   }
 

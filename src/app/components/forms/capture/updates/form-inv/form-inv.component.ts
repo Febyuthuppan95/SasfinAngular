@@ -658,12 +658,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   nextLine() {
-    if (this.activeIndex < this.lines.length - 1) {
-      this.activeIndex++;
+    this.activeIndex++;
+
+    if (this.activeIndex < (this.lines ? this.lines.length : 0)) {
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
-
       this.refresh();
+    } else {
+      this.activeIndex--;
     }
   }
 
