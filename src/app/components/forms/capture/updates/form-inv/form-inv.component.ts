@@ -507,19 +507,26 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
       const requestModel = form.value;
-      requestModel.attachmentStatusID = escalation
-        ? 7
-        : escalationResolved
-        ? 8
-        : saveProgress && requestModel.attachmentStatusID === 7
-        ? 7
-        : saveProgress
-        ? 2
-        : 3;
+      let statusID = 2;
 
-      if (this.form.controls.qaUserID.value === -1 && !escalation && !saveProgress && !escalationResolved) {
+      if (escalation || (saveProgress && requestModel.attachmentStatusID === 7)) {
+        statusID = 7;
+      } else if (escalationResolved) {
+        statusID = 8;
+      } else if (saveProgress) {
+        statusID = 2;
+      } else {
+        statusID = 3;
+      }
+
+      if (this.form.controls.qaUserID.value === -1
+        && !escalation
+        && !saveProgress
+        && !escalationResolved) {
+
         requestModel.attachmentStatusID = 11;
       } else if (this.form.controls.qaUserID.value !== -1) {
+
         if (saveProgress) {
           requestModel.attachmentStatusID = 11;
         } else {
@@ -527,10 +534,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      requestModel.attachmentStatusID = statusID;
       requestModel.userID = this.currentUser.userID;
       requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
-
-      console.log(requestModel);
 
       await this.captureService.invoiceUpdate(requestModel).then(
         async (res: Outcome) => {
