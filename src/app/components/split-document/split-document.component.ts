@@ -42,8 +42,6 @@ export class SplitDocumentComponent implements OnInit, AfterViewInit, OnDestroy 
   src: string;
   originalSize: boolean = true;
 
-  pageSequenceRegex = new RegExp(/^\s*\d+(?:-\d+)?\s*(?:,\s*\d+(?:-\d+)?\s*)*$/g);
-
   processing = false;
 
   private fileReader = new FileReader();
@@ -134,7 +132,8 @@ ngAfterViewInit() {
       companyName: this.companyName,
       control: new FormControl(null, [
         Validators.required,
-        Validators.pattern(new RegExp(/^\s*\d+(?:-\d+)?\s*(?:,\s*\d+(?:-\d+)?\s*)*$/g))
+        Validators.pattern(new RegExp(/^([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2})(,([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2}))*$/))
+        // Validators.pattern(new RegExp(/^\d{1,}((-\d{1,})|(,\d{1,})?){1,}/g))
       ]),
       nameControl: new FormControl(null, [Validators.required]),
     });
