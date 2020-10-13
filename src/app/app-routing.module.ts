@@ -162,7 +162,7 @@ const routes: Routes = [
           {
             path: 'locations',
             component: ViewPlacesComponent,
-            data: { right: 'Countries' },
+            data: { right: 'Places' },
             canActivate: [RightGuard],
           },
           {
@@ -196,13 +196,13 @@ const routes: Routes = [
           {
             path: 'reportsqueues',
             component: ViewReportQueuesListComponent,
-            data: { right: 'ReportQueues' },
+            data: { right: 'Reports' },
             canActivate: [RightGuard],
           },
           {
             path: 'addresstypes',
             component: ViewAddressTypesListComponent,
-            data: { right: 'AddressTypes' },
+            data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
           {
@@ -407,7 +407,7 @@ const routes: Routes = [
           {
             path: 'companyaddinfotypes',
             component: ViewCompanyAddInfoTypesListComponent,
-            data: { right: 'ContactTypes' },
+            data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
           {
@@ -480,7 +480,7 @@ const routes: Routes = [
           {
             path: 'transaction-linking/queue',
             component: CheckingQueueComponent,
-            data: { right: 'Companies' },
+            data: { right: 'Transcations' },
             canActivate: [RightGuard],
           }
         ],
@@ -488,7 +488,7 @@ const routes: Routes = [
       {
         path: 'transaction/linking',
         component: LinkingLinesComponent,
-        data: { right: 'Capture' },
+        data: { right: 'Attachments' },
         canActivate: [RightGuard],
       },
       {
