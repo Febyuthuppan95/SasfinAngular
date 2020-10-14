@@ -135,7 +135,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
-  rowCountPerPage: number;
+  rowCountPerPage: number = 15;
   filter: string;
 
 
@@ -168,12 +168,17 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
 
   loadItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
+
+    console.log(this.rowStart);
+    console.log(this.rowEnd);
     this.showLoader = true;
     const model = {
       requestParams: {
         UserID: this.currentUser.userID,
         bomId: this.bomid,
-        ItemID: -1
+        ItemID: -1,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd
       },
       requestProcedure: `CompanyItemsList`
     };
@@ -225,6 +230,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
   }
 
   recordsPerPageChange(recordsPerPage: number) {
+    console.log('recordsPerPageChange');
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
     this.loadItems(false); // reload data
