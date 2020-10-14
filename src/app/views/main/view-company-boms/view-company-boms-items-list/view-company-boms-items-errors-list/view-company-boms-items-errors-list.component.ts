@@ -73,7 +73,7 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
       },
     },
     {
-      title: 'Row Number',
+      title: 'Excel Line Number',
       propertyName: 'RowNumber',
       order: {
         enable: true,
