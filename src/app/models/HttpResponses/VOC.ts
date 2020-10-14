@@ -1,6 +1,8 @@
+import { AttachmentErrorResponse } from './AttachmentErrorResponse';
 import { Outcome } from './Outcome';
 
 export class VOCListResponse {
+  attachmentErrors: AttachmentErrorResponse;
   outcome: Outcome;
   rowCount: number;
   vocs: VOC[];
