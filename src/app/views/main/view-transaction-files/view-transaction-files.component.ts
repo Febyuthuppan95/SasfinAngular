@@ -688,12 +688,15 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       },
       requestProcedure: 'AttachmentsUpdate'
     };
+
     this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
-      (res: UpdateResponse) => {
+      (res) => {
         console.log(res);
         this.loadAttachments();
       },
       msg => {
+        console.log(msg);
+
         this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
