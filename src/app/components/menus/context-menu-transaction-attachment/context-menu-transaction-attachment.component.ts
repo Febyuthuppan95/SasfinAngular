@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
+import { DialogRemoveAttachmentComponent } from './dialog-remove-attachment/dialog-remove-attachment.component';
 
 @Component({
   selector: 'app-context-menu-transaction-attachment',
@@ -10,7 +12,10 @@ import { TransactionService } from 'src/app/services/Transaction.Service';
 })
 export class ContextMenuTransactionAttachmentComponent implements OnInit {
 
-  constructor(private router: Router, private docService: DocumentService, private transactionService: TransactionService) { }
+  constructor(private router: Router,
+              private docService: DocumentService,
+              private transactionService: TransactionService,
+              private dialog: MatDialog) { }
 
   @Input() x: number;
   @Input() y: number;
@@ -51,12 +56,18 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   }
 
   remove() {
-    this.removeAttachment.emit(
-      JSON.stringify({
-      fileID: this.attachmentID,
-      fileTypeID: this.fileTypeID,
-      })
-    );
+    this.dialog.open(DialogRemoveAttachmentComponent, {
+      width: '512px'
+    }).afterClosed().subscribe((value) => {
+      if (value) {
+        this.removeAttachment.emit(
+          JSON.stringify({
+          fileID: this.attachmentID,
+          fileTypeID: this.fileTypeID,
+          })
+        );
+      }
+    });
   }
   preview() {
     this.previewDocument.emit(this.docPath);
