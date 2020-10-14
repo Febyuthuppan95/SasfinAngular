@@ -690,6 +690,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
       (res: UpdateResponse) => {
+        console.log(res);
         this.loadAttachments();
       },
       msg => {
