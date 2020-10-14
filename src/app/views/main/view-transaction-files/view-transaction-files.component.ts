@@ -420,14 +420,18 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.focusStatusID = statusID;
     this.focusFileType = fileTypeID;
     this.focusReason = reason;
-    this.focusType = this.transactionTypes.find(x => x.value === fileTypeID).name;
+    const type = this.transactionTypes.find(x => x.value === fileTypeID);
 
-    if (!this.contextMenu) {
-      this.themeService.toggleContextMenu(true);
-      this.contextMenu = true;
-    } else {
-      this.themeService.toggleContextMenu(false);
-      this.contextMenu = false;
+    if (type) {
+      this.focusType = type.name;
+
+      if (!this.contextMenu) {
+        this.themeService.toggleContextMenu(true);
+        this.contextMenu = true;
+      } else {
+        this.themeService.toggleContextMenu(false);
+        this.contextMenu = false;
+      }
     }
   }
 
