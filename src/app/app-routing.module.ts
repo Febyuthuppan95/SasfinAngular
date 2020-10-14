@@ -480,7 +480,7 @@ const routes: Routes = [
           {
             path: 'transaction-linking/queue',
             component: CheckingQueueComponent,
-            data: { right: 'Transcations' },
+            data: { right: 'Transactions' },
             canActivate: [RightGuard],
           }
         ],
