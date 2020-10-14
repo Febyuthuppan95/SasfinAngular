@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
 import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
+import { CWSLines } from './lines';
 
 enum TotalStatus {
   Passed,
@@ -50,10 +51,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public sadLines: any[] = [];
   public invLines: any[] = [];
-  public cwsLines: any[] = [];
+  public cwsLines: CWSLines[] = [];
   public sadLinesTemp: any[] = [];
   public invLinesTemp: any[] = [];
-  public cwsLinesTemp: any[] = [];
+  public cwsLinesTemp: CWSLines[] = [];
   public attachments: any[] = [];
   public captureJoins: any[] = [];
   public allCaptureJoins: any[] = [];
@@ -97,6 +98,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.transactionID = +data.transactionID;
         this.transactionType = data.transactionType;
         this.transaction = data.transactionName;
+
+        console.log(this.transactionID);
 
         this.init();
       }
@@ -409,7 +412,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       .listAttatchments(model)
       .then(
         async (res: TransactionFileListResponse) => {
-          console.log(res.attachments);
           this.attachments = res.attachments;
 
           this.attachments.forEach((attach) => {
@@ -523,8 +525,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       orderByDirection: '',
     });
 
-    console.log(this.currentCWS);
-
     await this.capture.customWorksheetLineList({
       userID: this.currentUser.userID,
       customsWorksheetID: this.currentCWS.customsWorksheets[0].customWorksheetID,
@@ -534,10 +534,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       orderByDirection: '',
       filter: '',
       transactionID: this.transactionID, }).then(
-      async (res: any) => {
-        console.log(res);
-
-        this.cwsLinesTemp = res.lines;
+      async (res: { lines: CWSLines[] }) => {
+        this.cwsLinesTemp = JSON.parse(JSON.stringify(res.lines));
 
         await this.iterate(this.cwsLinesTemp, async (el) => {
           el.type = 'cws';
@@ -545,7 +543,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
         });
 
-        this.cwsLines = this.cwsLinesTemp;
+        this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
 
         await this.loadCaptureJoins();
       }
@@ -569,8 +567,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       async (res: any) => {
         this.allCaptureJoins = res.data;
-        this.cwsLines = this.cwsLinesTemp;
-        this.invLines = this.invLinesTemp;
 
         await this.iterate(this.sadLines, async (item) =>  {
           const exists = this.allCaptureJoins.find(x => x.SAD500LineID == item.sad500LineID && x.CustomsValueOBit);
@@ -589,6 +585,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   findCustomsWorksheetLine(array, value) {
     let found;
 
+    // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < array.length; i++) {
       if (array[i].customWorksheetLineID == value) {
         found = array[i];
@@ -688,13 +685,33 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     const currentLinks = [];
     const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
 
-    this.cwsLines = this.cwsLinesTemp;
+    this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
     this.invLines = this.invLinesTemp;
 
-    captureJoins.forEach((el) => {
-      this.cwsLines = this.cwsLines.filter(x => x.customWorksheetLineID != el.CustomWorksheetLineID);
-      this.invLines = this.invLines.filter(x => x.invoiceLineID != el.InvoiceLineID);
+    this.allCaptureJoins.forEach((el) => {
+      if (el.CustomWorksheetLineID != null) {
+        const cws = this.cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
+        console.log(cws);
+        console.log(el.CustomWorksheetLineID);
+
+        if (cws) {
+          this.cwsLines.splice(this.cwsLines.indexOf(cws), 1);
+        }
+      }
+
+      if (el.InvoiceLineID != null) {
+        const inv = this.invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+
+        console.log(inv);
+
+        if (inv) {
+          this.invLines.splice(this.invLines.indexOf(inv), 1);
+        }
+      }
+    });
+
+    captureJoins.forEach((el) => {
       if (currentSADLine ) {
         if (el.CustomWorksheetLineID !== null && type === 'cws') {
           const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
@@ -774,15 +791,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           reason: val
         };
 
-        console.log(request);
-
         this.api.post(`${environment.ApiEndpoint}/capture/post`, {
           request,
           procedure: 'ReturnAttachment'
         }).then(
           (res: any) => {
-            console.log(res);
-
             if (res.outcome) {
               this.snackbar.open('Attachment returned', '', { duration: 3000 });
               this.location.back();
