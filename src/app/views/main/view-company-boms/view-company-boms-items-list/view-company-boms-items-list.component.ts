@@ -271,6 +271,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
           this.notify.successmsg(
             res.outcome,
             res.outcomeMessage);
+          this.closeAddModal.nativeElement.click();
           this.loadItems(true);
         } else {
           this.notify.errorsmsg(
