@@ -122,7 +122,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
     },
     {
-      title: 'Item Parent',
+      title: 'Item Parent Code',
       propertyName: 'ItemParent',
       order: {
         enable: true,
@@ -130,7 +130,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
     },
     {
-      title: 'Item Child',
+      title: 'Item Child Code',
       propertyName: 'ItemChild',
       order: {
         enable: true,
