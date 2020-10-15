@@ -160,7 +160,7 @@ import { ViewItemParentsComponent } from './views/main/view-item-parents/view-it
 import { ContextMenuItemsParentsComponent } from './components/menus/context-menu-items-parents/context-menu-items-parents.component';
 import { TariffService } from './services/Tariff.service';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
-import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ViewBOMLinesComponent } from './views/main/view-company-boms/view-bom-lines/view-bom-lines.component';
 import { ContextMenuBomsComponent } from './components/menus/context-menu-boms/context-menu-boms.component';
 import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 // tslint:disable-next-line: max-line-length

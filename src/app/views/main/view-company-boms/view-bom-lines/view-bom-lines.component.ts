@@ -7,13 +7,13 @@ import {
 } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { Pagination } from '../../../models/Pagination';
-import { NotificationComponent } from '../../../components/notification/notification.component';
-import { UserService } from '../../../services/user.Service';
-import { User } from '../../../models/HttpResponses/User';
+import { Pagination } from '../../../../models/Pagination';
+import { NotificationComponent } from '../../../../components/notification/notification.component';
+import { UserService } from '../../../../services/user.Service';
+import { User } from '../../../../models/HttpResponses/User';
 import { ThemeService } from 'src/app/services/theme.Service.js';
-import { SnackbarModel } from '../../../models/StateModels/SnackbarModel';
-import { HelpSnackbar } from '../../../services/HelpSnackbar.service';
+import { SnackbarModel } from '../../../../models/StateModels/SnackbarModel';
+import { HelpSnackbar } from '../../../../services/HelpSnackbar.service';
 import {
   TableHeading,
   SelectedRecord,
@@ -25,10 +25,10 @@ import { ServicesService } from 'src/app/services/Services.Service';
 import { BOMLine } from 'src/app/models/HttpResponses/BOMsLinesResponse';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { ApiService } from '../../../services/api.service';
-import { environment } from '../../../../environments/environment';
-import { Outcome } from '../../../models/HttpResponses/Outcome';
-import { DocumentService } from '../../../services/Document.Service';
+import { ApiService } from '../../../../services/api.service';
+import { environment } from '../../../../../environments/environment';
+import { Outcome } from '../../../../models/HttpResponses/Outcome';
+import { DocumentService } from '../../../../services/Document.Service';
 
 @Component({
   selector: 'app-view-bom-lines',
@@ -122,43 +122,43 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       },
     },
     {
-      title: 'Item Code',
-      propertyName: 'ItemCode',
+      title: 'Item Parent',
+      propertyName: 'ItemParent',
       order: {
         enable: true,
-        tag: 'ItemCode',
+        tag: 'ItemParent',
       },
     },
     {
-      title: 'Tariff Code',
-      propertyName: 'TariffCode',
+      title: 'Item Child',
+      propertyName: 'ItemChild',
       order: {
         enable: true,
-        tag: 'TariffCode',
+        tag: 'ItemChild',
       },
     },
     {
-      title: 'Unit Of Measure',
-      propertyName: 'UnitOfMeasure',
+      title: 'Quantity',
+      propertyName: 'Quantity',
       order: {
         enable: true,
-        tag: 'UnitOfMeasure',
+        tag: 'Quantity',
       },
     },
     {
       title: 'Quarter',
-      propertyName: 'Quarter',
+      propertyName: 'QuarterID',
       order: {
         enable: true,
         tag: 'Quarter',
       },
     },
     {
-      title: 'Usage Type',
-      propertyName: 'UsageType',
+      title: 'Period Year',
+      propertyName: 'PeriodYear',
       order: {
         enable: true,
-        tag: 'UsageType',
+        tag: 'PeriodYear',
       },
     },
   ];
@@ -226,7 +226,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         }
     });
 
-    this.loadBOMLines(true);
+    this.loadBOMLines(false);
   }
 
   loadBOMLines(displayGrowl: boolean) {
@@ -235,20 +235,20 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        bomLineID: this.bomid,
+        bomID: this.bomid,
         filter: this.filter,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection,
         rowStart: this.rowStart,
         rowEnd: this.rowEnd,
       },
-      requestProcedure: `BOMLineList`,
+      requestProcedure: `ItemParentsList`,
     };
 
     console.log('model');
     console.log(model);
     this.ApiService.post(
-      `${environment.ApiEndpoint}/companies/BomLines`,
+      `${environment.ApiEndpoint}/companies/itemParentsList`,
       model
     ).then(
       (res: any) => {
@@ -278,6 +278,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
         }
+        this.closeAddModal.nativeElement.click();
       },
       (msg) => {
         // console.log(msg);
