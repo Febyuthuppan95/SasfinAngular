@@ -168,9 +168,9 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       requestParams: {
         UserID: this.currentUser.userID,
         ItemID: -1,
-        BomID: this.bomid,
-        rowStart: this.rowStart,
-        rowEnd: this.rowEnd
+        bomid: this.bomid,
+        // rowStart: this.rowStart,
+        // rowEnd: this.rowEnd
       },
       requestProcedure: `CompanyItemsList`
     };
