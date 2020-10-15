@@ -199,6 +199,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/itemGroups/list`, model).then((res: any) => {
         console.log(res);
         this.itemGroups = res.data;
+        this.rowCount = res.rowCount;
       },
       msg => {
         console.log(msg);
