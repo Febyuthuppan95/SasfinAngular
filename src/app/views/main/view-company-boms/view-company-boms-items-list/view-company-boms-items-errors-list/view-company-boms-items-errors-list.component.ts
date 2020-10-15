@@ -81,6 +81,14 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
       },
     },
     {
+      title: 'UOM',
+      propertyName: 'UOM',
+      order: {
+        enable: true,
+        tag: 'UOM',
+      },
+    },
+    {
       title: 'Tariff Code',
       propertyName: 'TariffCode',
       order: {
@@ -172,7 +180,8 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.items = res.data;
-
+      console.log('items');
+      console.log(this.items);
       if (res.rowCount === 0) {
         this.showLoader = false;
       } else {
