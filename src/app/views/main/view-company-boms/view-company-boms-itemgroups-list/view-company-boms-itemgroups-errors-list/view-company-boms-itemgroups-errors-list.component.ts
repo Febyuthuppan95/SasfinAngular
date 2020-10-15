@@ -1,3 +1,4 @@
+import { Item } from './../../../../../models/HttpResponses/CompanyItemsResponse';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../../services/Company.Service';
 import {UserService} from '../../../../../services/User.Service';
@@ -97,7 +98,7 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
 
-  BOMLines: BOMLine[] = [];
+  // BOMLines: BOMLine[] = [];
   currentUser: User = this.userService.getCurrentUser();
   // table vars - every page
   showLoader = true;
@@ -152,6 +153,26 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.groups = res.data;
+
+      this.groups.forEach(groupItem => {
+        if (groupItem.ItemCode === false) {
+          groupItem.ItemCode = 'Valid';
+        } else {
+          groupItem.ItemCode = 'Invalid';
+        }
+
+        if (groupItem.SupplierItemCode === false) {
+          groupItem.SupplierItemCode = 'Valid';
+        } else {
+          groupItem.SupplierItemCode = 'Invalid';
+        }
+
+        if (groupItem.SupplierCode === false) {
+          groupItem.SupplierCode = 'Valid';
+        } else {
+          groupItem.SupplierCode = 'Invalid';
+        }
+      });
 
       if (res.rowCount === 0) {
         this.showLoader = false;
