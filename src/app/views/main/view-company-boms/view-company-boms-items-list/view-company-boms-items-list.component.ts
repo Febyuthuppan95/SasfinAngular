@@ -112,13 +112,45 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
       },
     },
     {
-      title: 'Vulnerable',
-      propertyName: 'Vulnerable',
+      title: 'Usage Type',
+      propertyName: 'UsageType',
       order: {
         enable: true,
-        tag: 'Vulnerable',
+        tag: 'UsageType',
       },
     },
+    {
+      title: 'Item Class',
+      propertyName: 'ItemClass',
+      order: {
+        enable: true,
+        tag: 'ItemClass',
+      },
+    },
+    // {
+    //   title: 'Qualify 521',
+    //   propertyName: 'Qualify521',
+    //   order: {
+    //     enable: true,
+    //     tag: 'Qualify521',
+    //   },
+    // },
+    // {
+    //   title: 'Qualify 536',
+    //   propertyName: 'Qualify536',
+    //   order: {
+    //     enable: true,
+    //     tag: 'Qualify536',
+    //   },
+    // },
+    // {
+    //   title: 'Qualify PI',
+    //   propertyName: 'QualifyPI',
+    //   order: {
+    //     enable: true,
+    //     tag: 'QualifyPI',
+    //   },
+    // },
   ];
   items: Items[] = [];
   // table vars - every page
