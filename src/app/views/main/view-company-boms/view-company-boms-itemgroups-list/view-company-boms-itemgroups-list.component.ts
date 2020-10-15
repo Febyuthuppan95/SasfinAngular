@@ -10,7 +10,7 @@ import {Subject} from 'rxjs';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../models/Table';
 import {BOMLine} from '../../../../models/HttpResponses/BOMsLinesResponse';
 import {takeUntil} from 'rxjs/operators';
-import {Items} from '../../../../models/HttpResponses/ItemsListResponse';
+import {ItemGroups} from '../../../../models/HttpResponses/ItemsListResponse';
 import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/HttpResponses/User';
 import {NotificationComponent} from '../../../../components/notification/notification.component';
@@ -34,7 +34,14 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
     private ApiService: ApiService,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
-  ) { }
+  ) {
+    this.rowStart = 1;
+    this.rowCountPerPage = 15;
+    this.filter = '';
+    this.orderBy = 'Name';
+    this.orderDirection = 'ASC';
+    this.totalShowing = 0;
+  }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -94,19 +101,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       },
     },
     {
-      title: 'Tariff',
-      propertyName: 'Tariff',
+      title: 'Name',
+      propertyName: 'Name',
       order: {
         enable: true,
-        tag: 'Tariff',
+        tag: 'Name',
       },
     },
     {
-      title: 'Item Type',
-      propertyName: 'ItemType',
+      title: 'Group Value',
+      propertyName: 'GroupValue',
       order: {
         enable: true,
-        tag: 'ItemType',
+        tag: 'GroupValue',
       },
     },
     {
@@ -118,7 +125,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       },
     },
   ];
-  itemGroups: Items[] = [];
+  itemGroups: ItemGroups[] = [];
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
@@ -169,12 +176,14 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
         UserID: this.currentUser.userID,
         ItemID: -1,
         bomid: this.bomid,
-        // rowStart: this.rowStart,
-        // rowEnd: this.rowEnd
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd
       },
-      requestProcedure: `CompanyItemsList`
+      requestProcedure: `ItemGroupsList`
     };
-    this.ApiService.post(`${environment.ApiEndpoint}/boms/items`, model).then((res: any) => {
+
+    console.log(model);
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/itemGroups/list`, model).then((res: any) => {
         console.log(res);
         this.itemGroups = res.data;
       },
