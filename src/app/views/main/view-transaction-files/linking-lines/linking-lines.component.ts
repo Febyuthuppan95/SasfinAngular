@@ -688,29 +688,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
     this.invLines = this.invLinesTemp;
 
-    this.allCaptureJoins.forEach((el) => {
-      if (el.CustomWorksheetLineID != null) {
-        const cws = this.cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
-
-        console.log(cws);
-        console.log(el.CustomWorksheetLineID);
-
-        if (cws) {
-          this.cwsLines.splice(this.cwsLines.indexOf(cws), 1);
-        }
-      }
-
-      if (el.InvoiceLineID != null) {
-        const inv = this.invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
-
-        console.log(inv);
-
-        if (inv) {
-          this.invLines.splice(this.invLines.indexOf(inv), 1);
-        }
-      }
-    });
-
     captureJoins.forEach((el) => {
       if (currentSADLine ) {
         if (el.CustomWorksheetLineID !== null && type === 'cws') {
@@ -731,6 +708,24 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             invoiceToAdd.type = 'inv';
             currentLinks.push(invoiceToAdd);
           }
+        }
+      }
+    });
+
+    this.allCaptureJoins.forEach((el) => {
+      if (el.CustomWorksheetLineID != null) {
+        const cws = this.cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+
+        if (cws) {
+          this.cwsLines.splice(this.cwsLines.indexOf(cws), 1);
+        }
+      }
+
+      if (el.InvoiceLineID != null) {
+        const inv = this.invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+
+        if (inv) {
+          this.invLines.splice(this.invLines.indexOf(inv), 1);
         }
       }
     });
