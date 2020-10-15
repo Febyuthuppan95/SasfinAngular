@@ -16,6 +16,7 @@ import {User} from '../../../../models/HttpResponses/User';
 import {NotificationComponent} from '../../../../components/notification/notification.component';
 import {ApiService} from '../../../../services/api.service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { Pagination } from '../../../../models/Pagination';
 
 @Component({
   selector: 'app-view-company-boms-itemgroups-list',
@@ -37,8 +38,13 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
+    this.activePage = +1;
+    this.prevPageState = true;
+    this.nextPageState = false;
+    this.prevPage = +this.activePage - 1;
+    this.nextPage = +this.activePage + 1;
     this.filter = '';
-    this.orderBy = 'Name';
+    this.orderBy = 'Item';
     this.orderDirection = 'ASC';
     this.totalShowing = 0;
   }
@@ -134,12 +140,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   rowCount: number;
   orderBy: string;
   orderDirection: string;
+  activePage: number;
   selectedRow = -1;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   rowCountPerPage: number;
   filter: string;
+  displayFilter = false;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  showingPages: Pagination[];
 
   currentUser: User = this.userService.getCurrentUser();
   noData = false;
