@@ -20,6 +20,16 @@ export class Items {
   vulnerable: string;
 }
 
+export class ItemGroups {
+  rowNum: number;
+  itemID: number;
+  item: string;
+  description: string;
+  name: string;
+  groupValue: string;
+  vulnerable: string;
+}
+
 export class ItemError {
   bomID: number;
   rowNumber: number;

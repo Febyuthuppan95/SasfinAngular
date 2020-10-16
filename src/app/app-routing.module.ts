@@ -51,7 +51,7 @@ import { ViewCustomReleaseNotificationsComponent } from './views/main/view-trans
 import { ViewInvoicesComponent } from './views/main/view-transaction-files/view-invoices/view-invoices.component';
 import { ViewItemParentsComponent } from './views/main/view-item-parents/view-item-parents.component';
 import { ViewCompanyBOMsComponent } from './views/main/view-company-boms/view-company-boms.component';
-import { ViewBOMLinesComponent } from './views/main/view-bom-lines/view-bom-lines.component';
+import { ViewBOMLinesComponent } from './views/main/view-company-boms/view-bom-lines/view-bom-lines.component';
 import { ViewPermitsListComponent } from './views/main/view-permits-list/view-permits-list.component';
 // tslint:disable-next-line: max-line-length
 import { ViewPermitIMportTariffsListComponent } from './views/main/view-permit-import-tariffs-list/view-permit-import-tariffs-list.component';

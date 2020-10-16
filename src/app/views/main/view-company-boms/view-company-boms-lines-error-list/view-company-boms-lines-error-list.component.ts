@@ -62,7 +62,7 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
       },
     },
     {
-      title: 'Row Number',
+      title: 'Excel Line Number',
       propertyName: 'RowNumber',
       order: {
         enable: true,
@@ -179,6 +179,39 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.lines = res.data;
+
+      this.lines.forEach(line => {
+        if (line.ProductCode === false) {
+          line.ProductCode = 'Valid';
+        } else {
+          line.ProductCode = 'Invalid';
+        }
+        if (line.ComponentCode === false) {
+          line.ComponentCode = 'Valid';
+        } else {
+          line.ComponentCode = 'Invalid';
+        }
+        if (line.Quarter === false) {
+          line.Quarter = 'Valid';
+        } else {
+          line.Quarter = 'Invalid';
+        }
+        if (line.PeriodYear === false) {
+          line.PeriodYear = 'Valid';
+        } else {
+          line.PeriodYear = 'Invalid';
+        }
+        if (line.Quantity === false) {
+          line.Quantity = 'Valid';
+        } else {
+          line.Quantity = 'Invalid';
+        }
+        if (line.UOM === false) {
+          line.UOM = 'Valid';
+        } else {
+          line.UOM = 'Invalid';
+        }
+      });
 
       if (res.rowCount === 0) {
         this.showLoader = false;

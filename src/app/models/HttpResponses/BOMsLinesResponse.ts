@@ -1,3 +1,4 @@
+import { ItemParent } from './ItemParentsListResponse';
 import {Outcome} from './Outcome';
 
 export class BOMsLinesResponse {
@@ -8,12 +9,14 @@ export class BOMsLinesResponse {
 
 export class BOMLine {
   rowNum: number;
-  bomLineID: number;
-  tariffInput: string;
-  itemNameInput: string;
-  quarterInput: string;
-  unitOfMeasureInput: string;
-  usageTypeInput: string;
+  itemParentID: number;
+  parentID: string;
+  itemParent: string;
+  itemID: number;
+  itemchild: string;
+  quantity: string;
+  quarterID: string;
+  PeriodYear: string;
 }
 export interface BOMUpload {
   outcome: Outcome;

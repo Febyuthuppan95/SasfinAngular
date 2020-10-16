@@ -10,12 +10,13 @@ import {Subject} from 'rxjs';
 import {Order, SelectedRecord, TableHeader, TableHeading} from '../../../../models/Table';
 import {BOMLine} from '../../../../models/HttpResponses/BOMsLinesResponse';
 import {takeUntil} from 'rxjs/operators';
-import {Items} from '../../../../models/HttpResponses/ItemsListResponse';
+import {ItemGroups} from '../../../../models/HttpResponses/ItemsListResponse';
 import {environment} from '../../../../../environments/environment';
 import {User} from '../../../../models/HttpResponses/User';
 import {NotificationComponent} from '../../../../components/notification/notification.component';
 import {ApiService} from '../../../../services/api.service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { Pagination } from '../../../../models/Pagination';
 
 @Component({
   selector: 'app-view-company-boms-itemgroups-list',
@@ -34,7 +35,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
     private ApiService: ApiService,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
-  ) { }
+  ) {
+    this.rowStart = 1;
+    this.rowCountPerPage = 15;
+    this.activePage = +1;
+    this.prevPageState = true;
+    this.nextPageState = false;
+    this.prevPage = +this.activePage - 1;
+    this.nextPage = +this.activePage + 1;
+    this.filter = '';
+    this.orderBy = 'Item';
+    this.orderDirection = 'ASC';
+    this.totalShowing = 0;
+  }
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -94,19 +107,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       },
     },
     {
-      title: 'Tariff',
-      propertyName: 'Tariff',
+      title: 'Name',
+      propertyName: 'Name',
       order: {
         enable: true,
-        tag: 'Tariff',
+        tag: 'Name',
       },
     },
     {
-      title: 'Item Type',
-      propertyName: 'ItemType',
+      title: 'Group Value',
+      propertyName: 'GroupValue',
       order: {
         enable: true,
-        tag: 'ItemType',
+        tag: 'GroupValue',
       },
     },
     {
@@ -118,7 +131,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       },
     },
   ];
-  itemGroups: Items[] = [];
+  itemGroups: ItemGroups[] = [];
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
@@ -127,12 +140,19 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
   rowCount: number;
   orderBy: string;
   orderDirection: string;
+  activePage: number;
   selectedRow = -1;
   contextMenu = false;
   contextMenuX = 0;
   contextMenuY = 0;
   rowCountPerPage: number;
   filter: string;
+  displayFilter = false;
+  nextPage: number;
+  nextPageState: boolean;
+  prevPage: number;
+  prevPageState: boolean;
+  showingPages: Pagination[];
 
   currentUser: User = this.userService.getCurrentUser();
   noData = false;
@@ -168,15 +188,18 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       requestParams: {
         UserID: this.currentUser.userID,
         ItemID: -1,
-        BomID: this.bomid,
+        bomid: this.bomid,
         rowStart: this.rowStart,
         rowEnd: this.rowEnd
       },
-      requestProcedure: `CompanyItemsList`
+      requestProcedure: `ItemGroupsList`
     };
-    this.ApiService.post(`${environment.ApiEndpoint}/boms/items`, model).then((res: any) => {
+
+    console.log(model);
+    this.ApiService.post(`${environment.ApiEndpoint}/boms/itemGroups/list`, model).then((res: any) => {
         console.log(res);
         this.itemGroups = res.data;
+        this.rowCount = res.rowCount;
       },
       msg => {
         console.log(msg);

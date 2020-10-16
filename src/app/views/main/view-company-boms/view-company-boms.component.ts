@@ -101,7 +101,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
       }
     },
     {
-      title: 'BOMCode',
+      title: 'BOM Code',
       propertyName: 'bomInput',
       order: {
         enable: true,

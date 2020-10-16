@@ -180,6 +180,37 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
     this.ApiService.post(`${environment.ApiEndpoint}/boms/errors`, model).then((res: any) => {
 
       this.items = res.data;
+      this.items.forEach(item => {
+        if (item.UOM === false) {
+          item.UOM = 'Valid';
+        } else {
+          item.UOM = 'Invalid';
+        }
+
+        if (item.TariffCode === false) {
+          item.TariffCode = 'Valid';
+        } else {
+          item.TariffCode = 'Invalid';
+        }
+
+        if (item.ItemClass === false) {
+          item.ItemClass = 'Valid';
+        } else {
+          item.ItemClass = 'Invalid';
+        }
+
+        if (item.ItemType === false) {
+          item.ItemType = 'Valid';
+        } else {
+          item.ItemType = 'Invalid';
+        }
+
+        if (item.UsageType === false) {
+          item.UsageType = 'Valid';
+        } else {
+          item.UsageType = 'Invalid';
+        }
+      });
       console.log('items');
       console.log(this.items);
       if (res.rowCount === 0) {
