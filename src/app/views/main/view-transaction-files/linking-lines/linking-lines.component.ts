@@ -683,17 +683,19 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getCurrentLinks(currentSADLine: any, type: string): any[] {
     const currentLinks = [];
+    const allCaptureJoins: any = [] = this.allCaptureJoins;
     const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
 
     this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
-    this.invLines = this.invLinesTemp;
+    this.invLines = JSON.parse(JSON.stringify(this.invLinesTemp));
 
     captureJoins.forEach((el) => {
       if (currentSADLine ) {
         if (el.CustomWorksheetLineID !== null && type === 'cws') {
-          const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
+          const toAdd = JSON.parse(JSON.stringify(this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID)));
 
           if (toAdd) {
+            console.log('adding');
             toAdd.captureJoinID = el.CaptureJoinID;
             toAdd.type = 'cws';
             currentLinks.push(toAdd);
@@ -712,7 +714,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.allCaptureJoins.forEach((el) => {
+    allCaptureJoins.forEach((el) => {
       if (el.CustomWorksheetLineID != null) {
         const cws = this.cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
