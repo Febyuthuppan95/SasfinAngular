@@ -654,8 +654,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         currentLine: this.sadLines[index],
         joins: this.captureJoins,
         transactionID: this.transactionID,
-        lines: this.invLines,
-        currentLinks,
+        lines: currentLinks.invLines,
+        currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
       }
     }).afterClosed().subscribe(() => {
@@ -672,8 +672,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         currentLine: this.sadLines[index],
         transactionID: this.transactionID,
         joins: this.captureJoins,
-        lines: this.cwsLines,
-        currentLinks,
+        lines: currentLinks.cwsLines,
+        currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
       }
     }).afterClosed().subscribe(() => {
@@ -681,17 +681,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getCurrentLinks(currentSADLine: any, type: string): any[] {
+  getCurrentLinks(currentSADLine: any, type: string): any {
     const currentLinks = [];
     const allCaptureJoins: any = [] = this.allCaptureJoins;
     const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
 
-    this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
-    this.invLines = JSON.parse(JSON.stringify(this.invLinesTemp));
+    const cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
+    const invLines = JSON.parse(JSON.stringify(this.invLinesTemp));
 
     captureJoins.forEach((el) => {
       if (currentSADLine ) {
-        if (el.CustomWorksheetLineID !== null && type === 'cws') {
+        if (el.CustomWorksheetLineID !== null && (type === 'cws' || type === undefined)) {
           const toAdd = JSON.parse(JSON.stringify(this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID)));
 
           if (toAdd) {
@@ -702,7 +702,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
 
-        if (el.InvoiceLineID !== null && type === 'inv') {
+        if (el.InvoiceLineID !== null && (type === 'inv' || type === undefined)) {
           const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
 
           if (invoiceToAdd) {
@@ -714,25 +714,27 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    allCaptureJoins.forEach((el) => {
-      if (el.CustomWorksheetLineID != null) {
-        const cws = this.cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+    if (!type) {
+      allCaptureJoins.forEach((el) => {
+        if (el.CustomWorksheetLineID != null) {
+          const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
-        if (cws) {
-          this.cwsLines.splice(this.cwsLines.indexOf(cws), 1);
+          if (cws) {
+            cwsLines.splice(this.cwsLines.indexOf(cws), 1);
+          }
         }
-      }
 
-      if (el.InvoiceLineID != null) {
-        const inv = this.invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+        if (el.InvoiceLineID != null) {
+          const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
 
-        if (inv) {
-          this.invLines.splice(this.invLines.indexOf(inv), 1);
+          if (inv) {
+            invLines.splice(this.invLines.indexOf(inv), 1);
+          }
         }
-      }
-    });
+      });
 
-    return currentLinks;
+      return { currentLinks, invLines, cwsLines };
+    }
   }
 
   evaluate() {
@@ -742,11 +744,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
 
-      linkedCWS.forEach(cws => {
+      linkedCWS.currentLinks.forEach(cws => {
         cwsCustomsValue += +cws.custVal;
       });
 
-      linkedINV.forEach(inv => {
+      linkedINV.currentLinks.forEach(inv => {
 
       });
 
