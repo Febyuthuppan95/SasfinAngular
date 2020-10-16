@@ -691,8 +691,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     captureJoins.forEach((el) => {
       if (currentSADLine ) {
-        if (el.CustomWorksheetLineID !== null && (type === 'cws' || type === undefined)) {
-          const toAdd = JSON.parse(JSON.stringify(this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID)));
+        if (el.CustomWorksheetLineID !== null && type === 'cws') {
+          const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
 
           if (toAdd) {
             console.log('adding');
@@ -702,7 +702,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
 
-        if (el.InvoiceLineID !== null && (type === 'inv' || type === undefined)) {
+        if (el.InvoiceLineID !== null && type === 'inv') {
           const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
 
           if (invoiceToAdd) {
@@ -714,27 +714,25 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    if (!type) {
-      allCaptureJoins.forEach((el) => {
-        if (el.CustomWorksheetLineID != null) {
-          const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+    allCaptureJoins.forEach((el) => {
+      if (el.CustomWorksheetLineID != null) {
+        const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
-          if (cws) {
-            cwsLines.splice(this.cwsLines.indexOf(cws), 1);
-          }
+        if (cws) {
+          cwsLines.splice(this.cwsLines.indexOf(cws), 1);
         }
+      }
 
-        if (el.InvoiceLineID != null) {
-          const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+      if (el.InvoiceLineID != null) {
+        const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
 
-          if (inv) {
-            invLines.splice(this.invLines.indexOf(inv), 1);
-          }
+        if (inv) {
+          invLines.splice(this.invLines.indexOf(inv), 1);
         }
-      });
+      }
+    });
 
-      return { currentLinks, invLines, cwsLines };
-    }
+    return { currentLinks, invLines, cwsLines };
   }
 
   evaluate() {
