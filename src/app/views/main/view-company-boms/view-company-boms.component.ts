@@ -335,16 +335,16 @@ export class ViewCompanyBOMsComponent implements OnInit {
   //   );
   // }
 
-  saveBOM(companyID: number, statusID: number) {
+  saveBOM(companyID: number) {
 
-    const BOMIn = 'Q' + this.focusPeriodQuarter + ' ' + this.focusPeriodYear;
+    // const BOMIn = 'Q' + this.focusPeriodQuarter + ' ' + this.focusPeriodYear;
 
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
         CompanyID: this.companyID,
-        StatusID : 1,
-        BOMInput: BOMIn
+        // StatusID : 1,
+        // BOMInput: BOMIn
       },
       requestProcedure: `BOMAdd`
     };
@@ -358,6 +358,10 @@ export class ViewCompanyBOMsComponent implements OnInit {
           res.outcome,
           res.outcomeMessage);
         this.loadCompanyBOMs(true);
+      } else {
+        this.notify.errorsmsg(
+          res.outcome,
+          res.outcomeMessage);
       }
 
     },
