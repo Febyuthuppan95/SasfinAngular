@@ -169,7 +169,7 @@ ngAfterViewInit() {
     this.requestData.sections[index].name = this.transactionTypes[value].description;
   }
 
-  formSubmit() {
+  async formSubmit() {
     this.processing = true;
 
     let err = 0;
@@ -249,11 +249,12 @@ ngAfterViewInit() {
       request.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
       formData.append('requestModel', JSON.stringify(request));
 
+      // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < this.file.length; i++) {
         formData.append('files', this.file[i]);
       }
 
-      this.captureService.splitPDF(formData).then(
+      await this.captureService.splitPDF(formData).then(
         (res) => {
           this.processing = false;
           this.dialogRef.close({state: true});
