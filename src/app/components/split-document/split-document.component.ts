@@ -217,6 +217,8 @@ ngAfterViewInit() {
               } else {
                   item.control.setErrors({ format : true });
               }
+            } else if (range.length === 1) {
+              item.pages.push(range[0]);
             } else {
               item.control.setErrors({ format : true });
             }
