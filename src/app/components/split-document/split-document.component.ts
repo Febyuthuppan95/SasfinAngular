@@ -169,6 +169,13 @@ ngAfterViewInit() {
     this.requestData.sections[index].name = this.transactionTypes[value].description;
   }
 
+  async iterate(array, callback) {
+
+    for (let i = 0; i < array.length; i++) {
+      await callback(array[i]);
+    }
+  }
+
   async formSubmit() {
     this.processing = true;
 
@@ -176,22 +183,18 @@ ngAfterViewInit() {
 
     if (this.sections.length === 0) {
       err++;
-      console.log(this.sections.length);
-
     } else if (this.file === undefined) {
       err++;
-      console.log(this.file);
     }
 
     this.requestData.sections.forEach((item) => {
+
       if (item.name === '' || item.name === null || !item.name) {
         err++;
-        console.log('name');
       }
 
       if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
         err++;
-        console.log('attachmentType');
       }
 
       if (item.nameControl.valid) {
@@ -200,12 +203,25 @@ ngAfterViewInit() {
         err++;
       }
 
+      if (item.pages.length === 0) {
+        err++;
+      }
+
       if (item.control.valid) {
+        item.pages = [];
         const segments = item.control.value.split(',');
 
-        segments.forEach(element => {
+        this.iterate(segments, (element) => {
           if (element.indexOf('-') === -1) {
-            item.pages.push(+element.trim());
+            if (element.indexOf(',') === -1) {
+              item.pages.push(+element.trim());
+            } else {
+              const range = element.split(',');
+
+              range.forEach((page) => {
+                item.pages.push(+page);
+              });
+            }
           } else {
             const range = element.split('-');
 
@@ -215,7 +231,7 @@ ngAfterViewInit() {
                   item.pages.push(i);
                 }
               } else {
-                  item.control.setErrors({ format : true });
+                item.control.setErrors({ format : true });
               }
             } else if (range.length === 1) {
               item.pages.push(range[0]);
@@ -229,11 +245,6 @@ ngAfterViewInit() {
       } else {
         err++;
         this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
-      }
-
-      if (item.pages.length === 0) {
-        err++;
-        console.log('pages');
       }
     });
 
@@ -253,6 +264,8 @@ ngAfterViewInit() {
       for (let i = 0; i < this.file.length; i++) {
         formData.append('files', this.file[i]);
       }
+
+      console.log(request);
 
       await this.captureService.splitPDF(formData).then(
         (res) => {
