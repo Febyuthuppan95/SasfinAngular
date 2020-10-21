@@ -20,6 +20,7 @@ import { SplitDocumentComponent } from 'src/app/components/split-document/split-
 import { ApiService } from 'src/app/services/api.service';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DialogRemoveAttachmentComponent } from 'src/app/components/menus/context-menu-transaction-attachment/dialog-remove-attachment/dialog-remove-attachment.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -678,32 +679,43 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   removeAttachment($event) {
-    this.showLoader = true;
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        attachmentID: JSON.parse($event).fileID,
-        fileTypeID: JSON.parse($event).fileTypeID,
-        isDeleted: 1
-      },
-      requestProcedure: 'AttachmentsUpdate'
-    };
+    this.dialog.open(DialogRemoveAttachmentComponent, {
+      width: '512px'
+    }).afterClosed().subscribe((value) => {
+      if (value) {
+        this.showLoader = true;
+        const model = {
+          requestParams: {
+            userID: this.currentUser.userID,
+            attachmentID: JSON.parse($event).fileID,
+            fileTypeID: JSON.parse($event).fileTypeID,
+            isDeleted: 1
+          },
+          requestProcedure: 'AttachmentsUpdate'
+        };
 
-    this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
-      (res) => {
-        console.log(res);
-        this.loadAttachments();
-      },
-      msg => {
-        console.log(msg);
+        console.log('Building Request');
+        console.log(model);
 
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
+        this.apiService.post(`${environment.ApiEndpoint}/capture/update`, model).then(
+          (res) => {
+            console.log(res);
+            this.loadAttachments();
+          },
+          msg => {
+            console.log(msg);
+
+            this.showLoader = false;
+            this.notify.errorsmsg(
+              'Server Error',
+              'Something went wrong while trying to access the server.'
+            );
+          }
         );
       }
-    );
+    });
+
+
   }
   splitPDF() {
     this.closeModal.nativeElement.click();

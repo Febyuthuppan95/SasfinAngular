@@ -56,18 +56,12 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   }
 
   remove() {
-    this.dialog.open(DialogRemoveAttachmentComponent, {
-      width: '512px'
-    }).afterClosed().subscribe((value) => {
-      if (value) {
-        this.removeAttachment.emit(
-          JSON.stringify({
-          fileID: this.attachmentID,
-          fileTypeID: this.fileTypeID,
-          })
-        );
-      }
-    });
+    this.removeAttachment.emit(
+      JSON.stringify({
+      fileID: this.attachmentID,
+      fileTypeID: this.fileTypeID,
+      })
+    );
   }
   preview() {
     this.previewDocument.emit(this.docPath);

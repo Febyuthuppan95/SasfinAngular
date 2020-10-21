@@ -8,9 +8,14 @@ import { MatDialogRef } from '@angular/material';
 })
 export class DialogRemoveAttachmentComponent implements OnInit {
 
-  constructor(public ref: MatDialogRef<DialogRemoveAttachmentComponent>) { }
+  constructor(private ref: MatDialogRef<DialogRemoveAttachmentComponent>) { }
 
   ngOnInit() {
+  }
+
+  confirm() {
+    console.log('Confirm');
+    this.ref.close(true);
   }
 
 }
