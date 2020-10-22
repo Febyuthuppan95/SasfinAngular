@@ -19,6 +19,9 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CaptureService } from 'src/app/services/capture.service';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
+import { ApiService } from 'src/app/services/api.service';
+import { MatDialog } from '@angular/material';
+import { DialogTransactionDeleteComponent } from './dialog-transaction-delete/dialog-transaction-delete.component';
 
 @Component({
   selector: 'app-view-transactions',
@@ -32,9 +35,11 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
     private captureService: CaptureService,
     private router: Router,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private dialog: MatDialog,
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -200,6 +205,18 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
             item.sendAll = false;
           }
         });
+    });
+  }
+
+  async deleteTransaction($event) {
+    this.dialog.open(DialogTransactionDeleteComponent).afterClosed().subscribe((value) => {
+      if (value) {
+        this.captureService.post({ request: $event, procedure: 'TranscactionUpdate' }).then(
+          (res: any) => {
+            this.loadTransactions();
+          }
+        );
+      }
     });
   }
 

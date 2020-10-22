@@ -308,6 +308,7 @@ import { MenuLinkingComponent } from './views/main/checking-queue/menu-linking/m
 import { DialogConfirmationComponent } from './views/main/view-transaction-files/linking-lines/dialog-confirmation/dialog-confirmation.component';
 import { DialogReturnAttachmentComponent } from './views/main/view-transaction-files/linking-lines/dialog-return-attachment/dialog-return-attachment.component';
 import { DialogRemoveAttachmentComponent } from './components/menus/context-menu-transaction-attachment/dialog-remove-attachment/dialog-remove-attachment.component';
+import { DialogTransactionDeleteComponent } from './views/main/view-transactions/dialog-transaction-delete/dialog-transaction-delete.component';
 
 @NgModule({
   declarations: [
@@ -514,7 +515,8 @@ import { DialogRemoveAttachmentComponent } from './components/menus/context-menu
     MenuLinkingComponent,
     DialogConfirmationComponent,
     DialogReturnAttachmentComponent,
-    DialogRemoveAttachmentComponent
+    DialogRemoveAttachmentComponent,
+    DialogTransactionDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -629,7 +631,8 @@ import { DialogRemoveAttachmentComponent } from './components/menus/context-menu
     CustomsLineLinkComponent,
     DialogConfirmationComponent,
     DialogReturnAttachmentComponent,
-    DialogRemoveAttachmentComponent
+    DialogRemoveAttachmentComponent,
+    DialogTransactionDeleteComponent,
   ],
 })
 export class AppModule {}

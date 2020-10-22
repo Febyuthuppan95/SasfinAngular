@@ -31,6 +31,7 @@ export class ContextMenuTransactionComponent implements OnInit {
 
   @Output() viewTransactionsEmit = new EventEmitter<string>();
   @Output() statusResults = new EventEmitter<Outcome>();
+  @Output() removeTransaction = new EventEmitter<any>();
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -42,6 +43,14 @@ export class ContextMenuTransactionComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: -1, docType: '', transactionType: this.transactionType, transactionName: this.transactionName });
     this.router.navigate(['transaction', 'attachments']);
+  }
+
+  deleteTransaction() {
+    this.removeTransaction.emit({
+      transactionID: this.transactionID,
+      userID: this.currentUser.userID,
+      isDeleted: 1,
+    });
   }
 
   viewSAD500s() {
