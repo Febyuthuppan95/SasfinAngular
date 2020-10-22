@@ -188,12 +188,33 @@ ngAfterViewInit() {
     }
 
     this.requestData.sections.forEach((item) => {
+      if (item.control.valid) {
+        item.pages = [];
+        const segments = item.control.value.split(',');
 
-      if (item.name === '' || item.name === null || !item.name) {
+        segments.forEach((element) => {
+          if (element.indexOf('-') !== -1) {
+            const ranges = element.split('-');
+
+            if (ranges[0] < ranges[1]) {
+              for (let i = +ranges[0]; i <= +ranges[1]; i++) {
+                item.pages.push(i);
+              }
+            }
+          } else {
+            item.pages.push(+element);
+          }
+        });
+
+        console.log(item.pages);
+
+      } else {
         err++;
+        this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
       }
 
       if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
+        console.log('err: Attachment Type');
         err++;
       }
 
@@ -203,48 +224,13 @@ ngAfterViewInit() {
         err++;
       }
 
-      if (item.pages.length === 0) {
+      if (item.name === '' || item.name === null || !item.name) {
+        console.log('err: Name');
         err++;
       }
 
-      if (item.control.valid) {
-        item.pages = [];
-        const segments = item.control.value.split(',');
-
-        this.iterate(segments, (element) => {
-          if (element.indexOf('-') === -1) {
-            if (element.indexOf(',') === -1) {
-              item.pages.push(+element.trim());
-            } else {
-              const range = element.split(',');
-
-              range.forEach((page) => {
-                item.pages.push(+page);
-              });
-            }
-          } else {
-            const range = element.split('-');
-
-            if (range.length === 2) {
-              if (range[0] < range[1]) {
-                for (let i = +range[0]; i <= +range[1]; i++) {
-                  item.pages.push(i);
-                }
-              } else {
-                item.control.setErrors({ format : true });
-              }
-            } else if (range.length === 1) {
-              item.pages.push(range[0]);
-            } else {
-              item.control.setErrors({ format : true });
-            }
-          }
-        });
-
-        console.log(item.pages);
-      } else {
+      if (item.pages.length === 0) {
         err++;
-        this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
       }
     });
 
