@@ -352,6 +352,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             this.form.controls.SAD500ID.setValue(res.vocs[0].sad500ID);
 
             if (res.attachmentErrors.attachmentErrors ? res.attachmentErrors.attachmentErrors.length : 0 > 0) {
+              this.errors = res.attachmentErrors.attachmentErrors;
+
               Object.keys(this.form.controls).forEach(key => {
                 res.attachmentErrors.attachmentErrors.forEach((error) => {
                   if (key.toUpperCase() === error.fieldName.toUpperCase()) {
@@ -403,7 +405,10 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         console.log(`CPC ID: ${response.cpcID}`);
         console.log(this.form.value);
         this.form.updateValueAndValidity();
-        this.errors = res.attachmentErrors.attachmentErrors;
+
+        if (!this.isVOC) {
+          this.errors = res.attachmentErrors.attachmentErrors;
+        }
 
         Object.keys(this.form.controls).forEach(key => {
           if (key.indexOf('ODate') !== -1) {
