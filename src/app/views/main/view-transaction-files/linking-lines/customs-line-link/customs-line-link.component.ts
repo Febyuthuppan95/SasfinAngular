@@ -20,8 +20,10 @@ export class CustomsLineLinkComponent implements OnInit {
     public lines: any[] = [];
 
     ngOnInit() {
-      this.currentLinks = this.data.currentLinks;
-      this.lines = this.data.lines;
+      this.currentLinks = JSON.parse(JSON.stringify(this.data.currentLinks));
+      this.lines = JSON.parse(JSON.stringify(this.data.lines));
+
+      console.log(this.data);
     }
 
     async addJoin(index) {

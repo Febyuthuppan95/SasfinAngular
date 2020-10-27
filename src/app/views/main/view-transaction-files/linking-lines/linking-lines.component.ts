@@ -16,7 +16,6 @@ import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
 import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
-import { CWSLines } from './lines';
 
 enum TotalStatus {
   Passed,
@@ -51,10 +50,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public sadLines: any[] = [];
   public invLines: any[] = [];
-  public cwsLines: CWSLines[] = [];
+  public cwsLines: any[] = [];
   public sadLinesTemp: any[] = [];
   public invLinesTemp: any[] = [];
-  public cwsLinesTemp: CWSLines[] = [];
+  public cwsLinesTemp: any[] = [];
   public attachments: any[] = [];
   public captureJoins: any[] = [];
   public allCaptureJoins: any[] = [];
@@ -76,8 +75,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   private scrollLeft = 0;
 
   private currentUser: any = this.user.getCurrentUser();
-  // tslint:disable-next-line: max-line-length
-  public consultant = this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' || this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
+  public consultant =
+  this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' ||
+  this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
 
   currentReaderPOS: { x: number, y: number } = {
     x: 0,
@@ -98,8 +98,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.transactionID = +data.transactionID;
         this.transactionType = data.transactionType;
         this.transaction = data.transactionName;
-
-        console.log(this.transactionID);
 
         this.init();
       }
@@ -460,12 +458,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       async (res: any) => {
         this.sadLinesTemp = res.lines;
 
-        await this.iterate(this.sadLinesTemp, async (el) => {
-          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
-          el.country = this.countries.find(x => x.CountryID == el.cooID);
+        await this.iterate(this.sadLinesTemp, async (el, i) => {
+          this.sadLinesTemp[i].unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+          this.sadLinesTemp[i].country = this.countries.find(x => x.CountryID == el.cooID);
         });
 
-        this.sadLines = this.sadLinesTemp;
+        this.sadLines = [...this.sadLinesTemp];
+
         await this.loadInvoiceLines();
       }
     );
@@ -506,7 +505,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           el.currency = 'this';
         });
 
-        this.invLines = this.invLinesTemp;
+        this.invLines = [...this.invLinesTemp];
 
         await this.loadWorksheetLines();
       }
@@ -534,16 +533,16 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       orderByDirection: '',
       filter: '',
       transactionID: this.transactionID, }).then(
-      async (res: { lines: CWSLines[] }) => {
-        this.cwsLinesTemp = JSON.parse(JSON.stringify(res.lines));
+      async (res: any) => {
+        this.cwsLinesTemp = res.lines;
 
-        await this.iterate(this.cwsLinesTemp, async (el) => {
-          el.type = 'cws';
-          el.country = this.countries.find(x => x.CountryID == el.cooID);
-          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+        await this.iterate(this.cwsLinesTemp, async (el, i) => {
+          this.cwsLinesTemp[i].type = 'cws';
+          this.cwsLinesTemp[i].country = this.countries.find(x => x.CountryID == this.cwsLinesTemp[i].cooID);
+          this.cwsLinesTemp[i].unit = this.units.find(x => x.UnitOfMeasureID == this.cwsLinesTemp[i].unitOfMeasureID);
         });
 
-        this.cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
+        this.cwsLines = [...this.cwsLinesTemp];
 
         await this.loadCaptureJoins();
       }
@@ -568,17 +567,18 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       async (res: any) => {
         this.allCaptureJoins = res.data;
 
-        await this.iterate(this.sadLines, async (item) =>  {
-          const exists = this.allCaptureJoins.find(x => x.SAD500LineID == item.sad500LineID && x.CustomsValueOBit);
+        await this.iterate(this.sadLines, async (item, i) =>  {
+          const exists = this.allCaptureJoins.find(x => x.SAD500LineID == this.sadLines[i].sad500LineID && x.CustomsValueOBit);
 
           if (exists) {
-            item.OBit = true;
-            item.OReason = exists.CustomsValueOReason;
+            this.sadLines[i].OBit = true;
+            this.sadLines[i].OReason = exists.CustomsValueOReason;
           }
         });
 
         this.loading = false;
-        this.evaluate();
+
+        await this.evaluate();
     });
   }
 
@@ -588,7 +588,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < array.length; i++) {
       if (array[i].customWorksheetLineID == value) {
-        found = array[i];
+        found = JSON.parse(JSON.stringify(array[i]));
       }
     }
 
@@ -598,7 +598,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   async iterate(list, callback) {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < list.length; i++) {
-      await callback(list[i]);
+      await callback(list[i], i);
     }
   }
 
@@ -683,43 +683,48 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getCurrentLinks(currentSADLine: any, type: string): any {
     const currentLinks = [];
-    const allCaptureJoins: any = [] = this.allCaptureJoins;
-    const captureJoins: any = [] = this.allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
+    const allCaptureJoins = [...this.allCaptureJoins];
+    const captureJoins = allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
 
-    const cwsLines = JSON.parse(JSON.stringify(this.cwsLinesTemp));
-    const invLines = JSON.parse(JSON.stringify(this.invLinesTemp));
+    const cwsLines = [...this.cwsLinesTemp];
+    const invLines = [...this.invLinesTemp];
 
     captureJoins.forEach((el) => {
-      if (currentSADLine ) {
-        if (el.CustomWorksheetLineID !== null && type === 'cws') {
-          const toAdd = this.findCustomsWorksheetLine(this.cwsLinesTemp, el.CustomWorksheetLineID);
 
-          if (toAdd) {
-            console.log('adding');
-            toAdd.captureJoinID = el.CaptureJoinID;
-            toAdd.type = 'cws';
-            currentLinks.push(toAdd);
+      if (currentSADLine) {
+        if (el.CustomWorksheetLineID != null && type == 'cws') {
+          const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+
+          if (cws) {
+            cws.captureJoinID = el.CaptureJoinID;
+            cws.type = 'cws';
+
+            currentLinks.push(cws);
           }
         }
 
-        if (el.InvoiceLineID !== null && type === 'inv') {
-          const invoiceToAdd = this.invLinesTemp.find(x => x.invoiceLineID == el.InvoiceLineID);
+        if (el.InvoiceLineID != null && type == 'inv') {
+          const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
 
-          if (invoiceToAdd) {
-            invoiceToAdd.captureJoinID = el.CaptureJoinID;
-            invoiceToAdd.type = 'inv';
-            currentLinks.push(invoiceToAdd);
+          if (inv) {
+            inv.captureJoinID = el.CaptureJoinID;
+            inv.type = 'inv';
+
+            currentLinks.push(inv);
           }
         }
       }
+
     });
 
     allCaptureJoins.forEach((el) => {
+      console.log(el);
+
       if (el.CustomWorksheetLineID != null) {
         const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
         if (cws) {
-          cwsLines.splice(this.cwsLines.indexOf(cws), 1);
+          cwsLines.splice(cwsLines.indexOf(cws), 1);
         }
       }
 
@@ -727,10 +732,14 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
 
         if (inv) {
-          invLines.splice(this.invLines.indexOf(inv), 1);
+          invLines.splice(invLines.indexOf(inv), 1);
         }
       }
     });
+
+    // console.log(currentLinks);
+    // console.log(invLines);
+    // console.log(cwsLines);
 
     return { currentLinks, invLines, cwsLines };
   }

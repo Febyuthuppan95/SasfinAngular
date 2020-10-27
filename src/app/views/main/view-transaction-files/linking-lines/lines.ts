@@ -55,4 +55,5 @@ export interface CWSLines {
   type: string;
   country: Country;
   unit: Unit;
+  captureJoinID?: number;
 }
