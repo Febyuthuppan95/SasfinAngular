@@ -193,7 +193,13 @@ export class ViewUnitsOfMeasureComponent implements OnInit, OnDestroy {
     this.loadUnitsOfMeasures();
   }
 
-  searchBar() {
+  searchBar(search: string) {
+
+    console.log('search');
+    console.log(search);
+
+    this.filter = search;
+
     this.rowStart = 1;
     this.rowEnd = this.selectRowDisplay;
     this.loadUnitsOfMeasures();

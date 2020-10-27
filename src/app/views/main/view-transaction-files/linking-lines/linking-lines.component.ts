@@ -816,6 +816,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   overrideDialog(sad500Line: any, label) {
     this.dialog.open(DialogOverrideComponent, {
+      autoFocus: true,
       width: '512px',
       data: {
         label

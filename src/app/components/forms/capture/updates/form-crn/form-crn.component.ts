@@ -344,6 +344,7 @@ ngOnDestroy(): void {}
 
 overrideDialog(key: string, label) {
   this.dialog.open(DialogOverrideComponent, {
+    autoFocus: true,
     width: '512px',
     data: {
       label

@@ -325,6 +325,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     // @override methods
     overrideDialog(key, label) {
       this.dialog.open(DialogOverrideComponent, {
+        autoFocus: true,
         width: '512px',
         data: {
           label
