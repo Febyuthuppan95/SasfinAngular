@@ -738,6 +738,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   // @override methods
   overrideDialog(key, label) {
     this.dialog.open(DialogOverrideComponent, {
+      autoFocus: true,
       width: '512px',
       data: {
         label

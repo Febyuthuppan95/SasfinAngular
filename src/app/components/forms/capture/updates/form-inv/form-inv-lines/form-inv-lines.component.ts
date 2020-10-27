@@ -295,6 +295,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     // @override methods
     overrideDialog(key, label) {
       this.dialog.open(DialogOverrideComponent, {
+        autoFocus: true,
         width: '512px',
         data: {
           label

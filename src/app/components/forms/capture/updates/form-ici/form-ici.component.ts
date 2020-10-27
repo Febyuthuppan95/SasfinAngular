@@ -356,6 +356,7 @@ export class FormIciComponent implements OnInit, AfterViewInit, OnDestroy {
   overrideDialog(key: string, label) {
     this.dialog
       .open(DialogOverrideComponent, {
+        autoFocus: true,
         width: '512px',
         data: {
           label,

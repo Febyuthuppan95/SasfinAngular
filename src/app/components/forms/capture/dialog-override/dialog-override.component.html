@@ -3,7 +3,7 @@
 <div mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>Reason</mat-label>
-    <textarea matInput [formControl]="reason" cols="30" rows="10"></textarea>
+    <textarea cdkFocusInitial matInput [formControl]="reason" cols="30" rows="10"></textarea>
   </mat-form-field>
   <br>
   <button mat-raised-button class="bg-primary text-light" (click)="submit(reason)">Submit</button>

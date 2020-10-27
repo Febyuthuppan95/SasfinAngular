@@ -779,6 +779,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   overrideDialog(key, label) {
 
     this.dialog.open(DialogOverrideComponent, {
+      autoFocus: true,
       width: '512px',
       data: {
         label
