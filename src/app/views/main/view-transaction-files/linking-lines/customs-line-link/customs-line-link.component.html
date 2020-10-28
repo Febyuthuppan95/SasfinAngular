@@ -1,5 +1,8 @@
 <h3 mat-dialog-title cdkDrag cdkDragRootElement=".cdk-overlay-pane">Customs Worksheet Lines</h3>
 <div mat-dialog-content>
+  <ng-container *ngIf="lines.length === 0 && currentLinks.length === 0">
+    <h5>No Lines Available</h5>
+  </ng-container>
   <ng-container *ngIf="currentLinks.length > 0">
     <h5>Linked Lines ({{currentLinks.length}})</h5>
   </ng-container>

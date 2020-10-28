@@ -27,7 +27,7 @@ export class InvoiceLineLinkComponent implements OnInit {
   async addJoin(index) {
     const request: any = {};
     const invoiceLine = this.lines[index];
-    console.log(invoiceLine);
+
     request.transactionID = this.data.transactionID;
     request.userID = this.data.currentUser.userID;
     request.SAD500LineID = this.data.currentLine.sad500LineID;
