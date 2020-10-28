@@ -97,6 +97,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   @Input() data: any;
   @Input() companyID: number;
   @Input() isQA = false;
+  @Input() savedChanges = false;
   @Output() submission = new EventEmitter<any>();
 
   @ViewChild('startLineForm', { static: false })
@@ -150,7 +151,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     });
 
     // QA Recapture
-    if (this.isQA && !this.data.qaComplete) {
+    if (this.isQA && !this.data.qaComplete && !this.savedChanges) {
       this.form.controls.commonFactor.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('commonFactor', value);
@@ -226,7 +227,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         }
       });
 
-      if (this.isQA && !this.data.qaComplete) {
+      if (this.isQA && !this.data.qaComplete && !this.savedChanges) {
         this.form.controls.commonFactor.reset();
         this.form.controls.quantity.reset();
         this.form.controls.unitPrice.reset();

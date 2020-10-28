@@ -143,7 +143,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-inv-lines [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID" [(isQA)]="isQA"></app-form-inv-lines>
+  <app-form-inv-lines [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID" [(isQA)]="isQA" [(savedChanges)]="savedChanges"></app-form-inv-lines>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

@@ -67,6 +67,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   private dialogOpen = false;
 
   public isQA = false;
+  public savedChanges = false;
 
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
 
@@ -410,7 +411,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.updateValueAndValidity();
       this.isQA = this.form.controls.qaUserID.value !== -1;
 
-      if (this.isQA) {
+      if (this.isQA && !this.savedChanges) {
         this.invoiceDate.reset();
 
         this.form.controls.invoiceNo.reset();
@@ -559,6 +560,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           if (res.outcome === 'SUCCESS') {
             if (saveProgress) {
               this.snackbar.open('Progress Saved', '', { duration: 3000 });
+              this.savedChanges = true;
               this.load();
             } else {
               this.notify.successmsg(res.outcome, res.outcomeMessage);
