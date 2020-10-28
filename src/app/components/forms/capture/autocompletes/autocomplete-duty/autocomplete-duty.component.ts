@@ -131,8 +131,8 @@ constructor(private userService: UserService,
       .then(
         async (res: DutyListResponse) => {
           this.list = res.duties;
-          this.listTemp = this.list;
-          this.listMaster = this.list;
+          this.listTemp = [...this.list];
+          this.listMaster = [...this.list];
           await this.loadAssignedDuty();
         }
       );
@@ -215,6 +215,8 @@ constructor(private userService: UserService,
 
     this.assignedList.splice(this.assignedList.indexOf(duty), 1);
     this.control.setValue(this.assignedList);
+
+    this.load();
   }
 
   focusOut(trigger) {
