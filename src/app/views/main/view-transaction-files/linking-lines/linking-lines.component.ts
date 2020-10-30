@@ -718,8 +718,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     allCaptureJoins.forEach((el) => {
-      console.log(el);
-
       if (el.CustomWorksheetLineID != null) {
         const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
@@ -747,20 +745,26 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   evaluate() {
     this.sadLines.forEach(item => {
       let cwsCustomsValue = 0;
+      let invForeignValue = 0;
+      let cwsForeignValue = 0;
 
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
 
       linkedCWS.currentLinks.forEach(cws => {
         cwsCustomsValue += +cws.custVal;
-      });
+        cwsForeignValue += cws.foreignInv;
 
-      linkedINV.currentLinks.forEach(inv => {
-
+        linkedINV.currentLinks.forEach(inv => {
+          invForeignValue += inv.totalLineValue;
+        });
       });
 
       item.runningCustomsValue = cwsCustomsValue;
       item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue, cwsCustomsValue);
+
+      item.runningForeignValue = invForeignValue;
+      item.runningForeignValueStatus = item.ForeignValueOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue, invForeignValue);
     });
   }
 

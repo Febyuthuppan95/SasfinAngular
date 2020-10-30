@@ -51,6 +51,17 @@
                               {{ item.runningCustomsValueStatus === totalStatuses.None ? 'remove' : '' }}
                             </mat-icon>
                           </mat-chip>
+                          <mat-chip
+                          [ngClass]="{'bg-success': item.runningForeignValueStatus === totalStatuses.Passed, 'bg-danger': item.runningForeignValueStatus === totalStatuses.Failed, 'bg-warning': item.runningForeignValueStatus === totalStatuses.None}"
+                          [matTooltip]="item.OBit ? item.OReason : item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None ? 'Running total does not equal target' : 'Running total equals target'">
+                            Foreign Inv vs Total Line Value&nbsp;
+                            <strong>{{item.runningForeignValue}}</strong>&nbsp;
+                            <mat-icon>
+                              {{ item.runningForeignValueStatus === totalStatuses.Passed ? 'check' : '' }}
+                              {{ item.runningForeignValueStatus === totalStatuses.Failed ? 'close' : '' }}
+                              {{ item.runningForeignValueStatus === totalStatuses.None ? 'remove' : '' }}
+                            </mat-icon>
+                          </mat-chip>
                         </mat-chip-list>
                         <h3 class="text-left">Line {{i+1}}</h3>
                         <br>
