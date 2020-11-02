@@ -637,16 +637,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.lines[this.lines.indexOf(target)] = $event;
       this.activeLine = $event;
 
-      // this.cancelLine();
-
-      // this.newLine(true);
-
       this.refresh();
-
-      // this.snackbar.open('Line queued to update', '', {duration: 3000});
     }
-
-    // this.cancelLine();
   }
 
   async saveLines(lines: any[], callback) {
@@ -753,16 +745,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   override(key: string, reason: string) {
-
-
     this.form.controls[`${key}OBit`].setValue(true);
     this.form.controls[`${key}OReason`].setValue(reason);
     this.form.controls[key].setErrors(null);
   }
 
   undoOverride(key: string) {
-
-
     this.form.controls[`${key}OBit`].setValue(false);
     this.form.controls[`${key}OReason`].setValue(null);
 

@@ -35,12 +35,20 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   public valueKeeper = new FormControl();
   public selected = false;
 
+  safe = true;
+
   ngOnInit() {
     if (!this.control) {
       this.control = new FormControl();
     }
 
     this.isRequired = this.control.validator !== null;
+
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
 
     if (this.control.value !== null) {
       this.selected = true;
@@ -94,6 +102,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   async load(setDefault?: boolean, filter?: string) {
+    this.safe = false;
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -111,6 +120,10 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
           const defaultValue = this.list.find(x => x.ItemID === this.control.value);
           this.query.setValue(defaultValue, { emitEvent: false });
         }
+
+        this.safe = true;
+      }, (msg) => {
+        this.safe = true;
       });
   }
 
@@ -133,14 +146,16 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
-      this.query.setValue(this.list[0]);
+    if (this.safe) {
+      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+        this.query.setValue(this.list[0]);
 
-      trigger.closePanel();
-    }
+        trigger.closePanel();
+      }
 
-    if (this.list.length === 0) {
-      this.createItem();
+      if (this.list.length === 0) {
+        this.createItem();
+      }
     }
   }
 
