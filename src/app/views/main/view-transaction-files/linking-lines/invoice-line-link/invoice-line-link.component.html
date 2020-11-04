@@ -41,33 +41,36 @@
       <br>
       <h5>Available Lines ({{lines.length}})</h5>
     </ng-container>
-    <ng-container *ngFor="let item of lines; let i = index">
-      <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
-        <mat-card>
-          <mat-card-content>
-            <button tabindex="-1" mat-mini-fab color="accent" style="
-            position: absolute;
-            left: -20px;
-            top: 30%;
-            bottom: 50%;">{{i+1}}</button>
-            <div class="row">
-              <div class="col-6">
-                <p style="width: 100%; margin-left: 24px;">
-                  <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                  <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                  <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-                </p>
+    <ng-container *ngFor="let key of lineKeys; let i = index">
+      <small>{{key}}</small>
+      <ng-container *ngFor="let item of formattedInvoiceLines[key]">
+        <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+          <mat-card>
+            <mat-card-content>
+              <button tabindex="-1" mat-mini-fab color="accent" style="
+              position: absolute;
+              left: -20px;
+              top: 30%;
+              bottom: 50%;">{{i+1}}</button>
+              <div class="row">
+                <div class="col-6">
+                  <p style="width: 100%; margin-left: 24px;">
+                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                    <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                    <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                    <strong>Quantity</strong> {{item.quantity}} <br>
+                  </p>
+                </div>
               </div>
-              <div class="col-6">
-                <p style="width: 100%;">
-                  <strong>Unit Price</strong> {{item.unitPrice}} <br>
-                  <strong>Quantity</strong> {{item.quantity}} <br>
-                </p>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </button>
+            </mat-card-content>
+          </mat-card>
+        </button>
+      </ng-container>
       <br>
       <br>
     </ng-container>

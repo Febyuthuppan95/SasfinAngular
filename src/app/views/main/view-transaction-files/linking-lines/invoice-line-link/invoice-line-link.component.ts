@@ -18,10 +18,33 @@ export class InvoiceLineLinkComponent implements OnInit {
 
   public currentLinks: any[] = [];
   public lines: any[] = [];
+  public lineKeys: string[] = [];
+
+  public formattedInvoiceLines: any[] = [];
 
   ngOnInit() {
     this.currentLinks = this.data.currentLinks;
     this.lines = this.data.lines;
+
+    this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+    this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+    this.currentLinks.forEach((link) => {
+      this.lineKeys.forEach((key) => {
+        const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+
+        if (inv) {
+          this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+        }
+      });
+    });
+  }
+
+ groupBy(xs, key) {
+    return xs.reduce((rv, x) => {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
   }
 
   async addJoin(index) {
@@ -44,6 +67,20 @@ export class InvoiceLineLinkComponent implements OnInit {
           const item = this.lines.splice(index, 1)[0];
           item.captureJoinID = +res.outcomeMessage;
           this.currentLinks.push(item);
+
+          this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+          this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+          this.currentLinks.forEach((link) => {
+            this.lineKeys.forEach((key) => {
+              const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+
+              if (inv) {
+                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+              }
+            });
+          });
+
           this.snackbar.open('Line linked', 'OK', { duration: 3000 });
         }
       },
@@ -67,6 +104,20 @@ export class InvoiceLineLinkComponent implements OnInit {
         if (res.outcome) {
           const removed = this.currentLinks.splice(index, 1)[0];
           this.lines.push(removed);
+
+          this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+          this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+          this.currentLinks.forEach((link) => {
+            this.lineKeys.forEach((key) => {
+              const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+
+              if (inv) {
+                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+              }
+            });
+          });
+
           this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
         }
       },

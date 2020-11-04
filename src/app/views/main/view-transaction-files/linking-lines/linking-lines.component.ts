@@ -104,6 +104,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  groupBy(xs, key) {
+    return xs.reduce((rv, x) => {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  }
+
   requestFullscreen() {
     const el = document.documentElement as HTMLElement & {
       mozRequestFullScreen(): Promise<void>;
@@ -485,31 +492,35 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       rowEnd: 1000,
     });
 
-    await this.capture.invoiceLineList({
-      invoiceID: this.currentINV.invoices[0].invoiceID,
-      invoiceLineID: -1,
-      userID: this.currentUser.userID,
-      transactionID: this.transactionID,
-      filter:  '',
-      orderBy: '',
-      orderByDirection: '',
-      rowStart: 1,
-      rowEnd: 1000000 }).then(
-      async (res: any) => {
-        this.invLinesTemp = res.lines;
+    await this.iterate(this.currentINV.invoices, async (invoice) => {
+      await this.capture.invoiceLineList({
+        invoiceID: invoice.invoiceID,
+        invoiceLineID: -1,
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID,
+        filter:  '',
+        orderBy: '',
+        orderByDirection: '',
+        rowStart: 1,
+        rowEnd: 1000000 }).then(
+        async (res: any) => {
+          this.invLinesTemp = [...res.lines];
 
-        await this.iterate(this.invLinesTemp, (el) => {
-          el.type = 'inv';
-          el.items = this.items.find(x => x.ItemID == el.itemID);
-          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
-          el.currency = 'this';
-        });
+          await this.iterate(this.invLinesTemp, (el) => {
+            el.invoiceID = invoice.invoiceID;
+            el.invoiceNo = invoice.invoiceNo;
+            el.type = 'inv';
+            el.items = this.items.find(x => x.ItemID == el.itemID);
+            el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+            el.currency = 'this';
+          });
 
-        this.invLines = [...this.invLinesTemp];
+          this.invLines = [...this.invLinesTemp];
 
-        await this.loadWorksheetLines();
-      }
-    );
+          await this.loadWorksheetLines();
+        }
+      );
+    });
   }
 
   async loadWorksheetLines() {
@@ -573,6 +584,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           if (exists) {
             this.sadLines[i].OBit = true;
             this.sadLines[i].OReason = exists.CustomsValueOReason;
+          }
+
+          const foreign = this.allCaptureJoins.find(x => x.SAD500LineID == this.sadLines[i].sad500LineID && x.ForeignInvoiceOBit);
+
+          if (foreign) {
+            this.sadLines[i].ForeignOBit = true;
+            this.sadLines[i].ForeignOReason = exists.ForeignInvoiceOReason;
           }
         });
 
@@ -735,10 +753,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    // console.log(currentLinks);
-    // console.log(invLines);
-    // console.log(cwsLines);
-
     return { currentLinks, invLines, cwsLines };
   }
 
@@ -764,7 +778,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue, cwsCustomsValue);
 
       item.runningForeignValue = invForeignValue;
-      item.runningForeignValueStatus = item.ForeignValueOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue, invForeignValue);
+      item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue, invForeignValue);
     });
   }
 
@@ -780,7 +794,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   customsValueChip(item: any) {
     if (item.runningCustomsValueStatus === this.totalStatuses.Failed || item.runningCustomsValueStatus === this.totalStatuses.None) {
-      this.overrideDialog(item, 'Customs Value Running Total');
+      this.overrideDialog(item, 'Customs Value');
+    }
+  }
+
+  foreignValueChip(item: any) {
+    if (item.runningForeignValueStatus === this.totalStatuses.Failed || item.runningForeignValueStatus === this.totalStatuses.None) {
+      this.overrideDialog(item, 'Foreign Invoice Value');
     }
   }
 
@@ -827,58 +847,107 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }).afterClosed().subscribe((val) => {
       if (val) {
-        this.override(sad500Line, val);
+        this.override(sad500Line, val, label);
       }
     });
   }
 
-  override(sad500Line: any, reason: string) {
-    sad500Line.OBit = true;
-    sad500Line.OReason = reason;
+  override(sad500Line: any, reason: string, label: string) {
+    if (label == 'Customs Value') {
+      sad500Line.OBit = true;
+      sad500Line.OReason = reason;
 
-    sad500Line.runningCustomsValueStatus = this.totalStatuses.Passed;
+      sad500Line.runningCustomsValueStatus = this.totalStatuses.Passed;
 
-    this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-      request: {
-        sad500LineID: sad500Line.sad500LineID,
-        customsValue: true,
-        customsValueOBit: sad500Line.OBit,
-        customsValueOReason: sad500Line.OReason,
-      },
-      procedure: 'OverrideSAD500LineLinking'
-    }).then(
-      (res: any) => {
-        if (res.outcome) {
-          this.snackbar.open('Overridden: Customs Value', '', { duration: 3000 });
-        } else {
-          this.snackbar.open('Failure: Could not override SAD500 Line', '', { duration: 3000 });
-          this.undoOverride(sad500Line);
-        }
-      },
-    );
+      this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request: {
+          sad500LineID: sad500Line.sad500LineID,
+          customsValue: true,
+          customsValueOBit: sad500Line.OBit,
+          customsValueOReason: sad500Line.OReason,
+        },
+        procedure: 'OverrideSAD500LineLinking'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            this.snackbar.open('Overridden: Customs Value', '', { duration: 3000 });
+          } else {
+            this.snackbar.open('Failure: Could not override SAD500 Line', '', { duration: 3000 });
+            this.undoOverride(sad500Line, label);
+          }
+        },
+      );
+    } else if (label == 'Foreign Invoice Value') {
+      sad500Line.ForeignOBit = true;
+      sad500Line.ForeignOReason = reason;
+      sad500Line.runningForeignValueStatus = this.totalStatuses.Passed;
+
+      this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request: {
+          sad500LineID: sad500Line.sad500LineID,
+          ForeignInvoiceValue: true,
+          ForeignInvoiceOBit: sad500Line.ForeignOBit,
+          ForeignInvoiceOReason: sad500Line.ForeignOReason,
+        },
+        procedure: 'OverrideSAD500LineLinking'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            this.snackbar.open('Overridden: Foreign Invoice Value', '', { duration: 3000 });
+          } else {
+            this.snackbar.open('Failure: Could not override SAD500 Line', '', { duration: 3000 });
+            this.undoOverride(sad500Line, label);
+          }
+        },
+      );
+    }
   }
 
-  undoOverride(sad500Line: any) {
-    sad500Line.OBit = false;
-    sad500Line.OReason = null;
+  undoOverride(sad500Line: any, label: string) {
+    if (label == 'Customs Value') {
+      sad500Line.OBit = false;
+      sad500Line.OReason = null;
 
-    this.evaluate();
+      this.evaluate();
 
-    this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-      request: {
-        sad500LineID: sad500Line.sad500LineID,
-        customsValue: true,
-        customsValueOBit: sad500Line.OBit,
-        customsValueOReason: sad500Line.OReason,
-      },
-      procedure: 'OverrideSAD500LineLinking'
-    }).then(
-      (res: any) => {
-        if (res.outcome) {
-          this.snackbar.open('Undo: Customs Value Override', '', { duration: 3000 });
-        }
-      },
-    );
+      this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request: {
+          sad500LineID: sad500Line.sad500LineID,
+          customsValue: true,
+          customsValueOBit: sad500Line.OBit,
+          customsValueOReason: sad500Line.OReason,
+        },
+        procedure: 'OverrideSAD500LineLinking'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            this.snackbar.open('Undo: Customs Value Override', '', { duration: 3000 });
+          }
+        },
+      );
+    } else if (label == 'Foreign Invoice Value') {
+      sad500Line.ForeignOBit = false;
+      sad500Line.ForeignOReason = null;
+
+      this.evaluate();
+
+      this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request: {
+          sad500LineID: sad500Line.sad500LineID,
+          ForeignInvoiceValue: true,
+          ForeignInvoiceOBit: sad500Line.ForeignOBit,
+          ForeignInvoiceOReason: sad500Line.ForeignOReason,
+        },
+        procedure: 'OverrideSAD500LineLinking'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            this.snackbar.open('Undo: Foreign Invoice Value Override', '', { duration: 3000 });
+          }
+        },
+      );
+    }
+
   }
 
   ngOnDestroy(): void {
