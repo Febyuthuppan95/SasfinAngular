@@ -38,10 +38,10 @@ export class MenuEscalationsComponent implements OnInit {
         'attachment',
         btoa(this.docPath),
         btoa(this.fileType),
-        btoa(this.attachmentID.toString()),
-        btoa(this.transactionID.toString()),
+        this.attachmentID.toString(),
+        this.transactionID.toString(),
         btoa(this.transactionType),
-        btoa(this.statusID === 7 ? '1' : '-1'),
+        this.statusID === 7 ? '1' : '-1',
         btoa(this.reason)]);
     }
   }

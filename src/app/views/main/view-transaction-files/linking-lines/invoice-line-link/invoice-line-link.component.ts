@@ -47,9 +47,9 @@ export class InvoiceLineLinkComponent implements OnInit {
     }, {});
   }
 
-  async addJoin(index) {
+  async addJoin(item) {
     const request: any = {};
-    const invoiceLine = this.lines[index];
+    const invoiceLine = this.lines.find(x => x.invoiceLineID == item.invoiceLineID);
 
     request.transactionID = this.data.transactionID;
     request.userID = this.data.currentUser.userID;
@@ -61,12 +61,12 @@ export class InvoiceLineLinkComponent implements OnInit {
       procedure: 'CaptureJoinAdd'
     }).then(
       (res: any) => {
-        console.log(res);
-
         if (res.outcome) {
-          const item = this.lines.splice(index, 1)[0];
-          item.captureJoinID = +res.outcomeMessage;
-          this.currentLinks.push(item);
+          const currentLine = this.lines.find(x => x.invoiceLineID == item.invoiceLineID);
+          const line = this.lines.splice(this.lines.indexOf(currentLine), 1)[0];
+
+          line.captureJoinID = +res.outcomeMessage;
+          this.currentLinks.push(line);
 
           this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
           this.lineKeys = Object.keys(this.formattedInvoiceLines);
@@ -76,7 +76,7 @@ export class InvoiceLineLinkComponent implements OnInit {
               const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
 
               if (inv) {
-                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(item), 1);
               }
             });
           });

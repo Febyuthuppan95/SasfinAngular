@@ -200,20 +200,20 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
         }
 
         if (param.attachmentID) {
-          this.transactionID = +atob(param.transactionID);
-          this.attachmentID = +atob(param.attachmentID);
+          this.transactionID = +param.transactionID;
+          this.attachmentID = +param.attachmentID;
           this.attachmentType = atob(param.attachmentType);
           this.transactionType = atob(param.transactionType);
           this.reason = `${atob(param.reason)}`;
-          this.escalated = +atob(param.escalated) > 0 ? true : false;
+          this.escalated = +param.escalated > 0 ? true : false;
           this.initTypes();
           this.loadAttachments();
 
           this.captureData = {
-            attachmentID: +atob(param.attachmentID),
+            attachmentID: +param.attachmentID,
             transactionType: atob(param.transactionType),
             docType: atob(param.attachmentType),
-            transactionID: +atob(param.transactionID),
+            transactionID: +param.transactionID,
           };
 
           this.currentDoctype = atob(param.attachmentType);

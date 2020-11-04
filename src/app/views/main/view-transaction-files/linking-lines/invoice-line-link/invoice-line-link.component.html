@@ -41,10 +41,10 @@
       <br>
       <h5>Available Lines ({{lines.length}})</h5>
     </ng-container>
-    <ng-container *ngFor="let key of lineKeys; let i = index">
+    <ng-container *ngFor="let key of lineKeys;">
       <small>{{key}}</small>
-      <ng-container *ngFor="let item of formattedInvoiceLines[key]">
-        <button mat-button (click)="addJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+      <ng-container *ngFor="let item of formattedInvoiceLines[key]; let i = index">
+        <button mat-button (click)="addJoin(item)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
           <mat-card>
             <mat-card-content>
               <button tabindex="-1" mat-mini-fab color="accent" style="

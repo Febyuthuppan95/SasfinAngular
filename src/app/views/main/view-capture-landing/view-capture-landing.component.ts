@@ -145,10 +145,10 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
                 'attachment',
                 btoa(this.docPath),
                 btoa(this.fileType),
-                btoa(this.attachmentID.toString()),
-                btoa(this.transactionID.toString()),
+                this.attachmentID.toString(),
+                this.transactionID.toString(),
                 btoa(this.transactionType),
-                btoa(res.captureattachment.issueID === 7 ? '1' : '-1'),
+                res.captureattachment.issueID === 7 ? '1' : '-1',
                 btoa(res.captureattachment.reason)]);
 
               this.showLoader = false;
