@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
 import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
+import { CompanyService } from 'src/app/services/Company.Service';
 
 enum TotalStatus {
   Passed,
@@ -38,7 +39,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     private snackbar: MatSnackBar,
     private dialog: MatDialog,
     private location: Location,
-    private render: Renderer2) { }
+    private render: Renderer2,
+    private companyService: CompanyService) { }
 
   public transaction: string;
   public transactionType: string;
@@ -210,6 +212,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             width: '512px'
           }).afterClosed().subscribe((state) => {
             if (state) {
+              this.companyService.setCapture({ capturestate: false});
               this.location.back();
             }
           });
