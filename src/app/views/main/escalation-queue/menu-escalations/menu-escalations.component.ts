@@ -33,9 +33,9 @@ export class MenuEscalationsComponent implements OnInit {
       // tslint:disable-next-line: max-line-length
       this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
       this.router.navigate([
-        'capture',
-        'transaction',
-        'attachment',
+        'c',
+        't',
+        'a',
         btoa(this.docPath),
         btoa(this.fileType),
         this.attachmentID.toString(),

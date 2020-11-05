@@ -37,9 +37,9 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
 
   capture() {
       this.router.navigate([
-        'capture',
-        'transaction',
-        'attachment',
+        'c',
+        't',
+        'a',
         btoa(this.docPath),
         btoa(this.fileType),
         this.attachmentID.toString(),

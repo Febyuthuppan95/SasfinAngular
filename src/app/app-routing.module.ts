@@ -497,7 +497,7 @@ const routes: Routes = [
         canActivateChild: [DialogGuard],
       },
       {
-        path: 'capture/transaction/attachment/:source/:attachmentType/:attachmentID/:transactionID/:transactionType/:escalated/:reason',
+        path: 'c/t/a/:source/:attachmentType/:attachmentID/:transactionID/:transactionType/:escalated/:reason',
         component: CaptureLayoutComponent,
         canActivateChild: [DialogGuard],
       },
