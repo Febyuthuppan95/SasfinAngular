@@ -610,8 +610,6 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               this.attachmentID === attach.attachmentID ? attach.tooltip += ' - Current' : console.log() ;
             }
           });
-
-          console.log(this.pdfWrapper.scrollHeight);
         });
   }
 

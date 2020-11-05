@@ -154,7 +154,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       if (this.isExport) {
         this.form.controls.referenceNo.setValidators([Validators.required]);
         this.form.controls.reason.setValidators([Validators.required]);
-        this.form.controls.vocLRN.setValidators([Validators.required]);
         this.form.updateValueAndValidity();
       }
     }
@@ -441,7 +440,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.form.updateValueAndValidity();
         setTimeout(() => {
           this.loader = false;
-          setTimeout(() => this.startForm.nativeElement.focus(), 100);
+          setTimeout(() => {
+            if (this.startForm) {
+              this.startForm.nativeElement.focus()
+            }
+          }, 100);
         }, 200);
 
         await this.loadLines();
