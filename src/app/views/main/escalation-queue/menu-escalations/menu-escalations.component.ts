@@ -34,15 +34,12 @@ export class MenuEscalationsComponent implements OnInit {
       this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
       this.router.navigate([
         'c',
-        't',
-        'a',
         btoa(this.docPath),
         btoa(this.fileType),
         this.attachmentID.toString(),
         this.transactionID.toString(),
         btoa(this.transactionType),
-        this.statusID === 7 ? '1' : '-1',
-        btoa(this.reason)]);
+        this.statusID === 7 ? '1' : '-1']);
     }
   }
 

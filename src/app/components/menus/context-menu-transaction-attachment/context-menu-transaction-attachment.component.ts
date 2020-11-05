@@ -38,15 +38,12 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   capture() {
       this.router.navigate([
         'c',
-        't',
-        'a',
         btoa(this.docPath),
         btoa(this.fileType),
         this.attachmentID.toString(),
         this.transactionID.toString(),
         btoa(this.transactionType),
-        this.statusID === 7 ? '1' : '-1',
-        btoa(this.reason)]);
+        this.statusID === 7 ? '1' : '-1']);
   }
 
   lines() {

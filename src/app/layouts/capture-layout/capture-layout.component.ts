@@ -204,10 +204,12 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           this.attachmentID = +param.attachmentID;
           this.attachmentType = atob(param.attachmentType);
           this.transactionType = atob(param.transactionType);
-          this.reason = `${atob(param.reason)}`;
+          // this.reason = `${atob(param.reason)}`;
           this.escalated = +param.escalated > 0 ? true : false;
           this.initTypes();
           this.loadAttachments();
+
+          console.log(this.attachmentType);
 
           this.captureData = {
             attachmentID: +param.attachmentID,
@@ -217,9 +219,30 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           };
 
           this.currentDoctype = atob(param.attachmentType);
+
+          this.getIssue();
         }
       }
     });
+  }
+
+  async getIssue() {
+    const model = {
+      request: {
+        attachmentID: this.attachmentID,
+        transactionID: this.transactionID,
+        fileType: this.attachmentType,
+      },
+      procedure: 'AttachmentIssue'
+    };
+
+    const result: any = await this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model);
+
+    if (result) {
+      if (result.data.length > 0) {
+        this.reason = result.data[0].Reason;
+      }
+    }
   }
 
   requestFullscreen() {

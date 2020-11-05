@@ -141,15 +141,12 @@ export class ViewCaptureLandingComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               this.router.navigate([
                 'c',
-                't',
-                'a',
                 btoa(this.docPath),
                 btoa(this.fileType),
                 this.attachmentID.toString(),
                 this.transactionID.toString(),
                 btoa(this.transactionType),
-                res.captureattachment.issueID === 7 ? '1' : '-1',
-                btoa(res.captureattachment.reason)]);
+                res.captureattachment.issueID === 7 ? '1' : '-1']);
 
               this.showLoader = false;
               this.loading = false;
