@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { TransactionFileListResponse } from 'src/app/models/HttpResponses/TransactionFileListModel';
@@ -82,6 +82,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   companyShowToggle: boolean;
   companyInfoList: CaptureInfoResponse;
   companyID = -1;
+
+  invoiceDialog: MatDialogRef<InvoiceLineLinkComponent>;
+  cwsDialog: MatDialogRef<CustomsLineLinkComponent>;
 
   private currentUser: any = this.user.getCurrentUser();
   public consultant =
@@ -723,7 +726,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   _invoiceLinkDialog(index: number) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'inv');
 
-    this.dialog.open(InvoiceLineLinkComponent, {
+    this.dialog.closeAll();
+
+    this.invoiceDialog = this.dialog.open(InvoiceLineLinkComponent, {
       width: '860px',
       data: {
         currentLine: this.sadLines[index],
@@ -732,8 +737,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         lines: currentLinks.invLines,
         currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
-      }
-    }).afterClosed().subscribe(() => {
+      },
+      hasBackdrop: false,
+    });
+
+    this.invoiceDialog.afterClosed().subscribe(() => {
       this.loadInvoiceLines();
     });
   }
@@ -741,7 +749,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   _customsLinkDialog(index: number) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'cws');
 
-    this.dialog.open(CustomsLineLinkComponent, {
+    this.dialog.closeAll();
+
+    this.cwsDialog = this.dialog.open(CustomsLineLinkComponent, {
       width: '860px',
       data: {
         currentLine: this.sadLines[index],
@@ -750,8 +760,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         lines: currentLinks.cwsLines,
         currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
-      }
-    }).afterClosed().subscribe(() => {
+      },
+      hasBackdrop: false,
+    });
+
+    this.cwsDialog.afterClosed().subscribe(() => {
       this.loadWorksheetLines();
     });
   }
