@@ -220,7 +220,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               setTimeout(() => {
                 this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file);
                 this.currentAttachment = this.attachments[this.currentPDFIndex]
-              });            }
+              });
+            }
           }
         },
         {

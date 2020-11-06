@@ -44,7 +44,7 @@
                           [ngClass]="{'bg-success': item.runningCustomsValueStatus === totalStatuses.Passed, 'bg-danger': item.runningCustomsValueStatus === totalStatuses.Failed, 'bg-warning': item.runningCustomsValueStatus === totalStatuses.None}"
                           [matTooltip]="item.OBit ? item.OReason : item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None ? 'Running total does not equal target' : 'Running total equals target'">
                             Customs Value&nbsp;
-                            <strong>{{item.runningCustomsValue}}</strong>&nbsp;
+                            <strong>({{item.runningCustomsValue}}/{{item.customsValue}})</strong>&nbsp;
                             <mat-icon>
                               {{ item.runningCustomsValueStatus === totalStatuses.Passed ? 'check' : '' }}
                               {{ item.runningCustomsValueStatus === totalStatuses.Failed ? 'close' : '' }}
@@ -54,8 +54,8 @@
                           <mat-chip
                           [ngClass]="{'bg-success': item.runningForeignValueStatus === totalStatuses.Passed, 'bg-danger': item.runningForeignValueStatus === totalStatuses.Failed, 'bg-warning': item.runningForeignValueStatus === totalStatuses.None}"
                           [matTooltip]="item.ForeignOBit ? item.ForeignInvoiceOReason : item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None ? 'Running total does not equal target' : 'Running total equals target'">
-                            Foreign Inv <strong>{{item.runningTotalLineValue}}</strong>&nbsp;vs Total Line Value&nbsp;
-                            <strong>{{item.runningForeignValue}}</strong>&nbsp;
+                            Foreign Inv&nbsp;<strong>({{item.runningTotalLineValue}})</strong>&nbsp;vs Total Line Value&nbsp;
+                            <strong>({{item.runningForeignValue}})</strong>&nbsp;
                             <mat-icon>
                               {{ item.runningForeignValueStatus === totalStatuses.Passed ? 'check' : '' }}
                               {{ item.runningForeignValueStatus === totalStatuses.Failed ? 'close' : '' }}
