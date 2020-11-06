@@ -114,3 +114,14 @@
     <img src="assets/svg/keyboard-shortcuts/Linking.png" />
   </div>
 </div>
+
+<div class="company-container" [ngClass]="{'show-company-container': companyShowToggle}">
+  <div class="company-info shadow text-left" *ngIf="companyInfoList">
+    <div *ngFor="let info of companyInfoList.captureInfo" class="info-item">
+      <p>{{info.info}}</p>
+    </div>
+    <div class="info-item bg-transparent text-muted" *ngIf="companyInfoList.captureInfo.length === 0">
+      <p>No Capture Info</p>
+    </div>
+  </div>
+</div>

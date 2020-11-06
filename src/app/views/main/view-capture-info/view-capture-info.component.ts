@@ -88,7 +88,7 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
   showingRecords: number;
   filter: string;
   activePage: number;
-  orderBy: string;
+  orderBy: string = '';
   orderByDirection: string;
   totalShowing: number;
 
@@ -375,7 +375,14 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     this.requestModelAddInfo.doctypeID = id;
   }
 
-  loadDoctypes() {
+  async loadDoctypes() {
+    const allFiles = {
+      request: {},
+      procedure: 'AllFileTypes'
+    };
+    const docTypes: any = await this.apiService.post(`${environment.ApiEndpoint}/capture/list`, allFiles);
+    const targetDocTypes = docTypes.data.find(x => x.ShortName == 'LT');
+
     const model = {
       // requestParams: {
       //   userID: this.currentUser.userID,
@@ -387,6 +394,10 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
       (res: any) => {
         this.doctypeResponse = res;
         console.log(this.doctypeResponse);
+        this.doctypeResponse.data.push({
+          doctypeID: targetDocTypes.FileTypeID,
+          name: targetDocTypes.Name,
+        });
       },
       (msg) => {
         console.log(JSON.stringify(msg));

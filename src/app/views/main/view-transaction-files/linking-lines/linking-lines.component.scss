@@ -98,3 +98,52 @@
   top: 8px;
   right: 24px;
 }
+
+.company-container {
+  position: absolute;
+  bottom: 0;
+  right: -33%;
+  top: 0;
+  text-align: center;
+  z-index: 9999;
+  transition: ease-in-out 0.3s;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 33%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.show-company-container {
+  display: block;
+  transition: ease-in-out 0.3s;
+  right: 0;
+}
+
+.company-info {
+  padding: 12px;
+  border-radius: 0px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  background: rgba($color: #fff, $alpha: 0.9);
+  transition: ease-in-out 0.3s;
+}
+
+.company-bottom .active {
+  z-index: 0;
+}
+
+
+.info-item {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: #f2f2f2;
+  color: #000;
+  font-size: 12px !important;
+}

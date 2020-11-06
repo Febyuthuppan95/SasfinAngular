@@ -17,6 +17,8 @@ import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confir
 import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog-override/dialog-override.component';
 import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
+import { TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
 
 enum TotalStatus {
   Passed,
@@ -40,7 +42,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     private dialog: MatDialog,
     private location: Location,
     private render: Renderer2,
-    private companyService: CompanyService) { }
+    private companyService: CompanyService,
+    private transactionService: TransactionService) { }
 
   public transaction: string;
   public transactionType: string;
@@ -76,6 +79,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   private scrollTop = 0;
   private scrollLeft = 0;
 
+  companyShowToggle: boolean;
+  companyInfoList: CaptureInfoResponse;
+  companyID = -1;
+
   private currentUser: any = this.user.getCurrentUser();
   public consultant =
   this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' ||
@@ -104,6 +111,45 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.init();
       }
     });
+  }
+
+  async loadCaptureInfo() {
+    const transactionModel = {
+      request: {
+        transactionID: this.transactionID,
+      },
+      procedure: 'GetCompany'
+    };
+
+    const transaction: any = await this.api.post(`${environment.ApiEndpoint}/capture/post`, transactionModel);
+    const companyID = transaction.data[0].CompanyID;
+
+    const model = {
+      request: {},
+      procedure: 'AllFileTypes'
+    };
+    const docTypes: any = await this.api.post(`${environment.ApiEndpoint}/capture/list`, model);
+
+    const targetDocTypes = docTypes.data.find(x => x.ShortName == 'LT');
+    const fileTypeID = targetDocTypes.FileTypeID;
+
+    const requestModel = {
+      userID: this.currentUser.userID,
+      companyID,
+      doctypeID: fileTypeID,
+      filter: '',
+      orderBy: '',
+      orderByDirection: 'ASC',
+      rowStart: 1,
+      rowEnd: 15,
+      specificCaptureInfoID: -1
+    };
+
+    this.transactionService.captureInfo(requestModel).then(
+      (res: CaptureInfoResponse) => {
+        this.companyInfoList = res;
+     },
+    );
   }
 
   groupBy(xs, key) {
@@ -176,6 +222,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.currentAttachment = this.attachments[this.currentPDFIndex]
               });            }
           }
+        },
+        {
+          key: 'alt + i',
+          preventDefault: true,
+          allowIn: [AllowIn.Textarea, AllowIn.Input],
+          command: e => this.companyShowToggle = !this.companyShowToggle
         },
         {
           key: 'alt + h',
@@ -443,6 +495,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           this.currentAttachment = this.attachments[this.currentPDFIndex];
           this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
 
+          await this.loadCaptureInfo();
           await this.loadSADLines();
         });
   }
