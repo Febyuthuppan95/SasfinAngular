@@ -309,6 +309,7 @@ import { DialogConfirmationComponent } from './views/main/view-transaction-files
 import { DialogReturnAttachmentComponent } from './views/main/view-transaction-files/linking-lines/dialog-return-attachment/dialog-return-attachment.component';
 import { DialogRemoveAttachmentComponent } from './components/menus/context-menu-transaction-attachment/dialog-remove-attachment/dialog-remove-attachment.component';
 import { DialogTransactionDeleteComponent } from './views/main/view-transactions/dialog-transaction-delete/dialog-transaction-delete.component';
+import { ExchangeRateUploadComponent } from './views/main/exchange-rate-upload/exchange-rate-upload.component';
 
 @NgModule({
   declarations: [
@@ -516,7 +517,8 @@ import { DialogTransactionDeleteComponent } from './views/main/view-transactions
     DialogConfirmationComponent,
     DialogReturnAttachmentComponent,
     DialogRemoveAttachmentComponent,
-    DialogTransactionDeleteComponent
+    DialogTransactionDeleteComponent,
+    ExchangeRateUploadComponent
   ],
   imports: [
     BrowserModule,
