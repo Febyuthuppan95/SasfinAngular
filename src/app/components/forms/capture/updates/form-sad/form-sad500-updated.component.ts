@@ -144,18 +144,22 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       this.attachmentLabel = this.capture.docType;
       this.transactionLabel = this.capture.transactionType;
       this.isExport = this.capture.transactionType === 'Export' ? true : false;
+
       if (this.capture.docType === 'VOC') {
         this.isVOC = true;
-        this.load();
-      } else {
-        this.load();
       }
 
       if (this.isExport) {
         this.form.controls.referenceNo.setValidators([Validators.required]);
+        this.form.updateValueAndValidity();
+      }
+
+      if (this.isVOC) {
         this.form.controls.reason.setValidators([Validators.required]);
         this.form.updateValueAndValidity();
       }
+
+      this.load();
     }
   }
 
