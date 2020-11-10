@@ -80,7 +80,7 @@ export class ExchangeRateUploadComponent implements OnInit {
     },
     {
       title: 'Item',
-      propertyName: 'Item',
+      propertyName: 'MonthID' + 'YearID',
       order: {
         enable: true,
         tag: 'Item',
@@ -154,7 +154,7 @@ export class ExchangeRateUploadComponent implements OnInit {
         rowStart: this.rowStart,
         rowEnd: this.rowEnd
       },
-      requestProcedure: `ExchangeRatesList`
+      requestProcedure: `RateOfExchangeDatesList`
     };
     this.ApiService.post(`${environment.ApiEndpoint}/companies/exchangerates`, model).then((res: any) => {
       console.log(res);
