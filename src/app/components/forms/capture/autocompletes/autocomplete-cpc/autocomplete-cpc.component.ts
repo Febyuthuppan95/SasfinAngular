@@ -39,6 +39,11 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.isRequired = this.control.validator !== null;
+    if (this.isRequired) {
+      this.query.setValidators([Validators.required]);
+    } else {
+      this.query.setValidators(null);
+    }
 
     if (this.control.value !== null) {
       this.selected = true;
