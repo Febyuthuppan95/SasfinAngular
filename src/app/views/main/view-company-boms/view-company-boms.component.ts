@@ -13,7 +13,7 @@ import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
-import { GetCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
+import { GetCompanyBOMs, UpdateCompanyBOMs } from 'src/app/models/HttpRequests/GetCompanyBOMs';
 import { CompanyBOMsListResponse, CompanyBOM } from 'src/app/models/HttpResponses/CompanyBOMsListResponse';
 import { Router } from '@angular/router';
 import {BOM, BOMStatus} from '../../../models/BOM';
@@ -313,6 +313,48 @@ export class ViewCompanyBOMsComponent implements OnInit {
     this.bomFile.nativeElement.value = '';
     this.BomFile = null;
     this.openAddModal.nativeElement.click();
+  }
+
+  RemoveBOM(BOMID: number) {
+
+    const updateBOMModel: UpdateCompanyBOMs = {
+      userID: this.currentUser.userID,
+      BOMID
+    };
+
+    this.companyService.updateCompanyBoms(updateBOMModel).then(
+      (res: CompanyBOMsListResponse) => {
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(
+          res.outcome.outcome,
+          res.outcome.outcomeMessage);
+          this.loadCompanyBOMs(true);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage);
+        }
+
+        if (res.rowCount === 0) {
+          this.noData = true;
+          this.showLoader = false;
+        } else {
+          this.noData = false;
+          this.rowCount = res.rowCount;
+          this.showingRecords = res.companyBoms.length;
+          this.showLoader = false;
+          this.totalShowing = +this.rowStart + +this.CompanyBOMs.length - 1;
+        }
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
   queueBOM() {
     // Add to import queue

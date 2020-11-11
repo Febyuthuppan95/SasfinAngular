@@ -4,4 +4,5 @@
 <a (click)="ItemErrors()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Item Errors</span></a>
 <a (click)="ItemGroups()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Item Groups</span></a>
 <a (click)="ItemGroupErrors()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Item Group Errors</span></a>
+<a *ngIf="currentUser.designation.toUpperCase() == 'ADMIN'" (click)="RemoveBOM()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Remove BOM</span></a>
 

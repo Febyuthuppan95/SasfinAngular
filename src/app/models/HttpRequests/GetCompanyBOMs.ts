@@ -7,3 +7,8 @@ export class GetCompanyBOMs {
   rowStart: number;
   rowEnd: number;
 }
+
+export class UpdateCompanyBOMs {
+  userID: number;
+  BOMID: number;
+}

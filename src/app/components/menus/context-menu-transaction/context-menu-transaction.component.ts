@@ -19,6 +19,7 @@ export class ContextMenuTransactionComponent implements OnInit {
 
   currentUser = this.userService.getCurrentUser();
 
+
   @Input() x: number;
   @Input() y: number;
   @Input() transactionID: number;

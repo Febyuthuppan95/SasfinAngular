@@ -20,7 +20,7 @@ import { GetIAlternateItemList } from '../models/HttpRequests/GetIAlternateItemL
 import { AddItemGroup } from '../models/HttpRequests/AddItemGroup';
 import { GetItemValuesList } from '../models/HttpRequests/GetItemValuesList';
 import { GetItemParentsList } from '../models/HttpRequests/GetItemParentsList';
-import { GetCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
+import { GetCompanyBOMs, UpdateCompanyBOMs } from '../models/HttpRequests/GetCompanyBOMs';
 import { GetBOMLines } from '../models/HttpRequests/GetBOMLines';
 import { GetCompanyPermits } from '../models/HttpRequests/GetCompanyPermits';
 import { GetPermitImportTariffs } from '../models/HttpRequests/GetPermitImportTariffs';
@@ -710,6 +710,23 @@ export class CompanyService {
       const apiURL = `${environment.ApiEndpoint}/companies/companyBoms`;
       this.httpClient
         .post(apiURL, model)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          msg => {
+            reject(msg);
+          }
+        );
+    });
+  }
+
+  public updateCompanyBoms(updateBOM: UpdateCompanyBOMs) {
+    return new Promise((resolve, reject) => {
+      const apiURL = `${environment.ApiEndpoint}/companies/updateBom`;
+      this.httpClient
+        .post(apiURL, updateBOM)
         .toPromise()
         .then(
           res => {

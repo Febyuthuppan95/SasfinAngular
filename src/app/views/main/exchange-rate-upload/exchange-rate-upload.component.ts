@@ -17,6 +17,7 @@ import {NotificationComponent} from '../../../components/notification/notificati
 import {ApiService} from '../../../services/api.service';
 import {environment} from '../../../../environments/environment';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { RateofExchange } from 'src/app/models/HttpResponses/RateofExchangeListResponse';
 
 @Component({
   selector: 'app-exchange-rate-upload',
@@ -79,24 +80,24 @@ export class ExchangeRateUploadComponent implements OnInit {
       },
     },
     {
-      title: 'Item',
-      propertyName: 'MonthID' + 'YearID',
+      title: 'Date',
+      propertyName: 'RateOfExchangeInput',
       order: {
         enable: true,
-        tag: 'Item',
+        tag: 'RateOfExchangeInput',
       },
-    },
-    {
-      title: 'Item Class',
-      propertyName: 'ItemClass',
-      order: {
-        enable: true,
-        tag: 'ItemClass',
-      },
-    },
+    // },
+    // {
+    //   title: 'Item Class',
+    //   propertyName: 'ItemClass',
+    //   order: {
+    //     enable: true,
+    //     tag: 'ItemClass',
+    //   },
+     },
 
   ];
-  items: Items[] = [];
+  RateofExchanges: RateofExchange[] = [];
   // table vars - every page
   showLoader = true;
   recordsPerPage = 15;
@@ -145,8 +146,6 @@ export class ExchangeRateUploadComponent implements OnInit {
   loadItems(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
 
-    console.log(this.rowStart);
-    console.log(this.rowEnd);
     this.showLoader = true;
     const model = {
       requestParams: {
@@ -157,8 +156,10 @@ export class ExchangeRateUploadComponent implements OnInit {
       requestProcedure: `RateOfExchangeDatesList`
     };
     this.ApiService.post(`${environment.ApiEndpoint}/companies/exchangerates`, model).then((res: any) => {
-      console.log(res);
-      this.items = res.data;
+      // console.log(res.data);
+      this.RateofExchanges = res.data;
+      console.log('RateofExchanges');
+      console.log(this.RateofExchanges);
       this.rowCount = res.rowCount;
     },
       msg => {
@@ -231,13 +232,13 @@ export class ExchangeRateUploadComponent implements OnInit {
       requestParams: {
         userID: this.currentUser.userID,
       },
-      requestProcedure: `BOMItemAdd`
+      requestProcedure: `ROEAdd`
     };
     console.log(this.ItemFile, model);
 
     this.IDocumentService.upload(this.ItemFile, model, 'companies/exchangerates/upload').then(
       (res: Outcome) => {
-        console.log('BOMUploadRes');
+        console.log('Response');
         console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(

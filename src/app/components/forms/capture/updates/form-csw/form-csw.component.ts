@@ -92,7 +92,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       transactionID: new FormControl(null),
       waybillNo: new FormControl(null),
       lrn: new FormControl(null),
-      fileRef: new FormControl(null, [Validators.required]),
+      fileRef: new FormControl(null),
       attachmentStatusID: new FormControl(null),
       isDeleted: new FormControl(0),
       waybillNoOBit: new FormControl(null),
@@ -355,7 +355,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         if (res.lines.length > 0) {
         this.lines = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
-
+        console.log('attachmentErrors');
         console.log(res.attachmentErrors);
 
         this.lines.forEach((line) => {
@@ -376,6 +376,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getError(key: string): string {
+    console.log('errors');
     console.log(this.errors);
     return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
   }

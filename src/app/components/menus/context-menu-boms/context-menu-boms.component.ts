@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-context-menu-boms',
@@ -9,14 +10,17 @@ import { CompanyService } from 'src/app/services/Company.Service';
 })
 export class ContextMenuBomsComponent implements OnInit {
 
-  constructor(private router: Router, private companyService: CompanyService) { }
+  constructor(private router: Router, private companyService: CompanyService, private userService: UserService) { }
 
   @Input() BOMID: number;
   @Input() BOMInput: string;
   @Input() Status: string;
   @Input() currentTheme: string;
+  @Output() RemovingBOM = new EventEmitter<number>();
 
   // @Output() EditCompony = new EventEmitter<string>();
+
+  currentUser = this.userService.getCurrentUser();
 
   ngOnInit() {}
 
@@ -48,5 +52,11 @@ export class ContextMenuBomsComponent implements OnInit {
   ItemGroupErrors() {
     this.companyService.setBOM({bomid: this.BOMID, status: this.Status});
     this.router.navigate(['companies', 'boms', 'itemgroup-errors']);
+  }
+
+  RemoveBOM() {
+    // this.companyService.setBOM({bomid: this.BOMID, status: this.Status});
+    // this.router.navigate(['companies', 'boms', 'itemgroup-errors']);
+    this.RemovingBOM.emit(this.BOMID);
   }
 }
