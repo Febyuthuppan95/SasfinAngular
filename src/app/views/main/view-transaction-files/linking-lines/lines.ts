@@ -57,3 +57,53 @@ export interface CWSLines {
   unit: Unit;
   captureJoinID?: number;
 }
+
+export interface InvoiceLines {
+  rowNum: number;
+  invoiceLineID: number;
+  invoiceID: number;
+  itemID: number;
+  cooID: number;
+  invoiceNo: string;
+  prodCode: string;
+  quantity: number;
+  itemValue: number;
+  prodCodeError?: any;
+  quantityError?: any;
+  itemValueError?: any;
+  dateCreated: string;
+  unitPrice: number;
+  unitPriceError?: any;
+  totalLineValue: number;
+  commonFactor: number;
+  totalLineValueError?: any;
+  unitOfMeasureID: number;
+  unitOfMeasure?: any;
+  unitOfMeasureError?: any;
+  invoiceNoOBit: boolean;
+  invoiceNoOUserID: number;
+  invoiceNoDate?: any;
+  invoiceNoReason?: any;
+  prodCodeOBit: boolean;
+  prodCodeOUserID: number;
+  prodCodeODate?: any;
+  prodCodeOReason?: any;
+  quantityOBit: boolean;
+  quantityOUserID: number;
+  quantityODate?: any;
+  quantityOReason?: any;
+  itemValueOBit: boolean;
+  itemValueOUserID: number;
+  itemValueODate?: any;
+  itemValueOReason?: any;
+  unitPriceOBit: boolean;
+  unitPriceOUserID: number;
+  unitPriceODate?: any;
+  unitPriceOReason?: any;
+  totalLineValueOBit: boolean;
+  totalLineValueOUserID: number;
+  totalLineValueODate?: any;
+  totalLineValueOReason?: any;
+  captureJoinID?: number;
+  type?: string;
+}

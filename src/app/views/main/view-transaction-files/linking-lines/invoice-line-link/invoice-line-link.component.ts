@@ -23,15 +23,15 @@ export class InvoiceLineLinkComponent implements OnInit {
   public formattedInvoiceLines: any[] = [];
 
   ngOnInit() {
-    this.currentLinks = this.data.currentLinks;
-    this.lines = this.data.lines;
+    this.currentLinks = [...this.data.currentLinks];
+    this.lines = [...this.data.lines];
 
     this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
     this.lineKeys = Object.keys(this.formattedInvoiceLines);
 
     this.currentLinks.forEach((link) => {
       this.lineKeys.forEach((key) => {
-        const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+        const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
 
         if (inv) {
           this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
@@ -49,12 +49,12 @@ export class InvoiceLineLinkComponent implements OnInit {
 
   async addJoin(item) {
     const request: any = {};
-    const invoiceLine = this.lines.find(x => x.invoiceLineID == item.invoiceLineID);
+    const invoiceLine = this.lines.find(x => x.lineID == item.InvoiceLineID);
 
     request.transactionID = this.data.transactionID;
     request.userID = this.data.currentUser.userID;
     request.SAD500LineID = this.data.currentLine.sad500LineID;
-    request.invoiceLineID = invoiceLine.invoiceLineID;
+    request.invoiceLineID = invoiceLine.lineID;
 
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
       request,
@@ -62,7 +62,7 @@ export class InvoiceLineLinkComponent implements OnInit {
     }).then(
       (res: any) => {
         if (res.outcome) {
-          const currentLine = this.lines.find(x => x.invoiceLineID == item.invoiceLineID);
+          const currentLine = this.lines.find(x => x.lineID == item.InvoiceLineID);
           const line = this.lines.splice(this.lines.indexOf(currentLine), 1)[0];
 
           line.captureJoinID = +res.outcomeMessage;
@@ -73,7 +73,7 @@ export class InvoiceLineLinkComponent implements OnInit {
 
           this.currentLinks.forEach((link) => {
             this.lineKeys.forEach((key) => {
-              const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+              const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
 
               if (inv) {
                 this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(item), 1);
@@ -110,7 +110,7 @@ export class InvoiceLineLinkComponent implements OnInit {
 
           this.currentLinks.forEach((link) => {
             this.lineKeys.forEach((key) => {
-              const inv = this.formattedInvoiceLines[key].find(x => x.invoiceLineID == link.InvoiceLineID);
+              const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
 
               if (inv) {
                 this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);

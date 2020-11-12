@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { KeyboardShortcutsComponent, ShortcutInput, AllowIn } from 'ng-keyboard-shortcuts';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -19,6 +19,7 @@ import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dial
 import { CompanyService } from 'src/app/services/Company.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
 import { TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
+import { InvoiceLines } from './lines';
 
 enum TotalStatus {
   Passed,
@@ -54,9 +55,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public totalStatuses = TotalStatus;
 
   public sadLines: any[] = [];
-  public invLines: any[] = [];
-  public cwsLines: any[] = [];
-  public sadLinesTemp: any[] = [];
   public invLinesTemp: any[] = [];
   public cwsLinesTemp: any[] = [];
   public attachments: any[] = [];
@@ -85,6 +83,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   private pdfWrapper: HTMLElement;
   private scrollTop = 0;
   private scrollLeft = 0;
+
+  public invoiceRates: { invoiceID: number, rate: number }[] = [];
+
+  public rateOfExchange = new FormControl(null, [Validators.required]);
+  public currentRate = 1;
 
   companyShowToggle: boolean;
   companyInfoList: CaptureInfoResponse;
@@ -121,6 +124,22 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.init();
       }
     });
+
+    this.rateOfExchange.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value.Currency) {
+
+        } else {
+          this.rates = [...this.ratesTemp].filter(x => this.matchRuleShort(x.Currency, `*${value}*`));
+        }
+      }
+    });
+  }
+
+  matchRuleShort(str, rule) {
+    // tslint:disable-next-line: no-shadowed-variable
+    const escapeRegex = (str: string) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1');
+    return new RegExp('^' + rule.split('*').map(escapeRegex).join('.*') + '$').test(str);
   }
 
   async loadCaptureInfo() {
@@ -229,7 +248,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
               this.currentPDFSource = undefined;
               setTimeout(() => {
                 this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file);
-                this.currentAttachment = this.attachments[this.currentPDFIndex]
+                this.currentAttachment = this.attachments[this.currentPDFIndex];
+                this.updateRateValue();
               });
             }
           }
@@ -257,7 +277,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.currentPDFSource = undefined;
                 setTimeout(() => {
                   this.currentPDFSource = btoa(this.attachments[this.currentPDFIndex].file);
-                  this.currentAttachment = this.attachments[this.currentPDFIndex]
+                  this.currentAttachment = this.attachments[this.currentPDFIndex];
+                  this.updateRateValue();
                 });
               }
           }
@@ -455,6 +476,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  displayRate(rate: any) {
+    return rate ? `${rate.Currency}, ${rate.ExchangeRate}` : '';
+  }
+
   YearSelected(yearID: number) {
     this.selctedYear = yearID;
     this.rates = this.rates.filter(x => x.yearID === this.selctedYear);
@@ -463,19 +488,39 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async SetEchangeRate() {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        filter: '',
-      },
-      requestProcedure: 'InvoiceEchangeUpdate'
-    };
+    if (this.rateOfExchange.valid) {
+      if (this.rateOfExchange.value.Currency) {
+      const model = {
+        request: {
+          userID: this.currentUser.userID,
+          transactionID: this.transactionID,
+          invoiceID: this.currentAttachment.attachmentID,
+          rateOfExchangeID: this.rateOfExchange.value.RatesOfExhangeID,
+        },
+        procedure: 'InvoiceExchangeUpdate'
+      };
 
-    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
-      (res: any) => {
-        this.rates = res.data;
-        console.log(this.rates);
-    });
+      await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+        (res: any) => {
+          console.log(res);
+          this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
+
+          const find = this.invoiceRates.find(x => x.invoiceID = this.currentAttachment.attachmentID);
+
+          if (find) {
+            this.invoiceRates.splice(this.invoiceRates.indexOf(find), 1);
+          }
+
+          this.invoiceRates.push({
+            invoiceID: this.currentAttachment.attachmentID,
+            rate: this.rateOfExchange.value.ExchangeRate,
+          });
+
+          this.updateRateValue(this.rateOfExchange.value.RatesOfExhangeID);
+          this.evaluate();
+      });
+    }
+    }
   }
 
   async loadCountry() {
@@ -552,6 +597,30 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
 
+  updateRateValue(rate?) {
+    if (this.currentAttachment.fileType == 'Invoice') {
+      const invoices = [...this.currentINV.invoices];
+
+      invoices.forEach((invoice) => {
+        if (invoice.invoiceID == this.currentAttachment.attachmentID) {
+
+          if (rate) {
+            invoice.rateOfExchangeID = rate;
+          }
+
+          if (invoice.rateOfExchangeID == -1) {
+            this.rateOfExchange.setValue(null);
+          } else {
+            const rates = [...this.rates];
+            const find = rates.find(x => x.RatesOfExhangeID == invoice.rateOfExchangeID);
+            this.currentRate = +find.ExchangeRate;
+            this.rateOfExchange.setValue(find);
+          }
+        }
+      });
+    }
+  }
+
   async loadSADLines() {
     this.currentSAD = await this.capture.sad500Get({
       userID: this.currentUser.userID,
@@ -571,14 +640,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       rowStart: 1,
       rowEnd: 1000000 }).then(
       async (res: any) => {
-        this.sadLinesTemp = res.lines;
+        this.sadLines = res.lines;
 
-        await this.iterate(this.sadLinesTemp, async (el, i) => {
-          this.sadLinesTemp[i].unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
-          this.sadLinesTemp[i].country = this.countries.find(x => x.CountryID == el.cooID);
+        await this.iterate(this.sadLines, async (el, i) => {
+          this.sadLines[i].unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+          this.sadLines[i].country = this.countries.find(x => x.CountryID == el.cooID);
         });
-
-        this.sadLines = [...this.sadLinesTemp];
 
         await this.loadInvoiceLines();
       }
@@ -587,6 +654,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async loadInvoiceLines() {
     this.loading = true;
+    this.invoiceRates = [];
+    this.invLinesTemp = [];
 
     this.currentINV = await this.capture.invoiceList({
       invoiceID: -1,
@@ -601,7 +670,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     await this.iterate(this.currentINV.invoices, async (invoice) => {
-      await this.capture.invoiceLineList({
+      const res: any = await this.capture.invoiceLineList({
         invoiceID: invoice.invoiceID,
         invoiceLineID: -1,
         userID: this.currentUser.userID,
@@ -610,25 +679,44 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         orderBy: '',
         orderByDirection: '',
         rowStart: 1,
-        rowEnd: 1000000 }).then(
-        async (res: any) => {
-          this.invLinesTemp = [...res.lines];
+        rowEnd: 1000000 });
 
-          await this.iterate(this.invLinesTemp, (el) => {
-            el.invoiceID = invoice.invoiceID;
-            el.invoiceNo = invoice.invoiceNo;
-            el.type = 'inv';
-            el.items = this.items.find(x => x.ItemID == el.itemID);
-            el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
-            el.currency = 'this';
+      if (res) {
+        await this.iterate(res.lines, (el) => {
+          el.invoiceID = invoice.invoiceID;
+          el.invoiceNo = invoice.invoiceNo;
+          el.type = 'inv';
+          el.items = this.items.find(x => x.ItemID == el.itemID);
+          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+        });
+
+        res.lines.forEach((inv) => {
+          this.invLinesTemp.push({
+            lineID: +JSON.stringify(inv.invoiceLineID),
+            invoiceID: +JSON.stringify(inv.invoiceID),
+            itemValue: +JSON.stringify(inv.itemValue),
+            totalLineValue: +JSON.stringify(inv.totalLineValue),
+            invoiceNo: JSON.stringify(inv.invoiceNo),
+            items: JSON.parse(JSON.stringify(inv.items)),
+            unit: JSON.parse(JSON.stringify(inv.unit)),
           });
+        });
 
-          this.invLines = [...this.invLinesTemp];
+        console.log(this.invLinesTemp);
+      }
 
-          await this.loadWorksheetLines();
-        }
-      );
+      if (invoice.rateOfExchangeID != -1) {
+        const rate = this.rates.find(x => x.RatesOfExhangeID == invoice.rateOfExchangeID);
+
+        this.invoiceRates.push({
+          invoiceID: invoice.invoiceID,
+          rate: rate.ExchangeRate,
+        });
+      }
     });
+
+    this.updateRateValue();
+    await this.loadWorksheetLines();
   }
 
   async loadWorksheetLines() {
@@ -643,29 +731,29 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       orderByDirection: '',
     });
 
-    await this.capture.customWorksheetLineList({
-      userID: this.currentUser.userID,
-      customsWorksheetID: this.currentCWS.customsWorksheets[0].customWorksheetID,
-      rowStart: 1,
-      rowEnd: 1000,
-      orderBy: '',
-      orderByDirection: '',
-      filter: '',
-      transactionID: this.transactionID, }).then(
-      async (res: any) => {
-        this.cwsLinesTemp = res.lines;
+    if (this.currentCWS.customsWorksheets.length > 0) {
+      await this.capture.customWorksheetLineList({
+        userID: this.currentUser.userID,
+        customsWorksheetID: this.currentCWS.customsWorksheets[0].customWorksheetID,
+        rowStart: 1,
+        rowEnd: 1000,
+        orderBy: '',
+        orderByDirection: '',
+        filter: '',
+        transactionID: this.transactionID, }).then(
+        async (res: any) => {
+          this.cwsLinesTemp = res.lines;
 
-        await this.iterate(this.cwsLinesTemp, async (el, i) => {
-          this.cwsLinesTemp[i].type = 'cws';
-          this.cwsLinesTemp[i].country = this.countries.find(x => x.CountryID == this.cwsLinesTemp[i].cooID);
-          this.cwsLinesTemp[i].unit = this.units.find(x => x.UnitOfMeasureID == this.cwsLinesTemp[i].unitOfMeasureID);
-        });
+          await this.iterate(this.cwsLinesTemp, async (el, i) => {
+            this.cwsLinesTemp[i].type = 'cws';
+            this.cwsLinesTemp[i].country = this.countries.find(x => x.CountryID == this.cwsLinesTemp[i].cooID);
+            this.cwsLinesTemp[i].unit = this.units.find(x => x.UnitOfMeasureID == this.cwsLinesTemp[i].unitOfMeasureID);
+          });
+        }
+      );
+    }
 
-        this.cwsLines = [...this.cwsLinesTemp];
-
-        await this.loadCaptureJoins();
-      }
-    );
+    await this.loadCaptureJoins();
   }
 
   async loadCaptureJoins() {
@@ -704,7 +792,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.loading = false;
 
-        await this.evaluate();
+        this.evaluate();
     });
   }
 
@@ -822,14 +910,22 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     const allCaptureJoins = [...this.allCaptureJoins];
     const captureJoins = allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
 
-    const cwsLines = [...this.cwsLinesTemp];
-    const invLines = [...this.invLinesTemp];
+    const cwsLines = [];
+    const invLines = [];
+
+    this.cwsLinesTemp.forEach((item) => {
+      cwsLines.push(item);
+    });
+
+    this.invLinesTemp.forEach((item) => {
+      invLines.push(item);
+    });
 
     captureJoins.forEach((el) => {
 
       if (currentSADLine) {
         if (el.CustomWorksheetLineID != null && type == 'cws') {
-          const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+          const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
           if (cws) {
             cws.captureJoinID = el.CaptureJoinID;
@@ -840,7 +936,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (el.InvoiceLineID != null && type == 'inv') {
-          const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+          const inv = [...invLines].find(x => x.lineID == el.InvoiceLineID);
 
           if (inv) {
             inv.captureJoinID = el.CaptureJoinID;
@@ -855,7 +951,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     allCaptureJoins.forEach((el) => {
       if (el.CustomWorksheetLineID != null) {
-        const cws = cwsLines.find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+        const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
         if (cws) {
           cwsLines.splice(cwsLines.indexOf(cws), 1);
@@ -863,7 +959,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       if (el.InvoiceLineID != null) {
-        const inv = invLines.find(x => x.invoiceLineID == el.InvoiceLineID);
+        const inv = [...invLines].find(x => x.lineID == el.InvoiceLineID);
 
         if (inv) {
           invLines.splice(invLines.indexOf(inv), 1);
@@ -883,12 +979,30 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
 
-      linkedCWS.currentLinks.forEach(cws => {
+      linkedCWS.currentLinks.forEach(cwsItem => {
+        const cws = cwsItem;
         cwsCustomsValue += +cws.custVal;
         cwsForeignValue += cws.foreignInv;
 
-        linkedINV.currentLinks.forEach(inv => {
-          invForeignValue += inv.totalLineValue;
+        linkedINV.currentLinks.forEach(invItem => {
+          const inv = invItem;
+          console.log(inv);
+
+          let exchangeRate = 1;
+          const invLines = [...this.invLinesTemp];
+          const invoiceLine = invLines.find(x => x.lineID == inv.lineID);
+          console.log(invoiceLine);
+
+          if (invoiceLine) {
+            const rate = [...this.invoiceRates].find(x => x.invoiceID == invoiceLine.invoiceID);
+            console.log(rate);
+
+            if (rate) {
+              exchangeRate = +rate.rate;
+            }
+          }
+
+          invForeignValue += (inv.totalLineValue / exchangeRate);
         });
       });
 
