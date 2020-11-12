@@ -786,7 +786,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
           if (foreign) {
             this.sadLines[i].ForeignOBit = true;
-            this.sadLines[i].ForeignOReason = exists.ForeignInvoiceOReason;
+            this.sadLines[i].ForeignOReason = foreign.ForeignInvoiceOReason;
           }
         });
 
