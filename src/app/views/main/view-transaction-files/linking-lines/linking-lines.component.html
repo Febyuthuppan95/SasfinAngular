@@ -28,6 +28,48 @@
             <br>
             <h3 *ngIf="sadLines">SAD500 Lines ({{sadLines.length}})</h3>
           </div>
+          <ng-container>
+            <div class="col-12">
+              <mat-form-field>
+              <input type="text"
+              placeholder="Select Year"
+              aria-label="Number"
+              matInput
+              [matAutocomplete]="auto1">
+              <mat-autocomplete #auto1="matAutocomplete">
+                <mat-option *ngFor="let exchangerate of rates" [value]="exchangerate.YearID" (selectionChange)="YearSelected()">
+                  {{exchangerate.YearID}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field *ngIf="selctedYear > 0">
+              <input type="text"
+              placeholder="Select Month"
+              aria-label="Number"
+              matInput
+              [matAutocomplete]="auto2">
+              <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let exchangerate of rates" [value]="exchangerate.MonthID">
+                  {{exchangerate.MonthID}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field *ngIf="selctedMonth > 0">
+              <input type="text"
+              placeholder="Select Currency"
+              aria-label="Number"
+              matInput
+              [matAutocomplete]="auto3">
+              <mat-autocomplete #auto3="matAutocomplete">
+                <mat-option *ngFor="let exchangerate of rates" [value]="exchangerate.ExchangeRate">
+                  {{exchangerate.Currency}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+              <br>
+              <button mat-raised-button style="cursor: pointer;margin-bottom: 24px;margin-right: 24px">ExchangeRate</button>
+            </div>
+          </ng-container>
           <div class="col-12">
             <button id="startLine" mat-button style="opacity: 0;"></button>
             <ng-container *ngFor="let item of sadLines; let i = index;">

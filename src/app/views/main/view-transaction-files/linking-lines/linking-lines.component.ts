@@ -64,8 +64,15 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public allCaptureJoins: any[] = [];
 
   public units: any[] = [];
+  public rates: any[] = [];
+  public ratesTemp: any[] = [];
   public countries: any[] = [];
   public items: any[] = [];
+
+  public selctedYear = -1;
+  public selctedMonth = -1;
+  public selctedCurrency = -1;
+
 
   public currentPDFSource: string;
   public currentAttachment: any;
@@ -408,6 +415,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   async init() {
     this.loading = true;
     await this.loadUnits();
+    await this.loadRates();
     await this.loadCountry();
     await this.loadItems();
 
@@ -427,6 +435,46 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.units = res.data;
+    });
+  }
+
+  async loadRates() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'RateOfExchangeList'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.rates = res.data;
+        this.ratesTemp = res.data;
+        console.log(this.rates);
+    });
+  }
+
+  YearSelected(yearID: number) {
+    this.selctedYear = yearID;
+    this.rates = this.rates.filter(x => x.yearID === this.selctedYear);
+    console.log('rates');
+    console.log(this.rates);
+  }
+
+  async SetEchangeRate() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: '',
+      },
+      requestProcedure: 'InvoiceEchangeUpdate'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+      (res: any) => {
+        this.rates = res.data;
+        console.log(this.rates);
     });
   }
 
