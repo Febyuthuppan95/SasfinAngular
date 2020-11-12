@@ -255,7 +255,7 @@ export class ExchangeRateUploadComponent implements OnInit {
       },
       (msg) => {
         // nothing yet
-        console.log('Error: ' + msg);
+        console.log('Error: ' + JSON.stringify(msg));
         this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
