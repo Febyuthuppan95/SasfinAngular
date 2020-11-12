@@ -68,6 +68,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public isQA = false;
   public savedChanges = false;
+  private invoice: any;
 
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
 
@@ -409,7 +410,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.form.updateValueAndValidity();
-      this.isQA = this.form.controls.qaUserID.value !== -1;
+      this.isQA = false;
+
+      if (this.form.controls.qaUserID.value !== -1 && response.attachmentStatusID == 11) {
+        this.isQA = true;
+      }
 
       if (this.isQA && !this.savedChanges) {
         this.invoiceDate.reset();
