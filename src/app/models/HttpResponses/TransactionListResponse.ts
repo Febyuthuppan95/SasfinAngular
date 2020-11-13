@@ -12,5 +12,7 @@ export class Transaction {
   name: string;
   type: string;
   status: string;
+  linkedUserName?: string;
+  dateEdited?: Date;
   sendAll?: boolean;
 }

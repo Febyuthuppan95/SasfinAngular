@@ -323,16 +323,18 @@ export class ViewCompanyBOMsComponent implements OnInit {
     };
 
     this.companyService.updateCompanyBoms(updateBOMModel).then(
-      (res: CompanyBOMsListResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
+      (res: any) => {
+        console.log('res');
+        console.log(res);
+        if (res.outcome == 'SUCCESS') {
           this.notify.successmsg(
-          res.outcome.outcome,
-          res.outcome.outcomeMessage);
+          res.outcome,
+          res.outcomeMessage);
           this.loadCompanyBOMs(true);
         } else {
           this.notify.errorsmsg(
-            res.outcome.outcome,
-            res.outcome.outcomeMessage);
+            res.outcome,
+            res.outcomeMessage);
         }
 
         if (res.rowCount === 0) {

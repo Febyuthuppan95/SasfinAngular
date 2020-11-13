@@ -339,7 +339,8 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
       .list(model)
       .then(
         (res: TransactionListResponse) => {
-          // console.log(res);
+          console.log('res');
+          console.log(res);
           if (res.transactions.length === 0) {
             this.notify.toastrwarning(
               res.outcome.outcome,

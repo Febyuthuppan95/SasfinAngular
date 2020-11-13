@@ -70,6 +70,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   public selctedYear = -1;
   public selctedMonth = -1;
   public selctedCurrency = -1;
+  public invoiceDate = new FormControl(null);
 
 
   public currentPDFSource: string;
@@ -463,6 +464,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
+        invDate: this.invoiceDate,
         filter: '',
       },
       requestProcedure: 'RateOfExchangeList'
@@ -613,9 +615,15 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             const rates = [...this.rates];
             const find = rates.find(x => x.RatesOfExhangeID == invoice.rateOfExchangeID);
-            this.currentRate = +find.ExchangeRate;
-            this.rateOfExchange.setValue(find);
+
+            if (find) {
+              this.currentRate = +find.ExchangeRate;
+              this.rateOfExchange.setValue(find);
+            }
           }
+
+          this.invoiceDate.setValue(new Date(invoice.invoiceDate.toString()));
+          this.invoiceDate.updateValueAndValidity();
         }
       });
     }
@@ -708,10 +716,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       if (invoice.rateOfExchangeID != -1) {
         const rate = this.rates.find(x => x.RatesOfExhangeID == invoice.rateOfExchangeID);
 
-        this.invoiceRates.push({
+        if (rate) {
+           this.invoiceRates.push({
           invoiceID: invoice.invoiceID,
           rate: rate.ExchangeRate,
         });
+        }
       }
     });
 
