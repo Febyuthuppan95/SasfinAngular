@@ -28,6 +28,7 @@ constructor(private userService: UserService,
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Company[] = [];
   private isRequired = false;
+  public isDisabled = false;
 
   public list: Company[] = [];
   public query = new FormControl(null);
@@ -115,13 +116,10 @@ constructor(private userService: UserService,
         }
       );
 
-    if (this.status) {
-    console.log('company status');
-    console.log(this.status);
     if (this.status === 5) {
-        console.log('yes');
-        this.query.disable();
-      }
+      this.isDisabled = true;
+      console.log('yes');
+      this.query.disable();
     }
   }
 
