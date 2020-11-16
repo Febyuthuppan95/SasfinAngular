@@ -489,8 +489,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(this.rates);
   }
 
-  async SetEchangeRate() {
-    if (this.rateOfExchange.valid) {
+  async SetEchangeRate(clear) {
+    if (this.rateOfExchange.valid || clear) {
       if (this.rateOfExchange.value.Currency) {
       const model = {
         request: {
@@ -522,6 +522,32 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           this.evaluate();
       });
     }
+
+      if (clear) {
+        const model = {
+          request: {
+            userID: this.currentUser.userID,
+            transactionID: this.transactionID,
+            invoiceID: this.currentAttachment.attachmentID,
+            rateOfExchangeID: -1,
+          },
+          procedure: 'InvoiceExchangeUpdate'
+        };
+
+        await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+          (res: any) => {
+            this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
+
+            const find = this.invoiceRates.find(x => x.invoiceID = this.currentAttachment.attachmentID);
+
+            if (find) {
+              this.invoiceRates.splice(this.invoiceRates.indexOf(find), 1);
+            }
+
+            this.updateRateValue(-1);
+            this.evaluate();
+        });
+      }
     }
   }
 
