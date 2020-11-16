@@ -12,6 +12,6 @@
     {{item.name}}
   </mat-option>
 </mat-autocomplete>
-<mat-form-field *ngIf="isDisabled">
-  <input type="text" disabled="true" [value]="query.value.name ? query.value.name : 'NA'" />
+<mat-form-field *ngIf="isDisabled" [appearance]="appearance">
+  <input type="text" matInput disabled="true" [value]="query.value.name ? query.value.name : 'NA'" />
 </mat-form-field>
