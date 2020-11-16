@@ -135,6 +135,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     });
+
+    this.invoiceDate.valueChanges.subscribe((date) => {
+      // TODO: stuff
+    });
   }
 
   matchRuleShort(str, rule) {
