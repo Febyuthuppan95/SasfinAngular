@@ -34,11 +34,11 @@
                 <br>
                 <mat-form-field style="width: 100%;">
                   <mat-label>Choose a date</mat-label>
-                  <input matInput [matDatepicker]="picker" [formControl]="invoiceDate">
+                  <input matInput [matDatepicker]="picker" [formControl]="invoiceDate" (change)="datechanged()">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
-              <mat-form-field style="width: 100%;">
+              <mat-form-field style="width: 100%;" *ngIf="invoiceDate || invoiceDate !== null">
                 <input type="text"
                 placeholder="Select Exchange Rate"
                 aria-label="Number"

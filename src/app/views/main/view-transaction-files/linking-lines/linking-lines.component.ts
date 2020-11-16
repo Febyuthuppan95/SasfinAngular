@@ -454,10 +454,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       requestProcedure: 'UnitOfMeasuresList'
     };
 
+    console.log('model');
+    console.log(model);
+
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.units = res.data;
     });
+  }
+
+  datechanged() {
+    this.loadRates();
   }
 
   async loadRates() {
@@ -470,6 +477,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       requestProcedure: 'RateOfExchangeList'
     };
 
+    console.log('model2');
+    console.log(model);
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.rates = res.data;
@@ -560,6 +569,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       requestProcedure: 'CountriesList'
     };
 
+    console.log('model3');
+    console.log(model);
+
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.countries = res.data;
@@ -574,6 +586,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       requestProcedure: 'ItemsList'
     };
+
+    console.log('model4');
+    console.log(model);
 
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
