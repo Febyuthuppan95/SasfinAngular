@@ -51,4 +51,5 @@ export class InvoiceLine {
   unitPrice: number;
   guid?: string;
   isDeleted?: boolean;
+  ShortageValue?: number;
 }

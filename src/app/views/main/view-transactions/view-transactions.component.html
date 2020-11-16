@@ -101,7 +101,25 @@
             </th>
             <th scope="col">
               <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
+                <p class="headerText">Linking Capturer</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
                 <p class="headerText">Status</p>
+                <span class="headerSpan">
+                  <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
+                  <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
+                </span>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('Status')">
+                <p class="headerText">Date Edited</p>
                 <span class="headerSpan">
                   <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_ASC')?'order-active':'order-not-active'"></i>
                   <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Status_DESC')?'order-active':'order-not-active'"></i>
@@ -115,7 +133,15 @@
             <td>{{transaction.rowNum}}</td>
             <td>{{transaction.name}}</td>
             <td>{{transaction.type}}</td>
+            <td>
+              <span *ngIf="transaction.linkedUserName !== null && transaction.linkedUserName !== undefined && transaction.linkedUserName !== ''">{{transaction.linkedUserName}}</span>
+              <span *ngIf="transaction.linkedUserName === null || transaction.linkedUserName === undefined || transaction.linkedUserName === ''">-</span>
+            </td>
             <td>{{transaction.status}}</td>
+            <td>
+              <span *ngIf="transaction.dateEdited !== null && transaction.dateEdited !== undefined">{{transaction.dateEdited}}</span>
+              <span *ngIf="transaction.dateEdited === null || transaction.dateEdited === undefined">-</span>
+            </td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >
