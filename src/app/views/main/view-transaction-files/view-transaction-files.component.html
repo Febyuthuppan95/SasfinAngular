@@ -133,7 +133,7 @@
       </div>
       <form (submit)="uploadAttachments()" enctype="multipart/form-data">
         <div class="text-center" style="padding: 24px">
-        <button class="btn btn-info" style="margin-bottom: 40px" (click)="splitPDF()">
+        <button class="btn btn-info" style="margin-bottom: 40px" (click)="splitPDF()" [disabled]="uploading">
           Split PDF
         </button>
       <br/>
@@ -142,28 +142,28 @@
       <div class="modal-body">
           <div class="form-group">
               <input type="text" placeholder="Name" class="form-control"
-                [(ngModel)]="this.attachmentName" [ngModelOptions]="{standalone: true}" required/>
+                [(ngModel)]="this.attachmentName" [ngModelOptions]="{standalone: true}" required [disabled]="uploading"/>
             </div>
         <div class="form-group">
-          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [(selectedIndex)]="attachmentTypeIndex" [formControl]="selectAttachmentType">
+          <select (change)="onTypeSelect($event.target.value)" class="form-control" required [(selectedIndex)]="attachmentTypeIndex" [formControl]="selectAttachmentType" [disabled]="uploading">
             <option value="-1" [disabled]="this.disableAttachmentType" selected>Please select an attachment type</option>
             <option *ngFor="let type of this.transactionTypes, index as i" value="{{i}}">{{type.description}}</option>
           </select>
         </div>
         <div class="form-group" *ngIf="selectedTransactionType == 2">
-          <select class="form-control" [selectedIndex]="selectedEDIIndex" [formControl]="selectEDIControl" (change)="onEDIChange()">
+          <select class="form-control" [selectedIndex]="selectedEDIIndex" [formControl]="selectEDIControl" (change)="onEDIChange()" [disabled]="uploading">
             <option selected value="0" [disabled]="ediDisable">Select an EDI status</option>
             <option *ngFor="let item of ediStatuses" [value]="item.EDIStatusID">{{item.Name}}</option>
           </select>
         </div>
         <div class="form-group" *ngIf="isVOC">
-          <select (change)="onSAD500Select($event.target.value)" class="form-control" required [(selectedIndex)]="sad500Index" [formControl]="selectSAD500Control">
+          <select (change)="onSAD500Select($event.target.value)" class="form-control" required [(selectedIndex)]="sad500Index" [formControl]="selectSAD500Control" [disabled]="uploading">
             <option value="-1" [disabled]="this.disableSAD500" selected>Please select an SAD500</option>
             <option *ngFor="let sad of this.sad500s" value="{{sad.customReleaseID}}">SAD500 - {{sad.mrn}} - {{sad.status}}</option>
           </select>
         </div>
         <div class="form-group" *ngIf="this.sad500s.length > 0 && isVOC && (this.selectedSAD500 !== 0 && this.selectedSAD500 !== -1 && this.selectedSAD500 !== null  && this.selectedSAD500 !== undefined)">
-          <select (change)="onSAD500LineSelect($event.target.value)" class="form-control" required [(selectedIndex)]="sad500LineIndex" [formControl]="selectSAD500LinesControl">
+          <select (change)="onSAD500LineSelect($event.target.value)" class="form-control" required [(selectedIndex)]="sad500LineIndex" [formControl]="selectSAD500LinesControl" [disabled]="uploading">
             <option value="-1" [disabled]="this.disableSAD500Lines" selected>Please select an SAD500 Line</option>
             <option *ngFor="let sad of this.sad500Line" value="{{sad.sad500LineID}}">SAD500 - {{sad.lineNo}}</option>
           </select>
@@ -173,8 +173,8 @@
             <label for="addBackgroundImage" style="height:18px;">
               <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
             </label>
-            <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()">Add to queue</button>
-            <input id="addBackgroundImage" hidden #inputFile type="file" (change)="onFileChange($event.target.files)" required multiple>
+            <button *ngIf="this.preview" style="margin-top: -8px;" type="button" mat-button (click)="addToQueue()" [disabled]="uploading">Add to queue</button>
+            <input id="addBackgroundImage" hidden #inputFile type="file" (change)="onFileChange($event.target.files)" required multiple [disabled]="uploading">
         </div>
         <br>
         <br>
@@ -194,8 +194,8 @@
         </div>
       </div>
       <div class="modal-footer bg-dark">
-        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeModal>Close</button>
-        <button type="submit" class="btn btn-primary btn-sm" [disabled]="this.attachmentQueueDisplay.length === 0">Start Uploading</button>
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" [disabled]="uploading" #closeModal>Close</button>
+        <button type="submit" class="btn btn-primary btn-sm" [disabled]="this.attachmentQueueDisplay.length === 0 || uploading">Start Uploading</button>
       </div>
     </form>
     </div>

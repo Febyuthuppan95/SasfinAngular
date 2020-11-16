@@ -449,9 +449,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   uploadAttachments() {
-      if (this.attachmentQueue.length !== 0) {
-        this.iterateAttachments(0);
-      }
+    this.uploading = true;
+    if (this.attachmentQueue.length !== 0) {
+      this.iterateAttachments(0);
+    } else {
+      this.uploading = false;
+    }
   }
 
   iterateAttachments(index) {
