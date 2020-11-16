@@ -94,7 +94,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-csw-lines [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-csw-lines>
+  <app-form-csw-lines [status]="attachmentStatus" [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport"></app-form-csw-lines>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

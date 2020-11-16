@@ -45,7 +45,7 @@ export class ExchangeRateUploadComponent implements OnInit {
   closeAddModal: ElementRef;
 
   @ViewChild('itemFile', { static: false })
-  bomFile: ElementRef;
+  itemFile: ElementRef;
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
@@ -217,6 +217,9 @@ export class ExchangeRateUploadComponent implements OnInit {
   }
 
   add() {
+    this.itemFile.nativeElement.value = '';
+    this.ItemFile = null;
+    this.filePreview = '';
     this.openAddModal.nativeElement.click();
   }
 

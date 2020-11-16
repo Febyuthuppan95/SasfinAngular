@@ -24,6 +24,7 @@ constructor(private userService: UserService,
             private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() sad500LineID: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
@@ -136,6 +137,12 @@ constructor(private userService: UserService,
           await this.loadAssignedDuty();
         }
       );
+
+    console.log('status');
+    console.log(this.status);
+    if (this.status === 5) {
+        this.query.disable();
+    }
   }
 
   matchRuleShort(str: string, rule) {

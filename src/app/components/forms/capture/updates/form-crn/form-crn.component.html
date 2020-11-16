@@ -80,7 +80,7 @@
       <br /><br />
     </div>
     <div class="col-4" >
-      <ls-autocomplete-cpc [(control)]="form.controls.pccID" [helpSlug]="'form-crn-pcc'"></ls-autocomplete-cpc>
+      <ls-autocomplete-cpc  [status]="attachmentStatus" [(control)]="form.controls.pccID" [helpSlug]="'form-crn-pcc'"></ls-autocomplete-cpc>
       <br /><br />
     </div>
     <div class="col-4">
@@ -123,7 +123,7 @@
       <br /><br />
     </div>
     <div class="col-12" >
-      <ls-autocomplete-edi-statuses
+      <ls-autocomplete-edi-statuses [status]="attachmentStatus"
         [(control)]="form.controls.ediStatusID"
         [helpSlug]="'form-crn-edi-status'">
       </ls-autocomplete-edi-statuses>

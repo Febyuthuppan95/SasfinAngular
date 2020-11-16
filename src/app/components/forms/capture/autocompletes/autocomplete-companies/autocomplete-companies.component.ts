@@ -20,6 +20,7 @@ constructor(private userService: UserService,
             private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
   @Input() title = 'Companies';
@@ -113,6 +114,15 @@ constructor(private userService: UserService,
           }
         }
       );
+
+    if (this.status) {
+    console.log('company status');
+    console.log(this.status);
+    if (this.status === 5) {
+        console.log('yes');
+        this.query.disable();
+      }
+    }
   }
 
   matchRuleShort(str, rule) {

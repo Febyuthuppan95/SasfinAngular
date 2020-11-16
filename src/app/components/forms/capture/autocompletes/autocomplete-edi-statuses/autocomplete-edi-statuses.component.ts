@@ -19,6 +19,7 @@ constructor(private userService: UserService,
             private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
@@ -107,6 +108,10 @@ constructor(private userService: UserService,
           this.query.setValue(defaultValue, { emitEvent: false });
         }
       });
+
+    if (this.status === 5) {
+        this.query.disable();
+      }
   }
 
   matchRuleShort(str, rule) {

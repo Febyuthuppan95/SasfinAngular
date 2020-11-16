@@ -53,6 +53,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
   public SupplierC1LineID = -1;
 
   @Input() data: any;
+  @Input() status: number;
   @Input() companyID: any;
   @Output() submission = new EventEmitter<any>();
 
@@ -65,6 +66,10 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
     this.eventService.submitLines.subscribe(() => {
       this.submit(this.form.value);
     });
+
+    if (this.status === 5) {
+      this.form.disable();
+    }
   }
 
   ngAfterViewInit(): void {

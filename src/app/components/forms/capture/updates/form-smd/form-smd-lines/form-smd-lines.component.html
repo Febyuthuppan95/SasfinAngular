@@ -12,11 +12,11 @@
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <div class="row">
     <div class="col-6" >
-      <ls-autocomplete-items [label]="'Items'" [(control)]="form.controls.ItemID" [companyID]="companyID" [helpSlug]="'smd-line-items'"></ls-autocomplete-items>
+      <ls-autocomplete-items [status]="status" [label]="'Items'" [(control)]="form.controls.ItemID" [companyID]="companyID" [helpSlug]="'smd-line-items'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6" >
-      <ls-autocomplete-items [label]="'Supplier Items'" [(control)]="form.controls.SupplierItemID" [companyID]="companyID" [helpSlug]="'smd-line-supplier-items'"></ls-autocomplete-items>
+      <ls-autocomplete-items [status]="status" [label]="'Supplier Items'" [(control)]="form.controls.SupplierItemID" [companyID]="companyID" [helpSlug]="'smd-line-supplier-items'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="col-6" >
-        <ls-autocomplete-units-of-measure [(control)]="form.controls.UnitOfMeasureID" [helpSlug]="'smd-line-unit'"></ls-autocomplete-units-of-measure>
+        <ls-autocomplete-units-of-measure [status]="status" [(control)]="form.controls.UnitOfMeasureID" [helpSlug]="'smd-line-unit'"></ls-autocomplete-units-of-measure>
         <br><br>
     </div>
 

@@ -84,6 +84,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
+  @Input() status: number;
   @Input() isExport: boolean;
   @Output() submission = new EventEmitter<any>();
 
@@ -175,6 +176,12 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
     });
 
     setTimeout(() => this.form.valueChanges.subscribe(() => this.unsavedChanges = true), 1000);
+
+    console.log('data');
+    console.log(this.status);
+    if (this.status === 2) {
+      this.form.disable();
+    }
   }
 
   ngAfterViewInit(): void {

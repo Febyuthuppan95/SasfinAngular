@@ -57,7 +57,7 @@
         <br /><br />
       </div>
       <div class="col-12">
-        <ls-autocomplete-companies [control]="form.controls.CompanyID"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [status]="attachmentStatus" [control]="form.controls.CompanyID"></ls-autocomplete-companies>
         <br /><br />
       </div>
     </div>
@@ -66,7 +66,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-smd-lines [(data)]="activeLine" [(companyID)]="form.controls.companyID" (submission)="queueLine($event)" #lineForm></app-form-smd-lines>
+  <app-form-smd-lines [status]="attachmentStatus" [(data)]="activeLine" [(companyID)]="form.controls.companyID" (submission)="queueLine($event)" #lineForm></app-form-smd-lines>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

@@ -79,6 +79,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     itemValue: new FormControl(null),
     unitPrice: new FormControl(null, [Validators.required]),
     totalLineValue: new FormControl(null, [Validators.required]),
+    shortClaim: new FormControl(null),
   });
 
   public attachmentLabel: string;
@@ -95,6 +96,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
+  @Input() status: number;
   @Input() companyID: number;
   @Input() isQA = false;
   @Input() savedChanges = false;
@@ -178,6 +180,10 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     }
 
     this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
+
+    if (this.status === 5) {
+      this.form.disable();
+    }
   }
 
   markAsNoMatch(key, value) {

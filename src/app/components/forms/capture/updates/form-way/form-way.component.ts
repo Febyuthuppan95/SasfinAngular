@@ -58,6 +58,7 @@ form = new FormGroup({
   containerNoError: new FormControl(null),
 });
 
+public attachmentStatus: number;
 public attachmentLabel: string;
 public transactionLabel: string;
 public errors: AttachmentError[] = [];
@@ -163,6 +164,12 @@ async load() {
     const response: any = res.waybills[0];
     response.waybillID = res.waybills[0].waybillID;
     response.attachmentStatusID = response.statusID;
+
+    this.attachmentStatus = response.attachmentStatusID;
+
+    if (this.attachmentStatus === 5) {
+      this.form.disable();
+    }
 
     this.form.patchValue(response);
     this.form.controls.userID.setValue(this.currentUser.userID);

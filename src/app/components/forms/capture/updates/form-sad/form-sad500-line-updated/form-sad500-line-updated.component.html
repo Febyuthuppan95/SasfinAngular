@@ -41,15 +41,15 @@
       <br><br>
     </div>
     <div class="col-4" >
-      <ls-autocomplete-tariffs [(control)]="form.controls.tariffID" [helpSlug]="'form-sad500-line-tariff-description'"></ls-autocomplete-tariffs>
+      <ls-autocomplete-tariffs [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-sad500-line-tariff-description'"></ls-autocomplete-tariffs>
       <br><br>
     </div>
     <div class="col-4" >
-      <ls-autocomplete-units-of-measure [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-sad500-line-unit-of-measure'"></ls-autocomplete-units-of-measure>
+      <ls-autocomplete-units-of-measure [status]="status" [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-sad500-line-unit-of-measure'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>
     <div class="col-4" >
-      <ls-autocomplete-coo [(control)]="form.controls.cooID" [helpSlug]="'form-sad500-line-coo'"></ls-autocomplete-coo>
+      <ls-autocomplete-coo [status]="status" [(control)]="form.controls.cooID" [helpSlug]="'form-sad500-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
     <div class="col-12">
@@ -84,7 +84,7 @@
       <br><br>
     </div>
     <div class="col-10">
-      <ls-autocomplete-duty [(control)]="form.controls.duties" [(sad500LineID)]="sadLine500ID" [helpSlug]="'form-sad500-line-duty-tax-search'"></ls-autocomplete-duty>
+      <ls-autocomplete-duty [status]="status" [(control)]="form.controls.duties" [(sad500LineID)]="sadLine500ID" [helpSlug]="'form-sad500-line-duty-tax-search'"></ls-autocomplete-duty>
       <br><br>
     </div>
     <div class="col-2">

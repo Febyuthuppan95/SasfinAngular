@@ -101,6 +101,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     reason: new FormControl(null),
   });
 
+  public attachmentStatus: number;
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -393,6 +395,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
     this.captureService.sad500Get(request).then(async (res: SAD500Get) => {
 
+      this.attachmentStatus = null;
+
       if (res !== null) {
         const response: any = res;
         console.log(response);
@@ -401,6 +405,12 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         response.SAD500ID = request.specificID;
         response.attachmentStatusID = response.statusID;
         response.referenceNo = response.rebateCode;
+
+        this.attachmentStatus = response.attachmentStatusID;
+
+        if (this.attachmentStatus === 5) {
+          this.form.disable();
+        }
 
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);

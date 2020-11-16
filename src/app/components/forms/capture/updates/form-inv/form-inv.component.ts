@@ -61,6 +61,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public lineErrors: any[] = [];
   public invoiceDate = new FormControl();
 
+  public attachmentStatus: number;
+  public shortClaim: number;
+
   private attachmentID: number;
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
@@ -362,15 +365,26 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       if (res.invoices.length > 0) {
       const response: any = res.invoices[0];
+      console.log('response');
       console.log(response);
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
 
       this.form.patchValue(response, { emitEvent: false });
       this.form.controls.userID.setValue(this.currentUser.userID, { emitEvent: false });
-      this.form.controls.attachmentStatusID.setValue(res.invoices[0].statusID, { emitEvent: false });
+      this.form.controls.attachmentStatusID.setValue(res.invoices[0].attachmentStatusID, { emitEvent: false });
       this.form.updateValueAndValidity();
 
+      this.attachmentStatus = response.attachmentStatusID;
+
+      if (this.attachmentStatus === 5) {
+        this.form.disable();
+        this.invoiceDate.disable();
+        this.form.controls.freightCost.enable();
+        this.form.controls.insuranceCost.enable();
+        this.form.controls.bankCharges.enable();
+
+      }
       this.temporaryForm.patchValue(response);
       this.temporaryForm.updateValueAndValidity();
 
@@ -550,6 +564,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             line.isDeleted = 0;
             line.invoiceID = form.controls.invoiceID.value;
             line.userID = this.currentUser.userID;
+            line.shortClaim = this.shortClaim;
 
             if (line.isLocal) {
               await this.captureService.invoiceLineAdd(line).then((res) => console.log(res),

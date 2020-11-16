@@ -55,6 +55,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public loader = true;
   public showErrors = false;
 
+  public attachmentStatus: number;
+
   private attachmentID: number;
   private transactionID: number;
   private currentUser = this.userService.getCurrentUser();
@@ -298,7 +300,13 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         const response: any = res.customsWorksheets[0];
         response.userID = request.userID;
         response.customworksheetID = res.customsWorksheets[0].customWorksheetID;
-        response.attachmentStatusID = response.statusID;
+        response.attachmentStatusID = response.attachmentStatusID;
+
+        this.attachmentStatus = response.attachmentStatusID;
+
+        if (this.attachmentStatus === 5) {
+          this.form.disable();
+        }
 
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);

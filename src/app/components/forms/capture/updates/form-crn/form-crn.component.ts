@@ -60,6 +60,7 @@ form = new FormGroup({
   attachmentStatusID: new FormControl(null),
   isDeleted: new FormControl(0),
 
+
   // Override Properties
   serialNoOBit: new FormControl(false),
   serialNoOReason: new FormControl(null),
@@ -93,6 +94,8 @@ form = new FormGroup({
   mrnOReason: new FormControl(null),
   mrnError: new FormControl(null),
 });
+
+public attachmentStatus: number;
 
 public attachmentLabel: string;
 public transactionLabel: string;
@@ -201,6 +204,12 @@ async load() {
       response.customsReleaseID = res.customs[0].customReleaseID;
       response.attachmentStatusID = response.statusID;
       response.pccID = res.customs[0].pcc;
+
+      this.attachmentStatus = response.statusID;
+
+      if (this.attachmentStatus === 5) {
+        this.form.disable();
+      }
 
       this.form.patchValue(response);
       this.form.controls.userID.setValue(this.currentUser.userID);

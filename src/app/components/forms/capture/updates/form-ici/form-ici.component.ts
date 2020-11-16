@@ -75,6 +75,8 @@ export class FormIciComponent implements OnInit, AfterViewInit, OnDestroy {
     waybillNoOReason: new FormControl(null),
   });
 
+  public attachmentStatus: number;
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public errors: any[] = [];
@@ -194,6 +196,12 @@ export class FormIciComponent implements OnInit, AfterViewInit, OnDestroy {
           response.specificICIID =
             res.clearingInstructions[0].clearingInstructionID;
           response.attachmentStatusID = response.statusID;
+
+          this.attachmentStatus = response.attachmentStatusID;
+
+          if (this.attachmentStatus === 5) {
+            this.form.disable();
+          }
 
           this.form.patchValue(response);
           this.form.controls.userID.setValue(this.currentUser.userID);

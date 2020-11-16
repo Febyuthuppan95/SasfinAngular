@@ -20,6 +20,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
               private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() readonly defaultValue: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
@@ -111,6 +112,10 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
             const defaultValue = this.cpcList.find(x => x.CPCID === this.control.value);
             this.query.setValue(defaultValue, { emitEvent: false });
           }
+        }
+
+        if (this.status === 5) {
+          this.query.disable();
         }
       });
   }

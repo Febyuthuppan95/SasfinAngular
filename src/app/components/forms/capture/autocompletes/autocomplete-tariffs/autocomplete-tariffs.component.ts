@@ -18,6 +18,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
               private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
@@ -119,6 +120,10 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
           }
         }
       });
+
+    if (this.status === 5) {
+        this.query.disable();
+    }
   }
 
   public displayFn(item: any): string {

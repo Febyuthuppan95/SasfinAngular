@@ -21,6 +21,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
               private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() companyID: number;
   @Input() appearance = 'fill';
   @Input() label = 'Items';
@@ -125,6 +126,10 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
       }, (msg) => {
         this.safe = true;
       });
+
+    if (this.status === 5) {
+        this.query.disable();
+      }
   }
 
   async createItem() {

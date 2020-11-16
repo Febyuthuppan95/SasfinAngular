@@ -113,6 +113,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
+  @Input() status: number;
   @Input() isExport: boolean;
   @Output() submission = new EventEmitter<any>();
 
@@ -236,6 +237,10 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     });
 
     this.form.valueChanges.subscribe((e) => this.unsavedChanges = true);
+
+    if (this.status === 5) {
+      this.form.disable();
+    }
   }
 
   ngAfterViewInit(): void {

@@ -44,6 +44,8 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     AttachmentStatusID: new FormControl(null)
   });
 
+  public attachmentStatus: number;
+
   public attachmentLabel: string;
   public transactionLabel: string;
   public lines: any[];
@@ -232,7 +234,14 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
     this.captureService.post({ request: requestParams, procedure: 'SupplierSMDList' }).then(
       async (res: any) => {
       this.loader = false;
+      console.log('res');
       console.log(res);
+
+      this.attachmentStatus = res.attachmentStatusID;
+
+      if (this.attachmentStatus === 5) {
+        this.form.disable();
+      }
 
       if (res.data !== null) {
         this.form.patchValue(res.data[0]);

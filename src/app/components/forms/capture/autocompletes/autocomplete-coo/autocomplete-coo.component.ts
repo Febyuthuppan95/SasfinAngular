@@ -21,6 +21,7 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
               private snackbarService: HelpSnackbar) { }
 
   @Input() control: FormControl;
+  @Input() status: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
@@ -111,6 +112,10 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
           this.query.setValue(defaultValue, { emitEvent: false });
         }
       });
+
+    if (this.status === 5) {
+        this.query.disable();
+    }
   }
 
   async createOption() {
