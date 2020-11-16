@@ -81,7 +81,7 @@
                   <mat-form-field appearance="fill">
                     <mat-label>Attachment Name</mat-label>
                     <input matInput type="text" [formControl]="section.nameControl">
-                    <mat-error *ngIf="section.control.hasError('required')">
+                    <mat-error *ngIf="section.nameControl.hasError('required')">
                       Attachment Name is <strong>required</strong>
                     </mat-error>
                   </mat-form-field>

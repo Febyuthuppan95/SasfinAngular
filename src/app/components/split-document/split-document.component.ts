@@ -214,7 +214,8 @@ ngAfterViewInit() {
       }
 
       if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
-        console.log('err: Attachment Type');
+        this.snackbar.open('err: Attachment Type', '', { duration: 5000 });
+        console.log(item.attachmentType);
         err++;
       }
 
@@ -226,6 +227,7 @@ ngAfterViewInit() {
 
       if (item.name === '' || item.name === null || !item.name) {
         console.log('err: Name');
+        this.snackbar.open('err: Attachment Name', '', { duration: 5000 });
         err++;
       }
 
