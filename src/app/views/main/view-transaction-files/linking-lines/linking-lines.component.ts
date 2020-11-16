@@ -137,8 +137,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.invoiceDate.valueChanges.subscribe((date) => {
-      // TODO: stuff
-    });
+    //  this.loadRates();
+      if (date) {
+        this.loadRates();
+      }
+     });
   }
 
   matchRuleShort(str, rule) {
@@ -467,15 +470,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  datechanged() {
-    this.loadRates();
-  }
-
   async loadRates() {
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
-        invDate: this.invoiceDate,
+        invDate: this.invoiceDate.value,
         filter: '',
       },
       requestProcedure: 'RateOfExchangeList'
@@ -485,9 +484,15 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(model);
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
+        console.log('res roe');
+        console.log(res);
         this.rates = res.data;
         this.ratesTemp = res.data;
         console.log(this.rates);
+
+
+        this.snackbar.open(res.outcome.outcomeMessage, '', { duration: 3000 });
+
     });
   }
 
