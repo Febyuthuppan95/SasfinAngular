@@ -73,10 +73,13 @@ constructor(private userService: UserService,
         this.selected = false;
       }
     });
+
+    this.checkStatus();
   }
 
   ngOnChanges() {
     this.isRequired = this.control.validator !== null;
+    this.checkStatus();
 
     if (this.isRequired) {
       this.query.setValidators([Validators.required]);
@@ -113,13 +116,17 @@ constructor(private userService: UserService,
             const defaultValue = this.list.find(x => x.companyID === this.control.value);
             this.query.setValue(defaultValue, { emitEvent: false });
           }
+
+          this.checkStatus();
         }
       );
+  }
 
+  checkStatus() {
     if (this.status === 5) {
       this.isDisabled = true;
-      console.log('yes');
       this.query.disable();
+      this.query.updateValueAndValidity();
     }
   }
 
