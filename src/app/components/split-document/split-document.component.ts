@@ -136,6 +136,7 @@ ngAfterViewInit() {
         // Validators.pattern(new RegExp(/^\d{1,}((-\d{1,})|(,\d{1,})?){1,}/g))
       ]),
       nameControl: new FormControl(null, [Validators.required]),
+      selectControl: new FormControl(null, [Validators.required]),
     });
 
     this.requestData.sections[this.requestData.sections.length - 1].control.markAsUntouched();
@@ -165,6 +166,8 @@ ngAfterViewInit() {
   }
 
   typeChange(index: number, value: number) {
+    console.log('attachmentType');
+    console.log(this.requestData.sections[index].attachmentType);
     this.requestData.sections[index].attachmentType = this.transactionTypes[value].name;
     this.requestData.sections[index].name = this.transactionTypes[value].description;
   }
@@ -186,6 +189,7 @@ ngAfterViewInit() {
     } else if (this.file === undefined) {
       err++;
     }
+
 
     this.requestData.sections.forEach((item) => {
       if (item.control.valid) {
@@ -225,6 +229,19 @@ ngAfterViewInit() {
         err++;
       }
 
+      console.log('selectControl');
+      console.log(item.selectControl.value);
+
+      if (item.selectControl.valid) {
+        item.attachmentType = item.selectControl.value;
+      } else {
+        item.selectControl.setErrors({ required: true });
+        item.selectControl.updateValueAndValidity();
+        err++;
+      }
+      console.log('attachmentType');
+      console.log(item.attachmentType);
+
       if (item.name === '' || item.name === null || !item.name) {
         console.log('err: Name');
         this.snackbar.open('err: Attachment Name', '', { duration: 5000 });
@@ -242,6 +259,7 @@ ngAfterViewInit() {
       request.sections.forEach((item) => {
         delete item.control;
         delete item.nameControl;
+        delete item.selectControl;
       });
 
       const formData = new FormData();
@@ -314,4 +332,5 @@ export class SplitPDFRequest {
     companyName: string;
     control: FormControl;
     nameControl: FormControl;
+    selectControl: FormControl;
 }
