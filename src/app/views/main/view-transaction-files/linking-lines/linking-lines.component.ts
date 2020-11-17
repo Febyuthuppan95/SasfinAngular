@@ -515,8 +515,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(this.rates);
   }
 
-  async SetEchangeRate(clear) {
-    if (this.rateOfExchange.valid || clear) {
+  async SetEchangeRate(clear = false) {
+    console.log(clear);
+    if (this.rateOfExchange.valid || !clear) {
       if (this.rateOfExchange.value.Currency) {
       const model = {
         request: {
@@ -680,8 +681,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
 
-          this.invoiceDate.setValue(new Date(invoice.invoiceDate.toString()));
-          this.invoiceDate.updateValueAndValidity();
+          if (this.invoiceDate.value == null) {
+            this.invoiceDate.setValue(new Date(invoice.invoiceDate.toString()));
+            this.invoiceDate.updateValueAndValidity();
+          }
+
         }
       });
     }

@@ -26,6 +26,15 @@
   </div>
 </div>
 
+<app-menu
+*ngIf="this.contextMenu"
+[contextShow]="this.contextMenu"
+[x]="this.contextMenuX"
+[y]="this.contextMenuY"
+(resetContext)="this.selectedRow = -1; this.contextMenu = false">
+<!-- <app-context-menu-boms [BOMID]="this.BOM.bomid" [Status]="this.BOM.status" (RemovingBOM)="RemoveBOM($event)"></app-context-menu-boms> -->
+</app-menu>
+
 <button class="hide" data-toggle="modal" data-target="#addItem" #openAddModal></button>
 <div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

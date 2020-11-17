@@ -51,9 +51,9 @@ export class ExchangeRateUploadComponent implements OnInit {
   private notify: NotificationComponent;
 
   private unsubscribe$ = new Subject<void>();
-  bomid = -1;
-  bomstatus = '';
+  ROEdateID = -1;
   currentTheme: string;
+  ROE: any;
 
   ItemFile: File;
   filePreview: any;
@@ -183,11 +183,12 @@ export class ExchangeRateUploadComponent implements OnInit {
   }
 
   popClick(event, obj) {
-    // this.Item = obj;
-    // this.contextMenuX = event.clientX + 3;
-    // this.contextMenuY = event.clientY + 5;
-    // this.themeService.toggleContextMenu(!this.contextMenu);
-    // this.contextMenu = true;
+    this.ROE = obj;
+    console.log(this.ROE)
+    this.contextMenuX = event.clientX + 3;
+    this.contextMenuY = event.clientY + 5;
+    this.themeService.toggleContextMenu(!this.contextMenu);
+    this.contextMenu = true;
   }
 
   orderChange($event: Order) {
