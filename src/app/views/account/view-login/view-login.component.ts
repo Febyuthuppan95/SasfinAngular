@@ -53,7 +53,13 @@ export class ViewLoginComponent implements OnInit {
     }
   }
 
+  clearStorage(clear: boolean) {
+    // clear local storage
+    if (clear) { localStorage.clear(); }
+  }
+
   onLoginSubmit() {
+    this.clearStorage(true);
     if (this.txtEmail === '' || this.txtPassword === '') {
 
       this.pendingRequest = false;
