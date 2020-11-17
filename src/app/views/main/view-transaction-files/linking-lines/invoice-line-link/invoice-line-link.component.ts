@@ -48,8 +48,10 @@ export class InvoiceLineLinkComponent implements OnInit {
   }
 
   async addJoin(item) {
+    console.log('item link');
+    console.log(item);
     const request: any = {};
-    const invoiceLine = this.lines.find(x => x.lineID == item.InvoiceLineID);
+    const invoiceLine = this.lines.find(x => x.lineID == item.lineID);
 
     request.transactionID = this.data.transactionID;
     request.userID = this.data.currentUser.userID;
@@ -62,7 +64,7 @@ export class InvoiceLineLinkComponent implements OnInit {
     }).then(
       (res: any) => {
         if (res.outcome) {
-          const currentLine = this.lines.find(x => x.lineID == item.InvoiceLineID);
+          const currentLine = this.lines.find(x => x.lineID == item.lineID);
           const line = this.lines.splice(this.lines.indexOf(currentLine), 1)[0];
 
           line.captureJoinID = +res.outcomeMessage;

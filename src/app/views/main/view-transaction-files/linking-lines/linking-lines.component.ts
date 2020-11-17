@@ -471,18 +471,26 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async loadRates() {
-    const model = {
-      requestParams: {
+    const tempDate = new Date(this.invoiceDate.value);
+    const newDate = new Date(Date.UTC(
+      tempDate.getFullYear(),
+      tempDate.getMonth(),
+      tempDate.getDate(),
+      0,0,0,0
+    ));
+
+    const requestModel = {
+      request: {
         userID: this.currentUser.userID,
-        invDate: this.invoiceDate.value,
+        ROEDate: newDate,
         filter: '',
       },
-      requestProcedure: 'RateOfExchangeList'
+      procedure: 'RateOfExchangeList'
     };
 
     console.log('model2');
-    console.log(model);
-    await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
+    console.log(requestModel);
+    await this.api.post(`${environment.ApiEndpoint}/capture/list`, requestModel).then(
       (res: any) => {
         console.log('res roe');
         console.log(res);
@@ -491,7 +499,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log(this.rates);
 
 
-        this.snackbar.open(res.outcome.outcomeMessage, '', { duration: 3000 });
+        this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
 
     });
   }

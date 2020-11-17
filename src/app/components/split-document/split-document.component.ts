@@ -217,12 +217,6 @@ ngAfterViewInit() {
         this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
       }
 
-      if (item.attachmentType === '' || item.attachmentType === null || !item.attachmentType) {
-        this.snackbar.open('err: Attachment Type', '', { duration: 5000 });
-        console.log(item.attachmentType);
-        err++;
-      }
-
       if (item.nameControl.valid) {
         item.name = item.nameControl.value;
       } else {

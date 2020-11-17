@@ -89,9 +89,9 @@
                   <br>
                   <mat-form-field appearance="fill">
                     <mat-label>Document Type</mat-label>
-                    <mat-select [formControl]="section.selectControl" (selectionChange)="typeChange(i, $event.value)">
+                    <mat-select [formControl]="section.selectControl" >
                       <mat-option disabled selected>Please select a type</mat-option>
-                      <mat-option *ngFor="let type of this.transactionTypes; let x = index;" [value]="x">
+                      <mat-option *ngFor="let type of this.transactionTypes; let x = index;" [value]="type.name">
                         {{type.description}}
                       </mat-option>
                     </mat-select>

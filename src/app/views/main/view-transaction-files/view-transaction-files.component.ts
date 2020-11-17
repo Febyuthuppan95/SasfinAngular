@@ -458,6 +458,9 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   }
 
   iterateAttachments(index) {
+    console.log('uploading attachment index');
+    console.log(index);
+    console.log(this.attachmentQueue.length);
     if (index < this.attachmentQueue.length) {
       this.uploading = true;
       this.uploadAttach(index, this.attachmentQueue[index]);
@@ -470,7 +473,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
   uploadAttach(index, attach) {
     attach.status = 'Uploading';
     attach.uploading = false;
-
+    console.log('uploading attachment');
+    console.log(attach);
     this.transationService.uploadAttachment(
       attach.name,
       attach.file,
