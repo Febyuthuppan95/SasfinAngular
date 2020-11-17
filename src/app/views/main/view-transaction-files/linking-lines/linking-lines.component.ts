@@ -476,7 +476,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       tempDate.getFullYear(),
       tempDate.getMonth(),
       tempDate.getDate(),
-      0,0,0,0
+      0, 0, 0, 0
     ));
 
     const requestModel = {
