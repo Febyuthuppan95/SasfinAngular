@@ -54,6 +54,7 @@ export class CompanyService {
     let sessionData2: SelectedItem = null;
     // BOM
     let sessionData3: SelectedBOM = null;
+    let sessionData11: SelectedROE = null;
     // PermitType
     let sessionData10: SelectedPermitType = null;
     // Permit
@@ -83,6 +84,10 @@ export class CompanyService {
     // BOM
     if (sessionStorage.getItem(`${environment.Sessions.BOMData}`) !== undefined || null) {
       sessionData3 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.BOMData}`));
+    }
+    // ROE
+    if (sessionStorage.getItem(`${environment.Sessions.ROEData}`) !== undefined || null) {
+      sessionData11 = JSON.parse(sessionStorage.getItem(`${environment.Sessions.ROEData}`));
     }
     // PermitType
     if (sessionStorage.getItem(`${environment.Sessions.PermitTypeData}`) !== undefined || null) {
@@ -116,6 +121,8 @@ export class CompanyService {
     this.selectedItem = new BehaviorSubject<SelectedItem>(sessionData2);
     // BOM
     this.SelectedBOM = new BehaviorSubject<SelectedBOM>(sessionData3);
+    // ROE
+    this.SelectedROE = new BehaviorSubject<SelectedROE>(sessionData11);
     // PermitType
     this.SelectedPermitType = new BehaviorSubject<SelectedPermitType>(sessionData10);
     // Permit
@@ -137,6 +144,8 @@ export class CompanyService {
   selectedItem: BehaviorSubject<SelectedItem>;
   // BOM
   SelectedBOM: BehaviorSubject<SelectedBOM>;
+  // ROE
+  SelectedROE: BehaviorSubject<SelectedROE>;
   // PermitType
   SelectedPermitType: BehaviorSubject<SelectedPermitType>;
   // Permit
@@ -188,6 +197,11 @@ export class CompanyService {
     this.SelectedBOM.next(BOM);
     sessionStorage.setItem(`${environment.Sessions.BOMData}`, JSON.stringify(BOM));
   }
+  // ROE
+  setROE(ROE: SelectedROE) {
+    this.SelectedROE.next(ROE);
+    sessionStorage.setItem(`${environment.Sessions.ROEData}`, JSON.stringify(ROE));
+  }
   // PermitType
   setPermitType(PermitType: SelectedPermitType) {
     this.SelectedPermitType.next(PermitType);
@@ -233,6 +247,10 @@ export class CompanyService {
   // BOM
   observeBOM() {
     return this.SelectedBOM.asObservable();
+  }
+  // BOM
+  observeROE() {
+    return this.SelectedROE.asObservable();
   }
    // PermitType
    observePermitType() {
@@ -1424,6 +1442,10 @@ export class SelectedItem {
 export class SelectedBOM {
   bomid: number;
   status: string;
+}
+
+export class SelectedROE {
+  ROEDateID: number;
 }
 
 export class SelectedPermitType {

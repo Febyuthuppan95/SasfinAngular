@@ -91,6 +91,7 @@ import { EscalationQueueComponent } from './views/main/escalation-queue/escalati
 import { LinkingLinesComponent } from './views/main/view-transaction-files/linking-lines/linking-lines.component';
 import { CheckingQueueComponent } from './views/main/checking-queue/checking-queue.component';
 import { ExchangeRateUploadComponent } from './views/main/exchange-rate-upload/exchange-rate-upload.component';
+import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/exchange-rate-lines/exchange-rate-lines.component';
 // import { ViewReportsListComponent } from './views/main/view-reports-list/view-reports-list.component';
 // import { ViewDutyTaxTypesComponent } from './views/main/view-tariffs-list/view-duty-tax-types/view-duty-tax-types.component';
 const routes: Routes = [
@@ -193,6 +194,12 @@ const routes: Routes = [
           {
             path: 'exchangrates',
             component: ExchangeRateUploadComponent,
+            // TO DO
+            // Add rights
+          },
+          {
+            path: 'exchangrates/roe',
+            component: ExchangeRateLinesComponent,
             // TO DO
             // Add rights
           },

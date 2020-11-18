@@ -1062,6 +1062,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
           let exchangeRate = 1;
           const invLines = [...this.invLinesTemp];
+          console.log('invLines');
+          console.log(invLines);
           const invoiceLine = invLines.find(x => x.lineID == inv.lineID);
           console.log(invoiceLine);
 

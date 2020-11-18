@@ -32,6 +32,7 @@ export class ExchangeRateUploadComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
+    private api: ApiService,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
     // tslint:disable-next-line:no-shadowed-variable
@@ -140,10 +141,10 @@ export class ExchangeRateUploadComponent implements OnInit {
     //     }
     // });
 
-    this.loadItems(true);
+    this.loadIROEs(true);
   }
 
-  loadItems(displayGrowl: boolean) {
+  loadIROEs(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
 
     this.showLoader = true;
@@ -196,25 +197,25 @@ export class ExchangeRateUploadComponent implements OnInit {
     this.orderDirection = $event.orderByDirection;
     this.rowStart = 1;
     this.rowEnd = this.rowCountPerPage;
-    this.loadItems(false); // reload data
+    this.loadIROEs(false); // reload data
   }
 
   pageChange($event: { rowStart: number; rowEnd: number }) {
     this.rowStart = $event.rowStart;
     this.rowEnd = $event.rowEnd;
-    this.loadItems(false); // reload data
+    this.loadIROEs(false); // reload data
   }
 
   recordsPerPageChange(recordsPerPage: number) {
     console.log('recordsPerPageChange');
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
-    this.loadItems(false); // reload data
+    this.loadIROEs(false); // reload data
   }
 
   searchEvent(query: string) {
     this.filter = query;
-    this.loadItems(false); // reload data
+    this.loadIROEs(false); // reload data
   }
 
   add() {
@@ -227,6 +228,26 @@ export class ExchangeRateUploadComponent implements OnInit {
   onFileChange(files: FileList) {
     this.ItemFile = files.item(0);
     this.filePreview = this.ItemFile.name;
+  }
+
+  async RemoveROE(ROEDateID: number) {
+    console.log('ROEDateID');
+    console.log(ROEDateID);
+
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+        RateOfExchangeDateID: ROEDateID,
+        IsDeleted: 1
+      },
+      procedure: 'RateOfExchangeDateUpdate'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+      (res: any) => {
+        console.log(res);
+        this.loadIROEs(true);
+    });
   }
 
   saveItemUpload() {
@@ -249,7 +270,7 @@ export class ExchangeRateUploadComponent implements OnInit {
             res.outcome,
             res.outcomeMessage);
           this.closeAddModal.nativeElement.click();
-          this.loadItems(true);
+          this.loadIROEs(true);
         } else {
           this.notify.errorsmsg(
             res.outcome,
