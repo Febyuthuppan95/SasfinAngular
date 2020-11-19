@@ -13,6 +13,7 @@ export const environment = {
     PermitTypeData: '8584a11d-c605-4b41-ae94-4cefa43c0d96',
     PermitData: '780f766e-8d4b-43f8-a067-059a82b7da13',
     BOMData: '3ba86905-764b-44ce-9e8c-6363187bd864',
+    ROEData: 'b539e189-5db3-4a69-a793-aa081755129c',
     itemData: '7f539ac4-3f99-428f-a04c-5ba2d4bd1172',
     companyData: '41d516a5-9339-4b7c-a810-be1ce3150722',
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
