@@ -289,6 +289,10 @@ export class CompanyService {
   flushBOMSession() {
     sessionStorage.removeItem(`${environment.Sessions.BOMData}`);
   }
+   // ROE
+   flushROESession() {
+    sessionStorage.removeItem(`${environment.Sessions.ROEData}`);
+  }
   // PermitType
   flushPermitTypeSession() {
     sessionStorage.removeItem(`${environment.Sessions.PermitTypeData}`);
