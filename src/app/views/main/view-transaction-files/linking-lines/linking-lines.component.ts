@@ -461,9 +461,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       requestProcedure: 'UnitOfMeasuresList'
     };
 
-    console.log('model');
-    console.log(model);
-
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.units = res.data;
@@ -488,16 +485,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       procedure: 'RateOfExchangeList'
     };
 
-    console.log('model2');
-    console.log(requestModel);
     await this.api.post(`${environment.ApiEndpoint}/capture/list`, requestModel).then(
       (res: any) => {
-        console.log('res roe');
-        console.log(res);
         this.rates = res.data;
         this.ratesTemp = res.data;
-        console.log(this.rates);
-
 
         this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
 
@@ -511,12 +502,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   YearSelected(yearID: number) {
     this.selctedYear = yearID;
     this.rates = this.rates.filter(x => x.yearID === this.selctedYear);
-    console.log('rates');
-    console.log(this.rates);
   }
 
   async SetEchangeRate(clear = false) {
-    console.log(clear);
     if (this.rateOfExchange.valid || !clear) {
       if (this.rateOfExchange.value.Currency) {
       const model = {
@@ -531,7 +519,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
       await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
         (res: any) => {
-          console.log(res);
           this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
 
           const find = this.invoiceRates.find(x => x.invoiceID = this.currentAttachment.attachmentID);
@@ -587,9 +574,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       requestProcedure: 'CountriesList'
     };
 
-    console.log('model3');
-    console.log(model);
-
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
         this.countries = res.data;
@@ -604,9 +588,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       requestProcedure: 'ItemsList'
     };
-
-    console.log('model4');
-    console.log(model);
 
     await this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
@@ -774,9 +755,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             unit: JSON.parse(JSON.stringify(inv.unit)),
           });
         });
-
-        console.log('invLinesTemp');
-        console.log(this.invLinesTemp);
       }
 
       if (invoice.rateOfExchangeID != -1) {
@@ -1055,11 +1033,6 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
 
-      console.log('linkedCWS');
-      console.log(linkedCWS);
-      console.log('linkedINV');
-      console.log(linkedINV);
-
       linkedCWS.currentLinks.forEach(cwsItem => {
         const cws = cwsItem;
         cwsCustomsValue += +cws.custVal;
@@ -1068,27 +1041,19 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
       linkedINV.currentLinks.forEach(invItem => {
         const inv = invItem;
-        // console.log(inv);
 
         let exchangeRate = 1;
 
         const invLines = [...this.invLinesTemp];
-        // console.log('invLines');
-        // console.log(invLines);
         const invoiceLine = invLines.find(x => x.lineID == inv.lineID);
-        // console.log(invoiceLine);
 
         if (invoiceLine) {
           const rate = [...this.invoiceRates].find(x => x.invoiceID == invoiceLine.invoiceID);
-          // console.log(rate);
 
           if (rate) {
-            console.log('rate has value');
             exchangeRate = +rate.rate;
           }
         }
-        console.log('rate value');
-        console.log(exchangeRate);
 
         invForeignValue += (inv.totalLineValue / exchangeRate);
       });

@@ -157,10 +157,7 @@ export class ExchangeRateUploadComponent implements OnInit {
       requestProcedure: `RateOfExchangeDatesList`
     };
     this.ApiService.post(`${environment.ApiEndpoint}/companies/exchangerates`, model).then((res: any) => {
-      console.log(res);
       this.RateofExchanges = res.data;
-      console.log('RateofExchanges');
-      console.log(this.RateofExchanges);
       this.rowCount = res.rowCount;
 
       if (res.outcome.outcome == 'SUCCESS') {
@@ -186,7 +183,6 @@ export class ExchangeRateUploadComponent implements OnInit {
 
   popClick(event, obj) {
     this.ROE = obj;
-    console.log(this.ROE)
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.themeService.toggleContextMenu(!this.contextMenu);
@@ -208,7 +204,6 @@ export class ExchangeRateUploadComponent implements OnInit {
   }
 
   recordsPerPageChange(recordsPerPage: number) {
-    console.log('recordsPerPageChange');
     this.rowCountPerPage = recordsPerPage;
     this.rowStart = 1;
     this.loadIROEs(false); // reload data
@@ -244,13 +239,13 @@ export class ExchangeRateUploadComponent implements OnInit {
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: any) => {
 
-        this.loadIROEs(true);
-
         if (res.outcome.outcome == 'SUCCESS') {
           this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
         } else {
           this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
         }
+
+        this.loadIROEs(true);
     });
   }
 
@@ -263,12 +258,10 @@ export class ExchangeRateUploadComponent implements OnInit {
       },
       requestProcedure: `ROEAdd`
     };
-    console.log(this.ItemFile, model);
+    // console.log(this.ItemFile, model);
 
     this.IDocumentService.upload(this.ItemFile, model, 'companies/exchangerates/upload').then(
       (res: Outcome) => {
-        console.log('Response');
-        console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.notify.successmsg(
             res.outcome,

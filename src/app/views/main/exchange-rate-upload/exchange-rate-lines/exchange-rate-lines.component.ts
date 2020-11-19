@@ -206,88 +206,20 @@ export class ExchangeRateLinesComponent implements OnInit {
       procedure: 'RateOfExchangeList'
     };
 
-    console.log('model');
-    console.log(requestModel);
     await this.api.post(`${environment.ApiEndpoint}/capture/list`, requestModel).then(
       (res: any) => {
         this.showLoader = false;
-        console.log('res roe lines');
-        console.log(res);
         this.ROELines = res.data;
         this.rowCount = res.rowCount;
-        // this.ratesTemp = res.data;
-        // console.log(this.rates);
 
-
-        // this.notify.successmsg(
-        //   res.outcome.outcome,
-        //   res.outcome.outcomeMessage
-        // );
+        if (res.outcome.outcome == 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+          this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
 
     });
   }
-
-  // loadBOMLines(displayGrowl: boolean) {
-  //   this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
-  //   this.showLoader = true;
-  //   const model = {
-  //     requestParams: {
-  //       userID: this.currentUser.userID,
-  //       bomID: this.bomid,
-  //       filter: this.filter,
-  //       orderBy: this.orderBy,
-  //       orderByDirection: this.orderDirection,
-  //       rowStart: this.rowStart,
-  //       rowEnd: this.rowEnd,
-  //     },
-  //     requestProcedure: `ItemParentsList`,
-  //   };
-
-  //   console.log('model');
-  //   console.log(model);
-  //   this.ApiService.post(
-  //     `${environment.ApiEndpoint}/companies/itemParentsList`,
-  //     model
-  //   ).then(
-  //     (res: any) => {
-  //       if (res.outcome.outcome === 'SUCCESS') {
-  //         if (displayGrowl) {
-  //           this.notify.successmsg(
-  //             res.outcome.outcome,
-  //             res.outcome.outcomeMessage
-  //           );
-  //         } else {
-  //           if (displayGrowl) {
-  //             this.notify.errorsmsg(
-  //               res.outcome.outcome,
-  //               res.outcome.outcomeMessage
-  //             );
-  //           }
-  //         }
-  //       }
-  //       this.BOMLines = res.data;
-  //       if (res.rowCount === 0) {
-  //         this.noData = true;
-  //         this.showLoader = false;
-  //       } else {
-  //         this.noData = false;
-  //         this.rowCount = res.rowCount;
-  //         this.showingRecords = res.data.length;
-  //         this.showLoader = false;
-  //         this.totalShowing = +this.rowStart + +this.BOMLines.length - 1;
-  //       }
-  //       this.closeAddModal.nativeElement.click();
-  //     },
-  //     (msg) => {
-  //       // console.log(msg);
-  //       this.showLoader = false;
-  //       this.notify.errorsmsg(
-  //         'Server Error',
-  //         'Something went wrong while trying to access the server.'
-  //       );
-  //     }
-  //   );
-  // }
 
   back() {
     this.router.navigate(['exchangrates']);
