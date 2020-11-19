@@ -1094,11 +1094,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
       item.runningCustomsValue = cwsCustomsValue.toFixed(2);
-      item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue, cwsCustomsValue);
+      item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue.toFixed(2), cwsCustomsValue.toFixed(2));
 
       item.runningTotalLineValue = invForeignValue.toFixed(2);
       item.runningForeignValue = cwsForeignValue.toFixed(2);
-      item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue, invForeignValue);
+      item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue.toFixed(2), invForeignValue.toFixed(2));
     });
   }
 
