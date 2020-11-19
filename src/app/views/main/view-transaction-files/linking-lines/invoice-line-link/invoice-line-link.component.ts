@@ -26,6 +26,9 @@ export class InvoiceLineLinkComponent implements OnInit {
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
 
+    console.log('lines');
+    console.log(this.lines);
+
     this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
     this.lineKeys = Object.keys(this.formattedInvoiceLines);
 

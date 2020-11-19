@@ -651,15 +651,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
           this.currentPDFIndex = 0;
           this.currentAttachment = this.attachments[this.currentPDFIndex];
-          this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
-
+          if (this.attachments[this.currentPDFIndex]) {
+            this.currentPDFSource =  btoa(this.attachments[this.currentPDFIndex].file);
+          }
           await this.loadCaptureInfo();
           await this.loadSADLines();
         });
   }
 
   updateRateValue(rate?) {
-    if (this.currentAttachment.fileType == 'Invoice') {
+    if (this.currentAttachment) {
+      if (this.currentAttachment.fileType == 'Invoice') {
       const invoices = [...this.currentINV.invoices];
 
       invoices.forEach((invoice) => {
@@ -689,6 +691,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     }
+  }
   }
 
   async loadSADLines() {
@@ -772,6 +775,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           });
         });
 
+        console.log('invLinesTemp');
         console.log(this.invLinesTemp);
       }
 
@@ -1061,6 +1065,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log(inv);
 
           let exchangeRate = 1;
+
           const invLines = [...this.invLinesTemp];
           console.log('invLines');
           console.log(invLines);
@@ -1072,9 +1077,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             console.log(rate);
 
             if (rate) {
+              console.log('rate has value');
               exchangeRate = +rate.rate;
             }
           }
+          console.log('rate value');
+          console.log(exchangeRate);
 
           invForeignValue += (inv.totalLineValue / exchangeRate);
         });
@@ -1083,8 +1091,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       item.runningCustomsValue = cwsCustomsValue.toFixed(2);
       item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue, cwsCustomsValue);
 
-      item.runningForeignValue = invForeignValue.toFixed(2);
-      item.runningTotalLineValue = cwsForeignValue.toFixed(2);
+      item.runningTotalLineValue = invForeignValue.toFixed(2);
+      item.runningForeignValue = cwsForeignValue.toFixed(2);
       item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue, invForeignValue);
     });
   }

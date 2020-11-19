@@ -83,8 +83,8 @@
                           <mat-chip
                           [ngClass]="{'bg-success': item.runningForeignValueStatus === totalStatuses.Passed, 'bg-danger': item.runningForeignValueStatus === totalStatuses.Failed, 'bg-warning': item.runningForeignValueStatus === totalStatuses.None}"
                           [matTooltip]="item.ForeignOBit ? item.ForeignInvoiceOReason : item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None ? 'Running total does not equal target' : 'Running total equals target'">
-                            Foreign Inv&nbsp;<strong>({{item.runningTotalLineValue}})</strong>&nbsp;vs Total Line Value&nbsp;
-                            <strong>({{item.runningForeignValue}})</strong>&nbsp;
+                            Foreign Inv&nbsp;<strong>({{item.runningForeignValue}})</strong>&nbsp;vs Total Line Value&nbsp;
+                            <strong>({{item.runningTotalLineValue}})</strong>&nbsp;
                             <mat-icon>
                               {{ item.runningForeignValueStatus === totalStatuses.Passed ? 'check' : '' }}
                               {{ item.runningForeignValueStatus === totalStatuses.Failed ? 'close' : '' }}
