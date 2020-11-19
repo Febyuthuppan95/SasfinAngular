@@ -16,7 +16,12 @@ export const environment = {
     itemData: '7f539ac4-3f99-428f-a04c-5ba2d4bd1172',
     companyData: '41d516a5-9339-4b7c-a810-be1ce3150722',
     transactionData: 'fb27c30c-958f-4aee-ba9d-7a0aee6256a7',
-    attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5'
+    attachmentData: '7c949dd9-aff3-45a8-9bb5-fca466bf15e5',
+    companyOEMData: 'f0e77e12-2f52-4a5b-ac12-c88bf6d4c2dc',
+    PermitTypeData: '8584a11d-c605-4b41-ae94-4cefa43c0d96',
+    companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209',
+    companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5',
+    localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d'
   },
 
   // We should consider doing this for api endpoints -- Ashton

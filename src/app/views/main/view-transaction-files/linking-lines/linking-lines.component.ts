@@ -1055,37 +1055,42 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
 
+      console.log('linkedCWS');
+      console.log(linkedCWS);
+      console.log('linkedINV');
+      console.log(linkedINV);
+
       linkedCWS.currentLinks.forEach(cwsItem => {
         const cws = cwsItem;
         cwsCustomsValue += +cws.custVal;
         cwsForeignValue += cws.foreignInv;
+      });
 
-        linkedINV.currentLinks.forEach(invItem => {
-          const inv = invItem;
-          console.log(inv);
+      linkedINV.currentLinks.forEach(invItem => {
+        const inv = invItem;
+        // console.log(inv);
 
-          let exchangeRate = 1;
+        let exchangeRate = 1;
 
-          const invLines = [...this.invLinesTemp];
-          console.log('invLines');
-          console.log(invLines);
-          const invoiceLine = invLines.find(x => x.lineID == inv.lineID);
-          console.log(invoiceLine);
+        const invLines = [...this.invLinesTemp];
+        // console.log('invLines');
+        // console.log(invLines);
+        const invoiceLine = invLines.find(x => x.lineID == inv.lineID);
+        // console.log(invoiceLine);
 
-          if (invoiceLine) {
-            const rate = [...this.invoiceRates].find(x => x.invoiceID == invoiceLine.invoiceID);
-            console.log(rate);
+        if (invoiceLine) {
+          const rate = [...this.invoiceRates].find(x => x.invoiceID == invoiceLine.invoiceID);
+          // console.log(rate);
 
-            if (rate) {
-              console.log('rate has value');
-              exchangeRate = +rate.rate;
-            }
+          if (rate) {
+            console.log('rate has value');
+            exchangeRate = +rate.rate;
           }
-          console.log('rate value');
-          console.log(exchangeRate);
+        }
+        console.log('rate value');
+        console.log(exchangeRate);
 
-          invForeignValue += (inv.totalLineValue / exchangeRate);
-        });
+        invForeignValue += (inv.totalLineValue / exchangeRate);
       });
 
       item.runningCustomsValue = cwsCustomsValue.toFixed(2);

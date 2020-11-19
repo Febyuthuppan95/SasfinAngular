@@ -22,7 +22,7 @@ export const environment = {
     companyOEMData: 'f0e77e12-2f52-4a5b-ac12-c88bf6d4c2dc',
     companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209',
     companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5',
-    localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d'
+    localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d',
   },
   firebase: {
     apiKey: 'AIzaSyA-eGQMsoiNn30kqeVClYCYTkWr0SpAlb0',
