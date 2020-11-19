@@ -118,10 +118,10 @@ export class ExchangeRateLinesComponent implements OnInit {
     },
     {
       title: 'Date',
-      propertyName: '',
+      propertyName: 'FullDate',
       order: {
         enable: true,
-        tag: '',
+        tag: 'FullDate',
       },
     },
   ];

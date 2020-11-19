@@ -157,11 +157,17 @@ export class ExchangeRateUploadComponent implements OnInit {
       requestProcedure: `RateOfExchangeDatesList`
     };
     this.ApiService.post(`${environment.ApiEndpoint}/companies/exchangerates`, model).then((res: any) => {
-      // console.log(res.data);
+      console.log(res);
       this.RateofExchanges = res.data;
       console.log('RateofExchanges');
       console.log(this.RateofExchanges);
       this.rowCount = res.rowCount;
+
+      if (res.outcome.outcome == 'SUCCESS') {
+        this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+      } else {
+        this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+      }
     },
       msg => {
       console.log(msg);
@@ -172,11 +178,6 @@ export class ExchangeRateUploadComponent implements OnInit {
       });
     this.showLoader = false;
   }
-
-  // table methods
-  // back() {
-  //   this.router.navigate(['companies', 'boms']);
-  // }
 
   selectedRecord(obj: SelectedRecord) {
     this.selectedRow = obj.index;
@@ -231,9 +232,6 @@ export class ExchangeRateUploadComponent implements OnInit {
   }
 
   async RemoveROE(ROEDateID: number) {
-    console.log('ROEDateID');
-    console.log(ROEDateID);
-
     const model = {
       request: {
         userID: this.currentUser.userID,
@@ -245,8 +243,14 @@ export class ExchangeRateUploadComponent implements OnInit {
 
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: any) => {
-        console.log(res);
+
         this.loadIROEs(true);
+
+        if (res.outcome.outcome == 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        } else {
+          this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
     });
   }
 
