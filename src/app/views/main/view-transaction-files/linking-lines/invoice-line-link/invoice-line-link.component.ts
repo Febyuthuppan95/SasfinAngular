@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
@@ -12,29 +12,41 @@ export class InvoiceLineLinkComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<InvoiceLineLinkComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: MatSnackBar,
     private api: ApiService) { }
 
+  @Output() onFilter = new EventEmitter<any>();
+
   public currentLinks: any[] = [];
   public lines: any[] = [];
+  public Templines: any[] = [];
   public lineKeys: string[] = [];
-  public filter: string;
+  public filter = '';
 
   public formattedInvoiceLines: any[] = [];
 
   ngOnInit() {
+    console.log('data');
+    console.log(this.data);
+
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
-    this.filter = this.data.filter;
+    this.Templines = [...this.lines];
 
     console.log('lines');
     console.log(this.lines);
 
-    this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+    this.linesList(this.Templines, this.currentLinks);
+
+  }
+
+  linesList(lines, links) {
+
+    this.formattedInvoiceLines = this.groupBy(lines, 'invoiceNo');
     this.lineKeys = Object.keys(this.formattedInvoiceLines);
 
-    this.currentLinks.forEach((link) => {
+    links.forEach((link) => {
       this.lineKeys.forEach((key) => {
         const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
 
@@ -43,6 +55,7 @@ export class InvoiceLineLinkComponent implements OnInit {
         }
       });
     });
+
   }
 
  groupBy(xs, key) {
@@ -92,6 +105,8 @@ export class InvoiceLineLinkComponent implements OnInit {
         }
       },
     );
+
+    this.searchBar();
   }
 
   async removeJoin(index) {
@@ -129,9 +144,27 @@ export class InvoiceLineLinkComponent implements OnInit {
         }
       },
     );
+
+    this.searchBar();
   }
 
   searchBar() {
+    // this.onFilter.emit({filter: this.filter, index: this.data.index});
+
+    let templines  = [...this.lines];
+
+    if (this.filter !== '') {
+      templines = templines.filter(x => x.totalLineValue === +this.filter);
+
+      this.Templines = templines;
+    } else {
+      this.Templines = [...this.lines];
+    }
+    console.log('filter lines');
+    console.log(this.Templines);
+
+    this.linesList(this.Templines, this.currentLinks);
+
 
   }
 
