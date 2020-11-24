@@ -19,12 +19,14 @@ export class InvoiceLineLinkComponent implements OnInit {
   public currentLinks: any[] = [];
   public lines: any[] = [];
   public lineKeys: string[] = [];
+  public filter: string;
 
   public formattedInvoiceLines: any[] = [];
 
   ngOnInit() {
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
+    this.filter = this.data.filter;
 
     console.log('lines');
     console.log(this.lines);
@@ -127,6 +129,10 @@ export class InvoiceLineLinkComponent implements OnInit {
         }
       },
     );
+  }
+
+  searchBar() {
+
   }
 
 }
