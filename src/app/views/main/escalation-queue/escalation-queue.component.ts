@@ -58,6 +58,8 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       { title: 'Type', propertyName: 'AttachmentType', order: { enable: false } },
       { title: 'Reason', propertyName: 'Reason', order: { enable: false } },
       { title: 'Capturer', propertyName: 'Capturer', order: { enable: false } },
+      { title: 'LeadCapturer', propertyName: 'ResponsibleCapturer', order: { enable: false } },
+      { title: 'Consultant', propertyName: 'ResponsibleConsultant', order: { enable: false} },
       { title: 'Date', propertyName: 'Date', order: { enable: false } },
     ],
     rowStart: 1,
@@ -103,6 +105,8 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
+        console.log('Hello');
+        console.log(res);
         const unfiltered = res.data;
 
         unfiltered.forEach((el) => {
