@@ -931,6 +931,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       hasBackdrop: false,
     });
 
+    // this.invoiceDialog.afterOpened().subscribe(() => {
+    //   const sub = this.invoiceDialog.componentInstance.onFilter.subscribe((data) => {
+    //     alert(data);
+    //   });
+    // });
+
     this.invoiceDialog.afterClosed().subscribe(() => {
       this.loadInvoiceLines();
     });
