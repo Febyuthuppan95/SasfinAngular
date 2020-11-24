@@ -41,6 +41,8 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
     prodCode: new FormControl(null),
     supplyUnit: new FormControl(null),
     isDeleted: new FormControl(null),
+    invLineNumb: new FormControl(null),
+    sadLineNumb: new FormControl(null),
 
     cooOBit: new FormControl(null),
     cooOUserID: new FormControl(null),
