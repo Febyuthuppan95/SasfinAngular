@@ -55,6 +55,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
     headings: [
       { title: '', propertyName: 'RowNum', order: { enable: false } },
       { title: 'Transaction', propertyName: 'Name', order: { enable: false } },
+      { title: 'Company', propertyName: 'CompanyName', order: {enable : false}},
       { title: 'Type', propertyName: 'AttachmentType', order: { enable: false } },
       { title: 'Reason', propertyName: 'Reason', order: { enable: false } },
       { title: 'Capturer', propertyName: 'Capturer', order: { enable: false } },
