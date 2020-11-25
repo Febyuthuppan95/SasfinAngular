@@ -18,12 +18,31 @@ export class CustomsLineLinkComponent implements OnInit {
 
     public currentLinks: any[] = [];
     public lines: any[] = [];
+    public Templines: any[] = [];
+
+    public filter = '';
 
     ngOnInit() {
-      this.currentLinks = JSON.parse(JSON.stringify(this.data.currentLinks));
-      this.lines = JSON.parse(JSON.stringify(this.data.lines));
+
+      this.currentLinks = [...this.data.currentLinks];
+      this.lines = [...this.data.lines];
+      this.Templines = [...this.lines];
+
+      console.log('lists');
+
+      console.log(this.lines);
+      console.log(this.Templines);
 
       console.log(this.data);
+
+
+      this.CWSList(this.Templines, this.currentLinks);
+
+    }
+
+    CWSList(lines, links) {
+      this.currentLinks = JSON.parse(JSON.stringify(links));
+      this.Templines = JSON.parse(JSON.stringify(lines));
     }
 
     async addJoin(index) {
@@ -42,6 +61,7 @@ export class CustomsLineLinkComponent implements OnInit {
         (res: any) => {
           if (res.outcome) {
             const item = this.lines.splice(index, 1)[0];
+            this.Templines.splice(index, 1)[0];
             item.captureJoinID = +res.outcomeMessage;
             this.currentLinks.push(item);
             this.snackbar.open('Line linked', 'OK', { duration: 3000 });
@@ -51,7 +71,7 @@ export class CustomsLineLinkComponent implements OnInit {
     }
 
     async removeJoin(index) {
-      const currentLink = this.currentLinks[index]
+      const currentLink = this.currentLinks[index];
       const request: any = {};
 
       request.userID = this.data.currentUser.userID;
@@ -67,9 +87,33 @@ export class CustomsLineLinkComponent implements OnInit {
           if (res.outcome) {
             const removed = this.currentLinks.splice(index, 1)[0];
             this.lines.push(removed);
+            this.Templines.push(removed);
             this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
           }
         },
       );
+    }
+
+    searchBar() {
+      // this.onFilter.emit({filter: this.filter, index: this.data.index});
+
+      console.log('filter');
+      console.log(this.filter);
+
+      let templines  = [...this.lines];
+
+      if (this.filter !== '') {
+        templines = templines.filter(x => x.custVal === +this.filter);
+
+        this.Templines = templines;
+      } else {
+        this.Templines = [...this.lines];
+      }
+      console.log('filter lines');
+      console.log(this.Templines);
+
+      this.CWSList(this.Templines, this.currentLinks);
+
+
     }
 }
