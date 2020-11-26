@@ -28,6 +28,9 @@ export class CustomWorksheetLine {
     currency?: string;
     isDeleted: number;
 
+    invLineNumb?: number;
+    sadLineNumb?: number;
+
     cooOBit: boolean;
     cooOUserID: number;
     cooODate: string;

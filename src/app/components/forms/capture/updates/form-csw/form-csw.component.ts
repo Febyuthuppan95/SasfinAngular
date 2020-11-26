@@ -414,6 +414,8 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
 
+      console.log('requestModel lines');
+      console.log(this.lines);
 
       await this.captureService.customWorksheetUpdate(requestModel).then(
         async (res: Outcome) => {
