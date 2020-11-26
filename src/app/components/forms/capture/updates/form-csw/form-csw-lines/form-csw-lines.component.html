@@ -44,6 +44,26 @@
       </mat-form-field>
       <br><br>
     </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill" >
+        <mat-label>
+          Invoice Line Number
+        </mat-label>
+        <input matInput type="number" formControlName="invLineNumb" #startLineForm (focusin)="updateHelpContext('form-customs-worksheet-line-invLineNumb')">
+        <!-- <mat-error *ngIf="!form.controls.commonFactorOBit.value  && form.controls.commonFactor.errors?.incorrect">{{getError('commonFactor')}}</mat-error> -->
+      </mat-form-field>
+      <br><br>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="fill" >
+        <mat-label>
+          SAD Line Number
+        </mat-label>
+        <input matInput type="number" formControlName="sadLineNumb" (focusin)="updateHelpContext('form-customs-worksheet-line-sadLineNumb')">
+        <!-- <mat-error *ngIf="form.controls.custValError.value && !form.controls.custValOBit.value">{{form.controls.custValError.value}}</mat-error> -->
+      </mat-form-field>
+      <br><br>
+    </div>
     <div class="col-12">
       <mat-form-field appearance="fill" >
         <mat-label>
@@ -126,26 +146,7 @@
       </mat-form-field>
       <br><br>
     </div>
-    <div class="col-6">
-      <mat-form-field appearance="fill" >
-        <mat-label>
-          Invoice Line Number
-        </mat-label>
-        <input matInput type="number" formControlName="invLineNumb" #startLineForm (focusin)="updateHelpContext('form-customs-worksheet-line-invLineNumb')">
-        <!-- <mat-error *ngIf="!form.controls.commonFactorOBit.value  && form.controls.commonFactor.errors?.incorrect">{{getError('commonFactor')}}</mat-error> -->
-      </mat-form-field>
-      <br><br>
-    </div>
-    <div class="col-6">
-      <mat-form-field appearance="fill" >
-        <mat-label>
-          SAD Line Number
-        </mat-label>
-        <input matInput type="number" formControlName="sadLineNumb" (focusin)="updateHelpContext('form-customs-worksheet-line-sadLineNumb')">
-        <!-- <mat-error *ngIf="form.controls.custValError.value && !form.controls.custValOBit.value">{{form.controls.custValError.value}}</mat-error> -->
-      </mat-form-field>
-      <br><br>
-    </div>
   </div>
+  <br><br><br><br><br>
 </form>
 <loader *ngIf="loader"></loader>
