@@ -13,6 +13,8 @@ export class Transaction {
   type: string;
   status: string;
   linkedUserName?: string;
+  responsibleCapturer?: string;
+  responsibleConsultant?: string;
   dateEdited?: Date;
   sendAll?: boolean;
 }

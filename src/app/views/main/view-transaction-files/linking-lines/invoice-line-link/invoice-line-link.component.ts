@@ -16,7 +16,7 @@ export class InvoiceLineLinkComponent implements OnInit {
     private snackbar: MatSnackBar,
     private api: ApiService) { }
 
-  @Output() onFilter = new EventEmitter<any>();
+  // @Output() onFilter = new EventEmitter<any>();
 
   public currentLinks: any[] = [];
   public lines: any[] = [];
@@ -27,15 +27,15 @@ export class InvoiceLineLinkComponent implements OnInit {
   public formattedInvoiceLines: any[] = [];
 
   ngOnInit() {
-    console.log('data');
-    console.log(this.data);
+    // console.log('data');
+    // console.log(this.data);
 
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
     this.Templines = [...this.lines];
 
-    console.log('lines');
-    console.log(this.lines);
+    // console.log('lines');
+    // console.log(this.lines);
 
     this.linesList(this.Templines, this.currentLinks);
 
@@ -110,7 +110,7 @@ export class InvoiceLineLinkComponent implements OnInit {
   }
 
   async removeJoin(index) {
-    const currentLink = this.currentLinks[index]
+    const currentLink = this.currentLinks[index];
     const request: any = {};
 
     request.userID = this.data.currentUser.userID;
@@ -160,8 +160,8 @@ export class InvoiceLineLinkComponent implements OnInit {
     } else {
       this.Templines = [...this.lines];
     }
-    console.log('filter lines');
-    console.log(this.Templines);
+    // console.log('filter lines');
+    // console.log(this.Templines);
 
     this.linesList(this.Templines, this.currentLinks);
 

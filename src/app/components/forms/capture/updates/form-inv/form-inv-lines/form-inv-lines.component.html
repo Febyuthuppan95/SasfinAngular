@@ -90,6 +90,14 @@
       </mat-form-field>
       <br><br>
     </div>
+    <div class="col-4">
+      <mat-form-field appearance="fill">
+      <mat-label>
+        Invoice No
+      </mat-label>
+      <input matInput type="text" formControlName="LineNo" (focusin)="updateHelpContext('form-invoice-line-LineNo')">
+      </mat-form-field>
+    </div>
 
     <div class="col-6" *ngIf="status === 5">
       <mat-form-field appearance="fill" >
