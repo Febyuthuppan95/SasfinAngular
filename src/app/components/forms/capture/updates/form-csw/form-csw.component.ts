@@ -304,7 +304,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.attachmentStatus = response.attachmentStatusID;
 
-        if (this.attachmentStatus === 5) {
+        if (this.attachmentStatus === 10) {
           this.form.disable();
         }
 
@@ -473,6 +473,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // [Line Controls]
   async queueLine($event: any) {
+    console.log('this is the event');
     console.log($event);
     let target = null;
 

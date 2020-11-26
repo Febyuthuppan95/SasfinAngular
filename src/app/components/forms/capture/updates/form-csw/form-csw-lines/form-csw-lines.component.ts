@@ -240,7 +240,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     this.form.valueChanges.subscribe((e) => this.unsavedChanges = true);
 
-    if (this.status === 5) {
+    if (this.status === 10) {
       this.form.disable();
     }
   }

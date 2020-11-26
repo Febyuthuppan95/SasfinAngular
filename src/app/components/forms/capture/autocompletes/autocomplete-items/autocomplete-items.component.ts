@@ -127,7 +127,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
         this.safe = true;
       });
 
-    if (this.status === 5) {
+    if (this.status === 10) {
         this.query.disable();
       }
   }

@@ -114,7 +114,7 @@ constructor(private userService: UserService,
         }
       });
 
-    if (this.status === 5) {
+    if (this.status === 10) {
         this.query.disable();
     }
   }

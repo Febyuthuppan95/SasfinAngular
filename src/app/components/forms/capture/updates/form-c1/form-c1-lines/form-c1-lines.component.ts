@@ -67,7 +67,7 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
       this.submit(this.form.value);
     });
 
-    if (this.status === 5) {
+    if (this.status === 10) {
       this.form.disable();
     }
   }

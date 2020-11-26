@@ -121,7 +121,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         }
       });
 
-    if (this.status === 5) {
+    if (this.status =10) {
         this.query.disable();
     }
   }

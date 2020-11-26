@@ -199,7 +199,7 @@ export class FormIciComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.attachmentStatus = response.attachmentStatusID;
 
-          if (this.attachmentStatus === 5) {
+          if (this.attachmentStatus === 10) {
             this.form.disable();
           }
 

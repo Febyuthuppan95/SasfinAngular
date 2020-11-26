@@ -123,7 +123,7 @@ constructor(private userService: UserService,
   }
 
   checkStatus() {
-    if (this.status === 5) {
+    if (this.status === 10) {
       this.isDisabled = true;
       this.query.disable();
       this.query.updateValueAndValidity();

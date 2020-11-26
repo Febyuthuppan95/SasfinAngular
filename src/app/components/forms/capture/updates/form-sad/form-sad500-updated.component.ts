@@ -408,7 +408,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
         this.attachmentStatus = response.attachmentStatusID;
 
-        if (this.attachmentStatus === 5) {
+        if (this.attachmentStatus === 10) {
           this.form.disable();
         }
 

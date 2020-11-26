@@ -183,7 +183,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
     this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
 
-    if (this.status === 5) {
+    if (this.status === 10) {
       this.form.disable();
     }
   }

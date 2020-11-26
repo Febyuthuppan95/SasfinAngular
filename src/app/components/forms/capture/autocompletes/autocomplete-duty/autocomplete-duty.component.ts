@@ -140,7 +140,7 @@ constructor(private userService: UserService,
 
     console.log('status');
     console.log(this.status);
-    if (this.status === 5) {
+    if (this.status === 10) {
         this.query.disable();
     }
   }

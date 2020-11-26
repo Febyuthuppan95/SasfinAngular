@@ -114,7 +114,7 @@ export class AutocompleteCPCComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
 
-        if (this.status === 5) {
+        if (this.status === 10) {
           this.query.disable();
         }
       });

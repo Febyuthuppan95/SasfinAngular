@@ -377,7 +377,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.attachmentStatus = response.attachmentStatusID;
 
-      if (this.attachmentStatus === 5) {
+      if (this.attachmentStatus === 10) {
         this.form.disable();
         this.invoiceDate.disable();
         this.form.controls.freightCost.enable();

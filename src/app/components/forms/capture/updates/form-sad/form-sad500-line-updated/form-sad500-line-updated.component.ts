@@ -177,7 +177,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
     setTimeout(() => this.form.valueChanges.subscribe(() => this.unsavedChanges = true), 1000);
 
-    if (this.status === 5) {
+    if (this.status === 10) {
       this.form.disable();
     }
   }
