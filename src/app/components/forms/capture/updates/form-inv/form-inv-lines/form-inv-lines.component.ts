@@ -67,6 +67,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     totalLineValueODate: new FormControl(null),
     totalLineValueOReason: new FormControl(null),
     uniqueIdentifier: new FormControl(),
+    LineNo: new FormControl(null),
   });
 
   public tempForm = new FormGroup({
@@ -134,6 +135,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         this.form.controls.unitOfMeasureID.reset();
         this.form.controls.itemID.reset();
         this.form.controls.cooID.reset();
+        //this.form.controls.LineNo.reset();
       }
 
     } else {
