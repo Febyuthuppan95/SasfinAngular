@@ -113,7 +113,7 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
 
-    if (this.status =10) {
+    if (this.status === 10) {
         this.query.disable();
     }
   }
