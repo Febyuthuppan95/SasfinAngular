@@ -85,6 +85,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
   @Input() data: any;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() isExport: boolean;
   @Output() submission = new EventEmitter<any>();
 
@@ -177,7 +178,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
     setTimeout(() => this.form.valueChanges.subscribe(() => this.unsavedChanges = true), 1000);
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
       this.form.disable();
     }
   }

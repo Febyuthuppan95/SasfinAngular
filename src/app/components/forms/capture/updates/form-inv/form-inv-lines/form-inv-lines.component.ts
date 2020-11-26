@@ -98,6 +98,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
   @Input() data: any;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() companyID: number;
   @Input() isQA = false;
   @Input() savedChanges = false;
@@ -183,7 +184,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
     this.form.valueChanges.subscribe(() => this.unsavedChanges = true);
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
       this.form.disable();
     }
   }

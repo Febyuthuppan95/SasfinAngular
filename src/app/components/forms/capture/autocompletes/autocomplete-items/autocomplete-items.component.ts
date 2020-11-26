@@ -22,6 +22,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
 
   @Input() control: FormControl;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() companyID: number;
   @Input() appearance = 'fill';
   @Input() label = 'Items';
@@ -127,7 +128,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
         this.safe = true;
       });
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
         this.query.disable();
       }
   }

@@ -22,6 +22,7 @@ export class CustomsWorksheet {
   waybillNoError: string;
   dateCreated: string;
   attachmentStatusID: number;
+  transactionStatusID: number;
 
   waybillNoOBit: boolean;
   waybillNoOUserID: number;

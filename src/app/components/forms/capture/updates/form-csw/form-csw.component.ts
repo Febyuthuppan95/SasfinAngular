@@ -56,6 +56,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
   public showErrors = false;
 
   public attachmentStatus: number;
+  public transactionStatus: number;
 
   private attachmentID: number;
   private transactionID: number;
@@ -303,8 +304,9 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
         response.attachmentStatusID = response.attachmentStatusID;
 
         this.attachmentStatus = response.attachmentStatusID;
+        this.transactionStatus = response.transactionStatusID;
 
-        if (this.attachmentStatus === 10) {
+        if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
           this.form.disable();
         }
 

@@ -98,7 +98,7 @@
         <br /><br />
       </div>
       <div class="col-6" >
-        <ls-autocomplete-cpc [status]="this.attachmentStatus" [(control)]="form.controls.cpcID" [helpSlug]="'form-sad500-cpc'"></ls-autocomplete-cpc>
+        <ls-autocomplete-cpc [transstatus]="transactionStatus" [status]="this.attachmentStatus" [(control)]="form.controls.cpcID" [helpSlug]="'form-sad500-cpc'"></ls-autocomplete-cpc>
         <br /><br />
       </div>
       <div class="col-12">
@@ -225,7 +225,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-sad500-line-updated [status]="attachmentStatus" [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport" #lineForm></app-form-sad500-line-updated>
+  <app-form-sad500-line-updated [transstatus]="transactionStatus" [status]="attachmentStatus" [(data)]="activeLine" (submission)="queueLine($event)" [(isExport)]="isExport" #lineForm></app-form-sad500-line-updated>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

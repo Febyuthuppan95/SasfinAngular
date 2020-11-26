@@ -118,19 +118,19 @@
     </div>
     <div class="col-8">
       <!-- Override -->
-      <ls-autocomplete-units-of-measure [status]="status" [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-cws-line-uom'"></ls-autocomplete-units-of-measure>
+      <ls-autocomplete-units-of-measure [transstatus]="transstatus" [status]="status" [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-cws-line-uom'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>
     <div class="col-12" >
-      <ls-autocomplete-currency [status]="status" [(control)]="form.controls.currencyID" [helpSlug]="'form-customs-worksheet-line-currency'"></ls-autocomplete-currency>
+      <ls-autocomplete-currency [transstatus]="transstatus" [status]="status" [(control)]="form.controls.currencyID" [helpSlug]="'form-customs-worksheet-line-currency'"></ls-autocomplete-currency>
       <br><br>
     </div>
     <div class="col-12" >
-      <ls-autocomplete-coo [status]="status" [(control)]="form.controls.cooID" [helpSlug]="'form-customs-worksheet-line-coo'"></ls-autocomplete-coo>
+      <ls-autocomplete-coo [transstatus]="transstatus" [status]="status" [(control)]="form.controls.cooID" [helpSlug]="'form-customs-worksheet-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
     <div class="col-12" >
-      <ls-autocomplete-tariffs [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
+      <ls-autocomplete-tariffs [transstatus]="transstatus" [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
       <br><br>
     </div>
     <div class="col-12">

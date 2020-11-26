@@ -62,6 +62,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public invoiceDate = new FormControl();
 
   public attachmentStatus: number;
+  public transactionStatus: number;
   public shortClaim: number;
 
   private attachmentID: number;
@@ -376,8 +377,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.form.updateValueAndValidity();
 
       this.attachmentStatus = response.attachmentStatusID;
+      this.transactionStatus = response.transactionStatusID;
 
-      if (this.attachmentStatus === 10) {
+      if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
         this.form.disable();
         this.invoiceDate.disable();
         this.form.controls.freightCost.enable();

@@ -52,6 +52,7 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   });
 
   public attachmentStatus: number;
+  public transactionStatus: number;
 
   public attachmentLabel: string;
   public transactionLabel: string;
@@ -233,8 +234,9 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
       this.loader = false;
 
       this.attachmentStatus = res.attachmentStatusID;
+      this.transactionStatus = res.transactionStatusID;
 
-      if (this.attachmentStatus === 10) {
+      if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
         this.form.disable();
       }
 

@@ -20,6 +20,7 @@ constructor(private userService: UserService,
 
   @Input() control: FormControl;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
@@ -109,7 +110,7 @@ constructor(private userService: UserService,
         }
       });
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
         this.query.disable();
       }
   }

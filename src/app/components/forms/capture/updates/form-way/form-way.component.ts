@@ -59,6 +59,7 @@ form = new FormGroup({
 });
 
 public attachmentStatus: number;
+public transactionStatus: number;
 public attachmentLabel: string;
 public transactionLabel: string;
 public errors: AttachmentError[] = [];
@@ -166,8 +167,9 @@ async load() {
     response.attachmentStatusID = response.statusID;
 
     this.attachmentStatus = response.attachmentStatusID;
+    this.transactionStatus = response.transactionStatusID;
 
-    if (this.attachmentStatus =10) {
+    if (this.attachmentStatus == 5 && this.transactionStatus == 10) {
       this.form.disable();
     }
 

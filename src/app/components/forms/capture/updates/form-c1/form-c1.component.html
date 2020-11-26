@@ -66,7 +66,7 @@
         <br /><br />
       </div> -->
       <div class="col-6">
-        <ls-autocomplete-companies [status]="attachmentStatus" [control]="form.controls.CompanyID" [helpSlug]="'c1-company'"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [transstatus] ="transactionStatus" [status]="attachmentStatus" [control]="form.controls.CompanyID" [helpSlug]="'c1-company'"></ls-autocomplete-companies>
         <br /><br />
       </div>
       <!-- <div class="col-6">
@@ -79,6 +79,6 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-c1-lines [status]="attachmentStatus" [(data)]="activeLine" [(companyID)]="form.controls.companyID" (submission)="queueLine($event)" #lineForm></app-form-c1-lines>
+  <app-form-c1-lines [transstatus]="transactionStatus" [status]="attachmentStatus" [(data)]="activeLine" [(companyID)]="form.controls.companyID" (submission)="queueLine($event)" #lineForm></app-form-c1-lines>
 </ng-container>
 

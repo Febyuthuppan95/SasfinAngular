@@ -72,15 +72,15 @@
     </div>
     <div class="col-4">
       <!-- UOM Override -->
-      <ls-autocomplete-units-of-measure [status]="status" [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
+      <ls-autocomplete-units-of-measure [transstatus]="transstatus" [status]="status" [(control)]="form.controls.unitOfMeasureID" [helpSlug]="'form-invoice-line-unitofmeasure'"></ls-autocomplete-units-of-measure>
       <br><br>
     </div>
     <div class="col-4" >
-      <ls-autocomplete-coo [status]="status" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
+      <ls-autocomplete-coo [transstatus]="transstatus" [status]="status" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-line-coo'"></ls-autocomplete-coo>
       <br><br>
     </div>
     <div class="col-6" >
-      <ls-autocomplete-items [status]="status" [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
+      <ls-autocomplete-items [transstatus]="transstatus" [status]="status" [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
       <br><br>
     </div>
     <div class="col-6">
@@ -100,7 +100,7 @@
     </div>
 
 
-    <div class="col-6" *ngIf="status === 10">
+    <div class="col-6" *ngIf="status === 5 && transstatus == 10">
       <mat-form-field appearance="fill" >
         <mat-label>
           Short Claim

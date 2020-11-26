@@ -116,6 +116,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 
   @Input() data: any;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() isExport: boolean;
   @Output() submission = new EventEmitter<any>();
 
@@ -240,7 +241,7 @@ export class FormCswLinesComponent implements OnInit, OnChanges, OnDestroy, Afte
 
     this.form.valueChanges.subscribe((e) => this.unsavedChanges = true);
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
       this.form.disable();
     }
   }

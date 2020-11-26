@@ -102,6 +102,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   });
 
   public attachmentStatus: number;
+  public transactionStatus: number;
 
   public attachmentLabel: string;
   public transactionLabel: string;
@@ -407,8 +408,9 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         response.referenceNo = response.rebateCode;
 
         this.attachmentStatus = response.attachmentStatusID;
+        this.transactionStatus = response.transactionStatusID;
 
-        if (this.attachmentStatus === 10) {
+        if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
           this.form.disable();
         }
 

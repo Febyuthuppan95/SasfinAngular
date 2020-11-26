@@ -96,6 +96,7 @@ form = new FormGroup({
 });
 
 public attachmentStatus: number;
+public transactionStatus: number;
 
 public attachmentLabel: string;
 public transactionLabel: string;
@@ -206,8 +207,9 @@ async load() {
       response.pccID = res.customs[0].pcc;
 
       this.attachmentStatus = response.statusID;
+      this.transactionStatus = response.TransactionStatusID;
 
-      if (this.attachmentStatus === 10) {
+      if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
         this.form.disable();
       }
 

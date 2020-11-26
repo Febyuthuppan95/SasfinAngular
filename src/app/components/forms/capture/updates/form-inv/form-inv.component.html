@@ -103,7 +103,7 @@
         <br /><br />
       </div>
       <div class="col-6" >
-        <ls-autocomplete-companies [status]="attachmentStatus" [(control)]="form.controls.seededCompanyID" [title]="'Ceded Company'" [helpSlug]="'form-invoice-seededCompanyID'"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.seededCompanyID" [title]="'Ceded Company'" [helpSlug]="'form-invoice-seededCompanyID'"></ls-autocomplete-companies>
         <br /><br />
       </div>
       <div class="col-12" >
@@ -112,7 +112,7 @@
       </div>
       <div class="col-12" >
         <!-- Override -->
-        <ls-autocomplete-currency [status]="attachmentStatus"
+        <ls-autocomplete-currency [transstatus]="transactionStatus" [status]="attachmentStatus"
           [(control)]="form.controls.currencyID"
           [helpSlug]="'form-invoice-unit-of-measure'"
           [hasOverride]="true"
@@ -126,15 +126,15 @@
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-coo [status]="attachmentStatus" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-coo'"></ls-autocomplete-coo>
+        <ls-autocomplete-coo [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-coo'"></ls-autocomplete-coo>
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-inco [status]="attachmentStatus" [(control)]="form.controls.incoTermTypeID" [helpSlug]="'form-invoice-incotype'"></ls-autocomplete-inco>
+        <ls-autocomplete-inco [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.incoTermTypeID" [helpSlug]="'form-invoice-incotype'"></ls-autocomplete-inco>
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-companies [status]="attachmentStatus" [(control)]="form.controls.companyID" [helpSlug]="'form-invoice-company'"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.companyID" [helpSlug]="'form-invoice-company'"></ls-autocomplete-companies>
         <br /><br />
       </div>
     </div>
@@ -143,7 +143,7 @@
 
 <loader *ngIf="loader"></loader>
 <ng-container *ngIf="displayLines && !loader">
-  <app-form-inv-lines [status]="attachmentStatus" [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID" [(isQA)]="isQA" [(savedChanges)]="savedChanges"></app-form-inv-lines>
+  <app-form-inv-lines [transstatus]="transactionStatus" [status]="attachmentStatus" [(data)]="activeLine" (submission)="queueLine($event)" [(companyID)]="companyID" [(isQA)]="isQA" [(savedChanges)]="savedChanges"></app-form-inv-lines>
 </ng-container>
 
 <app-capture-errors [(errors)]="errors" [(open)]="showErrors" [(lines)]="lines" [(lineErrors)]="lineErrors"></app-capture-errors>

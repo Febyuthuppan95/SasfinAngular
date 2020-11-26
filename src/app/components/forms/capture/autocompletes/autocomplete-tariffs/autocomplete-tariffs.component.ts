@@ -19,6 +19,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
 
   @Input() control: FormControl;
   @Input() status: number;
+  @Input() transstatus: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
 
@@ -121,7 +122,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         }
       });
 
-    if (this.status === 10) {
+    if (this.status === 5 && this.transstatus == 10) {
         this.query.disable();
     }
   }
