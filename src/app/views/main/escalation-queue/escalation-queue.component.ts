@@ -59,7 +59,7 @@ export class EscalationQueueComponent implements OnInit, OnDestroy {
       { title: 'Type', propertyName: 'AttachmentType', order: { enable: false } },
       { title: 'Reason', propertyName: 'Reason', order: { enable: false } },
       { title: 'Capturer', propertyName: 'Capturer', order: { enable: false } },
-      { title: 'LeadCapturer', propertyName: 'ResponsibleCapturer', order: { enable: false } },
+      { title: 'Lead Capturer', propertyName: 'ResponsibleCapturer', order: { enable: false } },
       { title: 'Consultant', propertyName: 'ResponsibleConsultant', order: { enable: false} },
       { title: 'Date', propertyName: 'Date', order: { enable: false } },
     ],
