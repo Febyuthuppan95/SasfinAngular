@@ -159,7 +159,7 @@
             <td>{{transaction.responsibleConsultant}}</td>
             <td>{{transaction.status}}</td>
             <td>
-              <span *ngIf="transaction.dateEdited !== null && transaction.dateEdited !== undefined">{{transaction.dateEdited}}</span>
+              <span *ngIf="transaction.dateEdited !== null && transaction.dateEdited !== undefined">{{transaction.dateEdited | date:'yyyy-MM-dd hh:mm aaa'}}</span>
               <span *ngIf="transaction.dateEdited === null || transaction.dateEdited === undefined">-</span>
             </td>
           </tr>

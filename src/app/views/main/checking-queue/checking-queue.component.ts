@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
@@ -94,8 +95,8 @@ export class CheckingQueueComponent implements OnInit, OnDestroy {
         const unfiltered = res.data;
 
         unfiltered.forEach((el) => {
-          el.Date = new Date(el.DateCreated).toLocaleString();
-          el.Edited = new Date(el.DateEdited).toLocaleString();
+          el.Date = new Date(el.DateCreated).toLocaleString('sv-SE');
+          el.Edited = new Date(el.DateEdited).toLocaleString('sv-SE');
         });
 
         this.tableConfig.dataset = unfiltered;
