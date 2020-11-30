@@ -312,6 +312,7 @@ import { DialogTransactionDeleteComponent } from './views/main/view-transactions
 import { ExchangeRateUploadComponent } from './views/main/exchange-rate-upload/exchange-rate-upload.component';
 import { ContextMenuRoeComponent } from './components/menus/context-menu-roe/context-menu-roe.component';
 import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/exchange-rate-lines/exchange-rate-lines.component';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -525,6 +526,7 @@ import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/ex
     ExchangeRateLinesComponent
   ],
   imports: [
+    TextMaskModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -548,6 +550,7 @@ import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/ex
     FirebaseModule,
     PdfJsViewerModule,
     NgxMaskModule.forRoot(),
+    
   ],
   providers: [
     CookieService,

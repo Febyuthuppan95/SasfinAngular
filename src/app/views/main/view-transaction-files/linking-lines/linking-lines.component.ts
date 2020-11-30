@@ -97,6 +97,13 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   invoiceDialog: MatDialogRef<InvoiceLineLinkComponent>;
   cwsDialog: MatDialogRef<CustomsLineLinkComponent>;
 
+   public mask = {
+    // guide: true,
+     //showMask: true,
+     // keepCharPositions : true,
+     mask: [/\d/, /\d/,/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/] // i made changes here
+   };
+
   private currentUser: any = this.user.getCurrentUser();
   public consultant =
   this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' ||
@@ -1240,7 +1247,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   }
-
+  todate(value) {
+    this.invoiceDate.setValue(new Date(value));
+  }
+  
   ngOnDestroy(): void {
     this.exitFullscreen();
   }
