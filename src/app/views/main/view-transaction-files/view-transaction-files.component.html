@@ -82,8 +82,8 @@
             <td>{{file.fileType}}</td>
             <td>{{file.status}}</td>
             <td>{{file.capturer}}</td>
-            <td>{{file.dateCreated}}</td>
-            <td>{{file.dateEdited}}</td>
+            <td>{{file.dateCreated | date:'yyyy-MM-dd hh:mm aaa'}}</td>
+            <td>{{file.dateEdited | date:'yyyy-MM-dd hh:mm aaa'}}</td>
           </tr>
         </tbody>
         <tbody class="tbodyPop" *ngIf="(noData)" >

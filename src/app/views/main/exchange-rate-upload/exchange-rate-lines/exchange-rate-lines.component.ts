@@ -186,9 +186,9 @@ export class ExchangeRateLinesComponent implements OnInit {
       .subscribe((obj: SelectedROE) => {
         if (obj !== undefined) {
           this.ROEDateID = obj.ROEDateID;
-         // this.bomstatus = obj.status;
+          // this.bomstatus = obj.status;
         }
-    });
+      });
 
     this.loadROELines();
   }
@@ -201,15 +201,19 @@ export class ExchangeRateLinesComponent implements OnInit {
         RateOfExchangeDateID: this.ROEDateID,
         filter: this.filter,
         RowStart: this.rowStart,
-        RowEnd: this. rowEnd
+        RowEnd: this.rowEnd
       },
       procedure: 'RateOfExchangeList'
     };
 
     await this.api.post(`${environment.ApiEndpoint}/capture/list`, requestModel).then(
       (res: any) => {
-        this.showLoader = false;
-        this.ROELines = res.data;
+        this.showLoader = false
+        const unfiltered = res.data;
+        unfiltered.forEach(el => {
+          el.FullDate = new Date(el.FullDate, ).toLocaleString('sv-SE',{year:"numeric",month:"2-digit", day:"2-digit"})
+        });
+        this.ROELines = unfiltered;
         this.rowCount = res.rowCount;
 
         if (res.outcome.outcome == 'SUCCESS') {
@@ -218,7 +222,7 @@ export class ExchangeRateLinesComponent implements OnInit {
           this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
         }
 
-    });
+      });
   }
 
   back() {
