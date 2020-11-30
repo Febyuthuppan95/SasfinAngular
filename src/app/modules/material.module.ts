@@ -34,7 +34,7 @@ import { ChatRedirectComponent } from './chat/components/chat-redirect/chat-redi
 import { OverlayContainer, FullscreenOverlayContainer } from '@angular/cdk/overlay';
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE, NativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -73,10 +73,23 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatBottomSheetModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    DragDropModule
+    DragDropModule,
+    NativeDateModule
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    { provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'YYYY/MM/DD',
+        },
+        display: {
+          dateInput: 'YYYY/MM/DD',
+          monthYearLabel: 'YYYY MMM DD',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'YYYY MMMM DD',
+        },
+      },
+    },
     {
       provide: MAT_BOTTOM_SHEET_DATA,
       useValue: {}
