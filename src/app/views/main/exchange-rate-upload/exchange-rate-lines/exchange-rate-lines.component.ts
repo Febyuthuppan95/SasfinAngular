@@ -211,7 +211,7 @@ export class ExchangeRateLinesComponent implements OnInit {
         this.showLoader = false
         const unfiltered = res.data;
         unfiltered.forEach(el => {
-          el.FullDate = new Date(el.FullDate, ).toLocaleString('sv-SE',{year:"numeric",month:"2-digit", day:"2-digit"})
+          el.FullDate = new Date(el.FullDate).toLocaleString('sv-SE',{year:"numeric",month:"2-digit", day:"2-digit"})
         });
         this.ROELines = unfiltered;
         this.rowCount = res.rowCount;
