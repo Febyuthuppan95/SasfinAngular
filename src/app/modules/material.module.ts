@@ -37,7 +37,6 @@ import { MatBottomSheetModule, MAT_BOTTOM_SHEET_DATA } from '@angular/material/b
 import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   imports: [
@@ -75,7 +74,6 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatNativeDateModule,
     MatCheckboxModule,
     DragDropModule,
-    MatMomentDateModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
