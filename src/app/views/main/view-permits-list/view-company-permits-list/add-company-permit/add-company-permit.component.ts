@@ -11,7 +11,8 @@ export class AddCompanyPermitComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
   form : FormGroup;
-  
+
+  PermitCode: number;
 
   public mask = {
     // guide: true,
@@ -33,7 +34,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
   addCompany(group : FormGroup){
     if (group.valid){
-      
+
     }
   }
 
