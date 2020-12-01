@@ -281,11 +281,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   importComponents: Import[];
   selectProducts: Export[];
-  availableExports: Export[];
-  assignedExports: ExportLine[];
+  availableExports: Export[] = [];
+  assignedExports: ExportLine[] = [];
   displayedColumns: string[] = ['rowNum', 'prodCode', 'quantityPer', 'exportedQuantity', 'totalExportedQuantity', 'select'];
-  dataSource = new MatTableDataSource<Export>(this.availableExports);
-  eDataSource = new MatTableDataSource<ExportLine>(this.assignedExports);
+
   selection = new SelectionModel<Export>(true, []);
 
   length = 100;
@@ -297,7 +296,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   minClaimDate = new Date();
   /* Claims Modal*/
-
+  dataSource = new MatTableDataSource<Export>(this.availableExports);
+  eDataSource = new MatTableDataSource<ExportLine>(this.assignedExports);
 
   ngOnInit() {
 
@@ -319,8 +319,6 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
 
-
-
   submit522() {
     this.openCreate522Modal.nativeElement.click();
   }
@@ -336,7 +334,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: `CompanyServiceClaimsUpdate`
     };
-    // console.log(model);
+    console.log('model');
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`, model).then(
       (res: UpdateResponse ) => {
         this.closeCreate522Modal.nativeElement.click();
@@ -595,6 +594,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   }
 
   populatecompanyService($event) {
+    console.log('event');
+    console.log($event);
      this.myInputVariable.nativeElement.value = null;
 
      this.openPopulateModal.nativeElement.click();
@@ -875,7 +876,8 @@ addCompanyServiceClaimPermits() {
       },
       requestProcedure: 'CompanyServiceClaimPermitAdd'
     };
-    // console.log(model);
+    console.log('model');
+     console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/addClaimPermit`, model).then(
       (res: Outcome) => {
         console.log(res);
