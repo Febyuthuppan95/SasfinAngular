@@ -91,7 +91,7 @@ export class ViewPermitsListComponent implements OnInit {
       }
     },
     {
-      title: 'permit Name',
+      title: 'Permit Type',
       propertyName: 'permitName',
       order: {
         enable: false

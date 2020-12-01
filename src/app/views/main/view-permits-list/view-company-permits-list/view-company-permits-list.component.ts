@@ -13,9 +13,14 @@ import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { User } from 'src/app/models/HttpResponses/User';
 import { Pagination } from 'src/app/models/Pagination';
+import { ApiService } from 'src/app/services/api.service';
+import { MatDialog } from '@angular/material';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { GetCompanyEPCs } from 'src/app/models/HttpRequests/GetCompanyEPCs';
 import { GetCompanyPRCCs } from 'src/app/models/HttpRequests/GetCompanyPRCCs';
+import { AddCompanyPermitComponent } from './add-company-permit/add-company-permit.component';
+import { env } from 'process';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-company-permits-list',
@@ -31,6 +36,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     private themeService: ThemeService,
     private IMenuService: MenuService,
     private router: Router,
+    private dialog: MatDialog,
+    private api: ApiService,
     private snackbarService: HelpSnackbar
   ) {
     this.rowStart = 1;
@@ -68,7 +75,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   tableHeader: TableHeader = {
     title: 'Permits',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: true
@@ -633,6 +640,36 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       console.log(3);
       this.loadCompanyEPCs(true);
     }
+  }
+
+  addPermitDialog(){
+    this.dialog.open(AddCompanyPermitComponent,{
+      autoFocus: true,
+      width: '512px',
+      data: {
+        
+      }});
+    /*} ).afterClosed().subscribe((val) =>{
+      if  (val){
+        this.addPermit(val);
+      }
+    }); */
+  }
+
+  addPermit(permit : any){
+    this.api.post(`${environment.ApiEndpoint}/`, {
+      request: {
+
+      }
+    })
+  }
+
+  updatePermitDialog(){
+
+  }
+
+  updatePermit(){
+
   }
 
   // editItem(id: number) {
