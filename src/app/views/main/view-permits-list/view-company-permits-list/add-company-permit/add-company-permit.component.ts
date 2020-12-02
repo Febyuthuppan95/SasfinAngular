@@ -23,6 +23,26 @@ export class AddCompanyPermitComponent implements OnInit {
   transactionTypes: any;
   processing: any;
   fileReader: any;
+  form = new FormGroup({
+    PermitCode: new FormControl(null, [Validators.required]),
+    dateStart: new FormControl(null, [Validators.required]),
+    dateEnd: new FormControl(null, [Validators.required]),
+    importdateStart: new FormControl(null, [Validators.required]),
+    importdateEnd: new FormControl(null, [Validators.required]),
+    exportdateStart: new FormControl(null, [Validators.required]),
+    exportdateEnd: new FormControl(null, [Validators.required])
+   });
+
+   public mask = {
+    // guide: true,
+    // showMask: true,
+    // keepCharPositions : true,
+     mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/] // i made changes here
+   };
+
+   toDate(value, control: FormControl) {
+    control.setValue(new Date(value));
+  }
 
   ngOnInit() {
 
@@ -54,7 +74,8 @@ export class AddCompanyPermitComponent implements OnInit {
   //     control: new FormControl(null, [
   //       Validators.required,
   //       // tslint:disable-next-line: max-line-length
-  //       Validators.pattern(new RegExp(/^([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2})(,([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2}))*$/))
+  // tslint:disable-next-line: max-line-length
+  //      Validators.pattern(new RegExp(/^([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2})(,([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2}))*$/))
   //       // Validators.pattern(new RegExp(/^\d{1,}((-\d{1,})|(,\d{1,})?){1,}/g))
   //     ]),
   //     nameControl: new FormControl(null, [Validators.required]),
