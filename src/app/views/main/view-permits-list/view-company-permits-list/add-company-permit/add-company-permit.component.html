@@ -1,0 +1,21 @@
+<div mat-dialog-content class="overflow: hidden">
+  <div class="text-center">
+    <label *ngIf="this.file === undefined" for="attachDocument" style="margin-top: 20%;">
+      <span class="upload-attachment">
+          <span class="mdi mdi-file-upload"></span>
+      </span>
+      <br><br><br>
+      Upload Document
+    </label>
+  </div>
+    <input id="attachDocument" (change)="inputFileChange($event.target.files)" type="file" hidden/>
+  <div class="row" style="overflow: hidden">
+    <div style=" width: 58% ;overflow-y: auto; position: relative; overflow-y: auto; height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
+        <app-pdf-viewer
+        class="fill-div"
+        *ngIf="this.filePreview"
+        [pdf]="this.filePreview"
+        >
+        </app-pdf-viewer>
+    </div>
+</div>
