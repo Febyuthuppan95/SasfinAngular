@@ -54,7 +54,7 @@ export class CaptureService {
   splitPDF = (requestModel: FormData) => this.apiService.postFormData(`${environment.ApiEndpoint}/public/generate/split-document`, requestModel);
 
   // tslint:disable-next-line: max-line-length
-  UploadPermit = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/public/generate/split-document`, requestModel);
+  UploadPermit = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/public/permit-document`, requestModel);
 
   waybillUpdate = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/waybill/update`, requestModel);
   waybillList = (requestModel: object) => this.apiService.post(`${environment.ApiEndpoint}/capture/waybill/list`, requestModel);
