@@ -43,6 +43,9 @@
               <mat-label>Permit Code:</mat-label>
               <input matInput type="text" placeholder="Code"
               [formControl]="this.form.controls.PermitCode"  required/>
+              <mat-error *ngIf="this.form.controls.PermitCode.hasError('required')">
+                Permit Code is <strong>required</strong>
+              </mat-error>
             </mat-form-field>
           <mat-form-field class="form-group">
             <mat-label>Start Date:</mat-label>

@@ -97,62 +97,19 @@ export class AddCompanyPermitComponent implements OnInit {
   }
 
   async formSubmit() {
-    this.processing = true;
 
     let err = 0;
 
-    if (this.file === undefined) {
-          err++;
-    }
-
-    if (this.requestData.valid) {
-
-
-      } else {
-        err++;
-        this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
-      }
-
-    if (this.requestData.valid) {
-        // item.name = item.nameControl.value;
-      } else {
+    if (this.form.valid) {
         err++;
       }
-
-
-    // if (item.selectControl.valid) {
-    //     item.attachmentType = item.selectControl.value;
-    //   } else {
-    //     item.selectControl.setErrors({ required: true });
-    //     item.selectControl.updateValueAndValidity();
-    //     err++;
-    //   }
-    // console.log('attachmentType');
-    // console.log(item.attachmentType);
-
-    // if (item.name === '' || item.name === null || !item.name) {
-    //     console.log('err: Name');
-    //     this.snackbar.open('err: Attachment Name', '', { duration: 5000 });
-    //     err++;
-    //   }
-
-    // if (item.pages.length === 0) {
-    //     err++;
-    //   }
-
 
     if (err === 0) {
        const request = this.requestData;
 
-    //   request.sections.forEach((item) => {
-    //     delete item.control;
-    //     delete item.nameControl;
-    //     delete item.selectControl;
-    //   });
-
        const formData = new FormData();
 
-       await this.captureService.splitPDF(formData).then(
+       await this.captureService.UploadPermit(formData).then(
         (res) => {
           this.processing = false;
           this.dialogRef.close({state: true});
