@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CaptureService } from 'src/app/services/capture.service';
+import { UserService } from 'src/app/services/user.Service';
 
 @Component({
   selector: 'app-add-company-permit',
@@ -12,6 +13,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 export class AddCompanyPermitComponent implements OnInit {
 
   constructor(private snackbar: MatSnackBar,
+              private userService: UserService,
               private captureService: CaptureService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
@@ -32,6 +34,8 @@ export class AddCompanyPermitComponent implements OnInit {
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required])
    });
+
+   private currentUser = this.userService.getCurrentUser();
 
    public mask = {
     // guide: true,
@@ -105,11 +109,15 @@ export class AddCompanyPermitComponent implements OnInit {
       }
 
     if (err === 0) {
-       const request = this.requestData;
 
-       const formData = new FormData();
+       const model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+        },
+        requestProcedure: ''
+      };
 
-       await this.captureService.UploadPermit(formData).then(
+       await this.captureService.UploadPermit(model).then(
         (res) => {
           this.processing = false;
           this.dialogRef.close({state: true});
