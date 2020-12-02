@@ -100,6 +100,13 @@ export class AddCompanyPermitComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
+  /*dateStart: new FormControl(null, [Validators.required]),
+    dateEnd: new FormControl(null, [Validators.required]),
+    importdateStart: new FormControl(null, [Validators.required]),
+    importdateEnd: new FormControl(null, [Validators.required]),
+    exportdateStart: new FormControl(null, [Validators.required]),
+    exportdateEnd: new FormControl(null, [Validators.required])*/
+
   async formSubmit() {
 
     let err = 0;
@@ -113,6 +120,13 @@ export class AddCompanyPermitComponent implements OnInit {
        const model = {
         requestParams: {
           userID: this.currentUser.userID,
+          permitCode: this.form.controls.PermitCode.value,
+          dateStart: this.form.controls.dateStart.value,
+          dateEnd: this.form.controls.dateEnd.value,
+          importDateStart: this.form.controls.importdateStart.value,
+          importDateEnd: this.form.controls.importdateEnd.value,
+          exportDateStart: this.form.controls.exportdateStart.value,
+          exportDateEnd: this.form.controls.exportdateEnd.value
         },
         requestProcedure: ''
       };
