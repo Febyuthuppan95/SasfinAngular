@@ -10,7 +10,7 @@
   </div>
     <input id="attachDocument" (change)="inputFileChange($event.target.files)" type="file" hidden/>
   <div class="row" style="overflow: hidden">
-    <div style=" width: 58% ;overflow-y: auto; position: relative; overflow-y: auto; height: 80vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
+    <div style=" width: 58% ;overflow-y: auto; position: relative; overflow-y: auto; height: 65vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
         <app-pdf-viewer
         class="fill-div"
         *ngIf="this.filePreview"
@@ -19,6 +19,7 @@
         </app-pdf-viewer>
     </div>
     <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.displayPreview">
+      <h5 class="modal-title" id="modalContent" style="color:black">Capture Permit</h5>
         <form [formGroup]="form" class="bg-light" style="padding: 24px; width: 100%;">
             <div *ngIf="this.file !== undefined" class="split-pdf">
                   <!-- <mat-form-field appearance="fill">
@@ -35,37 +36,22 @@
                       Incorrect Format <strong>make sure ranges are valid</strong>
                     </mat-error> -->
                   <!-- </mat-form-field> -->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Attachment Name</mat-label>
-                    <input matInput type="text" >
-                    <!-- <mat-error *ngIf="section.nameControl.hasError('required')">
-                      Attachment Name is <strong>required</strong>
-                    </mat-error> -->
-                  </mat-form-field>
-                  <br>
-                  <br>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Document Type</mat-label>
-                    <input matInput type="text" >
-                  </mat-form-field>
-                  <br>
-                  <br>
-              <hr>
+
             </div>
             <mat-form-field class="form-group">
               <mat-label>Permit Code:</mat-label>
               <input matInput type="text" placeholder="Code"
               [formControl]="this.form.controls.PermitCode"  required/>
             </mat-form-field>
-          <div class="form-group">
-            <label class="control-label">Start Date:</label>
+          <mat-form-field class="form-group">
+            <mat-label>Start Date:</mat-label>
             <input hidden [matDatepicker]="startPicker" [formControl]="this.form.controls.dateStart">
-            <input matInput type="text" placeholder="start date" class="form-control" [textMask]="mask"
+            <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.dateStart.value | date : this.form.controls.dateStart.value !== null?'yyyy/MM/dd' : ''"
             [ngModelOptions]="{standalone: true}" (change)='toDate($event.target.value, this.form.controls.DateStart)'  required/>
             <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
             <mat-datepicker #startPicker></mat-datepicker>
-          </div>
+          </mat-form-field>
           <mat-form-field class="form-group">
             <mat-label>End Date:</mat-label>
             <input hidden [matDatepicker]="endPicker" [formControl]="this.form.controls.dateEnd">
@@ -74,49 +60,50 @@
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>
           </mat-form-field>
-          <div class="form-group">
-            <label class="control-label">Import Start Date:</label>
+          <mat-form-field class="form-group">
+            <mat-label>Import Start Date:</mat-label>
             <input hidden [matDatepicker]="importStartPicker" [formControl]="this.form.controls.importdateStart">
-            <input matInput type="text" placeholder="Import Start Date" class="form-control" [textMask]="mask"
+            <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.importdateStart.value | date : this.form.controls.importdateStart.value !== null?'yyyy/MM/dd' : ''"
             [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ImportDateStart)' required/>
             <mat-datepicker-toggle matSuffix [for]="importStartPicker"></mat-datepicker-toggle>
             <mat-datepicker #importStartPicker></mat-datepicker>
-          </div>
-          <div class="form-group">
-            <label class="control-label">Import End Date:</label>
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label>Import End Date:</mat-label>
             <input hidden [matDatepicker]="importEndPicker" [formControl]="this.form.controls.importdateEnd">
-            <input matInput type="text" placeholder="Import End Date" class="form-control" [textMask]="mask"
+            <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.importdateEnd.value | date : this.form.controls.importdateEnd.value !== null?'yyyy/MM/dd' : ''"
             [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ImportDateEnd)' required/>
             <mat-datepicker-toggle matSuffix [for]="importEndPicker"></mat-datepicker-toggle>
             <mat-datepicker #importEndPicker></mat-datepicker>
-          </div>
-          <div class="form-group">
-            <label class="control-label">Export Start Date:</label>
+          </mat-form-field>
+          <mat-form-field class="form-group">
+            <mat-label>Export Start Date:</mat-label>
             <input hidden [matDatepicker]="exportStartPicker" [formControl]="this.form.controls.exportdateStart">
-            <input matInput type="text" placeholder="Export Start Date" class="form-control" [textMask]="mask"
+            <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.exportdateStart.value | date : this.form.controls.exportdateStart.value !== null?'yyyy/MM/dd' : ''"
             [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ExportDateStart)' required/>
             <mat-datepicker-toggle matSuffix [for]="exportStartPicker"></mat-datepicker-toggle>
             <mat-datepicker #exportStartPicker></mat-datepicker>
-          </div>
-          <div class="form-group">
-            <label class="control-label">Export End Date:</label>
+          </mat-form-field>
+          <mat-form-field class="form-group" style="margin-bottom: 0px;">
+            <mat-label>Export End Date:</mat-label>
             <input hidden [matDatepicker]="exportEndPicker" [formControl]="this.form.controls.exportdateEnd">
-            <input matInput type="text" placeholder="Export End date" class="form-control" [textMask]="mask"
+            <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.exportdateEnd.value | date : this.form.controls.exportdateEnd.value !== null?'yyyy/MM/dd' : ''"
             [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ExportDateEnd)' required/>
             <mat-datepicker-toggle matSuffix [for]="exportEndPicker"></mat-datepicker-toggle>
             <mat-datepicker #exportEndPicker></mat-datepicker>
-          </div>
+          </mat-form-field>
         </form>
-        <div class="form-group text-right" style="padding: 24px">
-            <button class="btn btn-light btn-sm" (click)="dismiss()" [disabled]="processing">Cancel</button>
-            <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm" [disabled]="processing">Submit</button>
-          </div>
       </div>
   </div>
+
   <div class="split-overlay" *ngIf="processing" ><mat-spinner></mat-spinner></div>
+ </div>
+ <div class="form-group text-right" style="padding: 24px" *ngIf="this.file !== undefined">
+  <button class="btn btn-light btn-sm" (click)="dismiss()" [disabled]="processing">Cancel</button>
+  <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm" [disabled]="processing">Submit</button>
 </div>
 
