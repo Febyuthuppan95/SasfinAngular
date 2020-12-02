@@ -642,12 +642,12 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     }
   }
 
-  addPermitDialog(){
-    this.dialog.open(AddCompanyPermitComponent,{
+  addPermitDialog() {
+    this.dialog.open(AddCompanyPermitComponent, {
       autoFocus: true,
       width: '512px',
       data: {
-        
+
       }});
     /*} ).afterClosed().subscribe((val) =>{
       if  (val){
@@ -656,7 +656,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     }); */
   }
 
-  addPermit(permit : any){
+  addPermit(permit: any){
     this.api.post(`${environment.ApiEndpoint}/`, {
       request: {
 
