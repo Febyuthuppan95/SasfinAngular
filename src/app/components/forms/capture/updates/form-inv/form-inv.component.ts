@@ -93,6 +93,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       this.transactionID = this.capture.transactionID;
       this.attachmentLabel = this.capture.docType;
       this.transactionLabel = this.capture.transactionType;
+      console.log('capture');
+      console.log(this.capture);
       this.load();
     }
   }
