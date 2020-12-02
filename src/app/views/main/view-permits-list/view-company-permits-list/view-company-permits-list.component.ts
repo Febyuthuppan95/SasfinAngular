@@ -75,7 +75,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   tableHeader: TableHeader = {
     title: 'Permits',
     addButton: {
-     enable: false,
+     enable: true,
     },
     backButton: {
       enable: true

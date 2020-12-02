@@ -18,7 +18,7 @@ export class AddCompanyPermitComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
 
-  file: File;
+  file: File[];
   filePreview: any;
   displayPreview: any;
   requestData = new FormControl(null);
@@ -52,7 +52,8 @@ export class AddCompanyPermitComponent implements OnInit {
 
   }
 
-  inputFileChange(files: File) {
+  inputFileChange(files: File[]) {
+
     this.file = files;
 
     this.fileReader = new FileReader();
@@ -124,11 +125,14 @@ export class AddCompanyPermitComponent implements OnInit {
 
        // console.log(requestParams);
 
-       const file = this.file;
+       const file: File[] = this.file;
        const formData = new FormData();
 
        formData.append('requestModel', JSON.stringify(requestParams));
-       formData.append('files', file);
+       // tslint:disable-next-line: prefer-for-of
+       for (let i = 0; i < this.file.length; i++) {
+        formData.append('files', this.file[i]);
+      }
        console.log(formData);
 
        await this.captureService.UploadPermit(formData).then(
