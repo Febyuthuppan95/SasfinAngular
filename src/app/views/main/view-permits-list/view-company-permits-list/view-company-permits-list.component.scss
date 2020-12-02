@@ -215,3 +215,7 @@ tr.active {
   color: #5085fa;
   padding-bottom: 3px;
 }
+
+.custom-dialog-container .mat-dialog-container {
+  overflow-y: hidden !important;
+}

@@ -647,6 +647,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   addPermitDialog() {
     this.dialog.open(AddCompanyPermitComponent, {
       autoFocus: true,
+      panelClass: 'custom-dialog-container',
       height: '75vh',
       width: '80%',
       data: {

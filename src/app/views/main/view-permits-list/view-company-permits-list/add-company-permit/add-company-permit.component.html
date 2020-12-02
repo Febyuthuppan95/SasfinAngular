@@ -1,3 +1,4 @@
+
 <div mat-dialog-content class="overflow: hidden">
   <div class="text-center">
     <label *ngIf="this.file === undefined" for="attachDocument" style="margin-top: 20%;">
@@ -18,7 +19,7 @@
         >
         </app-pdf-viewer>
     </div>
-    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height: 80vh;padding: 24px" *ngIf="this.displayPreview">
+    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.displayPreview">
       <h5 class="modal-title" id="modalContent" style="color:black">Capture Permit</h5>
         <form [formGroup]="form" class="bg-light" style="padding: 24px; width: 100%;">
             <div *ngIf="this.file !== undefined" class="split-pdf">
@@ -102,8 +103,7 @@
 
   <div class="split-overlay" *ngIf="processing" ><mat-spinner></mat-spinner></div>
  </div>
- <div class="form-group text-right" style="padding: 24px" *ngIf="this.file !== undefined">
+ <div class="form-group text-right" style="margin-bottom: 5px;" *ngIf="this.file !== undefined">
   <button class="btn btn-light btn-sm" (click)="dismiss()" [disabled]="processing">Cancel</button>
   <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm" [disabled]="processing">Submit</button>
 </div>
-
