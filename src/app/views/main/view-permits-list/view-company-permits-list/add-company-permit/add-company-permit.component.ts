@@ -18,7 +18,7 @@ export class AddCompanyPermitComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
 
-  file: any;
+  file: File;
   filePreview: any;
   displayPreview: any;
   requestData = new FormControl(null);
@@ -52,7 +52,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
   }
 
-  inputFileChange(files: any) {
+  inputFileChange(files: File) {
     this.file = files;
 
     this.fileReader = new FileReader();
@@ -117,8 +117,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
     if (err === 0) {
 
-       const model = {
-        requestParams: {
+       const requestParams: object = {
           userID: this.currentUser.userID,
           permitCode: this.form.controls.PermitCode.value,
           dateStart: this.form.controls.dateStart.value,
@@ -126,12 +125,17 @@ export class AddCompanyPermitComponent implements OnInit {
           importDateStart: this.form.controls.importdateStart.value,
           importDateEnd: this.form.controls.importdateEnd.value,
           exportDateStart: this.form.controls.exportdateStart.value,
-          exportDateEnd: this.form.controls.exportdateEnd.value
-        },
-        requestProcedure: ''
-      };
+          exportDateEnd: this.form.controls.exportdateEnd.value,
+        };
 
-       await this.captureService.UploadPermit(model).then(
+       const file = this.file;
+
+       const formData = new FormData();
+
+       formData.append('requestModel', JSON.stringify(requestParams));
+       formData.append('file', file);
+
+       await this.captureService.UploadPermit(formData).then(
         (res) => {
           this.processing = false;
           this.dialogRef.close({state: true});
