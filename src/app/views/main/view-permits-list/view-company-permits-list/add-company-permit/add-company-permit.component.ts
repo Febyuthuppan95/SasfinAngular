@@ -19,11 +19,10 @@ export class AddCompanyPermitComponent implements OnInit {
   file: any;
   filePreview: any;
   displayPreview: any;
-  requestData: any;
+  requestData = new FormControl(null);
   transactionTypes: any;
   processing: any;
   fileReader: any;
-  sections: any;
 
   ngOnInit() {
 
@@ -41,32 +40,32 @@ export class AddCompanyPermitComponent implements OnInit {
     this.displayPreview = true;
   }
 
-  addSection() {
-    const curLength = this.requestData.sections.length;
+  // addSection() {
+  //   const curLength = this.requestData.sections.length;
 
-    this.requestData.sections.push({
-      position: curLength,
-      pages: [],
-      name: '',
-      userID: this.data.userID,
-      transactionID: this.data.transactionID,
-      attachmentType: '',
-     // companyName: this.companyName,
-      control: new FormControl(null, [
-        Validators.required,
-        // tslint:disable-next-line: max-line-length
-        Validators.pattern(new RegExp(/^([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2})(,([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2}))*$/))
-        // Validators.pattern(new RegExp(/^\d{1,}((-\d{1,})|(,\d{1,})?){1,}/g))
-      ]),
-      nameControl: new FormControl(null, [Validators.required]),
-      selectControl: new FormControl(null, [Validators.required]),
-    });
+  //   this.requestData.sections.push({
+  //     position: curLength,
+  //     pages: [],
+  //     name: '',
+  //     userID: this.data.userID,
+  //     transactionID: this.data.transactionID,
+  //     attachmentType: '',
+  //    // companyName: this.companyName,
+  //     control: new FormControl(null, [
+  //       Validators.required,
+  //       // tslint:disable-next-line: max-line-length
+  //       Validators.pattern(new RegExp(/^([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2})(,([1-9][0-9]{0,2}|[1-9][0-9]{0,2}-[1-9][0-9]{0,2}))*$/))
+  //       // Validators.pattern(new RegExp(/^\d{1,}((-\d{1,})|(,\d{1,})?){1,}/g))
+  //     ]),
+  //     nameControl: new FormControl(null, [Validators.required]),
+  //     selectControl: new FormControl(null, [Validators.required]),
+  //   });
 
-    this.requestData.sections[this.requestData.sections.length - 1].control.markAsUntouched();
-    this.requestData.sections[this.requestData.sections.length - 1].nameControl.markAsUntouched();
+  //   this.requestData.sections[this.requestData.sections.length - 1].control.markAsUntouched();
+  //   this.requestData.sections[this.requestData.sections.length - 1].nameControl.markAsUntouched();
 
-    this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
-  }
+  //   this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
+  // }
 
   removeSection(section: any) {
 
@@ -81,90 +80,58 @@ export class AddCompanyPermitComponent implements OnInit {
 
     let err = 0;
 
-    if (this.sections.length === 0) {
-      err++;
-    } else if (this.file === undefined) {
-      err++;
+    if (this.file === undefined) {
+          err++;
     }
 
+    if (this.requestData.valid) {
 
-    this.requestData.sections.forEach((item) => {
-      if (item.control.valid) {
-        item.pages = [];
-        const segments = item.control.value.split(',');
-
-        segments.forEach((element) => {
-          if (element.indexOf('-') !== -1) {
-            const ranges = element.split('-');
-
-            if (ranges[0] < ranges[1]) {
-              for (let i = +ranges[0]; i <= +ranges[1]; i++) {
-                item.pages.push(i);
-              }
-            }
-          } else {
-            item.pages.push(+element);
-          }
-        });
-
-        console.log(item.pages);
 
       } else {
         err++;
         this.snackbar.open('Page number format is incorrect', '', { duration: 5000 });
       }
 
-      if (item.nameControl.valid) {
-        item.name = item.nameControl.value;
+    if (this.requestData.valid) {
+        // item.name = item.nameControl.value;
       } else {
         err++;
       }
 
-      console.log('selectControl');
-      console.log(item.selectControl.value);
 
-      if (item.selectControl.valid) {
-        item.attachmentType = item.selectControl.value;
-      } else {
-        item.selectControl.setErrors({ required: true });
-        item.selectControl.updateValueAndValidity();
-        err++;
-      }
-      console.log('attachmentType');
-      console.log(item.attachmentType);
+    // if (item.selectControl.valid) {
+    //     item.attachmentType = item.selectControl.value;
+    //   } else {
+    //     item.selectControl.setErrors({ required: true });
+    //     item.selectControl.updateValueAndValidity();
+    //     err++;
+    //   }
+    // console.log('attachmentType');
+    // console.log(item.attachmentType);
 
-      if (item.name === '' || item.name === null || !item.name) {
-        console.log('err: Name');
-        this.snackbar.open('err: Attachment Name', '', { duration: 5000 });
-        err++;
-      }
+    // if (item.name === '' || item.name === null || !item.name) {
+    //     console.log('err: Name');
+    //     this.snackbar.open('err: Attachment Name', '', { duration: 5000 });
+    //     err++;
+    //   }
 
-      if (item.pages.length === 0) {
-        err++;
-      }
-    });
+    // if (item.pages.length === 0) {
+    //     err++;
+    //   }
+
 
     if (err === 0) {
-      const request = this.requestData;
+       const request = this.requestData;
 
-      request.sections.forEach((item) => {
-        delete item.control;
-        delete item.nameControl;
-        delete item.selectControl;
-      });
+    //   request.sections.forEach((item) => {
+    //     delete item.control;
+    //     delete item.nameControl;
+    //     delete item.selectControl;
+    //   });
 
-      const formData = new FormData();
-      request.sections.sort((x, y) => x.attachmentType.toLocaleString().localeCompare(y.attachmentType.toLocaleString()));
-      formData.append('requestModel', JSON.stringify(request));
+       const formData = new FormData();
 
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < this.file.length; i++) {
-        formData.append('files', this.file[i]);
-      }
-
-      console.log(request);
-
-      await this.captureService.splitPDF(formData).then(
+       await this.captureService.splitPDF(formData).then(
         (res) => {
           this.processing = false;
           this.dialogRef.close({state: true});
