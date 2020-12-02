@@ -44,7 +44,7 @@ export class AddCompanyPermitComponent implements OnInit {
      mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/] // i made changes here
    };
 
-   toDate(value, control: FormControl) {
+   toDate(value, control) {
     control.setValue(new Date(value));
   }
 
@@ -100,18 +100,12 @@ export class AddCompanyPermitComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  /*dateStart: new FormControl(null, [Validators.required]),
-    dateEnd: new FormControl(null, [Validators.required]),
-    importdateStart: new FormControl(null, [Validators.required]),
-    importdateEnd: new FormControl(null, [Validators.required]),
-    exportdateStart: new FormControl(null, [Validators.required]),
-    exportdateEnd: new FormControl(null, [Validators.required])*/
-
   async formSubmit() {
 
     let err = 0;
+    console.log(this.form.valid);
 
-    if (this.form.valid) {
+    if (!this.form.valid) {
         err++;
       }
 
@@ -128,19 +122,23 @@ export class AddCompanyPermitComponent implements OnInit {
           exportDateEnd: this.form.controls.exportdateEnd.value,
         };
 
-       const file = this.file;
+       // console.log(requestParams);
 
+       const file = this.file;
        const formData = new FormData();
 
        formData.append('requestModel', JSON.stringify(requestParams));
-       formData.append('file', file);
+       formData.append('files', file);
+       console.log(formData);
 
        await this.captureService.UploadPermit(formData).then(
         (res) => {
+          console.log(res);
           this.processing = false;
           this.dialogRef.close({state: true});
         },
         (msg) => {
+          console.log(msg);
           this.processing = false;
           this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
         }

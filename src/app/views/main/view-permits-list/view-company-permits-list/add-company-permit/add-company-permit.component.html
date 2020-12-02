@@ -52,7 +52,7 @@
             <input hidden [matDatepicker]="startPicker" [formControl]="this.form.controls.dateStart">
             <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.dateStart.value | date : this.form.controls.dateStart.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}" (change)='toDate($event.target.value, this.form.controls.DateStart)'  required/>
+            [ngModelOptions]="{standalone: true}" (change)='toDate($event.target.value, this.form.controls.dateStart)'  required/>
             <mat-error *ngIf="this.form.controls.dateStart.hasError('required')">
               Start Date is <strong>required</strong>
             </mat-error>
@@ -63,7 +63,7 @@
             <mat-label>End Date:</mat-label>
             <input hidden [matDatepicker]="endPicker" [formControl]="this.form.controls.dateEnd">
             <input matInput type="text" [textMask]="mask" [ngModel]="this.form.controls.dateEnd.value | date : this.form.controls.dateEnd.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.DateEnd)'required/>
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.dateEnd)'required/>
             <mat-error *ngIf="this.form.controls.dateEnd.hasError('required')">
               End Date is <strong>required</strong>
             </mat-error>
@@ -75,7 +75,7 @@
             <input hidden [matDatepicker]="importStartPicker" [formControl]="this.form.controls.importdateStart">
             <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.importdateStart.value | date : this.form.controls.importdateStart.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ImportDateStart)' required/>
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.importdateStart)' required/>
             <mat-error *ngIf="this.form.controls.importdateStart.hasError('required')">
               Import Start Date is <strong>required</strong>
             </mat-error>
@@ -87,7 +87,7 @@
             <input hidden [matDatepicker]="importEndPicker" [formControl]="this.form.controls.importdateEnd">
             <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.importdateEnd.value | date : this.form.controls.importdateEnd.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ImportDateEnd)' required/>
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.importdateEnd)' required/>
             <mat-error *ngIf="this.form.controls.importdateEnd.hasError('required')">
               Import End Date is <strong>required</strong>
             </mat-error>
@@ -99,7 +99,7 @@
             <input hidden [matDatepicker]="exportStartPicker" [formControl]="this.form.controls.exportdateStart">
             <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.exportdateStart.value | date : this.form.controls.exportdateStart.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ExportDateStart)' required/>
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.exportdateStart)' required/>
             <mat-error *ngIf="this.form.controls.exportdateStart.hasError('required')">
               Export Start Date is <strong>required</strong>
             </mat-error>
@@ -111,7 +111,7 @@
             <input hidden [matDatepicker]="exportEndPicker" [formControl]="this.form.controls.exportdateEnd">
             <input matInput type="text" [textMask]="mask"
             [ngModel]="this.form.controls.exportdateEnd.value | date : this.form.controls.exportdateEnd.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.ExportDateEnd)' required/>
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.exportdateEnd)' required/>
             <mat-error *ngIf="this.form.controls.exportdateEnd.hasError('required')">
               Export End Date is <strong>required</strong>
             </mat-error>
