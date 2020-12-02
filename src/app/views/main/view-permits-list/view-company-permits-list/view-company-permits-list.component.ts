@@ -214,8 +214,10 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     });
 
     this.companyService.observePermitType().subscribe((obj: SelectedPermitType) => {
-      this.permitTypeID = obj.permitTypeID;
-      this.permitTypeName = obj.permitTypeName;
+      if (obj) {
+        this.permitTypeID = obj.permitTypeID;
+        this.permitTypeName = obj.permitTypeName;
+      }
     });
 
     if (this.permitTypeID === 1) {
@@ -645,7 +647,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   addPermitDialog() {
     this.dialog.open(AddCompanyPermitComponent, {
       autoFocus: true,
-      width: '512px',
+      height: '80vh',
+      width: '80%',
       data: {
 
       }});
