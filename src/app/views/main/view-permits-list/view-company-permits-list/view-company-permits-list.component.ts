@@ -21,6 +21,8 @@ import { GetCompanyPRCCs } from 'src/app/models/HttpRequests/GetCompanyPRCCs';
 import { AddCompanyPermitComponent } from './add-company-permit/add-company-permit.component';
 import { env } from 'process';
 import { environment } from 'src/environments/environment';
+import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
+import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 
 @Component({
   selector: 'app-view-company-permits-list',
@@ -200,6 +202,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   companyName = '';
   permitTypeID = 0;
   permitTypeName = '';
+  tarifflist: Tariff[];
 
 
   ngOnInit() {
@@ -387,6 +390,35 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     }
   }
 
+  loadTariffs() {
+
+    const model: GetTariffList = {
+      filter: '',
+      userID: this.currentUser.userID,
+      specificTariffID: -1,
+      rowStart: 1,
+      rowEnd: 100000000
+    };
+
+    this.companyService
+    .getTariffList(model)// model
+    .then(
+      (res: TariffListResponse) => {
+
+          this.tarifflist = res.tariffList;
+          console.log(this.tarifflist);
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
   loadCompanyPermits(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
@@ -411,6 +443,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         }
         this.CompanyPermits = res.permits;
         this.PermitData = this.CompanyPermits;
+        console.log('521 PermitData');
         console.log(this.PermitData);
 
         if (res.rowCount === 0) {
@@ -459,6 +492,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         }
         this.CompanyPRCC = res.prccs;
         this.PermitData = this.CompanyPRCC;
+        console.log('PRCC PermitData');
         console.log(this.PermitData);
 
         if (res.rowCount === 0) {
@@ -507,6 +541,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         }
         this.CompanyEPC = res.epcs;
         this.PermitData = this.CompanyEPC;
+        console.log('EPC PermitData');
         console.log(this.PermitData);
 
         if (res.rowCount === 0) {
