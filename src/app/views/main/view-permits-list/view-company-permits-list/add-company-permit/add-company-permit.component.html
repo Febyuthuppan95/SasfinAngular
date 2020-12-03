@@ -121,6 +121,9 @@
 
           <!--Changes made from here-->
           <mat-form-field class="form-group">
+            <mat-label>
+              Tariffs
+            </mat-label>
             <input type="text" matInput [formControl]="form.controls.importTariffs" [matAutocomplete]="autoTariff"
             (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
             <mat-error *ngIf="form.controls.importTariffs.hasError('required')"></mat-error>
