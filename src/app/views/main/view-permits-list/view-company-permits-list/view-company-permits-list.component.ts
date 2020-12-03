@@ -6,6 +6,7 @@ import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models
 import { CompanyService, SelectedCompany, SelectedPermitType } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
+// tslint:disable-next-line: max-line-length
 import { CompanyPermitsListResponse, Permit, PRCC, EPC, CompanyPRCCsListResponse, CompanyEPCsListResponse } from 'src/app/models/HttpResponses/CompanyPermitsListResponse';
 import { GetCompanyPermits } from 'src/app/models/HttpRequests/GetCompanyPermits';
 import { UserService } from 'src/app/services/user.Service';
@@ -666,19 +667,19 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     }); */
   }
 
-  addPermit(permit: any){
+  addPermit(permit: any) {
     this.api.post(`${environment.ApiEndpoint}/`, {
       request: {
 
       }
-    })
+    });
   }
 
-  updatePermitDialog(){
+  updatePermitDialog() {
 
   }
 
-  updatePermit(){
+  updatePermit() {
 
   }
 

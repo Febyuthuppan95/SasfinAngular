@@ -196,7 +196,7 @@ export class AddCompanyPermitComponent implements OnInit {
     }
   }
 
-  updateHelpContext(slug: string){
+  updateHelpContext(slug: string) {
 
   }
 }
