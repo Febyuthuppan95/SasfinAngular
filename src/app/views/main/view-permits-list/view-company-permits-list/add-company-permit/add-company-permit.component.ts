@@ -37,11 +37,15 @@ export class AddCompanyPermitComponent implements OnInit {
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
-    importTariffs: new FormControl(null, [Validators.required])
+    importTariffs: new FormControl(null, [Validators.required]),
+    filteredTariffs: new FormControl(null)
   });
-   tarifflist: Tariff[];
+   tarifflist: Tariff[] = [];
+   selectedTariffs: Tariff[] = [];
    selected = false;
    @Input() helpSlug = 'default';
+   removable = true;
+   selectable = false;
 
    private currentUser = this.userService.getCurrentUser();
 
@@ -58,6 +62,14 @@ export class AddCompanyPermitComponent implements OnInit {
 
   ngOnInit() {
     this.loadTariffs();
+
+    this.form.controls.importTariffs.valueChanges.subscribe((value) => {
+      if (value) {
+        if (value.id) {
+          //this.form.controls.
+        }
+      }
+    });
 
   }
 
@@ -194,6 +206,15 @@ export class AddCompanyPermitComponent implements OnInit {
       this.form.controls.importTarrifs.setValue(this.tarifflist[0]);
       trigger.closePanel();
     }
+  }*
+
+  tariffselected(tariffIDs) {
+    this.selectedTariffs = tariffIDs;
+    console.log(this.selectedTariffs);
+  }
+
+  remove($event) {
+
   }
 
   updateHelpContext(slug: string) {

@@ -129,11 +129,23 @@
             <mat-error *ngIf="form.controls.importTariffs.hasError('required')"></mat-error>
             <mat-error *ngIf="form.controls.importTariffs.hasError('incorrect')"></mat-error>
           </mat-form-field>
-          <mat-autocomplete #autoTariff="matAutocomplete" >
-            <mat-option *ngFor="let tariff of tarifflist" [value]="tariff.id">
-              {{tariff.itemNumber}}
-            </mat-option>
-          </mat-autocomplete>
+          <mat-form-field>
+            <mat-autocomplete #autoTariff="matAutocomplete">
+              <mat-select [formControl]="form.controls.filteredTariffs" multiple (selectionChange)="tariffselected($event.value)" >
+                <mat-option *ngFor="let tariff of tarifflist" [value]="tariff.id">
+                  {{tariff.itemNumber}}
+                </mat-option>
+              </mat-select>
+            </mat-autocomplete>
+            <mat-chip-list #chipList aria-label="Tarrif selection">
+              <mat-chip *ngFor="let tariff of selectedTariffs" [selectable]="selectable"
+                [removable]="removable" (removed)="remove(tariff)">
+                {{tariff.itemNumber}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+
 
         </form>
       </div>
