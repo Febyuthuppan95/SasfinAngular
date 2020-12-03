@@ -122,12 +122,13 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         }
       });
 
-    if (this.status === 5 && this.transstatus == 10) {
+    if (this.status === 5 && this.transstatus === 10) {
         this.query.disable();
     }
   }
 
   public displayFn(item: any): string {
+    // tslint:disable-next-line: max-line-length
     return item ? `${item.subHeading == null ? item.itemNumber : item.subHeading}${item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}` : '';
   }
 
