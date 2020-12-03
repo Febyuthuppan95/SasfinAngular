@@ -1,8 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
+import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
 import { CaptureService } from 'src/app/services/capture.service';
+import { CompanyService } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 
 @Component({
@@ -14,6 +17,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
   constructor(private snackbar: MatSnackBar,
               private userService: UserService,
+              private companyService: CompanyService,
               private captureService: CaptureService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
@@ -32,8 +36,12 @@ export class AddCompanyPermitComponent implements OnInit {
     importdateStart: new FormControl(null, [Validators.required]),
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
-    exportdateEnd: new FormControl(null, [Validators.required])
-   });
+    exportdateEnd: new FormControl(null, [Validators.required]),
+    importTariffs: new FormControl(null, [Validators.required])
+  });
+   tarifflist: Tariff[];
+   selected = false;
+   @Input() helpSlug = 'default';
 
    private currentUser = this.userService.getCurrentUser();
 
@@ -49,6 +57,7 @@ export class AddCompanyPermitComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadTariffs();
 
   }
 
@@ -151,5 +160,43 @@ export class AddCompanyPermitComponent implements OnInit {
       this.processing = false;
       this.snackbar.open('There are errors', '', { duration: 3000 });
     }
+  }
+
+
+
+  loadTariffs() {
+    const model: GetTariffList = {
+      filter: '',
+      userID: this.currentUser.userID,
+      specificTariffID: -1,
+      rowStart: 1,
+      rowEnd: 100000000
+    };
+
+    this.companyService
+    .getTariffList(model)// model
+    .then(
+      (res: TariffListResponse) => {
+
+          this.tarifflist = res.tariffList;
+          console.log('tarifflist');
+          console.log(this.tarifflist);
+
+      },
+      msg => {
+
+      }
+    );
+  }
+
+  focusOut(trigger) {
+    if (this.tarifflist.length > 0 && !this.selected) {
+      this.form.controls.importTarrifs.setValue(this.tarifflist[0]);
+      trigger.closePanel();
+    }
+  }
+
+  updateHelpContext(slug: string){
+
   }
 }

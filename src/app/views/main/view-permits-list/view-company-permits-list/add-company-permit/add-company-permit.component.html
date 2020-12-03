@@ -118,6 +118,20 @@
             <mat-datepicker-toggle matSuffix [for]="exportEndPicker"></mat-datepicker-toggle>
             <mat-datepicker #exportEndPicker></mat-datepicker>
           </mat-form-field>
+
+          <!--Changes made from here-->
+          <mat-form-field class="form-group">
+            <input type="text" matInput [formControl]="form.controls.importTariffs" [matAutocomplete]="autoTariff"
+            (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
+            <mat-error *ngIf="form.controls.importTariffs.hasError('required')"></mat-error>
+            <mat-error *ngIf="form.controls.importTariffs.hasError('incorrect')"></mat-error>
+          </mat-form-field>
+          <mat-autocomplete #autoTariff="matAutocomplete" >
+            <mat-option *ngFor="let tariff of tarifflist" [value]="tariff.id">
+              {{tariff.itemNumber}}
+            </mat-option>
+          </mat-autocomplete>
+
         </form>
       </div>
   </div>

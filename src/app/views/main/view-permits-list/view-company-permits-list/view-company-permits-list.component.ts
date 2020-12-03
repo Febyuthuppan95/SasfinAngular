@@ -390,35 +390,6 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     }
   }
 
-  loadTariffs() {
-
-    const model: GetTariffList = {
-      filter: '',
-      userID: this.currentUser.userID,
-      specificTariffID: -1,
-      rowStart: 1,
-      rowEnd: 100000000
-    };
-
-    this.companyService
-    .getTariffList(model)// model
-    .then(
-      (res: TariffListResponse) => {
-
-          this.tarifflist = res.tariffList;
-          console.log(this.tarifflist);
-
-      },
-      msg => {
-        this.showLoader = false;
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
-      }
-    );
-  }
-
   loadCompanyPermits(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
