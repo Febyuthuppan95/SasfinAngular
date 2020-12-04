@@ -47,6 +47,10 @@
                 Permit Code is <strong>required</strong>
               </mat-error>
             </mat-form-field>
+            <div class="col-12" >
+              <ls-autocomplete-tariffs [(control)]="exportTariff" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
+              <br><br>
+            </div>
           <mat-form-field class="form-group">
             <mat-label>Start Date:</mat-label>
             <input hidden [matDatepicker]="startPicker" [formControl]="this.form.controls.dateStart">

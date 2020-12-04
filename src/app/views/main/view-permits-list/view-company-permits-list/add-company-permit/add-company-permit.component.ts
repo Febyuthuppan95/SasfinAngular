@@ -6,7 +6,7 @@ import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { CaptureService } from 'src/app/services/capture.service';
-import { CompanyService } from 'src/app/services/Company.Service';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { UserService } from 'src/app/services/user.Service';
 
@@ -40,7 +40,6 @@ export class AddCompanyPermitComponent implements OnInit {
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
-    tariffID: new FormControl(null, [Validators.required]),
   });
    tarifflist: Tariff[] = [];
    selectedTariffs: Tariff[] = [];
@@ -48,9 +47,13 @@ export class AddCompanyPermitComponent implements OnInit {
    @Input() helpSlug = 'default';
    removable = true;
    selectable = false;
+   companyID: number;
+   companyName: string;
 
    importTariffs = new FormControl(null, [Validators.required]);
+   exportTariff = new FormControl(null, [Validators.required]);
    selectedImportTariffs = [];
+   selectedExportTariff: number;
 
    private isRequired = false;
 
@@ -70,11 +73,15 @@ export class AddCompanyPermitComponent implements OnInit {
   async ngOnInit() {
     // this.loadTariffs();
 
+    this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
+      this.companyID = obj.companyID;
+      this.companyName = obj.companyName;
+    });
+
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
 
       if (value) {
-        // TODO: Get tariff record from API; Replace if existing; Add if not exist in [selectedImportTariffs]
 
         const model: GetTariffList = {
           filter: '',
@@ -102,7 +109,18 @@ export class AddCompanyPermitComponent implements OnInit {
         );
       }
     });
+
+    this.exportTariff.valueChanges.subscribe(async (value) => {
+      console.log(value);
+
+      if (value) {
+        this.selectedExportTariff = +value;
+      }
+    });
+
   }
+
+
 
   removeTariff(index: number) {
     this.selectedImportTariffs.splice(index, 1);
@@ -170,6 +188,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
        const requestParams: object = {
           userID: this.currentUser.userID,
+          companyID: this.companyID,
           permitCode: this.form.controls.PermitCode.value,
           dateStart: this.form.controls.dateStart.value,
           dateEnd: this.form.controls.dateEnd.value,
@@ -178,7 +197,7 @@ export class AddCompanyPermitComponent implements OnInit {
           exportDateStart: this.form.controls.exportdateStart.value,
           exportDateEnd: this.form.controls.exportdateEnd.value,
           importTariffs: this.selectedImportTariffs,
-          exportTariffs: this.selectedImportTariffs,
+          exportTariffs: this.selectedExportTariff,
         };
 
        // console.log(requestParams);
