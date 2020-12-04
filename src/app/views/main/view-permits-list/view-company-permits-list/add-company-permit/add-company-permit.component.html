@@ -119,9 +119,13 @@
             <mat-datepicker #exportEndPicker></mat-datepicker>
           </mat-form-field>
           <div class="col-12" >
-            <ls-autocomplete-tariffs [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
+            <ls-autocomplete-tariffs [(control)]="importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
             <br><br>
           </div>
+          <mat-chip-list>
+            <mat-chip *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)"><mat-icon>clear</mat-icon>&nbsp;{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</mat-chip>
+          </mat-chip-list>
+
           <!--Changes made from here-->
             <!-- <mat-form-field>
               <mat-label>

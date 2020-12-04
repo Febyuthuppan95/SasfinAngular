@@ -49,7 +49,8 @@ export class AddCompanyPermitComponent implements OnInit {
    removable = true;
    selectable = false;
 
-   importTariffs = new FormControl(null, [Validators.required])
+   importTariffs = new FormControl(null, [Validators.required]);
+   selectedImportTariffs = [];
 
    private isRequired = false;
 
@@ -66,19 +67,46 @@ export class AddCompanyPermitComponent implements OnInit {
     control.setValue(new Date(value));
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // this.loadTariffs();
 
-    // this.importTariffs.valueChanges.subscribe((value) => {
-    //   if (value) {
-    //     if (value.id) {
-    //     console.log(value.id);
-    //     }
-    //   }
-    // });
+    this.importTariffs.valueChanges.subscribe(async (value) => {
+      console.log(value);
 
+      if (value) {
+        // TODO: Get tariff record from API; Replace if existing; Add if not exist in [selectedImportTariffs]
+
+        const model: GetTariffList = {
+          filter: '',
+          userID: this.currentUser.userID,
+          specificTariffID: value,
+          rowStart: 1,
+          rowEnd: 10
+        };
+
+        await this.companyService
+        .getTariffList(model)
+        .then(
+          (res: TariffListResponse) => {
+            console.log(res);
+
+            if (res.outcome.outcome === 'SUCCESS') {
+              // Removes Tariff object if exists
+              this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
+              // Adds record from api
+              this.selectedImportTariffs.push(res.tariffList[0]);
+
+              this.importTariffs.setValue(null, { emitEvent: false });
+            }
+          }
+        );
+      }
+    });
   }
 
+  removeTariff(index: number) {
+    this.selectedImportTariffs.splice(index, 1);
+  }
 
   inputFileChange(files: File[]) {
 
@@ -149,6 +177,8 @@ export class AddCompanyPermitComponent implements OnInit {
           importDateEnd: this.form.controls.importdateEnd.value,
           exportDateStart: this.form.controls.exportdateStart.value,
           exportDateEnd: this.form.controls.exportdateEnd.value,
+          importTariffs: this.selectedImportTariffs,
+          exportTariffs: this.selectedImportTariffs,
         };
 
        // console.log(requestParams);
@@ -181,36 +211,36 @@ export class AddCompanyPermitComponent implements OnInit {
     }
   }
 
-  loadTariffs(setDefault?: boolean, getSpecific?: boolean) {
+  // loadTariffs(setDefault?: boolean, getSpecific?: boolean) {
 
-    let filter = '';
+  //   let filter = '';
 
-    if (this.importTariffs.value && this.importTariffs.value !== null) {
-      filter = this.importTariffs.value;
-    }
+  //   if (this.importTariffs.value && this.importTariffs.value !== null) {
+  //     filter = this.importTariffs.value;
+  //   }
 
-    const model: GetTariffList = {
-      filter,
-      userID: this.currentUser.userID,
-      specificTariffID: -1,
-      rowStart: 1,
-      rowEnd: 10
-    };
+  //   const model: GetTariffList = {
+  //     filter,
+  //     userID: this.currentUser.userID,
+  //     specificTariffID: -1,
+  //     rowStart: 1,
+  //     rowEnd: 10
+  //   };
 
-    this.companyService
-    .getTariffList(model)// model
-    .then(
-      (res: TariffListResponse) => {
+  //   this.companyService
+  //   .getTariffList(model)// model
+  //   .then(
+  //     (res: TariffListResponse) => {
 
-          this.tarifflist = res.tariffList;
-          console.log('tarifflist');
-          console.log(this.tarifflist);
-      },
-      msg => {
+  //         this.tarifflist = res.tariffList;
+  //         console.log('tarifflist');
+  //         console.log(this.tarifflist);
+  //     },
+  //     msg => {
 
-      }
-    );
-  }
+  //     }
+  //   );
+  // }
 
   public displayFn(item: any): string {
     // tslint:disable-next-line: max-line-length
@@ -234,6 +264,10 @@ export class AddCompanyPermitComponent implements OnInit {
   }
 
   remove($event) {
+
+  }
+
+  async findTariff(id: number) {
 
   }
 }
