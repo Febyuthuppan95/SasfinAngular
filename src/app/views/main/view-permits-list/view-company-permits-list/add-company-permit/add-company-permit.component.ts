@@ -67,15 +67,15 @@ export class AddCompanyPermitComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadTariffs();
+    // this.loadTariffs();
 
-    this.importTariffs.valueChanges.subscribe((value) => {
-      if (value) {
-        if (value.id) {
-        console.log(value.id);
-        }
-      }
-    });
+    // this.importTariffs.valueChanges.subscribe((value) => {
+    //   if (value) {
+    //     if (value.id) {
+    //     console.log(value.id);
+    //     }
+    //   }
+    // });
 
   }
 
