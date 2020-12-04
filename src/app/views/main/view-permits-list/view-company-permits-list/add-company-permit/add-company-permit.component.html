@@ -118,33 +118,33 @@
             <mat-datepicker-toggle matSuffix [for]="exportEndPicker"></mat-datepicker-toggle>
             <mat-datepicker #exportEndPicker></mat-datepicker>
           </mat-form-field>
-
+          <div class="col-12" >
+            <ls-autocomplete-tariffs [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
+            <br><br>
+          </div>
           <!--Changes made from here-->
-          <mat-form-field class="form-group">
-            <mat-label>
-              Tariffs
-            </mat-label>
-            <input type="text" matInput [formControl]="form.controls.importTariffs" [matAutocomplete]="autoTariff"
-            (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
-            <mat-error *ngIf="form.controls.importTariffs.hasError('required')"></mat-error>
-            <mat-error *ngIf="form.controls.importTariffs.hasError('incorrect')"></mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-autocomplete #autoTariff="matAutocomplete">
-              <mat-select [formControl]="form.controls.filteredTariffs" multiple (selectionChange)="tariffselected($event.value)" >
-                <mat-option *ngFor="let tariff of tarifflist" [value]="tariff.id">
-                  {{tariff.itemNumber}}
-                </mat-option>
-              </mat-select>
-            </mat-autocomplete>
-            <mat-chip-list #chipList aria-label="Tarrif selection">
+            <!-- <mat-form-field>
+              <mat-label>
+                Tariff
+              </mat-label>
+              <input type="text" matInput [formControl]="importTariffs" [matAutocomplete]="cpcAuto"
+              (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)"> -->
+              <!-- <mat-hint>Sub Heading / Item Number</mat-hint> -->
+              <!-- <mat-error *ngIf="importTariffs.hasError('required')">This field is required</mat-error>
+              <mat-error *ngIf="importTariffs.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="importTariffs.setValue(null)">clear</button></mat-error>
+            </mat-form-field>
+            <mat-autocomplete #cpcAuto="matAutocomplete"  [displayWith]="displayFn">
+              <mat-option *ngFor="let tariff of tarifflist" [value]="tariff">
+                {{tariff.subHeading == null ? tariff.itemNumber: tariff.subHeading}}{{tariff.subHeading ? tariff.subHeading.length < 8 && tariff.subHeading != null ? '.00' : '' : ''}}</mat-option>
+            </mat-autocomplete> -->
+            <!-- <mat-chip-list #chipList aria-label="Tarrif selection">
               <mat-chip *ngFor="let tariff of selectedTariffs" [selectable]="selectable"
                 [removable]="removable" (removed)="remove(tariff)">
                 {{tariff.itemNumber}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
-            </mat-chip-list>
-          </mat-form-field>
+            </mat-chip-list> -->
+          <!-- </mat-form-field> -->
 
 
         </form>

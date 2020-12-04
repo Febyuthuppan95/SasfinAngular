@@ -1,11 +1,13 @@
-import { Component, Inject, OnInit, Input } from '@angular/core';
+import { Component, Inject, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService } from 'src/app/services/Company.Service';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { UserService } from 'src/app/services/user.Service';
 
 @Component({
@@ -18,6 +20,7 @@ export class AddCompanyPermitComponent implements OnInit {
   constructor(private snackbar: MatSnackBar,
               private userService: UserService,
               private companyService: CompanyService,
+              private snackbarService: HelpSnackbar,
               private captureService: CaptureService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
@@ -37,8 +40,7 @@ export class AddCompanyPermitComponent implements OnInit {
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
-    importTariffs: new FormControl(null, [Validators.required]),
-    filteredTariffs: new FormControl(null)
+    tariffID: new FormControl(null, [Validators.required]),
   });
    tarifflist: Tariff[] = [];
    selectedTariffs: Tariff[] = [];
@@ -46,6 +48,10 @@ export class AddCompanyPermitComponent implements OnInit {
    @Input() helpSlug = 'default';
    removable = true;
    selectable = false;
+
+   importTariffs = new FormControl(null, [Validators.required])
+
+   private isRequired = false;
 
    private currentUser = this.userService.getCurrentUser();
 
@@ -63,15 +69,16 @@ export class AddCompanyPermitComponent implements OnInit {
   ngOnInit() {
     this.loadTariffs();
 
-    this.form.controls.importTariffs.valueChanges.subscribe((value) => {
+    this.importTariffs.valueChanges.subscribe((value) => {
       if (value) {
         if (value.id) {
-          //this.form.controls.
+        console.log(value.id);
         }
       }
     });
 
   }
+
 
   inputFileChange(files: File[]) {
 
@@ -174,15 +181,20 @@ export class AddCompanyPermitComponent implements OnInit {
     }
   }
 
+  loadTariffs(setDefault?: boolean, getSpecific?: boolean) {
 
+    let filter = '';
 
-  loadTariffs() {
+    if (this.importTariffs.value && this.importTariffs.value !== null) {
+      filter = this.importTariffs.value;
+    }
+
     const model: GetTariffList = {
-      filter: '',
+      filter,
       userID: this.currentUser.userID,
       specificTariffID: -1,
       rowStart: 1,
-      rowEnd: 100000000
+      rowEnd: 10
     };
 
     this.companyService
@@ -193,7 +205,6 @@ export class AddCompanyPermitComponent implements OnInit {
           this.tarifflist = res.tariffList;
           console.log('tarifflist');
           console.log(this.tarifflist);
-
       },
       msg => {
 
@@ -201,23 +212,28 @@ export class AddCompanyPermitComponent implements OnInit {
     );
   }
 
-  focusOut(trigger) {
-    if (this.tarifflist.length > 0 && !this.selected) {
-      this.form.controls.importTarrifs.setValue(this.tarifflist[0]);
-      trigger.closePanel();
-    }
-  }*
-
-  tariffselected(tariffIDs) {
-    this.selectedTariffs = tariffIDs;
-    console.log(this.selectedTariffs);
+  public displayFn(item: any): string {
+    // tslint:disable-next-line: max-line-length
+    return item ? `${item.subHeading == null ? item.itemNumber : item.subHeading}${item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}` : '';
   }
 
-  remove($event) {
-
+  focusOut(trigger) {
+    if (this.tarifflist.length > 0 && !this.selected) {
+      this.importTariffs.setValue(this.tarifflist[0]);
+      trigger.closePanel();
+    }
   }
 
   updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
+
+  remove($event) {
 
   }
 }
