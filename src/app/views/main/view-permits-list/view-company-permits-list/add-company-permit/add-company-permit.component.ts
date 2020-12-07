@@ -52,10 +52,13 @@ export class AddCompanyPermitComponent implements OnInit {
 
    importTariffs = new FormControl(null, [Validators.required]);
    exportTariff = new FormControl(null, [Validators.required]);
+   public paginationControl = new FormControl(1);
    selectedImportTariffs = [];
    selectedExportTariff: number;
 
    private isRequired = false;
+   public activeIndex = 0;
+   public activeTariff: any = null;
 
    private currentUser = this.userService.getCurrentUser();
 
@@ -100,8 +103,9 @@ export class AddCompanyPermitComponent implements OnInit {
             if (res.outcome.outcome === 'SUCCESS') {
               // Removes Tariff object if exists
               this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
+
               // Adds record from api
-              this.selectedImportTariffs.push(res.tariffList[0]);
+              this.selectedImportTariffs.push(res.tariffList[0].id);
 
               this.importTariffs.setValue(null, { emitEvent: false });
             }
@@ -166,6 +170,46 @@ export class AddCompanyPermitComponent implements OnInit {
 
   //   this.requestData.sections.sort((x, y) => y.position.toLocaleString().localeCompare(x.position.toLocaleString()));
   // }
+
+  prevTarrif() {
+    if (this.activeIndex >= 1) {
+      this.activeIndex--;
+      this.activeTariff = this.selectedImportTariffs[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+
+      //this.refresh();
+    }
+  }
+
+  nextTarrif() {
+    this.activeIndex++;
+
+    if (this.activeIndex < (this.selectedImportTariffs ? this.selectedImportTariffs.length : 0)) {
+      this.activeTariff = this.selectedImportTariffs[this.activeIndex];
+      this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
+      // this.refresh();
+    } else {
+      this.activeIndex--;
+    }
+  }
+
+  async deleteTariffPrompt() {
+    const targetLine = this.selectedImportTariffs[this.activeIndex];
+
+    if (this.selectedImportTariffs.length === 1) {
+      this.selectedImportTariffs = [];
+      this.activeTariff = null;
+      this.activeIndex = -1;
+      this.paginationControl.setValue(1, { emitEvent: false });
+    } else {
+      this.selectedImportTariffs.splice(this.selectedImportTariffs.indexOf(targetLine), 1);
+      this.activeIndex = 0;
+      this.activeTariff = this.selectedImportTariffs[this.activeIndex];
+      this.paginationControl.setValue(1, { emitEvent: false });
+    }
+
+    // this.refresh();
+  }
 
   removeSection(section: any) {
 
@@ -285,6 +329,15 @@ export class AddCompanyPermitComponent implements OnInit {
   remove($event) {
 
   }
+
+  // refresh() {
+  //   this.displayLines = false;
+  //   this.loader = true;
+  //   setTimeout(() => {
+  //     this.displayLines = true;
+  //     this.loader = false;
+  //   }, 500);
+  // }
 
   async findTariff(id: number) {
 
