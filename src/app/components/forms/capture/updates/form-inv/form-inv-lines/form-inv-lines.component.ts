@@ -29,6 +29,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     invoiceLineID: new FormControl(null),
     invoiceID: new FormControl(null),
     itemID: new FormControl(null, [Validators.required]),
+    tariffID: new FormControl(null),
     unitOfMeasureID: new FormControl(null),
     cooID: new FormControl(null),
     prodCode: new FormControl(null),
@@ -136,6 +137,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         this.form.controls.unitOfMeasureID.reset();
         this.form.controls.itemID.reset();
         this.form.controls.cooID.reset();
+        this.form.controls.tariffID.reset();
         //this.form.controls.LineNo.reset();
       }
 
@@ -243,6 +245,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         this.form.controls.totalLineValue.reset();
         this.form.controls.unitOfMeasureID.reset();
         this.form.controls.itemID.reset();
+        this.form.controls.tariffID.reset();
         this.form.controls.cooID.reset();
       }
 

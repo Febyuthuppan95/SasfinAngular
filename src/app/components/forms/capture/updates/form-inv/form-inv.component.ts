@@ -655,6 +655,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.invoiceID = this.form.controls.invoiceID.value;
       $event.userID = this.currentUser.userID;
 
+      console.log('invoice line update');
+      console.log($event);
+
       await this.captureService.invoiceLineUpdate($event).then((res) => console.log(res),
       (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
 

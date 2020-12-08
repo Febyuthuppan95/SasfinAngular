@@ -83,6 +83,10 @@
       <ls-autocomplete-items [transstatus]="transstatus" [status]="status" [(control)]="form.controls.itemID" [(companyID)]="companyID" [helpSlug]="'form-invoice-line-item-code'"></ls-autocomplete-items>
       <br><br>
     </div>
+    <div class="col-12" >
+      <ls-autocomplete-tariffs [transstatus]="transstatus" [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
+      <br><br>
+    </div>
     <div class="col-6">
       <mat-form-field appearance="fill" >
         <mat-label>
