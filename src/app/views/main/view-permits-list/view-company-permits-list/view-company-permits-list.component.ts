@@ -1,3 +1,4 @@
+import { EditPermitDialogComponent } from './edit-permit-dialog/edit-permit-dialog.component';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
@@ -689,6 +690,21 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   }
 
   updatePermitDialog() {
+    this.dialog.open(EditPermitDialogComponent, {
+      panelClass: 'custom-dialog-container',
+      height: '75vh',
+      width: '80%',
+      data: {
+        permitID: this.Permit.permitID,
+        permitCode: this.Permit.permitCode,
+        dateStart: this.Permit.dateStart,
+        dateEnd: this.Permit.dateEnd,
+        importdateStart: this.Permit.importdateStart,
+        importdateEnd: this.Permit.importdateEnd,
+        exportdateStart: this.Permit.exportdateStart,
+        exportdateEnd: this.Permit.exportdateEnd
+      }
+    });
 
   }
 

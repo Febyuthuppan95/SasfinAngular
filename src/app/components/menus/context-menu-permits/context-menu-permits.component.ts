@@ -15,6 +15,7 @@ export class ContextMenuPermitsComponent implements OnInit {
   @Input() permitCode: string;
   @Input() currentTheme: string;
   @Output() removePermit = new EventEmitter<number>();
+  @Output() updatePermit = new EventEmitter<number>();
 
   // @Output() EditCompony = new EventEmitter<string>();
 
@@ -29,5 +30,10 @@ export class ContextMenuPermitsComponent implements OnInit {
     console.log('hello');
   // this.companyService.setPermit({permitID: this.permitID, permitCode: this.permitCode});
     this.removePermit.emit(+this.permitID);
+  }
+
+  UpdatePermit() {
+    console.log('update permit');
+    this.updatePermit.emit(this.permitID);
   }
 }

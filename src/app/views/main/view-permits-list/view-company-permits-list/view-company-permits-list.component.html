@@ -36,7 +36,8 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-permits [permitID]="this.Permit.permitID" [permitCode]="this.Permit.permitCode" (removePermit)="removePermitDialog($event)"></app-context-menu-permits>
+<app-context-menu-permits [permitID]="this.Permit.permitID" [permitCode]="this.Permit.permitCode"
+(removePermit)="removePermitDialog($event)" (updatePermit)="updatePermitDialog($event)"></app-context-menu-permits>
 </app-menu>
 
 <!--Edit Modal-->

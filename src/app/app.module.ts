@@ -315,6 +315,7 @@ import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/ex
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/add-company-permit.component';
 import { RemovePermitsDialogComponent } from './views/main/view-permits-list/view-company-permits-list/remove-permits-dialog/remove-permits-dialog.component';
+import { EditPermitDialogComponent } from './views/main/view-permits-list/view-company-permits-list/edit-permit-dialog/edit-permit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -527,7 +528,8 @@ import { RemovePermitsDialogComponent } from './views/main/view-permits-list/vie
     ContextMenuRoeComponent,
     ExchangeRateLinesComponent,
     AddCompanyPermitComponent,
-    RemovePermitsDialogComponent
+    RemovePermitsDialogComponent,
+    EditPermitDialogComponent
   ],
   imports: [
     TextMaskModule,
@@ -647,7 +649,8 @@ import { RemovePermitsDialogComponent } from './views/main/view-permits-list/vie
     DialogRemoveAttachmentComponent,
     DialogTransactionDeleteComponent,
     AddCompanyPermitComponent,
-    RemovePermitsDialogComponent
+    RemovePermitsDialogComponent,
+    EditPermitDialogComponent
   ],
 })
 export class AppModule {}

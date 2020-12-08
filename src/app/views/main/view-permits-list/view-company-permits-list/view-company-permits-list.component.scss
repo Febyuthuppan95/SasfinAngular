@@ -218,12 +218,9 @@ tr.active {
 
 .custom-dialog-container .mat-dialog-container {
   overflow-y: hidden !important;
-  background-color: transparent !important;
+  //background-color: transparent !important;
 }
 
-::ng-deep .custom-dialog-container .mat-dialog-container {
-background-color: transparent;
-box-shadow: none;
-}
+
 
 
