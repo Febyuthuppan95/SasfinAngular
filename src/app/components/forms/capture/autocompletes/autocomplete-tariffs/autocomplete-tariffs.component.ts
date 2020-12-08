@@ -22,9 +22,12 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   @Input() transstatus: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+  @Input() tariffHeading = 0;
 
+  private isTariffType;
   private currentUser = this.userService.getCurrentUser();
   private isRequired = false;
+  public heading = 'Tariff';
 
   public list: any [] = [];
   public query = new FormControl('');
@@ -61,6 +64,16 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         this.selected = false;
       }
     });
+    if (this.tariffHeading > 0 && this.tariffHeading !== null) {
+      this.isTariffType = this.tariffHeading;
+      if (this.isTariffType === 1) {
+        this.heading = 'Export Tariff';
+      } else if (this.isTariffType === 2) {
+        this.heading = 'Import Tariff';
+      } else {
+        this.heading = 'Tariff';
+      }
+    }
   }
 
   ngOnChanges() {

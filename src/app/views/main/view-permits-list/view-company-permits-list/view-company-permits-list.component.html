@@ -36,7 +36,7 @@
 [x]="this.contextMenuX"
 [y]="this.contextMenuY"
 (resetContext)="this.selectedRow = -1; this.contextMenu = false">
-<app-context-menu-permits [permitID]="this.Permit.permitID" [permitCode]="this.Permit.permitCode"></app-context-menu-permits>
+<app-context-menu-permits [permitID]="this.Permit.permitID" [permitCode]="this.Permit.permitCode" (removePermit)="removePermitDialog($event)"></app-context-menu-permits>
 </app-menu>
 
 <!--Edit Modal-->
@@ -122,12 +122,12 @@
 </div>
 </div> -->
 <!--Delete Modal -->
-<!-- <button class="hide" data-toggle="modal" data-target="#removeItem" #openRemoveModal></button>
-<div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+<!-- <button class="hide" data-toggle="modal" data-target="#removePermit" #openRemoveModal></button>
+<div class="modal fade" id="removePermit" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title" id="modalContent">Remove Item</h5>
+      <h5 class="modal-title" id="modalContent">Remove Permit</h5>
       <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -138,7 +138,7 @@
       </div>
     <div class="modal-footer bg-dark">
       <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeRemoveModal>Close</button>
-      <button type="button" (click)="UpdateItem(true)" class="btn btn-primary btn-sm">Remove</button>
+      <button type="button" (click)="UpdatePermit(true)" class="btn btn-primary btn-sm">Remove</button>
     </div>
   </form>
   </div>

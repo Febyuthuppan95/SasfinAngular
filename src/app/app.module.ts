@@ -314,6 +314,8 @@ import { ContextMenuRoeComponent } from './components/menus/context-menu-roe/con
 import { ExchangeRateLinesComponent } from './views/main/exchange-rate-upload/exchange-rate-lines/exchange-rate-lines.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/add-company-permit.component';
+import { RemovePermitsDialogComponent } from './views/main/view-permits-list/view-company-permits-list/remove-permits-dialog/remove-permits-dialog.component';
+import { PermitTariffInfoComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/permit-tariff-info/permit-tariff-info.component';
 
 @NgModule({
   declarations: [
@@ -525,7 +527,9 @@ import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-c
     ExchangeRateUploadComponent,
     ContextMenuRoeComponent,
     ExchangeRateLinesComponent,
-    AddCompanyPermitComponent
+    AddCompanyPermitComponent,
+    RemovePermitsDialogComponent,
+    PermitTariffInfoComponent
   ],
   imports: [
     TextMaskModule,
@@ -552,7 +556,7 @@ import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-c
     FirebaseModule,
     PdfJsViewerModule,
     NgxMaskModule.forRoot(),
-    
+
   ],
   providers: [
     CookieService,
@@ -644,7 +648,9 @@ import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-c
     DialogReturnAttachmentComponent,
     DialogRemoveAttachmentComponent,
     DialogTransactionDeleteComponent,
-    AddCompanyPermitComponent
+    AddCompanyPermitComponent,
+    RemovePermitsDialogComponent,
+    PermitTariffInfoComponent
   ],
 })
 export class AppModule {}
