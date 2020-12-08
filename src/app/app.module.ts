@@ -316,6 +316,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/add-company-permit.component';
 import { RemovePermitsDialogComponent } from './views/main/view-permits-list/view-company-permits-list/remove-permits-dialog/remove-permits-dialog.component';
 import { EditPermitDialogComponent } from './views/main/view-permits-list/view-company-permits-list/edit-permit-dialog/edit-permit-dialog.component';
+import { PermitTariffInfoComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/permit-tariff-info/permit-tariff-info.component';
 
 @NgModule({
   declarations: [
@@ -529,7 +530,8 @@ import { EditPermitDialogComponent } from './views/main/view-permits-list/view-c
     ExchangeRateLinesComponent,
     AddCompanyPermitComponent,
     RemovePermitsDialogComponent,
-    EditPermitDialogComponent
+    EditPermitDialogComponent,
+    PermitTariffInfoComponent
   ],
   imports: [
     TextMaskModule,
@@ -650,7 +652,8 @@ import { EditPermitDialogComponent } from './views/main/view-permits-list/view-c
     DialogTransactionDeleteComponent,
     AddCompanyPermitComponent,
     RemovePermitsDialogComponent,
-    EditPermitDialogComponent
+    EditPermitDialogComponent,
+    PermitTariffInfoComponent
   ],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
@@ -9,6 +9,7 @@ import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { UserService } from 'src/app/services/user.Service';
+import { PermitTariffInfoComponent } from './permit-tariff-info/permit-tariff-info.component';
 
 @Component({
   selector: 'app-add-company-permit',
@@ -22,6 +23,7 @@ export class AddCompanyPermitComponent implements OnInit {
               private companyService: CompanyService,
               private snackbarService: HelpSnackbar,
               private captureService: CaptureService,
+              private matDialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
 
@@ -104,10 +106,21 @@ export class AddCompanyPermitComponent implements OnInit {
               // Removes Tariff object if exists
               this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
 
-              // Adds record from api
-              this.selectedImportTariffs.push(res.tariffList[0].id);
+              this.matDialog.open(PermitTariffInfoComponent, {
+                data: {
+                  tariffID: res.tariffList[0].id,
+                  subHeading: res.tariffList[0].subHeading,
+                  itemNumber: res.tariffList[0].itemNumber,
+                },
+                width: '512px'
+              }).afterClosed().subscribe((tariffObj) => {
+                if (tariffObj) {
 
-              this.importTariffs.setValue(null, { emitEvent: false });
+                  // Adds record from api
+                  this.selectedImportTariffs.push(tariffObj);
+                  this.importTariffs.setValue(null, { emitEvent: false });
+                }
+              });
             }
           }
         );
@@ -240,7 +253,14 @@ export class AddCompanyPermitComponent implements OnInit {
           importDateEnd: this.form.controls.importdateEnd.value,
           exportDateStart: this.form.controls.exportdateStart.value,
           exportDateEnd: this.form.controls.exportdateEnd.value,
-          importTariffs: this.selectedImportTariffs,
+          importTariffs: this.selectedImportTariffs.map((e) => {
+            return {
+              tariffID: e.tariffID,
+              uomID: e.unitOfMeasureID,
+              quantity: e.quantity,
+              price: e.price,
+            };
+          }),
           exportTariffs: this.selectedExportTariff,
         };
 
@@ -257,10 +277,16 @@ export class AddCompanyPermitComponent implements OnInit {
        console.log(formData);
 
        await this.captureService.UploadPermit(formData).then(
-        (res) => {
+        (res: any) => {
           console.log(res);
-          this.processing = false;
-          this.dialogRef.close({state: true});
+
+          this.snackbar.open(res.outcomeMessage, '', { duration: 2000 });
+
+          if (res.outcome) {
+            this.processing = false;
+            this.dialogRef.close({state: true});
+          }
+
         },
         (msg) => {
           console.log(msg);
