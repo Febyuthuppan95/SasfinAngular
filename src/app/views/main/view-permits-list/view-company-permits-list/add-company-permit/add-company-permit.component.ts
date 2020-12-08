@@ -277,10 +277,16 @@ export class AddCompanyPermitComponent implements OnInit {
        console.log(formData);
 
        await this.captureService.UploadPermit(formData).then(
-        (res) => {
+        (res: any) => {
           console.log(res);
-          this.processing = false;
-          this.dialogRef.close({state: true});
+
+          this.snackbar.open(res.outcomeMessage, '', { duration: 2000 });
+
+          if (res.outcome) {
+            this.processing = false;
+            this.dialogRef.close({state: true});
+          }
+
         },
         (msg) => {
           console.log(msg);

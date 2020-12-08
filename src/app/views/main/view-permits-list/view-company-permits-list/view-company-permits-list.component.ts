@@ -672,12 +672,20 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       width: '80%',
       data: {
 
-      }});
-    /*} ).afterClosed().subscribe((val) =>{
-      if  (val){
-        this.addPermit(val);
+      }}).afterClosed().subscribe((val) => {
+      if (val){
+        if (this.permitTypeID === 1) {
+          console.log('1');
+          this.loadCompanyPermits(true);
+        } else if (this.permitTypeID === 2) {
+          console.log('2');
+          this.loadCompanyPRCCs(true);
+        } else if (this.permitTypeID === 3) {
+          console.log(3);
+          this.loadCompanyEPCs(true);
+        }
       }
-    }); */
+    });
   }
 
   addPermit(permit: any) {

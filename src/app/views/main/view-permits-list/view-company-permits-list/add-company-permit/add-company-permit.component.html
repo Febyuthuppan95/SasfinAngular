@@ -126,10 +126,9 @@
             <ls-autocomplete-tariffs [tariffHeading]="2" [(control)]="importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
             <br><br>
           </div>
-          <!-- TODO: Change from Chip to Card view-->
-          <mat-card *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)">
+          <mat-card *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)" matTooltip="Click to remove">
             <mat-card-content>
-              <h3>{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</h3>
+              <small class="text-muted"><strong>{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</strong></small>
               <p>
                 <strong>Price</strong>:&nbsp;{{item.price}}<br/>
                 <strong>Quantity</strong>:&nbsp;{{item.quantity}}
