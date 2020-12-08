@@ -18,10 +18,7 @@ private result = false;
 
   }
 
-  UpdatePermit() {
-    this.result = true;
-}
-  dismiss() {
-    this.dialogRef.close(false);
+  dismiss(result) {
+    this.dialogRef.close(result);
   }
 }

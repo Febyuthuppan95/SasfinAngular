@@ -27,6 +27,7 @@ import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { UpdateItemResponse } from 'src/app/models/HttpResponses/UpdateItemResponse';
 import { RemovePermitsDialogComponent } from './remove-permits-dialog/remove-permits-dialog.component';
 
+
 @Component({
   selector: 'app-view-company-permits-list',
   templateUrl: './view-company-permits-list.component.html',
@@ -667,7 +668,6 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   addPermitDialog() {
     this.dialog.open(AddCompanyPermitComponent, {
       autoFocus: true,
-      panelClass: 'custom-dialog-container',
       height: '75vh',
       width: '80%',
       data: {
@@ -702,8 +702,10 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       width: '512px',
 
     }).afterClosed().subscribe(UpdatePermit => {
+      console.log('awe');
       if (UpdatePermit) {
-          this.UpdatePermit(true);
+        console.log('hi');
+        this.UpdatePermit(true);
       }
     });
   }
@@ -731,40 +733,44 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   //   this.openRemoveModal.nativeElement.click();
   // }
 
-  UpdatePermit(deleted: boolean) {
-    const requestModel = {
-      userID: this.currentUser.userID,
-      permitID: this.permitID,
-      permitCode: this.permitCode,
-      permitReference: this.permitReference,
-      dateStart: this.dateStart,
-      dateEnd: this.dateEnd,
-      importStartDate: this.importStartDate,
-      importEndDate: this.importEndDate,
-      exportStartDate: this.exportStartDate,
-      exportEndDate: this.exportEndDate,
-
-      // tariff: this.tariff,
-      // type: this.type,
-      // mIDP: this.mIDP,
-      // pI: this.pI,
-      // vulnerable: this.vulnerable,
-      // service: '',
-
-      isDeleted: deleted
-    };
-    console.log('hey');
-    this.companyService.itemupdate(requestModel).then(
-      (res: UpdateItemResponse) => {
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-          this.loadCompanyPermits(false);
-        } else {
-          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
-        }
+  async UpdatePermit(deleted: boolean) {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+        permitID: this.permitID,
+        isDeleted: deleted ? 1 : 0,
       },
-      (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
-    );
+      procedure: 'PermitUpdate'
+    };
+
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+      (res: any) => {
+        console.log(res);
+
+        if (this.permitTypeID === 1) {
+          console.log('1');
+          this.loadCompanyPermits(true);
+        } else if (this.permitTypeID === 2) {
+          console.log('2');
+          this.loadCompanyPRCCs(true);
+        } else if (this.permitTypeID === 3) {
+          console.log(3);
+          this.loadCompanyEPCs(true);
+        }
+
+        console.log('Test');
+    });
+    // this.companyService.itemupdate(requestModel).then(
+    //   (res: UpdateItemResponse) => {
+    //     if (res.outcome.outcome === 'SUCCESS') {
+    //       this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+    //       this.loadCompanyPermits(false);
+    //     } else {
+    //       this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+    //     }
+    //   },
+    //   (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
+    // );
   }
 
   // addNewservice(id, name) {
