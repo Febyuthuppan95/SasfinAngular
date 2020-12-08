@@ -673,7 +673,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       data: {
 
       }}).afterClosed().subscribe((val) => {
-      if (val){
+      if (val) {
         if (this.permitTypeID === 1) {
           console.log('1');
           this.loadCompanyPermits(true);
