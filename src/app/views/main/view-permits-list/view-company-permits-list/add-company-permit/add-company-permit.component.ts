@@ -190,7 +190,7 @@ export class AddCompanyPermitComponent implements OnInit {
       this.activeTariff = this.selectedImportTariffs[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 
-      //this.refresh();
+      // this.refresh();
     }
   }
 
