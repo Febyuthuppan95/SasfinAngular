@@ -1,12 +1,13 @@
 import { environment } from 'src/environments/environment';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
 import { ApiService } from 'src/app/services/api.service';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { UserService } from 'src/app/services/user.Service';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
+import { PermitTariffInfoComponent } from '../add-company-permit/permit-tariff-info/permit-tariff-info.component';
 
 @Component({
   selector: 'app-edit-permit-dialog',
@@ -18,6 +19,7 @@ export class EditPermitDialogComponent implements OnInit {
   constructor(private userService: UserService,
               private companyService: CompanyService,
               private api: ApiService,
+              private matDialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<EditPermitDialogComponent>) { }
   form = new FormGroup({
@@ -60,7 +62,7 @@ export class EditPermitDialogComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
-    this.Permit = this.data.Permit;
+    this.Permit = this.data.permit;
 
 
     this.form.controls.PermitCode.setValue(this.Permit.permitCode);
@@ -70,8 +72,8 @@ export class EditPermitDialogComponent implements OnInit {
     this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
     this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
     this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
-    this.exportTariff.setValue(this.Permit.exportTariffID);
-    this.selectedImportTariffs = this.Permit.tariff;
+    this.exportTariff.setValue(this.Permit.exportTariff);
+    //this.selectedImportTariffs = this.Permit.tariff;
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
@@ -96,10 +98,21 @@ export class EditPermitDialogComponent implements OnInit {
               // Removes Tariff object if exists
               this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
 
-              // Adds record from api
-              this.selectedImportTariffs.push(res.tariffList[0].id);
+              this.matDialog.open(PermitTariffInfoComponent, {
+                data: {
+                  tariffID: res.tariffList[0].id,
+                  subHeading: res.tariffList[0].subHeading,
+                  itemNumber: res.tariffList[0].itemNumber,
+                },
+                width: '512px'
+              }).afterClosed().subscribe((tariffObj) => {
+                if (tariffObj) {
 
-              this.importTariffs.setValue(null, { emitEvent: false });
+                  // Adds record from api
+                  this.selectedImportTariffs.push(tariffObj);
+                  this.importTariffs.setValue(null, { emitEvent: false });
+                }
+              });
             }
           }
         );
@@ -174,7 +187,22 @@ export class EditPermitDialogComponent implements OnInit {
       err++;
     }
     if (err === 0) {
-      const model: any = {
+      const model = {
+          permitID: this.Permit.permitID,
+          userID: this.currentUser.userID,
+          companyID: this.companyID,
+          permitCode: this.form.controls.PermitCode.value,
+          dateStart: this.form.controls.dateStart.value,
+          dateEnd: this.form.controls.dateEnd.value,
+          importDateStart: this.form.controls.importdateStart.value,
+          importDateEnd: this.form.controls.importdateEnd.value,
+          exportDateStart: this.form.controls.exportdateStart.value,
+          exportDateEnd: this.form.controls.exportdateEnd.value,
+          tariff: this.selectedImportTariffs,
+          exportTariffID: this.selectedExportTariff,
+      };
+
+      /* const model: any = {
         request: {
           permitID: this.data.permitID,
           userID: this.currentUser.userID,
@@ -190,10 +218,11 @@ export class EditPermitDialogComponent implements OnInit {
           exportTariffID: this.selectedExportTariff,
         },
         procedure: 'PermitUpdate'
-      };
+      }; */
       console.log('model');
       console.log(model);
-      await this.api.post(`${environment.ApiEndpoint}/capture/post`,
+      this.dialogRef.close(model);
+      /* await this.api.post(`${environment.ApiEndpoint}/capture/post`,
       model).then(
         (res: any) => {
           console.log('res');
@@ -204,7 +233,7 @@ export class EditPermitDialogComponent implements OnInit {
             // no outcome
           }
         }
-      );
+      ); */
     }
   }
 

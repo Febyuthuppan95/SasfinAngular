@@ -707,11 +707,13 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       data: {
         permit: this.Permit
       }
+    }).afterClosed().subscribe(UpdatePermit => {
+      console.log('Update');
+      console.log(UpdatePermit);
+      if (UpdatePermit) {
+        this.UpdatePermit(UpdatePermit);
+      }
     });
-
-  }
-
-  updatePermit() {
 
   }
 
@@ -722,9 +724,16 @@ export class ViewCompanyPermitsListComponent implements OnInit {
 
     }).afterClosed().subscribe(UpdatePermit => {
       console.log('awe');
+      console.log(UpdatePermit);
       if (UpdatePermit) {
         console.log('hi');
-        this.UpdatePermit(true);
+        const requestModel = {
+          userID: this.currentUser.userID,
+          permitID: this.Permit.permitID,
+          isDeleted: UpdatePermit ? 1 : 0,
+        };
+        console.log(requestModel);
+        this.UpdatePermit(requestModel);
       }
     });
   }
@@ -752,16 +761,12 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   //   this.openRemoveModal.nativeElement.click();
   // }
 
-  async UpdatePermit(deleted: boolean) {
+  async UpdatePermit(requestModel: any) {
     const model = {
-      request: {
-        userID: this.currentUser.userID,
-        permitID: this.Permit.permitID,
-        isDeleted: deleted ? 1 : 0,
-      },
+      request: requestModel,
       procedure: 'PermitUpdate'
     };
-
+    console.log(model);
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
       (res: any) => {
         console.log(res);

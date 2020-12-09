@@ -115,10 +115,24 @@
             <ls-autocomplete-tariffs [tariffHeading]="2" [(control)]="importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
             <br><br>
           </div>
-          <mat-chip-list>
-            <mat-chip *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)"><mat-icon>clear</mat-icon>&nbsp;{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</mat-chip>
-          </mat-chip-list>
+          <mat-card *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)" matTooltip="Click to remove" style="margin: 10px;">
+            <mat-card-content>
+              <small class="text-muted"><strong>{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</strong></small>
+              <p>
+                <strong>Price</strong>:&nbsp;{{item.price}}<br/>
+                <strong>Quantity</strong>:&nbsp;{{item.quantity}}
+              </p>
+            </mat-card-content>
+          </mat-card>
           <br>
+          <ng-container *ngIf="selectedImportTariffs.length > 0">
+
+          </ng-container>
+
+          <!-- <mat-chip-list>
+            <mat-chip *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)"><mat-icon>clear</mat-icon>&nbsp;{{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}</mat-chip>
+          </mat-chip-list> -->
+          <!-- <br>
           <ng-container *ngIf="selectedImportTariffs.length > 0">
             <mat-card>
               <mat-card-content>
@@ -129,24 +143,24 @@
                     <button tabindex="-1" (click)="nextTarrif()" style="margin-top: 12px; margin-bottom: 12px;" mat-button *ngIf="selectedImportTariffs.length !== 0 || selectedImportTariffs.length !== 0" [disabled]="(selectedImportTariffs.length === 1 && activeIndex <= 0) || (this.activeIndex >= this.selectedImportTariffs.length - 1)"><span class="mdi mdi-chevron-right"></span></button>
                     <span class="badge badge-transparent" *ngIf="activeIndex > -1">Tariff <input tabindex="-1" type="number" [max]="selectedImportTariffs.length - 1" [min]="1" step="1" matInput class="pagination-input" [formControl]="paginationControl" /> of {{ selectedImportTariffs.length }}</span>
                     <span class="badge badge-transparent" *ngIf="activeIndex === -1" style="margin-top: 12px; margin-bottom: 12px;">New Line</span>
-                  &nbsp;
+                  &nbsp; -->
                   <!-- &nbsp;<span>{{lineState}}</span> -->
-                  </p>
+                  <!-- </p> -->
                 <!-- <div class="line-errors" *ngIf="lineErrors.length > 0">
                     <button style="margin-bottom: 12px; width:24px; height: 24px;padding: 4px !important" class="btn btn-danger btn-sm" *ngFor="let item of lineErrors" (click)="specificLine(sad500CreatedLines.indexOf(item))">{{sad500CreatedLines.indexOf(item) + 1}}</button>
                 </div> -->
-              </div>
+              <!-- </div>
               <br>
-              <br>
-            <form [formGroup]="form" >
-              <!-- (ngSubmit)="submit(form)" -->
+              <br> -->
+            <!-- <form [formGroup]="form" >
+              (ngSubmit)="submit(form)"
               <div class="row">
                 <div class="col-6">
                   <mat-form-field appearance="fill">
                   <mat-label>
                     Import Tariff
                   </mat-label>
-                  <input matInput type="text" disabled > <!-- (focusin)="updateHelpContext('form-invoice-line-LineNo')" -->
+                  <input matInput type="text" disabled (focusin)="updateHelpContext('form-invoice-line-LineNo')">
                 </mat-form-field>
                 </div>
                 <div class="col-6">
@@ -158,8 +172,8 @@
                     <mat-label>
                       Quantity
                     </mat-label>
-                    <input matInput type="text" formControlName="hsQuantity" > <!-- (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')" -->
-                    <!-- <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantityError.value">{{form.controls.hsQuantityError.value}}</mat-error> -->
+                    <input matInput type="text" formControlName="hsQuantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
+                    <mat-error *ngIf="!form.controls.hsQuantityOBit.value  && form.controls.hsQuantityError.value">{{form.controls.hsQuantityError.value}}</mat-error>
                   </mat-form-field>
                   <br><br>
                 </div>
@@ -168,8 +182,8 @@
                     <mat-label>
                       Price
                     </mat-label>
-                   <input matInput type="text" formControlName="unitPrice" > <!-- (focusin)="updateHelpContext('form-invoice-line-unitprice')" -->
-                   <!-- <mat-error *ngIf="form.controls.unitPrice.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.unitPrice.value}}</mat-error> -->
+                   <input matInput type="text" formControlName="unitPrice" (focusin)="updateHelpContext('form-invoice-line-unitprice')">
+                   <mat-error *ngIf="form.controls.unitPrice.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.unitPrice.value}}</mat-error>
                   </mat-form-field>
                   <br><br>
                 </div>
@@ -178,7 +192,7 @@
 
           </mat-card-content>
         </mat-card>
-          </ng-container>
+          </ng-container> -->
         </form>
       </div>
   </div>
