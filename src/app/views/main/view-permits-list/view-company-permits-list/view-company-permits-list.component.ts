@@ -761,7 +761,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     const model = {
       request: {
         userID: this.currentUser.userID,
-        permitID: this.permitID,
+        permitID: this.Permit.permitID,
         isDeleted: deleted ? 1 : 0,
       },
       procedure: 'PermitUpdate'
