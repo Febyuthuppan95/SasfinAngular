@@ -73,7 +73,7 @@ export class EditPermitDialogComponent implements OnInit {
     this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
     this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
     this.exportTariff.setValue(this.Permit.exportTariff);
-    //this.selectedImportTariffs = this.Permit.tariff;
+    // this.selectedImportTariffs = this.Permit.tariff;
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
