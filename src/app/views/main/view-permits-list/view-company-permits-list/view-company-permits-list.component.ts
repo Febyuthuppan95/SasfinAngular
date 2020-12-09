@@ -78,6 +78,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     importdateEnd: string;
     exportdateStart: string;
     exportdateEnd: string;
+    exportTariff: number;
+    tariff: any[]
   };
 
   tableHeader: TableHeader = {
@@ -703,14 +705,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       height: '75vh',
       width: '80%',
       data: {
-        permitID: this.Permit.permitID,
-        permitCode: this.Permit.permitCode,
-        dateStart: this.Permit.dateStart,
-        dateEnd: this.Permit.dateEnd,
-        importdateStart: this.Permit.importdateStart,
-        importdateEnd: this.Permit.importdateEnd,
-        exportdateStart: this.Permit.exportdateStart,
-        exportdateEnd: this.Permit.exportdateEnd
+        permit: this.Permit
       }
     });
 

@@ -40,6 +40,7 @@ export class EditPermitDialogComponent implements OnInit {
   selectedExportTariff: number;
   companyID: number;
   companyName: string;
+  Permit: any;
 
   public activeIndex = 0;
   public activeTariff: any = null;
@@ -54,24 +55,23 @@ export class EditPermitDialogComponent implements OnInit {
      mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/] // i made changes here
    };
 
-   toDate(value, control) {
-    control.setValue(new Date(value));
-  }
-
-
   ngOnInit() {
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
-    this.form.controls.PermitCode.setValue(this.data.permitCode);
-    this.form.controls.dateStart.setValue(this.data.dateStart);
-    this.form.controls.dateEnd.setValue(this.data.dateEnd);
-    this.form.controls.importdateStart.setValue(this.data.importdateStart);
-    this.form.controls.importdateEnd.setValue(this.data.importdateEnd);
-    this.form.controls.exportdateStart.setValue(this.data.exportdateStart);
-    this.form.controls.exportdateEnd.setValue(this.data.exportdateEnd);
-    // this.exportTariff.setValue(this.data.exportTariff);
+    this.Permit = this.data.Permit;
+
+
+    this.form.controls.PermitCode.setValue(this.Permit.permitCode);
+    this.form.controls.dateStart.setValue(this.Permit.dateStart);
+    this.form.controls.dateEnd.setValue(this.Permit.dateEnd);
+    this.form.controls.importdateStart.setValue(this.Permit.importdateStart);
+    this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
+    this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
+    this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
+    this.exportTariff.setValue(this.Permit.exportTariffID);
+    this.selectedImportTariffs = this.Permit.tariff;
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
@@ -113,6 +113,10 @@ export class EditPermitDialogComponent implements OnInit {
         this.selectedExportTariff = +value;
       }
     });
+  }
+
+   toDate(value, control) {
+    control.setValue(new Date(value));
   }
 
   removeTariff(index: number) {
