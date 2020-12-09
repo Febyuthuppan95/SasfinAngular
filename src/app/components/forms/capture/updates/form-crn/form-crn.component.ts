@@ -310,6 +310,7 @@ findInvalidControls(form: FormGroup) {
 }
 
 getError(key: string): string {
+  // tslint:disable-next-line: max-line-length
   return this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()) ? this.errors.find(x => x.fieldName.toUpperCase() === key.toUpperCase()).errorDescription : '';
 }
 
@@ -318,8 +319,23 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
 
   if (form.valid || escalation || saveProgress || escalationResolved) {
     const requestModel: any = form.value;
+    // tslint:disable-next-line: max-line-length
     requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
     requestModel.userID = this.currentUser.userID;
+    requestModel.fob = requestModel.fob == null ?  0 : requestModel.fob;
+    requestModel.supplierRef = requestModel.supplierRef == null ? '' : requestModel.supplierRef;
+    requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason;
+    requestModel.lrnOReason = requestModel.lrnOReason == null ? '' : requestModel.lrnOReason;
+    requestModel.importersCodeOReason = requestModel.importersCodeOReason == null ? '' : requestModel.importersCodeOReason;
+    requestModel.fileRefOReason = requestModel.fileRefOReason == null ? '' : requestModel.fileRefOReason;
+    requestModel.mrnOReason = requestModel.mrnOReason == null ? '' : requestModel.mrnOReason;
+    requestModel.totalCustomsValueOReason = requestModel.totalCustomsValueOReason == null ? '' : requestModel.totalCustomsValueOReason;
+    requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
+    requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
+
+    console.log('CRN requestModel');
+    console.log(requestModel);
+
 
     this.transactionService.customsReleaseUpdate(requestModel).then(
       (res: Outcome) => {
