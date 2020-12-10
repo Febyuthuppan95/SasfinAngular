@@ -17,7 +17,7 @@ import { PermitTariffInfoComponent } from './permit-tariff-info/permit-tariff-in
   styleUrls: ['./add-company-permit.component.scss']
 })
 export class AddCompanyPermitComponent implements OnInit {
-
+  //hi
   constructor(private snackbar: MatSnackBar,
               private userService: UserService,
               private companyService: CompanyService,
