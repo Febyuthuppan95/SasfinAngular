@@ -78,7 +78,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     importdateEnd: string;
     exportdateStart: string;
     exportdateEnd: string;
-    exportTariff: number;
+    exportTariffCode: string;
     tariff: any[]
   };
 
@@ -607,6 +607,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   }
 
   popClick(event, obj) {
+    console.log('object');
+    console.log(obj);
     this.Permit = obj;
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;

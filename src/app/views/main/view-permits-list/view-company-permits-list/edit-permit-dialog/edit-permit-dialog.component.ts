@@ -63,6 +63,8 @@ export class EditPermitDialogComponent implements OnInit {
       this.companyName = obj.companyName;
     });
     this.Permit = this.data.permit;
+    console.log('Permit');
+    console.log(this.Permit.exportTariffCode);
 
 
     this.form.controls.PermitCode.setValue(this.Permit.permitCode);
@@ -72,7 +74,9 @@ export class EditPermitDialogComponent implements OnInit {
     this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
     this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
     this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
-    this.exportTariff.setValue(this.Permit.exportTariff);
+    this.exportTariff.setValue(this.Permit.exportTariffID);
+    //console.log(this.exportTariff);
+
     //this.selectedImportTariffs = this.Permit.tariff;
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
@@ -118,6 +122,7 @@ export class EditPermitDialogComponent implements OnInit {
         );
       }
     });
+    this.loadImportTariffs();
 
     this.exportTariff.valueChanges.subscribe(async (value) => {
       console.log(value);
@@ -126,6 +131,28 @@ export class EditPermitDialogComponent implements OnInit {
         this.selectedExportTariff = +value;
       }
     });
+  }
+
+  loadImportTariffs() {
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        permitID: this.Permit.permitID
+      },
+      requestProcedure: 'PermitImportTafiffsList'
+    };
+    /* console.log('PermitImportTariffList');
+    console.log(model); */
+    this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model)
+    .then(
+      (res: any) => {
+        for (let item of res.data){
+          this.selectedImportTariffs.push(item);
+        }
+        // this.selectedImportTariffs = res.data;
+        console.log(this.selectedImportTariffs);
+      }
+    );
   }
 
    toDate(value, control) {
@@ -199,7 +226,7 @@ export class EditPermitDialogComponent implements OnInit {
           exportDateStart: this.form.controls.exportdateStart.value,
           exportDateEnd: this.form.controls.exportdateEnd.value,
           tariff: this.selectedImportTariffs,
-          exportTariffID: this.selectedExportTariff,
+          exportTariffID: this.selectedExportTariff
       };
 
       /* const model: any = {
