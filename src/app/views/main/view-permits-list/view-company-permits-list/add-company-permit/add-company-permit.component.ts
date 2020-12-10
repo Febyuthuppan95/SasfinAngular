@@ -36,8 +36,7 @@ export class AddCompanyPermitComponent implements OnInit {
   fileReader: any;
   form = new FormGroup({
     PermitCode: new FormControl(null, [Validators.required]),
-    dateStart: new FormControl(null, [Validators.required]),
-    dateEnd: new FormControl(null, [Validators.required]),
+    permitDate: new FormControl(null, [Validators.required]),
     importdateStart: new FormControl(null, [Validators.required]),
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
@@ -247,8 +246,7 @@ export class AddCompanyPermitComponent implements OnInit {
           userID: this.currentUser.userID,
           companyID: this.companyID,
           permitCode: this.form.controls.PermitCode.value,
-          dateStart: this.form.controls.dateStart.value,
-          dateEnd: this.form.controls.dateEnd.value,
+          permitDate: this.form.controls.permitDate.value,
           importDateStart: this.form.controls.importdateStart.value,
           importDateEnd: this.form.controls.importdateEnd.value,
           exportDateStart: this.form.controls.exportdateStart.value,
