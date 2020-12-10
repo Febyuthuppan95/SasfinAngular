@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
@@ -14,7 +14,7 @@ import { PermitTariffInfoComponent } from '../add-company-permit/permit-tariff-i
   templateUrl: './edit-permit-dialog.component.html',
   styleUrls: ['./edit-permit-dialog.component.scss']
 })
-export class EditPermitDialogComponent implements OnInit {
+export class EditPermitDialogComponent implements OnInit, AfterViewInit {
 
   constructor(private userService: UserService,
               private companyService: CompanyService,
@@ -64,20 +64,7 @@ export class EditPermitDialogComponent implements OnInit {
     });
     this.Permit = this.data.permit;
     console.log('Permit');
-    console.log(this.Permit.exportTariffCode);
-
-
-    this.form.controls.PermitCode.setValue(this.Permit.permitCode);
-    this.form.controls.dateStart.setValue(this.Permit.dateStart);
-    this.form.controls.dateEnd.setValue(this.Permit.dateEnd);
-    this.form.controls.importdateStart.setValue(this.Permit.importdateStart);
-    this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
-    this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
-    this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
-    this.exportTariff.setValue(this.Permit.exportTariffID);
-    //console.log(this.exportTariff);
-
-    //this.selectedImportTariffs = this.Permit.tariff;
+    console.log(this.Permit);
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
@@ -92,9 +79,7 @@ export class EditPermitDialogComponent implements OnInit {
           rowEnd: 10
         };
 
-        await this.companyService
-        .getTariffList(model)
-        .then(
+        await this.companyService.getTariffList(model).then(
           (res: TariffListResponse) => {
             console.log(res);
 
@@ -125,12 +110,30 @@ export class EditPermitDialogComponent implements OnInit {
     this.loadImportTariffs();
 
     this.exportTariff.valueChanges.subscribe(async (value) => {
+      console.log('value');
       console.log(value);
 
       if (value) {
         this.selectedExportTariff = +value;
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.form.controls.PermitCode.setValue(this.Permit.permitCode);
+    this.form.controls.dateStart.setValue(this.Permit.dateStart);
+    this.form.controls.dateEnd.setValue(this.Permit.dateEnd);
+    this.form.controls.importdateStart.setValue(this.Permit.importdateStart);
+    this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
+    this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
+    this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
+    this.exportTariff.setValue(this.Permit.exportTariffID, { emitEvent: false });
+    this.exportTariff.updateValueAndValidity();
+    this.selectedExportTariff = this.Permit.exportTariffID;
+
+    console.log('exportTariff');
+    console.log(this.exportTariff.value);
+    console.log(this.selectedExportTariff);
   }
 
   loadImportTariffs() {
@@ -248,7 +251,7 @@ export class EditPermitDialogComponent implements OnInit {
       }; */
       console.log('model');
       console.log(model);
-      this.dialogRef.close(model);
+     // this.dialogRef.close(model);
       /* await this.api.post(`${environment.ApiEndpoint}/capture/post`,
       model).then(
         (res: any) => {

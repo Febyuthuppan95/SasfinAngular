@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, EventEmitter } from '@angular/core';
 import { UserService } from 'src/app/services/user.Service';
 import { FormControl, Validators } from '@angular/forms';
 import { TariffService } from 'src/app/services/Tariff.service';
@@ -45,6 +45,20 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     }
 
     this.load(true);
+
+    this.control.valueChanges.subscribe((value) => {
+      if (value) {
+        console.log('test control');
+        console.log(value);
+
+        // this.query.setValue(value, {emitEvent: false});
+        // this.query.setErrors(null);
+        // this.control.setErrors(null);
+        // this.selected = true;
+        this.load(true, true);
+
+      }
+    });
 
     this.query.valueChanges.subscribe((value) => {
       if (value) {
@@ -127,8 +141,14 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
       }) => {
         this.list = res.tariffList;
 
+        console.log('list');
+        console.log(this.list);
+
         if (setDefault) {
-          const defaultValue = this.list.find(x => x.id === this.control.value);
+          const defaultValue = this.list.find(x => x.id === +this.control.value);
+          console.log('defaultValue');
+          console.log(defaultValue);
+
           if (defaultValue) {
             this.query.setValue(defaultValue, { emitEvent: false });
           }
