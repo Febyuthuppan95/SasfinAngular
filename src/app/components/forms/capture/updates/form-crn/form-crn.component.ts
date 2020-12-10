@@ -207,7 +207,12 @@ async load() {
       response.pccID = res.customs[0].pcc;
 
       this.attachmentStatus = response.statusID;
-      this.transactionStatus = response.TransactionStatusID;
+      this.transactionStatus = response.transactionStatusID;
+
+      console.log('statusses');
+      console.log(res.customs[0]);
+      console.log(this.transactionStatus);
+      console.log( this.attachmentStatus);
 
       if (this.attachmentStatus === 5 && this.transactionStatus == 10) {
         this.form.disable();

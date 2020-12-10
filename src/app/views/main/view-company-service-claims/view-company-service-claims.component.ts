@@ -55,11 +55,12 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   constructor(
     private companyService: CompanyService,
-    private ServiceService: ServicesService,
+    //private ServiceService: ServicesService,
     private userService: UserService,
     private apiService: ApiService,
     private formBuilder: FormBuilder,
     private themeService: ThemeService,
+    private claimService: ServicesService,
     private IMenuService: MenuService,
     private router: Router,
     private snackbarService: HelpSnackbar,
@@ -352,7 +353,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
   }
   remove($event: ClaimPermit) {
-    // console.log($event);
+    console.log($event);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -363,7 +364,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: 'CompanyServiceClaimPermitsUpdate'
     };
-    // console.log(model);
+    console.log('model');
+    console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
       (res: any) => {
         this.loadCompanyServiceClaimPermits();
@@ -483,7 +485,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     };
     this.companyService.getCompanyServiceClaims(model).then(
       (res: CompanyServiceClaimsListResponse) => {
-        console.log('res');
+        console.log('res claims');
         console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
@@ -859,7 +861,7 @@ getTransactionID(): number {
   return 0;
 }
 addCompanyServiceClaimPermits() {
-  // console.log(this.permitslist.length);
+  console.log(this.permitslist);
 
   if (this.permitslist.length === 0) {
     // error
@@ -901,6 +903,19 @@ addCompanyServiceClaimPermits() {
       }
     );
   });
+  // if (successCount === this.permitslist.length) {
+  //     this.claimService.setCompanyClaim({
+  //     companyID: this.companyID,
+  //     companyName: this.companyName,
+  //     serviceID: this.ServiceClaim.serviceID,
+  //     serviceName: this.ServiceClaim.serviceName,
+  //     companyServiceClaimID: this.ServiceClaim.companyServiceClaimNumber,
+  //     claimStatus: 'Active'
+  //   });
+  //   this.router.navigate(['claim','capture']);
+  // }
+
+
 }
 openAddClaimPermits($event) {
   this.loadCompanyServiceClaimPermits();
