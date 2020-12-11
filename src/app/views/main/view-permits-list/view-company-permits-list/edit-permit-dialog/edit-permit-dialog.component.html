@@ -40,7 +40,7 @@
               <ls-autocomplete-tariffs [tariffHeading]="1" [(control)]="exportTariff" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
               <br><br>
             </div>
-          <mat-form-field class="form-group">
+          <!-- <mat-form-field class="form-group">
             <mat-label>Start Date:</mat-label>
             <input hidden [matDatepicker]="startPicker" [formControl]="this.form.controls.dateStart">
             <input matInput type="text" [textMask]="mask"
@@ -59,6 +59,17 @@
             [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.dateEnd)'required/>
             <mat-error *ngIf="this.form.controls.dateEnd.hasError('required')">
               End Date is <strong>required</strong>
+            </mat-error>
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field> -->
+          <mat-form-field class="form-group">
+            <mat-label>Permit Date:</mat-label>
+            <input hidden [matDatepicker]="endPicker" [formControl]="this.form.controls.permitDate">
+            <input matInput type="text" [textMask]="mask" [ngModel]="this.form.controls.permitDate.value | date : this.form.controls.permitDate.value !== null?'yyyy/MM/dd' : ''"
+            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.form.controls.permitDate)'required/>
+            <mat-error *ngIf="this.form.controls.permitDate.hasError('required')">
+              Permit Date is <strong>required</strong>
             </mat-error>
             <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
             <mat-datepicker #endPicker></mat-datepicker>

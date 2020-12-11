@@ -5,10 +5,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { Tariff, TariffListResponse } from 'src/app/models/HttpResponses/TariffListResponse';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { ApiService } from 'src/app/services/api.service';
 import { CaptureService } from 'src/app/services/capture.service';
 import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { UserService } from 'src/app/services/user.Service';
+import { environment } from 'src/environments/environment';
 import { PermitTariffInfoComponent } from './permit-tariff-info/permit-tariff-info.component';
 
 @Component({
@@ -24,6 +26,7 @@ export class AddCompanyPermitComponent implements OnInit {
               private snackbarService: HelpSnackbar,
               private captureService: CaptureService,
               private matDialog: MatDialog,
+              private api: ApiService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<AddCompanyPermitComponent>) { }
 
@@ -355,6 +358,38 @@ export class AddCompanyPermitComponent implements OnInit {
     this.snackbarService.setHelpContext(newContext);
   }
 
+  /* add512(){
+
+  }
+
+  addPRCC(){
+    const model = {
+      requestParams: {
+
+      },
+      requestProcedure: 'PRCCAdd'
+    }
+
+    this.api.post(`${environment.ApiEndpoint}/`,model).then(
+      (res: any) => {
+
+      });
+  }
+
+  addEPC(){
+    const model = {
+      requestParams: {
+
+      },
+      requestProcedure: 'EPCAdd'
+    }
+
+    this.api.post(`${environment.ApiEndpoint}/`, model).then(
+      (res: any) => {
+
+      });
+  } */
+
   remove($event) {
 
   }
@@ -371,4 +406,6 @@ export class AddCompanyPermitComponent implements OnInit {
   async findTariff(id: number) {
 
   }
+
+
 }
