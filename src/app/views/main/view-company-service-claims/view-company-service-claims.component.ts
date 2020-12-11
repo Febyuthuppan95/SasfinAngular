@@ -364,10 +364,10 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       },
       requestProcedure: 'CompanyServiceClaimPermitsUpdate'
     };
-    console.log('model');
-    console.log(model);
+
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/permit`, model).then(
       (res: any) => {
+        this.loadServiceClaims(false);
         this.loadCompanyServiceClaimPermits();
       },
       msg => {
@@ -393,17 +393,27 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       (res: any) => {
-        // console.log(res);
-        if (res.outcome.outcome === 'SUCCESS') {
-          this.companyServiceClaimPermits = res.data;
-          console.log(res.data);
-          console.log(this.Permits);
+        console.log(res);
 
+        this.companyServiceClaimPermits = res.data;
+
+        console.log('Permits');
+        console.log(this.Permits);
+        console.log(this.companyServiceClaimPermits);
+
+        if ( this.companyServiceClaimPermits.length > 0) {
           this.companyServiceClaimPermits.forEach((item) => {
 
-          });
+            const find = this.Permits.find(x => x.permitID == item.PermitID);
 
-         // console.log(this.companyServiceClaimPermits);
+            if (find) {
+              this.Permits.splice(this.Permits.indexOf(find), 1);
+            }
+
+          });
+        }
+        if (res.outcome.outcome === 'SUCCESS') {
+
         }
       },
       msg => {
@@ -497,7 +507,8 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
         this.rowCount = res.rowCount;
         this.CompanyServiceClaims = res.serviceClaims;
 
-        // console.log(this.rowCount);
+        console.log('CompanyServiceClaims');
+        console.log(this.CompanyServiceClaims);
 
         if (res.rowCount === 0) {
           this.noData = true;
@@ -547,6 +558,9 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
   popClick(event, obj) {
     this.ServiceClaim = obj;
     // console.log(event);
+    this.Permits = null;
+    this.loadCompanyPermits();
+    this.companyServiceClaimPermits = null;
     this.loadCompanyServiceClaimPermits();
     if (this.ServiceClaim.serviceName === '522') {
       this.ServiceClaim.transactionID = this.getTransactionID();
@@ -922,6 +936,7 @@ openAddClaimPermits($event) {
   this.permitsByDate.reset(null);
   this.openPermitModal.nativeElement.click();
 }
+
 loadCompanyPermits() {
   const model: GetCompanyPermits = {
     userID: this.currentUser.userID,
@@ -938,7 +953,6 @@ loadCompanyPermits() {
 
       if (res.outcome.outcome === 'SUCCESS') {
        this.Permits = res.permits;
-       console.log(this.Permits);
       }
     },
     msg => {
