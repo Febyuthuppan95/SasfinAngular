@@ -45,6 +45,16 @@ export class AddCompanyPermitComponent implements OnInit {
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
   });
+  prccForm = new FormGroup({
+    prccNumber: new FormControl(null, [Validators.required]),
+    prccCustomValue: new FormControl(null, [Validators.required]),
+    prccRegNo: new FormControl(null, [Validators.required]),
+    prccFileNo: new FormControl(null, [Validators.required]),
+    prccStartDate: new FormControl(null, [Validators.required]),
+    prccEndDate: new FormControl(null, [Validators.required]),
+    prccImportStartDate: new FormControl(null, [Validators.required]),
+    prccImportEndDate: new FormControl(null, [Validators.required])
+  });
    tarifflist: Tariff[] = [];
    selectedTariffs: Tariff[] = [];
    selected = false;
@@ -53,17 +63,19 @@ export class AddCompanyPermitComponent implements OnInit {
    selectable = false;
    companyID: number;
    companyName: string;
+   permitTypeID: number;
 
    importTariffs = new FormControl(null, [Validators.required]);
    exportTariff = new FormControl(null, [Validators.required]);
    public paginationControl = new FormControl(1);
    selectedImportTariffs = [];
    selectedExportTariff: number;
+   requestParams : object;
 
    private isRequired = false;
    public activeIndex = 0;
    public activeTariff: any = null;
-   public  SPName = '';
+   public SPName = '';
    private currentUser = this.userService.getCurrentUser();
 
    public mask = {
@@ -84,6 +96,8 @@ export class AddCompanyPermitComponent implements OnInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+
+    this.permitTypeID = this.data.permitTypeID;
 
     this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
@@ -234,48 +248,36 @@ export class AddCompanyPermitComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  async formSubmit(sp: string) {
+  async formSubmit() {
 
 
-    this.SPName = sp;
 
     let err = 0;
     console.log(this.form.valid);
-
-    if (!this.form.valid) {
+    if (this.permitTypeID === 1) {
+      this.SPName = 'PermitAdd'
+      this.requestParams = this.PermitModel();
+      if (!this.form.valid) {
         err++;
       }
-
+    } else if (this.permitTypeID === 2) {
+      this.SPName = 'PRCCAdd'
+      this.requestParams = this.PRCCModel();
+      if (!this.prccForm.valid) {
+        err++;
+      }
+    } else if (this.permitTypeID === 3) {
+      this.SPName = 'EPCAdd'
+      this.requestParams = this.EPCModel();
+    }
     if (err === 0) {
-
-       const requestParams: object = {
-          userID: this.currentUser.userID,
-          companyID: this.companyID,
-          permitCode: this.form.controls.PermitCode.value,
-          permitDate: this.form.controls.permitDate.value,
-          importDateStart: this.form.controls.importdateStart.value,
-          importDateEnd: this.form.controls.importdateEnd.value,
-          exportDateStart: this.form.controls.exportdateStart.value,
-          exportDateEnd: this.form.controls.exportdateEnd.value,
-          importTariffs: this.selectedImportTariffs.map((e) => {
-            return {
-              tariffID: e.tariffID,
-              uomID: e.unitOfMeasureID,
-              quantity: e.quantity,
-              price: e.price,
-            };
-          }),
-          exportTariffs: this.selectedExportTariff,
-
-          procedure: this.SPName
-        };
 
        // console.log(requestParams);
 
        const file: File[] = this.file;
        const formData = new FormData();
 
-       formData.append('requestModel', JSON.stringify(requestParams));
+       formData.append('requestModel', JSON.stringify(this.requestParams));
        // tslint:disable-next-line: prefer-for-of
        for (let i = 0; i < this.file.length; i++) {
         formData.append('files', this.file[i]);
@@ -304,6 +306,57 @@ export class AddCompanyPermitComponent implements OnInit {
       this.processing = false;
       this.snackbar.open('There are errors', '', { duration: 3000 });
     }
+  }
+
+  PermitModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      permitCode: this.form.controls.PermitCode.value,
+      permitDate: this.form.controls.permitDate.value,
+      importDateStart: this.form.controls.importdateStart.value,
+      importDateEnd: this.form.controls.importdateEnd.value,
+      exportDateStart: this.form.controls.exportdateStart.value,
+      exportDateEnd: this.form.controls.exportdateEnd.value,
+      importTariffs: this.selectedImportTariffs.map((e) => {
+        return {
+          tariffID: e.tariffID,
+          uomID: e.unitOfMeasureID,
+          quantity: e.quantity,
+          price: e.price,
+        };
+      }),
+      exportTariffs: this.selectedExportTariff,
+      procedure: this.SPName
+    };
+    return obj;
+  }
+
+  PRCCModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      prccNumber: this.prccForm.controls.prccNumber.value,
+      customValue: this.prccForm.controls.prccCustomValue.value,
+      regNo: this.prccForm.controls.prccRegNo.value,
+      fileNo: this.prccForm.controls.prccFileNo.value,
+      startDate: this.prccForm.controls.prccStartDate.value,
+      endDate: this.prccForm.controls.prccEndDate.value,
+      importStartDate: this.prccForm.controls.prccImportStartDate.value,
+      importEndDate: this.prccForm.controls.prccImportEndDatevalue,
+      procedure: this.SPName
+    };
+    return obj;
+  }
+
+  EPCModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      epcCode: '',
+      procedure: this.SPName
+    };
+    return obj
   }
 
   // loadTariffs(setDefault?: boolean, getSpecific?: boolean) {
@@ -357,38 +410,6 @@ export class AddCompanyPermitComponent implements OnInit {
 
     this.snackbarService.setHelpContext(newContext);
   }
-
-  /* add512(){
-
-  }
-
-  addPRCC(){
-    const model = {
-      requestParams: {
-
-      },
-      requestProcedure: 'PRCCAdd'
-    }
-
-    this.api.post(`${environment.ApiEndpoint}/`,model).then(
-      (res: any) => {
-
-      });
-  }
-
-  addEPC(){
-    const model = {
-      requestParams: {
-
-      },
-      requestProcedure: 'EPCAdd'
-    }
-
-    this.api.post(`${environment.ApiEndpoint}/`, model).then(
-      (res: any) => {
-
-      });
-  } */
 
   remove($event) {
 

@@ -120,8 +120,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.form.controls.PermitCode.setValue(this.Permit.permitCode);
-    this.form.controls.dateStart.setValue(this.Permit.dateStart);
-    this.form.controls.dateEnd.setValue(this.Permit.dateEnd);
+    this.form.controls.permitDate.setValue(this.Permit.permitDate);
     this.form.controls.importdateStart.setValue(this.Permit.importdateStart);
     this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
     this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
