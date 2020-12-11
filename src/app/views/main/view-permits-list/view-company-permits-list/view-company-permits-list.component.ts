@@ -72,7 +72,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     permitID: number;
     permitCode: string;
     permitReference: string;
-    permitDate: string;
+    PermitDate: string;
     importdateStart: string;
     importdateEnd: string;
     exportdateStart: string;
@@ -129,7 +129,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     // },
     {
       title: 'Permit Date',
-      propertyName: 'permitDate',
+      propertyName: 'PermitDate',
       order: {
         enable: true,
         tag: 'PermitDate'
@@ -348,20 +348,20 @@ export class ViewCompanyPermitsListComponent implements OnInit {
             tag: 'FileNo'
           }
         },
-        // {
-        //   title: 'Start Date',
-        //   propertyName: 'startDate',
-        //   order: {
-        //     enable: true,
-        //     tag: 'StartDate'
-        //   }
-        // },
         {
-          title: 'Permit Date',
-          propertyName: 'dateStart',
+          title: 'Start Date',
+          propertyName: 'startDate',
           order: {
             enable: true,
-            tag: 'PermitDate'
+            tag: 'StartDate'
+          }
+        },
+        {
+          title: 'End Date',
+          propertyName: 'endDate',
+          order: {
+            enable: true,
+            tag: 'EndDate'
           }
         },
         {
