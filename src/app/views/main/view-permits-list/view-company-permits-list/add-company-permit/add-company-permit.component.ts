@@ -152,7 +152,7 @@ export class AddCompanyPermitComponent implements OnInit {
     this.fileReader = new FileReader();
     this.fileReader.readAsDataURL(this.file[0]);
     this.fileReader.onload = (e) => {
-      this.filePreview = this.fileReader.result;
+    this.filePreview = this.fileReader.result;
     };
 
     this.displayPreview = true;

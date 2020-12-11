@@ -72,8 +72,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     permitID: number;
     permitCode: string;
     permitReference: string;
-    dateStart: string;
-    dateEnd: string;
+    permitDate: string;
     importdateStart: string;
     importdateEnd: string;
     exportdateStart: string;
@@ -120,20 +119,20 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     //     tag: 'PermitReference'
     //   }
     // },
+    // {
+    //   title: 'Start Date',
+    //   propertyName: 'dateStart',
+    //   order: {
+    //     enable: true,
+    //     tag: 'DateStart'
+    //   }
+    // },
     {
-      title: 'Start Date',
-      propertyName: 'dateStart',
+      title: 'Permit Date',
+      propertyName: 'permitDate',
       order: {
         enable: true,
-        tag: 'DateStart'
-      }
-    },
-    {
-      title: 'End Date',
-      propertyName: 'dateEnd',
-      order: {
-        enable: true,
-        tag: 'DateEnd'
+        tag: 'PermitDate'
       }
     },
     {
@@ -215,8 +214,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   permitID = 0;
   permitCode =  '';
   permitReference: '';
-  dateStart: '';
-  dateEnd: '';
+  permitDate: '';
   importStartDate = '';
   importEndDate = '';
   exportStartDate = '';
@@ -259,20 +257,20 @@ export class ViewCompanyPermitsListComponent implements OnInit {
             tag: 'PermitCode'
           }
         },
+        // {
+        //   title: 'Start Date',
+        //   propertyName: 'dateStart',
+        //   order: {
+        //     enable: true,
+        //     tag: 'DateStart'
+        //   }
+        // },
         {
-          title: 'Start Date',
+          title: 'Permit Date',
           propertyName: 'dateStart',
           order: {
             enable: true,
-            tag: 'DateStart'
-          }
-        },
-        {
-          title: 'End Date',
-          propertyName: 'dateEnd',
-          order: {
-            enable: true,
-            tag: 'DateEnd'
+            tag: 'PermitDate'
           }
         },
         {
@@ -350,20 +348,20 @@ export class ViewCompanyPermitsListComponent implements OnInit {
             tag: 'FileNo'
           }
         },
+        // {
+        //   title: 'Start Date',
+        //   propertyName: 'startDate',
+        //   order: {
+        //     enable: true,
+        //     tag: 'StartDate'
+        //   }
+        // },
         {
-          title: 'Start Date',
-          propertyName: 'startDate',
+          title: 'Permit Date',
+          propertyName: 'dateStart',
           order: {
             enable: true,
-            tag: 'StartDate'
-          }
-        },
-        {
-          title: 'End Date',
-          propertyName: 'endDate',
-          order: {
-            enable: true,
-            tag: 'EndDate'
+            tag: 'PermitDate'
           }
         },
         {
