@@ -267,7 +267,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         // },
         {
           title: 'Permit Date',
-          propertyName: 'dateStart',
+          propertyName: 'permitDate',
           order: {
             enable: true,
             tag: 'PermitDate'
@@ -674,7 +674,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       height: '75vh',
       width: '80%',
       data: {
-
+        permitTypeID: this.permitTypeID
       }}).afterClosed().subscribe((val) => {
       if (val) {
         if (this.permitTypeID === 1) {

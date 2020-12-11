@@ -19,7 +19,7 @@
         >
         </app-pdf-viewer>
     </div>
-    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.displayPreview">
+    <div class="col-5 bg-light" style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.displayPreview && this.permitTypeID === 1" >
       <h5 class="modal-title" id="modalContent" style="color:black">Capture Permit</h5>
         <form [formGroup]="form" class="bg-light" style="padding: 24px; width: 100%;">
             <div *ngIf="this.file !== undefined" class="split-pdf">
@@ -171,11 +171,94 @@
 
         </form>
       </div>
+
+    <div class="col-5 bg-light"style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.displayPreview && this.permitTypeID === 2" >
+      <h5 class="modal-title" id="modalContent" style="color:black">Capture PRCC</h5>
+      <form>
+        <mat-form-field class="form-group">
+          <mat-label>PRCC Number:</mat-label>
+          <input matInput type="text" placeholder="Code"
+          [formControl]="this.prccForm.controls.prccNumber"  required/>
+          <mat-error *ngIf="this.prccForm.controls.prccNumber.hasError('required')">
+            PRCC Number is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Custom Value:</mat-label>
+          <input matInput type="text" placeholder="Code"
+          [formControl]="this.prccForm.controls.prccCustomValue"  required/>
+          <mat-error *ngIf="this.prccForm.controls.prccCustomValue.hasError('required')">
+            Custome Value is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Reg No:</mat-label>
+          <input matInput type="text" placeholder="Code"
+          [formControl]="this.prccForm.controls.prccRegNo"  required/>
+          <mat-error *ngIf="this.prccForm.controls.prccRegNo.hasError('required')">
+            Reg No is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>File No:</mat-label>
+          <input matInput type="text" placeholder="Code"
+          [formControl]="this.prccForm.controls.prccFileNo"  required/>
+          <mat-error *ngIf="this.prccForm.controls.prccFileNo.hasError('required')">
+            File No is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Start Date:</mat-label>
+          <input hidden [matDatepicker]="prccStartDate" [formControl]="this.prccForm.controls.prccStartDate">
+          <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccStartDate.value | date : this.prccForm.controls.prccStartDate.value !== null?'yyyy/MM/dd' : ''"
+          [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccStartDate)'required/>
+          <mat-error *ngIf="this.prccForm.controls.prccStartDate.hasError('required')">
+            Start Date is <strong>required</strong>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="prccStartDate"></mat-datepicker-toggle>
+          <mat-datepicker #prccStartDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>End Date:</mat-label>
+          <input hidden [matDatepicker]="prccEndDate" [formControl]="this.prccForm.controls.prccEndDate">
+          <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccEndDate.value | date : this.prccForm.controls.prccEndDate.value !== null?'yyyy/MM/dd' : ''"
+          [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccEndDate)'required/>
+          <mat-error *ngIf="this.prccForm.controls.prccEndDate.hasError('required')">
+            End Date is <strong>required</strong>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="prccEndDate"></mat-datepicker-toggle>
+          <mat-datepicker #prccEndDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Import Start Date:</mat-label>
+          <input hidden [matDatepicker]="prccImportStartDate" [formControl]="this.prccForm.controls.prccImportStartDate">
+          <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccImportStartDate.value | date : this.prccForm.controls.prccImportStartDate.value !== null?'yyyy/MM/dd' : ''"
+          [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccImportStartDate)'required/>
+          <mat-error *ngIf="this.prccForm.controls.prccImportStartDate.hasError('required')">
+            Import Start Date is <strong>required</strong>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="prccImportStartDate"></mat-datepicker-toggle>
+          <mat-datepicker #prccImportStartDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Export End Date:</mat-label>
+          <input hidden [matDatepicker]="prccImportEndDate" [formControl]="this.prccForm.controls.prccImportEndDate">
+          <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccImportEndDate.value | date : this.prccForm.controls.prccImportEndDate.value !== null?'yyyy/MM/dd' : ''"
+          [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccImportEndDate)'required/>
+          <mat-error *ngIf="this.prccForm.controls.prccImportEndDate.hasError('required')">
+            Import End Date is <strong>required</strong>
+          </mat-error>
+          <mat-datepicker-toggle matSuffix [for]="prccImportEndDate"></mat-datepicker-toggle>
+          <mat-datepicker #prccImportEndDate></mat-datepicker>
+        </mat-form-field>
+      </form>
+
+    </div>
   </div>
 
   <div class="split-overlay" *ngIf="processing" ><mat-spinner></mat-spinner></div>
  </div>
  <div class="form-group text-right" style="margin-bottom: 5px; margin-top: 20px;" *ngIf="this.file !== undefined">
   <button class="btn btn-light btn-sm" (click)="dismiss()" [disabled]="processing" style="margin-right: 5px; margin-left: 5px;">Cancel</button>
-  <button type="button" (click)="formSubmit('PermitAdd')"class="btn btn-primary btn-sm" [disabled]="processing" style="margin-right: 5px; margin-left: 5px;">Submit</button>
+  <button type="button" (click)="formSubmit()"class="btn btn-primary btn-sm" [disabled]="processing" style="margin-right: 5px; margin-left: 5px;">Submit</button>
 </div>
