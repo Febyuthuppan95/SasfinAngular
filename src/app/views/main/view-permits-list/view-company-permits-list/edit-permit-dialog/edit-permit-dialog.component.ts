@@ -225,7 +225,14 @@ export class EditPermitDialogComponent implements OnInit {
           importDateEnd: this.form.controls.importdateEnd.value,
           exportDateStart: this.form.controls.exportdateStart.value,
           exportDateEnd: this.form.controls.exportdateEnd.value,
-          tariff: this.selectedImportTariffs,
+          tariff: this.selectedImportTariffs.map((e)=> {
+            return {
+              tariffID: e.PermitImportTariffID,
+              uomID: e.UnitOfMeasureID,
+              quantity: e.Quantity,
+              price: e.Price,
+            };
+          }),
           exportTariffID: this.selectedExportTariff
       };
 
