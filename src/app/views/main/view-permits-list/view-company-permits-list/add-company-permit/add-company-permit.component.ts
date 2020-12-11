@@ -17,7 +17,7 @@ import { PermitTariffInfoComponent } from './permit-tariff-info/permit-tariff-in
   styleUrls: ['./add-company-permit.component.scss']
 })
 export class AddCompanyPermitComponent implements OnInit {
-  //hi
+
   constructor(private snackbar: MatSnackBar,
               private userService: UserService,
               private companyService: CompanyService,
@@ -60,7 +60,7 @@ export class AddCompanyPermitComponent implements OnInit {
    private isRequired = false;
    public activeIndex = 0;
    public activeTariff: any = null;
-
+   public  SPName = '';
    private currentUser = this.userService.getCurrentUser();
 
    public mask = {
@@ -231,7 +231,10 @@ export class AddCompanyPermitComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  async formSubmit() {
+  async formSubmit(sp: string) {
+
+
+    this.SPName = sp;
 
     let err = 0;
     console.log(this.form.valid);
@@ -260,6 +263,8 @@ export class AddCompanyPermitComponent implements OnInit {
             };
           }),
           exportTariffs: this.selectedExportTariff,
+
+          procedure: this.SPName
         };
 
        // console.log(requestParams);
