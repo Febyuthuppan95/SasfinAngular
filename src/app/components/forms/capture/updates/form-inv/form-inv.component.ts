@@ -656,9 +656,69 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.userID = this.currentUser.userID;
 
       console.log('invoice line update');
-      console.log($event);
+      // console.log($event);
 
-      await this.captureService.invoiceLineUpdate($event).then((res) => console.log(res),
+      // Object.values($event).forEach((element, index) => {
+
+      //   // if (element == null) {
+      //   //   $event.$event[index] = '';
+      //   // }
+
+      //   console.log($event[index]);
+      // });
+
+      $event.LineNo = $event.LineNo == null ? 0 : $event.LineNo;
+      $event.commonFactor = $event.commonFactor == null ? 0 : $event.commonFactor;
+
+      $event.commonFactorODate = $event.commonFactorODate == null ? '' : $event.commonFactorODate;
+      $event.commonFactorOBit = $event.commonFactorOBit == null ? 0 : $event.commonFactorOBit;
+      $event.commonFactorOReason = $event.commonFactorOReason == null ? '' : $event.commonFactorOReason;
+      $event.cooID = $event.cooID == null ? -1 : $event.cooID;
+      delete $event.invoiceNoDate;
+      delete $event.invoiceNoOBit;
+      delete $event.invoiceNoOUserID;
+      delete $event.invoiceNoReason;
+      delete $event.commonFactorID;
+      delete $event.isLocal;
+      $event.itemID = $event.itemID == null ? -1 : $event.itemID;
+      delete $event.itemValue;
+      delete $event.itemValueOBit;
+      delete $event.itemValueODate;
+      delete $event.itemValueOReason;
+      delete $event.itemValueOUserID;
+      delete $event.prodCode;
+      delete $event.prodCodeOBit;
+      delete $event.prodCodeODate;
+      delete $event.prodCodeOReason;
+      delete $event.prodCodeOUserID;
+      delete $event.qaComplete;
+      $event.quantity = $event.quantity == null ? 0 : $event.quantity;
+      $event.quantityOBit = $event.quantityOBit == null ? 0 : $event.quantityOBit;
+      $event.quantityODate = $event.quantityODate == null ? '' : $event.quantityODate;
+      $event.quantityOReason = $event.quantityOReason == null ? '' : $event.quantityOReason;
+      $event.quantityOUserID = $event.quantityOUserID == null ? -1 : $event.quantityOUserID;
+      $event.tariffID = $event.tariffID == null ? -1 : $event.tariffID;
+      $event.totalLineValue = $event.totalLineValue == null ? '' : $event.totalLineValue;
+      $event.totalLineValueOBit = $event.totalLineValueOBit == null ? 0 : $event.totalLineValueOBit;
+      $event.totalLineValueODate = $event.totalLineValueODate == null ? '' : $event.totalLineValueODate;
+      $event.totalLineValueOReason = $event.totalLineValueOReason == null ? '' : $event.totalLineValueOReason;
+      $event.totalLineValueOUserID = $event.totalLineValueOUserID == null ? -1 : $event.totalLineValueOUserID;
+      delete $event.uniqueIdentifier;
+      $event.unitOfMeasureID = $event.unitOfMeasureID == null ? -1 : $event.unitOfMeasureID;
+      $event.unitPrice = $event.unitPrice == null ? 0 : $event.unitPrice;
+      delete $event.unitPriceOBit;
+      delete $event.unitPriceODate;
+      delete $event.unitPriceOReason;
+      delete $event.unitPriceOUserID;
+
+      const model = {
+        request: $event,
+        procedure: 'InvoiceLineUpdate'
+      };
+
+      console.log(model);
+
+      await this.captureService.post(model).then((res) => console.log(res),
       (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
 
       this.lines[this.lines.indexOf(target)] = $event;
