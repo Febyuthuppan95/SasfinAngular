@@ -68,7 +68,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   private notify: NotificationComponent;
 
 
-  Permit: {
+  Permit: any;/* {
     permitID: number;
     permitCode: string;
     permitReference: string;
@@ -79,7 +79,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
     exportdateEnd: string;
     exportTariffCode: string;
     tariff: any[]
-  };
+  }; */
 
   tableHeader: TableHeader = {
     title: 'Permits',
@@ -698,20 +698,27 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       }
     });
   }
-
+  //
   updatePermitDialog() {
     this.dialog.open(EditPermitDialogComponent, {
       panelClass: 'custom-dialog-container',
       height: '75vh',
       width: '80%',
       data: {
-        permit: this.Permit
+        permit: this.Permit,
+        permitTypeID: this.permitTypeID
       }
     }).afterClosed().subscribe(UpdatePermit => {
       console.log('Update');
       console.log(UpdatePermit);
       if (UpdatePermit) {
-        this.UpdatePermit(UpdatePermit);
+        if (this.permitTypeID === 1) {
+          this.UpdatePermit(UpdatePermit, 'PermitUpdate');
+        } else if (this.permitTypeID === 2) {
+          this.UpdatePermit(UpdatePermit, 'PRCCUpdate');
+        } else if (this.permitTypeID === 3) {
+          this.UpdatePermit(UpdatePermit, 'EPCUpdate');
+        }
       }
     });
 
@@ -727,13 +734,33 @@ export class ViewCompanyPermitsListComponent implements OnInit {
       console.log(UpdatePermit);
       if (UpdatePermit) {
         console.log('hi');
-        const requestModel = {
-          userID: this.currentUser.userID,
-          permitID: this.Permit.permitID,
-          isDeleted: UpdatePermit ? 1 : 0,
-        };
-        console.log(requestModel);
-        this.UpdatePermit(requestModel);
+
+        //console.log(requestModel);
+        if (UpdatePermit) {
+          if (this.permitTypeID === 1) {
+            const requestModel = {
+              userID: this.currentUser.userID,
+              permitID: this.Permit.permitID,
+              isDeleted: UpdatePermit ? 1 : 0,
+            };
+            this.UpdatePermit(requestModel, 'PermitUpdate');
+          } else if (this.permitTypeID === 2) {
+            const requestModel = {
+              userID: this.currentUser.userID,
+              prccID: this.Permit.prccID,
+              companyID: this.companyID,
+              isDeleted: UpdatePermit ? 1 : 0,
+            };
+            this.UpdatePermit(requestModel, 'PRCCUpdate');
+          } else if (this.permitTypeID === 3) {
+            const requestModel = {
+              userID: this.currentUser.userID,
+              epcID: this.Permit.permitID,
+              isDeleted: UpdatePermit ? 1 : 0,
+            };
+            this.UpdatePermit(requestModel, 'EPCUpdate');
+          }
+        }
       }
     });
   }
@@ -761,10 +788,10 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   //   this.openRemoveModal.nativeElement.click();
   // }
 
-  async UpdatePermit(requestModel: any) {
+  async UpdatePermit(requestModel: any, proc: string) {
     const model = {
       request: requestModel,
-      procedure: 'PermitUpdate'
+      procedure: proc
     };
     console.log(model);
     await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(

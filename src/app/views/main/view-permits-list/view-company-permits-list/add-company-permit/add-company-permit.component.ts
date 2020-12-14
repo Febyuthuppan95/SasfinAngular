@@ -253,7 +253,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
 
     let err = 0;
-    console.log(this.form.valid);
+    // console.log(this.form.valid);
     if (this.permitTypeID === 1) {
       this.SPName = 'PermitAdd'
       this.requestParams = this.PermitModel();

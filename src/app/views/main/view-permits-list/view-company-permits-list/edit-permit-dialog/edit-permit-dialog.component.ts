@@ -30,6 +30,16 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
   });
+  prccForm = new FormGroup({
+    prccNumber: new FormControl(null, [Validators.required]),
+    prccCustomValue: new FormControl(null, [Validators.required]),
+    prccRegNo: new FormControl(null, [Validators.required]),
+    prccFileNo: new FormControl(null, [Validators.required]),
+    prccStartDate: new FormControl(null, [Validators.required]),
+    prccEndDate: new FormControl(null, [Validators.required]),
+    prccImportStartDate: new FormControl(null, [Validators.required]),
+    prccImportEndDate: new FormControl(null, [Validators.required])
+  });
   importTariffs = new FormControl(null, [Validators.required]);
   exportTariff = new FormControl(null, [Validators.required]);
   selectedTariffs: Tariff[] = [];
@@ -42,10 +52,13 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   companyID: number;
   companyName: string;
   Permit: any;
+  permitTypeID: number;
 
   public activeIndex = 0;
   public activeTariff: any = null;
   public paginationControl = new FormControl(1);
+  public SPName = '';
+  requestParams : object;
 
   private currentUser = this.userService.getCurrentUser();
 
@@ -61,6 +74,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       this.companyID = obj.companyID;
       this.companyName = obj.companyName;
     });
+    this.permitTypeID = this.data.permitTypeID;
     this.Permit = this.data.permit;
     console.log('Permit');
     console.log(this.Permit);
@@ -128,6 +142,15 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     this.exportTariff.setValue(this.Permit.exportTariffID, { emitEvent: false });
     this.exportTariff.updateValueAndValidity();
     this.selectedExportTariff = this.Permit.exportTariffID;
+
+    this.prccForm.controls.prccNumber.setValue(this.Permit.prccNumber);
+    this.prccForm.controls.prccCustomValue.setValue(this.Permit.customValue);
+    this.prccForm.controls.prccRegNo.setValue(this.Permit.regNo);
+    this.prccForm.controls.prccFileNo.setValue(this.Permit.fileNo);
+    this.prccForm.controls.prccStartDate.setValue(this.Permit.startDate);
+    this.prccForm.controls.prccEndDate.setValue(this.Permit.endDate);
+    this.prccForm.controls.prccImportStartDate.setValue(this.Permit.importStartDate);
+    this.prccForm.controls.prccImportEndDate.setValue(this.Permit.importEndDate);
 
     console.log('exportTariff');
     console.log(this.exportTariff.value);
@@ -211,31 +234,23 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   async formSubmit() {
     let err = 0;
 
-    if (!this.form.valid) {
-      err++;
+    if (this.permitTypeID === 1) {
+      this.SPName = 'PermitUpdate'
+      this.requestParams = this.PermitModel();
+      if (!this.form.valid) {
+        err++;
+      }
+    } else if (this.permitTypeID === 2) {
+      this.SPName = 'PRCCUpdate'
+      this.requestParams = this.PRCCModel();
+      if (!this.prccForm.valid) {
+        err++;
+      }
+    } else if (this.permitTypeID === 3) {
+      this.SPName = 'EPCUpdate'
+      this.requestParams = this.EPCModel();
     }
     if (err === 0) {
-      const model = {
-          permitID: this.Permit.permitID,
-          userID: this.currentUser.userID,
-          companyID: this.companyID,
-          permitCode: this.form.controls.PermitCode.value,
-          permitDate: this.form.controls.permitDate.value,
-          importDateStart: this.form.controls.importdateStart.value,
-          importDateEnd: this.form.controls.importdateEnd.value,
-          exportDateStart: this.form.controls.exportdateStart.value,
-          exportDateEnd: this.form.controls.exportdateEnd.value,
-          tariff: this.selectedImportTariffs.map((e)=> {
-            return {
-              tariffID: e.PermitImportTariffID,
-              uomID: e.UnitOfMeasureID,
-              quantity: e.Quantity,
-              price: e.Price,
-            };
-          }),
-          exportTariffID: this.selectedExportTariff
-      };
-
       /* const model: any = {
         request: {
           permitID: this.data.permitID,
@@ -254,7 +269,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
         procedure: 'PermitUpdate'
       }; */
       console.log('model');
-      console.log(model);
+      console.log(this.requestParams);
      // this.dialogRef.close(model);
       /* await this.api.post(`${environment.ApiEndpoint}/capture/post`,
       model).then(
@@ -269,6 +284,57 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
         }
       ); */
     }
+  }
+
+  PermitModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      permitCode: this.form.controls.PermitCode.value,
+      permitDate: this.form.controls.permitDate.value,
+      importDateStart: this.form.controls.importdateStart.value,
+      importDateEnd: this.form.controls.importdateEnd.value,
+      exportDateStart: this.form.controls.exportdateStart.value,
+      exportDateEnd: this.form.controls.exportdateEnd.value,
+      importTariffs: this.selectedImportTariffs.map((e) => {
+        return {
+          tariffID: e.tariffID,
+          uomID: e.unitOfMeasureID,
+          quantity: e.quantity,
+          price: e.price,
+        };
+      }),
+      exportTariffs: this.selectedExportTariff,
+      procedure: this.SPName
+    };
+    return obj;
+  }
+
+  PRCCModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      prccNumber: this.prccForm.controls.prccNumber.value,
+      customValue: this.prccForm.controls.prccCustomValue.value,
+      regNo: this.prccForm.controls.prccRegNo.value,
+      fileNo: this.prccForm.controls.prccFileNo.value,
+      startDate: this.prccForm.controls.prccStartDate.value,
+      endDate: this.prccForm.controls.prccEndDate.value,
+      importStartDate: this.prccForm.controls.prccImportStartDate.value,
+      importEndDate: this.prccForm.controls.prccImportEndDatevalue,
+      procedure: this.SPName
+    };
+    return obj;
+  }
+
+  EPCModel(): object {
+    const obj = {
+      userID: this.currentUser.userID,
+      companyID: this.companyID,
+      epcCode: '',
+      procedure: this.SPName
+    };
+    return obj
   }
 
 
