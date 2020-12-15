@@ -262,6 +262,10 @@ export class AddCompanyPermitComponent implements OnInit {
       if (!this.form.valid) {
         err++;
       }
+      if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value || this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
+        this.dateErrOp = 'End date cannot be lower than start date ';
+         err++;
+     }
     } else if (this.permitTypeID === 2) {
       this.SPName = 'PRCCAdd';
       this.requestParams = this.PRCCModel();
@@ -273,20 +277,10 @@ export class AddCompanyPermitComponent implements OnInit {
       this.requestParams = this.EPCModel();
     }
 
-    if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value) {
-        this.dateErrOp = 'Import end date cannot be lower than Import start date ';
-         err++;
-     }
-     if (this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
-
-        if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value) {
-          this.dateErrOp += 'and Export end date cannot be lower than Export start date';
-       }
-       else {
-        this.dateErrOp = 'Export end date cannot be lower than Export start date';
-       }
-        err++;
-     }
+    // if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value || this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
+    //     this.dateErrOp = 'End date cannot be lower than start date ';
+    //      err++;
+    //  }
 
     if (err === 0) {
 

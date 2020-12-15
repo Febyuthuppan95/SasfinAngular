@@ -8,6 +8,9 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { UserService } from 'src/app/services/user.Service';
 import { GetTariffList } from 'src/app/models/HttpRequests/GetTariffList';
 import { PermitTariffInfoComponent } from '../add-company-permit/permit-tariff-info/permit-tariff-info.component';
+import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
+import { MatSnackBar } from '@angular/material';
+import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
 
 @Component({
   selector: 'app-edit-permit-dialog',
@@ -16,10 +19,13 @@ import { PermitTariffInfoComponent } from '../add-company-permit/permit-tariff-i
 })
 export class EditPermitDialogComponent implements OnInit, AfterViewInit {
 
+
   constructor(private userService: UserService,
               private companyService: CompanyService,
               private api: ApiService,
               private matDialog: MatDialog,
+              private snackbarService: HelpSnackbar,
+              private snackbar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<EditPermitDialogComponent>) { }
   form = new FormGroup({
@@ -61,6 +67,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   requestParams : object;
 
   private currentUser = this.userService.getCurrentUser();
+  private dateErrOp ='';
 
   public mask = {
     // guide: true,
@@ -240,6 +247,10 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       if (!this.form.valid) {
         err++;
       }
+      if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value || this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
+        this.dateErrOp = 'End date cannot be lower than start date ';
+         err++;
+     }
     } else if (this.permitTypeID === 2) {
       this.SPName = 'PRCCUpdate'
       this.requestParams = this.PRCCModel();
@@ -283,6 +294,9 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
           }
         }
       ); */
+    }
+    else{
+      this.snackbar.open(this.dateErrOp, '', { duration: 3000 });
     }
   }
 
@@ -337,5 +351,13 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     return obj
   }
 
+  updateHelpContext(slug: string) {
+    const newContext: SnackbarModel = {
+      display: true,
+      slug
+    };
+
+    this.snackbarService.setHelpContext(newContext);
+  }
 
 }
