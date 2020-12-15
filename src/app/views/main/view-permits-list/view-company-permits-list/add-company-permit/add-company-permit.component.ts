@@ -55,6 +55,9 @@ export class AddCompanyPermitComponent implements OnInit {
     prccImportStartDate: new FormControl(null, [Validators.required]),
     prccImportEndDate: new FormControl(null, [Validators.required])
   });
+  epcForm = new FormGroup({
+    epcCode: new FormControl(null, [Validators.required])
+  });
    tarifflist: Tariff[] = [];
    selectedTariffs: Tariff[] = [];
    selected = false;
@@ -284,7 +287,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
     if (err === 0) {
 
-       // console.log(requestParams);
+       console.log(this.requestParams);
 
        const file: File[] = this.file;
        const formData = new FormData();

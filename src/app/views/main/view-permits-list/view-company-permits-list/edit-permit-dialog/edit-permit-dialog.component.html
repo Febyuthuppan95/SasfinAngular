@@ -288,6 +288,20 @@
         </form>
 
       </div>
+      <div class="col-5 bg-light"style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.permitTypeID === 3" >
+        <h5 class="modal-title" id="modalContent" style="color:black">Capture EPC</h5>
+        <form>
+          <mat-form-field class="form-group">
+            <mat-label>EPC Code:</mat-label>
+            <input matInput type="text" placeholder="Code"
+            [formControl]="this.epcForm.controls.epcCode"  required/>
+            <mat-error *ngIf="this.epcForm.controls.epcCode.hasError('required')">
+              EPC Code is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </form>
+      </div>
+
   </div>
 
   <div class="split-overlay" *ngIf="processing"> <mat-spinner></mat-spinner></div>

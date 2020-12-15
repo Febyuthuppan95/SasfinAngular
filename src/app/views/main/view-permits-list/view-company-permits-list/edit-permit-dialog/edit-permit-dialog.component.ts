@@ -48,6 +48,9 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     prccImportStartDate: new FormControl(null, [Validators.required]),
     prccImportEndDate: new FormControl(null, [Validators.required])
   });
+  epcForm = new FormGroup({
+    epcCode: new FormControl(null, [Validators.required])
+  });
 
   selectedTariffs: Tariff[] = [];
   file: File[];
