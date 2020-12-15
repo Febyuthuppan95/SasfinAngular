@@ -77,6 +77,7 @@ export class AddCompanyPermitComponent implements OnInit {
    public activeTariff: any = null;
    public SPName = '';
    private currentUser = this.userService.getCurrentUser();
+   private dateErrOp = '';
 
    public mask = {
     // guide: true,
@@ -253,23 +254,40 @@ export class AddCompanyPermitComponent implements OnInit {
 
 
     let err = 0;
+    this.dateErrOp = 'There are errors';
     // console.log(this.form.valid);
     if (this.permitTypeID === 1) {
-      this.SPName = 'PermitAdd'
+      this.SPName = 'PermitAdd';
       this.requestParams = this.PermitModel();
       if (!this.form.valid) {
         err++;
       }
     } else if (this.permitTypeID === 2) {
-      this.SPName = 'PRCCAdd'
+      this.SPName = 'PRCCAdd';
       this.requestParams = this.PRCCModel();
       if (!this.prccForm.valid) {
         err++;
       }
     } else if (this.permitTypeID === 3) {
-      this.SPName = 'EPCAdd'
+      this.SPName = 'EPCAdd';
       this.requestParams = this.EPCModel();
     }
+
+    if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value) {
+        this.dateErrOp = 'Import end date cannot be lower than Import start date ';
+         err++;
+     }
+     if (this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
+
+        if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value) {
+          this.dateErrOp += 'and Export end date cannot be lower than Export start date';
+       }
+       else {
+        this.dateErrOp = 'Export end date cannot be lower than Export start date';
+       }
+        err++;
+     }
+
     if (err === 0) {
 
        // console.log(requestParams);
@@ -304,7 +322,7 @@ export class AddCompanyPermitComponent implements OnInit {
       );
     } else {
       this.processing = false;
-      this.snackbar.open('There are errors', '', { duration: 3000 });
+      this.snackbar.open(this.dateErrOp, '', { duration: 3000 });
     }
   }
 
