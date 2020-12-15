@@ -37,7 +37,7 @@
               </mat-error>
             </mat-form-field>
             <div class="col-12" style="padding-left: 0; margin-top: 0;">
-              <ls-autocomplete-tariffs [tariffHeading]="1" [(control)]="exportTariff" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
+              <ls-autocomplete-tariffs [tariffHeading]="1" [(control)]="this.form.controls.exportTariff" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
               <br><br>
             </div>
           <!-- <mat-form-field class="form-group">
@@ -123,7 +123,7 @@
             <mat-datepicker #exportEndPicker></mat-datepicker>
           </mat-form-field>
           <div class="col-12" style="padding-left: 0;">
-            <ls-autocomplete-tariffs [tariffHeading]="2" [(control)]="importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
+            <ls-autocomplete-tariffs [tariffHeading]="2" [(control)]="this.form.controls.importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
             <br><br>
           </div>
           <mat-card *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)" matTooltip="Click to remove" style="margin: 10px;">
@@ -208,7 +208,7 @@
       </div>
       <div class="col-5 bg-light"style="overflow-y: auto;margin: 0; max-height:67vh; padding: 24px" *ngIf="this.permitTypeID === 2" >
         <h5 class="modal-title" id="modalContent" style="color:black">Capture PRCC</h5>
-        <form>
+        <form [formGroup]="prccForm" class="bg-light" style="padding: 24px; width: 100%;">
           <mat-form-field class="form-group">
             <mat-label>PRCC Number:</mat-label>
             <input matInput type="text" placeholder="Code"
@@ -245,7 +245,7 @@
             <mat-label>Start Date:</mat-label>
             <input hidden [matDatepicker]="prccStartDate" [formControl]="this.prccForm.controls.prccStartDate">
             <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccStartDate.value | date : this.prccForm.controls.prccStartDate.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccStartDate)'required/>
+            [ngModelOptions]="{standalone: true}"  (change)="toDate($event.target.value, this.prccForm.controls.prccStartDate)" required/>
             <mat-error *ngIf="this.prccForm.controls.prccStartDate.hasError('required')">
               Start Date is <strong>required</strong>
             </mat-error>
@@ -256,7 +256,7 @@
             <mat-label>End Date:</mat-label>
             <input hidden [matDatepicker]="prccEndDate" [formControl]="this.prccForm.controls.prccEndDate">
             <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccEndDate.value | date : this.prccForm.controls.prccEndDate.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccEndDate)'required/>
+            [ngModelOptions]="{standalone: true}"  (change)="toDate($event.target.value, this.prccForm.controls.prccEndDate)" required/>
             <mat-error *ngIf="this.prccForm.controls.prccEndDate.hasError('required')">
               End Date is <strong>required</strong>
             </mat-error>
@@ -267,7 +267,7 @@
             <mat-label>Import Start Date:</mat-label>
             <input hidden [matDatepicker]="prccImportStartDate" [formControl]="this.prccForm.controls.prccImportStartDate">
             <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccImportStartDate.value | date : this.prccForm.controls.prccImportStartDate.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccImportStartDate)'required/>
+            [ngModelOptions]="{standalone: true}"  (change)="toDate($event.target.value, this.prccForm.controls.prccImportStartDate)" required/>
             <mat-error *ngIf="this.prccForm.controls.prccImportStartDate.hasError('required')">
               Import Start Date is <strong>required</strong>
             </mat-error>
@@ -278,7 +278,7 @@
             <mat-label>Export End Date:</mat-label>
             <input hidden [matDatepicker]="prccImportEndDate" [formControl]="this.prccForm.controls.prccImportEndDate">
             <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccImportEndDate.value | date : this.prccForm.controls.prccImportEndDate.value !== null?'yyyy/MM/dd' : ''"
-            [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccImportEndDate)'required/>
+            [ngModelOptions]="{standalone: true}"  (change)="toDate($event.target.value, this.prccForm.controls.prccImportEndDate)" required/>
             <mat-error *ngIf="this.prccForm.controls.prccImportEndDate.hasError('required')">
               Import End Date is <strong>required</strong>
             </mat-error>
