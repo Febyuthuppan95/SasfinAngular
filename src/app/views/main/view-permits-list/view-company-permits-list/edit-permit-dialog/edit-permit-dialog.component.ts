@@ -281,7 +281,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       }; */
       console.log('model');
       console.log(this.requestParams);
-     // this.dialogRef.close(model);
+      this.dialogRef.close(this.requestParams);
       /* await this.api.post(`${environment.ApiEndpoint}/capture/post`,
       model).then(
         (res: any) => {
@@ -301,7 +301,9 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   }
 
   PermitModel(): object {
+    console.log(this.selectedImportTariffs);
     const obj = {
+      permitID: this.Permit.permitID,
       userID: this.currentUser.userID,
       companyID: this.companyID,
       permitCode: this.form.controls.PermitCode.value,
@@ -310,16 +312,16 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       importDateEnd: this.form.controls.importdateEnd.value,
       exportDateStart: this.form.controls.exportdateStart.value,
       exportDateEnd: this.form.controls.exportdateEnd.value,
-      importTariffs: this.selectedImportTariffs.map((e) => {
+      tariff: this.selectedImportTariffs.map((e) => {
         return {
-          tariffID: e.tariffID,
-          uomID: e.unitOfMeasureID,
-          quantity: e.quantity,
-          price: e.price,
+          tariffID: e.PermitImportTariffID,
+          uomID: e.UnitOfMeasureID,
+          quantity: e.Quantity,
+          price: e.Price,
         };
       }),
-      exportTariffs: this.selectedExportTariff,
-      procedure: this.SPName
+      exportTariffID: this.selectedExportTariff
+      //procedure: this.SPName
     };
     return obj;
   }
@@ -335,8 +337,8 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       startDate: this.prccForm.controls.prccStartDate.value,
       endDate: this.prccForm.controls.prccEndDate.value,
       importStartDate: this.prccForm.controls.prccImportStartDate.value,
-      importEndDate: this.prccForm.controls.prccImportEndDatevalue,
-      procedure: this.SPName
+      importEndDate: this.prccForm.controls.prccImportEndDatevalue
+      //procedure: this.SPName
     };
     return obj;
   }
@@ -345,8 +347,8 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     const obj = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
-      epcCode: '',
-      procedure: this.SPName
+      epcCode: ''
+      //procedure: this.SPName
     };
     return obj
   }
