@@ -525,7 +525,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       const requestModel = form.value;
       requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
       requestModel.userID = this.currentUser.userID;
-
       if (this.isVOC) {
         const vocRequest = {
           userID: this.currentUser.userID,
@@ -562,6 +561,24 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       if (!this.isExport) {
         delete requestModel.referenceNo;
       }
+
+      requestModel.containerNumbers = requestModel.containerNumbers == null ? '' : requestModel.containerNumbers;
+      requestModel.lrnOReason = requestModel.lrnOReason == null ? '' : requestModel.lrnOReason;
+      requestModel.referenceNo = requestModel.referenceNo == null ? '' : requestModel.referenceNo;
+      requestModel.transAtArrival = requestModel.transAtArrival == null ? '' : requestModel.transAtArrival;
+      requestModel.mrnOReason = requestModel.mrnOReason == null ? '' : requestModel.mrnOReason;
+      requestModel.importersCodeOReason = requestModel.importersCodeOReason == null ? '' : requestModel.importersCodeOReason;
+      requestModel.fileRefOReason = requestModel.fileRefOReason == null ? '' : requestModel.fileRefOReason;
+      requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
+      requestModel.totalCustomsValuesOReason = requestModel.totalCustomsValuesOReason == null ? '' : requestModel.totalCustomsValuesOReason;
+      requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason
+      requestModel.supplierRefOReason = requestModel.supplierRefOReason == null ? '' : requestModel.supplierRefOReason;
+      requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
+      requestModel.transAtArrivalOReason = requestModel.transAtArrivalOReason == null ? '' : requestModel.transAtArrivalOReason;
+      requestModel.containerNumbersOReason = requestModel.containerNumbersOReason == null ? '' : requestModel.containerNumbersOReason;
+
+      console.log('SAD500 RequestModel');
+      console.log(requestModel);
 
       await this.captureService.sad500Update(requestModel).then(
         async (res: Outcome) => {
