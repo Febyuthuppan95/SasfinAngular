@@ -241,7 +241,7 @@
           <mat-datepicker #prccImportStartDate></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="form-group">
-          <mat-label>Export End Date:</mat-label>
+          <mat-label>Import End Date:</mat-label>
           <input hidden [matDatepicker]="prccImportEndDate" [formControl]="this.prccForm.controls.prccImportEndDate">
           <input matInput type="text" [textMask]="mask" [ngModel]="this.prccForm.controls.prccImportEndDate.value | date : this.prccForm.controls.prccImportEndDate.value !== null?'yyyy/MM/dd' : ''"
           [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, this.prccForm.controls.prccImportEndDate)'required/>

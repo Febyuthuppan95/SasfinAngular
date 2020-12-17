@@ -358,7 +358,7 @@ export class AddCompanyPermitComponent implements OnInit {
       startDate: this.prccForm.controls.prccStartDate.value,
       endDate: this.prccForm.controls.prccEndDate.value,
       importStartDate: this.prccForm.controls.prccImportStartDate.value,
-      importEndDate: this.prccForm.controls.prccImportEndDatevalue,
+      importEndDate: this.prccForm.controls.prccImportEndDate.value,
       procedure: this.SPName
     };
     return obj;

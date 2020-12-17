@@ -215,11 +215,12 @@ export class ExchangeRateLinesComponent implements OnInit {
         });
         this.ROELines = unfiltered;
         this.rowCount = res.rowCount;
+        console.log(res);
 
-        if (res.outcome.outcome == 'SUCCESS') {
-          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        if (res.outcome/*.outcome == 'SUCCESS'*/) {
+          this.notify.successmsg('SUCCESS', res.outcomeMessage);
         } else {
-          this.notify.toastrwarning(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.notify.toastrwarning('FAILED', res.outcomeMessage);
         }
 
       });
