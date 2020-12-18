@@ -942,7 +942,7 @@ loadCompanyPermits() {
     userID: this.currentUser.userID,
     filter: this.filter,
     permitID: -1,
-    companyID: 1,
+    companyID: this.companyID,
     rowStart: this.rowStart,
     rowEnd: this.rowEnd,
     orderBy: this.orderBy,
