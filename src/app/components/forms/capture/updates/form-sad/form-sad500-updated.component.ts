@@ -417,6 +417,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         this.form.patchValue(response);
         this.form.controls.userID.setValue(this.currentUser.userID);
         this.form.controls.cpcID.setValue(response.cpcID);
+        this.form.controls.totalCustomsValueOBit.setValue(response.totalCustomValueOBit);
+        this.form.controls.totalCustomsValueOReason.setValue(response.totalCustomValueOReason);
         console.log(`CPC ID: ${response.cpcID}`);
         console.log(this.form.value);
         this.form.updateValueAndValidity();
@@ -570,7 +572,8 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       requestModel.importersCodeOReason = requestModel.importersCodeOReason == null ? '' : requestModel.importersCodeOReason;
       requestModel.fileRefOReason = requestModel.fileRefOReason == null ? '' : requestModel.fileRefOReason;
       requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
-      requestModel.totalCustomsValuesOReason = requestModel.totalCustomsValuesOReason == null ? '' : requestModel.totalCustomsValuesOReason;
+      requestModel.totalCustomValueOReason = requestModel.totalCustomsValueOReason == null ? '' : requestModel.totalCustomsValueOReason;
+      requestModel.totalCustomValueOBit = requestModel.totalCustomsValueOBit == null ? '' : requestModel.totalCustomsValueOBit;
       requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason
       requestModel.supplierRefOReason = requestModel.supplierRefOReason == null ? '' : requestModel.supplierRefOReason;
       requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;

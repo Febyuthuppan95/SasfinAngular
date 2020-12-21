@@ -211,7 +211,7 @@
         <form [formGroup]="prccForm" class="bg-light" style="padding: 24px; width: 100%;">
           <mat-form-field class="form-group">
             <mat-label>PRCC Number:</mat-label>
-            <input matInput type="text" placeholder="Code"
+            <input matInput type="number" placeholder="Code"
             [formControl]="this.prccForm.controls.prccNumber"  required/>
             <mat-error *ngIf="this.prccForm.controls.prccNumber.hasError('required')">
               PRCC Number is <strong>required</strong>
@@ -219,7 +219,7 @@
           </mat-form-field>
           <mat-form-field class="form-group">
             <mat-label>Custom Value:</mat-label>
-            <input matInput type="text" placeholder="Code"
+            <input matInput type="number" placeholder="Code"
             [formControl]="this.prccForm.controls.prccCustomValue"  required/>
             <mat-error *ngIf="this.prccForm.controls.prccCustomValue.hasError('required')">
               Custome Value is <strong>required</strong>
@@ -299,6 +299,10 @@
               EPC Code is <strong>required</strong>
             </mat-error>
           </mat-form-field>
+          <div class="col-12" style="padding-left: 0;">
+            <ls-autocomplete-tariffs [tariffHeading]="2" [(control)]="this.form.controls.importTariffs" [helpSlug]="'form-customs-worksheet-line-tariff-description'" appearance="standard"></ls-autocomplete-tariffs>
+            <br><br>
+          </div>
 
         </form>
       </div>

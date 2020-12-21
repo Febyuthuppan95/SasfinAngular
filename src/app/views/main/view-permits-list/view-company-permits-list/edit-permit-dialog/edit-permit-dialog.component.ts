@@ -156,7 +156,9 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     this.selectedExportTariff = this.Permit.exportTariffID;
 
     this.prccForm.controls.prccNumber.setValue(this.Permit.prccNumber);
-    this.prccForm.controls.prccCustomValue.setValue(this.Permit.customValue);
+    const custom = new String(this.Permit.customValue).replace(/,/gi,'.');
+    console.log(custom);
+    this.prccForm.controls.prccCustomValue.setValue(new Number(custom));
     this.prccForm.controls.prccRegNo.setValue(this.Permit.regNo);
     this.prccForm.controls.prccFileNo.setValue(this.Permit.fileNo);
     this.prccForm.controls.prccStartDate.setValue(new Date(this.Permit.startDate));
@@ -336,6 +338,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     const obj = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
+      prccID: this.Permit.prccID,
       prccNumber: this.prccForm.controls.prccNumber.value,
       customValue: this.prccForm.controls.prccCustomValue.value,
       regNo: this.prccForm.controls.prccRegNo.value,
