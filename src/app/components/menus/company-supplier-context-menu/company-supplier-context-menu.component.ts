@@ -38,6 +38,8 @@ export class CompanySupplierContextMenuComponent implements OnInit {
     );
   }
   Edit() {
+    console.log('help');
+    console.log(this.currentLocalReceipt);
     this.EditQuarterReceipts.emit(JSON.stringify(this.currentLocalReceipt));
   }
   Transactions() {

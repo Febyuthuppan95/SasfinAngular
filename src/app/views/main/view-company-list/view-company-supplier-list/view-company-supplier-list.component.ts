@@ -277,8 +277,11 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
     );
   }
   openLocalReceiptEdit($event) {
-    this.focusQuarterID = null;
-    this.focusPeriodYear = null;
+    const view = JSON.parse($event);
+    console.log("pie");
+    console.log(view);
+    this.focusQuarterID = view.QuarterID;
+    this.focusPeriodYear = view.PeriodYear;
     this.openeditModal.nativeElement.click();
   }
   EditLocalReceipt(flag: boolean) {
