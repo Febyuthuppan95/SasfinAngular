@@ -210,6 +210,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   permitTypeID = 0;
   permitTypeName = '';
   tarifflist: Tariff[];
+  updateTariffs: any[] = [];
+  addTariffs: any[] = [];
 
   permitID = 0;
   permitCode =  '';
@@ -551,6 +553,8 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         );
       }
     );
+    this.addTariffs = [];
+    this.updateTariffs = [];
   }
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
@@ -717,11 +721,53 @@ export class ViewCompanyPermitsListComponent implements OnInit {
         } else if (this.permitTypeID === 2) {
           this.UpdatePermit(UpdatePermit, 'PRCCUpdate');
         } else if (this.permitTypeID === 3) {
-          this.UpdatePermit(UpdatePermit, 'EPCUpdate');
+          if (UpdatePermit.EPCTariffs) {
+            for (let item of UpdatePermit.EPCTariffs){
+              if (item.isLocal){
+                const model = {
+                  request: {
+                    userID: UpdatePermit.userID,
+                    ePCID: UpdatePermit.epcID,
+                    ePCTariffID: item.EPCTariffID,
+                    isDeleted: item.isDeleted ? 1 : 0,
+                  },
+                  procedure: 'EPCTariffUpdate'
+                }
+                console.log(item);
+                this.updateTariffs.push(model)
+              }
+              else {
+                this.addTariffs.push(item);
+            }
+          }
+          if (this.addTariffs) {
+            const model = {
+              request: {
+                userID: UpdatePermit.userID,
+                epcID: UpdatePermit.epcID,
+              EPCTariffs: this.addTariffs.map((e) =>{
+                return {
+                  TariffID: e.TariffID,
+                  ItemID: e.ItemID
+                  }
+                }),
+              },
+              procedure: 'EPCTariffAdd'
+            };
+            this.updateTariffs.push(model);
+          }
+        }
+          const tariffModel = {
+            userID: UpdatePermit.userID,
+            epcID: UpdatePermit.epcID,
+            epcCode: UpdatePermit.epcCode,
+          };
+          console.log(tariffModel);
+          console.log(this.updateTariffs);
+          this.UpdatePermit(tariffModel, 'EPCUpdate', this.updateTariffs);
         }
       }
     });
-
   }
 
   removePermitDialog() {
@@ -755,7 +801,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
           } else if (this.permitTypeID === 3) {
             const requestModel = {
               userID: this.currentUser.userID,
-              epcID: this.Permit.permitID,
+              ePCID: this.Permit.epcID,
               isDeleted: UpdatePermit ? 1 : 0,
             };
             this.UpdatePermit(requestModel, 'EPCUpdate');
@@ -788,7 +834,7 @@ export class ViewCompanyPermitsListComponent implements OnInit {
   //   this.openRemoveModal.nativeElement.click();
   // }
 
-  async UpdatePermit(requestModel: any, proc: string) {
+  async UpdatePermit(requestModel: any, proc: string, updateTariffModel?: any) {
     const model = {
       request: requestModel,
       procedure: proc
@@ -806,9 +852,16 @@ export class ViewCompanyPermitsListComponent implements OnInit {
           this.loadCompanyPRCCs(true);
         } else if (this.permitTypeID === 3) {
           console.log(3);
+          if (updateTariffModel) {
+            for (let item of updateTariffModel) {
+              this.api.post(`${environment.ApiEndpoint}/capture/post`,item).then(
+                (res: any) => {
+                  console.log(res);
+                });
+            }
+          }
           this.loadCompanyEPCs(true);
         }
-
         console.log('Test');
     });
     // this.companyService.itemupdate(requestModel).then(

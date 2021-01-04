@@ -56,7 +56,8 @@ export class AddCompanyPermitComponent implements OnInit {
     prccImportEndDate: new FormControl(null, [Validators.required])
   });
   epcForm = new FormGroup({
-    epcCode: new FormControl(null, [Validators.required])
+    epcCode: new FormControl(null, [Validators.required]),
+    epcTariffs: new FormControl(null)
   });
    tarifflist: Tariff[] = [];
    selectedTariffs: Tariff[] = [];
@@ -131,6 +132,7 @@ export class AddCompanyPermitComponent implements OnInit {
                   tariffID: res.tariffList[0].id,
                   subHeading: res.tariffList[0].subHeading,
                   itemNumber: res.tariffList[0].itemNumber,
+                  permitTypeID: this.permitTypeID,
                 },
                 width: '512px'
               }).afterClosed().subscribe((tariffObj) => {
@@ -139,6 +141,41 @@ export class AddCompanyPermitComponent implements OnInit {
                   // Adds record from api
                   this.selectedImportTariffs.push(tariffObj);
                   this.importTariffs.setValue(null, { emitEvent: false });
+                }
+              });
+            }
+          }
+        );
+      }
+    });
+
+    this.epcForm.controls.epcTariffs.valueChanges.subscribe(async (value) =>{
+      if (value) {
+        const model: GetTariffList = {
+          filter: '',
+          userID: this.currentUser.userID,
+          specificTariffID: value,
+          rowStart: 1,
+          rowEnd: 100
+        };
+
+        await this.companyService.getTariffList(model).then(
+          (res: TariffListResponse) => {
+            if (res.outcome.outcome === 'SUCCESS') {
+              console.log(res);
+              this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
+              this.matDialog.open(PermitTariffInfoComponent, {
+                data: {
+                  tariffID: res.tariffList[0].id,
+                  subHeading: res.tariffList[0].subHeading == null ? res.tariffList[0].heading: res.tariffList[0].subHeading,
+                  permitTypeID: this.permitTypeID,
+                },
+                width: '512px'
+              }).afterClosed().subscribe((tariffObj) => {
+                if (tariffObj) {
+                  this.selectedImportTariffs.push(tariffObj);
+                  this.epcForm.controls.epcTariffs.setValue(null, { emitEvent: false })
+                  console.log(this.selectedImportTariffs);
                 }
               });
             }
@@ -278,6 +315,9 @@ export class AddCompanyPermitComponent implements OnInit {
     } else if (this.permitTypeID === 3) {
       this.SPName = 'EPCAdd';
       this.requestParams = this.EPCModel();
+      if (!this.epcForm.valid || this.selectedImportTariffs.length == 0) {
+        err++;
+      }
     }
 
     // if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value || this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
@@ -318,6 +358,7 @@ export class AddCompanyPermitComponent implements OnInit {
         }
       );
     } else {
+      console.log(this.epcForm);
       this.processing = false;
       this.snackbar.open(this.dateErrOp, '', { duration: 3000 });
     }
@@ -368,9 +409,16 @@ export class AddCompanyPermitComponent implements OnInit {
     const obj = {
       userID: this.currentUser.userID,
       companyID: this.companyID,
-      epcCode: '',
-      procedure: this.SPName
+      epcCode: this.epcForm.controls.epcCode.value,
+      procedure: this.SPName,
+      EPCTariffs: this.selectedImportTariffs.map((e) => {
+        return {
+          TariffID: e.TariffID,
+          ItemID: e.ItemID
+        };
+      }),
     };
+    console.log(obj);
     return obj
   }
 

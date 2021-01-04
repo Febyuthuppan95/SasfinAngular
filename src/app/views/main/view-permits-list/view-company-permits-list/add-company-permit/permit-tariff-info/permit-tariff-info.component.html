@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit(form)" mat-dialog-content>
+<form [formGroup]="form" (ngSubmit)="submit(form)" mat-dialog-content *ngIf="permitTypeID === 1">
   <div class="row">
     <div class="col-12">
       <h3>Required Tariff Information</h3>
@@ -25,6 +25,22 @@
       <input matInput type="text" formControlName="price" (focusin)="updateHelpContext('form-invoice-line-unitprice')">
       </mat-form-field>
       <br><br>
+    </div>
+    <div class="col-12 text-right">
+      <button mat-dialog-close mat-button type="button">Close</button>
+      <button mat-raised-button color="accent" type="submit">Submit</button>
+    </div>
+  </div>
+</form>
+
+<form [formGroup]="epcForm" (ngSubmit)="submit(epcForm)" mat-dialog-content *ngIf="permitTypeID === 3">
+  <div class="row">
+    <div class="col-12">
+      <h3>Required Tariff Information</h3>
+      <br><br>
+    </div>
+    <div class="col-12">
+      <ls-autocomplete-items [(control)]="this.epcForm.controls.ItemID"></ls-autocomplete-items>
     </div>
     <div class="col-12 text-right">
       <button mat-dialog-close mat-button type="button">Close</button>

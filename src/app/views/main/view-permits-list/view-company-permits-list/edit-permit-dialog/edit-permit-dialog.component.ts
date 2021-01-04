@@ -35,8 +35,6 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     importdateEnd: new FormControl(null, [Validators.required]),
     exportdateStart: new FormControl(null, [Validators.required]),
     exportdateEnd: new FormControl(null, [Validators.required]),
-    importTariffs: new FormControl(null, [Validators.required]),
-    exportTariff: new FormControl(null, [Validators.required])
   });
   prccForm = new FormGroup({
     prccNumber: new FormControl(null, [Validators.required]),
@@ -50,7 +48,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   });
   epcForm = new FormGroup({
     epcCode: new FormControl(null, [Validators.required]),
-    epcTariffs: new FormControl(null, [Validators.required])
+    epcTariffs: new FormControl(null)
   });
 
   selectedTariffs: Tariff[] = [];
@@ -64,6 +62,8 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   companyName: string;
   Permit: any;
   permitTypeID: number;
+  importTariffs = new FormControl(null, [Validators.required]);
+  exportTariff = new FormControl(null, [Validators.required]);
 
   public activeIndex = 0;
   public activeTariff: any = null;
@@ -91,7 +91,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     console.log('Permit');
     console.log(this.Permit);
 
-    this.form.controls.importTariffs.valueChanges.subscribe(async (value) => {
+    this.importTariffs.valueChanges.subscribe(async (value) => {
       console.log(value);
 
       if (value) {
@@ -117,14 +117,15 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
                   tariffID: res.tariffList[0].id,
                   subHeading: res.tariffList[0].subHeading,
                   itemNumber: res.tariffList[0].itemNumber,
+                  permitTypeID: this.permitTypeID,
                 },
                 width: '512px'
               }).afterClosed().subscribe((tariffObj) => {
                 if (tariffObj) {
-
+                  console.log(tariffObj);
                   // Adds record from api
                   this.selectedImportTariffs.push(tariffObj);
-                  this.form.controls.importTariffs.setValue(null, { emitEvent: false });
+                  this.importTariffs.setValue(null, { emitEvent: false });
                 }
               });
             }
@@ -132,9 +133,48 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
         );
       }
     });
-    this.loadImportTariffs();
 
-    this.form.controls.exportTariff.valueChanges.subscribe(async (value) => {
+    this.epcForm.controls.epcTariffs.valueChanges.subscribe(async (value) =>{
+      if (value) {
+        const model: GetTariffList = {
+          filter: '',
+          userID: this.currentUser.userID,
+          specificTariffID: value,
+          rowStart: 1,
+          rowEnd: 10
+        };
+
+        await this.companyService.getTariffList(model).then(
+          (res: TariffListResponse) => {
+            if (res.outcome.outcome === 'SUCCESS') {
+              this.selectedImportTariffs = [...this.selectedImportTariffs.filter(x => +x.id !== +value)];
+              this.matDialog.open(PermitTariffInfoComponent, {
+                data: {
+                  tariffID: res.tariffList[0].id,
+                  subHeading: res.tariffList[0].subHeading == null ? res.tariffList[0].heading: res.tariffList[0].subHeading,
+                  permitTypeID: this.permitTypeID,
+                },
+                width: '512px'
+              }).afterClosed().subscribe((tariffObj) => {
+                if (tariffObj) {
+                  this.selectedImportTariffs.push(tariffObj);
+                  this.epcForm.controls.epcTariffs.setValue(null, { emitEvent: false })
+                }
+              });
+            }
+          }
+        );
+      }
+    });
+
+    if (this.permitTypeID === 1) {
+      this.loadImportTariffs();
+    } else if (this.permitTypeID === 3) {
+      this.loadTariffItems()
+    }
+
+
+    this.exportTariff.valueChanges.subscribe(async (value) => {
       console.log('value');
       console.log(value);
 
@@ -146,13 +186,13 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.form.controls.PermitCode.setValue(this.Permit.permitCode);
-    this.form.controls.permitDate.setValue(this.Permit.permitDate);
-    this.form.controls.importdateStart.setValue(this.Permit.importdateStart);
-    this.form.controls.importdateEnd.setValue(this.Permit.importdateEnd);
-    this.form.controls.exportdateStart.setValue(this.Permit.exportdateStart);
-    this.form.controls.exportdateEnd.setValue(this.Permit.exportdateEnd);
-    this.form.controls.exportTariff.setValue(this.Permit.exportTariffID, { emitEvent: false });
-    this.form.controls.exportTariff.updateValueAndValidity();
+    this.form.controls.permitDate.setValue(new Date(this.Permit.permitDate));
+    this.form.controls.importdateStart.setValue(new Date(this.Permit.importdateStart));
+    this.form.controls.importdateEnd.setValue(new Date(this.Permit.importdateEnd));
+    this.form.controls.exportdateStart.setValue(new Date(this.Permit.exportdateStart));
+    this.form.controls.exportdateEnd.setValue(new Date(this.Permit.exportdateEnd));
+    this.exportTariff.setValue(this.Permit.exportTariffID, { emitEvent: false });
+    this.exportTariff.updateValueAndValidity();
     this.selectedExportTariff = this.Permit.exportTariffID;
 
     this.prccForm.controls.prccNumber.setValue(this.Permit.prccNumber);
@@ -166,22 +206,28 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     this.prccForm.controls.prccImportStartDate.setValue(new Date(this.Permit.importStartDate));
     this.prccForm.controls.prccImportEndDate.setValue(new Date(this.Permit.importEndDate));
 
+    this.epcForm.controls.epcCode.setValue(this.Permit.epcCode)
+    this.selectedImportTariffs = [];
     /* console.log('exportTariff');
     console.log(this.exportTariff.value);
     console.log(this.selectedExportTariff); */
   }
 
+  inputFileChange(){
+
+  }
+
   loadImportTariffs() {
     const model = {
-      requestParams: {
+      request: {
         userID: this.currentUser.userID,
         permitID: this.Permit.permitID
       },
-      requestProcedure: 'PermitImportTafiffsList'
+      procedure: 'PermitImportTafiffsList'
     };
     /* console.log('PermitImportTariffList');
     console.log(model); */
-    this.api.post(`${environment.ApiEndpoint}/capture/read/list`, model)
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model)
     .then(
       (res: any) => {
         for (let item of res.data){
@@ -193,12 +239,42 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     );
   }
 
+  loadTariffItems() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+        ePCID: this.Permit.epcID,
+      },
+      procedure: 'EPCTariffsList'
+    };
+    /* console.log('EPCTariffList');
+    console.log(model); */
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model)
+    .then(
+      (res: any) => {
+        console.log(res);
+        for (let item of res.data) {
+          if (item.isDeleted !== true) {
+            item.isLocal = true;
+            item.isDeleted = false;
+            this.selectedImportTariffs.push(item);
+          }
+        }
+        console.log(this.selectedImportTariffs)
+      }
+    );
+  }
+
    toDate(value, control) {
     control.setValue(new Date(value));
   }
 
   removeTariff(index: number) {
-    this.selectedImportTariffs.splice(index, 1);
+    if (this.permitTypeID === 1) {
+      this.selectedImportTariffs.splice(index, 1);
+    } else if (this.permitTypeID === 3) {
+      this.selectedImportTariffs[index].isDeleted = true;
+    }
   }
 
   prevTarrif() {
@@ -253,6 +329,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       this.requestParams = this.PermitModel();
       if (!this.form.valid) {
         err++;
+        this.dateErrOp = 'There are errors';
       }
       if (this.form.controls.importdateEnd.value < this.form.controls.importdateStart.value || this.form.controls.exportdateEnd.value < this.form.controls.exportdateStart.value) {
         this.dateErrOp = 'End date cannot be lower than start date ';
@@ -268,6 +345,9 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     } else if (this.permitTypeID === 3) {
       this.SPName = 'EPCUpdate';
       this.requestParams = this.EPCModel();
+      if (!this.epcForm.valid || this.selectedImportTariffs.length == 0){
+        err++;
+      }
     }
     if (err === 0) {
       /* const model: any = {
@@ -356,10 +436,20 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   EPCModel(): object {
     const obj = {
       userID: this.currentUser.userID,
-      companyID: this.companyID,
-      epcCode: ''
+      epcID: this.Permit.epcID,
+      epcCode: this.epcForm.controls.epcCode.value,
+      EPCTariffs: this.selectedImportTariffs.map((e) => {
+        return {
+          EPCTariffID: e.EPCTariffID,
+          TariffID: e.TariffID,
+          ItemID: e.ItemID,
+          isLocal: e.isLocal,
+          isDeleted: e.isDeleted
+        };
+      }),
       //procedure: this.SPName
     };
+    console.log(obj);
     return obj
   }
 

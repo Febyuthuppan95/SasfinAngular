@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -12,8 +12,11 @@ export class DialogOverrideComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogOverrideComponent>) { }
 
   reason = new FormControl(null, [Validators.required]);
+  @ViewChild('cdkFocusInitial', { static: false })
+  private cdkFocusInitial: ElementRef;
 
   ngOnInit() {
+    this.cdkFocusInitial.nativeElement.focus();
   }
 
   submit(control: FormControl) {
