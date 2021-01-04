@@ -274,7 +274,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
 
   loadTransactions() {
     const model = {
-      requestParams: {
+      request: {
         userID: this.currentUser.userID,
         CompanyLocalReceiptID: this.SelectedReceipt.CompanyLocalReceiptID,
         rowStart: this.rowStart,
@@ -283,13 +283,13 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection
       },
-      requestProcedure: 'LocalReciptsList'
+      procedure: 'LocalReciptsList'
     };
     console.log('model yes');
     console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/capture/list`, model).then(
       (res: CompanyLocalReceiptList) => {
-        // console.log(res);
+       console.log(res);
         if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
