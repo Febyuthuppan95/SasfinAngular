@@ -292,7 +292,7 @@ filePreview: string;
       procedure: 'SupplierC1List'
     };
     // console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/capture/list`, model).then(
       (res: SupplierC1List) => {
        console.log('res1');
        console.log(res);
@@ -353,6 +353,7 @@ filePreview: string;
         this.closeaddModal.nativeElement.click();
       },
       (msg) => {
+        console.log("error solve");
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'

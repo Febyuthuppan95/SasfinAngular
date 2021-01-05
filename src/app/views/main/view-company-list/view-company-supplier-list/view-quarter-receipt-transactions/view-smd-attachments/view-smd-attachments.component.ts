@@ -293,7 +293,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
       procedure: 'SupplierSMDList'
     };
     // console.log(model);
-    this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+    this.apiService.post(`${environment.ApiEndpoint}/capture/list`, model).then(
       (res: SupplierSMDList) => {
 
        console.log(res);
