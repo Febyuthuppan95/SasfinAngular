@@ -18,7 +18,7 @@ import { LocalReceipt } from '../view-quarter-receipt-transactions.component';
 import { CompanyLocalReceipt } from '../../view-company-supplier-list.component';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
-import { SupplierSMDList } from 'src/app/components/forms/capture/updates/form-smd/form-smd.component';
+import { SupplierSMDList, SupplierSMDs } from 'src/app/components/forms/capture/updates/form-smd/form-smd.component';
 
 @Component({
   selector: 'app-view-smd-attachments',
@@ -26,6 +26,7 @@ import { SupplierSMDList } from 'src/app/components/forms/capture/updates/form-s
   styleUrls: ['./view-smd-attachments.component.scss']
 })
 export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
+  focusAttachmenID: any;
 
   constructor(private companyService: CompanyService,
               private userService: UserService,
@@ -92,7 +93,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
   focusOEMID: any;
   focusTransactionID: number;
 
-  SelectedRecord: SupplierC1 = {
+  SelectedRecord: SupplierSMDs = {
    TransactionID: -1,
    CompanyID: -1,
    SupplierName: '',
@@ -442,9 +443,10 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
     this.focusPeriodYear = obj.record.PeriodYear;
     this.SelectedRecord = obj.record;
     console.log(obj.record);
+    this.focusAttachmenID = obj.record.SupplierSMDID;
     this.transactionService.setCurrentAttachment({
       transactionID: obj.record.TransactionID,
-      attachmentID: obj.record.SupplierC1ID,
+      attachmentID: obj.record.SupplierSMDID,
       docType: 'SMD',
       transactionType: 'local'
       });
