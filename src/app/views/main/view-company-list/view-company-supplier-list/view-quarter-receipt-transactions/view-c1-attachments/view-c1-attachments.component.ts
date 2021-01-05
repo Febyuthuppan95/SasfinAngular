@@ -102,7 +102,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
    AttachmentStatusID: -1,
    FilePath: ''
   };
-fileUpload: File;
+fileUpload: File[];
 filePreview: string;
   tableHeader: TableHeader = {
     title: 'Supplier C1s',
@@ -334,14 +334,14 @@ filePreview: string;
 
   }
 
-  onFileChange(files: FileList) {
-    this.fileUpload = files.item(0);
-    this.filePreview = this.fileUpload.name;
+  onFileChange(files: File[]) {
+    this.fileUpload = files;
+    this.filePreview = this.fileUpload[0].name;
   }
   createAttachments() {
     this.transactionService.uploadAttachment(
       this.filePreview,
-      this.fileUpload[0],
+      this.fileUpload,
       'SC1',
       this.currentReceipt.TransactionID,
       this.currentUser.userID,
@@ -365,7 +365,7 @@ filePreview: string;
   uploadAttachments() {
       this.transactionService.uploadLocalAttachment(
         this.filePreview,
-        this.fileUpload,
+        this.fileUpload[0],
         'SC1',
         this.currentReceipt.TransactionID,
         this.currentUser.userID,
