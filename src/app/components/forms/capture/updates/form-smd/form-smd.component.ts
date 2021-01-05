@@ -13,6 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ShortcutInput, KeyboardShortcutsComponent, AllowIn } from 'ng-keyboard-shortcuts';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { SubmitDialogComponent } from 'src/app/layouts/capture-layout/submit-dialog/submit-dialog.component';
+import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 
 import { UUID } from 'angular2-uuid';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
@@ -498,16 +499,23 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
 }
 
 
-export class SupplierC1 {
+export class SupplierSMDs {
   TransactionID: number;
   CompanyID: number;
   SupplierName: string;
   CertificateNo: string;
   AttachmentStatusID: number;
   AttachmentStatus: string;
+  FilePath: string;
 }
 
-export class SupplierC1Line {
+export class SupplierSMDList {
+  rowCount: number;
+  data?: SupplierSMDs[];
+  outcome: Outcome;
+}
+
+export class SupplierSMDLine {
   LineNo: number;
   ItemID: number;
   ItemName: string;

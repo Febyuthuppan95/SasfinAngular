@@ -18,6 +18,7 @@ import { LocalReceipt } from '../view-quarter-receipt-transactions.component';
 import { CompanyLocalReceipt } from '../../view-company-supplier-list.component';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
+import { SupplierSMDList } from 'src/app/components/forms/capture/updates/form-smd/form-smd.component';
 
 @Component({
   selector: 'app-view-smd-attachments',
@@ -293,7 +294,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
     };
     // console.log(model);
     this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
-      (res: SupplierC1List) => {
+      (res: SupplierSMDList) => {
 
        console.log(res);
         if (res.data.length === 0) {
