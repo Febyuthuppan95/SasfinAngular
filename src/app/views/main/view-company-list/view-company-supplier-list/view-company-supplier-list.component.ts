@@ -3,6 +3,7 @@ import { CompanyService, SelectedCompany } from 'src/app/services/Company.Servic
 import { UserService } from 'src/app/services/user.Service';
 import { ThemeService } from 'src/app/services/theme.Service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TableHeading, TableConfig, TableHeader, SelectedRecord, Order } from 'src/app/models/Table';
 import { User } from 'src/app/models/HttpResponses/User';
 import { environment } from 'src/environments/environment';
@@ -15,6 +16,8 @@ import { NotificationComponent } from 'src/app/components/notification/notificat
 import { takeUntil } from 'rxjs/operators';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { ApiService } from 'src/app/services/api.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-view-company-supplier-list',
@@ -23,7 +26,9 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
 
-  constructor(private companyService: CompanyService,
+
+  constructor(private snackbar: MatSnackBar,
+              private companyService: CompanyService,
               private userService: UserService,
               private themeService: ThemeService,
               public router: Router,
@@ -85,6 +90,11 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   contextMenuX = 0;
   contextMenuY = 0;
   sidebarCollapsed = true;
+
+  form = new FormGroup({
+    focusQuarter: new FormControl(null, [Validators.required]),
+    focusYear: new FormControl(null, [Validators.required]),
+  });
 
   selectedRow = -1;
   companyID: number;
@@ -340,36 +350,45 @@ export class ViewCompanySupplierListComponent implements OnInit, OnDestroy {
   }
 
   AddSupplierQuarter() {
-    const model = {
-      requestParams: {
-        userID: this.currentUser.userID,
-        companyID: this.companyID,
-        periodYear: this.focusPeriodYear,
-        quarterID: this.focusQuarterID
-      },
-      requestProcedure: 'CompanyLocalReceiptAdd'
-    };
-    this.apiService.post(`${environment.ApiEndpoint}/companies/localreceipts/add`, model).then(
-      (res: Outcome) => {
-        console.log(res);
-        this.loadLocalReceipts();
-        this.closeaddModal.nativeElement.click();
-        this.notify.successmsg(
-          'SUCCESS',
-          res.outcomeMessage
-        );
+    let err = 0;
+    if (!this.form.valid){
+      err++;
+    }
+    if (err === 0) {
+      const model = {
+        requestParams: {
+          userID: this.currentUser.userID,
+          companyID: this.companyID,
+          periodYear: this.focusPeriodYear,
+          quarterID: this.focusQuarterID
+        },
+        requestProcedure: 'CompanyLocalReceiptAdd'
+      };
+      this.apiService.post(`${environment.ApiEndpoint}/companies/localreceipts/add`, model).then(
+        (res: Outcome) => {
+          console.log(res);
+          this.loadLocalReceipts();
+          this.closeaddModal.nativeElement.click();
+          this.notify.successmsg(
+            'SUCCESS',
+            res.outcomeMessage
+          );
 
-        this.focusQuarterID = null;
-        this.focusPeriodYear = null;
-      },
-      msg => {
-        this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
-        );
+          this.focusQuarterID = null;
+          this.focusPeriodYear = null;
+        },
+        msg => {
+          this.notify.errorsmsg(
+            'Server Error',
+            'Something went wrong while trying to access the server.'
+          );
 
-      }
-    );
+        }
+      );
+    }
+    else{
+      this.snackbar.open('There are errors', '',{ duration: 2000 });
+    }
   }
 
   recordsPerPageChange($event) {
