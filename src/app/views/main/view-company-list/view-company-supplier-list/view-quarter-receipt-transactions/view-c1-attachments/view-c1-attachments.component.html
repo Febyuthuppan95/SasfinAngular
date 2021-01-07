@@ -26,7 +26,7 @@
         (backButtonEvent)="router.navigate(['companies', 'localreceipts', 'transactions'])">
       </app-table>
     </div>
-  </div> 
+  </div>
 
   <!--Edit Modal-->
   <!-- <button class="hide" data-toggle="modal" data-target="#editOEM" #openeditModal></button>
@@ -161,6 +161,20 @@
   <app-notification></app-notification>
   <app-modal-component></app-modal-component>
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
-    <app-context-menu-local-attachments (addAttachment)="openUploadModal()" [docPath]="this.SelectedRecord.FilePath" [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" ></app-context-menu-local-attachments>
+    <!--Context menu changed to actually open the capturing screen up-->
+    <app-context-menu-local-attachments
+    (addAttachment)="openUploadModal()"
+    [docPath]="this.SelectedRecord.FilePath"
+    [fileType]="'SC1'"
+    [fileTypeID]="17"
+    [attachmentID]="this.SelectedRecord.SupplierC1ID"
+    [statusID]="this.SelectedRecord.AttachmentStatusID"
+    [transactionID]="this.SelectedRecord.TransactionID"
+    [transactionType]="this.SelectedRecord.Name"
+    [ngStyle]="(contextMenu)?'' :'display:none;'"
+    class="contextMenuDiv"
+    *ngIf="(contextMenu)"
+    [x]="contextMenuX"
+    [y]="contextMenuY" ></app-context-menu-local-attachments>
   </div>
 

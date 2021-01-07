@@ -20,6 +20,14 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
   @Input() y: number;
   @Input() currentTheme: string;
   @Input() docPath: string;
+  //Parameters for routing to capturing page --Reuben
+  @Input() fileType: string;
+  @Input() fileTypeID: number;
+  @Input() transactionID: number;
+  @Input() attachmentID: number;
+  @Input() statusID: number;
+  @Input() transactionType: string;
+
   @Output() addAttachment = new EventEmitter<string>();
   currentTransaction
   ngOnInit() {
@@ -33,5 +41,14 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     // this.transactionService.setCurrentAttachment({ transactionID: this.transactionID, attachmentID: this.attachmentID, docType: this.fileType, transactionType: this.transactionType, issueID: this.statusID === 7 ? 1 : -1, reason: this.reason });
     this.router.navigate(['capture', 'transaction', 'attachment', btoa(this.docPath)]);
+
+    //Used different URL to route, capture/transaction/attachment didnt work --Reuben
+    this.router.navigate(['c',
+                          btoa(this.docPath),
+                          btoa(this.fileType),
+                          this.attachmentID.toString(),
+                          this.transactionID.toString(),
+                          btoa(this.transactionType),
+                          this.statusID === 7 ? '1' : '-1']);
   }
 }

@@ -93,7 +93,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
   focusOEMID: any;
   focusTransactionID: number;
 
-  SelectedRecord: SupplierSMDs = {
+  SelectedRecord: any = {
    TransactionID: -1,
    CompanyID: -1,
    SupplierName: '',
@@ -101,7 +101,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
    AttachmentStatus: '',
    AttachmentStatusID: -1,
    FilePath: ''
-  };
+  }; //Changed Supplier SMD type to any
 
   fileUpload: File[];
   filePreview: string;
@@ -306,7 +306,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          // console.log(this.dataList);
+          console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -415,12 +415,14 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
   }
 
   popClick(event, localReceipt) {
-    // console.log(localReceipt);
+    console.log('pop');
+    console.log(localReceipt);
     this.contextMenuX = event.clientX + 3;
     this.contextMenuY = event.clientY + 5;
     this.focusLocalReceiptID = localReceipt.localReceiptID;
     this.focusQuarterID = localReceipt.QuarterID;
     this.focusPeriodYear = localReceipt.PeriodYear;
+
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
       this.contextMenu = true;

@@ -93,7 +93,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
   focusTransactionID: number;
 
   focusAttachmenID: number;
-  SelectedRecord: SupplierC1 = {
+  SelectedRecord: any = {
    TransactionID: -1,
    CompanyID: -1,
    SupplierName: '',
@@ -101,7 +101,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
    AttachmentStatus: '',
    AttachmentStatusID: -1,
    FilePath: ''
-  };
+  }; //Changed SupplierC1 type to any
 fileUpload: File[];
 filePreview: string;
   tableHeader: TableHeader = {
