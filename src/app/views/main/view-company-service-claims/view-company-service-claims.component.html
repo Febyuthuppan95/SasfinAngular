@@ -39,6 +39,7 @@
     <app-context-menu-service-claims (populatecompanyService)="populatecompanyService($event)"
     (reportscompanyService)="reportscompanyService($event)"
     (addClaimPermits)="openAddClaimPermits($event)"
+    (remove)="removeClaim($event)"
     (submit522Claim) = "submit522($event)"
     [companyID]="this.companyID"
     [companyName]="this.companyName"
