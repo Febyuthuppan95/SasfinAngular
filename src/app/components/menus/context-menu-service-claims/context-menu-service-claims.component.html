@@ -1,11 +1,14 @@
 <a (click)="ClaimPermits()" *ngIf="this.serviceName === '521' && this.status === 'Created'" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Assign Permits</span></a>
 <a *ngIf="this.status === 'Created' && ((this.permitCount > 0 && this.serviceName === '521') || (this.serviceName !== '521'))"
     (click)="Populate()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Populate</span></a>
+<a (click)="dismiss()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Remove</span></a>
 
 <a *ngIf="this.status !== 'Created'" (click)="Reports()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Reports</span></a>
 <a *ngIf="this.status === 'Complete' && this.serviceName === '522'" (click)="Submit522Report()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Submit Claim</span></a>
 <!--522-->
 <a *ngIf="this.serviceName === '522' && this.status === 'Created'" (click)="CaptureInvoices()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Capture Invoices</span></a>
+
+<!--Remove-->
 
 
 

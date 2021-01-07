@@ -240,6 +240,14 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
     // tslint:disable-next-line: max-line-length
     requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
     requestModel.userID = this.currentUser.userID;
+    //Waybill wasn't submitting with the OBit's and OReason's set to null. --Reuben
+    console.log(requestModel);
+    requestModel.waybillNoOBit = requestModel.waybillNoOBit == null ? 0 : requestModel.waybillNoOBit
+    requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
+    requestModel.transAtArrivalOBit = requestModel.transAtArrivalOBit == null ? 0 : requestModel.transAtArrivalOBit;
+    requestModel.transAtArrivalOReason = requestModel.transAtArrivalOReason == null ? '' : requestModel.transAtArrivalOReason;
+    requestModel.containerNoOBit = requestModel.containerNoOBit == null ? 0 : requestModel.containerNoOBit;
+    requestModel.containerNoOReason = requestModel.containerNoOReason == null ? '' : requestModel.containerNoOReason
 
     await this.captureService.waybillUpdate(requestModel).then(
       async (res: Outcome) => {

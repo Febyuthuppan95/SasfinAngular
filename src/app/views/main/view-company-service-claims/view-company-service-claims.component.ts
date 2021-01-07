@@ -1,3 +1,4 @@
+import { CompanyServiceClaim } from './../../../models/HttpResponses/CompanyServiceClaimsListResponse';
 import { Component, OnInit, ViewChild, ElementRef, ɵConsole } from '@angular/core';
 import {FormControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -14,7 +15,7 @@ import { CompanyService, SelectedCompany, AddComanyServiceClaimResponse } from '
 import { ServicesService, ServiceClaimReadRequest } from 'src/app/services/Services.Service';
 import { Router } from '@angular/router';
 import { GetCompanyServiceClaims } from 'src/app/models/HttpRequests/GetCompanyServiceClaims';
-import { CompanyServiceClaimsListResponse, CompanyServiceClaim } from 'src/app/models/HttpResponses/CompanyServiceClaimsListResponse';
+import { CompanyServiceClaimsListResponse } from 'src/app/models/HttpResponses/CompanyServiceClaimsListResponse';
 import { GetPermitsByDate } from 'src/app/models/HttpRequests/GetPermitsByDate';
 import { PermitsByDateListResponse, PermitByDate } from 'src/app/models/HttpResponses/PermitsByDateListResponse';
 import { GetSAD500LinesByPermits } from 'src/app/models/HttpRequests/GetSAD500LinesByPermits';
@@ -380,6 +381,28 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
 
     );
   }
+
+  removeClaim($event) {
+    console.log($event);
+    console.log("remove");
+    const model = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        companyServiceClaimID: $event,
+        isDeleted: 1
+      },
+      requestProcedure: 'CompanyServiceClaimsUpdate'
+    };
+    this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/update/claim`, model).then(
+      (res: any) => {
+        console.log(res);
+        this.loadServiceClaims(false);
+        this.loadCompanyServiceClaimPermits();
+      }
+    )
+
+  }
+
   loadCompanyServiceClaimPermits() {
     const model = {
       requestParams: {

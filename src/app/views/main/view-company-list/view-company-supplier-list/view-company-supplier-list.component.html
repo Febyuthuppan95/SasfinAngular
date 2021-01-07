@@ -102,21 +102,27 @@
             <div class="form-group">
               <mat-form-field>
                   <mat-label>Quarter</mat-label>
-                  <mat-select [(ngModel)]="this.focusQuarterID" name="quarter">
+                  <mat-select [formControl]="this.form.controls.focusQuarter" [(ngModel)]="this.focusQuarterID" name="quarter">
                     <mat-option (change)="periodQuarter(quarter.value)" *ngFor="let quarter of quarters" [value]="quarter.value">
                       {{quarter.Name}}
                     </mat-option>
                   </mat-select>
+                  <mat-error *ngIf="this.form.controls.focusQuarter.hasError('required')">
+                    Quarter is <strong>required</strong>
+                  </mat-error>
                 </mat-form-field>
           </div>
           <div class="form-group">
             <mat-form-field>
                 <mat-label>Year</mat-label>
-                <mat-select [(ngModel)]="this.focusPeriodYear" name="year">
+                <mat-select [formControl]="this.form.controls.focusYear" [(ngModel)]="this.focusPeriodYear" name="year">
                   <mat-option (change)="periodYear(year)" *ngFor="let year of years" [value]="year">
                     {{year}}
                   </mat-option>
                 </mat-select>
+                <mat-error *ngIf="this.form.controls.focusYear.hasError('required')">
+                  Year is <strong>required</strong>
+                </mat-error>
               </mat-form-field>
           </div>
         </div>
