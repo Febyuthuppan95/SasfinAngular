@@ -574,7 +574,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
       requestModel.totalCustomValueOReason = requestModel.totalCustomsValueOReason == null ? '' : requestModel.totalCustomsValueOReason;
       requestModel.totalCustomValueOBit = requestModel.totalCustomsValueOBit == null ? '' : requestModel.totalCustomsValueOBit;
-      requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason
+      requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason;
       requestModel.supplierRefOReason = requestModel.supplierRefOReason == null ? '' : requestModel.supplierRefOReason;
       requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
       requestModel.transAtArrivalOReason = requestModel.transAtArrivalOReason == null ? '' : requestModel.transAtArrivalOReason;
