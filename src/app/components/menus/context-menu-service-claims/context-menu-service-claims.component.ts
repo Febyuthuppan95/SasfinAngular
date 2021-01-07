@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ContextMenuServiceClaimsComponent implements OnInit {
 
+
   constructor(
     private router: Router,
     private companyService: CompanyService,
@@ -34,6 +35,7 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   @Output() reportscompanyService = new EventEmitter<number>();
   @Output() addClaimPermits = new EventEmitter<number>();
   @Output() submit522Claim = new EventEmitter<number>();
+  @Output() remove = new EventEmitter<number>();
 populate = false;
   ngOnInit() {}
 
@@ -68,6 +70,9 @@ populate = false;
   }
   Submit522Report() {
     this.submit522Claim.emit(1);
+  }
+  dismiss(){
+    this.remove.emit(this.companyServiceClaimID);
   }
 }
 
