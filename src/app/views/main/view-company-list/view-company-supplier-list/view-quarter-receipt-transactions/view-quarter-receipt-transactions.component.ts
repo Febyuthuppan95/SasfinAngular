@@ -290,7 +290,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
     this.apiService.post(`${environment.ApiEndpoint}/capture/list`, model).then(
       (res: CompanyLocalReceiptList) => {
        console.log(res);
-        if (res.data.length === 0) {
+       if (res.data.length === 0) {
           this.noData = true;
           this.showLoader = false;
           this.dataList = [];
@@ -449,6 +449,7 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       ).then(
         (res: Outcome) => {
           console.log(res);
+          console.log('find me');
           this.addedTransactionID = res.createdID;
           if (this.addedTransactionID > 0) {
             this.createLocalReceipt();
