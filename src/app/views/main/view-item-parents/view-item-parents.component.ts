@@ -90,14 +90,14 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
   tableHeadings: TableHeading[] = [
     {
       title: '#',
-      propertyName: 'rowNum',
+      propertyName: 'RowNum',
       order: {
         enable: false,
       }
     },
     {
       title: 'Parent Item',
-      propertyName: 'parentName',
+      propertyName: 'ItemParent',
       order: {
         enable: true,
         tag: 'ParentName'
@@ -105,7 +105,7 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Child Item',
-      propertyName: 'itemName',
+      propertyName: 'ItemChild',
       order: {
         enable: true,
         tag: 'ItemName'
@@ -113,7 +113,7 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Quantity',
-      propertyName: 'quantity',
+      propertyName: 'Quantity',
       order: {
         enable: true,
         tag: 'Quantity'
@@ -121,7 +121,7 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Units of Measure',
-      propertyName: 'unitsOfMeasureName',
+      propertyName: 'UOMName',
       order: {
         enable: true,
         tag: 'UnitsOfMeasureName'
@@ -215,7 +215,22 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
   loadItemsParents(displayGrowl: boolean) {
     this.rowEnd = +this.rowStart + +this.rowCountPerPage - 1;
     this.showLoader = true;
-    const model: GetItemParentsList = {
+    //API endpoint was using a generic service and front end was't sending thru SP
+    const model: any  = {
+      requestParams: {
+        userID: this.currentUser.userID,
+        filter: this.filter,
+        itemID: this.itemID,
+        bomID: -1,
+        rowStart: this.rowStart,
+        rowEnd: this.rowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection
+      },
+      requestProcedure: 'ItemParentsList'
+    }
+    GetItemParentsList
+    /*const model: GetItemParentsList = {
       userID: this.currentUser.userID,
       filter: this.filter,
       itemID: this.itemID,
@@ -223,9 +238,10 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
       rowEnd: this.rowEnd,
       orderBy: this.orderBy,
       orderByDirection: this.orderDirection
-    };
+    };*/
     this.companyService.getItemParentsList(model).then(
-      (res: ItemParentsListResponse) => {
+      (res: any) => {
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (displayGrowl) {
             this.notify.successmsg(
@@ -234,8 +250,14 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
             );
           }
         }
-
-        this.itemParents = res.itemParents;
+        /*else {
+          //this.showLoader = false;
+          this.notify.errorsmsg(
+            res.outcome.outcome,
+            res.outcome.outcomeMessage
+          );
+        }*/
+        this.itemParents = res.data;
         this.itemParents.forEach((item) => {
           item.startDateText = new Date(item.startDate).toDateString();
           item.endDateText = new Date(item.endDate).toDateString();

@@ -121,10 +121,11 @@
                   </thead>
                   <tbody class="modal-list-rights" *ngIf="(!noitemData)">
                     <tr *ngFor="let item of items; let i=index" (click)="addtoGroup(item.groupID, item.itemID)" class="right-list-row"  >
-                      <td>{{item.item}}</td>
-                      <td>{{item.description}}</td>
-                      <td>{{item.tariff}}</td>
-                      <td>{{item.type}}</td>
+                      <!--Fields Mispelled-->
+                      <td>{{item.Name}}</td>
+                      <td>{{item.Description}}</td>
+                      <td>{{item.Tariff}}</td>
+                      <td>{{item.Type}}</td>
                     </tr>
                   </tbody>
                   <tbody class="tbodyPop" *ngIf="(noitemData)" >
@@ -228,10 +229,11 @@
                   </thead>
                   <tbody class="modal-list-rights" *ngIf="(!noitemData)">
                     <tr *ngFor="let item of items; let i=index" (click)="addtoParent(item.itemID)" class="right-list-row"  >
-                      <td>{{item.item}}</td>
-                      <td>{{item.description}}</td>
-                      <td>{{item.tariff}}</td>
-                      <td>{{item.type}}</td>
+                      <!--Fields Mispelled-->
+                      <td>{{item.Name}}</td>
+                      <td>{{item.Description}}</td>
+                      <td>{{item.Tariff}}</td>
+                      <td>{{item.Type}}</td>
                     </tr>
                   </tbody>
                   <tbody class="tbodyPop" *ngIf="(noitemData)" >

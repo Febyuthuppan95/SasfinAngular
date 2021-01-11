@@ -19,6 +19,8 @@ import { Subject } from 'rxjs';
 import {Outcome} from '../../../models/HttpResponses/Outcome';
 import {DocumentService} from '../../../services/Document.Service';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -35,6 +37,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private router: Router,
+    private api: ApiService,
     private IDocumentService: DocumentService,
   ) {
     this.rowStart = 1;
@@ -90,7 +93,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   currentTheme: string;
 
   itemsdraft: Items[] = [];
-  items: Items[] = [];
+  items: any[] = [];
   itemparents: Items[] = [];
   pages: Pagination[];
   itemspages: Pagination[];
@@ -373,18 +376,22 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   loadItems(displayGrowl: boolean, isParent: boolean) {
     this.itemsrowEnd = +this.itemsrowStart + +this.itemsrowCountPerPage - 1;
-    const model: GetItemList = {
-      userID: this.currentUser.userID,
-      filter: this.itemsfilter,
-      specificItemID: this.focusItemID,
-      rowStart: this.itemsrowStart,
-      rowEnd: this.itemsrowEnd,
-      orderBy: this.orderBy,
-      orderByDirection: this.orderDirection,
-      isParent
+    //Changed to use a generic API endpoint instead of the one it did use
+    const model = {
+      request :{
+        userID: this.currentUser.userID,
+        filter: this.itemsfilter,
+        itemsID: this.focusItemID,
+        rowStart: this.itemsrowStart,
+        rowEnd: this.itemsrowEnd,
+        orderBy: this.orderBy,
+        orderByDirection: this.orderDirection,
+      },
+      procedure: 'ItemsList'
     };
-    this.companyService.getItemjoinList(model).then(
-      (res: ItemsListResponse) => {
+    //this.companyService.getItemjoinList(model).then(
+    this.api.post(`${environment.ApiEndpoint}/capture/list`,model).then(
+      (res: any) => {
         if (res.outcome.outcome === 'FAILURE') {
           if (displayGrowl) {
           this.notify.errorsmsg(
@@ -400,14 +407,16 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           }
         }
         console.log(res);
-        if (res.rowCount !== 0) {
+        if (res.data) {
           this.noitemData = false;
           this.itemsdataset = res;
-          this.items = res.itemsLists;
+          this.items = res.data;
+          console.log(this.items);
           this.itemsrowCount = res.rowCount;
           this.itemsshowingRecords = res.itemsLists.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
           // console.log(this.itemsdataset);
+
           this.itemspaginateData();
         } else {
           this.noitemData = true;
