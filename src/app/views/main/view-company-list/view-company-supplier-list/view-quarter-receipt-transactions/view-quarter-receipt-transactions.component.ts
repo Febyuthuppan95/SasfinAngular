@@ -234,9 +234,15 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
       this.currentTheme = theme;
     });
 
+    this.companyService.observeCompany().subscribe((data) => {
+      this.companyName = data.companyName;
+      this.companyID = data.companyID;
+    });
+
     this.companyService.observeLocalReceipt().pipe(takeUntil(this.unsubscribe$)).subscribe(
       (res: CompanyLocalReceipt) => {
         if (res !== null && res !== undefined) {
+          console.log(res);
           this.SelectedReceipt = res;
           this.loadTransactions();
         }
@@ -440,9 +446,10 @@ export class ViewQuarterReceiptTransactionsComponent implements OnInit, OnDestro
 
   saveBulkUpload() {
     if (this.selectedTabIndex === 0) {
+      console.log(this.SelectedReceipt);
       this.transationService.createdTransaction(
         this.currentUser.userID,
-        this.SelectedReceipt.CompanyID,
+        this.companyID,
         3,
         3,
         this.focusTransactionName,
