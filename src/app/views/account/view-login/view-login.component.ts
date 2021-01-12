@@ -6,7 +6,7 @@ import { LoginResponse } from '../../../models/HttpResponses/LoginResponse';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
 import { Router } from '@angular/router';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import { ChatService } from 'src/app/modules/chat/services/chat.service';
 import { ChannelService } from 'src/app/modules/chat/services/channel.service';
 import { environment } from 'src/environments/environment';

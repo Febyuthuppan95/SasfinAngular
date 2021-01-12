@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {CompanyService, SelectedBOM} from '../../../../services/Company.Service';
 import {UserService} from '../../../../services/User.Service';
-import {ThemeService} from '../../../../services/Theme.Service';
+import { ThemeService } from 'src/app/services/theme.Service';
 import {MenuService} from '../../../../services/Menu.Service';
 import {Router} from '@angular/router';
 import {HelpSnackbar} from '../../../../services/HelpSnackbar.service';

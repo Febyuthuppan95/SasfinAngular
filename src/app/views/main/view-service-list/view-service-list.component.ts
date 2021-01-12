@@ -7,7 +7,7 @@ import { NotificationComponent } from '../../../components/notification/notifica
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';

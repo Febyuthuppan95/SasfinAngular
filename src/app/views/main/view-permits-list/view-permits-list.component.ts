@@ -5,7 +5,7 @@ import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import {SnackbarModel} from '../../../models/StateModels/SnackbarModel';
 import {HelpSnackbar} from '../../../services/HelpSnackbar.service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
@@ -202,8 +202,8 @@ export class ViewPermitsListComponent implements OnInit {
   ngOnInit() {
 
     this.themeService.observeTheme().subscribe((theme) => {
-      this.currentTheme = theme;
-    });
+        this.currentTheme = theme;
+      });
 
     this.companyService.observeCompany().subscribe((obj: SelectedCompany) => {
       this.companyID = obj.companyID;

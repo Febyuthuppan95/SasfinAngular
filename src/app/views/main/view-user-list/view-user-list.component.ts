@@ -10,7 +10,7 @@ import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { ImageModalComponent } from '../../../components/image-modal/image-modal.component';
 import { UserService } from '../../../services/user.Service';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import { environment } from '../../../../environments/environment';
 import { ImageModalOptions } from 'src/app/models/ImageModalOptions';
 import { DesignationList } from 'src/app/models/HttpResponses/DesignationList';

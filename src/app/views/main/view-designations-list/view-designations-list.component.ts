@@ -6,7 +6,7 @@ import { Pagination } from '../../../models/Pagination';
 import { NotificationComponent } from '../../../components/notification/notification.component';
 import { UserService } from '../../../services/user.Service';
 import { User } from '../../../models/HttpResponses/User';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ContextMenuComponent } from 'src/app/components/menus/context-menu/context-menu.component';
 import { ContextMenu } from 'src/app/models/StateModels/ContextMenu';

@@ -2,7 +2,7 @@ import { EditPermitDialogComponent } from './edit-permit-dialog/edit-permit-dial
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MenuService } from 'src/app/services/Menu.Service';
-import { ThemeService } from 'src/app/services/theme.Service.js';
+import { ThemeService } from 'src/app/services/theme.Service';
 import { TableHeading, SelectedRecord, Order, TableHeader } from 'src/app/models/Table';
 import { CompanyService, SelectedCompany, SelectedPermitType } from 'src/app/services/Company.Service';
 import { ServicesService } from 'src/app/services/Services.Service';
