@@ -72,9 +72,11 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
       this.form.disable();
     }
   }
-//alt + a is not working
+// alt + a is not working
   ngAfterViewInit(): void {
+
     setTimeout(() => {
+      console.log('find');
       this.shortcuts.push(
         {
           key: 'alt + a',

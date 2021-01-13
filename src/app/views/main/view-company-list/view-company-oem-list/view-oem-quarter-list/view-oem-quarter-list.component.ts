@@ -211,7 +211,7 @@ private unsubscribe$ = new Subject<void>();
     const model = {
       requestParams: {
       userID: this.currentUser.userID,
-      companyOEMQuarterID: -1,
+      companyOEMQuarterID: this.selectedOEM.companyOEMQuarterID,
       companyOEMID: this.selectedOEM.companyOEMID,
       rowStart: this.rowStart,
       filter: this.filter,
@@ -222,6 +222,7 @@ private unsubscribe$ = new Subject<void>();
     };
     this.companyService.companyOEMQuarterList(model).then(
       (res: CompanyOEMQuartersList) => {
+        console.log(model);
         if (res.outcome.outcome === 'SUCCESS') {
           this.noData = false;
           this.dataset = res;
