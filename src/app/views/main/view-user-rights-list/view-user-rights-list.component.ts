@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { Location } from '@angular/common';
-import {ThemeService} from '../../../services/Theme.Service';
+import { ThemeService } from 'src/app/services/theme.Service';
 import {UserService} from '../../../services/User.Service';
 import {NotificationComponent} from '../../../components/notification/notification.component';
 import {ImageModalComponent} from '../../../components/image-modal/image-modal.component';

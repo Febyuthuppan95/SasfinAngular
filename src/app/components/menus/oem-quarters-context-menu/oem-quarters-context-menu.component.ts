@@ -37,9 +37,6 @@ export class OemQuartersContextMenuComponent implements OnInit {
   }
 
   Edit() {
-
-   
-    
     this.EditQuarter.emit(JSON.stringify({
       companyOEMID: this.selectedOEM.companyOEMID,
       oemName: this.selectedOEM.oemName,
@@ -49,8 +46,13 @@ export class OemQuartersContextMenuComponent implements OnInit {
   }
 
   Supply() {
-    
+
     this.companyService.setCompanyOEM(this.selectedOEM);
       this.router.navigate(['companies', 'oem', 'quarter', 'supply']);
+  }
+
+  Sales() {
+    //this.companyService.setCompanyOEM(this.selectedOEM);
+    //this.router.navigate(['compnaies','oem','quarter','sales']);
   }
 }

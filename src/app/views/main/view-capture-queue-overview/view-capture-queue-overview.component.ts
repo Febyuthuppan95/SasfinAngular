@@ -4,7 +4,7 @@ import { UserService } from './../../../services/User.Service';
 import { TableConfig, SelectedRecord } from './../../../models/Table';
 import { Router } from '@angular/router';
 import { TransactionService } from './../../../services/Transaction.Service';
-import { ThemeService } from './../../../services/Theme.Service';
+import { ThemeService } from 'src/app/services/theme.Service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({

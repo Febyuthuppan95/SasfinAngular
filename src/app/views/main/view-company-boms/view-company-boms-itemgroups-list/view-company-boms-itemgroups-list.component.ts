@@ -285,11 +285,14 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
             res.outcome,
             res.outcomeMessage);
           this.loadItemGroups(true);
+          this.closeAddModal.nativeElement.click();
         } else {
           this.notify.errorsmsg(
             res.outcome,
             res.outcomeMessage
           );
+          this.loadItemGroups(true);
+          this.closeAddModal.nativeElement.click();
         }
       },
       (msg) => {
@@ -300,6 +303,8 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
+        this.loadItemGroups(true);
+        this.closeAddModal.nativeElement.click();
       }
     );
   }

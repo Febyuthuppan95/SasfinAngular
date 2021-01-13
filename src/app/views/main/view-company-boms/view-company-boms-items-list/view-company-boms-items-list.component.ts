@@ -310,6 +310,8 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
             res.outcome,
             res.outcomeMessage
           );
+          this.closeAddModal.nativeElement.click();
+          this.loadItems(true);
         }
       },
       (msg) => {
@@ -320,6 +322,8 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
           'Server Error',
           'Something went wrong while trying to access the server.'
         );
+        this.closeAddModal.nativeElement.click();
+        this.loadItems(true);
       }
     );
   }
