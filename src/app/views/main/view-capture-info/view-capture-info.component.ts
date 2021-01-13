@@ -392,12 +392,27 @@ export class ViewCaptureInfoComponent implements OnInit, OnDestroy {
     };
     this.apiService.post(`${environment.ApiEndpoint}/capture/read/list`, model).then(
       (res: any) => {
-        this.doctypeResponse = res;
-        console.log(this.doctypeResponse);
+        //Filters away the unwanted selected --Reuben
+        this.doctypeResponse = {
+          data : []
+        }
+        res.data.forEach(element => {
+          if (element.doctypeID != 3 && element.doctypeID != 17 && element.doctypeID != 19 && element.doctypeID != 22 &&
+              element.doctypeID != 23 && element.doctypeID != 25 && element.doctypeID != 26) {
+                this.doctypeResponse.data.push({
+                  doctypeID: element.doctypeID,
+                  name: element.name
+                });
+          }
+        });
+        //this.doctypeResponse = res;
+
+        /*console.log(this.doctypeResponse);
         this.doctypeResponse.data.push({
           doctypeID: targetDocTypes.FileTypeID,
           name: targetDocTypes.Name,
-        });
+        });*/
+        console.log(this.doctypeResponse);
       },
       (msg) => {
         console.log(JSON.stringify(msg));
