@@ -216,9 +216,12 @@ export class ViewCompanyOemListComponent implements OnInit {
     this.pageChange(obj);
 
     this.CompanyControl.valueChanges.subscribe((value) => {
+      console.log('value changes event');
+      console.log(value);
       if (value) {
         if (value.companyID) {
           this.selectedOEMCompany(value.companyID, value.name);
+          this.CompanyControl.setValue(value.name, { emitEvent: false });
         } else {
           this.CompanySearch = value;
         }
@@ -294,7 +297,7 @@ export class ViewCompanyOemListComponent implements OnInit {
       },
       requestProcedure: 'CompanyOEMCreate'
     };
-    // console.log('model = ' + JSON.stringify(model));
+    console.log(model);
     // company service api call
     this.companyService.companyOEMAdd(model).then(
       (res: Outcome) => {
@@ -306,8 +309,9 @@ export class ViewCompanyOemListComponent implements OnInit {
           this.notify.successmsg('SUCCESS', 'OEM successfully added');
           this.pageChange({rowStart: this.rowStart, rowEnd: this.rowEnd});
         } else {
+          console.log('close');
           this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-          this.closeaddModal.nativeElement.click();
+          // this.closeaddModal.nativeElement.click();
           this.noData = false;
           // this.dataset = res;
           // this.dataList = res.companyOEMs;
@@ -437,7 +441,7 @@ export class ViewCompanyOemListComponent implements OnInit {
   }
   selectedOEMCompany(companyID: number, name: string) {
     // this.countryID = country;
-    // console.log(companyID);
+    console.log(companyID);
     this.oemCompanyID = companyID;
     this.OEM.OEMCompanyName = name;
     // this.form.cooID.value = country;

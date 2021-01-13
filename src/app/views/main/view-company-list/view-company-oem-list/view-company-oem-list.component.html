@@ -91,10 +91,10 @@
                   <mat-form-field class="form-control" style="border: transparent !important; padding: 0;">
                     <input [(ngModel)]="this.CompanySearch" type="text" (keyup)="CompanyBar()" placeholder="Company" aria-label="Number" matInput [formControl]="CompanyControl" [matAutocomplete]="companyAuto" required>
                     <mat-autocomplete #companyAuto="matAutocomplete" >
-                      <mat-option *ngFor="let company of companiesList" [value]="company.name"
-                      (onSelectionChange)="selectedOEMCompany(company.companyID, company.name)">
+                      <mat-option *ngFor="let company of companiesList" [value]="company">
                       {{company.name}}
                       </mat-option>
+                      <!-- (onSelectionChange)="selectedOEMCompany(company.companyID, company.name)" -->
                     </mat-autocomplete>
                   </mat-form-field>
               </div>
