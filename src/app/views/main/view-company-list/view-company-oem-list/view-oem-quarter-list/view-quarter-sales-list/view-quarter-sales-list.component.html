@@ -1,0 +1,132 @@
+<div class="shadow tile ls-tile-{{ currentTheme }}">
+  <div class="ls-card-body">
+    <div class="float-right">
+      <ng-container *ngIf="showLoader">
+        <app-loader></app-loader>
+      </ng-container>
+    </div>
+    <app-table
+      *ngIf="this.dataList"
+      [(dataset)]="this.dataList"
+      [headings]="this.tableHeadings"
+      [(recordsPerPage)]="this.showingRecords"
+      [(rowStart)]="this.rowStart"
+      [(rowEnd)]="this.rowEnd"
+      [(rowCount)]="this.rowCount"
+      [orderBy]="this.orderBy"
+      [orderByDirection]="this.orderDirection"
+      [tableHeader]="this.tableHeader"
+      (selectedRecord)="setClickedRow($event)"
+      (orderChange)="orderChange($event)"
+      (pageChange)="pageChange($event)"
+      (showingRecordsEvent)="recordsPerPageChange($event)"
+      (addButtonEvent)="Add()"
+      (searchEvent)="searchBar($event)"
+      (backButtonEvent)="back()">
+    </app-table>
+  </div>
+</div>
+
+<!--Edit Modal-->
+<button class="hide" data-toggle="modal" data-target="#editQuarterSales" #openeditModal></button>
+<div class="modal fade" id="editQuarterSales" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Edit</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-group">
+              <mat-label></mat-label>
+              <ls-autocomplete-items [control]="this.itemID"></ls-autocomplete-items>
+            </div>
+            <div class="form-group">
+              <mat-form-field>
+                <mat-label>Quantity</mat-label>
+                <input matInput type="text" [(ngModel)]="this.selectedQuarterSale.quantity" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+            <div class="form-group">
+              <mat-form-field>
+                <mat-label>Unit Price</mat-label>
+                <input matInput type="text" [(ngModel)]="this.selectedQuarterSale.price" [ngModelOptions]="{standalone: true}">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>
+          <button type="button" (click)="EditQuarterSale(false)" class="btn btn-primary btn-sm" >Save</button>
+          <button type="button" (click)="EditQuarterSale(true)" class="btn btn-danger btn-sm" >Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Add Modal-->
+<button class="hide" data-toggle="modal" data-target="#addOEMQuarterSale" #openaddModal></button>
+<div class="modal fade" id="addOEMQuarterSale" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <mat-label>Item</mat-label>
+            <ls-autocomplete-items [control]="this.itemID"></ls-autocomplete-items>
+          </div>
+          <div class="form-group">
+            <mat-form-field>
+              <mat-label>Quantity</mat-label>
+              <input matInput type="text" [(ngModel)]="this.selectedQuarterSale.quantity" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field>
+              <mat-label>Unit Price</mat-label>
+              <input matInput type="text" [(ngModel)]="this.selectedQuarterSale.price" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeaddModal>Close</button>
+          <button type="button" (click)="addSale()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-notification></app-notification>
+<app-modal-component></app-modal-component>
+<div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
+  <app-menu
+  *ngIf="this.contextMenu"
+  [contextShow]="this.contextMenu"
+  [x]="this.contextMenuX"
+  [y]="this.contextMenuY"
+  (resetContext)="this.recordIndex = -1; this.contextMenuEnable = false;">
+    <app-context-menu-sadlines
+    (editEvent)="EditSales($event)">
+    </app-context-menu-sadlines>
+  </app-menu>
+  <!-- <app-quarters-supply-context-menu
+  (EditQuarterSupply)="EditSales($event)"
+  [ngStyle]="(contextMenu)?'' :'display:none;'"
+  class="contextMenuDiv" *ngIf="(contextMenu)"
+  [x]="contextMenuX"
+  [y]="contextMenuY"
+  [supplyID]="this.selectedQuarterSale.salesID">
+</app-quarters-supply-context-menu> -->
+</div>
