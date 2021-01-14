@@ -228,7 +228,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       request: {
           userID: this.currentUser.userID,
           companyOEMQuarterID: this.selectedCompanyOEM.companyOEMQuarterID,
-          companyOEmQuarterSupplyID: -1,
+          companyOEMQuarterSupplyID: this.selectedQuarterSupply.companyOEMQuarterSupplyID,
           rowStart: this.rowStart,
           rowEnd: this.rowEnd,
           filter: this.filter,
@@ -241,6 +241,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     //this.companyService.companyOEMQuarterSupplyList(model).then(
       (res: OEMQuarterSupplyList) => {
         console.log(res);
+        console.log(model);
         this.dataList = res.data;
         console.log(this.dataList);
         if (res.outcome.outcome === 'SUCCESS') {

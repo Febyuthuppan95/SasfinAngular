@@ -318,9 +318,9 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
     if (form.valid) {
       const line: any = form.value;
-      //Values were returning a null exception on API
-      //line.originalLineID = line.originalLineID == null ? -1 : line.originalLineID;
-      //line.replacedByLineID = line.replacedByLineID == null ? -1 : line.replacedByLineID;
+      // Values were returning a null exception on API
+      // line.originalLineID = line.originalLineID == null ? -1 : line.originalLineID;
+      // line.replacedByLineID = line.replacedByLineID == null ? -1 : line.replacedByLineID;
       line.duty = line.duty == null ? -1 : line.duty;
       line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
       this.unsavedChanges = false;
