@@ -46,13 +46,12 @@ export class OemQuartersContextMenuComponent implements OnInit {
   }
 
   Supply() {
-
     this.companyService.setCompanyOEM(this.selectedOEM);
-      this.router.navigate(['companies', 'oem', 'quarter', 'supply']);
+    this.router.navigate(['companies', 'oem', 'quarter', 'supply']);
   }
 
   Sales() {
-    //this.companyService.setCompanyOEM(this.selectedOEM);
-    //this.router.navigate(['compnaies','oem','quarter','sales']);
+    this.companyService.setCompanyOEM(this.selectedOEM);
+    this.router.navigate(['companies','oem','quarter', 'sales']);
   }
 }

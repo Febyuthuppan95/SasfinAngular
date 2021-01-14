@@ -227,7 +227,7 @@ private unsubscribe$ = new Subject<void>();
           this.noData = false;
           this.dataset = res;
           this.dataList = res.data;
-          // console.log(this.dataList);
+          console.log(this.dataList);
           this.rowCount = res.rowCount;
           this.showLoader = false;
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
@@ -276,10 +276,10 @@ private unsubscribe$ = new Subject<void>();
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
+          this.loadOEMQuarters();
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.closeeditModal.nativeElement.click();
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadOEMQuarters();
         } else {
           this.noData = true;
           this.showLoader = false;
@@ -307,13 +307,14 @@ private unsubscribe$ = new Subject<void>();
     };
     this.companyService.companyOEMQuarterAdd(model).then(
       (res: Outcome) => {
+        console.log(res);
         if (res.outcome === 'SUCCESS') {
           this.noData = false;
           this.showLoader = false;
           this.closeaddModal.nativeElement.click();
+          this.loadOEMQuarters();
           this.totalShowing = +this.rowStart + +this.dataset.data.length - 1;
           this.notify.successmsg(res.outcome, res.outcomeMessage);
-          this.loadOEMQuarters();
         } else {
           this.noData = true;
           this.showLoader = false;

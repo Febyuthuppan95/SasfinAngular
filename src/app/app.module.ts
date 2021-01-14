@@ -317,6 +317,7 @@ import { AddCompanyPermitComponent } from './views/main/view-permits-list/view-c
 import { RemovePermitsDialogComponent } from './views/main/view-permits-list/view-company-permits-list/remove-permits-dialog/remove-permits-dialog.component';
 import { EditPermitDialogComponent } from './views/main/view-permits-list/view-company-permits-list/edit-permit-dialog/edit-permit-dialog.component';
 import { PermitTariffInfoComponent } from './views/main/view-permits-list/view-company-permits-list/add-company-permit/permit-tariff-info/permit-tariff-info.component';
+import { ViewQuarterSalesListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-sales-list/view-quarter-sales-list.component';
 
 @NgModule({
   declarations: [
@@ -531,7 +532,8 @@ import { PermitTariffInfoComponent } from './views/main/view-permits-list/view-c
     AddCompanyPermitComponent,
     RemovePermitsDialogComponent,
     EditPermitDialogComponent,
-    PermitTariffInfoComponent
+    PermitTariffInfoComponent,
+    ViewQuarterSalesListComponent
   ],
   imports: [
     TextMaskModule,

@@ -413,7 +413,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           this.items = res.data;
           console.log(this.items);
           this.itemsrowCount = res.rowCount;
-          this.itemsshowingRecords = res.itemsLists.length;
+          //Variable was storing the wrong array from the api --Reuben
+          this.itemsshowingRecords = res.data.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
           // console.log(this.itemsdataset);
 

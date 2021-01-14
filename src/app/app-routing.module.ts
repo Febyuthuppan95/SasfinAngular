@@ -1,3 +1,4 @@
+import { ViewQuarterSalesListComponent } from './views/main/view-company-list/view-company-oem-list/view-oem-quarter-list/view-quarter-sales-list/view-quarter-sales-list.component';
 import { ViewCaptureQueueOverviewComponent } from './views/main/view-capture-queue-overview/view-capture-queue-overview.component';
 import { ChatRedirectComponent } from './modules/chat/components/chat-redirect/chat-redirect.component';
 import { NgModule } from '@angular/core';
@@ -361,6 +362,12 @@ const routes: Routes = [
           {
             path: 'companies/oem/quarter/supply',
             component: ViewQuarterSupplyListComponent,
+            data: { right: 'Companies' },
+            canActivate: [RightGuard],
+          },
+          {
+            path:'companies/oem/quarter/sales',
+            component: ViewQuarterSalesListComponent,
             data: { right: 'Companies' },
             canActivate: [RightGuard],
           },
