@@ -205,7 +205,8 @@ export class CompanyService {
   // PermitType
   setPermitType(PermitType: SelectedPermitType) {
     this.SelectedPermitType.next(PermitType);
-    sessionStorage.setItem(`${environment.Sessions.PermitData}`, JSON.stringify(PermitType));
+    console.log(this.SelectedPermitType);
+    sessionStorage.setItem(`${environment.Sessions.PermitTypeData}`, JSON.stringify(PermitType));
   }
   // Permit
   setPermit(Permit: SelectedPermit) {
@@ -254,6 +255,7 @@ export class CompanyService {
   }
    // PermitType
    observePermitType() {
+
     return this.SelectedPermitType.asObservable();
   }
   // Permit

@@ -197,31 +197,32 @@
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
                     [isPageable]="'true'"
-                    [parents] = "this.dataS"
+                    [parents]="this.dataS"
                     [headings]="this.headingsS"
                     [filter]="this.filterS"
                     [(paginator)]="this.pageS"
                     [pageSizeOptions]="[5, 10]"
                     (rowEvent)="rowEventS($event)"
-                    [noDataError] ="'No Available SAD500s'"
+                    [noDataError]="'No Available SAD500s'"
                     (pageEvent)="paginateS($event)"
                     [action_toolip]="'View Data'"
                     ></app-nested-table>
                 </mat-card>
             </div>
+            <!--Available Imports-->
             <div class="bottom-section row" *ngIf="this.showMain && (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI')">
                 <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">{{this.importLabel}}</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
                     [isPageable]="'true'"
-                    [parents] = "this.data"
+                    [parents]="this.data"
                     [headings]="this.headings"
                     [filter]="this.filterA"
                     [(paginator)]="this.pageA"
                     [pageSizeOptions]="[5, 10]"
                     (rowEvent)="rowEventA($event)"
-                    [noDataError] ="'No Available Imports'"
+                    [noDataError]="'No Available Imports'"
                     (pageEvent)="paginateA($event)"
                     [action_toolip]="'View Data'"
                     ></app-nested-table>
@@ -235,7 +236,7 @@
                     [action_icon]="'view_headline'"
                     [second_icon]="'rule'"
                     [isPageable]="'true'"
-                    [parents] = "this.data"
+                    [parents]="this.data"
                     [headings]="this.headings"
                     [filter]="this.filterA"
                     [(paginator)]="this.pageA"
@@ -258,13 +259,13 @@
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Assigned Exports</button>
                 <app-nested-table *ngIf="!this.loading"
                 [action_icon]="'arrow_downward'"
-                [(parents)] = "this.dataLinesAssigned"
+                [(parents)]="this.dataLinesAssigned"
                 [isPageable]="'true'"
                 [headings]="this.headingsB"
                 [filter]="this.filterB"
                 [(paginator)]="this.pageB"
                 [pageSizeOptions]="[5]"
-                [noDataError] ="'No Assigned Data'"
+                [noDataError]="'No Assigned Data'"
                 (pageEvent)="paginateB($event)"
                 (rowEvent)="rowEventB($event)"
                 [action_toolip]="'Unassign Export'"
@@ -275,13 +276,13 @@
                 <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Product Components</button>
                 <app-nested-table *ngIf="!this.loading"
-                [(parents)] = "this.dataLinesAssigned"
+                [(parents)]="this.dataLinesAssigned"
                 [isPageable]="'true'"
                 [headings]="this.headingsB"
                 [filter]="this.filterB"
                 [(paginator)]="this.pageB"
                 [pageSizeOptions]="[5]"
-                [noDataError] ="'No Component Data'"
+                [noDataError]="'No Component Data'"
                 (pageEvent)="paginateB($event)"
                 (rowEvent)="rowEventB($event)"
                 ></app-nested-table>
@@ -292,13 +293,13 @@
                     <button class="col-sm-12" mat-button color="warn"  style="font-size: 1.2rem;">Available Exports</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'arrow_upward'"
-                    [(parents)] = "this.dataLinesAvailable"
+                    [(parents)]="this.dataLinesAvailable"
                     [isPageable]="'true'"
                     [headings]="this.headingsC"
                     [filter]="this.filterB"
                     [(paginator)]="this.pageC"
                     [pageSizeOptions]="[5]"
-                    [noDataError] ="'No Available Data'"
+                    [noDataError]="'No Available Data'"
                     (pageEvent)="paginateC($event)"
                     (rowEvent)="rowEventC($event)"
                     [action_toolip]="'Assign Export'"
