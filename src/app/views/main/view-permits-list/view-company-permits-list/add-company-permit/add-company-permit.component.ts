@@ -74,7 +74,7 @@ export class AddCompanyPermitComponent implements OnInit {
    public paginationControl = new FormControl(1);
    selectedImportTariffs = [];
    selectedExportTariff: number;
-   requestParams : object;
+   requestParams: object;
 
    private isRequired = false;
    public activeIndex = 0;
@@ -149,7 +149,7 @@ export class AddCompanyPermitComponent implements OnInit {
       }
     });
 
-    this.epcForm.controls.epcTariffs.valueChanges.subscribe(async (value) =>{
+    this.epcForm.controls.epcTariffs.valueChanges.subscribe(async (value) => {
       if (value) {
         const model: GetTariffList = {
           filter: '',
@@ -167,14 +167,14 @@ export class AddCompanyPermitComponent implements OnInit {
               this.matDialog.open(PermitTariffInfoComponent, {
                 data: {
                   tariffID: res.tariffList[0].id,
-                  subHeading: res.tariffList[0].subHeading == null ? res.tariffList[0].heading: res.tariffList[0].subHeading,
+                  subHeading: res.tariffList[0].subHeading == null ? res.tariffList[0].heading : res.tariffList[0].subHeading,
                   permitTypeID: this.permitTypeID,
                 },
                 width: '512px'
               }).afterClosed().subscribe((tariffObj) => {
                 if (tariffObj) {
                   this.selectedImportTariffs.push(tariffObj);
-                  this.epcForm.controls.epcTariffs.setValue(null, { emitEvent: false })
+                  this.epcForm.controls.epcTariffs.setValue(null, { emitEvent: false });
                   console.log(this.selectedImportTariffs);
                 }
               });
@@ -352,6 +352,7 @@ export class AddCompanyPermitComponent implements OnInit {
 
         },
         (msg) => {
+          console.log('111');
           console.log(msg);
           this.processing = false;
           this.snackbar.open(`There was an issue uploading documents with message: ${JSON.stringify(msg)}`, '', { duration: 3000 });
@@ -419,7 +420,7 @@ export class AddCompanyPermitComponent implements OnInit {
       }),
     };
     console.log(obj);
-    return obj
+    return obj;
   }
 
   // loadTariffs(setDefault?: boolean, getSpecific?: boolean) {
