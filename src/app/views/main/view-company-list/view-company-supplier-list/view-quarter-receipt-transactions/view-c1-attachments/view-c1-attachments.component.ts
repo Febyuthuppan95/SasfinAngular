@@ -101,7 +101,7 @@ export class ViewC1AttachmentsComponent implements OnInit, OnDestroy {
    AttachmentStatus: '',
    AttachmentStatusID: -1,
    FilePath: ''
-  }; //Changed SupplierC1 type to any
+  }; // Changed SupplierC1 type to any
 fileUpload: File[];
 filePreview: string;
   tableHeader: TableHeader = {
