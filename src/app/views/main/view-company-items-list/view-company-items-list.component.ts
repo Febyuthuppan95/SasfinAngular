@@ -376,9 +376,9 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   loadItems(displayGrowl: boolean, isParent: boolean) {
     this.itemsrowEnd = +this.itemsrowStart + +this.itemsrowCountPerPage - 1;
-    //Changed to use a generic API endpoint instead of the one it did use
+    // Changed to use a generic API endpoint instead of the one it did use
     const model = {
-      request :{
+      request : {
         userID: this.currentUser.userID,
         filter: this.itemsfilter,
         itemsID: this.focusItemID,
@@ -389,8 +389,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       procedure: 'ItemsList'
     };
-    //this.companyService.getItemjoinList(model).then(
-    this.api.post(`${environment.ApiEndpoint}/capture/list`,model).then(
+    // this.companyService.getItemjoinList(model).then(
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
       (res: any) => {
         if (res.outcome.outcome === 'FAILURE') {
           if (displayGrowl) {
@@ -413,7 +413,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           this.items = res.data;
           console.log(this.items);
           this.itemsrowCount = res.rowCount;
-          //Variable was storing the wrong array from the api --Reuben
+          // Variable was storing the wrong array from the api --Reuben
           this.itemsshowingRecords = res.data.length;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
           // console.log(this.itemsdataset);
@@ -633,8 +633,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.focusItemID,
-      parentID: itemid
+      parentID: itemid,
     };
+    console.log('find me');
+    console.log(requestModel);
     this.companyService
     .AddItemParent(requestModel).then(
       (res: ItemParentAddReponse) => {
