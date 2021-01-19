@@ -13,7 +13,7 @@
         <mat-label>
           Quantity
         </mat-label>
-        <input matInput type="text" formControlName="quantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
+        <input matInput type="number" formControlName="quantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
       </mat-form-field>
       <br><br>
     </div>
@@ -22,7 +22,7 @@
         <mat-label>
           Price
         </mat-label>
-      <input matInput type="text" formControlName="price" (focusin)="updateHelpContext('form-invoice-line-unitprice')">
+      <input matInput type="number" formControlName="price" (focusin)="updateHelpContext('form-invoice-line-unitprice')">
       </mat-form-field>
       <br><br>
     </div>

@@ -377,7 +377,7 @@ export class AddCompanyPermitComponent implements OnInit {
       importTariffs: this.selectedImportTariffs.map((e) => {
         return {
           tariffID: e.tariffID,
-          uomID: e.unitOfMeasureID,
+          uOMID: e.unitOfMeasureID,
           quantity: e.quantity,
           price: e.price,
         };
