@@ -45,24 +45,56 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
-          </div>
-          <div class="form-group">
-            <label for="addItemFile">
-              <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
-            </label>
-            <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
-            <input id="addItemFile" hidden #itemFile type="file" (change)="onFileChange($event.target.files)" required>
-          </div>
-        </div>
-        <div class="modal-footer bg-dark">
-          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
-          <button type="submit" (click)="saveItemUpload()" class="btn btn-primary btn-sm">Save</button>
-        </div>
-      </form>
+      <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Add Single">
+          <form class="bg-light">
+            <div class="modal-body">
+              <ls-autocomplete-currency
+              [(control)]="currencyID"
+              [helpSlug]="'app-exchange-rate-upload-currency'">
+              </ls-autocomplete-currency>
+              <ls-autocomplete-coo
+              [(control)]="countryID"
+              [helpSlug]="'app-exchange-rate-upload-coo'"></ls-autocomplete-coo>
+              <mat-form-field class="form-group col-12">
+                <mat-label>Exchange Rate</mat-label>
+                <input matInput type="number" [formControl]="this.exchangeRate">
+              </mat-form-field>
+              <mat-form-field class="form-group col-12">
+                <mat-label>Date:</mat-label>
+                <input hidden [matDatepicker]="date" [formControl]="roeDate">
+                <input matInput type="text" [textMask]="mask" [ngModel]="roeDate.value | date : roeDate.value !== null?'yyyy/MM/dd' : ''"
+                [ngModelOptions]="{standalone: true}"  (change)='toDate($event.target.value, roeDate)'required/>
+                <mat-error *ngIf="roeDate.hasError('required')">
+                  Start Date is <strong>required</strong>
+                </mat-error>
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-tab>
+        <mat-tab label="Bulk Import">
+          <form>
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="control-label">File Name:&nbsp;{{filePreview}}</label>
+              </div>
+              <div class="form-group">
+                <label for="addItemFile">
+                  <span class="upload-button"><span class="mdi mdi-upload"></span>&nbsp;Upload</span>
+                </label>
+                <!-- <button class="btn btn-primary btn-sm" style="margin-top: -8px;" type="button" mat-button (click)="queueBOM($event)">Upload</button> -->
+                <input id="addItemFile" hidden #itemFile type="file" (change)="onFileChange($event.target.files)" required>
+              </div>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="modal-footer bg-dark">
+        <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+        <button type="submit" (click)="submit()" class="btn btn-primary btn-sm">Save</button>
+      </div>
     </div>
   </div>
 </div>

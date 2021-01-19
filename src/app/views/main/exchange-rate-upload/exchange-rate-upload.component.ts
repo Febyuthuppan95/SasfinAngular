@@ -18,6 +18,9 @@ import {ApiService} from '../../../services/api.service';
 import {environment} from '../../../../environments/environment';
 import { Outcome } from 'src/app/models/HttpResponses/DoctypeResponse';
 import { RateofExchange } from 'src/app/models/HttpResponses/RateofExchangeListResponse';
+import { FormControl, Validators } from '@angular/forms';
+import { DateService } from 'src/app/services/tools/date.service';
+
 
 @Component({
   selector: 'app-exchange-rate-upload',
@@ -35,6 +38,7 @@ export class ExchangeRateUploadComponent implements OnInit {
     private api: ApiService,
     private snackbarService: HelpSnackbar,
     private IDocumentService: DocumentService,
+    private dateService: DateService,
     // tslint:disable-next-line:no-shadowed-variable
     private ApiService: ApiService,
   ) { }
@@ -116,7 +120,17 @@ export class ExchangeRateUploadComponent implements OnInit {
   rowCountPerPage: number = 15;
   filter: string;
 
-
+  selectedTabIndex: number = 0;
+  currencyID: FormControl = new FormControl(null, [Validators.required]);
+  countryID: FormControl = new FormControl(null, [Validators.required]);
+  roeDate: FormControl = new FormControl(null, [Validators.required]);
+  exchangeRate: FormControl = new FormControl(null, [Validators.required]);
+  public mask = {
+    // guide: true,
+    // showMask: true,
+    // keepCharPositions : true,
+     mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/] // i made changes here
+   };
 
   currentUser: User = this.userService.getCurrentUser();
   noData = false;
@@ -288,6 +302,64 @@ export class ExchangeRateUploadComponent implements OnInit {
   }
   loadCompanyItemsList(arg0: boolean) {
     throw new Error('Method not implemented.');
+  }
+
+  tabChanged($event){
+    console.log($event);
+    this.selectedTabIndex = $event.index;
+  }
+
+  toDate(value, control) {
+    control.setValue(new Date(value));
+  }
+
+  submit(){
+    if (this.selectedTabIndex === 0){
+      this.addROE();
+    } else {
+      this.saveItemUpload();
+    }
+  }
+
+  addROE(){
+    const date: Date = this.dateService.getUTC(this.roeDate.value);
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+        monetaryUnitID: Number(this.currencyID.value),
+        countryID: this.countryID.value,
+        yearID: date.getFullYear(),
+        monthID: (date.getMonth() + 1),
+        dayID: date.getDate(),
+        exchangeRate: this.exchangeRate.value
+      },
+      procedure: 'RateOfExchangeAdd'
+    }
+    // console.log(model);
+    // console.log(date);
+    this.api.post(`${environment.ApiEndpoint}/capture/post`,model).then(
+      (res: any) =>{
+        console.log(res);
+        if (res.outcome) {
+          this.closeAddModal.nativeElement.click();
+          this.loadIROEs(true);
+        } else {
+          this.notify.errorsmsg(
+            res.outcome,
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        // nothing yet
+        console.log('Error: ' + JSON.stringify(msg));
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
 }
