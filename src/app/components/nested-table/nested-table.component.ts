@@ -25,7 +25,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
   @Input() pageSizeOptions?: string[] = [];
   @Input() noDataError: string;
   @Input() isPageable: boolean;
-  //@Input() config: MatTableConfig;
+  // @Input() config: MatTableConfig;
 
   @Input() headings: TableHeading[];
   @Output() getChildrenEvent = new EventEmitter<number>();
@@ -38,9 +38,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
   parentDataSource =  new MatTableDataSource<Object>(this.parents);
   currentTheme: string;
 
-  constructor(private themeService: ThemeService)
-  {
-
+  constructor(private themeService: ThemeService) {
 
   }
 
@@ -124,7 +122,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
     } else {
       this.noData = true;
     }
-   console.log(this.displayData);
+    console.log(this.displayData);
     this.loading = false;
 
   }
@@ -161,7 +159,7 @@ export class NestedTableComponent implements OnInit, OnChanges {
 }
 
 export class MatTableConfig {
-  //data
+  // data
   data: any[];
   columns: MatTableColumn[];
   // Action Column
