@@ -141,14 +141,18 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
   }
 
   public displayFn(item: any): string {
+    console.log(item);
     return item ? `${item.code}, ${item.name}` : '';
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
-      this.query.setValue(this.list[0]);
-      trigger.closePanel();
+    if ( trigger._previousValue === '') {
+      console.log(this.query.value !== '');
+      if (this.list.length > 0 && !this.selected && (this.query.value !== '')) {
 
+        this.query.setValue(this.list[0]);
+        trigger.closePanel();
+      }
     }
   }
 
