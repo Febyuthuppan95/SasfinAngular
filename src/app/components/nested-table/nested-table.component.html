@@ -40,7 +40,7 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
     </table>
-    <button *ngIf="this.displayData.length === 0" class="col-sm-12" mat-button color="primary"  [disabled]="disabled" style="font-size: 0.9rem;">{{noDataError}}</button>
+    <button *ngIf="this.displayData.length === 0" class="col-sm-12" mat-button color="primary"  [disabled]="true" style="font-size: 0.9rem;">{{noDataError}}</button>
     <mat-paginator style="font-size: 1rem;" *ngIf="displayData.length > 0 && this.paginator"  [length]="this.paginator.length"
                     [pageSize]="this.paginator.pageSize"
                     [pageSizeOptions]="this.pageSizeOptions" (page)="this.paginate($event)">

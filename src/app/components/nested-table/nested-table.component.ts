@@ -155,6 +155,10 @@ export class NestedTableComponent implements OnInit, OnChanges {
 
   }
 
+  applyFilter() {
+    this.initTable();
+  }
+
 
 }
 
