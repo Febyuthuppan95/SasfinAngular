@@ -1971,7 +1971,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         if (res.outcome.outcome === 'SUCCESS') {
           if (this.selectedA === null || this.selectedA === undefined) {
             res.data.forEach(element => {
-              let datum : string = element.ImportDate;
+              let datum: string = element.ImportDate;
               element.ImportDate = datum.substring(0, 10);
               console.log('holnaai');
               console.log(element.ImportDate);
