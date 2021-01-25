@@ -9,11 +9,11 @@
       </mat-form-field>
     <table color="primary" *ngIf="displayData.length > 0" mat-table [dataSource]="displayData" class="mat-elevation-z0 table table-hover table-striped table-{{ currentTheme }}" multiTemplateDataRows>
         <ng-container matColumnDef="{{column.propertyName}}" *ngFor="let column of headings">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;
-          font-weight: 600;
-          font-size: 1.1rem;
+         <b> <th mat-header-cell *matHeaderCellDef style="text-align: center;
+          font-weight: 300;
+          font-size: 1.05rem;
           padding-bottom: 10px;
-          color: #3F51B5;"> {{column.title}} </th>
+          color: #3F51B5;"> {{column.title}} </th></b>
           <td mat-cell  *matCellDef="let element" (click)="what(element, column)"> {{element[column.position].value}} </td>
         </ng-container>
         <ng-container matColumnDef="action" class="col-1">

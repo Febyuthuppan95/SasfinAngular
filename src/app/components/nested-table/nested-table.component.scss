@@ -6,7 +6,7 @@
         .mat-header-cell {
             text-align: center !important;
         }
-       
+
     }
     .mat-row, .mat-header-row {
         text-align: center;
@@ -29,4 +29,8 @@ mat-paginator {
     font-weight: 500;
     font-size: 1rem;
     text-align: center;
+}
+
+.table td.mat-cell:last-of-type {
+padding-right: 0;
 }

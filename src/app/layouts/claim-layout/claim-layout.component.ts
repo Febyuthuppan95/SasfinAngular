@@ -1966,9 +1966,17 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
           this.data = res.data;
           this.pageA.length = res.rowCount;
         }, 500);
-
+        console.log('hi');
+        console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
           if (this.selectedA === null || this.selectedA === undefined) {
+            res.data.forEach(element => {
+              let datum: string = element.ImportDate;
+              element.ImportDate = datum.substring(0, 10);
+              console.log('holnaai');
+              console.log(element.ImportDate);
+            });
+            console.log(res);
             if (this.currentClaim.serviceName === '538') {
               console.log(this.showMain);
               if (this.showMain) {
@@ -1978,6 +1986,8 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
                 this.dataS = [];
                 this.dataS = res.data;
                 this.pageS.length = res.rowCount;
+                console.log('hi');
+                console.log(res);
               }
            } else {
               this.snackbar.open('Successfully Retrieved Imports', res.outcome.outcome, {
