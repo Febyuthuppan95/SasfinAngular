@@ -781,8 +781,9 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
     targetLine.isDeleted = 1;
+    targetLine.userID = this.userService.getCurrentUser().userID;
     targetLine.invoiceID = this.attachmentID;
-
+    console.log(targetLine);
     if (!targetLine.isLocal) {
       await this.captureService.invoiceLineUpdate(targetLine);
     }
