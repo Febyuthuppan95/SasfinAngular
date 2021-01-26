@@ -15,7 +15,7 @@ export class SAD500Line {
     sad500ID: number;
     tariffID: number;
     customsValue: string;
-    lineNo: string;
+    lineNo: number;
     unitOfMeasureID: number;
     tariffError?: string;
     customsValueError?: number;
@@ -78,7 +78,7 @@ export class SADLineCaptureThatSHOULDWorks {
     unitOfMeasureID: number;
     quantity: number;
     customsValue: number;
-    lineNo: string;
+    lineNo: number;
     previousDeclaration: string;
     duty: number;
 

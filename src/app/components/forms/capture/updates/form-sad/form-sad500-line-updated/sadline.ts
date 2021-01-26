@@ -1,14 +1,14 @@
 export class SAD500Line {
   userID: number;
   sad500LineID: number;
-  specificSAD500LineID: number = this.sad500LineID;
+  specificSAD500LineID: number;// = this.sad500LineID;
   sad500ID: number;
   tariffID: number;
   unitOfMeasureID: number;
   originalLineID: number;
   cooID: number;
   replacedByLineID: number;
-  lineNo: string;
+  lineNo: number;
   customsValue: number;
   previousDeclaration: string;
   quantity: number;

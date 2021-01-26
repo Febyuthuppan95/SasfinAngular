@@ -20,7 +20,7 @@ export class SadTest {
   OriginalLineID: number;
   COOID: number;
   ReplacedByLineID: number;
-  LineNo: string;
+  LineNo: number;
   CustomsValue: string;
   PreviousDeclaration: string;
   Quantity: number;
@@ -64,7 +64,7 @@ export class SAD500LineCreateRequest {
   originalLineID?: number;
   cooID: number;
   replacedByLineID?: number;
-  lineNo: string;
+  lineNo: number;
   customsValue: string;
   previousDeclaration: string;
   quantity: number;
@@ -127,7 +127,7 @@ export class SAD500LineUpdateModel {
     // unitOfMeasure: string;
     unitOfMeasureID: number;
     customsValue: string;
-    lineNo: string;
+    lineNo: number;
     isDeleted: number;
     quantity: number;
     cooID: number;
