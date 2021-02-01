@@ -697,7 +697,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.quantityODate = $event.quantityODate == null ? '' : $event.quantityODate;
       $event.quantityOReason = $event.quantityOReason == null ? '' : $event.quantityOReason;
       $event.quantityOUserID = $event.quantityOUserID == null ? -1 : $event.quantityOUserID;
-      $event.tariffID = $event.tariffID == null ? -1 : $event.tariffID;
+      // $event.tariffID = $event.tariffID == null ? -1 : $event.tariffID;
       $event.totalLineValue = $event.totalLineValue == null ? '' : $event.totalLineValue;
       $event.totalLineValueOBit = $event.totalLineValueOBit == null ? 0 : $event.totalLineValueOBit;
       $event.totalLineValueODate = $event.totalLineValueODate == null ? '' : $event.totalLineValueODate;
