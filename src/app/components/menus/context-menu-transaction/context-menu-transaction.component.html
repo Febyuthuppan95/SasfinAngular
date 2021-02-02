@@ -10,7 +10,8 @@
       <a (click)="viewInvoices()" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Invoices</span></a> -->
       <hr *ngIf="transactionsSendAll || status === 'Assess Succeeded'" class="bg-light" style="width: 80%; margin:auto; margin-top: 12px;margin-bottom: 12px;">
       <a (click)="readyForAssessment()" *ngIf="transactionsSendAll" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Send for Assessment</span></a>
-      <a (click)="viewLinking()" *ngIf="status === 'Assess Succeeded'" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Linking Lines</span></a>
+      <a (click)="viewLinking()" *ngIf="status === 'Assess Succeeded' || status ==='InLinking' || status ==='Linking Completed' || status === 'InConfirmation'
+      || status === 'Ready'" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title">Linking Lines</span></a>
       <!-- <a (click)="viewCheckList()" *ngIf="status === 'Assess Succeeded'" class="nav-link ls-text-{{ currentTheme }}"><span class="menu-title" >Check List</span></a> -->
     </div>
   </div>
