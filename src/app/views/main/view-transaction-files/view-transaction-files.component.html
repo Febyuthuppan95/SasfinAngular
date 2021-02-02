@@ -186,11 +186,11 @@
                 <p>{{attach.name}}</p>
                 <small>{{attach.type}}</small><br/>
                 <small *ngFor="let item of attach.file">{{item.name}},&nbsp;</small>
-                <button mat-raised-button #documents type="button"
+                <button mat-button #documents type="button"
                     tabindex="-1"
                     style="cursor: pointer;margin-bottom: 24px; float: right !important; background-color: #4d83ff; color: #fff;"
                     matTooltipPosition="after"
-                    (click)="previewDocument(attach.file, attach)" [disabled]="uploading" >View Document
+                    (click)="viewDoc(attach.file)" [disabled]="uploading" >View Document
               </button>
                 <br/>
                 <br/>
@@ -219,6 +219,7 @@
   [y]="contextMenuY"
   (removeAttachment)="removeAttachment($event)"
   (previewDocument)="previewDocument($event)"
+  (viewDoc)="viewDoc($event)"
   [docPath]="focusPath"
   [attachmentID]="focusHelp"
   [transactionID]="this.transactionID"
