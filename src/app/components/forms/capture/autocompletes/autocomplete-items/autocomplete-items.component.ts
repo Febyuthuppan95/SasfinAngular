@@ -81,6 +81,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
         }
       } else {
         this.selected = false;
+        this.control.setValue(null);
       }
     });
   }

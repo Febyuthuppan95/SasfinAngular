@@ -76,6 +76,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         }
       } else {
         this.selected = false;
+        this.control.setValue(null);
       }
     });
     if (this.tariffHeading > 0 && this.tariffHeading !== null) {

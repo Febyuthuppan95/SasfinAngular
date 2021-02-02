@@ -39,6 +39,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     private companyService: CompanyService,
     private dialog: MatDialog,
     private apiService: ApiService
+
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -65,6 +66,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputFile', { static: false })
   inputFile: ElementRef;
+
+  public currentPDFIndex: number;
 
   defaultProfile =
     `${environment.ApiProfileImages}/default.jpg`;
