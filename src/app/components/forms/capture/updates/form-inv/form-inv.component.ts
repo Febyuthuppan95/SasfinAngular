@@ -697,12 +697,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       $event.quantityODate = $event.quantityODate == null ? '' : $event.quantityODate;
       $event.quantityOReason = $event.quantityOReason == null ? '' : $event.quantityOReason;
       $event.quantityOUserID = $event.quantityOUserID == null ? -1 : $event.quantityOUserID;
-      // $event.tariffID = $event.tariffID == null ? -1 : $event.tariffID;
+      //SP doesnt accept 0 as a valid value, must be null or an ID
+      $event.tariffID = $event.tariffID == 0 ? null : $event.tariffID;
       $event.totalLineValue = $event.totalLineValue == null ? '' : $event.totalLineValue;
       $event.totalLineValueOBit = $event.totalLineValueOBit == null ? 0 : $event.totalLineValueOBit;
       $event.totalLineValueODate = $event.totalLineValueODate == null ? '' : $event.totalLineValueODate;
       $event.totalLineValueOReason = $event.totalLineValueOReason == null ? '' : $event.totalLineValueOReason;
       $event.totalLineValueOUserID = $event.totalLineValueOUserID == null ? -1 : $event.totalLineValueOUserID;
+      //Temp var for unique identifier
+      let identifier = $event.uniqueIdentifier;
       delete $event.uniqueIdentifier;
       $event.unitOfMeasureID = $event.unitOfMeasureID == null ? -1 : $event.unitOfMeasureID;
       $event.unitPrice = $event.unitPrice == null ? 0 : $event.unitPrice;
@@ -720,7 +723,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       await this.captureService.post(model).then((res) => console.log(res),
       (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
-
+      //Unique identifier put back to avoid duplication
+      $event.uniqueIdentifier = identifier;
       this.lines[this.lines.indexOf(target)] = $event;
       this.activeLine = $event;
 
