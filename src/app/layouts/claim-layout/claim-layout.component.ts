@@ -154,7 +154,18 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         {value: 360},
         {value: 540},
         {value: 730},
-        {value: 900}
+        {value: 900},
+        {value: 1000},
+        {value: 1100},
+        {value: 1200},
+        {value: 1300},
+        {value: 1400},
+        {value: 1500},
+        {value: 1600},
+        {value: 1700},
+        {value: 1800},
+        {value: 1900},
+        {value: 2000}
         );
       this.extensionDays.push(
         {value: 10},
