@@ -28,10 +28,8 @@ import { DialogRemoveAttachmentComponent } from 'src/app/components/menus/contex
   styleUrls: ['./view-transaction-files.component.scss']
 })
 export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
-  file: File[];
   fileReader: FileReader;
   filePreview: any;
-  displayPreview: boolean;
 
   constructor(
     private transationService: TransactionService,
@@ -67,6 +65,12 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeModal', { static: false })
   closeModal: ElementRef;
+
+  @ViewChild('openPreview', {static: true})
+  openPreview: ElementRef;
+
+  @ViewChild('closePreview', {static: true})
+  closePreview: ElementRef;
 
   @ViewChild('inputFile', { static: false })
   inputFile: ElementRef;
@@ -760,25 +764,14 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     myWindow.opener = null;
   }
 
-  // View the permit before submitting 
-  viewDoc(files: File[], src: string) {
-
-    const myWindow2 = window.open(
-      `${environment.appRoute}/documentpreview/${btoa(src)}`,
-      '_blank',
-      'width=600, height=800, noreferrer'
-    );
-
-    myWindow2.opener = null;
-
-    this.file = files;
+  // View the permit before submitting
+  viewDoc(file: any) {
     this.fileReader = new FileReader();
-    this.fileReader.readAsDataURL(this.file[0]);
+    this.fileReader.readAsDataURL(file[0]);
     this.fileReader.onload = (e) => {
     this.filePreview = this.fileReader.result;
-  };
-    this.displayPreview = true;
-
+    };
+    this.openPreview.nativeElement.click();
   }
 
   ngOnDestroy(): void {

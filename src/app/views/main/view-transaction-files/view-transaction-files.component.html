@@ -208,6 +208,27 @@
   </div>
 </div>
 
+<button class="hide" data-toggle="modal" data-target="#previewAttachment" #openPreview></button>
+  <div class="modal fade" id="previewAttachment">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadBackgroundLabel">Preview Attachments</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close" #closePreview>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-pdf-viewer
+            class="fill-div"
+            *ngIf="this.filePreview"
+            [pdf]="this.filePreview">
+          </app-pdf-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <app-notification></app-notification>
 <app-modal-component></app-modal-component>
 <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
