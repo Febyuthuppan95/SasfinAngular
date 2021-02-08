@@ -16,7 +16,7 @@
 <br>
 <mat-list role="list">
   <mat-list-item role="listitem" *ngFor="let item of assignedList">
-    <button mat-icon-button (click)="revokeDuty(item)" type="button"><mat-icon>delete</mat-icon></button>{{item.label ? item.label : item.code ? item.code : item.name}}&nbsp;({{item.duty}})
+    <button mat-icon-button (click)="revokeDuty(item)" type="button"[disabled]="isDisabled"><mat-icon>delete</mat-icon></button>{{item.label ? item.label : item.code ? item.code : item.name}}&nbsp;({{item.duty}})
     <span *ngIf="item.isLocal">&nbsp; - Line needs to update before changes apply</span>
   </mat-list-item>
 </mat-list>

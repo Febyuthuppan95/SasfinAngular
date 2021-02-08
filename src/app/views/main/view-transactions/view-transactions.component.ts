@@ -494,6 +494,7 @@ export class ViewTransactionsComponent implements OnInit, OnDestroy {
     }
 
     if (errors === 0) {
+      console.log('find');
       this.transationService.createdTransaction(
           this.currentUser.userID,
           this.companyID,

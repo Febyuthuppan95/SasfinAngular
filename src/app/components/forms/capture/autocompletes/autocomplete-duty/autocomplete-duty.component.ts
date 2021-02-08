@@ -43,6 +43,7 @@ constructor(private userService: UserService,
   private sad500LineIDTemp = -1;
   public selected = false;
   private currentDialog: MatBottomSheetRef<BottomSheetAssignDutyComponent>;
+  public isDisabled = false;
 
   ngOnInit() {
     if (!this.control) {
@@ -140,7 +141,8 @@ constructor(private userService: UserService,
       );
 
     if (this.status === 5 && this.transstatus == 10) {
-        this.query.disable();
+      this.isDisabled = true;
+      this.query.disable();
     }
   }
 
