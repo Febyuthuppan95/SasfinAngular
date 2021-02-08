@@ -78,7 +78,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
   selectedCompanyOEM: SelectedCompanyOEM;
   selectedQuarterSupply: SelectedOEMQuarterSupply = {
     rowNum: -1,
-    companyOEMQuarterSupplyID: -1,
+    CompanyOEMQuarterSupplyID: -1,
     //productCode: '',
     //productDescription: '',
     quantity: 0,
@@ -228,7 +228,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       request: {
           userID: this.currentUser.userID,
           companyOEMQuarterID: this.selectedCompanyOEM.companyOEMQuarterID,
-          companyOEMQuarterSupplyID: this.selectedQuarterSupply.companyOEMQuarterSupplyID,
+          //companyOEMQuarterSupplyID: this.selectedQuarterSupply.CompanyOEMQuarterSupplyID,
           rowStart: this.rowStart,
           rowEnd: this.rowEnd,
           filter: this.filter,
@@ -317,7 +317,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       request: {
         userID: this.currentUser.userID,
         companyOEMQuarterID: this.selectedCompanyOEM.companyOEMQuarterID,
-        companyOEMQuarterSupplyID: this.selectedQuarterSupply.companyOEMQuarterSupplyID,
+        companyOEMQuarterSupplyID: this.selectedQuarterSupply.CompanyOEMQuarterSupplyID,
         itemID: this.itemID.value,
         /*productCode: this.selectedQuarterSupply.productCode,
         productDescription: this.selectedQuarterSupply.productDescription,*/
@@ -326,6 +326,8 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       },
       procedure: 'CompanyOEMQuarterSupplyUpdate'
     };
+    console.log('find');
+    console.log(model);
     this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
     //this.companyService.companyOEMQuarterSupplyUpdate(model).then(
       (res: Outcome) => {
@@ -334,7 +336,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
           this.itemID.setValue(-1);
           this.selectedQuarterSupply = {
             rowNum: -1,
-            companyOEMQuarterSupplyID: -1,
+            CompanyOEMQuarterSupplyID: -1,
             quantity: 0,
             itemID: -1,
           };
@@ -398,6 +400,8 @@ export class ViewQuarterSupplyListComponent implements OnInit {
       this.themeService.toggleContextMenu(false);
       this.contextMenu = false;
     }
+    console.log("object");
+    console.log(obj);
   }
   EditSupply($event) {
     // console.log($event);
@@ -415,7 +419,7 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     this.itemID.setValue(-1);
     this.selectedQuarterSupply = {
       rowNum: -1,
-      companyOEMQuarterSupplyID: -1,
+      CompanyOEMQuarterSupplyID: -1,
       quantity: 0,
       itemID: -1,
     };
@@ -428,7 +432,7 @@ export class OEMQuarterSupply {
   rowNum: number;
   companyOEmQuarterID: number;
   itemID: number;
-  companyOEMQuarterSupplyID: number;
+  CompanyOEMQuarterSupplyID: number;
   productCode: string;
   productDescription: string;
   quantity: number;
@@ -443,7 +447,7 @@ export class SelectedOEMQuarterSupply {
   rowNum: number;
   supplyID?: number;
   itemID: number;
-  companyOEMQuarterSupplyID: number;
+  CompanyOEMQuarterSupplyID: number;
   /*
   productCode: string;
   productDescription: string;
