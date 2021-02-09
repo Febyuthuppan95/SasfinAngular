@@ -360,23 +360,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             if (res.attachmentErrors.attachmentErrors ? res.attachmentErrors.attachmentErrors.length : 0 > 0) {
               this.errors = res.attachmentErrors.attachmentErrors;
 
-              Object.keys(this.form.controls).forEach(key => {
-                res.attachmentErrors.attachmentErrors.forEach((error) => {
-                  if (key.toUpperCase() === error.fieldName.toUpperCase()) {
-                    if (!this.form.controls[`${key}OBit`].value) {
-                      this.form.controls[key].setErrors({incorrect: true});
-                      this.form.controls[key].markAsTouched();
-                    }
-                  }
-
-                  if (error.fieldName.toUpperCase() == 'IMPORTERCODE') {
-                    this.form.controls.importersCode.setErrors({
-                      incorrect: true,
-                    });
-                    this.form.controls.importersCode.markAsTouched();
-                  }
-                });
-              });
             }
           } else {
             this.notify.errorsmsg('FAILURE', 'Could not retrieve SAD500 record');
@@ -425,6 +408,26 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
         if (!this.isVOC) {
           this.errors = res.attachmentErrors.attachmentErrors;
+        }
+
+        if (this.errors ? this.errors.length : 0 > 0 && this.isVOC) {
+          Object.keys(this.form.controls).forEach(key => {
+            this.errors.forEach((error) => {
+              if (key.toUpperCase() === error.fieldName.toUpperCase()) {
+                if (!this.form.controls[`${key}OBit`].value) {
+                  this.form.controls[key].setErrors({incorrect: true});
+                  this.form.controls[key].markAsTouched();
+                }
+              }
+
+              if (error.fieldName.toUpperCase() == 'IMPORTERCODE') {
+                this.form.controls.importersCode.setErrors({
+                  incorrect: true,
+                });
+                this.form.controls.importersCode.markAsTouched();
+              }
+            });
+          });
         }
 
         Object.keys(this.form.controls).forEach(key => {
