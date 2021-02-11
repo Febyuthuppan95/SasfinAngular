@@ -2244,11 +2244,21 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       (res: ReadResponse) => {
         console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
-          this.loading = false;
-          this.dataLinesAvailable = [];
-          this.dataLinesAvailable = res.data;
-          console.log(this.dataLinesAvailable);
-          this.pageC.length = res.rowCount;
+          res.data.forEach(element => {
+            let datum : string = element.ExportDate;
+            element.ExportDate = datum.substring(0, 10);
+            this.loading = false;
+            this.dataLinesAvailable = [];
+            this.dataLinesAvailable = res.data;
+          // console.log(res);
+          // console.log("date?");
+          // console.log(this.dataLinesAvailable);
+            this.pageC.length = res.rowCount;
+            console.log('day');
+            console.log(element.ExportDate);
+          });
+
+
         }
       },
       msg => {

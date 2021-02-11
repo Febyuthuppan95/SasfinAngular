@@ -199,9 +199,11 @@ ngAfterViewInit() {
         segments.forEach((element) => {
           if (element.indexOf('-') !== -1) {
             const ranges = element.split('-');
+            console.log(element);
 
-            if (ranges[0] < ranges[1]) {
+            if (Number(ranges[0]) < Number(ranges[1])) {
               for (let i = +ranges[0]; i <= +ranges[1]; i++) {
+                console.log(i);
                 item.pages.push(i);
               }
             }
