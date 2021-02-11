@@ -193,25 +193,25 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
             key: 'alt + .',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.nextLine()
+            command: (e) =>  this.nextLine()
           },
           {
             key: 'alt + ,',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.prevLine()
+            command: (e) => this.prevLine()
           },
           {
             key: 'alt + c',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.cancelLine()
+            command: e => { this.cancelLine(); }
           },
           {
             key: 'alt + v',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.deleteLinePrompt()
+            command: e => { this.deleteLinePrompt(); }
           },
           {
             key: 'alt + m',
@@ -346,6 +346,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         rowStart: 1,
         rowEnd: 10
       };
+      console.log(vocRequest);
 
       await this.captureService.vocList(vocRequest).then(
         (res: VOCListResponse) => {
@@ -501,13 +502,13 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         pre_processed_lines.forEach((line) => {
           line.isLocal = false;
           line.specificSAD500LineID = line.sad500LineID;
-          line.sad500ID = this.form.controls.SAD500ID.value;
+          line.sad500ID = line.sad500ID;
           line.uniqueIdentifier = UUID.UUID();
           line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
         });
 
         this.lines = pre_processed_lines;
-
+        console.log(this.lines);
         if (this.lines ? this.lines.length : 0 > 0) {
           this.activeIndex = 0;
           this.activeLine = this.lines[this.activeIndex];
@@ -680,23 +681,43 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       $event.isLocal = false;
       const original = this.lines[this.lines.indexOf(target)];
 
+      console.log(target);
+      console.log(this.form.controls.SAD500ID.value);
       $event.sad500LineID = target.sad500LineID;
       $event.specificSAD500LineID = target.sad500LineID;
-      $event.sad500ID = this.isVOC ? this.originalSAD500ID : original.SAD500ID;
+      //$event.sad500ID = this.isVOC ? this.form.controls.SAD500ID.value : original.SAD500ID;
+      console.log(this.originalSAD500ID);
+      console.log($event);
 
+      console.log(original);
       if (this.isVOC) {
-        $event.originalLineID = target.sad500LineID;
+        if ($event.sad500ID === this.form.controls.SAD500ID.value) {
+          //Line update
+          //$event.sad500ID = this.form.controls.SAD500ID.value;
+          await this.captureService.sad500LineUpdate($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
+          (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+        } else {
+          //line add
+          $event.replacedByLineID = null;
+          $event.originalLineID = target.sad500LineID;
+          $event.sad500ID = this.form.controls.SAD500ID.value;
+          //$event.replacedByLineID = original.sad500LineID;
+          await this.captureService.sad500LineAdd($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
+          (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }))
+        }
       }
-
-      $event.isDeleted = 0;
-      $event.sad500ID = this.isVOC ? this.originalSAD500ID : this.form.controls.SAD500ID.value;
-      $event.userID = this.currentUser.userID;
+      else {
+        $event.isDeleted = 0;
+        $event.sad500ID = this.isVOC ? this.originalSAD500ID : this.form.controls.SAD500ID.value;
+        $event.userID = this.currentUser.userID;
 
       await this.captureService.sad500LineUpdate($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
-              (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+             (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+      }
 
       this.lines[this.lines.indexOf(target)] = $event;
       this.activeLine = $event;
+      this.loadLines()
       this.refresh();
     }
 
@@ -736,7 +757,6 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
       if (this.lineForm) {
         this.lineForm.resetForm();
       }
-
       this.activeLine = this.lines[this.activeIndex];
       this.paginationControl.setValue(this.activeIndex + 1, { emitEvent: false });
 

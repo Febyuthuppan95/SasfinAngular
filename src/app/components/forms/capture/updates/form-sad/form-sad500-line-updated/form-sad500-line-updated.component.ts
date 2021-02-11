@@ -97,7 +97,8 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
 
   ngOnInit() {
     if (this.data && this.data !== null) {
-      this.data.sad500ID = this.data.SAD500ID;
+      //this.data.sad500ID = this.data.SAD500ID;
+      console.log(this.data);
       this.data.specificSAD500LineID = this.data.sad500LineID;
       this.sadLine500ID = this.data.specificSAD500LineID;
       this.form.patchValue(this.data, { emitEvent: false });
@@ -211,7 +212,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
           key: 'alt + a',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: () => this.submit(this.form),
+          command: () => { this.submit(this.form)},
         },
         {
           key: 'alt + k',
@@ -315,7 +316,7 @@ export class FormSad500LineUpdatedComponent implements OnInit, OnChanges, AfterV
   submit(form: FormGroup) {
     console.log(form);
     form.markAllAsTouched();
-
+    console.log(form);
     if (form.valid) {
       const line: any = form.value;
       // Values were returning a null exception on API
