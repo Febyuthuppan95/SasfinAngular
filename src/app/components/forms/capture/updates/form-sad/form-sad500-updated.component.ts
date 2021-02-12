@@ -615,7 +615,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
 
                 await this.captureService.sad500LineDutyAdd(dutyRequest);
               });
-          }
+            }
         });
 
           if (res.outcome === 'SUCCESS') {
@@ -694,7 +694,24 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         if ($event.sad500ID === this.form.controls.SAD500ID.value) {
           //Line update
           //$event.sad500ID = this.form.controls.SAD500ID.value;
-          await this.captureService.sad500LineUpdate($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
+          await this.captureService.sad500LineUpdate($event).then((res: any) => {
+            this.snackbar.open('Line updated', '', {duration: 3000});
+            console.log(res);
+            if ($event.duties && $event.sad500LineID !== null && $event.sad500LineID) {
+              const duties = $event.duties.filter(x => x.isLocal === true);
+
+              this.saveLineDuty(duties, async (duty) => {
+                const dutyRequest = {
+                  userID: this.currentUser.userID,
+                  dutyID: duty.dutyTaxTypeID,
+                  sad500LineID: $event.sad500LineID,
+                  value: duty.value
+                };
+
+                await this.captureService.sad500LineDutyAdd(dutyRequest);
+              });
+            }
+          },
           (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
         } else {
           //line add
@@ -702,8 +719,25 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           $event.originalLineID = target.sad500LineID;
           $event.sad500ID = this.form.controls.SAD500ID.value;
           //$event.replacedByLineID = original.sad500LineID;
-          await this.captureService.sad500LineAdd($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
-          (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }))
+          await this.captureService.sad500LineAdd($event).then((res: any) => {
+            this.snackbar.open('Line updated', '', {duration: 3000});
+            console.log(res);
+            if ($event.duties && $event.sad500LineID !== null && $event.sad500LineID) {
+              const duties = $event.duties.filter(x => x.isLocal === true);
+
+              this.saveLineDuty(duties, async (duty) => {
+                const dutyRequest = {
+                  userID: this.currentUser.userID,
+                  dutyID: duty.dutyTaxTypeID,
+                  sad500LineID: $event.sad500LineID,
+                  value: duty.value
+                };
+
+                await this.captureService.sad500LineDutyAdd(dutyRequest);
+              });
+            }
+          },
+          (msg) => this.snackbar.open('Failed to update line ' + msg, '', { duration: 3000 }))
         }
       }
       else {
