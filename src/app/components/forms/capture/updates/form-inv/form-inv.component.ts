@@ -529,81 +529,90 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     form.updateValueAndValidity();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
-      const requestModel = form.value;
-      let statusID = 2;
+    if (!this.loader) {
+      if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+        this.loader = true;
+        const requestModel = form.value;
+        let statusID = 2;
 
-      if (escalation || (saveProgress && requestModel.attachmentStatusID === 7)) {
-        statusID = 7;
-      } else if (escalationResolved) {
-        statusID = 8;
-      } else if (saveProgress) {
-        statusID = 2;
-      } else {
-        statusID = 3;
-      }
-
-      if (this.form.controls.qaUserID.value === -1
-        && !escalation
-        && !saveProgress
-        && !escalationResolved) {
-
-        requestModel.attachmentStatusID = 11;
-      } else if (this.form.controls.qaUserID.value !== -1) {
-
-        if (saveProgress) {
-          requestModel.attachmentStatusID = 11;
+        if (escalation || (saveProgress && requestModel.attachmentStatusID === 7)) {
+          statusID = 7;
+        } else if (escalationResolved) {
+          statusID = 8;
+        } else if (saveProgress) {
+          statusID = 2;
         } else {
-          requestModel.attachmentStatusID = 3;
+          statusID = 3;
         }
-      }
 
-      requestModel.attachmentStatusID = statusID;
-      requestModel.userID = this.currentUser.userID;
-      requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
+        if (this.form.controls.qaUserID.value === -1
+          && !escalation
+          && !saveProgress
+          && !escalationResolved) {
 
-      await this.captureService.invoiceUpdate(requestModel).then(
-        async (res: Outcome) => {
-          await this.saveLines(this.lines, async (line) => {
-            line.isDeleted = 0;
-            line.invoiceID = form.controls.invoiceID.value;
-            line.userID = this.currentUser.userID;
-            line.shortClaim = this.shortClaim;
+          requestModel.attachmentStatusID = 11;
+        } else if (this.form.controls.qaUserID.value !== -1) {
 
-            if (line.isLocal) {
-              await this.captureService.invoiceLineAdd(line).then((res) => console.log(res),
-                (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
-            }
-
-            // else {
-            //   await this.captureService.invoiceLineUpdate(line).then((res) => console.log(res),
-            //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
-            // }
-          });
-
-          if (res.outcome === 'SUCCESS') {
-            if (saveProgress) {
-              this.snackbar.open('Progress Saved', '', { duration: 3000 });
-              this.savedChanges = true;
-              this.load();
-            } else {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
-              if (this.currentUser.designation === 'Consultant') {
-                this.router.navigate(['escalations']);
-              } else {
-                this.location.back();
-              }
-            }
+          if (saveProgress) {
+            requestModel.attachmentStatusID = 11;
           } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+            requestModel.attachmentStatusID = 3;
           }
-        },
-        (msg) => console.log(JSON.stringify(msg))
-      );
-    } else {
-      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
-      this.findInvalidControls(form);
+        }
+
+        requestModel.attachmentStatusID = statusID;
+        requestModel.userID = this.currentUser.userID;
+        requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
+
+        await this.captureService.invoiceUpdate(requestModel).then(
+          async (res: Outcome) => {
+            await this.saveLines(this.lines, async (line) => {
+              line.isDeleted = 0;
+              line.invoiceID = form.controls.invoiceID.value;
+              line.userID = this.currentUser.userID;
+              line.shortClaim = this.shortClaim;
+
+              if (line.isLocal) {
+                await this.captureService.invoiceLineAdd(line).then((res) => console.log(res),
+                  (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
+              }
+
+              // else {
+              //   await this.captureService.invoiceLineUpdate(line).then((res) => console.log(res),
+              //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+              // }
+            });
+
+            if (res.outcome === 'SUCCESS') {
+              if (saveProgress) {
+                this.snackbar.open('Progress Saved', '', { duration: 3000 });
+                this.savedChanges = true;
+                this.load();
+              } else {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+                if (this.currentUser.designation === 'Consultant') {
+                  this.router.navigate(['escalations']);
+                } else {
+                  this.location.back();
+                }
+              }
+              this.loader = false;
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              this.loader = false;
+            }
+          },
+          (msg) => console.log(JSON.stringify(msg))
+        );
+      } else {
+        this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+        this.findInvalidControls(form);
+      }
     }
+    else {
+      this.snackbar.open('Page is submitting', '', {duration: 3000});
+    }
+
   }
 
   updateHelpContext(slug: string) {

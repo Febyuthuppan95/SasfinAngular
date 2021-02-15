@@ -406,57 +406,65 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
     if (form.controls.lrn.value) {
       pass = true;
     }
+    if (!this.loader) {
+      if (!pass) {
+        this.snackbar.open('At least one field must be entered', '', {duration: 3000});
+      } else if ((form.valid && (this.lines ? this.lines.length : 0) > 0) || escalation || saveProgress || escalationResolved) {
+        this.loader = true;
+        const requestModel = form.value;
+        // tslint:disable-next-line: max-line-length
+        requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+        requestModel.userID = this.currentUser.userID;
 
-    // Check at least one of the fields are valid
-    if (!pass) {
-      this.snackbar.open('At least one field must be entered', '', {duration: 3000});
-    } else if ((form.valid && (this.lines ? this.lines.length : 0) > 0) || escalation || saveProgress || escalationResolved) {
-      const requestModel = form.value;
-      // tslint:disable-next-line: max-line-length
-      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
-      requestModel.userID = this.currentUser.userID;
+        console.log('requestModel lines');
+        console.log(this.lines);
 
-      console.log('requestModel lines');
-      console.log(this.lines);
+        await this.captureService.customWorksheetUpdate(requestModel).then(
+          async (res: Outcome) => {
+            await this.saveLines(this.lines, async (line) => {
+              line.isDeleted = 0;
+              line.userID = this.currentUser.userID;
+              line.customsWorksheetID = this.attachmentID;
 
-      await this.captureService.customWorksheetUpdate(requestModel).then(
-        async (res: Outcome) => {
-          await this.saveLines(this.lines, async (line) => {
-            line.isDeleted = 0;
-            line.userID = this.currentUser.userID;
-            line.customsWorksheetID = this.attachmentID;
-
-            if (line.isLocal) {
-              await this.captureService.customWorksheetLineAdd(line).then((res) => console.log(res),
-              () => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
-            }
-            // else {
-            //   await this.captureService.customWorksheetLineUpdate(line).then((res) => console.log(res),
-            //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
-            // }
-          });
-
-          if (res.outcome === 'SUCCESS') {
-            if (saveProgress) {
-              this.snackbar.open('Progress Saved', '', { duration: 3000 });
-              this.load();
-            } else {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
-              if (this.currentUser.designation === 'Consultant') {
-                this.router.navigate(['escalations']);
-              } else {
-                this.location.back();
+              if (line.isLocal) {
+                await this.captureService.customWorksheetLineAdd(line).then((res) => console.log(res),
+                () => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
               }
+              // else {
+              //   await this.captureService.customWorksheetLineUpdate(line).then((res) => console.log(res),
+              //   (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+              // }
+            });
+
+            if (res.outcome === 'SUCCESS') {
+              if (saveProgress) {
+                this.snackbar.open('Progress Saved', '', { duration: 3000 });
+                this.load();
+              } else {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+                if (this.currentUser.designation === 'Consultant') {
+                  this.router.navigate(['escalations']);
+                } else {
+                  this.location.back();
+                }
+              }
+              this.loader = false;
+            } else {
+              this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              this.loader = false;
             }
-          } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
           }
-        }
-      );
-    } else {
-      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
-      this.findInvalidControls(form);
+        );
+      } else {
+        this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+        this.findInvalidControls(form);
+      }
     }
+    else {
+      this.snackbar.open('Page is submitting', '', {duration: 3000});
+    }
+    // Check at least one of the fields are valid
+
   }
 
   updateHelpContext(slug: string) {

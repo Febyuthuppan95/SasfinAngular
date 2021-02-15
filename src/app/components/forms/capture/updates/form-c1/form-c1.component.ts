@@ -292,65 +292,74 @@ export class FormC1Component implements OnInit, OnDestroy, AfterViewInit {
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
-      const request = form.value;
-      // tslint:disable-next-line: max-line-length
-      request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
-      request.userID = this.currentUser.userID;
+    if (!this.loader){
+      if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+        this.loader = true;
+        const request = form.value;
+        // tslint:disable-next-line: max-line-length
+        request.AttachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && request.AttachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+        request.userID = this.currentUser.userID;
 
-      await this.captureService.post({ request, procedure: 'SupplierC1Update' }).then(
-        async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
-          await this.saveLines(this.lines, async (line) => {
-            const lineRequest = line;
-            delete lineRequest.RowNum;
-            delete lineRequest.isLocal;
-            delete lineRequest.uniqueIdentifier;
-            delete lineRequest.ItemName;
-            delete lineRequest.SupplierItem;
-            delete lineRequest.SupplierName;
+        await this.captureService.post({ request, procedure: 'SupplierC1Update' }).then(
+          async (res: { data: any[], outcome: boolean, outcomeMessage: string, rowCount: number }) => {
+            await this.saveLines(this.lines, async (line) => {
+              const lineRequest = line;
+              delete lineRequest.RowNum;
+              delete lineRequest.isLocal;
+              delete lineRequest.uniqueIdentifier;
+              delete lineRequest.ItemName;
+              delete lineRequest.SupplierItem;
+              delete lineRequest.SupplierName;
 
-            lineRequest.SupplierC1ID = this.attachmentID;
+              lineRequest.SupplierC1ID = this.attachmentID;
 
-            line.IsDeleted = 0;
-            line.userID = this.currentUser.userID;
+              line.IsDeleted = 0;
+              line.userID = this.currentUser.userID;
 
-            if (line.SupplierC1LineID === -1) {
-              delete lineRequest.SupplierC1LineID;
-              delete lineRequest.IsDeleted;
+              if (line.SupplierC1LineID === -1) {
+                delete lineRequest.SupplierC1LineID;
+                delete lineRequest.IsDeleted;
 
-              await this.captureService
-                .post({ request: lineRequest, procedure: 'SupplierC1LineAdd' })
-                .then((response: any) => console.log(JSON.stringify(response)), (msg) => console.log(JSON.stringify(msg)));
-            } else {
-              await this.captureService
-                .post({ request: lineRequest, procedure: 'SupplierC1LineUpdate' })
-                .then((response) => console.log(response), (msg) => console.log(JSON.stringify(msg)));
-            }
-          });
-
-          if (res.outcome) {
-            if (saveProgress) {
-              this.snackbar.open('Progress Saved', '', { duration: 3000 });
-              this.load();
-            } else {
-              this.notify.successmsg('SC1 Submitted', res.outcomeMessage);
-              if (this.currentUser.designation === 'Consultant') {
-                this.router.navigate(['escalations']);
+                await this.captureService
+                  .post({ request: lineRequest, procedure: 'SupplierC1LineAdd' })
+                  .then((response: any) => console.log(JSON.stringify(response)), (msg) => console.log(JSON.stringify(msg)));
               } else {
-                this.companyService.setCapture({ capturestate: true });
-                this.router.navigateByUrl('transaction/capturerlanding');
+                await this.captureService
+                  .post({ request: lineRequest, procedure: 'SupplierC1LineUpdate' })
+                  .then((response) => console.log(response), (msg) => console.log(JSON.stringify(msg)));
               }
+            });
+
+            if (res.outcome) {
+              if (saveProgress) {
+                this.snackbar.open('Progress Saved', '', { duration: 3000 });
+                this.load();
+              } else {
+                this.notify.successmsg('SC1 Submitted', res.outcomeMessage);
+                if (this.currentUser.designation === 'Consultant') {
+                  this.router.navigate(['escalations']);
+                } else {
+                  this.companyService.setCapture({ capturestate: true });
+                  this.router.navigateByUrl('transaction/capturerlanding');
+                }
+              }
+              this.loader = false;
+            } else {
+              this.notify.errorsmsg('Failed to submit SC1', res.outcomeMessage);
+              this.loader = false;
             }
-          } else {
-            this.notify.errorsmsg('Failed to submit SC1', res.outcomeMessage);
-          }
-        },
-        (msg) => console.log(JSON.stringify(msg))
-      );
-    } else {
-      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
-      this.findInvalidControls(form);
+          },
+          (msg) => console.log(JSON.stringify(msg))
+        );
+      } else {
+        this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+        this.findInvalidControls(form);
+      }
     }
+    else {
+      this.snackbar.open('Page is submitting', '', {duration: 3000});
+    }
+
   }
 
   updateHelpContext(slug: string) {

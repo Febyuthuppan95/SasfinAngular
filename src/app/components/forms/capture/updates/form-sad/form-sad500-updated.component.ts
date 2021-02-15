@@ -527,119 +527,128 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
 
-    if ((form.valid && this.lines ? this.lines.length : 0 > 0) || escalation || saveProgress || escalationResolved) {
-      const requestModel = form.value;
-      requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
-      requestModel.userID = this.currentUser.userID;
-      if (this.isVOC) {
-        const vocRequest = {
-          userID: this.currentUser.userID,
-          vocID: requestModel.vocID,
-          referenceNo: requestModel.referenceNo,
-          reason: requestModel.reason,
-          mrn: requestModel.mrn,
-          lrn: requestModel.lrn,
-          isDeleted: false,
-          attachmentStatusID: escalation ? 7 : 3,
-        };
+    if (!this.loader){
+      if ((form.valid && this.lines ? this.lines.length : 0 > 0) || escalation || saveProgress || escalationResolved) {
+        this.loader = true;
+        const requestModel = form.value;
+        requestModel.attachmentStatusID = escalation ? 7 : (escalationResolved ? 8 : (saveProgress && requestModel.attachmentStatusID === 7 ? 7 : (saveProgress ? 2 : 3)));
+        requestModel.userID = this.currentUser.userID;
+        if (this.isVOC) {
+          const vocRequest = {
+            userID: this.currentUser.userID,
+            vocID: requestModel.vocID,
+            referenceNo: requestModel.referenceNo,
+            reason: requestModel.reason,
+            mrn: requestModel.mrn,
+            lrn: requestModel.lrn,
+            isDeleted: false,
+            attachmentStatusID: escalation ? 7 : 3,
+          };
 
-        await this.captureService.vocUpdate(vocRequest).then(
-          (res: Outcome) => {
+          await this.captureService.vocUpdate(vocRequest).then(
+            (res: Outcome) => {
+              if (res.outcome === 'SUCCESS') {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+              } else {
+                this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              }
+            },
+            (msg) => {
+              this.notify.errorsmsg('Failure', 'Cannot reach server');
+            }
+          );
+        }
+
+        if (!this.isVOC) {
+          delete requestModel.vocID;
+          delete requestModel.reason;
+          delete requestModel.originalID;
+          delete requestModel.replacedByID;
+        }
+
+        if (!this.isExport) {
+          delete requestModel.referenceNo;
+        }
+
+        requestModel.containerNumbers = requestModel.containerNumbers == null ? '' : requestModel.containerNumbers;
+        requestModel.lrnOReason = requestModel.lrnOReason == null ? '' : requestModel.lrnOReason;
+        requestModel.referenceNo = requestModel.referenceNo == null ? '' : requestModel.referenceNo;
+        requestModel.transAtArrival = requestModel.transAtArrival == null ? '' : requestModel.transAtArrival;
+        requestModel.mrnOReason = requestModel.mrnOReason == null ? '' : requestModel.mrnOReason;
+        requestModel.importersCodeOReason = requestModel.importersCodeOReason == null ? '' : requestModel.importersCodeOReason;
+        requestModel.fileRefOReason = requestModel.fileRefOReason == null ? '' : requestModel.fileRefOReason;
+        requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
+        requestModel.totalCustomValueOReason = requestModel.totalCustomsValueOReason == null ? '' : requestModel.totalCustomsValueOReason;
+        requestModel.totalCustomValueOBit = requestModel.totalCustomsValueOBit == null ? '' : requestModel.totalCustomsValueOBit;
+        requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason;
+        requestModel.supplierRefOReason = requestModel.supplierRefOReason == null ? '' : requestModel.supplierRefOReason;
+        requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
+        requestModel.transAtArrivalOReason = requestModel.transAtArrivalOReason == null ? '' : requestModel.transAtArrivalOReason;
+        requestModel.containerNumbersOReason = requestModel.containerNumbersOReason == null ? '' : requestModel.containerNumbersOReason;
+
+        console.log('SAD500 RequestModel');
+        console.log(requestModel);
+
+        await this.captureService.sad500Update(requestModel).then(
+          async (res: Outcome) => {
+
+            await this.saveLines(this.lines, async (line) => {
+              let sad500LineID = line.specificSAD500LineID;
+              line.isDeleted = 0;
+              line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
+              line.userID = this.currentUser.userID;
+
+              if (line.isLocal) {
+                await this.captureService.sad500LineAdd(line).then((res: any) =>  {
+                  console.log(res); sad500LineID = res.createdID; },
+                  (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
+              }
+
+              if (line.duties && sad500LineID !== null && sad500LineID) {
+                const duties = line.duties.filter(x => x.isLocal === true);
+
+                await this.saveLineDuty(duties, async (duty) => {
+                  const dutyRequest = {
+                    userID: this.currentUser.userID,
+                    dutyID: duty.dutyTaxTypeID,
+                    sad500LineID,
+                    value: duty.value
+                  };
+
+                  await this.captureService.sad500LineDutyAdd(dutyRequest);
+                });
+              }
+          });
+
             if (res.outcome === 'SUCCESS') {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
+              if (saveProgress) {
+                this.snackbar.open('Progress Saved', '', { duration: 3000 });
+                this.displayLines = false;
+                this.load();
+              } else {
+                this.notify.successmsg(res.outcome, res.outcomeMessage);
+                if (this.currentUser.designation === 'Consultant') {
+                  this.router.navigate(['escalations']);
+                } else {
+                  this.location.back();
+                }
+              }
+              this.loader = false;
             } else {
               this.notify.errorsmsg(res.outcome, res.outcomeMessage);
+              this.loader = false;
             }
-          },
-          (msg) => {
-            this.notify.errorsmsg('Failure', 'Cannot reach server');
           }
         );
+      } else {
+        this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
+        this.findInvalidControls(form);
       }
-
-      if (!this.isVOC) {
-        delete requestModel.vocID;
-        delete requestModel.reason;
-        delete requestModel.originalID;
-        delete requestModel.replacedByID;
-      }
-
-      if (!this.isExport) {
-        delete requestModel.referenceNo;
-      }
-
-      requestModel.containerNumbers = requestModel.containerNumbers == null ? '' : requestModel.containerNumbers;
-      requestModel.lrnOReason = requestModel.lrnOReason == null ? '' : requestModel.lrnOReason;
-      requestModel.referenceNo = requestModel.referenceNo == null ? '' : requestModel.referenceNo;
-      requestModel.transAtArrival = requestModel.transAtArrival == null ? '' : requestModel.transAtArrival;
-      requestModel.mrnOReason = requestModel.mrnOReason == null ? '' : requestModel.mrnOReason;
-      requestModel.importersCodeOReason = requestModel.importersCodeOReason == null ? '' : requestModel.importersCodeOReason;
-      requestModel.fileRefOReason = requestModel.fileRefOReason == null ? '' : requestModel.fileRefOReason;
-      requestModel.totalDutyOReason = requestModel.totalDutyOReason == null ? '' : requestModel.totalDutyOReason;
-      requestModel.totalCustomValueOReason = requestModel.totalCustomsValueOReason == null ? '' : requestModel.totalCustomsValueOReason;
-      requestModel.totalCustomValueOBit = requestModel.totalCustomsValueOBit == null ? '' : requestModel.totalCustomsValueOBit;
-      requestModel.serialNoOReason = requestModel.serialNoOReason == null ? '' : requestModel.serialNoOReason;
-      requestModel.supplierRefOReason = requestModel.supplierRefOReason == null ? '' : requestModel.supplierRefOReason;
-      requestModel.waybillNoOReason = requestModel.waybillNoOReason == null ? '' : requestModel.waybillNoOReason;
-      requestModel.transAtArrivalOReason = requestModel.transAtArrivalOReason == null ? '' : requestModel.transAtArrivalOReason;
-      requestModel.containerNumbersOReason = requestModel.containerNumbersOReason == null ? '' : requestModel.containerNumbersOReason;
-
-      console.log('SAD500 RequestModel');
-      console.log(requestModel);
-
-      await this.captureService.sad500Update(requestModel).then(
-        async (res: Outcome) => {
-
-          await this.saveLines(this.lines, async (line) => {
-            let sad500LineID = line.specificSAD500LineID;
-            line.isDeleted = 0;
-            line.sad500ID = this.isVOC ? this.originalSAD500ID : form.controls.SAD500ID.value;
-            line.userID = this.currentUser.userID;
-
-            if (line.isLocal) {
-              await this.captureService.sad500LineAdd(line).then((res: any) =>  {
-                console.log(res); sad500LineID = res.createdID; },
-                (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
-            }
-
-            if (line.duties && sad500LineID !== null && sad500LineID) {
-              const duties = line.duties.filter(x => x.isLocal === true);
-
-              await this.saveLineDuty(duties, async (duty) => {
-                const dutyRequest = {
-                  userID: this.currentUser.userID,
-                  dutyID: duty.dutyTaxTypeID,
-                  sad500LineID,
-                  value: duty.value
-                };
-
-                await this.captureService.sad500LineDutyAdd(dutyRequest);
-              });
-            }
-        });
-
-          if (res.outcome === 'SUCCESS') {
-            if (saveProgress) {
-              this.snackbar.open('Progress Saved', '', { duration: 3000 });
-              this.displayLines = false;
-              this.load();
-            } else {
-              this.notify.successmsg(res.outcome, res.outcomeMessage);
-              if (this.currentUser.designation === 'Consultant') {
-                this.router.navigate(['escalations']);
-              } else {
-                this.location.back();
-              }
-            }
-          } else {
-            this.notify.errorsmsg(res.outcome, res.outcomeMessage);
-          }
-        }
-      );
-    } else {
-      this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});
-      this.findInvalidControls(form);
     }
+    else {
+      this.snackbar.open('Page is submitting', '', {duration: 3000});
+    }
+
   }
 
   updateHelpContext(slug: string) {
