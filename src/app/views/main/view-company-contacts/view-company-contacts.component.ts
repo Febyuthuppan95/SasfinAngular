@@ -118,7 +118,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   //Add/ Edit or Delete
   CaptureModel: AddContact;
 
-  //Used for loading the contact types into the Add / Edit Modal 
+  //Used for loading the contact types into the Add / Edit Modal
   contactTypes: ContactTypesListRequest = {
     userID: this.currentUser.userID,
     specificContactTypeID: -1,
@@ -129,11 +129,11 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     rowEnd: 15
   };
 
-  
+
 
   //Variable to store the contact types
   contactTypeDropDown: ContactType[];
-  //Display text on Modal. 
+  //Display text on Modal.
   modalDisplay: string;
 
 
@@ -157,7 +157,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
 
   backToCompanies() {
     this.router.navigate(['companies']);
-    
+
   }
 
 
@@ -171,6 +171,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
     "Email": '',
     "CellNo": '',
     "LandNo": '',
+    "FaxNo": '',
     "isDeleted": 0,
     "ContactID" : 0,
     "ContactName" : ''
@@ -267,6 +268,8 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
             this.totalShowing = +this.rowStart + +this.dataset.contacts.length - 1;
             this.paginateData();
           }
+          console.log('fax');
+          console.log(model);
 
         },
         msg => {
@@ -364,9 +367,9 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
   loadContactTypes(){
-  
+
     this.contactTypeService.list(this.contactTypes).then(
       (res: ListContactTypes) => {
         if(res.outcome.outcome == "FAILURE"){
@@ -410,6 +413,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
    this.CaptureModel.ContactTypeID  = contact.contactTypeID;
    this.CaptureModel.Email = contact.email;
    this.CaptureModel.LandNo = contact.landNo;
+   this.CaptureModel.FaxNo = contact.faxNo;
    this.CaptureModel.Name = contact.contact;
    this.CaptureModel.isDeleted = 0; // No Delete
    this.CaptureModel.ContactID = contact.contactID;
@@ -418,18 +422,19 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
  }
 
 
- //Validation to ensure all fields are filled in 
+ //Validation to ensure all fields are filled in
  Validate(){
 
   if(this.CaptureModel.Name == '' ||
      this.CaptureModel.Email == '' ||
      this.CaptureModel.CellNo == '' ||
-     this.CaptureModel.LandNo == '')
+     this.CaptureModel.LandNo == '' ||
+     this.CaptureModel.FaxNo == '' )
      {
       this.notify.toastrwarning("Required Fields Error", "Please enter all required fields")
       return false;
      }
-  else 
+  else
    return true
 
 
@@ -453,7 +458,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   AddNewContact(){
     this.CaptureModel.isDeleted = 0;
     this.CaptureModel.CompanyID = this.companyService.selectedCompany.value.companyID;
-    
+
     this.companyService.addContact(this.CaptureModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
@@ -469,15 +474,15 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
-    
-    
-   
+
+
+
   }
 
   UpdateContact(){
-   
+
     this.CaptureModel.CompanyID = this.companyService.selectedCompany.value.companyID;
-    
+
     this.companyService.UpdateContact(this.CaptureModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
@@ -499,9 +504,9 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
-    
-    
-   
+
+
+
   }
 
 }

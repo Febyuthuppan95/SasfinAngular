@@ -13,7 +13,7 @@
             <button style="padding-right: 0px; padding-top: 7px" (click)="backToCompanies()" class="btn-back btn"><i class="mdi mdi-arrow-left"></i></button></span>
             <h4 class="ls-text-{{ currentTheme }}" style="float:left; padding-top:7px;">{{companyName}} - Contacts</h4>
             <span style="margin-left:10px;">
-              
+
               <button  class="btn-add btn hide" data-toggle="modal" data-target="#editCompanyContact" #openeditModal><i class="mdi mdi-plus"></i></button>
                 <button  class="btn-add btn" (click)="OpenModalForAdd()"><i class="mdi mdi-plus"></i></button>
             </span>
@@ -76,6 +76,15 @@
                       </button>
                     </th>
                     <th scope="col">
+                      <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                        <p class="headerText">Fax No</p>
+                        <span class="headerSpan">
+                          <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_ASC')?'order-active':'order-not-active'"></i>
+                          <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Name_DESC')?'order-active':'order-not-active'"></i>
+                        </span>
+                      </button>
+                    </th>
+                    <th scope="col">
                         <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
                           <p class="headerText">Type</p>
                           <span class="headerSpan">
@@ -93,6 +102,7 @@
               <td>{{contact.cellNo}}</td>
               <td>{{contact.email}}</td>
               <td>{{contact.landNo}}</td>
+              <td>{{contact.faxNo}}</td>
               <td>{{contact.contactType}}</td>
 
             </tr>
@@ -139,13 +149,13 @@
   <app-context-menu-company-info [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" [companyID]="focusHelp" [companyName]="focusHelpName"></app-context-menu-company-info>
   </div>
   -->
-  
+
   <div class="contextOverlay" *ngIf="(contextMenu)" (click)="popOff()">
     <app-context-menu-company-contacts  [ngStyle]="(contextMenu)?'' :'display:none;'" class="contextMenuDiv" *ngIf="(contextMenu)" [x]="contextMenuX" [y]="contextMenuY" (EditCompanyContact)="EditCompanyContact() " (DeleteContact)="DeleteContact()" ></app-context-menu-company-contacts>
     </div>
 
 
-  
+
 
   <!--MODAL ADD and EDIT-->
 <div class="modal fade" id="editCompanyContact" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
@@ -174,6 +184,10 @@
             <div class="form-group">
               <label class="control-label">Land No:</label>
               <input type="text" placeholder="Type" class="form-control" [value]="this.CaptureModel.LandNo" (input)="this.CaptureModel.LandNo = $event.target.value"  required/>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Fax No:</label>
+              <input type="text" placeholder="Type" class="form-control" [value]="this.CaptureModel.FaxNo" (input)="this.CaptureModel.FaxNo = $event.target.value"  required/>
             </div>
             <div class="form-group">
               <label class="control-label">Type:</label>

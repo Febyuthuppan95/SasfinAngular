@@ -14,6 +14,7 @@ export class Contacts {
   contact: string;
   email: string;
   landNo: string;
+  faxNo: string;
   contactTypeID: number;
   contactType: string;
 }
