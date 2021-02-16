@@ -17,9 +17,10 @@ export class CustomsLineLinkComponent implements OnInit {
     private api: ApiService) { }
 
     public currentLinks: any[] = [];
+    public newLink: any[] = [];
     public lines: any[] = [];
     public Templines: any[] = [];
-
+    public invoice: any;
     public filter = '';
 
     ngOnInit() {
@@ -27,12 +28,12 @@ export class CustomsLineLinkComponent implements OnInit {
       this.currentLinks = [...this.data.currentLinks];
       this.lines = [...this.data.lines];
       this.Templines = [...this.lines];
-
+      this.invoice = this.data.invoice;
       console.log('lists');
 
       console.log(this.lines);
       console.log(this.Templines);
-
+      console.log(this.invoice);
       console.log(this.data);
 
 
@@ -46,10 +47,20 @@ export class CustomsLineLinkComponent implements OnInit {
     }
 
     async addJoin(index) {
+      if (this.newLink.length === 0){
+        this.newLink[0] = this.lines[index];
+        const item = this.lines.splice(index, 1)[0];
+        this.Templines.splice(index, 1)[0];
+      }
+      else {
+
+      }
+      /*
       const request: any = {};
       const customsLine = this.lines[index];
       console.log(customsLine);
       request.transactionID = this.data.transactionID;
+      request.invoiceLineID = this.invoice.lineID
       request.userID = this.data.currentUser.userID;
       request.SAD500LineID = this.data.currentLine.sad500LineID;
       request.customWorksheetLineID = customsLine.customWorksheetLineID;
@@ -67,7 +78,43 @@ export class CustomsLineLinkComponent implements OnInit {
             this.snackbar.open('Line linked', 'OK', { duration: 3000 });
           }
         },
+      );*/
+    }
+
+    async continue() {
+      const request: any = {};
+      const customsLine = this.newLink[0];
+      console.log(customsLine);
+      request.transactionID = this.data.transactionID;
+      request.invoiceLineID = this.invoice.lineID
+      request.userID = this.data.currentUser.userID;
+      request.SAD500LineID = this.data.currentLine.sad500LineID;
+      request.customWorksheetLineID = customsLine.customWorksheetLineID;
+
+      await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+        request,
+        procedure: 'CaptureJoinAdd'
+      }).then(
+        (res: any) => {
+          if (res.outcome) {
+            /*const item = this.lines.splice(index, 1)[0];
+            this.Templines.splice(index, 1)[0];
+            item.captureJoinID = +res.outcomeMessage;
+            this.currentLinks.push(item);*/
+            this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+          }
+          else {
+            this.snackbar.open(res.outcomeMessage,'Error' , { duration: 3000 });
+          }
+        },
       );
+    }
+
+    removeNewLink(){
+      const removed = this.newLink[0];
+      this.lines.push(removed);
+      this.Templines.push(removed);
+      this.newLink = [];
     }
 
     async removeJoin(index) {

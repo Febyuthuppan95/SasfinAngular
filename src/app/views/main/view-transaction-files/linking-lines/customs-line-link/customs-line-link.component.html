@@ -3,15 +3,15 @@
 <input type="text" class="form-control shadow-sm  mb-2 mr-sm-2 form-control-sm ml-auto"
 placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]="{standalone: true}" />
 <div mat-dialog-content>
-  <ng-container *ngIf="lines.length === 0 && currentLinks.length === 0">
+  <ng-container *ngIf="lines.length === 0 && newLink.length === 0">
     <h5>No Lines Available</h5>
   </ng-container>
-  <ng-container *ngIf="currentLinks.length > 0">
-    <h5>Linked Lines ({{currentLinks.length}})</h5>
+  <ng-container *ngIf="newLink.length > 0">
+    <h5>Linked Lines ({{newLink.length}})</h5>
   </ng-container>
   <div style="padding: 0 20px 0 0px;">
-  <ng-container *ngFor="let item of currentLinks; let i = index">
-    <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+  <ng-container *ngFor="let item of newLink; let i = index">
+    <button mat-button (click)="removeNewLink()" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
       <mat-card class="linked">
         <mat-card-content>
           <button tabindex="-1" mat-mini-fab color="primary" style="
@@ -35,6 +35,14 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
     <br>
     <br>
   </ng-container>
+  <button mat-button type="button" class="btn btn-primary btn-sm" *ngIf="newLink.length !== 0"
+      (click)="continue()"
+      style="color: #fff;
+      background-color: #4d83ff;
+      border-color: #4d83ff;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      float: right;">Continue</button>
   <ng-container >
     <br>
     <h5>Available Lines ({{Templines.length}})</h5>

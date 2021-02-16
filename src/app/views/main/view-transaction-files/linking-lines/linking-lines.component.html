@@ -109,8 +109,8 @@
                 </mat-card>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="_invoiceLinkDialog(i);">Invoice Lines</button>
-              <button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>
+              <button mat-menu-item (click)="_invoiceLinkDialog(i);">Link Lines</button>
+              <!--<button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>-->
 
               <ng-container *ngIf="item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None">
                 <hr>

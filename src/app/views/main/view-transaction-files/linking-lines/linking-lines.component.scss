@@ -113,6 +113,10 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
+::ng-deep .mat-dialog-container {
+  margin-right:60px !important;
+}
+
 .show-company-container {
   display: block;
   transition: ease-in-out 0.3s;

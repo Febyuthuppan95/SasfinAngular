@@ -6,13 +6,13 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
   <ng-container *ngIf="lines.length === 0 && currentLinks.length === 0">
     <h5>No Lines Available</h5>
   </ng-container>
-  <ng-container *ngIf="currentLinks.length > 0">
-    <h5>Linked Lines ({{currentLinks.length}})</h5>
+  <ng-container *ngIf="newLink.length > 0">
+    <h5>New Links</h5>
   </ng-container>
-  <div style="padding: 0 20px 0 0px;">
-    <ng-container *ngFor="let item of currentLinks; let i = index">
-      <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
-        <mat-card class="linked">
+  <div style="padding: 0px 20px 20px 0px;">
+    <ng-container *ngFor="let item of newLink; let i = index">
+      <button mat-button (click)="removeNewLink()" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+        <mat-card>
           <mat-card-content>
             <button tabindex="-1" mat-mini-fab color="primary" style="
             position: absolute;
@@ -21,7 +21,7 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
             bottom: 50%;">{{i+1}}</button>
             <div class="row">
               <div class="col-6">
-                <p style="width: 100%; margin-left: 24px;">
+               <p style="width: 100%; margin-left: 24px;">
                   <strong>Invoice No</strong> {{item.invoiceNo}} <br>
                   <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
                   <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
@@ -36,6 +36,74 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
             </div>
           </mat-card-content>
         </mat-card>
+      </button>
+    </ng-container>
+    <button mat-button type="button" class="btn btn-primary btn-sm" *ngIf="newLink.length !== 0"
+      (click)="continue()"
+      style="color: #fff;
+      background-color: #4d83ff;
+      border-color: #4d83ff;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      float: right;">Continue</button>
+  </div>
+  <ng-container *ngIf="currentLinks.length > 0">
+    <h5>Linked Lines ({{currentLinks.length}})</h5>
+  </ng-container>
+  <div style="padding: 0 20px 0 0px;">
+    <ng-container *ngFor="let item of currentLinks; let i = index">
+      <button mat-button (click)="removeJoin(i)" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+        <div class="row">
+          <div class="col-6">
+            <mat-card class="linked">
+              <mat-card-content>
+                <button tabindex="-1" mat-mini-fab color="primary" style="
+                position: absolute;
+                left: -20px;
+                top: 30%;
+                bottom: 50%;">{{i+1}}</button>
+                <div class="row">
+                  <div class="col-12">
+                    <p style="width: 100%; margin-left: 24px;">
+                      <strong>Invoice Line {{item.cws.invLineNumb}}</strong> <br>
+                      <strong>Invoice No</strong> {{item.inv.invoiceNo}} <br>
+                      <strong>Total Line Value</strong> {{item.inv.totalLineValue}} <br>
+                      <strong>Item</strong> {{item.inv.items ? item.inv.items.Name : '-'}} <br>
+                      <strong>Unit Price</strong> {{item.inv.unitPrice}} <br>
+                      <strong>Quantity</strong> {{item.inv.quantity == -1 ? '0' : item.inv.quantity}} <br>
+                    </p>
+                  </div>
+                  <!--<div class="col-6">
+                    <p style="width: 100%;">
+                    </p>
+                  </div>-->
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-6">
+            <mat-card class="linked" style="height:100%">
+              <mat-card-content>
+                <button tabindex="-1" mat-mini-fab color="primary" style="
+                position: absolute;
+                left: -20px;
+                top: 30%;
+                bottom: 50%;">{{i+1}}</button>
+                <div class="row">
+                  <div class="col-12" style="height:100%">
+                    <p style="width: 100%; margin-left: 24px;">
+                      <strong>Custom Worksheet Line</strong> <br>
+                      <strong>HS Quantity</strong> {{item.cws.hsQuantity == -1 ? '0' : item.cws.hsQuantity}} <br>
+                      <strong>Total Customs Value</strong> {{item.cws.custVal}} <br>
+                      <strong>Customs Duty</strong> {{item.cws.duty}} <br>
+                      <strong>Foreign Inv</strong> {{item.cws.foreignInv}} <br>
+                    </p>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
       </button>
       <br>
       <br>

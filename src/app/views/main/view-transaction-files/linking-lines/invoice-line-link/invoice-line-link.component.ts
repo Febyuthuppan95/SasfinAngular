@@ -19,6 +19,9 @@ export class InvoiceLineLinkComponent implements OnInit {
   // @Output() onFilter = new EventEmitter<any>();
 
   public currentLinks: any[] = [];
+  public newLink: any[] = [];
+  public cws: any[] = [];
+  public joins: any[] = [];
   public lines: any[] = [];
   public Templines: any[] = [];
   public lineKeys: string[] = [];
@@ -28,8 +31,9 @@ export class InvoiceLineLinkComponent implements OnInit {
 
   ngOnInit() {
     // console.log('data');
-    // console.log(this.data);
-
+    console.log(this.data);
+    this.joins = [...this.data.joins];
+    this.cws = [...this.data.cwsLines];
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
     this.Templines = [...this.lines];
@@ -70,7 +74,7 @@ export class InvoiceLineLinkComponent implements OnInit {
     console.log(item);
     const request: any = {};
     const invoiceLine = this.lines.find(x => x.lineID == item.lineID);
-
+    /*
     request.transactionID = this.data.transactionID;
     request.userID = this.data.currentUser.userID;
     request.SAD500LineID = this.data.currentLine.sad500LineID;
@@ -106,7 +110,51 @@ export class InvoiceLineLinkComponent implements OnInit {
       },
     );
 
-    this.searchBar();
+    this.searchBar();*/
+    if (this.newLink.length === 0) {
+      const currentLine = this.lines.find(x => x.lineID == item.lineID);
+      const line = this.lines.splice(this.lines.indexOf(currentLine), 1)[0];
+      //line.captureJoinID = +res.outcomeMessage;
+      this.newLink.push(currentLine);
+
+      this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+      this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+      this.newLink.forEach((link) => {
+        this.lineKeys.forEach((key) => {
+          const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
+          if (inv) {
+            this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(item), 1);
+          }
+        });
+      });
+
+      this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+    } else {
+      this.snackbar.open('Line already linked', 'OK', { duration: 3000 });
+    }
+  }
+
+  continue() {
+    this.dialogRef.close(this.newLink[0]);
+  }
+
+  removeNewLink(){
+    const line = this.newLink[0];
+    this.lines.push(line);
+    this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+          this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+          this.currentLinks.forEach((link) => {
+            this.lineKeys.forEach((key) => {
+              const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
+
+              if (inv) {
+                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+              }
+            });
+          });
+    this.newLink = [];
   }
 
   async removeJoin(index) {

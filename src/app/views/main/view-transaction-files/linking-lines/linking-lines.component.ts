@@ -451,7 +451,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   async init() {
     this.loading = true;
     await this.loadUnits();
-    await this.loadRates();
+    // await this.loadRates();
     await this.loadCountry();
     await this.loadItems();
 
@@ -635,7 +635,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.attachments = this.attachments
-            .filter(x => x.fileTypeID === 2 || x.fileTypeID === 5 || x.fileTypeID === 7);
+            .filter(x => x.fileTypeID === 2 || x.fileTypeID === 5 || x.fileTypeID === 7 || x.fileTypeID === 8);
 
           this.currentPDFIndex = 0;
           this.currentAttachment = this.attachments[this.currentPDFIndex];
@@ -834,6 +834,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.api.post(`${environment.ApiEndpoint}/checking/read`, model).then(
       async (res: any) => {
         this.allCaptureJoins = res.data;
+        this.allCaptureJoins.forEach(item => {
+          item.isLocal = false;
+        });
 
         await this.iterate(this.sadLines, async (item, i) =>  {
           const exists = this.allCaptureJoins.find(x => x.SAD500LineID == this.sadLines[i].sad500LineID && x.CustomsValueOBit);
@@ -921,12 +924,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   _invoiceLinkDialog(index: number) {
-    const currentLinks = this.getCurrentLinks(this.sadLines[index], 'inv');
+    const currentLinks = this.getCurrentLinks(this.sadLines[index], null);
 
     this.dialog.closeAll();
-
     this.invoiceDialog = this.dialog.open(InvoiceLineLinkComponent, {
-      width: '860px',
+      width: '1000px',
       data: {
         currentLine: this.sadLines[index],
         joins: this.captureJoins,
@@ -935,6 +937,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
       },
+      position: { right : '-20'},
+		  panelClass: 'linking-dialog',
       hasBackdrop: false,
     });
 
@@ -943,19 +947,22 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     //     alert(data);
     //   });
     // });
-
-    this.invoiceDialog.afterClosed().subscribe(() => {
+    this.invoiceDialog.afterClosed().subscribe(invoice => {
       this.loadInvoiceLines();
-    });
+      console.log(invoice);
+      if (invoice) {
+        this._customsLinkDialog(index, invoice);
+      }
+      });
   }
 
-  _customsLinkDialog(index: number) {
+  _customsLinkDialog(index: number, inv?: any) {
     const currentLinks = this.getCurrentLinks(this.sadLines[index], 'cws');
-
+    console.log(currentLinks);
     this.dialog.closeAll();
 
     this.cwsDialog = this.dialog.open(CustomsLineLinkComponent, {
-      width: '860px',
+      width: '1000px',
       data: {
         currentLine: this.sadLines[index],
         transactionID: this.transactionID,
@@ -963,8 +970,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         lines: currentLinks.cwsLines,
         currentLinks: currentLinks.currentLinks,
         currentUser: this.currentUser,
+        invoice: inv
       },
       hasBackdrop: false,
+      position: { right : '20'},
+			panelClass: 'linking-dialog'
     });
 
     this.cwsDialog.afterClosed().subscribe(() => {
@@ -972,7 +982,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getCurrentLinks(currentSADLine: any, type: string): any {
+  getCurrentLinks(currentSADLine: any, type?: string): any {
     const currentLinks = [];
     const allCaptureJoins = [...this.allCaptureJoins];
     const captureJoins = allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
@@ -1012,6 +1022,24 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             currentLinks.push(inv);
           }
         }
+
+        if (el.InvoiceLineID !== null && el.CustomWorksheetLineID !== null && type === null) {
+          const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
+          const inv = [...invLines].find(x => x.lineID == el.InvoiceLineID);
+          console.log('hiii');
+          console.log(cws);
+          console.log(inv);
+          if (inv && cws) {
+            console.log('hi');
+            const link = {
+              captureJoinID: el.CaptureJoinID,
+              cws: cws,
+              inv: inv,
+            }
+            currentLinks.push(link);
+          }
+
+        }
       }
 
     });
@@ -1021,7 +1049,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
         if (cws) {
-          cwsLines.splice(cwsLines.indexOf(cws), 1);
+          //cwsLines.splice(cwsLines.indexOf(cws), 1);
         }
       }
 
@@ -1250,7 +1278,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   todate(value) {
     this.invoiceDate.setValue(new Date(value));
   }
-  
+
   ngOnDestroy(): void {
     this.exitFullscreen();
   }
