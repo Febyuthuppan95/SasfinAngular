@@ -754,7 +754,23 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         $event.sad500ID = this.isVOC ? this.originalSAD500ID : this.form.controls.SAD500ID.value;
         $event.userID = this.currentUser.userID;
 
-      await this.captureService.sad500LineUpdate($event).then((res: any) => this.snackbar.open('Line updated', '', {duration: 3000}),
+        await this.captureService.sad500LineUpdate($event).then((res: any) => {
+          this.snackbar.open('Line updated', '', {duration: 3000});
+          if ($event.duties && $event.sad500LineID !== null && $event.sad500LineID) {
+            const duties = $event.duties.filter(x => x.isLocal === true);
+
+            this.saveLineDuty(duties, async (duty) => {
+              const dutyRequest = {
+                userID: this.currentUser.userID,
+                dutyID: duty.dutyTaxTypeID,
+                sad500LineID: $event.sad500LineID,
+                value: duty.value
+              };
+
+              await this.captureService.sad500LineDutyAdd(dutyRequest);
+            });
+          }
+          },
              (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
       }
 
