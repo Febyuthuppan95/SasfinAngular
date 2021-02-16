@@ -20,7 +20,7 @@ export class InvoiceLineLinkComponent implements OnInit {
 
   public currentLinks: any[] = [];
   public newLink: any[] = [];
-  public cws: any[] = [];
+  //public cws: any[] = [];
   public joins: any[] = [];
   public lines: any[] = [];
   public Templines: any[] = [];
@@ -33,7 +33,7 @@ export class InvoiceLineLinkComponent implements OnInit {
     // console.log('data');
     console.log(this.data);
     this.joins = [...this.data.joins];
-    this.cws = [...this.data.cwsLines];
+    //this.cws = [...this.data.cwsLines];
     this.currentLinks = [...this.data.currentLinks];
     this.lines = [...this.data.lines];
     this.Templines = [...this.lines];
