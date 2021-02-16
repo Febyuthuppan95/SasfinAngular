@@ -269,7 +269,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
             this.paginateData();
           }
           console.log('fax');
-          console.log(model);
+          console.log(res);
 
         },
         msg => {
