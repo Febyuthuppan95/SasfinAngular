@@ -102,6 +102,7 @@ export class CustomsLineLinkComponent implements OnInit {
             item.captureJoinID = +res.outcomeMessage;
             this.currentLinks.push(item);*/
             this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+            this.dialogRef.close();
           }
           else {
             this.snackbar.open(res.outcomeMessage,'Error' , { duration: 3000 });

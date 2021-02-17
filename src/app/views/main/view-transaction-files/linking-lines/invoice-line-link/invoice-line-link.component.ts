@@ -1,5 +1,6 @@
+import { DialogConfirmationComponent } from './../dialog-confirmation/dialog-confirmation.component';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 
@@ -14,7 +15,8 @@ export class InvoiceLineLinkComponent implements OnInit {
     private dialogRef: MatDialogRef<InvoiceLineLinkComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: MatSnackBar,
-    private api: ApiService) { }
+    private api: ApiService,
+    private matDialog: MatDialog,) { }
 
   // @Output() onFilter = new EventEmitter<any>();
 
@@ -158,42 +160,54 @@ export class InvoiceLineLinkComponent implements OnInit {
   }
 
   async removeJoin(index) {
-    const currentLink = this.currentLinks[index];
-    const request: any = {};
-
-    request.userID = this.data.currentUser.userID;
-    request.SAD500LineID = this.data.currentLine.sad500LineID;
-    request.isDeleted = 1;
-    request.captureJoinID = currentLink.captureJoinID;
-
-    await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-      request,
-      procedure: 'CaptureJoinUpdate'
-    }).then(
-      (res: any) => {
-        if (res.outcome) {
-          const removed = this.currentLinks.splice(index, 1)[0];
-          this.lines.push(removed);
-
-          this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
-          this.lineKeys = Object.keys(this.formattedInvoiceLines);
-
-          this.currentLinks.forEach((link) => {
-            this.lineKeys.forEach((key) => {
-              const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
-
-              if (inv) {
-                this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
-              }
-            });
-          });
-
-          this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
-        }
+    this.matDialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Delete Link',
+        message: 'Are you sure you wnat to delete this link?'
       },
-    );
+      width: '512px'
+    }).afterClosed().subscribe((res) => {
+      console.log(res);
+      if (res) {
+        const currentLink = this.currentLinks[index];
+        const request: any = {};
 
-    this.searchBar();
+        request.userID = this.data.currentUser.userID;
+        request.SAD500LineID = this.data.currentLine.sad500LineID;
+        request.isDeleted = 1;
+        request.captureJoinID = currentLink.captureJoinID;
+
+        this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+          request,
+          procedure: 'CaptureJoinUpdate'
+        }).then(
+          (res: any) => {
+            if (res.outcome) {
+              const removed = this.currentLinks.splice(index, 1)[0];
+              this.lines.push(removed.inv);
+
+              this.formattedInvoiceLines = this.groupBy([...this.lines], 'invoiceNo');
+              this.lineKeys = Object.keys(this.formattedInvoiceLines);
+
+              this.currentLinks.forEach((link) => {
+                this.lineKeys.forEach((key) => {
+                  const inv = this.formattedInvoiceLines[key].find(x => x.lineID == link.InvoiceLineID);
+
+                  if (inv) {
+                    this.formattedInvoiceLines[key].splice(this.formattedInvoiceLines[key].indexOf(inv), 1);
+                  }
+                });
+              });
+
+              this.snackbar.open('Line unlinked', 'OK', { duration: 3000 });
+            }
+          },
+        );
+
+        this.searchBar();
+      }
+    })
+
   }
 
   searchBar() {
