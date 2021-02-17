@@ -90,25 +90,29 @@ export class CustomsLineLinkComponent implements OnInit {
       request.userID = this.data.currentUser.userID;
       request.SAD500LineID = this.data.currentLine.sad500LineID;
       request.customWorksheetLineID = customsLine.customWorksheetLineID;
-
-      await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
-        request,
-        procedure: 'CaptureJoinAdd'
-      }).then(
-        (res: any) => {
-          if (res.outcome) {
-            /*const item = this.lines.splice(index, 1)[0];
-            this.Templines.splice(index, 1)[0];
-            item.captureJoinID = +res.outcomeMessage;
-            this.currentLinks.push(item);*/
-            this.snackbar.open('Line linked', 'OK', { duration: 3000 });
-            this.dialogRef.close();
-          }
-          else {
-            this.snackbar.open(res.outcomeMessage,'Error' , { duration: 3000 });
-          }
-        },
-      );
+      console.log(request.invoiceLineID);
+      console.log(request.customWorksheetLineID)
+      console.log(request.SAD500LineID)
+      if (request.invoiceLineID !== null || request.customWorksheetLineID !== null || request.SAD500LineID !== null) {
+        await this.api.post(`${environment.ApiEndpoint}/capture/post`, {
+          request,
+          procedure: 'CaptureJoinAdd'
+        }).then(
+          (res: any) => {
+            if (res.outcome) {
+              /*const item = this.lines.splice(index, 1)[0];
+              this.Templines.splice(index, 1)[0];
+              item.captureJoinID = +res.outcomeMessage;
+              this.currentLinks.push(item);*/
+              this.snackbar.open('Line linked', 'OK', { duration: 3000 });
+              this.dialogRef.close(true);
+            }
+            else {
+              this.snackbar.open(res.outcomeMessage,'Error' , { duration: 3000 });
+            }
+          },
+        );
+      }
     }
 
     removeNewLink(){

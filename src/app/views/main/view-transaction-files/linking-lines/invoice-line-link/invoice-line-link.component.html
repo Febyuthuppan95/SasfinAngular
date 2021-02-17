@@ -6,47 +6,6 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
   <ng-container *ngIf="lines.length === 0 && currentLinks.length === 0">
     <h5>No Lines Available</h5>
   </ng-container>
-  <ng-container *ngIf="newLink.length > 0">
-    <h5>New Links</h5>
-  </ng-container>
-  <div style="padding: 0px 20px 20px 0px;">
-    <ng-container *ngFor="let item of newLink; let i = index">
-      <button mat-button (click)="removeNewLink()" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
-        <mat-card>
-          <mat-card-content>
-            <button tabindex="-1" mat-mini-fab color="primary" style="
-            position: absolute;
-            left: -20px;
-            top: 30%;
-            bottom: 50%;">{{i+1}}</button>
-            <div class="row">
-              <div class="col-6">
-               <p style="width: 100%; margin-left: 24px;">
-                  <strong>Invoice No</strong> {{item.invoiceNo}} <br>
-                  <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
-                  <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
-                </p>
-              </div>
-              <div class="col-6">
-                <p style="width: 100%;">
-                  <strong>Unit Price</strong> {{item.unitPrice}} <br>
-                  <strong>Quantity</strong> {{item.quantity == -1 ? '0' : item.quantity}} <br>
-                </p>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </button>
-    </ng-container>
-    <button mat-button type="button" class="btn btn-primary btn-sm" *ngIf="newLink.length !== 0"
-      (click)="continue()"
-      style="color: #fff;
-      background-color: #4d83ff;
-      border-color: #4d83ff;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      float: right;">Continue</button>
-  </div>
   <ng-container *ngIf="currentLinks.length > 0">
     <h5>Linked Lines ({{currentLinks.length}})</h5>
   </ng-container>
@@ -108,6 +67,47 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
       <br>
       <br>
     </ng-container>
+    <ng-container *ngIf="newLink.length > 0">
+      <h5>New Links</h5>
+    </ng-container>
+    <div style="padding: 0px 20px 20px 0px;">
+      <ng-container *ngFor="let item of newLink; let i = index">
+        <button mat-button (click)="removeNewLink()" style="margin: 0; padding: 0; width: 100%; margin-left: 20px;">
+          <mat-card>
+            <mat-card-content>
+              <button tabindex="-1" mat-mini-fab color="primary" style="
+              position: absolute;
+              left: -20px;
+              top: 30%;
+              bottom: 50%;">{{i+1}}</button>
+              <div class="row">
+                <div class="col-6">
+                 <p style="width: 100%; margin-left: 24px;">
+                    <strong>Invoice No</strong> {{item.invoiceNo}} <br>
+                    <strong>Total Line Value</strong> {{item.totalLineValue}} <br>
+                    <strong>Item</strong> {{item.items ? item.items.Name : '-'}} <br>
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p style="width: 100%;">
+                    <strong>Unit Price</strong> {{item.unitPrice}} <br>
+                    <strong>Quantity</strong> {{item.quantity == -1 ? '0' : item.quantity}} <br>
+                  </p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </button>
+      </ng-container>
+      <button mat-button type="button" class="btn btn-primary btn-sm" *ngIf="newLink.length !== 0"
+        (click)="continue()"
+        style="color: #fff;
+        background-color: #4d83ff;
+        border-color: #4d83ff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        float: right;">Continue</button>
+    </div>
     <ng-container *ngIf="lines.length > 0">
       <br>
       <h5>Available Lines ({{Templines.length}})</h5>

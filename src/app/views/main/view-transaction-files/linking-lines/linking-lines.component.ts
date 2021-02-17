@@ -923,9 +923,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  _invoiceLinkDialog(index: number) {
+  async _invoiceLinkDialog(index: number) {
+    await this.loadCaptureJoins();
     const currentLinks = this.getCurrentLinks(this.sadLines[index], null);
-
     this.dialog.closeAll();
     this.invoiceDialog = this.dialog.open(InvoiceLineLinkComponent, {
       width: '1000px',
@@ -977,8 +977,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 			panelClass: 'linking-dialog'
     });
 
-    this.cwsDialog.afterClosed().subscribe(() => {
+    this.cwsDialog.afterClosed().subscribe((c) => {
+      console.log(c);
       this.loadWorksheetLines();
+      if (c) {
+        this._invoiceLinkDialog(index);
+      }
     });
   }
 
@@ -986,7 +990,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     const currentLinks = [];
     const allCaptureJoins = [...this.allCaptureJoins];
     const captureJoins = allCaptureJoins.filter(x => x.SAD500LineID == currentSADLine.sad500LineID);
-
+    console.log(captureJoins);
+    console.log(allCaptureJoins);
+    console.log(currentSADLine);
     const cwsLines = [];
     const invLines = [];
 
