@@ -1005,10 +1005,12 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
           if (cws) {
-            cws.captureJoinID = el.CaptureJoinID;
-            cws.type = 'cws';
+            if (!currentLinks.includes(cws)){
+              cws.captureJoinID = el.CaptureJoinID;
+              cws.type = 'cws';
 
-            currentLinks.push(cws);
+              currentLinks.push(cws);
+            }
           }
         }
 
