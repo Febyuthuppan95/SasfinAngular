@@ -125,9 +125,9 @@
                 <hr>
                 <button mat-menu-item (click)="foreignValueChip(item);">Override Foreign Invoice Value</button>
               </ng-container>
-              <ng-container *ngIf="item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignValueOBit">
+              <ng-container *ngIf="item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignOBit">
                 <hr>
-                <button mat-menu-item (click)="undoOverride(item, 'Foreign Invoice Value');">Undo Foreign Invoice Value</button>
+                <button mat-menu-item (click)="undoOverride(item, 'Foreign Invoice Value');">Undo Override Foreign Invoice Value</button>
               </ng-container>
             </mat-menu>
             <br>
