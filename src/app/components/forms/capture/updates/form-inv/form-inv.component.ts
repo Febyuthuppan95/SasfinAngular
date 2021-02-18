@@ -676,7 +676,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       //   console.log($event[index]);
       // });
 
-      $event.lineNo = $event.lineNo == null ? 0 : $event.lineNo;
+      $event.lineNo = $event.lineNo == 0 ? null : $event.lineNo;
       $event.commonFactor = $event.commonFactor == null ? 0 : $event.commonFactor;
 
       $event.commonFactorODate = $event.commonFactorODate == null ? '' : $event.commonFactorODate;

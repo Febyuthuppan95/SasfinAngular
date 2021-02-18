@@ -495,7 +495,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
     this.captureService.sad500LineList(requestModel).then(
       (res: SPSAD500LineList) => {
         console.log(res);
-        const pre_processed_lines: any[] = res.lines;
+        let pre_processed_lines: any[] = res.lines;
         this.lineErrors = res.attachmentErrors.attachmentErrors;
         console.log(this.lineErrors);
 
@@ -506,6 +506,23 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
           line.uniqueIdentifier = UUID.UUID();
           line.errors = res.attachmentErrors.attachmentErrors.filter(x => x.attachmentID === line.sad500LineID);
         });
+        console.log(this.lines);
+        if (this.lines)
+        {
+          let count = 0;
+          this.lines = this.lines.filter(x =>
+            x.isLocal === true)
+          /*this.lines.forEach((line) => {
+            if (!line.isLocal){
+              this.lines.splice(count,1);
+              count--;
+            }
+            count++;
+          })*/
+
+          console.log(this.lines);
+          pre_processed_lines = pre_processed_lines.concat(this.lines);
+        }
 
         this.lines = pre_processed_lines;
         console.log(this.lines);
@@ -599,9 +616,14 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               line.userID = this.currentUser.userID;
 
               if (line.isLocal) {
-                await this.captureService.sad500LineAdd(line).then((res: any) =>  {
-                  console.log(res); sad500LineID = res.createdID; },
-                  (msg) => this.snackbar.open('Failed to create line', '', { duration: 3000 }));
+                await this.captureService.sad500LineAdd(line).then(
+                  (res: any) =>  {
+                  console.log(res);
+                  sad500LineID = res.createdID;
+                },(msg) => {
+                    console.log(msg);
+                    this.snackbar.open('Failed to create line', '', { duration: 3000 })
+                  });
               }
 
               if (line.duties && sad500LineID !== null && sad500LineID) {

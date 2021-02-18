@@ -1972,11 +1972,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     console.log(model);
     await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/read`, model).then(
       async (res: any) => {
-        this.data = [];
-        setTimeout(() => {
-          this.data = res.data;
-          this.pageA.length = res.rowCount;
-        }, 500);
         console.log('hi');
         console.log(res);
         if (res.outcome.outcome === 'SUCCESS') {
@@ -1984,9 +1979,13 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             res.data.forEach(element => {
               let datum: string = element.ImportDate;
               element.ImportDate = datum.substring(0, 10);
-              console.log('holnaai');
               console.log(element.ImportDate);
             });
+            this.data = [];
+            setTimeout(() => {
+              this.data = res.data;
+              this.pageA.length = res.rowCount;
+            }, 500);
             console.log(res);
             if (this.currentClaim.serviceName === '538') {
               console.log(this.showMain);
