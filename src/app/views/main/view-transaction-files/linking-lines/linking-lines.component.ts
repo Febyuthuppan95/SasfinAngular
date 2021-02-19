@@ -1082,8 +1082,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
-      console.log('Linked INV and CWS')
+      console.log('linkedCWS')
       console.log(linkedCWS);
+      console.log('linkedINV')
       console.log(linkedINV);
 
       linkedCWS.currentLinks.forEach(cwsItem => {
@@ -1091,7 +1092,9 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         cwsCustomsValue += +cws.custVal;
         cwsForeignValue += cws.foreignInv;
       });
+      console.log('cwsCustomsValue')
       console.log(cwsCustomsValue);
+      console.log('cwsForeignValue')
       console.log(cwsForeignValue);
 
       linkedINV.currentLinks.forEach(invItem => {
@@ -1113,8 +1116,11 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         invForeignValue += (inv.totalLineValue / exchangeRate);
       });
 
+      console.log('invForienValue')
       console.log(invForeignValue);
+      console.log('cwsCustomsValue')
       console.log(cwsCustomsValue);
+      console.log('cwsForeignValue')
       console.log(cwsForeignValue);
 
       item.runningCustomsValue = cwsCustomsValue.toFixed(2);
@@ -1123,6 +1129,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
       item.runningTotalLineValue = invForeignValue.toFixed(2);
       item.runningForeignValue = cwsForeignValue.toFixed(2);
       item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue.toFixed(2), invForeignValue.toFixed(2));
+      console.log('item');
       console.log(item);
     });
   }
