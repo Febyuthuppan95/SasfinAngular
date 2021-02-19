@@ -1011,6 +1011,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           const cws = [...cwsLines].find(x => x.customWorksheetLineID == el.CustomWorksheetLineID);
 
           if (cws) {
+            console.log(cws);
             if (!currentLinks.includes(cws)){
               cws.captureJoinID = el.CaptureJoinID;
               cws.type = 'cws';
@@ -1081,12 +1082,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
       const linkedCWS = this.getCurrentLinks(item, 'cws');
       const linkedINV = this.getCurrentLinks(item, 'inv');
+      console.log('Linked INV and CWS')
+      console.log(linkedCWS);
+      console.log(linkedINV);
 
       linkedCWS.currentLinks.forEach(cwsItem => {
         const cws = cwsItem;
         cwsCustomsValue += +cws.custVal;
         cwsForeignValue += cws.foreignInv;
       });
+      console.log(cwsCustomsValue);
+      console.log(cwsForeignValue);
 
       linkedINV.currentLinks.forEach(invItem => {
         const inv = invItem;
@@ -1107,12 +1113,17 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         invForeignValue += (inv.totalLineValue / exchangeRate);
       });
 
+      console.log(invForeignValue);
+      console.log(cwsCustomsValue);
+      console.log(cwsForeignValue);
+
       item.runningCustomsValue = cwsCustomsValue.toFixed(2);
       item.runningCustomsValueStatus = item.OBit ? this.totalStatuses.Passed : this.getTotalStatus(item.customsValue.toFixed(2), cwsCustomsValue.toFixed(2));
 
       item.runningTotalLineValue = invForeignValue.toFixed(2);
       item.runningForeignValue = cwsForeignValue.toFixed(2);
       item.runningForeignValueStatus = item.ForeignOBit ? this.totalStatuses.Passed : this.getTotalStatus(cwsForeignValue.toFixed(2), invForeignValue.toFixed(2));
+      console.log(item);
     });
   }
 
