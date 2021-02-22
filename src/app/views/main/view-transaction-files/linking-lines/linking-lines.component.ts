@@ -996,7 +996,10 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     const cwsLines = [];
     const invLines = [];
 
+    let count = 1;
     this.cwsLinesTemp.forEach((item) => {
+      item.lineNum = count;
+      count++;
       cwsLines.push(item);
     });
 

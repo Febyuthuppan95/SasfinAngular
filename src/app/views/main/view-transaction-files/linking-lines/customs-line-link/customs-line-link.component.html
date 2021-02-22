@@ -23,6 +23,7 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
           <div class="row">
             <div class="col-12">
               <p style="width: 100%; margin-left: 24px;">
+                <strong>Line {{item.lineNum}}</strong> <br>
                 <strong>HS Quantity</strong> {{item.hsQuantity == -1 ? '0' : item.hsQuantity}} <br>
                 <strong>Total Customs Value</strong> {{item.custVal}} <br>
                 <strong>Customs Duty</strong> {{item.duty}} <br>
@@ -61,6 +62,7 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
             <div class="row">
               <div class="col-12">
                 <p style="width: 100%; margin-left: 24px;">
+                  <strong>Line {{item.lineNum}}</strong> <br>
                   <strong>HS Quantity</strong> {{item.hsQuantity}} <br>
                   <strong>Total Customs Value</strong> {{item.custVal}} <br>
                   <strong>Customs Duty</strong> {{item.duty}} <br>

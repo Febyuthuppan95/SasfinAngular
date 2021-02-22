@@ -52,7 +52,7 @@ placeholder="Search" (keyup)="searchBar()" [(ngModel)]="filter" [ngModelOptions]
                 <div class="row">
                   <div class="col-12" style="height:100%">
                     <p style="width: 100%; margin-left: 24px;">
-                      <strong>Custom Worksheet Line</strong> <br>
+                      <strong>Custom Worksheet Line {{item.cws.lineNum}}</strong> <br>
                       <strong>HS Quantity</strong> {{item.cws.hsQuantity == -1 ? '0' : item.cws.hsQuantity}} <br>
                       <strong>Total Customs Value</strong> {{item.cws.custVal}} <br>
                       <strong>Customs Duty</strong> {{item.cws.duty}} <br>
