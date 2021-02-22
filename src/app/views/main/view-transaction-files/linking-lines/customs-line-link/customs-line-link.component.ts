@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
+import { ShortcutInput } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-customs-line-link',
@@ -22,6 +23,8 @@ export class CustomsLineLinkComponent implements OnInit {
     public Templines: any[] = [];
     public invoice: any;
     public filter = '';
+
+    shortcuts: ShortcutInput[] = [];
 
     ngOnInit() {
 
@@ -79,6 +82,21 @@ export class CustomsLineLinkComponent implements OnInit {
           }
         },
       );*/
+    }
+
+    ngAfterViewInit(): void {
+      this.shortcuts.push(
+        {
+          key: 'alt + a',
+          preventDefault: true,
+          command: e => {
+            console.log('hi')
+            if (this.newLink.length !== 0) {
+              this.continue();
+            }
+          },
+        },
+      );
     }
 
     async continue() {

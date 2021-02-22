@@ -3,6 +3,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
+import { ShortcutInput } from 'ng-keyboard-shortcuts';
 
 @Component({
   selector: 'app-invoice-line-link',
@@ -28,6 +29,7 @@ export class InvoiceLineLinkComponent implements OnInit {
   public Templines: any[] = [];
   public lineKeys: string[] = [];
   public filter = '';
+  shortcuts: ShortcutInput[] = [];
 
   public formattedInvoiceLines: any[] = [];
 
@@ -45,6 +47,20 @@ export class InvoiceLineLinkComponent implements OnInit {
 
     this.linesList(this.Templines, this.currentLinks);
 
+  }
+
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+      {
+        key: 'alt + a',
+        preventDefault: true,
+        command: e => {
+          if (this.newLink.length !== 0){
+            this.continue();
+          }
+        },
+      },
+    );
   }
 
   linesList(lines, links) {
