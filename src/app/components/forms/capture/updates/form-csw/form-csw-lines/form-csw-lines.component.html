@@ -36,7 +36,7 @@
         <mat-label>
           Customs Value
         </mat-label>
-        <input matInput type="text" formControlName="custVal" (focusin)="updateHelpContext('form-customs-worksheet-line-custval')">
+        <input matInput type="number" onkeydown="if(event.key==='.'||event.key===','){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" formControlName="custVal" (focusin)="updateHelpContext('form-customs-worksheet-line-custval')">
         <button mat-icon-button type="button" *ngIf="form.controls.custValOBit.value" matSuffix (click)="undoOverride('custVal')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.custValOBit.value">OVERRIDE: {{form.controls.custValOReason.value}}</mat-hint>
         <button *ngIf="form.controls.custValError.value && !form.controls.custValOBit.value" mat-icon-button type="button" matSuffix (click)="overrideDialog('custVal', 'Customs Value')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
