@@ -210,6 +210,9 @@
             },
             "uat": {
               "devServerTarget": "SasfinGTSAngular:serve:uat"
+            },
+            "migration": {
+              "devServerTarget": "SasfinGTSAngular:serve:migration"
             }
           }
         }
