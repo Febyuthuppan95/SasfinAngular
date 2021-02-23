@@ -1,13 +1,13 @@
+
 export const environment = {
   production: false,
-  AssetRoute: 'https://sasfin.lateral.solutions/assets/dist',
-  ImageRoute: 'https://sasfin.lateral.solutions/assets/dist/images',
-  ApiEndpoint: 'https://SasfinDataApi.lateral.solutions/api/v1.0',
-  ApiBackgroundImages: 'https://SasfinDataApi.lateral.solutions/api/v1.0/public/images/background',
-  ApiProfileImages: 'https://SasfinDataApi.lateral.solutions/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://SasfinDataApi.lateral.solutions/api/v1.0/public/document',
-  WebSocketConnection: 'https://SasfinDataApi.lateral.solutions/api/v1.0/chat',
-  appRoute: 'https://sasfinmigration.lateral.solutions',
+  AssetRoute: 'http://sasfinmigration.lateral.solutions/assets/dist',
+  ImageRoute: 'http://sasfinmigration.lateral.solutions/assets/dist/images',
+  ApiEndpoint: 'http://SasfinDataApi.lateral.solutions/api/v1.0',
+  ApiBackgroundImages: 'http://SasfinDataApi.lateral.solutions/api/v1.0/public/images/background',
+  ApiProfileImages: 'http://SasfinDataApi.lateral.solutions/api/v1.0/public/images/profile',
+  ApiDocuments: 'http://SasfinDataApi.lateral.solutions/api/v1.0/public/document',
+  appRoute: 'http://sasfinmigration.lateral.solutions',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -23,6 +23,7 @@ export const environment = {
     companyClaimData: 'f16d7f8c-279c-4c87-8919-09e91d15d209',
     companyLocalReceiptData: '0184b65f-d9d2-4627-8777-2558035617c5',
     localTransactionData: 'a0773d39-9112-4bd7-a320-ad5ba0f85b6d'
+
   },
   firebase: {
     apiKey: 'AIzaSyA-eGQMsoiNn30kqeVClYCYTkWr0SpAlb0',
@@ -34,15 +35,15 @@ export const environment = {
     appId: '1:919526667324:web:a6cd295797c17aeba7bf39',
     measurementId: 'G-S1QRVH7XLV'
   },
-
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'https://SasfinDataApi.lateral.solutions/api/v1.0/users/list',
-      create: 'https://SasfinDataApi.lateral.solutions/api/v1.0/users/add',
-      update: 'https://SasfinDataApi.lateral.solutions/api/v1.0/users/update',
-      upload: 'https://sasfinapi.solutions/api/v1.0/users/upload',
-      hub: 'https://SasfinDataApi.lateral.solutions/api/Communication/Hub'
+      list: 'http://SasfinDataApi.lateral.solutions/api/v1.0/users/list',
+      create: 'http://SasfinDataApi.lateral.solutions/api/v1.0/users/add',
+      update: 'http://SasfinDataApi.lateral.solutions/api/v1.0/users/update',
+      upload: 'http://SasfinDataApi.lateral.solutions/api/v1.0/users/upload',
+      hub: 'http://SasfinDataApi.lateral.solutions/Communication/Hub'
     }
   }
 };
+
