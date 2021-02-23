@@ -82,7 +82,11 @@ export class FormC1LinesComponent implements OnInit , OnChanges, AfterViewInit, 
           key: 'alt + a',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: () => this.submit(this.form),
+          command: () => {
+            if (this.status !== 5) {
+              this.submit(this.form);
+            }
+          }
         },
         {
           key: 'alt + k',

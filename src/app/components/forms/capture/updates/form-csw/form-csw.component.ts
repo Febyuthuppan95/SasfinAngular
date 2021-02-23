@@ -154,7 +154,11 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + v',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: () => this.deleteLinePrompt()
+            command: () => {
+              if (this.attachmentStatus !== 5) {
+                this.deleteLinePrompt()
+              }
+            }
           },
           {
             key: 'alt + /',
@@ -176,9 +180,11 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: () => {
-              this.activeLine = null;
-              this.activeIndex = -1;
-              this.refresh();
+              if (this.attachmentStatus !== 5){
+                this.activeLine = null;
+                this.activeIndex = -1;
+                this.refresh();
+              }
             }
           },
           {
@@ -244,7 +250,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: () => {
-              if (this.displayLines) {
+              if (this.displayLines && this.attachmentStatus !== 5) {
                 this.eventService.submitLines.next();
               }
             }

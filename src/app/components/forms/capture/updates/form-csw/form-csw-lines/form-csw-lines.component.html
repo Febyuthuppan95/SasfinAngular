@@ -1,9 +1,9 @@
 <ng-keyboard-shortcuts *ngIf="shortcuts" [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <br>
-<ng-container *ngIf="data === null">
+<ng-container *ngIf="(data === null) && this.status !== 5">
   <button mat-raised-button class="bg-success text-light" (click)="submit(form)">Queue Creation</button>
 </ng-container>
-<ng-container *ngIf="data !== null">
+<ng-container *ngIf="(data !== null) && this.status !== 5">
   <p><small>Use "<span class="key">ALT</span> + <span class="key">A</span>" to create or update the current line</small></p>
 </ng-container>
 <br><br>

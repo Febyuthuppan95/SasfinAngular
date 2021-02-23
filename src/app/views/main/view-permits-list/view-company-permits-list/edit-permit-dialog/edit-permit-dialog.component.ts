@@ -402,10 +402,10 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       exportDateEnd: this.form.controls.exportdateEnd.value,
       tariff: this.selectedImportTariffs.map((e) => {
         return {
-          tariffID: e.PermitImportTariffID,
-          uomID: e.UnitOfMeasureID,
-          quantity: e.Quantity,
-          price: e.Price,
+          tariffID: e.PermitImportTariffID === undefined ? e.tariffID : e.PermitImportTariffID,
+          uomID: e.UnitOfMeasureID === undefined ? e.unitOfMeasureID : e.UnitOfMeasureID,
+          quantity: e.Quantity === undefined ? e.quantity : e.Quantity,
+          price: e.Price === undefined ? e.price : e.Price,
         };
       }),
       exportTariffID: this.selectedExportTariff

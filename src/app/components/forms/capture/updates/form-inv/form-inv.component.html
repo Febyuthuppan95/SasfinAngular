@@ -24,8 +24,8 @@
   <mat-card>
     <mat-card-content>
       <div style="padding: 0 24px; height: 62px;" class="line-list">
-        <button tabindex="-1" mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1" (click)="deleteLinePrompt();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
-        <button tabindex="-1" mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
+        <button tabindex="-1" mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex !== -1 && this.attachmentStatus !== 5" (click)="deleteLinePrompt();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
+        <button tabindex="-1" mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1 && this.attachmentStatus !== 5" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button>
         <ng-container *ngIf="lines">
           <button  tabindex="-1" mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1 && lines.length > 0" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         </ng-container>

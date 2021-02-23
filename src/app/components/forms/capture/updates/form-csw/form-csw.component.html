@@ -24,10 +24,10 @@
   <mat-card class="minimal-card">
     <mat-card-content>
       <div class="line-list">
-        <button tabindex="-1" mat-stroked-button color="warn" class="float-right" *ngIf="activeIndex !== -1" (click)="deleteLinePrompt();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
+        <button tabindex="-1" mat-stroked-button color="warn" class="float-right" *ngIf="activeIndex !== -1 && this.attachmentStatus !== 5" (click)="deleteLinePrompt();" style="margin-top: 12px; margin-bottom: 12px;">Delete</button>
         <!-- <button tabindex="-1" mat-raised-button class="float-right bg-primary text-light" *ngIf="activeIndex !== -1" (click)="newLine();" style="margin-top: 12px; margin-bottom: 12px;">Add New Line</button> -->
         <ng-container *ngIf="lines">
-          <button  tabindex="-1" mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1 && lines.length > 0" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
+          <button  tabindex="-1" mat-raised-button class="float-right bg-danger text-light" *ngIf="activeIndex === -1 && lines.length > 0 && this.attachmentStatus !== 5" (click)="cancelLine();" style="margin-top: 12px; margin-bottom: 12px;">Cancel Line</button>
         </ng-container>
         <p *ngIf="!lines" style="font-size: 16px;">No Custom Worksheet Lines Added</p>
         <p *ngIf="lines">

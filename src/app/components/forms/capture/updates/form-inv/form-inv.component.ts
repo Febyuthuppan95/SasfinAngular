@@ -223,7 +223,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             key: 'alt + v',
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
-            command: e => this.deleteLinePrompt()
+            command: e => {
+              if(this.attachmentStatus !== 5) {
+                this.deleteLinePrompt()
+              }
+            }
           },
           {
             key: 'alt + /',
@@ -245,9 +249,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              this.activeLine = null;
-              this.activeIndex = -1;
-              this.refresh();
+              if (this.attachmentStatus !== 5) {
+                this.activeLine = null;
+                this.activeIndex = -1;
+                this.refresh();
+              }
             }
           },
           {
@@ -314,7 +320,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               preventDefault: true,
               allowIn: [AllowIn.Textarea, AllowIn.Input],
               command: e => {
-                if (this.displayLines) {
+                if (this.displayLines && this.attachmentStatus !== 5) {
                   this.eventService.submitLines.next();
                 }
               }
