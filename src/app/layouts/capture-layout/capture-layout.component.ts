@@ -125,6 +125,7 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   fileTypeID: number;
   companyID: number;
   companyName: string;
+  current: any;
 
   dialogAttachments: MatDialogRef<AttachmentDialogComponent>;
 
@@ -336,24 +337,35 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
           key: 'alt + d',
           preventDefault: true,
           allowIn: [AllowIn.Input, AllowIn.Textarea],
-          command: e => this.submitCapture(
-            false,
-            true,
-            false,
-            'Save Progress',
-            'The entered data will be stored, but not submitted for assessment')
+          command: e => { if (this.current.statusID !== 5){
+            this.submitCapture(
+              false,
+              true,
+              false,
+              'Save Progress',
+              'The entered data will be stored, but not submitted for assessment')
+            }
+          }
         },
         {
           key: 'alt + w',
           preventDefault: true,
           allowIn: [AllowIn.Input, AllowIn.Textarea],
-          command: e => this.toggelEscalate()
+          command: e => {
+            if (this.current.statusID !== 5) {
+              this.toggelEscalate()
+            }
+          }
         },
         {
           key: 'alt + q',
           preventDefault: true,
           allowIn: [AllowIn.Textarea, AllowIn.Input],
-          command: e => this.exitCaptureScreen()
+          command: e => {
+            if (!this.dialogOpen) {
+              this.exitCaptureScreen();
+            }
+          }
         },
         {
           key: 'alt + o',
@@ -610,6 +622,8 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
               this.attachmentID === attach.attachmentID ? attach.tooltip += ' - Current' : console.log() ;
             }
           });
+          this.current = current;
+          //console.log(current);
         });
   }
 
@@ -653,7 +667,9 @@ export class CaptureLayoutComponent implements OnInit, AfterViewInit, OnDestroy 
   }
   /* Key Handler Directive Outputs */
   exitCaptureScreen() {
+    this.dialogOpen = true;
     this.dialog.open(QuitDialogComponent).afterClosed().subscribe((status: boolean) => {
+      this.dialogOpen = false;
       if (status) {
         this.companyService.setCapture({ capturestate: false});
         // this.router.navigate(['transaction/capturerlanding']);
