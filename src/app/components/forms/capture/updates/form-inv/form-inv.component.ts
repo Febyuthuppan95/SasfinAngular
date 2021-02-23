@@ -262,7 +262,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
                 {
-                  if (!this.dialogOpen) {
+                  if (!this.dialogOpen && this.attachmentStatus !== 5) {
                     this.dialogOpen = true;
                     this.dialog.open(SubmitDialogComponent).afterClosed().subscribe((status: boolean) => {
                       this.dialogOpen = false;
