@@ -49,11 +49,11 @@
 
     </mat-toolbar>
     <mat-progress-bar mode="indeterminate"  *ngIf="loading" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
-    <div class="row">
+    <div class="row"style='margin:0px 15px;'>
         <div [ngClass]="(this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')
-        ? 'col-sm-5':'col-sm-7'">
+        ? 'col-sm-5':'col-sm-6'" >
             <div class="top-section row">
-                <mat-card class="offset-sm-1 col-sm-11">
+                <mat-card class="col-sm-12">
                     <mat-card-content>
                         <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Claim Parameters</button>
                         <form [formGroup]="claimRequestParams" *ngIf="claimRequestParams">
@@ -192,7 +192,7 @@
                 </mat-card>
             </div>
             <div class="bottom-section row" *ngIf="!this.showMain">
-                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                <mat-card class="col-sm-12 table-card mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available SAD500's</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
@@ -211,7 +211,7 @@
             </div>
             <!--Available Imports-->
             <div class="bottom-section row" *ngIf="this.showMain && (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI')">
-                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                <mat-card class="col-sm-12 table-card mat-elevation-z2">
                     <button class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">{{this.importLabel}}</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'view_headline'"
@@ -229,7 +229,7 @@
                 </mat-card>
             </div>
             <div class="bottom-section row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' || this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI' )">
-                <mat-card class="offset-sm-1 col-sm-11 table-card mat-elevation-z2" >
+                <mat-card class="col-sm-12 table-card mat-elevation-z2" >
                     <button *ngIf="this.currentClaim.serviceName !== 'PI'" class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">OEM Products</button>
                     <button *ngIf="this.currentClaim.serviceName === 'PI'" class="col-sm-12" mat-button color="primary"  style="font-size: 1.2rem;">Available Products</button>
                     <app-nested-table *ngIf="!this.loading"
@@ -253,9 +253,9 @@
         </div>
         <div class="data-lines "
         [ngClass]="(this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')
-        ? 'col-sm-7':'col-sm-5'">
+        ? 'col-sm-7':'col-sm-6'" style="padding-left: 30px;">
             <div class="top-section-right row" *ngIf="(this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI')">
-                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                <mat-card class="col-sm-12 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Assigned Exports</button>
                 <app-nested-table *ngIf="!this.loading"
                 [action_icon]="'arrow_downward'"
@@ -273,7 +273,7 @@
             </mat-card>
             </div>
             <div style="height: 90vh !important; margin-top:20px; margin-bottom:20px;" class=" row" *ngIf="!this.loading && (this.currentClaim.serviceName === 'C1' ||this.currentClaim.serviceName === 'SMD' || this.currentClaim.serviceName === 'PI')">
-                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                <mat-card class="col-sm-12 mat-elevation-z2" >
                 <button class="col-sm-12" mat-button color="accent"  style="font-size: 1.2rem;">Product Components</button>
                 <app-nested-table *ngIf="!this.loading"
                 [(parents)]="this.dataLinesAssigned"
@@ -289,7 +289,7 @@
             </mat-card>
             </div>
             <div class="bottom-section-right row" *ngIf="this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD' && this.currentClaim.serviceName !== 'PI'">
-                <mat-card class="offset-sm-1 col-sm-10 mat-elevation-z2" >
+                <mat-card class="col-sm-12 mat-elevation-z2" >
                     <button class="col-sm-12" mat-button color="warn"  style="font-size: 1.2rem;">Available Exports</button>
                     <app-nested-table *ngIf="!this.loading"
                     [action_icon]="'arrow_upward'"

@@ -42,6 +42,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   docPreview = false;
   PiClaim = true;
   claimRequestParams: FormGroup;
+  itemID: number = null;
+  captureJoinImportID: number = null;
+  quantity: number = null;
 
 
   quarters = [
@@ -1982,10 +1985,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               console.log(element.ImportDate);
             });
             this.data = [];
+            this.data = res.data;
             setTimeout(() => {
-              this.data = res.data;
               this.pageA.length = res.rowCount;
             }, 500);
+            console.log(this.data);
             console.log(res);
             if (this.currentClaim.serviceName === '538') {
               console.log(this.showMain);
@@ -2035,6 +2039,9 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.selectedA = lineData.lineA; // cjid
     this.selectedB = lineData.lineB; // itemID
     this.selectedC = lineData.lineD; // Import Avail Quatity
+    this.captureJoinImportID = this.selectedA;
+    this.itemID = this.selectedB;
+    this.quantity = this.selectedC;
     console.log(lineData);
     if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
       this.loadBottomChild();
@@ -2048,22 +2055,46 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
    * @param $event
    * 521, 536 - Assigned Lines Row Event
    */
-  rowEventB($event) {
+  async rowEventB($event) {
     const lineData = JSON.parse($event);
-
+    let temp = this.selectedC;
+    console.log(lineData);
+    console.log(this.quantity);
+    this.selectedA = this.captureJoinImportID;
     this.selectedB = lineData.lineB; // Export cjid
-
     this.selectedC = lineData.lineC;
-    this.updateTopChild();
+    await this.updateTopChild();
+    if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
+      this.selectedB = this.itemID;
+      await this.loadBottomChild();
+      this.selectedA = null;
+      this.loadMainDataSet();
+      this.quantity =+ this.selectedC;
+      console.log(this.quantity);
+      this.selectedC = temp;
+    }
   }
 
-  rowEventC($event) {
+  async rowEventC($event) {
     const lineData = JSON.parse($event);
     console.log(lineData);
+    console.log(this.quantity);
+    console.log(this.selectedC);
+    this.selectedA = this.captureJoinImportID;
     this.selectedB = lineData.lineB; // Export List CJID
     this.selectedD = lineData.lineD; // Export Line Quantity
-    this.updateBottomChild();
+    if (this.selectedC <= this.quantity) {
+      await this.updateBottomChild();
+      if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
+        this.selectedB = this.itemID;
+        await this.loadBottomChild();
+        this.selectedA = null;
+        this.loadMainDataSet();
+        this.quantity =- this.selectedC;
+      }
+    }
   }
+
   assignRowEvent($event) {
     this.loading = true;
     const lineData = JSON.parse($event);

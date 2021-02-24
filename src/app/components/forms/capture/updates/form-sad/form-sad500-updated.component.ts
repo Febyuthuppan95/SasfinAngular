@@ -416,6 +416,11 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
         if (!this.isVOC) {
           this.errors = res.attachmentErrors.attachmentErrors;
         }
+        else {
+          res.attachmentErrors.attachmentErrors.forEach((err)=>{
+            this.errors.push(err);
+          })
+        }
 
         if (this.errors ? this.errors.length : 0 > 0 && this.isVOC) {
           Object.keys(this.form.controls).forEach(key => {
