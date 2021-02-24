@@ -967,7 +967,7 @@ loadCompanyPermits() {
     permitID: -1,
     companyID: this.companyID,
     rowStart: this.rowStart,
-    rowEnd: this.rowEnd,
+    rowEnd: 10000000,
     orderBy: this.orderBy,
     orderByDirection: this.orderDirection
   };
