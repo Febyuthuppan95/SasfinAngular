@@ -89,7 +89,7 @@
           <mat-label>
             Total Customs Value
           </mat-label>
-          <input matInput type="number" formControlName="totalCustomsValue" (focusin)="updateHelpContext('form-sad500-total-customs-value')"/>
+          <input matInput type="number" onkeydown="if(event.key==='.'||event.key===','){event.preventDefault();}"  oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');"  formControlName="totalCustomsValue" (focusin)="updateHelpContext('form-sad500-total-customs-value')"/>
           <button mat-icon-button type="button" *ngIf="form.controls.totalCustomsValueOBit.value" matSuffix (click)="undoOverride('totalCustomsValue')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
           <mat-hint *ngIf="form.controls.totalCustomsValueOBit.value">OVERRIDE: {{form.controls.totalCustomsValueOReason.value}}</mat-hint>
           <button mat-icon-button type="button" *ngIf="!form.controls.totalCustomsValueOBit.value && form.controls.totalCustomsValue.errors?.incorrect" matSuffix (click)="overrideDialog('totalCustomsValue', 'Total Customs Value')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
