@@ -8,15 +8,15 @@
   [show-all]="false"
   [(page)]="page"
   [(rotation)]="rotation"
-  [autoresize]="true"
-  [fit-to-page]="true">
+  [autoresize]="false"
+  [fit-to-page]="false">
 </pdf-viewer>
 
 <div class="pdf-control-container">
   <div class="pdf-control">
     <div class="row">
       <div class="col-4 text-left">
-        <button class="btn btn-secondary btn-sm" matTooltip="Zoom out" matTooltipPosition="above" (click)="zoom_out()" [disabled]="this.zoom_to <= 0.4">
+        <button class="btn btn-secondary btn-sm" matTooltip="Zoom out" matTooltipPosition="above" (click)="zoom_out()" [disabled]="this.zoom_to = 0.8">
           <span class="mdi mdi-minus"></span>
         </button>
         &nbsp;

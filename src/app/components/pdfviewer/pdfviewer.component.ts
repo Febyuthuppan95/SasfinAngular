@@ -63,7 +63,9 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e =>  {
+          if (this.zoom_to <= 1.6) {
           this.zoom_in();
+          }
         }
       },
       {
@@ -71,7 +73,9 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
+          if (this.zoom_to > 0.8) {
           this.zoom_out();
+          }
         }
       },
       {
@@ -102,13 +106,25 @@ export class PDFViewerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   zoom_in() {
+    console.log('ZOOM IN');
+    console.log('currentZoom');
+    console.log(this.zoom_to);
+    if (this.zoom_to <= 1.6) {
     this.zoom_to = this.zoom_to + 0.2;
+    }
+    console.log('zoom_to');
+    console.log(this.zoom_to);
   }
 
   zoom_out() {
-    if (this.zoom_to >= 0.4) {
+    console.log('ZOOM OUT');
+    console.log('currentZoom');
+    console.log(this.zoom_to);
+    if (this.zoom_to > 0.8) {
        this.zoom_to = this.zoom_to - 0.2;
     }
+    console.log('zoom_to');
+    console.log(this.zoom_to);
   }
 }
 
