@@ -300,8 +300,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   async loadDataSets() {
     this.loading = true;
     await this.loadMainDataSet();
-    await this.loadTopChild();
-    await this.loadBottomChild();
+    if (this.selectedA){
+      await this.loadTopChild();
+      await this.loadBottomChild();
+    }
     this.loading = false;
   }
 
@@ -2042,6 +2044,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.captureJoinImportID = this.selectedA;
     this.itemID = this.selectedB;
     this.quantity = this.selectedC;
+    console.log('Quantity: ' + this.quantity);
     console.log(lineData);
     if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
       this.loadBottomChild();
@@ -2057,40 +2060,46 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
    */
   async rowEventB($event) {
     const lineData = JSON.parse($event);
-    let temp = this.selectedC;
     console.log(lineData);
-    console.log(this.quantity);
-    this.selectedA = this.captureJoinImportID;
-    this.selectedB = lineData.lineB; // Export cjid
-    this.selectedC = lineData.lineC;
-    await this.updateTopChild();
     if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
+      this.selectedA = this.captureJoinImportID;
+      this.selectedB = lineData.lineB; // Export cjid
+      this.selectedC = lineData.lineC;
+      await this.updateTopChild();
       this.selectedB = this.itemID;
       await this.loadBottomChild();
       this.selectedA = null;
-      this.loadMainDataSet();
-      this.quantity =+ this.selectedC;
-      console.log(this.quantity);
-      this.selectedC = temp;
+      await this.loadMainDataSet();
+      this.selectedA = this.captureJoinImportID;
+      this.loadTopChild();
+      console.log('Quantity: ' + this.quantity);
+      this.quantity = this.quantity + this.selectedC;
+      console.log('Quantity: ' + this.quantity);
+      console.log(this.selectedC);
     }
   }
 
   async rowEventC($event) {
     const lineData = JSON.parse($event);
     console.log(lineData);
-    console.log(this.quantity);
+    console.log('Quantity: ' + this.quantity);
     console.log(this.selectedC);
-    this.selectedA = this.captureJoinImportID;
-    this.selectedB = lineData.lineB; // Export List CJID
-    this.selectedD = lineData.lineD; // Export Line Quantity
-    if (this.selectedC <= this.quantity) {
+    if (lineData.lineD <= this.quantity && this.quantity > 0 && lineData.lineD > 0) {
+      this.selectedA = this.captureJoinImportID;
+      this.selectedB = lineData.lineB; // Export List CJID
+      this.selectedD = lineData.lineD; // Export Line Quantity
       await this.updateBottomChild();
       if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
         this.selectedB = this.itemID;
         await this.loadBottomChild();
         this.selectedA = null;
-        this.loadMainDataSet();
-        this.quantity =- this.selectedC;
+        await this.loadMainDataSet();
+        this.selectedA = this.captureJoinImportID;
+        this.loadTopChild();
+        console.log('Quantity: ' + this.quantity);
+        this.quantity = this.quantity - lineData.lineD;
+        console.log('Quantity: ' + this.quantity);
+        console.log(lineData.lineD);
       }
     }
   }
@@ -2481,19 +2490,24 @@ await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`
     );
   }
   paginateS($event) {
+    console.log($event);
     this.pageS = $event;
+    console.log(this.pageS);
     this.loadMainDataSet();
   }
   paginateA($event) {
     console.log($event);
     this.pageA = $event;
+    console.log(this.pageA);
     this.loadMainDataSet();
   }
   paginateB($event) {
+    console.log($event);
     this.pageB = $event;
     this.loadTopChild();
   }
   paginateC($event) {
+    console.log($event);
     this.pageC = $event;
     this.loadBottomChild();
   }
