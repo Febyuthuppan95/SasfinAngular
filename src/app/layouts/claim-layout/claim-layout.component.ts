@@ -2493,13 +2493,19 @@ await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`
     console.log($event);
     this.pageS = $event;
     console.log(this.pageS);
-    this.loadMainDataSet();
+    this.selectedA = null;
+    this.dataLinesAvailable = [];
+    this.dataLinesAssigned = [];
+    this.loadDataSets();
   }
   paginateA($event) {
     console.log($event);
     this.pageA = $event;
     console.log(this.pageA);
-    this.loadMainDataSet();
+    this.selectedA = null;
+    this.dataLinesAvailable = [];
+    this.dataLinesAssigned = [];
+    this.loadDataSets();
   }
   paginateB($event) {
     console.log($event);
