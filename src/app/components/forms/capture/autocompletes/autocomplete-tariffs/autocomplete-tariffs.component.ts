@@ -27,6 +27,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   private isTariffType;
   private currentUser = this.userService.getCurrentUser();
   private isRequired = false;
+  private click = null;
   public heading = 'Tariff';
 
   public list: any [] = [];
@@ -74,9 +75,11 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
           this.query.setErrors({ incorrect: true });
           this.control.setErrors({ incorrect: true });
         }
+        this.click = null;
       } else {
         this.selected = false;
         this.control.setValue(null);
+        this.click = null;
       }
     });
     if (this.tariffHeading > 0 && this.tariffHeading !== null) {
@@ -167,12 +170,19 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
-      this.query.setValue(this.list[0]);
-
-      trigger.closePanel();
-
-    }
+    setTimeout(() => {
+      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+        if (this.click === null) {
+          this.query.setValue(this.list[0]);
+        }
+        else {
+          this.query.setValue(this.click);
+          this.click = null;
+        }
+        console.log(this.query.value);
+        trigger.closePanel();
+      }
+    }, 200);
   }
 
   updateHelpContext(slug: string) {
@@ -182,6 +192,11 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     };
 
     this.snackbarService.setHelpContext(newContext);
+  }
+
+  selectedOption($event){
+    this.click = $event;
+    console.log($event);
   }
 
   ngOnDestroy(): void {}

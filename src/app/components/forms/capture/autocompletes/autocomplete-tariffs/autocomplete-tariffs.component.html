@@ -7,7 +7,7 @@
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button></mat-error>
 </mat-form-field>
-<mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn" >
+<mat-autocomplete #cpcAuto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="selectedOption($event.option.value)">
   <mat-option *ngFor="let item of list" [value]="item">
     {{item.subHeading == null ? item.itemNumber: item.subHeading}}{{item.subHeading ? item.subHeading.length < 8 && item.subHeading != null ? '.00' : '' : ''}}
   </mat-option>
