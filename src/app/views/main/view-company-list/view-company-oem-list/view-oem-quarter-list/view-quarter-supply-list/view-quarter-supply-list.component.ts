@@ -359,6 +359,8 @@ export class ViewQuarterSupplyListComponent implements OnInit {
     // this.focusOEMQuarterID = null;
     // this.focusPeriodQuarter = null;
     // this.focusPeriodYear = null;
+    this.selectedQuarterSupply.quantity = null;
+    this.itemID = new FormControl();
     this.openaddModal.nativeElement.click();
   }
   searchBar(filter: string) {
