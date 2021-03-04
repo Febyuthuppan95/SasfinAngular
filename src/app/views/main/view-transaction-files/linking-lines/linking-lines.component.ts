@@ -18,6 +18,7 @@ import { DialogOverrideComponent } from 'src/app/components/forms/capture/dialog
 import { DialogReturnAttachmentComponent } from './dialog-return-attachment/dialog-return-attachment.component';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { CaptureInfoResponse } from 'src/app/models/HttpResponses/ListCaptureInfo';
+import { CompanyServiceResponse } from 'src/app/models/HttpResponses/CompanyServiceResponse';
 import { TransactionListResponse } from 'src/app/models/HttpResponses/TransactionListResponse';
 import { InvoiceLines } from './lines';
 
@@ -105,6 +106,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
    };
 
   private currentUser: any = this.user.getCurrentUser();
+  public leadCapturer;
   public consultant =
   this.user.getCurrentUser().designation.toUpperCase() === 'CONSULTANT' ||
   this.user.getCurrentUser().designation.toUpperCase() === 'ADMIN';
@@ -149,6 +151,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loadRates();
       }
      });
+     console.log(this.currentUser);
   }
 
   matchRuleShort(str, rule) {
@@ -167,7 +170,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const transaction: any = await this.api.post(`${environment.ApiEndpoint}/capture/post`, transactionModel);
     const companyID = transaction.data[0].CompanyID;
-
+    this.companyID = companyID;
     const model = {
       request: {},
       procedure: 'AllFileTypes'
@@ -303,18 +306,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
-          this.dialog.open(DialogConfirmationComponent, {
-            data: {
-              title: 'Quit',
-              message: 'Are you sure you want to quit?'
-            },
-            width: '512px'
-          }).afterClosed().subscribe((state) => {
-            if (state) {
-              this.companyService.setCapture({ capturestate: false});
-              this.location.back();
-            }
-          });
+          this.openCloseDialog();
         }
       },
       {
@@ -322,31 +314,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
-          if (this.consultant) {
-            this.dialog.open(DialogConfirmationComponent, {
-              data: {
-                title: 'Approve',
-                message: 'Are you sure you want to approve this transaction?'
-              },
-              width: '512px'
-            }).afterClosed().subscribe((state) => {
-              if (state) {
-                this.approve();
-              }
-            });
-          } else {
-            this.dialog.open(DialogConfirmationComponent, {
-              data: {
-                title: 'Submit',
-                message: 'Are you sure you want to submit this transaction?'
-              },
-              width: '512px'
-            }).afterClosed().subscribe((state) => {
-              if (state) {
-                this.submitToConsultant();
-              }
-            });
-          }
+          this.submit()
         }
       },
       {
@@ -377,10 +345,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         preventDefault: true,
         allowIn: [AllowIn.Textarea, AllowIn.Input],
         command: e => {
-          const id = +this.currentAttachment.attachmentID;
-          const type = this.currentAttachment.fileType;
-
-          this._returnAttachmentDialog(type, id);
+          this.escalate();
         },
         key: 'alt + b',
       },
@@ -442,6 +407,14 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         key: 'alt + 6',
       },
+      {
+        preventDefault: true,
+        allowIn: [AllowIn.Textarea, AllowIn.Input],
+        command: e => {
+          this.captureQueue();
+        },
+        key: 'alt + c'
+      }
     );
 
     this.keyboard.select('cmd + f').subscribe(e => console.log(e));
@@ -456,6 +429,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.loadItems();
 
     await this.loadAttachments();
+    this.leadCapturer = this.getLeadCaps();
     this.loading = false;
   }
 
@@ -1306,6 +1280,196 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   todate(value) {
     this.invoiceDate.setValue(new Date(value));
+  }
+
+  getLeadCaps() {
+    const model = {
+      filter: '',
+      userID: 3,
+      specificCompanyID: this.companyID,
+      specificServiceID: -1,
+      rowStart: 1,
+      rowEnd: 9999969,
+      orderBy: 'Name',
+      orderByDirection: 'ASC'
+    };
+    console.log(model);
+
+    this.companyService.service(model).then(
+      (res: any) => {
+        console.log(res);
+        console.log(this.currentUser.userID);
+        let bool = res.services.some(el => el.resCapturerID === this.currentUser.userID);
+        this.leadCapturer = bool;
+      }
+    )
+  }
+
+  submit() {
+    if (this.consultant) {
+      this.dialog.open(DialogConfirmationComponent, {
+        data: {
+          title: 'Approve',
+          message: 'Are you sure you want to approve this transaction?'
+        },
+        width: '512px'
+      }).afterClosed().subscribe((state) => {
+        if (state) {
+          this.approve();
+        }
+      });
+    } else {
+      this.dialog.open(DialogConfirmationComponent, {
+        data: {
+          title: 'Submit',
+          message: 'Are you sure you want to submit this transaction?'
+        },
+        width: '512px'
+      }).afterClosed().subscribe((state) => {
+        if (state) {
+          this.submitToConsultant();
+        }
+      });
+    }
+  }
+
+  openCloseDialog() {
+    this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Quit',
+        message: 'Are you sure you want to quit?'
+      },
+      width: '512px'
+    }).afterClosed().subscribe((state) => {
+      if (state) {
+        this.companyService.setCapture({ capturestate: false});
+        this.location.back();
+      }
+    });
+  }
+
+  escalate() {
+    const id = +this.currentAttachment.attachmentID;
+    const type = this.currentAttachment.fileType;
+    this._returnAttachmentDialog(type, id);
+  }
+
+  captureQueue() {
+    this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Return Attachment',
+        message: 'Are you sure you want to return this attachement to the capturing queue?'
+      },
+      width: '512px'
+    }).afterClosed().subscribe((state) => {
+      if (state) {
+        console.log(this.attachments)
+        console.log(this.currentAttachment);
+        this._returnToCaptureQueue();
+        this.location.back();
+      }
+    })
+  }
+
+  async _returnToCaptureQueue() {
+    let model = {
+      request: {
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID,
+        attachmentID: this.currentAttachment.attachmentID,
+        fileTypeID: this.currentAttachment.fileTypeID
+      },
+      procedure: 'TransactionReturns'
+    }
+
+    this.api.post(`${environment.ApiEndpoint}/capture/post`,model).then(
+      (res) => {
+        console.log(res);
+      }
+    )
+
+
+    /*let attachModel;
+    if (this.currentAttachment.fileTypeID === 2) {
+      attachModel = {
+        request: {
+          userID: this.currentUser.userID,
+          SAD500ID: this.currentAttachment.attachmentID,
+          attachmentStatusID: 2,
+        },
+        procedure: 'SAD500Update'
+      }
+    }
+    else if (this.currentAttachment.fileTypeID === 5) {
+      attachModel = {
+        request: {
+          userID: this.currentUser.userID,
+          invoiceID: this.currentAttachment.attachmentID,
+          attachmentStatusID: 2,
+        },
+        procedure: 'InvoiceUpdate'
+      }
+    }
+    else if (this.currentAttachment.fileTypeID === 7) {
+      attachModel = {
+        request: {
+          userID: this.currentUser.userID,
+          customWorksheetID: this.currentAttachment.attachmentID,
+          attachmentStatusID: 2,
+        },
+        procedure: 'CustomWorksheetsUpdate'
+      }
+    }
+    else if (this.currentAttachment.fileTypeID === 8) {
+      let model = {
+        request: {
+          userID: this.currentUser.userID,
+          VOCID: this.currentAttachment.attachmentID,
+          attachmentStatusID: 2,
+        },
+        procedure: 'VOCUpdate'
+      }
+      await this.api.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+        (res) => {
+          console.log(res);
+        }
+      )
+      let sad500ID;
+      this.api.post(`${environment.ApiEndpoint}/capture/list`, {request: { userID: this.currentUser.userID, VOCID: this.currentAttachment.attachmentID, transactionID: this.transactionID }, procedure: 'VOCsList'}).then(
+        (res: any) => {
+          console.log(res);
+          sad500ID = res.data[0].SAD500ID;
+        }
+      )
+      attachModel = {
+        request: {
+          userID: this.currentUser.userID,
+          SAD500ID: sad500ID,
+          attachmentStatusID: 2,
+        },
+        procedure: 'SAD500Update'
+      }
+    }
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`,attachModel).then(
+      (res) => {
+        console.log(res);
+      }
+    );
+    const transModel = {
+      request : {
+        userID: this.currentUser.userID,
+        transactionID: this.transactionID,
+        statusID: 4,
+      },
+      procedure : 'TranscactionUpdate'
+    }
+    await this.api.post(`${environment.ApiEndpoint}/capture/post`,transModel).then(
+      (res) => {
+        console.log(res);
+        this.snackbar.open('Attachment successfully returned','',{ duration: 3000 });
+      },
+      msg => this.snackbar.open('Attachment return unsuccessful',msg,{ duration: 3000 })
+    );*/
   }
 
   ngOnDestroy(): void {

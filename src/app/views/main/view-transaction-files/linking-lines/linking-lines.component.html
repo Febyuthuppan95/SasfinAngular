@@ -3,6 +3,23 @@
 <mat-card style="background: #fafafa;" class="cover">
   <mat-card-content>
     <div class="row">
+      <div class="dock dock-top-left" style="position: absolute;">
+        <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab class="bg-danger text-light" matTooltip="Close without submitting" matTooltipPosition="below" (click)="openCloseDialog()">
+          <span class="mdi mdi-close"></span>
+        </button>
+        &nbsp;&nbsp;
+        <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab type="button" class="bg-success text-light" matTooltip="Submit and close" matTooltipPosition="below" (click)="submit()"> <!--*ngIf="this.current.statusID !== 5"-->
+          <span class="mdi mdi-check"></span>
+        </button>
+        &nbsp;&nbsp;
+        <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab class="bg-warning text-dark"  matTooltip="Escalate Attachment" matTooltipPosition="below" (click)="escalate()">
+          <span class="mdi mdi-exclamation"></span>
+        </button>
+        &nbsp;&nbsp;
+        <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab class="bg-info text-light" matTooltip="Send back to capturing queue" matTooltipPosition="below" (click)="captureQueue()">
+          <span class="mdi mdi-file-restore"></span> <!--mdi-backburger, mdi-keyboard-backspace,  -->
+        </button>
+      </div>
       <div class="col-6 pdf-viewer-cont" id="pdfWrapper">
         <div class="reader-line" ngDraggable [inBounds]="true" [lockAxis]="'x'" [position]="{ x: this.currentReaderPOS.x, y: this.currentReaderPOS.y }">
           <span class="mdi mdi-drag" style="position: absolute; right: 14px; top: 1px;"></span>
@@ -112,20 +129,20 @@
               <button mat-menu-item (click)="_invoiceLinkDialog(i);">Link Lines</button>
               <!--<button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>-->
 
-              <ng-container *ngIf="item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None">
+              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None) && (consultant || leadCapturer)">
                 <hr>
                 <button mat-menu-item (click)="customsValueChip(item);">Override Customs Value</button>
               </ng-container>
-              <ng-container *ngIf="item.runningCustomsValueStatus === totalStatuses.Passed && item.OBit">
+              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Passed && item.OBit) && (consultant || leadCapturer)">
                 <hr>
                 <button mat-menu-item (click)="undoOverride(item, 'Customs Value');">Undo Override Customs Value</button>
               </ng-container>
 
-              <ng-container *ngIf="item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None">
+              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None) && (consultant || leadCapturer)">
                 <hr>
                 <button mat-menu-item (click)="foreignValueChip(item);">Override Foreign Invoice Value</button>
               </ng-container>
-              <ng-container *ngIf="item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignOBit">
+              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignOBit) && (consultant || leadCapturer)">
                 <hr>
                 <button mat-menu-item (click)="undoOverride(item, 'Foreign Invoice Value');">Undo Override Foreign Invoice Value</button>
               </ng-container>
