@@ -127,6 +127,22 @@ export class ViewItemParentsComponent implements OnInit, OnDestroy {
         tag: 'UnitsOfMeasureName'
       }
     },
+    {
+      title: 'Period Year',
+      propertyName: 'PeriodYear',
+      order: {
+        enable: true,
+        tag: 'PeriodYear'
+      }
+    },
+    {
+      title: 'Quarter',
+      propertyName: 'QuarterID',
+      order: {
+        enable: true,
+        tag: 'Quarter'
+      }
+    },
     // {
     //   title: 'Start Date',
     //   propertyName: 'startDateText',

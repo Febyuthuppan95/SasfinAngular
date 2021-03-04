@@ -236,6 +236,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
       requestParams: {
         userID: this.currentUser.userID,
         bomID: this.bomid,
+        itemID: -1,
         filter: this.filter,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection,
