@@ -128,7 +128,8 @@
           </div>
           <mat-card *ngFor="let item of selectedImportTariffs; let i = index" (click)="removeTariff(i)" matTooltip="Click to remove" style="margin: 10px;">
             <mat-card-content>
-              <small class="text-muted"><strong>{{item.Subheading == null ? item.itemNumber: item.Subheading}}{{item.Subheading ? item.Subheading.length < 8 && item.Subheading != null ? '.00' : '' : ''}}</strong></small>
+              <small class="text-muted"><strong>{{item.Subheading == null ? (item.subHeading == null ? item.itemNumber: item.subHeading): item.Subheading}}{{item.Subheading ? item.Subheading.length < 8 && item.Subheading != null ? '.00' : '' : ''}}
+                {{item.subheading ? item.subheading.length < 8 && item.subheading != null ? '.00' : '' : ''}}</strong></small>
               <p>
                 <strong>Price</strong>:&nbsp;{{item.Price == null ? item.price: item.Price}}<br/>
                 <strong>Quantity</strong>:&nbsp;{{item.Quantity== null ? item.quantity: item.Quantity}}
