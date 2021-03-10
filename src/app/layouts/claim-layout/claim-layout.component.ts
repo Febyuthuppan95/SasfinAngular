@@ -1982,6 +1982,11 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         if (res.outcome.outcome === 'SUCCESS') {
           if (this.selectedA === null || this.selectedA === undefined) {
             res.data.forEach(element => {
+              console.log(element);
+              console.log(this.captureJoinImportID);
+              if (element.CJID === this.captureJoinImportID) {
+                this.quantity = element.AvailHSQuantity;
+              }
               let datum: string = element.ImportDate;
               element.ImportDate = datum.substring(0, 10);
               console.log(element.ImportDate);
@@ -2072,21 +2077,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       await this.loadMainDataSet();
       this.selectedA = this.captureJoinImportID;
       this.loadTopChild();
-      console.log('Quantity: ' + this.quantity);
-      this.quantity = this.quantity + this.selectedC;
-      console.log('Quantity: ' + this.quantity);
-      console.log(this.selectedC);
     }
   }
 
   async rowEventC($event) {
     const lineData = JSON.parse($event);
     console.log(lineData);
-    console.log('Quantity: ' + this.quantity);
-    console.log(this.selectedC);
-    if (lineData.lineD <= this.quantity && this.quantity > 0 && lineData.lineD > 0) {
+    if (this.quantity > 0 && lineData.lineD > 0) {
       this.selectedA = this.captureJoinImportID;
       this.selectedB = lineData.lineB; // Export List CJID
+      this.selectedC = this.quantity;
       this.selectedD = lineData.lineD; // Export Line Quantity
       await this.updateBottomChild();
       if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
@@ -2096,10 +2096,6 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         await this.loadMainDataSet();
         this.selectedA = this.captureJoinImportID;
         this.loadTopChild();
-        console.log('Quantity: ' + this.quantity);
-        this.quantity = this.quantity - lineData.lineD;
-        console.log('Quantity: ' + this.quantity);
-        console.log(lineData.lineD);
       }
     }
   }
