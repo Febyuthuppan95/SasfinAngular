@@ -21,6 +21,8 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
 
   @Output() addtoGroup = new EventEmitter<string>();
   @Output() addtoParent = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<number>();
+  @Output() remove = new EventEmitter<number>();
 
   ngOnInit() {
 
@@ -50,6 +52,12 @@ export class ContextMenuCompanyItemsComponent implements OnInit {
     this.addtoParent.emit(JSON.stringify({
       itemID: this.itemID
     }));
+  }
+  editCompanyItem() {
+    this.edit.emit(this.itemID);
+  }
+  removeCompanyItem(){
+    this.remove.emit(this.itemID)
   }
 }
 

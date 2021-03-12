@@ -60,24 +60,49 @@
                [(ngModel)]="this.description" [ngModelOptions]="{standalone: true}"  required></textarea>
             </div>
             <div class="form-group">
-              <label class="control-label">Tariff:</label>
+              <ls-autocomplete-tariffs [control]="tariffControl"></ls-autocomplete-tariffs>
+              <!--<label class="control-label">Tariff:</label>
               <select class="form-control" (change)="onTariffChange($event.target.value)">
-                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.name}}</option>
+                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.subHeading}}</option>
+              </select>-->
+            </div>
+            <div class="form-group">
+              <label class="control-label">Type:</label>
+              <select class="form-control" (change)="onTypeChange($event.target.value)">
+                <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemTypeID === this.itemtypeID">{{type.itemType}} - {{type.description}}</option>
+              </select>
+             </div>
+             <div class="form-group">
+              <label class="control-label">Class:</label>
+              <select class="form-control" (change)="onClassChange($event.target.value)">
+                <option *ngFor="let class of this.itemClasses" [value]="class.ItemClassID" [selected]="class.ItemClassID === this.itemClassID"><a><span>{{class.Name}} - {{class.Description}}</span></a></option>
               </select>
             </div>
             <div class="form-group">
-                <label class="control-label">Type:</label>
-                <select class="form-control" (change)="onTypeChange($event.target.value)">
-                  <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemTypeID === this.itemtypeID">{{type.itemType}}</option>
-                </select>
-              </div>
+              <label class="control-label">Usage:</label>
+              <select class="form-control" (change)="onUsageChange($event.target.value)">
+                <option *ngFor="let use of this.usages" [value]="use.UsageTypeID" [selected]="use.UsageTypeID === this.usageTypeID">{{use.Name}} - {{use.Description}}</option>
+              </select>
+            </div>
             <div class="form-group">
               <label class="control-label">Vulnerable:</label>
               <select class="form-control" (change)="onVulnerablestateChange($event.target.value)" [formControl]="vulnerableControl">
                 <option *ngFor="let state of this.YESNO" [value]="state.value">{{state.title}}</option>
               </select>
             </div>
-            <div class="row ">
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="this.qualify521" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+              <label class="control-label">Qualifies for 521</label>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="this.qualify536" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+              <label class="control-label">Qualifies for 536</label>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" [(ngModel)]="this.qualifyPI" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+              <label class="control-label">Qualifies for PI</label>
+            </div>
+            <!--<div class="row ">
               <form class="form-group add-scroll col-md-6 text-center">
                   <h5 class="control-label">Available Services</h5>
                   <div class="modal-list-service" style="border: inset;">
@@ -94,7 +119,7 @@
                   </ul>
                 </div>
               </form>
-            </div>
+            </div>-->
         </div>
       <div class="modal-footer bg-dark">
         <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeeditModal>Close</button>

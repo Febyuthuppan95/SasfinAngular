@@ -678,7 +678,7 @@ export class CompanyService {
     });
   }
 
-  public additem(model: AddCompanyItem) {
+  public additem(model: any) {
     return new Promise((resolve, reject) => {
       const apiURL = `${environment.ApiEndpoint}/companies/addCompanyItem`;
       this.httpClient

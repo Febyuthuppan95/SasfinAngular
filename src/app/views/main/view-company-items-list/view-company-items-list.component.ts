@@ -16,11 +16,23 @@ import { ItemGroupReponse } from 'src/app/models/HttpResponses/ItemGroupReponse'
 import { ItemParentAddReponse } from 'src/app/models/HttpResponses/ItemParentAddReponse';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {Outcome} from '../../../models/HttpResponses/Outcome';
-import {DocumentService} from '../../../services/Document.Service';
+import { Outcome } from '../../../models/HttpResponses/Outcome';
+import { DocumentService } from '../../../services/Document.Service';
 import { PaginationChange } from 'src/app/components/pagination/pagination.component';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
+import { Service} from 'src/app/models/HttpResponses/Service';
+import { ItemService, ItemServiceListResponse } from 'src/app/models/HttpResponses/ItemServiceListResponse';
+import { FormControl } from '@angular/forms';
+import { ItemType } from 'src/app/models/HttpResponses/ItemType';
+import { AddItemServiceResponse } from 'src/app/models/HttpResponses/AddItemServiceResponse';
+import { UpdateItemServiceResponse } from 'src/app/models/HttpResponses/UpdateItemServiceResponse';
+import { GetServiceLList } from 'src/app/models/HttpRequests/GetServiceLList';
+import { ServiceListResponse } from 'src/app/models/HttpResponses/ServiceListResponse';
+import {GetItemServiceList} from 'src/app/models/HttpRequests/GetItemServiceList';
+import {ServicesService} from 'src/app/services/Services.Service';
+import {UpdateItemResponse} from 'src/app/models/HttpResponses/UpdateItemResponse';
+import {ItemTypeListResponse} from 'src/app/models/HttpResponses/ItemTypeListResponse';
 
 @Component({
   selector: 'app-view-company-items-list',
@@ -39,6 +51,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: ApiService,
     private IDocumentService: DocumentService,
+    private ServiceService: ServicesService,
   ) {
     this.rowStart = 1;
     this.itemsrowStart = 1;
@@ -67,6 +80,18 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   @ViewChild('closeAddModal', {static: true})
   closeAddModal: ElementRef;
+
+  @ViewChild('openeditModal', {static: true})
+  openeditModal: ElementRef;
+
+  @ViewChild('closeeditModal', {static: true})
+  closeeditModal: ElementRef;
+
+  @ViewChild('openRemoveModal', {static: true})
+  openRemoveModal: ElementRef;
+
+  @ViewChild('closeRemoveModal', {static: true})
+  closeRemoveModal: ElementRef;
 
   @ViewChild('itemFile', { static: false })
   bomFile: ElementRef;
@@ -152,6 +177,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   displayFilter = false;
   itemsfilter = '';
 
+  itemID;
   ItemName = '';
   ItemDescription = '';
   ItemType = '';
@@ -175,20 +201,69 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
 
   tableHeader: TableHeader = {
     title: 'Items',
-    addButton: { enable: false, },
+    addButton: { enable: true, },
     backButton: { enable: true },
     filters: {
       search: true,
       selectRowCount: true,
     }
   };
+  tariffControl
+  servicelist: Service[] = [];
+  itemservicelist: ItemService[] = [];
+  returnedservices: Array<Service>;
+  YESNO: any[] = [{title: 'True', value: true}, {title: 'False', value: false}];
+  vulnerableControl = new FormControl();
+  usageControl = new FormControl();
+  typeControl = new FormControl();
+  classControl = new FormControl();
+  itemTypes: ItemType[];
+  itemClasses: any[];
+  usages: any[];
+  vulnerable = '';
+
+  newItem: {
+    itemID: number,
+    item: string,
+    description: string,
+    tariffID: number,
+    itemtypeID: number,
+    usageTypeID: number,
+    itemClassID: number,
+    qualify521: boolean,
+    qualify536: boolean,
+    qualifyPI: boolean,
+    vulnerable: string,
+  } = {
+    itemID: null,
+    item: null,
+    description: null,
+    tariffID: null,
+    itemtypeID: null,
+    usageTypeID: null,
+    itemClassID: null,
+    qualify521: null,
+    qualify536: null,
+    qualifyPI: null,
+    vulnerable: null,
+  };
+
+  /*requestModel = {
+    userID: this.currentUser.userID,
+    companyID: this.companyID,
+    tariffID: this.newItem.tariffID,
+    name: this.newItem.item,
+    description: this.newItem.description,
+    usageTypeID:
+  }*/
+
 
   tableHeadings: TableHeading[] = [
     { title: '', propertyName: 'rowNum',  order: { enable: false } },
     { title: 'Item', propertyName: 'item', order: { enable: true, tag: 'Item' }, },
     { title: 'Description', propertyName: 'description', order: { enable: true, tag: 'Description' }, },
     { title: 'Tariff', propertyName: 'tariff', order: { enable: true, tag: 'Tariff' }, },
-    { title: 'Type', propertyName: 'type', order: { enable: true, tag: 'Type' }, },
+    { title: 'Type', propertyName: 'itemType', order: { enable: true, tag: 'Type' }, },
     { title: 'Vulnerable', propertyName: 'vulnerable', order: { enable: true, tag: 'Vulnerable' }, },
   ];
 
@@ -208,7 +283,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     });
 
     this.loadCompanyItemsList(true);
-
+    this.loadItemTypes(false);
+    this.loadServices(false);
+    this.loadItemClasses();
+    this.loadUsageTypes();
   }
 
   onFileChange(files: FileList) {
@@ -342,7 +420,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
           // console.log('res' + JSON.stringify(res));
-          if (res.outcome.outcome === 'SUCCESS') {
+          if (res.outcome.outcome === 'SUCCESS' && displayGrowl) {
               this.notify.successmsg(
                 res.outcome.outcome,
                 res.outcome.outcomeMessage);
@@ -425,6 +503,153 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
         // this.Finalitemlist();
       },
       msg => {
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadServices(displayGrowl: boolean) {
+    const model: GetServiceLList = {
+      filter: this.filter,
+      userID: this.currentUser.userID,
+      specificServiceID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.ServiceService
+    .getServiceList(model)
+    .then(
+      (res: ServiceListResponse) => {
+
+        this.servicelist = res.serviceses;
+
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loaditemServices(displayGrowl: boolean) {
+    const model: GetItemServiceList = {
+      filter: '',
+      userID: this.currentUser.userID,
+      itemID: this.newItem.itemID,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+
+    };
+    this.companyService
+    .itemservice(model)
+    .then(
+      (res: ItemServiceListResponse) => {
+
+        this.itemservicelist = res.itemServices;
+
+        if (res.outcome.outcome === 'SUCCESS') {
+          //this.returnedservices = this.separateMe(this.servicelist, this.itemservicelist);
+          //console.log(this.returnedservices);
+        }
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadItemTypes(displayGrowl: boolean) {
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      itemTypeID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getItemTypesList(model).then(
+      (res: ItemTypeListResponse) => {
+        this.itemTypes = res.itemTypeLists;
+        console.log(this.itemTypes);
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadItemClasses() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'ItemClassList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.itemClasses = res.data;
+          console.log(this.itemClasses);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadUsageTypes() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'UsageTypesList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.usages = res.data;
+          console.log(this.usages);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
         this.notify.errorsmsg(
           'Server Error',
           'Something went wrong while trying to access the server.'
@@ -521,6 +746,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.focusItemID = itemid;
     this.focusItemName = itemname;
     this.focusItemParentID = itemparentid;
+    console.log(this.dataList.find(item => item.itemID == this.focusItemID));
 
     if (!this.contextMenu) {
       this.themeService.toggleContextMenu(true);
@@ -666,6 +892,172 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+
+
+  onTypeChange(id: number) {
+    //console.log(id);
+    this.newItem.itemtypeID = id;
+  }
+
+  onVulnerablestateChange(state: string) {
+    this.newItem.vulnerable = state;
+  }
+
+  onClassChange(id: number) {
+    //console.log(id);
+    this.newItem.itemClassID = id;
+  }
+
+  onUsageChange(id: number) {
+    //console.log(id);
+    this.newItem.usageTypeID = id;
+  }
+
+  addItem(){
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    this.typeControl.setValue(-1);
+    this.usageControl.setValue(-1);
+    this.classControl.setValue(-1);
+    this.newItem = {
+      itemID: null,
+      item: null,
+      description: null,
+      tariffID: null,
+      itemtypeID: null,
+      usageTypeID: null,
+      itemClassID: null,
+      qualify521: false,
+      qualify536: false,
+      qualifyPI: false,
+      vulnerable: null,
+    }
+    this.openAddModal.nativeElement.click();
+  }
+
+  editItem(id: number) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    let focusItem = this.dataList.find(item => item.itemID == this.focusItemID)
+    this.newItem = {
+      itemID: focusItem.itemID,
+      item: focusItem.item,
+      description: focusItem.description,
+      tariffID: focusItem.tariff,
+      itemtypeID: focusItem.itemTypeID,
+      usageTypeID: focusItem.usageTypeID,
+      itemClassID: focusItem.itemClassID,
+      qualify521: focusItem.qualify521,
+      qualify536: focusItem.qualify536,
+      qualifyPI: focusItem.qualifyPI,
+      vulnerable: focusItem.vulnerable,
+    }
+    this.vulnerableControl.setValue(this.newItem.vulnerable === 'True' ? true : false);
+    this.vulnerable = this.newItem.vulnerable;
+    this.loaditemServices(false);
+    this.openeditModal.nativeElement.click();
+  }
+
+  removeItem(id: number) {
+    this.themeService.toggleContextMenu(false);
+    this.contextMenu = false;
+    let focusItem = this.dataList.find(item => item.itemID == this.focusItemID)
+    this.newItem = {
+      itemID: focusItem.itemID,
+      item: focusItem.item,
+      description: focusItem.description,
+      tariffID: focusItem.tariff,
+      itemtypeID: focusItem.itemTypeID,
+      usageTypeID: focusItem.usageTypeID,
+      itemClassID: focusItem.itemClassID,
+      qualify521: focusItem.qualify521,
+      qualify536: focusItem.qualify536,
+      qualifyPI: focusItem.qualifyPI,
+      vulnerable: focusItem.vulnerable,
+    }
+    this.openRemoveModal.nativeElement.click();
+  }
+
+  AddItem(){
+    if (this.newItem.item.length !== 0 && this.newItem.description.length !== 0  &&
+      this.newItem.usageTypeID > 0 && this.newItem.itemtypeID > 0 && this.newItem.itemClassID > 0 ) {
+        const requestModel = {
+          request: {
+            userID: this.currentUser.userID,
+            companyID: this.companyID,
+            name: this.newItem.item,
+            description: this.newItem.description,
+            tariffID: this.newItem.tariffID,
+            vulnerable: this.newItem.vulnerable,
+            usageTypeID: this.newItem.usageTypeID,
+            itemTypeID: this.newItem.itemtypeID,
+            itemClassID: this.newItem.itemClassID,
+            qualify521: this.newItem.qualify521,
+            qualify536: this.newItem.qualify536,
+            qualifyPI: this.newItem.qualifyPI
+          },
+          procedure: 'CompanyItemAdd'
+        };
+        this.api.post(`${environment.ApiEndpoint}/capture/post`,requestModel).then(
+          (res: any) => {
+            //console.log(res)
+            if (res.outcome) {
+              this.loadCompanyItemsList(false);
+            } else {
+              this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+            }
+          },
+          (msg) => {
+            //console.log(msg)
+          }
+        );
+    }
+    else {
+      this.notify.errorsmsg('Error','Please fill in all the fields');
+    }
+
+  }
+
+  UpdateItem(deleted?: boolean) {
+    const requestModel = {
+      userID: this.currentUser.userID,
+      itemID: this.newItem.itemID,
+      companyID: this.companyID,
+      name: this.newItem.item,
+      description: this.newItem.description,
+      tariffID: this.newItem.tariffID,
+      vulnerable: this.newItem.vulnerable === 'true' ? true : false,
+      usageTypeID: this.newItem.usageTypeID,
+      itemTypeID: this.newItem.itemtypeID,
+      itemClassID: this.newItem.itemClassID,
+      qualify521: this.newItem.qualify521,
+      qualify536: this.newItem.qualify536,
+      qualifyPI: this.newItem.qualifyPI,
+      isDeleted: deleted
+    };
+    this.companyService.itemupdate(requestModel).then(
+      (res: any) => {
+        console.log(res);
+        if (res.outcome.outcome === 'SUCCESS') {
+          this.notify.successmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+          this.loadCompanyItemsList(false);
+          if (deleted === true) {
+            this.closeRemoveModal.nativeElement.click();
+          } else {
+            this.closeeditModal.nativeElement.click();
+          }
+          this.loadCompanyItemsList();
+        } else {
+          this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
+        }
+      },
+      (msg) => {
+        this.notify.errorsmsg('Failure', 'Cannot reach server');
+        console.log(msg);
+      }
+    );
   }
 
   // addButton(): void {

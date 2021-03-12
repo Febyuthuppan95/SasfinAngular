@@ -27,6 +27,8 @@ import {ItemTypeListResponse} from 'src/app/models/HttpResponses/ItemTypeListRes
 import {ItemType} from 'src/app/models/HttpResponses/ItemType';
 import {GetTariffList} from 'src/app/models/HttpRequests/GetTariffList';
 import {FormControl} from '@angular/forms';
+import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-items-list',
@@ -41,7 +43,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private themeService: ThemeService,
     private IMenuService: MenuService,
-    private snackbarService: HelpSnackbar
+    private snackbarService: HelpSnackbar,
+    private api: ApiService,
   ) {
     this.rowStart = 1;
     this.rowCountPerPage = 15;
@@ -82,9 +85,12 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     item: string,
     description: string,
     tariffID: number,
-    tariff: string,
-    typeID: number,
-    type: string,
+    itemTypeID: number,
+    usageTypeID: number,
+    itemClassID: number,
+    qualify521: boolean,
+    qualify536: boolean,
+    qualifyPI: boolean,
     vulnerable: string,
   };
 
@@ -160,7 +166,13 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   tariffID = 0;
   itemtype = '';
   itemtypeID = 0;
+  itemClassID = 0;
+  usageTypeID = 0;
   vulnerable = '';
+  tariffControl = new FormControl(null);
+  qualify521: boolean = null;
+  qualify536: boolean = null;
+  qualifyPI: boolean = null;
 
   items: Items[] = [];
 
@@ -198,6 +210,8 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
   returnedservices: Array<Service>;
   tarifflist: Tariff[] = [];
   itemTypes: ItemType[];
+  itemClasses: any[];
+  usages: any[];
   vulnerableControl = new FormControl();
 
   ngOnInit() {
@@ -210,14 +224,15 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
 
     this.loadItems(true);
     this.loadServices(false);
-    this.loadTariffs(false);
+    // this.loadTariffs(false);
     this.loadItemTypes(false);
-
+    this.loadItemClasses();
+    this.loadUsageTypes();
   }
 
   loaditemServices(displayGrowl: boolean) {
     const model: GetItemServiceList = {
-      filter: this.filter,
+      filter: '',
       userID: this.currentUser.userID,
       itemID: this.Item.itemID,
       rowStart: this.rowStart,
@@ -349,7 +364,67 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     );
   }
 
-  loadTariffs(displayGrowl: boolean) {
+  loadItemClasses() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'ItemClassList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.itemClasses = res.data;
+          //console.log(this.itemClasses);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  loadUsageTypes() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'UsageTypesList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.usages = res.data;
+          // console.log(this.usages);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  /*loadTariffs(displayGrowl: boolean) {
 
     const model: GetTariffList = {
       filter: this.filter,
@@ -376,7 +451,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
         );
       }
     );
-  }
+  }*/
 
   pageChange($event: {rowStart: number, rowEnd: number}) {
     this.rowStart = $event.rowStart;
@@ -449,10 +524,14 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     this.itemID = this.Item.itemID;
     this.item = this.Item.item;
     this.description = this.Item.description;
-    this.tariff = this.Item.tariff;
-    this.tariffID = this.Item.tariffID;
-    this.itemtype = this.Item.type;
-    this.itemtypeID = this.Item.typeID;
+    // this.tariffID = this.Item.tariffID;
+    this.tariffControl.setValue(this.Item.tariffID);
+    this.qualify521 = this.Item.qualify521;
+    this.qualify536 = this.Item.qualify536;
+    this.qualifyPI = this.Item.qualifyPI;
+    this.itemtypeID = this.Item.itemTypeID;
+    this.itemClassID = this.Item.itemClassID;
+    this.usageTypeID = this.Item.usageTypeID;
     // console.log(this.itemtype);
     // console.log(this.itemtypeID);
     this.vulnerableControl.setValue(this.Item.vulnerable === 'True' ? true : false);
@@ -471,12 +550,17 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     const requestModel = {
       userID: this.currentUser.userID,
       itemID: this.itemID,
-      item: this.item,
+      companyID: -1,
+      name: this.item,
       description: this.description,
-      tariffID: this.tariffID,
-      type: this.itemtypeID,
-      vulnerable: this.vulnerable,
-      service: '',
+      tariffID: this.tariffID == undefined || this.tariffID == null || this.tariffID == 0? null : this.tariffID,
+      vulnerable: this.vulnerable === 'true' ? true : false,
+      usageTypeID: this.usageTypeID,
+      itemTypeID: this.itemtypeID,
+      itemClassID: this.itemClassID,
+      qualify521: this.qualify521,
+      qualify536: this.qualify536,
+      qualifyPI: this.qualifyPI,
       isDeleted: deleted
     };
     this.companyService.itemupdate(requestModel).then(
@@ -496,7 +580,7 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
     );
   }
 
-  addNewservice(id, name) {
+  /*addNewservice(id, name) {
     const requestModel = {
       userID: this.currentUser.userID,
       serviceID: id,
@@ -517,9 +601,9 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
-  }
+  }*/
 
-  removeservice(id, name) {
+  /*removeservice(id, name) {
     const requestModel = {
       userID: this.currentUser.userID,
       itemServiceID: id,
@@ -538,13 +622,22 @@ export class ContextItemsListComponent implements OnInit, OnDestroy {
       },
       (msg) => this.notify.errorsmsg('Failure', 'Cannot reach server')
     );
-  }
+  }*/
   onVulnerablestateChange(state: string) {
     this.vulnerable = state;
   }
   onTypeChange(id: number) {
     this.itemtypeID = id;
     // console.log(this.itemtypeID);
+  }
+  onClassChange(id: number) {
+    // console.log(id);
+    this.itemClassID = id;
+  }
+
+  onUsageChange(id: number) {
+    // console.log(id);
+    this.usageTypeID = id;
   }
   onTariffChange(selectedtariffid: number) {
     this.tariffID = selectedtariffid;
