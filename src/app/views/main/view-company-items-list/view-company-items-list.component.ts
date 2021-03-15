@@ -458,14 +458,15 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     const model = {
       request : {
         userID: this.currentUser.userID,
+        companyID: this.companyID,
         filter: this.itemsfilter,
-        itemsID: this.focusItemID,
+        //itemsID: this.focusItemID,
         rowStart: this.itemsrowStart,
         rowEnd: this.itemsrowEnd,
         orderBy: this.orderBy,
         orderByDirection: this.orderDirection,
       },
-      procedure: 'ItemsList'
+      procedure: 'CompanyItemsList'
     };
     // this.companyService.getItemjoinList(model).then(
     this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
@@ -493,6 +494,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
           this.itemsrowCount = res.rowCount;
           // Variable was storing the wrong array from the api --Reuben
           this.itemsshowingRecords = res.data.length;
+          this.itemsdataset.itemsLists = res.data;
           this.itemstotalShowing = +this.itemsrowStart + +this.itemsdataset.itemsLists.length - 1;
           // console.log(this.itemsdataset);
 
@@ -846,6 +848,11 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.itemsrowCount = 0;
     this.itemsrowStart = 1;
     this.itemsrowEnd = 5;
+    this.itemsactivePage = 1;
+    this.itemsnextPage = +this.itemsactivePage + 1;;
+    this.itemsnextPageState = true;
+    this.itemsprevPage = +this.itemsactivePage - 1;
+    this.itemsprevPageState = false;
     // this.Finalitemlist();
     // this.Finalitemparentslist();
     this.isParent = true;

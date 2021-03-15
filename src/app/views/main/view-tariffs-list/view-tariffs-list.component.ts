@@ -202,7 +202,6 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
       rowStart: this.rowStart,
       rowEnd: this.rowEnd
     };
-
     this.companyService
     .getTariffList(model)// model
     .then(
@@ -216,16 +215,16 @@ export class ContextTariffsListComponent implements OnInit, OnDestroy {
           }
         }
 
+        this.showingRecords = res.tariffList.length;
+        this.tarifflist = res.tariffList;
+        this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
+        this.rowCount = res.rowCount;
         if (res.rowCount === 0) {
           this.noData = true;
           this.showLoader = false;
         } else {
           this.noData = false;
-          this.rowCount = res.rowCount;
-          this.showingRecords = res.tariffList.length;
-          this.tarifflist = res.tariffList;
           this.showLoader = false;
-          this.totalShowing = +this.rowStart + +this.tarifflist.length - 1;
         }
       },
       msg => {

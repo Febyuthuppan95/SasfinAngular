@@ -550,12 +550,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           statusID = 3;
         }
+        console.log(requestModel);
 
-        if (this.form.controls.qaUserID.value === -1
+        if (requestModel.qaUserID === -1
           && !escalation
           && !saveProgress
           && !escalationResolved) {
-
+          console.log('hi');
           requestModel.attachmentStatusID = 11;
         } else if (this.form.controls.qaUserID.value !== -1) {
 
@@ -566,7 +567,6 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
 
-        requestModel.attachmentStatusID = statusID;
         requestModel.userID = this.currentUser.userID;
         requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
 
