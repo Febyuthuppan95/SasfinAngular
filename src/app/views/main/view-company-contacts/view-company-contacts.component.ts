@@ -482,13 +482,11 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   UpdateContact(){
 
     this.CaptureModel.CompanyID = this.companyService.selectedCompany.value.companyID;
-
     this.companyService.UpdateContact(this.CaptureModel).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
-
-          if (this.CaptureModel.isDeleted = 0)
-          this.notify.successmsg(res.outcome, res.outcomeMessage);
+          if (this.CaptureModel.isDeleted === 0)
+            this.notify.successmsg(res.outcome, res.outcomeMessage);
           else{
             this.notify.successmsg('Success', 'Contact Removed')
             this.closeRemoveModal.nativeElement.click();
