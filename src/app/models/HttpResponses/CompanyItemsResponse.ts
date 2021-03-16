@@ -13,7 +13,8 @@ export class Item {
   groupID: string;
   item: string;
   description: string;
-  tariff: number;
+  tariff: string;
+  tariffID: number;
   vulnerable: string;
   itemType: string;
   itemTypeID: number;

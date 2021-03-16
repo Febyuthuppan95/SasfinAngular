@@ -165,8 +165,8 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   {
     this.CaptureModel = {
     "CUserID": this.currentUser.userID,
-    "ContactTypeID": this.companyService.selectedCompany.value.companyID,
-    "CompanyID": 0,
+    "ContactTypeID": 1,
+    "CompanyID": this.companyID,
     "Name": '',
     "Email": '',
     "CellNo": '',
@@ -300,7 +300,7 @@ export class ViewCompanyContactsComponent implements OnInit, OnDestroy {
   }
 
   updatePagination() {
-    if (this.dataset.contacts.length <= this.totalShowing) {
+    if (this.dataList.length <= this.totalShowing) {
       this.prevPageState = false;
       this.nextPageState = false;
     } else {

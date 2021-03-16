@@ -129,7 +129,7 @@
               <button mat-menu-item (click)="_invoiceLinkDialog(i);">Link Lines</button>
               <!--<button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>-->
 
-              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None) && (consultant || leadCapturer)">
+              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None) && (item.runningCustomsValue !== '0.00' && item.customsValue !== 0) && (consultant || leadCapturer)">
                 <hr>
                 <button mat-menu-item (click)="customsValueChip(item);">Override Customs Value</button>
               </ng-container>

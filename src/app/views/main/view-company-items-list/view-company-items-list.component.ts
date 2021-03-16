@@ -208,7 +208,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       selectRowCount: true,
     }
   };
-  tariffControl
+  tariffControl = new FormControl(null);
   servicelist: Service[] = [];
   itemservicelist: ItemService[] = [];
   returnedservices: Array<Service>;
@@ -419,6 +419,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     };
     this.companyService.items(model).then(
         (res: CompanyItemsResponse) => {
+          console.log(res);
           // console.log('res' + JSON.stringify(res));
           if (res.outcome.outcome === 'SUCCESS' && displayGrowl) {
               this.notify.successmsg(
@@ -928,6 +929,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     this.typeControl.setValue(-1);
     this.usageControl.setValue(-1);
     this.classControl.setValue(-1);
+    this.tariffControl = new FormControl(null);
     this.newItem = {
       itemID: null,
       item: null,
@@ -952,7 +954,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       itemID: focusItem.itemID,
       item: focusItem.item,
       description: focusItem.description,
-      tariffID: focusItem.tariff,
+      tariffID: focusItem.tariffID,
       itemtypeID: focusItem.itemTypeID,
       usageTypeID: focusItem.usageTypeID,
       itemClassID: focusItem.itemClassID,
@@ -960,6 +962,12 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       qualify536: focusItem.qualify536,
       qualifyPI: focusItem.qualifyPI,
       vulnerable: focusItem.vulnerable,
+    }
+    if (this.newItem.tariffID == null) {
+      this.tariffControl = new FormControl(null);
+    }
+    else {
+      this.tariffControl.setValue(this.newItem.tariffID);
     }
     this.vulnerableControl.setValue(this.newItem.vulnerable === 'True' ? true : false);
     this.vulnerable = this.newItem.vulnerable;
@@ -975,7 +983,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       itemID: focusItem.itemID,
       item: focusItem.item,
       description: focusItem.description,
-      tariffID: focusItem.tariff,
+      tariffID: focusItem.tariffID,
       itemtypeID: focusItem.itemTypeID,
       usageTypeID: focusItem.usageTypeID,
       itemClassID: focusItem.itemClassID,
@@ -996,8 +1004,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
             companyID: this.companyID,
             name: this.newItem.item,
             description: this.newItem.description,
-            tariffID: this.newItem.tariffID,
-            vulnerable: this.newItem.vulnerable,
+            tariffID: this.tariffControl.value,
+            vulnerable: this.vulnerableControl.value === 'true'? true : false,
             usageTypeID: this.newItem.usageTypeID,
             itemTypeID: this.newItem.itemtypeID,
             itemClassID: this.newItem.itemClassID,
@@ -1009,9 +1017,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
         };
         this.api.post(`${environment.ApiEndpoint}/capture/post`,requestModel).then(
           (res: any) => {
-            //console.log(res)
             if (res.outcome) {
+              this.notify.successmsg('Success', res.outcomeMessage);
               this.loadCompanyItemsList(false);
+              this.closeAddModal.nativeElement.click();
             } else {
               this.notify.errorsmsg(res.outcome.outcome, res.outcome.outcomeMessage);
             }
@@ -1034,8 +1043,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       companyID: this.companyID,
       name: this.newItem.item,
       description: this.newItem.description,
-      tariffID: this.newItem.tariffID,
-      vulnerable: this.newItem.vulnerable === 'true' ? true : false,
+      tariffID: this.tariffControl.value,
+      vulnerable: this.newItem.vulnerable === 'True' ? true : false,
       usageTypeID: this.newItem.usageTypeID,
       itemTypeID: this.newItem.itemtypeID,
       itemClassID: this.newItem.itemClassID,
