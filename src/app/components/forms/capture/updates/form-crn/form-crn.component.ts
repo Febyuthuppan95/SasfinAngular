@@ -125,7 +125,6 @@ public init() {
     this.transactionID = this.capture.transactionID;
     this.attachmentLabel = 'Customs Release Notification';
     this.transactionLabel = this.capture.transactionType;
-    this.load();
   }
 }
 // tslint:disable-next-line: max-line-length
@@ -185,6 +184,7 @@ ngAfterViewInit(): void {
           }
         }];
   });
+  this.load();
 }
 
 async load() {
@@ -223,60 +223,60 @@ async load() {
       this.form.updateValueAndValidity();
 
       this.errors = res.attachmentErrors.attachmentErrors;
-
+      console.log(this.errors);
       Object.keys(this.form.controls).forEach(key => {
         this.errors.forEach((error) => {
           if (error.fieldName.toUpperCase() === 'TOTALCUSTOMSVALUE') {
-            this.form.controls.totalCustomsValue.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.totalCustomsValue.setErrors({incorrect: true}), 1000);
             this.form.controls.totalCustomsValue.markAsTouched();
             this.form.controls.totalCustomsValueError.setValue(this.getError('totalCustomsValue'));
           }
 
           if (error.fieldName.toUpperCase() === 'TOTALDUTY') {
-            this.form.controls.totalDuty.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.totalDuty.setErrors({incorrect: true}), 1000);
             this.form.controls.totalDuty.markAsTouched();
             this.form.controls.totalDutyError.setValue(this.getError('totalDuty'));
           }
 
           if (error.fieldName.toUpperCase() === 'IMPORTERCODE') {
-            this.form.controls.importersCode.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.importersCode.setErrors({incorrect: true}), 1000);
             this.form.controls.importersCode.markAsTouched();
             this.form.controls.importersCodeError.setValue(this.getError('importercode'));
           }
 
           if (error.fieldName.toUpperCase() === 'FILEREF') {
-            this.form.controls.fileRef.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.fileRef.setErrors({incorrect: true}), 1000);
             this.form.controls.fileRef.markAsTouched();
             this.form.controls.fileRefError.setValue(this.getError('fileRef'));
           }
 
           if (error.fieldName.toUpperCase() === 'LRN') {
-            this.form.controls.lrn.setErrors({incorrect: true});
+            setTimeout(() =>  this.form.controls.lrn.setErrors({incorrect: true}), 1000);
             this.form.controls.lrn.markAsTouched();
             this.form.controls.lrnError.setValue(this.getError('lrn'));
           }
 
           if (error.fieldName.toUpperCase() === 'MRN') {
-            this.form.controls.mrn.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.mrn.setErrors({incorrect: true}), 1000);
             this.form.controls.mrn.markAsTouched();
             this.form.controls.mrnError.setValue(this.getError('mrn'));
           }
 
           if (error.fieldName.toUpperCase() === 'WAYBILLNO') {
-            this.form.controls.waybillNo.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.waybillNo.setErrors({incorrect: true}), 1000);
             this.form.controls.waybillNo.markAsTouched();
             this.form.controls.waybillNoError.setValue(this.getError('waybillNo'));
           }
 
           if (error.fieldName.toUpperCase() === 'SERIALNO') {
-            this.form.controls.serialNo.setErrors({incorrect: true});
+            setTimeout(() => this.form.controls.serialNo.setErrors({incorrect: true}), 1000);
             this.form.controls.serialNo.markAsTouched();
             const error = this.getError('serialNo');
             this.form.controls.serialNoError.setValue(error);
           }
         });
       });
-
+      console.log(this.form.errors);
       setTimeout(() => this.loader = false, 100);
     } else {
       this.loader = false;

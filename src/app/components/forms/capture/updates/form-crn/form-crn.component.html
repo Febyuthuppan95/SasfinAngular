@@ -60,7 +60,7 @@
         <input matInput type="text" formControlName="importersCode" (focusin)="updateHelpContext('form-cusrelease-importersCode')"/>
         <button *ngIf="form.controls.importersCodeOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('importersCode')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.importersCodeOBit.value">OVERRIDE: {{form.controls.importersCodeOReason.value}}</mat-hint>
-        <mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'importersCode')" matTooltip="Override">remove_circle</mat-icon>
+        <!--<mat-icon *ngIf="!form.controls.importersCodeOBit.value && form.controls.importersCode.errors?.incorrect" matSuffix (click)="overrideDialog('importersCode', 'importersCode')" matTooltip="Override">remove_circle</mat-icon>-->
         <button *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCodeError.value" type="button"  matSuffix mat-icon-button (click)="overrideDialog('importersCode', 'Importers Code')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
         <mat-error *ngIf="!form.controls.importersCodeOBit.value  && form.controls.importersCodeError.value">{{form.controls.importersCodeError.value}}</mat-error>
       </mat-form-field>
