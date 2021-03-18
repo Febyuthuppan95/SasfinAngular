@@ -1112,13 +1112,16 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getTotalStatus(parent, child) {
-    if (parent === child) {
+    let parentNum: number = +parent;
+    let childNum: number= +child;
+    if (parentNum === childNum) {
       return TotalStatus.Passed;
-    } else if (child > parent) {
+    } else if (childNum >= parentNum - 5 && childNum <= parentNum + 5) {
+      return TotalStatus.None;
+    }
+    else {
       return TotalStatus.Failed;
     }
-
-    return TotalStatus.None;
   }
 
   customsValueChip(item: any) {

@@ -265,6 +265,11 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
     { title: 'Tariff', propertyName: 'tariff', order: { enable: true, tag: 'Tariff' }, },
     { title: 'Type', propertyName: 'itemType', order: { enable: true, tag: 'Type' }, },
     { title: 'Vulnerable', propertyName: 'vulnerable', order: { enable: true, tag: 'Vulnerable' }, },
+    { title: 'Item Class', propertyName: 'itemClass', order: { enable: true, tag: 'ItemClass'}},
+    { title: 'Usage Type', propertyName: 'usageType', order: { enable: true, tag: 'UsageType'}},
+    { title: 'Qualify 521', propertyName: 'qualify521', order: { enable: true, tag: 'Qualify521'}},
+    { title: 'Qualify 536', propertyName: 'qualify536', order: { enable: true, tag: 'Qualify536'}},
+    { title: 'Qualify PI', propertyName: 'qualifyPI', order: { enable: true, tag: 'QualifyPI'}},
   ];
 
   ngOnInit() {
@@ -963,8 +968,8 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       qualifyPI: focusItem.qualifyPI,
       vulnerable: focusItem.vulnerable,
     }
-    if (this.newItem.tariffID == null) {
-      this.tariffControl = new FormControl(null);
+   if (this.newItem.tariffID === null) {
+      this.tariffControl.setValue(null);
     }
     else {
       this.tariffControl.setValue(this.newItem.tariffID);

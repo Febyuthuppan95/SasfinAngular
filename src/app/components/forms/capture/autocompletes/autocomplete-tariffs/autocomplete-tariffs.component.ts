@@ -51,13 +51,15 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
       if (value) {
         console.log('test control');
         console.log(value);
-
-        // this.query.setValue(value, {emitEvent: false});
+        this.load(true, true);
+        let item = this.list.find(x => x.id === value);
+        this.query.setValue(item.id, {emitEvent: false});
         // this.query.setErrors(null);
         // this.control.setErrors(null);
         // this.selected = true;
-        this.load(true, true);
-
+      } else{
+        this.control.setValue(null, {emitEvent: false});
+        this.query.setValue(null, {emitEvent: false});
       }
     });
 
@@ -122,8 +124,8 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.tariffService
     .list({
       userID: this.currentUser.userID,
-      specificTariffID: getSpecific ? this.control.value : -1,
-      filter,
+      specificTariffID: getSpecific === null ? this.control.value : -1,
+      filter: "",
       rowStart: 1,
       rowEnd: 10,
     })
