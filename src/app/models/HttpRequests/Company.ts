@@ -18,6 +18,7 @@ export class AddCompanyAddress {
   companyID: number;
   address1: string;
   address2: string;
+  address3: string;
   POBox: string;
   cityID: number;
   addressTypeID: number;
@@ -47,6 +48,7 @@ export class UpdateCompanyAddress {
   spesificAddressID: number;
   address1: string;
   address2: string;
+  address3: string;
   POBox: string;
   addressTypeID: number;
   cityID: number;

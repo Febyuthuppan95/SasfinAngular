@@ -58,6 +58,15 @@
                   </button>
                 </th>
                 <th scope="col">
+                  <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
+                    <p class="headerText">Address 3</p>
+                    <span class="headerSpan">
+                      <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address3_ASC')?'order-active':'order-not-active'"></i>
+                      <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address3_DESC')?'order-active':'order-not-active'"></i>
+                    </span>
+                  </button>
+                </th>
+                <th scope="col">
                     <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
                       <p class="headerText">PO Box</p>
                       <span class="headerSpan">
@@ -78,11 +87,12 @@
             </tr>
           </thead>
           <tbody *ngIf="(!noData)">
-            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.address1, address.address2, address.poBox, address.addressType, address.addressTypeID, address.cityID, address.city); setClickedRow(i)" [class.active]="i == selectedRow">
+            <tr *ngFor="let address of dataList; let i=index" class="userRecord" (click)="popClick($event, address.addressID, address.address1, address.address2, address.address3, address.poBox, address.addressType, address.addressTypeID, address.cityID, address.city); setClickedRow(i)" [class.active]="i == selectedRow">
               <td>{{address.rowNum}}</td>
               <td>{{address.city}}</td>
               <td>{{address.address1}}</td>
               <td>{{address.address2}}</td>
+              <td>{{address.address3}}</td>
               <td>{{address.poBox}}</td>
               <td>{{address.addressType}}</td>
             </tr>
@@ -145,6 +155,11 @@
               [(ngModel)]="this.Address2" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
           </div>
           <div class="form-group">
+            <label class="control-label">Address 3:</label>
+            <input type="text" placeholder="Address 3" class="form-control"
+            [(ngModel)]="this.Address3" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+        </div>
+          <div class="form-group">
               <label class="control-label">PO Box:</label>
               <input type="text" placeholder="PO Box" class="form-control"
               [(ngModel)]="this.POBox" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
@@ -199,6 +214,11 @@
                 <input type="text" placeholder="Address 2" class="form-control"
                 [(ngModel)]="this.Address2" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
               </div>
+              <div class="form-group">
+                <label class="control-label">Address 3:</label>
+                <input type="text" placeholder="Address 3" class="form-control"
+                [(ngModel)]="this.Address3" [ngModelOptions]="{standalone: true}" rows="4" cols="50"  required/>
+            </div>
               <div class="form-group">
                   <label class="control-label">PO Box:</label>
                   <input type="text" placeholder="PO Box" class="form-control"

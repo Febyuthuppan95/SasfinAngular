@@ -106,9 +106,11 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   focusDescription: string;
   Address1 = '';
   Address2 = '';
+  Address3 = '';
   POBox = '';
   focusAddress1 = '';
   focusAddress2 = '';
+  focusAddress3 = '';
   focusPOBox = '';
   focusAddressType = '';
   focusAddresTypeID = 0;
@@ -355,7 +357,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     this.displayFilter = !this.displayFilter;
   }
 
-  popClick(event, id, address1, address2, poBox, addressType, addressTypeID, cityid, cityname) {
+  popClick(event, id, address1, address2, address3, poBox, addressType, addressTypeID, cityid, cityname) {
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
       this.contextMenuY = event.clientY + 5;
@@ -367,6 +369,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     this.focusAddressID = id;
     this.focusAddress1 = address1;
     this.focusAddress2 = address2;
+    this.focusAddress3 = address3;
     this.focusPOBox = poBox;
     this.focusAddressType = addressType;
     this.focusAddresTypeID = addressTypeID;
@@ -393,6 +396,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
   Add() {
     this.Address1 = undefined;
     this.Address2 = undefined;
+    this.Address3 = undefined;
     this.POBox = undefined;
     this.cityID = undefined;
     this.myControl.reset();
@@ -436,6 +440,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         companyID: this.companyID,
         address1: this.Address1,
         address2: this.Address2,
+        address3: this.Address3,
         POBox: this.POBox,
         addressTypeID: this.Type,
         cityID: this.cityID,
@@ -472,6 +477,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
     this.cityID = this.focusCityID;
     this.Address1 = this.focusAddress1;
     this.Address2 = this.focusAddress2;
+    this.Address3 = this.focusAddress3;
     this.POBox = this.focusPOBox;
     this.openeditModal.nativeElement.click();
   }
@@ -489,6 +495,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         spesificAddressID: this.focusAddressID,
         address1: this.Address1,
         address2: this.Address2,
+        address3: this.Address3,
         POBox: this.POBox,
         addressTypeID: this.Type,
         cityID: this.cityID,
