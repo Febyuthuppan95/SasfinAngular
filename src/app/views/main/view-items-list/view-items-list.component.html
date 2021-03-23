@@ -29,6 +29,7 @@
   <app-modal-component></app-modal-component>
 
   <app-menu
+  *ngIf="this.contextMenu"
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"

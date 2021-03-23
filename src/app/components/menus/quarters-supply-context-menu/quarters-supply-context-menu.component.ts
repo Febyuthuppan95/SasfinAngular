@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './quarters-supply-context-menu.component.html',
   styleUrls: ['./quarters-supply-context-menu.component.scss']
 })
-export class QuartersSupplyContextMenuComponent implements OnInit {
+export class QuartersSupplyContextMenuComponent implements OnInit, AfterViewInit {
 
   constructor(private companyService: CompanyService, private router: Router) { }
   @Input() currentTheme: string;
@@ -25,6 +25,9 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
   @Output() EditQuarterSupply = new EventEmitter<string>();
   // @Output() bulkUploadOut = new EventEmitter<string>();
   private unsubscribe$ = new Subject<void>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
   ngOnInit() {
     this.companyService.observerLocalTransaction()
     .pipe(takeUntil(this.unsubscribe$))
@@ -33,6 +36,17 @@ export class QuartersSupplyContextMenuComponent implements OnInit {
         this.selectedTransaction = obj;
       }
     });
+  }
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 179 + this.x){
+      this.x = window.innerWidth - 179;
+    }
   }
   Edit() {
     this.unsubscribe$.unsubscribe();

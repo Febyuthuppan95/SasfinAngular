@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { DocumentService } from 'src/app/services/Document.Service';
@@ -10,7 +10,7 @@ import { DialogRemoveAttachmentComponent } from './dialog-remove-attachment/dial
   templateUrl: './context-menu-transaction-attachment.component.html',
   styleUrls: ['./context-menu-transaction-attachment.component.scss']
 })
-export class ContextMenuTransactionAttachmentComponent implements OnInit {
+export class ContextMenuTransactionAttachmentComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router,
               private docService: DocumentService,
@@ -32,8 +32,24 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit {
   @Output() viewTransactionsEmit = new EventEmitter<string>();
   @Output() removeAttachment = new EventEmitter<string>();
   @Output() previewDocument = new EventEmitter<string>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
+
 
   ngOnInit() {}
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 175 + this.x){
+      this.x = window.innerWidth - 175;
+    }
+  }
 
   capture() {
       this.router.navigate([

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.Service';
 
 @Component({
@@ -6,7 +6,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
   templateUrl: './context-menu.component.html',
   styleUrls: ['./context-menu.component.scss']
 })
-export class ContextMenuComponent implements OnInit {
+export class ContextMenuComponent implements OnInit, AfterViewInit {
 
   constructor(
     ) { }
@@ -18,8 +18,25 @@ export class ContextMenuComponent implements OnInit {
 
   @Output() editDesignation = new EventEmitter<string>();
 
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
+
   ngOnInit() {
   }
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 81 + this.x){
+      this.x = window.innerWidth - 81;
+    }
+  }
+
 
   // edit() {
   //   this.editDesignation.emit(JSON.stringify({

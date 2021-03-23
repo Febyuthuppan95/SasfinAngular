@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { DocumentService } from 'src/app/services/Document.Service';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './context-menu-local-attachments.component.html',
   styleUrls: ['./context-menu-local-attachments.component.scss']
 })
-export class ContextMenuLocalAttachmentsComponent implements OnInit {
+export class ContextMenuLocalAttachmentsComponent implements OnInit, AfterViewInit {
 
   constructor(private docService: DocumentService,
     private transactionService: TransactionService,
@@ -29,9 +29,24 @@ export class ContextMenuLocalAttachmentsComponent implements OnInit {
   @Input() transactionType: string;
 
   @Output() addAttachment = new EventEmitter<string>();
-  currentTransaction
+  currentTransaction;
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
   ngOnInit() {
   }
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 152 + this.x){
+      this.x = window.innerWidth - 152;
+    }
+  }
+
   AddAttachment() {
     this.addAttachment.emit("1");
   }

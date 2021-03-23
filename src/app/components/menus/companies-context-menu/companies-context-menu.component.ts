@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompanyService } from 'src/app/services/Company.Service';
 
@@ -7,7 +7,7 @@ import { CompanyService } from 'src/app/services/Company.Service';
   templateUrl: './companies-context-menu.component.html',
   styleUrls: ['./companies-context-menu.component.scss']
 })
-export class CompaniesContextMenuComponent implements OnInit {
+export class CompaniesContextMenuComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private companyService: CompanyService) { }
 
@@ -18,8 +18,24 @@ export class CompaniesContextMenuComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() EditCompony = new EventEmitter<string>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
 
   ngOnInit() {}
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 179 + this.x){
+      this.x = window.innerWidth - 179;
+    }
+  }
+
 
   viewTransactions() {
     this.companyService.setCompany({ companyID: this.companyID, companyName: this.companyName });

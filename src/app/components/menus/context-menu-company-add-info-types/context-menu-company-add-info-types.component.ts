@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-context-menu-company-add-info-types',
   templateUrl: './context-menu-company-add-info-types.component.html',
   styleUrls: ['./context-menu-company-add-info-types.component.scss']
 })
-export class ContextMenuCompanyAddInfoTypesComponent implements OnInit {
+export class ContextMenuCompanyAddInfoTypesComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
@@ -18,7 +18,22 @@ export class ContextMenuCompanyAddInfoTypesComponent implements OnInit {
   @Input() currentTheme: string;
 
   @Output() editCompanyAddInfoType = new EventEmitter<string>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 63 + this.x){
+      this.x = window.innerWidth - 63;
+    }
   }
 
   edit() {

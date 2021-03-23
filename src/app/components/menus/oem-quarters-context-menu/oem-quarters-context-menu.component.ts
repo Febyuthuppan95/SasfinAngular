@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CompanyService } from 'src/app/services/Company.Service';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { SelectedCompanyOEM } from 'src/app/views/main/view-company-list/view-co
   templateUrl: './oem-quarters-context-menu.component.html',
   styleUrls: ['./oem-quarters-context-menu.component.scss']
 })
-export class OemQuartersContextMenuComponent implements OnInit {
+export class OemQuartersContextMenuComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private companyService: CompanyService) { }
   @Input() currentTheme: string;
@@ -25,6 +25,10 @@ export class OemQuartersContextMenuComponent implements OnInit {
 
   @Output() EditQuarter = new EventEmitter<string>();
   private unsubscribe$ = new Subject<void>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
+
   ngOnInit() {
     this.companyService.observeCompanyOEM()
     .pipe(takeUntil(this.unsubscribe$))
@@ -34,6 +38,18 @@ export class OemQuartersContextMenuComponent implements OnInit {
         this.selectedOEM.companyOEMQuarterID = this.quarterID
       }
     });
+  }
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 150 + this.x){
+      this.x = window.innerWidth - 150;
+    }
   }
 
   Edit() {

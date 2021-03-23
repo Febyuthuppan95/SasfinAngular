@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TransactionService } from 'src/app/services/Transaction.Service';
 import { UserService } from 'src/app/services/user.Service';
@@ -12,7 +12,7 @@ import { TransactionUpdateResponse } from 'src/app/models/HttpResponses/Transact
   templateUrl: './context-menu-transaction.component.html',
   styleUrls: ['./context-menu-transaction.component.scss']
 })
-export class ContextMenuTransactionComponent implements OnInit {
+export class ContextMenuTransactionComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private router: Router, private userService: UserService, private transactionService: TransactionService, private companyService: CompanyService) { }
@@ -36,8 +36,23 @@ export class ContextMenuTransactionComponent implements OnInit {
 
   @ViewChild(NotificationComponent, { static: true })
   private notify: NotificationComponent;
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 181 + this.x){
+      this.x = window.innerWidth - 181;
+    }
   }
 
   viewTransactionAttachments() {

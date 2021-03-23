@@ -64,6 +64,7 @@
 </div>
 
 <app-menu
+  *ngIf="this.contextMenu"
   [contextShow]="this.contextMenu"
   [x]="this.contextMenuX"
   [y]="this.contextMenuY"

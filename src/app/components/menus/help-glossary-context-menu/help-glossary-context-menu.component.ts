@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-help-glossary-context-menu',
@@ -18,8 +18,23 @@ export class HelpGlossaryContextMenuComponent implements OnInit {
 
   @Output() editHelpItem = new EventEmitter<string>();
   @Output() deleteHelpItem = new EventEmitter<string>();
+  @ViewChild('popCont', {static: false}) elementView: ElementRef;
+  contentHeight: number;
+  contentWidth: number;
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(){
+    this.contentHeight = this.elementView.nativeElement.offsetHeight;
+    this.contentWidth = this.elementView.nativeElement.offsetWidth;
+    if (window.innerHeight < this.contentHeight + this.y)
+    {
+      this.y = window.innerHeight - this.contentHeight;
+    }
+    if (window.innerWidth < 81 + this.x){
+      this.x = window.innerWidth - 81;
+    }
   }
 
   edit() {
