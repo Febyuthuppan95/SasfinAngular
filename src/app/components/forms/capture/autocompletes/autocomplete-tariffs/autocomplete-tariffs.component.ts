@@ -66,21 +66,21 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.query.valueChanges.subscribe((value) => {
       if (value) {
         if (value.id) {
-          this.control.setValue(value.id);
+          this.control.setValue(value.id, {emitEvent: false});
           this.query.setErrors(null);
           this.control.setErrors(null);
           this.selected = true;
         } else {
           this.selected = false;
+          this.control.reset(null, {emitEvent: false});
           this.load(false);
-          this.control.reset(null);
           this.query.setErrors({ incorrect: true });
           this.control.setErrors({ incorrect: true });
         }
         this.click = null;
       } else {
         this.selected = false;
-        this.control.setValue(null);
+        this.control.setValue(null, {emitEvent: false});
         this.click = null;
       }
     });
@@ -124,8 +124,10 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.tariffService
     .list({
       userID: this.currentUser.userID,
-      specificTariffID: getSpecific === null ? this.control.value : -1,
-      filter: "",
+      specificTariffID: getSpecific === undefined || getSpecific === false || getSpecific === null ? -1 : this.control.value,
+      filter: getSpecific === undefined || getSpecific === false ? filter : '',
+      orderBy: '',
+      orderByDirection: '',
       rowStart: 1,
       rowEnd: 10,
     })

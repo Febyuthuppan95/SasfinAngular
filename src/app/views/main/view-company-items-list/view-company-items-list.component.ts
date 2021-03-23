@@ -968,12 +968,10 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       qualifyPI: focusItem.qualifyPI,
       vulnerable: focusItem.vulnerable,
     }
-   if (this.newItem.tariffID === null) {
-      this.tariffControl.setValue(null);
-    }
-    else {
-      this.tariffControl.setValue(this.newItem.tariffID);
-    }
+
+    this.tariffControl = new FormControl(null);
+    this.tariffControl.setValue(this.newItem.tariffID)
+    console.log(this.newItem);
     this.vulnerableControl.setValue(this.newItem.vulnerable === 'True' ? true : false);
     this.vulnerable = this.newItem.vulnerable;
     this.loaditemServices(false);
