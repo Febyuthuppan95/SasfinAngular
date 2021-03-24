@@ -149,7 +149,8 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   public displayFn(item: any): string {
-    return item ? `${item.Tariff !== '' && item.Tariff !== null ? item.Tariff + ', ' : ''}${item.Name}, ${item.Description}` : '';
+    //return item ? `${item.Tariff !== '' && item.Tariff !== null ? item.Tariff + ', ' : ''}${item.Name}, ${item.Description}` : '';
+    return item ? `${item.Name}, ${item.Description}` : '';
   }
 
   focusOut(trigger) {
