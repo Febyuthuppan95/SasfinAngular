@@ -55,7 +55,7 @@ constructor(private userService: UserService,
       if (value) {
         console.log(value);
         if (value.companyID) {
-          this.control.setValue(value.companyID);
+          this.control.setValue(value.companyID, {emitEvent: false});
           this.query.setErrors(null);
           this.control.setErrors(null);
           this.selected = true;
@@ -71,6 +71,7 @@ constructor(private userService: UserService,
           this.control.setErrors({ incorrect: true });
         }
       } else {
+        this.control.reset(null);
         this.selected = false;
       }
     });

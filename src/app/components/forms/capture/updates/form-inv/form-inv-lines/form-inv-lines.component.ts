@@ -118,6 +118,8 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.invoiceID = this.data.invoiceID;
       this.form.patchValue(this.data);
       this.tempForm.patchValue(this.data);
+      console.log(this.form.value);
+      console.log(this.tempForm.value);
 
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
@@ -197,8 +199,8 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     } else {
       this.form.controls[key].setErrors(null);
     }
-
-    this.form.controls[key].updateValueAndValidity();
+    //this.form.controls[key].updateValueAndValidity();
+    this.form.updateValueAndValidity()
   }
 
   ngAfterViewInit(): void {
