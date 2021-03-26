@@ -771,7 +771,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(model);
 
       await this.captureService.post(model).then((res) => console.log(res),
-      (msg) => this.snackbar.open('Failed to update line', '', { duration: 3000 }));
+      (msg) => this.snackbar.open(msg, '', { duration: 3000 }));
       //Unique identifier put back to avoid duplication
       $event.uniqueIdentifier = identifier;
       this.lines[this.lines.indexOf(target)] = $event;

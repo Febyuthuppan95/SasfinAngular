@@ -60,7 +60,7 @@
         <mat-label>
           Common Factor
         </mat-label>
-        <input matInput type="text" formControlName="commonFactor" (focusin)="updateHelpContext('form-invoice-line-common-factor')">
+        <input matInput type="number" formControlName="commonFactor" (focusin)="updateHelpContext('form-invoice-line-common-factor')">
         <mat-error *ngIf="form.controls.commonFactor.hasError('noMatch')">Value does not match previous value: {{tempForm.controls.commonFactor.value}}</mat-error>
 
 <!--        <mat-icon *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override">clear</mat-icon>-->
