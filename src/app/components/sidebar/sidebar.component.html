@@ -138,8 +138,8 @@
     <span class="menu-title">Start Capturing</span>
   </a>
   </li>
-  <!-- <li class="nav-item ls-btn-hover-{{ currentTheme }}"
-  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  <!-- <li class="nav-item ls-btn-hover-{{ currentTheme }}" -->
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}" *ngIf="showaddressTypes"
   (mouseover)="updateHelpContext('sidebar-places-link')"
   matTooltip="AddressTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/addresstypes" [routerLinkActive]="['active-item']">
@@ -147,14 +147,14 @@
     <span class="menu-title">Address Types</span>
   </a>
   </li>
-  <li class="nav-item ls-btn-hover-{{ currentTheme }}"
+  <li class="nav-item ls-btn-hover-{{ currentTheme }}" *ngIf="showcontactTypes"
   (mouseover)="updateHelpContext('sidebar-contact-types-link')"
   matTooltip="ContactTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">
   <a class="nav-link ls-text-{{ currentTheme }} ls-btn-hover-{{ currentTheme }}" routerLink="/contacttypes" [routerLinkActive]="['active-item']">
     <i class="mdi mdi-phone menu-icon"></i>
     <span class="menu-title">Contact Types</span>
   </a>
-  </li>
+  <!--</li>
   <li class="nav-item ls-btn-hover-{{ currentTheme }}"
   (mouseover)="updateHelpContext('sidebar-company-add-info-types-link')"
   matTooltip="CompanyAddInfoTypes" matTooltipPosition="above" [matTooltipDisabled]="!collapse">

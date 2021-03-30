@@ -73,6 +73,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public isQA = false;
   public savedChanges = false;
   private invoice: any;
+  private capturerID: number;
 
   datemask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
 
@@ -178,7 +179,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.invoiceNo.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1) {
+      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.invoiceNo.value) {
           this.form.controls.invoiceNo.setErrors({ noMatch: true });
         } else {
@@ -188,7 +189,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.invoiceDate.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1) {
+      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.invoiceDate.value) {
           this.form.controls.invoiceDate.setErrors({ noMatch: true });
         } else {
@@ -198,7 +199,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.freightCost.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1) {
+      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.freightCost.value) {
           this.form.controls.freightCost.setErrors({ noMatch: true });
         } else {
@@ -208,7 +209,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.insuranceCost.valueChanges.subscribe((value) =>{
-      if (value && this.form.controls.qaUserID.value !== -1) {
+      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.insuranceCost.value){
           this.form.controls.insuranceCost.setErrors({ noMatch: true });
         } else {
@@ -218,7 +219,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.bankCharges.valueChanges.subscribe((value) =>{
-      if (value && this.form.controls.qaUserID.value !== -1) {
+      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.bankCharges.value){
           this.form.controls.bankCharges.setErrors({ noMatch: true });
         } else {
@@ -407,6 +408,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const response: any = res.invoices[0];
       console.log('response');
       console.log(response);
+      this.capturerID = response.capturerID
       response.invoiceID = res.invoices[0].invoiceID;
       response.incoTermTypeID = res.invoices[0].incoID;
 
@@ -469,8 +471,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.updateValueAndValidity();
       this.isQA = false;
-
-      if (this.form.controls.qaUserID.value !== -1 && response.attachmentStatusID == 11) {
+      if (this.form.controls.qaUserID.value === -1 && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
+        this.form.controls.qaUserID.setValue(this.currentUser.userID);
+      }
+      if (this.form.controls.qaUserID.value !== -1 && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
         this.isQA = true;
       }
 
@@ -584,6 +588,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           statusID = 3;
         }
+        requestModel.attachmentStatusID = statusID;
 
         if (requestModel.qaUserID === -1
           && !escalation
@@ -591,7 +596,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           && !escalationResolved) {
           console.log('hi');
           requestModel.attachmentStatusID = 11;
-        } else if (this.form.controls.qaUserID.value !== -1) {
+        } else if (this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
 
           if (saveProgress) {
             requestModel.attachmentStatusID = 11;
@@ -602,7 +607,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
         requestModel.userID = this.currentUser.userID;
         requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
-
+        requestModel.qaUserUD = this.currentUser.userID;
+        requestModel.capturerID = this.capturerID;
         console.log(requestModel);
         await this.captureService.invoiceUpdate(requestModel).then(
           async (res: Outcome) => {
@@ -698,7 +704,6 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       const original = this.lines[this.lines.indexOf(target)];
       $event.invoiceLineID = original.invoiceLineID;
       $event.invoiceID = original.invoiceID;
-      $event.qaComplete = true;
 
       $event.isDeleted = 0;
       $event.invoiceID = this.form.controls.invoiceID.value;
@@ -774,6 +779,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       (msg) => this.snackbar.open(msg, '', { duration: 3000 }));
       //Unique identifier put back to avoid duplication
       $event.uniqueIdentifier = identifier;
+      $event.qaComplete = true;
       this.lines[this.lines.indexOf(target)] = $event;
       this.activeLine = $event;
 

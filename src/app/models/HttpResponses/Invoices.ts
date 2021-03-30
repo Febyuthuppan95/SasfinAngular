@@ -20,7 +20,7 @@ export class Invoice {
   currencyID: number;
   attachmentStatusID: number;
   incoID: number;
-
+  capturerID: number;
   invoiceNoOBit: boolean;
   invoiceNoOUserID: number;
   invoiceNoODate: string;
