@@ -3,8 +3,8 @@
     <div style=" width: 58% ;overflow-y: auto; position: relative; overflow-y: auto; height: 65vh;" ngClass="{'col-7': this.file, 'col-12': !this.filePreview}">
         <app-pdf-viewer
         class="fill-div"
-        *ngIf="this.filePreview"
-        [pdf]="this.filePreview"
+        *ngIf="this.displayPDF"
+        [pdf]="this.pdfSRC"
         >
         </app-pdf-viewer>
     </div>

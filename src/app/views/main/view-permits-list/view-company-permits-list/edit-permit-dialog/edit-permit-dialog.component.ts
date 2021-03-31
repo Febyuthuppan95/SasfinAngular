@@ -11,6 +11,7 @@ import { PermitTariffInfoComponent } from '../add-company-permit/permit-tariff-i
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { MatSnackBar } from '@angular/material';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
+import { DocumentService } from 'src/app/services/Document.Service';
 
 @Component({
   selector: 'app-edit-permit-dialog',
@@ -23,6 +24,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   constructor(private userService: UserService,
               private companyService: CompanyService,
               private api: ApiService,
+              private docService: DocumentService,
               private matDialog: MatDialog,
               private snackbarService: HelpSnackbar,
               private snackbar: MatSnackBar,
@@ -52,6 +54,8 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   });
 
   selectedTariffs: Tariff[] = [];
+  pdfSRC: string = '';
+  displayPDF = false;
   file: File[];
   filePreview: any;
   displayPreview: any;
@@ -185,6 +189,19 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    if (this.Permit.filepath.length > 0) {
+      this.docService.get(this.Permit.filepath).then(
+        (res: string) => {
+          console.log(res);
+          this.pdfSRC = res;
+          this.displayPDF = true;
+        },
+        (msg) => {
+          console.log(msg);
+        }
+      );
+    }
+
     this.form.controls.PermitCode.setValue(this.Permit.permitCode);
     this.form.controls.permitDate.setValue(new Date(this.Permit.permitDate));
     this.form.controls.importdateStart.setValue(new Date(this.Permit.importdateStart));

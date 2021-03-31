@@ -69,7 +69,7 @@ export class AddCompanyPermitComponent implements OnInit {
    companyName: string;
    permitTypeID: number;
 
-   importTariffs = new FormControl(null, [Validators.required]);
+   importTariffs = new FormControl(null);
    exportTariff = new FormControl(null, [Validators.required]);
    public paginationControl = new FormControl(1);
    selectedImportTariffs = [];

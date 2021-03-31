@@ -23,7 +23,7 @@
         <mat-label>
           Common Factor
         </mat-label>
-        <input matInput type="text" formControlName="commonFactor" #startLineForm (focusin)="updateHelpContext('form-customs-worksheet-line-commonfactor')" #startLineForm>
+        <input matInput type="number" formControlName="commonFactor" #startLineForm (focusin)="updateHelpContext('form-customs-worksheet-line-commonfactor')" #startLineForm>
         <button mat-icon-button type="button" *ngIf="form.controls.commonFactorOBit.value" matSuffix (click)="undoOverride('commonFactor')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.commonFactorOBit.value">OVERRIDE: {{form.controls.commonFactorOReason.value}}</mat-hint>
         <button mat-icon-button type="button" *ngIf="!form.controls.commonFactorOBit.value && form.controls.commonFactor.errors?.incorrect" matSuffix (click)="overrideDialog('commonFactor', 'Common Factor')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
@@ -69,7 +69,7 @@
         <mat-label>
           Quantity
         </mat-label>
-        <input matInput type="text" formControlName="hsQuantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
+        <input matInput type="number" formControlName="hsQuantity" (focusin)="updateHelpContext('form-customs-worksheet-line-hsquantity')">
         <button mat-icon-button type="button" *ngIf="form.controls.hsQuantityOBit.value" matSuffix (click)="undoOverride('hsQuantity')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.hsQuantityOBit.value">OVERRIDE: {{form.controls.hsQuantityOReason.value}}</mat-hint>
         <button mat-icon-button type="button" *ngIf="!form.controls.hsQuantityOBit.value && form.controls.hsQuantityError.value" matSuffix (click)="overrideDialog('hsQuantity', 'HS Quantity')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
@@ -108,7 +108,7 @@
         <mat-label>
           Supply Unit
         </mat-label>
-        <input matInput formControlName="supplyUnit" (focusin)="updateHelpContext('form-customs-worksheet-line-supplyUnit')">
+        <input matInput type="number" formControlName="supplyUnit" (focusin)="updateHelpContext('form-customs-worksheet-line-supplyUnit')">
         <button mat-icon-button type="button" *ngIf="form.controls.supplyUnitOBit.value" matSuffix (click)="undoOverride('supplyUnit')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.supplyUnitOBit.value">OVERRIDE: {{form.controls.supplyUnitOReason.value}}</mat-hint>
         <button *ngIf="form.controls.supplyUnitError.value && !form.controls.supplyUnitOBit.value" mat-icon-button type="button" matSuffix (click)="overrideDialog('supplyUnit', 'Supply Unit')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>

@@ -17,4 +17,5 @@ export class PermitByDate {
   importdateEnd: string;
   exportdateStart: string;
   exportdateEnd: string;
+  filepath: string;
 }

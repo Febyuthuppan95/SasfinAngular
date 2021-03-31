@@ -29,6 +29,7 @@ export class Permit {
   importdateEnd: string;
   exportdateStart: string;
   exportdateEnd: string;
+  filepath: string;
 }
 
 export class PRCC {
@@ -42,12 +43,14 @@ export class PRCC {
   endDate: string;
   importStartDate: string;
   importEndDate: string;
+  filepath: string;
 }
 
 export class EPC {
   rowNum: number;
   epcID: number;
   epcCode: string;
+  filepath: string;
 }
 
 export class ClaimPermit {

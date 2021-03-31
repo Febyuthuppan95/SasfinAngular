@@ -48,6 +48,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     this.load(true);
 
     this.control.valueChanges.subscribe((value) => {
+      console.log(value);
       if (value) {
         console.log('test control');
         console.log(value);
@@ -64,9 +65,10 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
     });
 
     this.query.valueChanges.subscribe((value) => {
+      console.log(value);
       if (value) {
         if (value.id) {
-          this.control.setValue(value.id, {emitEvent: false});
+          this.control.setValue(value.id);
           this.query.setErrors(null);
           this.control.setErrors(null);
           this.selected = true;
