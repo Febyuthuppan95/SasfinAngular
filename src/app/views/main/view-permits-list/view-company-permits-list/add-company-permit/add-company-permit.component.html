@@ -185,7 +185,7 @@
         </mat-form-field>
         <mat-form-field class="form-group">
           <mat-label>Custom Value:</mat-label>
-          <input matInput type="text" placeholder="Code"
+          <input matInput type="number" placeholder="Code"
           [formControl]="this.prccForm.controls.prccCustomValue"  required/>
           <mat-error *ngIf="this.prccForm.controls.prccCustomValue.hasError('required')">
             Custome Value is <strong>required</strong>

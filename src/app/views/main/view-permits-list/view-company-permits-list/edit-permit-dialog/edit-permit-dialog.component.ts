@@ -437,7 +437,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
       companyID: this.companyID,
       prccID: this.Permit.prccID,
       prccNumber: this.prccForm.controls.prccNumber.value,
-      customValue: this.prccForm.controls.prccCustomValue.value,
+      customValue: +this.prccForm.controls.prccCustomValue.value,
       regNo: this.prccForm.controls.prccRegNo.value,
       fileNo: this.prccForm.controls.prccFileNo.value,
       startDate: this.prccForm.controls.prccStartDate.value,

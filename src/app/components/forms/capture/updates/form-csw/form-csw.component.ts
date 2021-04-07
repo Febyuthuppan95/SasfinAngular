@@ -588,6 +588,7 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async deleteLine() {
     const targetLine = this.lines[this.activeIndex];
+    targetLine.userID = this.currentUser.userID;
     targetLine.isDeleted = 1;
     targetLine.customWorksheetID = this.attachmentID;
 

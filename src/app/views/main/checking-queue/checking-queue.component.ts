@@ -40,7 +40,7 @@ export class CheckingQueueComponent implements OnInit, OnDestroy {
       },
       filters: {
         search: true,
-        selectRowCount: false,
+        selectRowCount: true,
       }
     },
     headings: [
