@@ -27,6 +27,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
   @Input() appearance = 'fill';
   @Input() label = 'Items';
   @Input() helpSlug = 'default';
+  @Input() previousItem = '';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -65,7 +66,18 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
         if (value.ItemID) {
           this.control.setValue(value.ItemID);
           this.query.setErrors(null);
-          this.control.setErrors(null);
+          if (this.previousItem != '') {
+            console.log(this.control)
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+            console.log(this.query);
+          } else {
+            this.control.setErrors(null);
+          }
           this.selected = true;
         } else {
           this.selected = false;

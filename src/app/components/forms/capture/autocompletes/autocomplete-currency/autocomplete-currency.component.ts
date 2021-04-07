@@ -30,6 +30,7 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
   @Input() titleOverride = '';
   @Input() reasonOverride = '';
   @Input() errorOverride = '';
+  @Input() previousCurrency = '';
   @Output() undoOverride = new Subject<string>();
   @Output() override = new Subject<any>();
 
@@ -71,6 +72,17 @@ export class AutocompleteCurrencyComponent implements OnInit, OnDestroy, OnChang
           this.control.setValue(value.currencyID);
           this.query.setErrors(null);
           this.selected = true;
+          if (this.previousCurrency != '') {
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+          } else {
+            this.control.setErrors(null);
+            this.query.setErrors(null);
+          }
         } else {
           this.selected = false;
           const query: string = value;

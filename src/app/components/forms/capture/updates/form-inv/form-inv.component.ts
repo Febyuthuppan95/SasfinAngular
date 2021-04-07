@@ -60,6 +60,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   public showErrors = false;
   public lineErrors: any[] = [];
   public invoiceDate = new FormControl();
+  public incoTerm = '';
+  public companyName = '';
+  public seededCompanyName = '';
+  public currencyName = '';
+  public cooName = '';
 
   public attachmentStatus: number;
   public transactionStatus: number;
@@ -120,7 +125,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       incoTermTypeID: new FormControl(null),
       cooID: new FormControl(null),
       isDeleted: new FormControl(0),
-      qaUserID: new FormControl(-1),
+      qaUserID: new FormControl(null),
 
       invoiceNoOBit: new FormControl(null),
       invoiceNoOUserID: new FormControl(null),
@@ -179,7 +184,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.invoiceNo.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.invoiceNo.value) {
           this.form.controls.invoiceNo.setErrors({ noMatch: true });
         } else {
@@ -189,7 +194,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.invoiceDate.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.invoiceDate.value) {
           this.form.controls.invoiceDate.setErrors({ noMatch: true });
         } else {
@@ -199,7 +204,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.freightCost.valueChanges.subscribe((value) => {
-      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.freightCost.value) {
           this.form.controls.freightCost.setErrors({ noMatch: true });
         } else {
@@ -209,7 +214,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.insuranceCost.valueChanges.subscribe((value) =>{
-      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.insuranceCost.value){
           this.form.controls.insuranceCost.setErrors({ noMatch: true });
         } else {
@@ -219,11 +224,70 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.form.controls.bankCharges.valueChanges.subscribe((value) =>{
-      if (value && this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.bankCharges.value){
           this.form.controls.bankCharges.setErrors({ noMatch: true });
         } else {
           this.form.controls.bankCharges.setErrors(null);
+        }
+      }
+    });
+
+
+
+    this.form.controls.currencyID.valueChanges.subscribe((value) => {
+      let temp: number = +value;
+      if (temp && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+        if (temp !== this.temporaryForm.controls.currencyID.value) {
+          this.form.controls.currencyID.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.currencyID.setErrors(null);
+        }
+      }
+      console.log(this.form.controls.currencyID);
+    });
+
+    this.form.controls.cooID.valueChanges.subscribe((value) => {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+        if (value !== this.temporaryForm.controls.cooID.value) {
+          this.form.controls.cooID.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.cooID.setErrors(null);
+        }
+      }
+    });
+
+    this.form.controls.incoTermTypeID.valueChanges.subscribe((value) => {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+        if (value !== this.temporaryForm.controls.incoTermTypeID.value) {
+          this.form.controls.incoTermTypeID.setErrors({ noMatch: true });
+        } else {
+          this.form.controls.incoTermTypeID.setErrors(null);
+        }
+      }
+    });
+
+    setTimeout(() => { this.form.controls.companyID.valueChanges.subscribe((value) => {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+        if (value !== this.temporaryForm.controls.companyID.value) {
+          this.form.controls.companyID.setErrors({ noMatch: true });
+          console.log('hi');
+        } else {
+          this.form.controls.companyID.setErrors(null);
+          console.log('herro');
+        }
+      }
+    });}, 1000);
+
+    this.form.controls.seededCompanyID.valueChanges.subscribe((value) => {
+      if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+
+        if (value !== this.temporaryForm.controls.seededCompanyID.value) {
+          this.form.controls.seededCompanyID.setErrors({ noMatch: true });
+          console.log('hi');
+        } else {
+          this.form.controls.seededCompanyID.setErrors(null);
+          console.log('herro');
         }
       }
     });
@@ -471,10 +535,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.form.updateValueAndValidity();
       this.isQA = false;
-      if (this.form.controls.qaUserID.value === -1 && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
+      if (this.form.controls.qaUserID.value === null && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
         this.form.controls.qaUserID.setValue(this.currentUser.userID);
       }
-      if (this.form.controls.qaUserID.value !== -1 && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
+      if (this.form.controls.qaUserID.value !== null && response.attachmentStatusID == 11 && this.capturerID  !== this.currentUser.userID) {
         this.isQA = true;
       }
 
@@ -493,6 +557,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         this.form.controls.currencyID.reset();
         this.form.controls.seededCompanyID.reset();
         this.form.controls.companyID.reset();
+
+        this.incoTerm = res.invoices[0].incoTermType;
+        this.companyName = res.invoices[0].companyName;
+        this.seededCompanyName = res.invoices[0].seededCompanyName;
+        this.currencyName = res.invoices[0].currencyName;
+        this.cooName = res.invoices[0].cooName;
       }
 
       console.log(`======= QA USER ID ${this.isQA} =======`);
@@ -590,13 +660,13 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         requestModel.attachmentStatusID = statusID;
 
-        if (requestModel.qaUserID === -1
+        if (requestModel.qaUserID === null
           && !escalation
           && !saveProgress
           && !escalationResolved) {
           console.log('hi');
           requestModel.attachmentStatusID = 11;
-        } else if (this.form.controls.qaUserID.value !== -1 && this.capturerID !== this.currentUser.userID) {
+        } else if (this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
 
           if (saveProgress) {
             requestModel.attachmentStatusID = 11;
@@ -605,10 +675,15 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
 
+        requestModel.cooID = requestModel.cooID <= 0 ? null : requestModel.cooID;
+        requestModel.companyID = requestModel.companyID <= 0 ? null : requestModel.companyID;
+        requestModel.currencyID = requestModel.currencyID <= 0 ? null : requestModel.currencyID;
+        requestModel.incoTermTypeID = requestModel.incoTermTypeID <= 0 ? null : requestModel.incoTermTypeID
+        requestModel.seededCompanyID = requestModel.seededCompanyID <= 0 ? null : requestModel.seededCompanyID
         requestModel.userID = this.currentUser.userID;
         requestModel.invoiceDate = this.dateService.getUTC(new Date(requestModel.invoiceDate));
-        requestModel.qaUserUD = this.currentUser.userID;
-        requestModel.capturerID = this.capturerID;
+        //requestModel.qaUserUD = this.currentUser.userID;
+        requestModel.capturerID = this.capturerID === null ? this.currentUser.userID : this.capturerID;
         console.log(requestModel);
         await this.captureService.invoiceUpdate(requestModel).then(
           async (res: Outcome) => {
@@ -648,7 +723,10 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
               this.loader = false;
             }
           },
-          (msg) => console.log(JSON.stringify(msg))
+          (msg) => {
+            console.log(JSON.stringify(msg))
+            this.loader = false;
+          }
         );
       } else {
         this.snackbar.open('Please fill in header details as well as have at least one line', '', {duration: 3000});

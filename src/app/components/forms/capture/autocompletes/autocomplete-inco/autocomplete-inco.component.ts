@@ -21,6 +21,7 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
   @Input() transstatus: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+  @Input() previousINCO = '';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: any[] = [];
@@ -59,7 +60,18 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
         if (value.incoTermTypeID) {
           this.control.setValue(value.incoTermTypeID);
           this.query.setErrors(null);
-          this.control.setErrors(null);
+          if (this.previousINCO != '') {
+            console.log(this.control)
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+            console.log(this.query);
+          } else {
+            this.control.setErrors(null);
+          }
           this.selected = true;
         } else {
           this.selected = false;
@@ -134,7 +146,13 @@ export class AutocompleteIncoComponent implements OnInit, OnDestroy, OnChanges {
       this.query.setValue(this.list[0]);
     }
   }
-
+  clear(){
+    this.query.setValue(null, {emitEvent: false});
+    if (!this.isRequired){
+      this.query.setErrors(null);
+      this.control.setErrors(null);
+    }
+  }
   updateHelpContext(slug: string) {
     const newContext: SnackbarModel = {
       display: true,

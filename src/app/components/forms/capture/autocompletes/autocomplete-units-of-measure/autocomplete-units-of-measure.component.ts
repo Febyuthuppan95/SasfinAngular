@@ -23,6 +23,7 @@ constructor(private userService: UserService,
   @Input() transstatus: number;
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
+  @Input() previousUnit = '';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: UnitsOfMeasure[] = [];
@@ -53,7 +54,18 @@ constructor(private userService: UserService,
         if (value.unitOfMeasureID) {
           this.control.setValue(value.unitOfMeasureID);
           this.query.setErrors(null);
-          this.control.setErrors(null);
+          if (this.previousUnit != '') {
+            console.log(this.control)
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+            console.log(this.query);
+          } else {
+            this.control.setErrors(null);
+          }
           this.selected = true;
         } else {
           this.selected = false;
@@ -135,6 +147,14 @@ constructor(private userService: UserService,
       this.query.setValue(this.list[0]);
 
       trigger.closePanel();
+    }
+  }
+
+  clear(){
+    this.query.setValue(null, {emitEvent: false});
+    if (!this.isRequired){
+      this.query.setErrors(null);
+      this.control.setErrors(null);
     }
   }
 

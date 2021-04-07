@@ -25,6 +25,7 @@ constructor(private userService: UserService,
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
   @Input() title = 'Companies';
+  @Input() previousCompany = '';
 
   private currentUser = this.userService.getCurrentUser();
   private listTemp: Company[] = [];
@@ -55,9 +56,20 @@ constructor(private userService: UserService,
       if (value) {
         console.log(value);
         if (value.companyID) {
-          this.control.setValue(value.companyID, {emitEvent: false});
+          this.control.setValue(value.companyID);
           this.query.setErrors(null);
-          this.control.setErrors(null);
+          if (this.previousCompany != '') {
+            console.log(this.control)
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+            console.log(this.query);
+          } else {
+            this.control.setErrors(null);
+          }
           this.selected = true;
         } else {
           this.selected = false;

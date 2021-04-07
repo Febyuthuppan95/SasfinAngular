@@ -25,6 +25,11 @@ export class Invoice {
   invoiceNoOUserID: number;
   invoiceNoODate: string;
   invoiceNoOReason: string;
+  incoTermType?: string;
+  companyName?: string;
+  seededCompanyName?: string;
+  currencyName?: string;
+  cooName?: string;
 }
 
 export class InvoiceLinesResponse {
@@ -52,4 +57,8 @@ export class InvoiceLine {
   guid?: string;
   isDeleted?: boolean;
   ShortageValue?: number;
+  cooName?: string;
+  itemName?: string;
+  tariffName?: string;
+  unitOfMeasure?: string;
 }

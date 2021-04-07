@@ -82,6 +82,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     unitPrice: new FormControl(null, [Validators.required]),
     totalLineValue: new FormControl(null, [Validators.required]),
     shortClaim: new FormControl(null),
+    tariffID: new FormControl(null),
   });
 
   public attachmentLabel: string;
@@ -95,6 +96,10 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   public invoiceID = -1;
   public unsavedChanges = false;
 
+  public uomName = '';
+  public cooName = '';
+  public itemName = '';
+  public tariffName = '';
   private currentUser = this.userService.getCurrentUser();
 
   @Input() data: any;
@@ -120,7 +125,6 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.tempForm.patchValue(this.data);
       console.log(this.form.value);
       console.log(this.tempForm.value);
-
       Object.keys(this.form.controls).forEach(key => {
         if (key.indexOf('ODate') !== -1) {
           if (this.form.controls[key].value !== null || this.form.controls[key].value) {
@@ -140,6 +144,11 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
         this.form.controls.itemID.reset();
         this.form.controls.cooID.reset();
         this.form.controls.tariffID.reset();
+
+        this.uomName = this.data.unitOfMeasure;
+        this.cooName = this.data.cooName;
+        this.itemName = this.data.itemName;
+        this.tariffName = this.data.tariffName;
         //this.form.controls.LineNo.reset();
       }
 
@@ -182,6 +191,30 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.form.controls.unitPrice.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('unitPrice', value);
+        }
+      });
+
+      this.form.controls.unitOfMeasureID.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('unitOfMeasureID',value);
+        }
+      });
+
+      this.form.controls.cooID.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('cooID',value);
+        }
+      });
+
+      this.form.controls.itemID.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('itemID',value);
+        }
+      });
+
+      this.form.controls.tariffID.valueChanges.subscribe((value) => {
+        if (value) {
+          this.markAsNoMatch('tariffID',value);
         }
       });
     }
@@ -298,6 +331,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       this.submission.emit(line);
     } else {
       this.findInvalidControls(form);
+      console.log(this.form);
       this.snackbar.open('Please fill in line details', '', {duration: 3000});
     }
   }

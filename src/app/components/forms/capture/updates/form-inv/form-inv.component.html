@@ -103,7 +103,7 @@
         <br /><br />
       </div>
       <div class="col-6" >
-        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.seededCompanyID" [title]="'Ceded Company'" [helpSlug]="'form-invoice-seededCompanyID'"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.seededCompanyID" [title]="'Ceded Company'" [helpSlug]="'form-invoice-seededCompanyID'" [previousCompany]="this.seededCompanyName"></ls-autocomplete-companies>
         <br /><br />
       </div>
       <div class="col-12" >
@@ -121,20 +121,21 @@
           [(reasonOverride)]="form.controls.currencyIDOReason.value"
           [errorOverride]="getError('currencyID')"
           (undoOverride)="undoOverride($event)"
-          (override)="overrideDialog($event.tag, $event.title)">
+          (override)="overrideDialog($event.tag, $event.title)"
+          [previousCurrency]="this.currencyName">
         </ls-autocomplete-currency>
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-coo [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-coo'"></ls-autocomplete-coo>
+        <ls-autocomplete-coo [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.cooID" [helpSlug]="'form-invoice-coo'" [previousCountry]="this.cooName"></ls-autocomplete-coo>
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-inco [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.incoTermTypeID" [helpSlug]="'form-invoice-incotype'"></ls-autocomplete-inco>
+        <ls-autocomplete-inco [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.incoTermTypeID" [helpSlug]="'form-invoice-incotype'" [previousINCO]="this.incoTerm"></ls-autocomplete-inco>
         <br /><br />
       </div>
       <div class="col-12" >
-        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.companyID" [helpSlug]="'form-invoice-company'"></ls-autocomplete-companies>
+        <ls-autocomplete-companies [transstatus]="transactionStatus" [status]="attachmentStatus" [(control)]="form.controls.companyID" [helpSlug]="'form-invoice-company'" [previousCompany]="this.companyName"></ls-autocomplete-companies>
         <br /><br />
       </div>
     </div>
