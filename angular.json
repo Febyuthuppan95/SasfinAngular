@@ -135,6 +135,26 @@
                 "maximumWarning": "4mb",
                 "maximumError": "10mb"
               }]
+            },
+            "report": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.report.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [{
+                "type": "initial",
+                "maximumWarning": "4mb",
+                "maximumError": "10mb"
+              }]
             }
           }
         },
@@ -155,6 +175,9 @@
             },
             "migration": {
               "browserTarget": "SasfinGTSAngular:build:migration"
+            },
+            "report": {
+              "browserTarget": "SasfinGTSAngular:build:report"
             }
           }
         },
@@ -213,6 +236,9 @@
             },
             "migration": {
               "devServerTarget": "SasfinGTSAngular:serve:migration"
+            },
+            "report": {
+              "devServerTarget": "SasfinGTSAngular:serve:report"
             }
           }
         }
