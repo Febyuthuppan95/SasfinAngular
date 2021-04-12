@@ -1,13 +1,13 @@
 
 export const environment = {
   production: false,
-  AssetRoute: 'http://reports.sasfin.lateral.solutions/assets/dist',
-  ImageRoute: 'http://reports.sasfin.lateral.solutions/assets/dist/images',
-  ApiEndpoint: 'http://reports.sasfin.lateral/api/v1.0',
-  ApiBackgroundImages: 'http://reports.sasfin.lateral/api/v1.0/public/images/background',
-  ApiProfileImages: 'http://reports.sasfin.lateral/api/v1.0/public/images/profile',
-  ApiDocuments: 'http://reports.sasfin.lateral/api/v1.0/public/document',
-  appRoute: 'http://reports.sasfin.lateral.solutions',
+  AssetRoute: 'https://reports.sasfin.lateral.solutions/assets/dist',
+  ImageRoute: 'https://reports.sasfin.lateral.solutions/assets/dist/images',
+  ApiEndpoint: 'https://reports.sasfin.lateral/api/v1.0',
+  ApiBackgroundImages: 'https://reports.sasfin.lateral/api/v1.0/public/images/background',
+  ApiProfileImages: 'https://reports.sasfin.lateral/api/v1.0/public/images/profile',
+  ApiDocuments: 'https://reports.sasfin.lateral/api/v1.0/public/document',
+  appRoute: 'https://reports.sasfin.lateral.solutions',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
     ClaimReportData: '3393945f-b088-4d83-a263-6b9029df64ee',
@@ -38,11 +38,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'http://reports.sasfin.lateral/api/v1.0/users/list',
-      create: 'http://reports.sasfin.lateral/api/v1.0/users/add',
-      update: 'http://reports.sasfin.lateral/api/v1.0/users/update',
-      upload: 'http://reports.sasfin.lateral/api/v1.0/users/upload',
-      hub: 'http://reports.sasfin.lateral/Communication/Hub'
+      list: 'https://reports.sasfin.lateral/api/v1.0/users/list',
+      create: 'https://reports.sasfin.lateral/api/v1.0/users/add',
+      update: 'https://reports.sasfin.lateral/api/v1.0/users/update',
+      upload: 'https://reports.sasfin.lateral/api/v1.0/users/upload',
+      hub: 'https://reports.sasfin.lateral/Communication/Hub'
     }
   }
 };
