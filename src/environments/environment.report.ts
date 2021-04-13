@@ -3,10 +3,10 @@ export const environment = {
   production: false,
   AssetRoute: 'https://reports.sasfin.lateral.solutions/assets/dist',
   ImageRoute: 'https://reports.sasfin.lateral.solutions/assets/dist/images',
-  ApiEndpoint: 'https://reports.sasfin.lateral/api/v1.0',
-  ApiBackgroundImages: 'https://reports.sasfin.lateral/api/v1.0/public/images/background',
-  ApiProfileImages: 'https://reports.sasfin.lateral/api/v1.0/public/images/profile',
-  ApiDocuments: 'https://reports.sasfin.lateral/api/v1.0/public/document',
+  ApiEndpoint: 'https://sasfinrepo.lateral/api/v1.0',
+  ApiBackgroundImages: 'https://sasfinrepo.lateral/api/v1.0/public/images/background',
+  ApiProfileImages: 'https://sasfinrepo.lateral/api/v1.0/public/images/profile',
+  ApiDocuments: 'https://sasfinrepo.lateral/api/v1.0/public/document',
   appRoute: 'https://reports.sasfin.lateral.solutions',
   Sessions: {
     CaptureData: '69c58eaa-ccfb-4fba-97ad-8672ded5ad33',
@@ -38,11 +38,11 @@ export const environment = {
   // We should consider doing this for api endpoints -- Ashton
   api: {
     users: {
-      list: 'https://reports.sasfin.lateral/api/v1.0/users/list',
-      create: 'https://reports.sasfin.lateral/api/v1.0/users/add',
-      update: 'https://reports.sasfin.lateral/api/v1.0/users/update',
-      upload: 'https://reports.sasfin.lateral/api/v1.0/users/upload',
-      hub: 'https://reports.sasfin.lateral/Communication/Hub'
+      list: 'https://sasfinrepo.lateral/api/v1.0/users/list',
+      create: 'https://sasfinrepo.lateral/api/v1.0/users/add',
+      update: 'https://sasfinrepo.lateral/api/v1.0/users/update',
+      upload: 'https://sasfinrepo.lateral/api/v1.0/users/upload',
+      hub: 'https://sasfinrepo.lateral/Communication/Hub'
     }
   }
 };
