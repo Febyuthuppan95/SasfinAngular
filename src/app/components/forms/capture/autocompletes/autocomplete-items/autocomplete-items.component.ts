@@ -167,7 +167,7 @@ export class AutocompleteItemsComponent implements OnInit, OnDestroy, OnChanges 
 
   focusOut(trigger) {
     if (this.safe) {
-      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '' && this.query.value !== undefined)) {
         this.query.setValue(this.list[0]);
 
         trigger.closePanel();

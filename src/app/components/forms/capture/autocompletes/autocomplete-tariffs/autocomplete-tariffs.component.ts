@@ -178,7 +178,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   focusOut(trigger) {
     setTimeout(() => {
       if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
-        if (this.click === null) {
+        if (this.click === null && (this.query.value !== null && this.query.value !== '' && this.query.value !== undefined)) {
           this.query.setValue(this.list[0]);
         }
         else {

@@ -143,7 +143,7 @@ constructor(private userService: UserService,
   }
 
   focusOut(trigger) {
-    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+    if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '' && this.query.value !== undefined)) {
       this.query.setValue(this.list[0]);
 
       trigger.closePanel();

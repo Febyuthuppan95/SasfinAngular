@@ -160,12 +160,14 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   focusOut(trigger) {
-    if ( trigger._previousValue === '') {
-      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '')) {
+    console.log(this.query.value);
+    //if ( trigger._previousValue === '') {
+      console.log(trigger);
+      if (this.list.length > 0 && !this.selected && (this.query.value !== null && this.query.value !== '' && this.query.value !== undefined)) {
         this.query.setValue(this.list[0]);
         trigger.closePanel();
       }
-    }
+    //}
   }
   clear(){
     this.query.setValue(null, {emitEvent: false});
