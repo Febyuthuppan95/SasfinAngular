@@ -129,20 +129,20 @@
               <button mat-menu-item (click)="_invoiceLinkDialog(i);">Link Lines</button>
               <!--<button mat-menu-item (click)="_customsLinkDialog(i);">Customs Worksheet Lines</button>-->
 
-              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None) && (item.runningCustomsValue !== '0.00' && item.customsValue !== 0) && (consultant || leadCapturer)">
+              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Failed || item.runningCustomsValueStatus === totalStatuses.None) && (item.runningCustomsValue !== '0.00' && item.customsValue !== 0)"> <!--&& (consultant || leadCapturer)-->
                 <hr>
                 <button mat-menu-item (click)="customsValueChip(item);">Override Customs Value</button>
               </ng-container>
-              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Passed && item.OBit) && (consultant || leadCapturer)">
+              <ng-container *ngIf="(item.runningCustomsValueStatus === totalStatuses.Passed && item.OBit)"> <!--&& (consultant || leadCapturer)-->
                 <hr>
                 <button mat-menu-item (click)="undoOverride(item, 'Customs Value');">Undo Override Customs Value</button>
               </ng-container>
 
-              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None) && (consultant || leadCapturer)">
+              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Failed || item.runningForeignValueStatus === totalStatuses.None)"> <!--&& (consultant || leadCapturer)-->
                 <hr>
                 <button mat-menu-item (click)="foreignValueChip(item);">Override Foreign Invoice Value</button>
               </ng-container>
-              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignOBit) && (consultant || leadCapturer)">
+              <ng-container *ngIf="(item.runningForeignValueStatus === totalStatuses.Passed && item.ForeignOBit)"> <!--&& (consultant || leadCapturer)-->
                 <hr>
                 <button mat-menu-item (click)="undoOverride(item, 'Foreign Invoice Value');">Undo Override Foreign Invoice Value</button>
               </ng-container>

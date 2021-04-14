@@ -51,7 +51,7 @@ export class CustomsLineLinkComponent implements OnInit {
 
     async addJoin(index) {
       if (this.newLink.length === 0){
-        this.newLink[0] = this.lines[index];
+        this.newLink[0] = this.Templines[index];
         const item = this.lines.splice(index, 1)[0];
         this.Templines.splice(index, 1)[0];
       }
