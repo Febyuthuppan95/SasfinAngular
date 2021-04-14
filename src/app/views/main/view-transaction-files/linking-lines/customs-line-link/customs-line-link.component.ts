@@ -56,7 +56,6 @@ export class CustomsLineLinkComponent implements OnInit {
         this.Templines.splice(index, 1)[0];
       }
       else {
-
       }
       /*
       const request: any = {};
