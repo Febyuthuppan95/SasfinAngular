@@ -666,11 +666,11 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
           && !escalationResolved) {
           console.log('hi');
           requestModel.attachmentStatusID = 11;
-        } else if (this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
+        } else if (this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID && this.isQA) {
 
           if (saveProgress) {
             requestModel.attachmentStatusID = 11;
-          } else {
+          } else if (!escalation) {
             requestModel.attachmentStatusID = 3;
           }
         }
