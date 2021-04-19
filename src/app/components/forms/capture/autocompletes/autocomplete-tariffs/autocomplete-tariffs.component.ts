@@ -23,6 +23,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
   @Input() appearance = 'fill';
   @Input() helpSlug = 'default';
   @Input() tariffHeading = 0;
+  @Input() previousTariff = '';
 
   private isTariffType;
   private currentUser = this.userService.getCurrentUser();
@@ -47,9 +48,9 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
 
     this.load(true);
 
-    this.control.valueChanges.subscribe((value) => {
+    /*this.control.valueChanges.subscribe((value) => {
       console.log(value);
-      if (value) {
+      if (value !== undefined || value !== null) {
         console.log('test control');
         console.log(value);
         this.load(true, true);
@@ -62,7 +63,7 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         this.control.setValue(null, {emitEvent: false});
         this.query.setValue(null, {emitEvent: false});
       }
-    });
+    });*/
 
     this.query.valueChanges.subscribe((value) => {
       console.log(value);
@@ -70,7 +71,16 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         if (value.id) {
           this.control.setValue(value.id);
           this.query.setErrors(null);
-          this.control.setErrors(null);
+          if (this.previousTariff != '') {
+            if (this.control.hasError('noMatch')) {
+              this.query.setErrors({noMatch: true});
+            }
+            else {
+              this.query.setErrors(null);
+            }
+          } else {
+            this.control.setErrors(null);
+          }
           this.selected = true;
         } else {
           this.selected = false;
@@ -189,6 +199,14 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         trigger.closePanel();
       }
     }, 200);
+  }
+
+  clear(){
+    this.query.setValue(null, {emitEvent: false});
+    if (!this.isRequired) {
+      this.query.setErrors(null);
+      this.control.setErrors(null);
+    }
   }
 
   updateHelpContext(slug: string) {

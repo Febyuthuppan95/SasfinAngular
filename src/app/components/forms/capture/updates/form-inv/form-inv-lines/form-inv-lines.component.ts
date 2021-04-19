@@ -315,13 +315,13 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
   submit(form: FormGroup) {
     form.markAllAsTouched();
 
-    const keys = Object.keys(form.controls);
+    /*const keys = Object.keys(form.controls);
 
     keys.forEach((key) => {
       if (form.controls[key].hasError('noMatch')) {
         form.controls[key].setErrors(null);
       }
-    });
+    });*/
 
     form.updateValueAndValidity();
 

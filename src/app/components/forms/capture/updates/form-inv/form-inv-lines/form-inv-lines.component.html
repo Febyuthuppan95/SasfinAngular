@@ -84,7 +84,7 @@
       <br><br>
     </div>
     <div class="col-12" >
-      <ls-autocomplete-tariffs [transstatus]="transstatus" [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'"></ls-autocomplete-tariffs>
+      <ls-autocomplete-tariffs [transstatus]="transstatus" [status]="status" [(control)]="form.controls.tariffID" [helpSlug]="'form-customs-worksheet-line-tariff-description'" [previousTariff]="this.tariffName"></ls-autocomplete-tariffs>
       <br><br>
     </div>
     <div class="col-6">

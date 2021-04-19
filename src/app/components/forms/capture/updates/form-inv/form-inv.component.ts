@@ -193,12 +193,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.form.controls.invoiceDate.valueChanges.subscribe((value) => {
+    this.invoiceDate.valueChanges.subscribe((value) => {
       if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
         if (value !== this.temporaryForm.controls.invoiceDate.value) {
-          this.form.controls.invoiceDate.setErrors({ noMatch: true });
+          this.invoiceDate.setErrors({ noMatch: true });
         } else {
-          this.form.controls.invoiceDate.setErrors(null);
+          this.invoiceDate.setErrors(null);
         }
       }
     });
@@ -632,7 +632,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, escalationResolved?: boolean) {
     form.markAllAsTouched();
-
+    /*
     const keys = Object.keys(form.controls);
 
     keys.forEach((key) => {
@@ -640,11 +640,12 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
         form.controls[key].setErrors(null);
       }
     });
+    */
 
     form.updateValueAndValidity();
 
     if (!this.loader) {
-      if ((form.valid && this.lines.length > 0) || escalation || saveProgress || escalationResolved) {
+      if ((form.valid && this.lines.length > 0 && this.invoiceDate.valid) || escalation || saveProgress || escalationResolved) {
         this.loader = true;
         const requestModel = form.value;
         let statusID = 2;

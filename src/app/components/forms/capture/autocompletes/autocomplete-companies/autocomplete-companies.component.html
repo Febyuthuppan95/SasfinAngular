@@ -1,8 +1,8 @@
-<mat-form-field [appearance]="appearance" *ngIf="!isDisabled">
+<mat-form-field [appearance]="appearance">
   <mat-label>
     {{title}}
   </mat-label>
-  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)" [disabled]="isDisabled">
+  <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
   <mat-error *ngIf="query.hasError('noMatch')">Value does not match previous value: {{previousCompany}}</mat-error>
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)" [disabled]="isDisabled">clear</button></mat-error>
@@ -12,6 +12,6 @@
     {{item.name}}
   </mat-option>
 </mat-autocomplete>
-<mat-form-field *ngIf="isDisabled" [appearance]="appearance">
+<!--<mat-form-field *ngIf="isDisabled" [appearance]="appearance">
   <input type="text" matInput disabled="true" [value]="query.value.name ? query.value.name : 'NA'" />
-</mat-form-field>
+</mat-form-field>-->

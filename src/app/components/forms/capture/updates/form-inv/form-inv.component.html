@@ -69,6 +69,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Invoice Date</mat-label>
           <input matInput [formControl]="invoiceDate" (focusin)="updateHelpContext('form-invoice-invoicedate')" mask="0000/00/00">
+          <mat-error *ngIf="this.invoiceDate.hasError('noMatch')">Value does not match prvious value: {{temporaryForm.controls.invoiceDate.value}}</mat-error>
         </mat-form-field>
         <br /><br />
       </div>

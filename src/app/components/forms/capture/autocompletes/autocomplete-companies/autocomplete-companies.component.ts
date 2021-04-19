@@ -139,8 +139,8 @@ constructor(private userService: UserService,
   checkStatus() {
     if (this.status === 5 && this.transstatus == 10) {
       this.isDisabled = true;
-      this.query.disable();
-      this.query.updateValueAndValidity();
+      this.query.disable({emitEvent: false});
+      this.query.updateValueAndValidity({emitEvent: false});
     }
   }
 
