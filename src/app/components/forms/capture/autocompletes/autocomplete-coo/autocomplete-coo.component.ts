@@ -125,7 +125,6 @@ export class AutocompleteCooComponent implements OnInit, OnDestroy, OnChanges {
           this.query.setValue(defaultValue, { emitEvent: false });
         }
       });
-
     if (this.status === 5 && this.transstatus == 10) {
         this.query.disable();
     }
