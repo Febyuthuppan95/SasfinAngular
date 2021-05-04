@@ -724,7 +724,7 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           el.items = this.items.find(x => x.ItemID == el.itemID);
           el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
         });
-
+        console.log(res.lines);
         res.lines.forEach((inv) => {
           this.invLinesTemp.push({
             lineID: +JSON.stringify(inv.invoiceLineID),
@@ -734,6 +734,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
             invoiceNo: JSON.stringify(inv.invoiceNo),
             items: JSON.parse(JSON.stringify(inv.items)),
             unit: JSON.parse(JSON.stringify(inv.unit)),
+            quantity: JSON.parse(JSON.stringify(inv.quantity)),
+            unitPrice: JSON.parse(JSON.stringify(inv.unitPrice)),
           });
         });
       }

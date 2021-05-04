@@ -32,6 +32,7 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit, AfterV
   @Output() viewTransactionsEmit = new EventEmitter<string>();
   @Output() removeAttachment = new EventEmitter<string>();
   @Output() previewDocument = new EventEmitter<string>();
+  @Output() returnAttachment = new EventEmitter<string>();
   @ViewChild('popCont', {static: false}) elementView: ElementRef;
   contentHeight: number;
   contentWidth: number;
@@ -78,6 +79,14 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit, AfterV
   }
   preview() {
     this.previewDocument.emit(this.docPath);
+  }
+
+  return(){
+    this.returnAttachment.emit(
+      JSON.stringify({
+
+      })
+    );
   }
 
 }

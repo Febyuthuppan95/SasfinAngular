@@ -2398,27 +2398,28 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     );
   }
   async updateClaimLines() {
-let model = {};
-if (this.currentClaim.serviceName === '521') {
-      model = {
-        requestParams: {
-          userID: this.currentUser.userID,
-          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-          usageTypeID: 1
-        },
-        requestProcedure: 'UsageAdd'
-      };
-    } else {
-      model = {
-        requestParams: {
-          userID: this.currentUser.userID,
-          companyServiceClaimID: this.currentClaim.companyServiceClaimID,
-        },
-        requestProcedure: `CompanyServiceClaimLineUsed${this.currentClaim.serviceName}`
-      };
-    }
-this.loading = true;
-await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
+    let model = {};
+    if (this.currentClaim.serviceName === '521') {
+          model = {
+            requestParams: {
+              userID: this.currentUser.userID,
+              companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+              //usageTypeID: 1
+            },
+            requestProcedure: 'UsageAdd'
+          };
+        } else {
+          model = {
+            requestParams: {
+              userID: this.currentUser.userID,
+              companyServiceClaimID: this.currentClaim.companyServiceClaimID,
+            },
+            requestProcedure: `CompanyServiceClaimLineUsed${this.currentClaim.serviceName}`
+          };
+        }
+    console.log(model);
+    this.loading = true;
+    await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`, model).then(
       (res: Outcome) => {
         if (res.outcome === 'SUCCESS') {
           this.snackbar.open('Claim Submitted and sent for reporting. Please wait to be redirected..', res.outcome, {
@@ -2443,7 +2444,7 @@ await this.apiService.post(`${environment.ApiEndpoint}/serviceclaims/536/update`
         }
       },
       msg => {
-
+        this.loading = false;
       });
   }
   async updateClaimStatus() {

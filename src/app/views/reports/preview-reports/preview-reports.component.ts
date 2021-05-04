@@ -179,7 +179,7 @@ export class PreviewReportsComponent implements OnInit {
     return this.reports.filter(x => x.selected);
   }
   downloadFiles() {
-    this.reports.forEach((x: ServiceClaimReport) => {
+    this.getSelected().forEach((x: ServiceClaimReport) => {
       this.getSingleReport(x);
     });
   }
