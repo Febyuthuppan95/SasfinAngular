@@ -721,8 +721,8 @@ export class LinkingLinesComponent implements OnInit, OnDestroy, AfterViewInit {
           el.invoiceID = invoice.invoiceID;
           el.invoiceNo = invoice.invoiceNo;
           el.type = 'inv';
-          el.items = this.items.find(x => x.ItemID == el.itemID);
-          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
+          el.items = this.items.find(x => x.ItemID == el.itemID) === undefined ? null : this.items.find(x => x.ItemID == el.itemID);
+          el.unit = this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID) === undefined ? null : this.units.find(x => x.UnitOfMeasureID == el.unitOfMeasureID);
         });
         console.log(res.lines);
         res.lines.forEach((inv) => {
