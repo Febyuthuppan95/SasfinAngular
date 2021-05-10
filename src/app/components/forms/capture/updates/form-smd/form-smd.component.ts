@@ -346,11 +346,11 @@ export class FormSmdComponent implements OnInit, OnDestroy, AfterViewInit {
               } else {
                 this.notify.successmsg('SMD Submitted', res.outcomeMessage);
                 if (this.currentUser.designation === 'Consultant') {
-                  this.router.navigate(['escalations']);
+                  //this.router.navigate(['escalations']);
                 } else {
                   this.companyService.setCapture({ capturestate: true });
-                  this.router.navigateByUrl('transaction/capturerlanding');
                 }
+                this.router.navigateByUrl('transaction/capturerlanding');
               }
               this.loader = false;
             } else {

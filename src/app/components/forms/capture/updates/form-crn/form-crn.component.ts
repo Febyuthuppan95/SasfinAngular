@@ -351,11 +351,11 @@ async submit(form: FormGroup, escalation?: boolean, saveProgress?: boolean, esca
           } else {
             this.notify.successmsg(res.outcome, res.outcomeMessage);
 
-            if (this.currentUser.designation === 'Consultant') {
-              this.router.navigate(['escalations']);
-            } else {
+            //if (this.currentUser.designation === 'Consultant') {
+            //  this.router.navigate(['escalations']);
+            //} else {
               this.location.back();
-            }
+            //}
           }
 
         } else {

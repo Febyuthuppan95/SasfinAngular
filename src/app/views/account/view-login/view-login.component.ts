@@ -109,7 +109,7 @@ export class ViewLoginComponent implements OnInit {
                 if (res.designation === 'Capturer') {
                   this.router.navigate(['transaction/capturerlanding']);
                 } else if (res.designation === 'Consultant') {
-                  this.router.navigate(['escalations']);
+                  this.router.navigate(['companies']);
                 } else {
                   this.router.navigate(['users']);
                 }

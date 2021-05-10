@@ -448,11 +448,11 @@ export class FormCswComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.load();
               } else {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
-                if (this.currentUser.designation === 'Consultant') {
-                  this.router.navigate(['escalations']);
-                } else {
+                //if (this.currentUser.designation === 'Consultant') {
+                //  this.router.navigate(['escalations']);
+                //} else {
                   this.location.back();
-                }
+                //}
               }
               this.loader = false;
             } else {

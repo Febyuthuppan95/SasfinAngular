@@ -17,7 +17,7 @@ export class RedirectComponent implements OnInit {
     if (currentUser.designation === 'Capturer') {
       this.router.navigate(['transaction/capturerlanding']);
     } else if (currentUser.designation === 'Consultant') {
-      this.router.navigate(['escalations']);
+      this.router.navigate(['companies']);
     } else {
       this.router.navigate(['users']);
     }
