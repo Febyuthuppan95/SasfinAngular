@@ -21,6 +21,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UpdateResponse } from 'src/app/layouts/claim-layout/claim-layout.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogRemoveAttachmentComponent } from 'src/app/components/menus/context-menu-transaction-attachment/dialog-remove-attachment/dialog-remove-attachment.component';
+import { DialogConfirmationComponent } from './linking-lines/dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'app-view-transaction-files',
@@ -314,7 +315,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
       .listAttatchments(model)
       .then(
         (res: TransactionFileListResponse) => {
-          // console.log(res);
+           console.log(res);
           if (res.outcome.outcome === 'SUCCESS') {
             this.notify.successmsg(
               res.outcome.outcome,
@@ -416,8 +417,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
   popClick(event, id, fileName, statusID, doctype?, fileTypeID?, reason?) {
 
-    // console.log(doctype);
-    // console.log(fileTypeID);
+     console.log(doctype);
+     console.log(fileTypeID);
 
     if (this.sidebarCollapsed) {
       this.contextMenuX = event.clientX + 3;
@@ -772,6 +773,40 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
     this.filePreview = this.fileReader.result;
     };
     this.openPreview.nativeElement.click();
+  }
+
+  returnAttachment(attachment: any){
+    this.dialog.open(DialogConfirmationComponent, {
+      data: {
+        title: 'Return Attachment',
+        message: 'Are you sure you want to return this attachement to the capturing queue?'
+      },
+      width: '512px'
+    }).afterClosed().subscribe((state) => {
+      if (state) {
+        this._returnAttachment(JSON.parse(attachment));
+        this.loadAttachments()
+      }
+    })
+  }
+
+  _returnAttachment(attachment: any){
+    console.log(attachment);
+    console.log(this.focusFileType);
+    let model = {
+      request: {
+        userID: this.currentUser.userID,
+        attachmentID: attachment.attachmentID,
+        fileTypeID: attachment.fileTypeID,
+        isDeleted: 0
+      },
+      procedure: 'AttachmentsUpdate'
+    }
+    this.apiService.post(`${environment.ApiEndpoint}/capture/post`, model).then(
+      (res) => {
+        console.log(res)
+      }
+    )
   }
 
   ngOnDestroy(): void {

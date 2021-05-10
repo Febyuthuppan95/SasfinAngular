@@ -84,7 +84,9 @@ export class ContextMenuTransactionAttachmentComponent implements OnInit, AfterV
   return(){
     this.returnAttachment.emit(
       JSON.stringify({
-
+        transactionID: this.transactionID,
+        attachmentID: this.attachmentID,
+        fileTypeID: this.fileTypeID,
       })
     );
   }

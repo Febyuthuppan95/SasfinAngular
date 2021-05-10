@@ -479,6 +479,12 @@ export class ViewCompanyPermitsListComponent implements OnInit {
               res.outcome.outcomeMessage);
           }
         }
+        res.prccs.forEach(prcc => {
+          prcc.startDate = prcc.startDate.substring(0,10);
+          prcc.endDate = prcc.endDate.substring(0,10);
+          prcc.importStartDate = prcc.importStartDate.substring(0,10);
+          prcc.importEndDate = prcc.importEndDate.substring(0,10);
+        })
         this.CompanyPRCC = res.prccs;
         this.PermitData = this.CompanyPRCC;
         console.log('PRCC PermitData');

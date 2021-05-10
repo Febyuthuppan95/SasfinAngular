@@ -165,13 +165,43 @@ export class AutocompleteTariffsComponent implements OnInit, OnChanges, OnDestro
         console.log(this.list);
 
         if (setDefault) {
-          const defaultValue = this.list.find(x => x.id === +this.control.value);
-          console.log('defaultValue');
-          console.log(defaultValue);
+          this.tariffService.list({userID: this.currentUser.userID,
+            specificTariffID: this.control.value,
+            filter:'',
+            orderBy: '',
+            orderByDirection: '',
+            rowStart: 1,
+            rowEnd: 10,}).then((res: {
+              tariffList: {
+                id: number;
+                itemNumber: string;
+                heading: string;
+                tariffCode: number;
+                subHeading: string;
+                checkDigit: string;
+                name: string;
+                duty: string;
+                hsUnit: string;
+              }[];
+              outcome: Outcome;
+              rowCount: number;
+            }) => {
+              let templist = res.tariffList;
+              const defaultValue = templist.find(x => x.id === +this.control.value);
+              if (defaultValue) {
+                console.log('defaultValue');
+                console.log(defaultValue);
+                this.query.setValue(defaultValue, { emitEvent: false });
+              }
+            })
+          /*const defaultValue = this.list.find(x => x.id === +this.control.value);
+          console.log(this.control.value);
 
           if (defaultValue) {
+            console.log('defaultValue');
+            console.log(defaultValue);
             this.query.setValue(defaultValue, { emitEvent: false });
-          }
+          }*/
         }
       });
 

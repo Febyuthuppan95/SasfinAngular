@@ -345,7 +345,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
             preventDefault: true,
             allowIn: [AllowIn.Textarea, AllowIn.Input],
             command: e => {
-              if (this.attachmentStatus !== 5) {
+              if (this.attachmentStatus !== 5 && !this.isQA) {
                 this.activeLine = null;
                 this.activeIndex = -1;
                 this.refresh();

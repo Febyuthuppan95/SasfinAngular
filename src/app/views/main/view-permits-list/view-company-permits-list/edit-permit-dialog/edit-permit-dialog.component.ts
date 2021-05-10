@@ -208,7 +208,7 @@ export class EditPermitDialogComponent implements OnInit, AfterViewInit {
     this.form.controls.importdateEnd.setValue(new Date(this.Permit.importdateEnd));
     this.form.controls.exportdateStart.setValue(new Date(this.Permit.exportdateStart));
     this.form.controls.exportdateEnd.setValue(new Date(this.Permit.exportdateEnd));
-    this.exportTariff.setValue(this.Permit.exportTariffID, { emitEvent: false });
+    this.exportTariff.setValue(+this.Permit.exportTariffID);
     this.exportTariff.updateValueAndValidity();
     this.selectedExportTariff = this.Permit.exportTariffID;
 
