@@ -329,8 +329,8 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
           }
           const pre_processed = res.attachments;
           pre_processed.forEach((item) => {
-            item.dateCreated = new Date(item.dateCreated).toLocaleString();
-            item.dateEdited = new Date(item.dateEdited).toLocaleString();
+            item.dateCreated = new Date(item.dateCreated).toString();
+            item.dateEdited = item.dateEdited === null ? null : new Date(item.dateEdited).toLocaleString();
           });
 
           this.dataList = pre_processed;

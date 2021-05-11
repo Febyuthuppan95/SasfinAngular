@@ -195,7 +195,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.invoiceDate.valueChanges.subscribe((value) => {
       if (value && this.form.controls.qaUserID.value !== null && this.capturerID !== this.currentUser.userID) {
-        if (value !== this.temporaryForm.controls.invoiceDate.value) {
+        if (new Date(`${value[4]}${value[5]}/${value[6]}${value[7]}/${value[0]}${value[1]}${value[2]}${value[3]}`).toDateString() !== new Date(this.temporaryForm.controls.invoiceDate.value).toDateString()) {
           this.invoiceDate.setErrors({ noMatch: true });
         } else {
           this.invoiceDate.setErrors(null);
@@ -495,7 +495,8 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
 
       }
       this.temporaryForm.patchValue(response);
-      this.temporaryForm.controls.invoiceDate.setValue(date.substr(0,10));
+      date = date.substr(0,10).replace('-','/');
+      this.temporaryForm.controls.invoiceDate.setValue(date.substr(0,10).replace('-','/'));
       this.temporaryForm.updateValueAndValidity();
 
       const invoiceDate = this.dateService.getUTC(new Date(res.invoices[0].invoiceDate));
