@@ -657,7 +657,7 @@ export class FormSad500UpdatedComponent implements OnInit, OnDestroy, AfterViewI
               if (saveProgress) {
                 this.snackbar.open('Progress Saved', '', { duration: 3000 });
                 this.displayLines = false;
-                this.lines = null;
+                this.lines = [];
                 this.load();
               } else {
                 this.notify.successmsg(res.outcome, res.outcomeMessage);
