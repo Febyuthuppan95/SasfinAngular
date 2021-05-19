@@ -454,6 +454,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 7
           },
           {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 8
+          }
+          /*{
             title: 'Import Date',
             propertyName: 'importDate',
             order: {
@@ -461,7 +470,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               tag: 'importDate'
             },
             position: 8
-          }
+          }*/
         ];
         this.headingsB = [
           {
@@ -600,6 +609,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             position: 7
           },
           {
+            title: 'MRN',
+            propertyName: 'mrn',
+            order: {
+              enable: true,
+              tag: 'mrn'
+            },
+            position: 8,
+          },
+          /*{
             title: 'Export Date',
             propertyName: 'exportDate',
             order: {
@@ -607,7 +625,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
               tag: 'exportDate'
             },
             position: 8
-          }
+          }*/
         ];
         this.importLabel = 'Available Imports';
         break;
@@ -1849,6 +1867,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     }
   }
   update538Params() {
+    console.log(this.claimRequestParams);
     const model = {
       requestParams: {
         userID: this.currentUser.userID,
@@ -1856,7 +1875,7 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
         sad500ID: this.currentClaim.sad500ID,
         companyServiceClaimID: this.currentClaim.companyServiceClaimID,
         companyID: this.currentClaim.companyID,
-        lookBackPeriod: this.claimRequestParams.get('LookbackPeriod').value,
+        lookBackPeriod: this.claimRequestParams.get('LookBackPeriod').value,
         periodYear: this.claimRequestParams.get('PeriodYear').value,
         quarterID: this.claimRequestParams.get('QuarterID').value,
         oemCompanyID: this.claimRequestParams.get('OEMCompanyID').value
@@ -1984,15 +2003,29 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             res.data.forEach(element => {
               console.log(element);
               console.log(this.captureJoinImportID);
-              if (element.CJID === this.captureJoinImportID) {
-                this.quantity = element.AvailHSQuantity;
+              if (element.ImportDate) {
+                let datum: string = element.ImportDate;
+                element.ImportDate = datum.substring(0, 10);
+                console.log(element.ImportDate);
               }
-              let datum: string = element.ImportDate;
-              element.ImportDate = datum.substring(0, 10);
-              console.log(element.ImportDate);
+              if (element.CJID) {
+                if (element.CJID === this.captureJoinImportID) {
+                  this.quantity = element.AvailHSQuantity;
+                }
+              }
             });
             this.data = [];
             this.data = res.data;
+            this.data.forEach((item)=>{
+              console.log(item);
+              if (item.MRN){
+                let newMRN: string = item.MRN;
+                newMRN = newMRN.substring(0,3) + "-" + newMRN.substring(3,7) +
+                  "/" + newMRN.substring(7,9) + "/" + newMRN.substring(9,11) +
+                  "-" + newMRN.substring(11, newMRN.length);
+                item.MRN = newMRN;
+              }
+            });
             setTimeout(() => {
               this.pageA.length = res.rowCount;
             }, 500);
@@ -2051,6 +2084,16 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
     this.quantity = this.selectedC;
     console.log('Quantity: ' + this.quantity);
     console.log(lineData);
+    this.pageB = {
+      length: 0,
+      pageSize: 5,
+      pageIndex: 0
+    };
+    this.pageC = {
+      length: 0,
+      pageSize: 5,
+      pageIndex: 0
+    };
     if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
       this.loadBottomChild();
     }
@@ -2089,12 +2132,15 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
       this.selectedC = this.quantity;
       this.selectedD = lineData.lineD; // Export Line Quantity
       await this.updateBottomChild();
+      let temp = this.pageB;
+      this.pageB = this.pageC;
       if (this.currentClaim.serviceName !== 'C1' && this.currentClaim.serviceName !== 'SMD') {
         this.selectedB = this.itemID;
         await this.loadBottomChild();
         this.selectedA = null;
         await this.loadMainDataSet();
         this.selectedA = this.captureJoinImportID;
+        this.pageB = temp;
         this.loadTopChild();
       }
     }
@@ -2285,6 +2331,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.dataLinesAvailable = [];
             this.dataLinesAvailable = res.data;
+            console.log(res.data);
+              if (element.MRN){
+                let newMRN: string = element.MRN;
+                newMRN = newMRN.substring(0,3) + "-" + newMRN.substring(3,7) +
+                  "/" + newMRN.substring(7,9) + "/" + newMRN.substring(9,11) +
+                  "-" + newMRN.substring(11, newMRN.length);
+                element.MRN = newMRN;
+              }
           // console.log(res);
           // console.log("date?");
           // console.log(this.dataLinesAvailable);
@@ -2489,11 +2543,14 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   paginateS($event) {
     console.log($event);
     this.pageS = $event;
+    let temp = this.pageA;
+    this.pageA = $event;
     console.log(this.pageS);
     this.selectedA = null;
     this.dataLinesAvailable = [];
     this.dataLinesAssigned = [];
     this.loadDataSets();
+    this.pageA = temp;
   }
   paginateA($event) {
     console.log($event);
@@ -2512,7 +2569,10 @@ export class ClaimLayoutComponent implements OnInit, OnDestroy {
   paginateC($event) {
     console.log($event);
     this.pageC = $event;
+    let temp = this.pageB;
+    this.pageB = $event;
     this.loadBottomChild();
+    this.pageB = temp;
   }
 
   selectedOEM(oem: CompanyOEM) {
