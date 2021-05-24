@@ -33,7 +33,7 @@
         <button *ngIf="form.controls.transAtArrivalOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('transAtArrival')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.transAtArrivalOBit.value">OVERRIDE: {{form.controls.transAtArrivalOReason.value}}</mat-hint>
         <button *ngIf="!form.controls.transAtArrivalOBit.value  && form.controls.transAtArrival.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('transAtArrival', 'Transport At Arrival')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.transAtArrivalOBit.value  && form.controls.transAtArrival.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+        <mat-error *ngIf="!form.controls.transAtArrivalOBit.value  && form.controls.transAtArrival.errors?.incorrect">{{getError('transportAtArrival')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>
@@ -43,10 +43,10 @@
           Container No
         </mat-label>
         <input matInput type="text" formControlName="containerNo" (focusin)="updateHelpContext('form-waybill-container-no')"/>
-        <button *ngIf="form.controls.containerNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('waybillNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
+        <button *ngIf="form.controls.containerNoOBit.value" type="button"  matSuffix mat-icon-button (click)="undoOverride('containerNo')" matTooltip="Remove Override"><mat-icon>clear</mat-icon></button>
         <mat-hint *ngIf="form.controls.containerNoOBit.value">OVERRIDE: {{form.controls.containerNoOReason.value}}</mat-hint>
         <button *ngIf="!form.controls.containerNoOBit.value  && form.controls.containerNo.errors?.incorrect" type="button"  matSuffix mat-icon-button (click)="overrideDialog('containerNo', 'Container No')" matTooltip="Override"><mat-icon>remove_circle</mat-icon></button>
-        <mat-error *ngIf="!form.controls.containerNoOBit.value  && form.controls.containerNo.errors?.incorrect">{{getError('waybillNo')}}</mat-error>
+        <mat-error *ngIf="!form.controls.containerNoOBit.value  && form.controls.containerNo.errors?.incorrect">{{getError('containerNo')}}</mat-error>
       </mat-form-field>
       <br /><br />
     </div>

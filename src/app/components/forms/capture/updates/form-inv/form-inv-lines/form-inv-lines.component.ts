@@ -169,7 +169,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
     });
 
     // QA Recapture
-    if (this.isQA && !this.data.qaComplete && !this.savedChanges) {
+    if (this.isQA  && !this.savedChanges) { //&& !this.data.qaComplete
       this.form.controls.commonFactor.valueChanges.subscribe((value) => {
         if (value) {
           this.markAsNoMatch('commonFactor', value);
