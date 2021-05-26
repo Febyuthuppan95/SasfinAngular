@@ -860,8 +860,14 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
       //Unique identifier put back to avoid duplication
       $event.uniqueIdentifier = identifier;
       $event.qaComplete = true;
+      $event.unitOfMeasure = this.lines[this.lines.indexOf(target)].unitOfMeasure;
+      $event.cooName = this.lines[this.lines.indexOf(target)].cooName;
+      $event.itemName = this.lines[this.lines.indexOf(target)].itemName;
+      $event.tariffName = this.lines[this.lines.indexOf(target)].tariffName;
       this.lines[this.lines.indexOf(target)] = $event;
-      this.activeLine = $event;
+      if (this.lines.indexOf($event) !== this.lines.length - 1 && this.isQA){
+        this.nextLine();
+      }
 
       this.refresh();
     }

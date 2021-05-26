@@ -134,16 +134,19 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
       });
 
       this.errors = this.data.errors;
+      console.log(this.data)
+      if (this.isQA) { //&& !this.data.qaComplete
+        if (!this.data.qaComplete) {
+          this.form.controls.commonFactor.reset();
+          this.form.controls.quantity.reset();
+          this.form.controls.unitPrice.reset();
+          this.form.controls.totalLineValue.reset();
+          this.form.controls.unitOfMeasureID.reset();
+          this.form.controls.itemID.reset();
+          this.form.controls.cooID.reset();
+          this.form.controls.tariffID.reset();
+        }
 
-      if (this.isQA && !this.data.qaComplete) {
-        this.form.controls.commonFactor.reset();
-        this.form.controls.quantity.reset();
-        this.form.controls.unitPrice.reset();
-        this.form.controls.totalLineValue.reset();
-        this.form.controls.unitOfMeasureID.reset();
-        this.form.controls.itemID.reset();
-        this.form.controls.cooID.reset();
-        this.form.controls.tariffID.reset();
 
         this.uomName = this.data.unitOfMeasure;
         this.cooName = this.data.cooName;

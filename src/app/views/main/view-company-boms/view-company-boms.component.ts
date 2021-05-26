@@ -387,6 +387,8 @@ export class ViewCompanyBOMsComponent implements OnInit {
       requestParams: {
         userID: this.currentUser.userID,
         CompanyID: this.companyID,
+        quarterID: this.focusPeriodQuarter,
+        periodYear: this.focusPeriodYear
         // StatusID : 1,
         // BOMInput: BOMIn
       },
@@ -401,6 +403,8 @@ export class ViewCompanyBOMsComponent implements OnInit {
         this.notify.successmsg(
           res.outcome,
           res.outcomeMessage);
+          this.focusPeriodQuarter = null;
+          this.focusPeriodYear = null;
         this.loadCompanyBOMs(true);
       } else {
         this.notify.errorsmsg(
