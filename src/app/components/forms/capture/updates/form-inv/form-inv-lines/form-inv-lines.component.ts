@@ -328,7 +328,7 @@ export class FormInvLinesComponent implements OnInit, OnChanges, AfterViewInit, 
 
     form.updateValueAndValidity();
 
-    if (form.valid) {
+    if (form.valid || this.isQA) {
       const line: any = form.value;
       line.uniqueIdentifier = line.uniqueIdentifier === null ? UUID.UUID() : line.uniqueIdentifier;
       this.submission.emit(line);

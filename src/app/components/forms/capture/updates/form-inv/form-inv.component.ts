@@ -76,6 +76,7 @@ export class FormInvComponent implements OnInit, OnDestroy, AfterViewInit {
   private dialogOpen = false;
 
   public isQA = false;
+  public isQAWarning ="Warning! You are the second capturer. Please fill in all fields correctly."
   public savedChanges = false;
   private invoice: any;
   private capturerID: number;

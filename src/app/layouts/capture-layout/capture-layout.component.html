@@ -30,7 +30,7 @@
         <span class="mdi mdi-close"></span>
       </button>
       &nbsp;&nbsp;
-      <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, false, false, 'Submit', 'This attachment will be assessed and reviewed')" class="bg-success text-light" matTooltip="Submit and close" matTooltipPosition="below" *ngIf="this.current.statusID !== 5">
+      <button tabindex="-1" style="z-index: 99999999999999;" mat-mini-fab type="button" (click)="submitCapture(false, false, false, 'Submit', ' <strong>Are you sure you want to save and close</strong>? <br> This attachment will be assessed and reviewed')" class="bg-success text-light" matTooltip="Submit and close" matTooltipPosition="below" *ngIf="this.current.statusID !== 5">
           <span class="mdi mdi-check"></span>
       </button>
       &nbsp;&nbsp;

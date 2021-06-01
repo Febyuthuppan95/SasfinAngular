@@ -3,7 +3,7 @@
     <h4 [innerHTML]="data ? data.title : 'Submit'" #matDialogSubmit cdkDrag
     cdkDragRootElement=".cdk-overlay-pane"
     cdkDragHandle></h4>
-    <p [innerHTML]="data ? data.desc : 'This attachment will be assessed and reviewed'"></p>
+    <p [innerHTML]="data ? data.desc : 'Are you sure you want to save and close? <br> This attachment will be assessed and reviewed'"></p>
     <br>
     <button mat-raised-button (click)="this.confirm()" class="bg-success text-light">Submit</button>&nbsp;<button mat-button (click)="this.cancel()">Cancel</button>
   </div>

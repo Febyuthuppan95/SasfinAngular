@@ -4,7 +4,7 @@
   </mat-label>
   <input type="text" matInput [formControl]="query" [matAutocomplete]="cpcAuto" (focusout)="focusOut(trigger);" #trigger="matAutocompleteTrigger" (focusin)="updateHelpContext(helpSlug)">
   <mat-hint>Name, Description</mat-hint>
-  <mat-error *ngIf="query.hasError('noMatch')">Value does not match previous value: {{previousItem}}</mat-error>
+  <mat-error *ngIf="query.hasError('noMatch')" [ngStyle]="{'color': 'red'}">Value does not match previous value<!--: {{previousItem}}--></mat-error>
   <mat-error *ngIf="query.hasError('required')">This field is required</mat-error>
   <mat-error *ngIf="query.hasError('incorrect')">An option has not been selected, <button class="text-button" type="button" (click)="query.setValue(null)">clear</button> or <button class="text-button" type="button" (click)="createItem()">create item</button></mat-error>
 </mat-form-field>

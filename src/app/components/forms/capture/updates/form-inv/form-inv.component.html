@@ -11,6 +11,7 @@
     </div>
   </div>
   <h1 class="capture-form-title text-dark">
+    <span [ngStyle]="{'color': 'red'}" *ngIf="isQA">{{isQAWarning}}</span><br><br>
     <span *ngIf="displayLines">{{attachmentLabel}} Lines</span>
     <span *ngIf="!displayLines">{{attachmentLabel}} - <span style="color: #3f51b5;">{{transactionLabel}}</span></span>
     <ng-container *ngIf="lines">
@@ -61,7 +62,7 @@
             <mat-icon>remove_circle</mat-icon>
           </button>
           <mat-error *ngIf="!form.controls.invoiceNoOBit.value  && form.controls.invoiceNo.errors?.incorrect">{{getError('invoiceNo')}}</mat-error>
-          <mat-error *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.invoiceNo.value}}</mat-error>
+          <mat-error *ngIf="!form.controls.invoiceNoOBit.value && form.controls.invoiceNo.hasError('noMatch')">Value does not match previous value<!--: {{temporaryForm.controls.invoiceNo.value}}--></mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -69,7 +70,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Invoice Date</mat-label>
           <input matInput [formControl]="invoiceDate" (focusin)="updateHelpContext('form-invoice-invoicedate')" mask="0000/00/00">
-          <mat-error *ngIf="this.invoiceDate.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.invoiceDate.value}}</mat-error>
+          <mat-error *ngIf="this.invoiceDate.hasError('noMatch')">Value does not match previous value<!--: {{temporaryForm.controls.invoiceDate.value}}--></mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -79,7 +80,7 @@
             Freight Cost
           </mat-label>
           <input matInput type="number" formControlName="freightCost" (focusin)="updateHelpContext('form-invoice-freightCost')"/>
-          <mat-error *ngIf="form.controls.freightCost.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.freightCost.value}}</mat-error>
+          <mat-error *ngIf="form.controls.freightCost.hasError('noMatch')">Value does not match previous value<!--: {{temporaryForm.controls.freightCost.value}}--></mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -89,7 +90,7 @@
             Insurance Cost
           </mat-label>
           <input matInput type="number" formControlName="insuranceCost" (focusin)="updateHelpContext('form-invoice-insuranceCost')"/>
-          <mat-error *ngIf="form.controls.insuranceCost.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.insuranceCost.value}}</mat-error>
+          <mat-error *ngIf="form.controls.insuranceCost.hasError('noMatch')">Value does not match previous value<!--: {{temporaryForm.controls.insuranceCost.value}}--></mat-error>
         </mat-form-field>
         <br /><br />
       </div>
@@ -99,7 +100,7 @@
             Bank Charges
           </mat-label>
           <input matInput type="number" formControlName="bankCharges" (focusin)="updateHelpContext('form-invoice-bankCharges')"/>
-          <mat-error *ngIf="form.controls.bankCharges.hasError('noMatch')">Value does not match previous value: {{temporaryForm.controls.bankCharges.value}}</mat-error>
+          <mat-error *ngIf="form.controls.bankCharges.hasError('noMatch')">Value does not match previous value<!--: {{temporaryForm.controls.bankCharges.value}}--></mat-error>
         </mat-form-field>
         <br /><br />
       </div>
