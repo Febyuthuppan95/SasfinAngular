@@ -204,7 +204,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
       msg => {
         console.log(msg);
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 105',
           'Something went wrong while trying to access the server.'
         );
       });
@@ -300,7 +300,7 @@ export class ViewCompanyBomsItemgroupsListComponent implements OnInit {
         console.log('Error: ' + msg);
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 105',
           'Something went wrong while trying to access the server.'
         );
         this.loadItemGroups(true);

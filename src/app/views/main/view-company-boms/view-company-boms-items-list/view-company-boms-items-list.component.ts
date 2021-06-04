@@ -230,8 +230,8 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
       msg => {
       console.log(msg);
       this.notify.errorsmsg(
-        'Server Error',
-        'Something went wrong while trying to access the server.'
+        'Server Error 107',
+          'Something went wrong while trying to access the server.'
       );
       });
     this.showLoader = false;
@@ -327,8 +327,8 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
         console.log('Error: ' + msg);
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
-          'Something went wrong while trying to access the server.'
+          'Server Error 107',
+          'File might be the incorrect Format or Layout'
         );
         this.closeAddModal.nativeElement.click();
         this.loadItems(true);

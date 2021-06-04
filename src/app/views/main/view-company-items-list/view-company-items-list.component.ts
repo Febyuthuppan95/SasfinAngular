@@ -450,7 +450,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
         msg => {
           this.showLoader = false;
           this.notify.errorsmsg(
-            'Server Error',
+            'Server Error 110',
             'Something went wrong while trying to access the server.'
           );
           console.log(JSON.stringify(msg));
@@ -512,7 +512,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       msg => {
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -541,7 +541,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -574,7 +574,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -599,7 +599,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -629,7 +629,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       (msg) => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -659,7 +659,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       (msg) => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -843,7 +843,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       msg => {
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 101',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -895,7 +895,7 @@ export class ContextCompanyItemsListComponent implements OnInit, OnDestroy {
       },
       msg => {
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 110',
           'Something went wrong while trying to access the server.'
         );
       }

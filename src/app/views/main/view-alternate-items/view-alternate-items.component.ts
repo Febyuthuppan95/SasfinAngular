@@ -249,7 +249,7 @@ export class ViewAlternateItemsComponent implements OnInit, OnDestroy {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 101',
           'Something went wrong while trying to access the server.'
         );
       }

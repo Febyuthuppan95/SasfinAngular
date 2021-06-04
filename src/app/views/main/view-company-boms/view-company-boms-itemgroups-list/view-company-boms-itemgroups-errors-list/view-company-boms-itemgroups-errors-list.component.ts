@@ -183,7 +183,7 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
     },
       msg => {
       this.notify.errorsmsg(
-        'Server Error',
+        'Server Error 106',
         'Something went wrong while trying to access the server.'
       );
       });

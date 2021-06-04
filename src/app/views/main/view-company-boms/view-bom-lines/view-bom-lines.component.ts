@@ -285,7 +285,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         // console.log(msg);
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 104',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -400,7 +400,7 @@ export class ViewBOMLinesComponent implements OnInit, OnDestroy {
         console.log('Error: ' + msg);
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 104',
           'Something went wrong while trying to access the server.'
         );
       }

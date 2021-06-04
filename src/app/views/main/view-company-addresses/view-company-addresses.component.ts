@@ -263,7 +263,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         msg => {
           this.showLoader = false;
           this.notify.errorsmsg(
-            'Server Error',
+            'Server Error 102',
             'Something went wrong while trying to access the server.'
           );
           console.log(JSON.stringify(msg));
@@ -301,7 +301,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         msg => {
           this.showLoader = false;
           this.notify.errorsmsg(
-            'Server Error',
+            'Server Error2',
             'Something went wrong while trying to access the server.'
           );
           console.log(JSON.stringify(msg));
@@ -458,7 +458,7 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         },
         msg => {
           this.notify.errorsmsg(
-            'Server Error',
+            'Server Error 102',
             'Something went wrong while trying to access the server.'
           );
           this.closeaddModal.nativeElement.click();
@@ -512,7 +512,8 @@ export class ViewCompanyAddressesComponent implements OnInit, OnDestroy {
         },
           msg => {
             this.notify.errorsmsg(
-            'Server Error', 'Something went wrong while trying to access the server.');
+            'Server Error 102',
+            'Something went wrong while trying to access the server.');
         });
     } else {
       this.notify.toastrwarning('Warning', 'Please enter all fields before submitting');

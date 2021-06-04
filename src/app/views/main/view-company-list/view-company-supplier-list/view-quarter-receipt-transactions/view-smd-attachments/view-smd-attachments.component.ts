@@ -315,7 +315,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 112',
           'Something went wrong while trying to access the server.'
         );
 
@@ -360,7 +360,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
       },
       (msg) => {
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 112',
           'Something went wrong while trying to access the server.'
         );
         this.closeaddModal.nativeElement.click();
@@ -383,7 +383,7 @@ export class ViewSmdAttachmentsComponent implements OnInit , OnDestroy {
         },
         (msg) => {
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 112',
           'Something went wrong while trying to access the server.'
         );
         this.closeModal.nativeElement.click();

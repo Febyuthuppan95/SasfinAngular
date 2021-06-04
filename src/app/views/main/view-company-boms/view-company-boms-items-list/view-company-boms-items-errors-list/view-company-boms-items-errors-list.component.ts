@@ -222,7 +222,7 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
     },
       msg => {
       this.notify.errorsmsg(
-        'Server Error',
+        'Server Error 108',
         'Something went wrong while trying to access the server.'
       );
       });
