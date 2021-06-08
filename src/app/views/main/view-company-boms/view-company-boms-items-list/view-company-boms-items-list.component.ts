@@ -327,7 +327,7 @@ export class ViewCompanyBomsItemsListComponent implements OnInit {
         console.log('Error: ' + msg);
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error 107',
+          'Upload Error 107',
           'File might be the incorrect Format or Layout'
         );
         this.closeAddModal.nativeElement.click();
