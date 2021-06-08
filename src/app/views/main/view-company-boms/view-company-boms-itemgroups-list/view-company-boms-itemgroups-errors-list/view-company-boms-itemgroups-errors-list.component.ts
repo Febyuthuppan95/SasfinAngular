@@ -62,6 +62,22 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
       },
     },
     {
+      title: 'Item',
+      propertyName: 'ItemName',
+      order: {
+        enable: true,
+        tag: 'ItemName',
+      },
+    },
+    {
+      title: 'Alt Item',
+      propertyName: 'AltItem',
+      order: {
+        enable: true,
+        tag: 'AltItem',
+      },
+    },
+    {
       title: 'Row Number',
       propertyName: 'RowNumber',
       order: {

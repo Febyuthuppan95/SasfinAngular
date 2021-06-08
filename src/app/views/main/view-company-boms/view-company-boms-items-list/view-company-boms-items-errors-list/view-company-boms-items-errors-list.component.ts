@@ -81,6 +81,14 @@ export class ViewCompanyBomsItemsErrorsListComponent implements OnInit {
       },
     },
     {
+      title: 'Item Code',
+      propertyName: 'ItemCode',
+      order: {
+        enable: true,
+        tag: 'ItemCode',
+      },
+    },
+    {
       title: 'UOM',
       propertyName: 'UOM',
       order: {
