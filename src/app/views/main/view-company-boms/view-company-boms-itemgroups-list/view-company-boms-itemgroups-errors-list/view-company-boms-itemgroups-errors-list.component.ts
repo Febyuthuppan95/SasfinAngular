@@ -62,6 +62,14 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
       },
     },
     {
+      title: 'Row Number',
+      propertyName: 'RowNumber',
+      order: {
+        enable: true,
+        tag: 'RowNumber',
+      },
+    },
+    {
       title: 'Item',
       propertyName: 'Item',
       order: {
@@ -75,14 +83,6 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
       order: {
         enable: true,
         tag: 'AltItem',
-      },
-    },
-    {
-      title: 'Row Number',
-      propertyName: 'RowNumber',
-      order: {
-        enable: true,
-        tag: 'RowNumber',
       },
     },
     {
