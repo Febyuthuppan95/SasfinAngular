@@ -70,7 +70,7 @@ export class ViewCompanyBomsLinesErrorListComponent implements OnInit {
       },
     },
     {
-      title: 'Products',
+      title: 'Product',
       propertyName: 'Product',
       order: {
         enable: true,

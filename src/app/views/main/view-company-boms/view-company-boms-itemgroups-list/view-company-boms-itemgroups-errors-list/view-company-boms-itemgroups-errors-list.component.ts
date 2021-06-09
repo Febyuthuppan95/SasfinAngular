@@ -63,10 +63,10 @@ export class ViewCompanyBomsItemgroupsErrorsListComponent implements OnInit {
     },
     {
       title: 'Item',
-      propertyName: 'ItemName',
+      propertyName: 'Item',
       order: {
         enable: true,
-        tag: 'ItemName',
+        tag: 'Item',
       },
     },
     {
