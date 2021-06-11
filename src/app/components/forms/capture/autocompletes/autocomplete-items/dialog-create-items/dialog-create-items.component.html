@@ -1,24 +1,61 @@
 <h3 mat-dialog-title>Create Item</h3>
 <div mat-dialog-content>
-  <form [formGroup]="form" (ngSubmit)="submit(form)">
-    <ls-autocomplete-tariffs [control]="form.controls.tariffID" [helpSlug]="'item-add-tariff'"></ls-autocomplete-tariffs>
-    <br>
-    <br>
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" (focusin)="updateHelpContext('item-add-name')">
-    </mat-form-field>
-    <br>
-    <br>
-    <mat-form-field appearance="fill">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" (focusin)="updateHelpContext('item-add-description')"></textarea>
-    </mat-form-field>
-    <br>
-    <br>
-    <div class="text-right">
-      <button type="button" mat-button mat-dialog-close>Cancel</button>
-      <button mat-raised-button color="accent" type="submit">Save</button>
-    </div>
-  </form>
+  <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="control-label">Item:</label>
+            <input type="text" placeholder="Item" class="form-control"
+             [(ngModel)]="this.newItem.item" [ngModelOptions]="{standalone: true}"  required/>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Item Description:</label>
+            <textarea type="text" placeholder="Item Description" class="form-control"
+             [(ngModel)]="this.newItem.description" [ngModelOptions]="{standalone: true}"  required></textarea>
+          </div>
+          <div class="form-group">
+            <ls-autocomplete-tariffs [control]="tariffControl"></ls-autocomplete-tariffs>
+
+          </div>
+          <div class="form-group">
+              <label class="control-label">Type:</label>
+              <select class="form-control" (change)="onTypeChange($event.target.value)" [formControl]="typeControl">
+                <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemTypeID === this.newItem.itemtypeID">{{type.itemType}} - {{type.description}}</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Class:</label>
+            <select class="form-control" (change)="onClassChange($event.target.value)" [formControl]="classControl">
+              <option *ngFor="let class of this.itemClasses" [value]="class.ItemClassID" [selected]="class.ItemClassID === this.newItem.itemClassID"><a><span>{{class.Name}} - {{class.Description}}</span></a></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Usage:</label>
+            <select class="form-control" (change)="onUsageChange($event.target.value)" [formControl]="usageControl">
+              <option *ngFor="let use of this.usages" [value]="use.UsageTypeID" [selected]="use.UsageTypeID === this.newItem.usageTypeID">{{use.Name}} - {{use.Description}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Vulnerable:</label>
+            <select class="form-control" (change)="onVulnerablestateChange($event.target.value)" [formControl]="vulnerableControl">
+              <option *ngFor="let state of this.YESNO" [value]="state.value">{{state.title}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" [(ngModel)]="this.newItem.qualify521" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+            <label class="control-label">Qualifies for 521</label>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" [(ngModel)]="this.newItem.qualify536" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+            <label class="control-label">Qualifies for 536</label>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" [(ngModel)]="this.newItem.qualifyPI" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
+            <label class="control-label">Qualifies for PI</label>
+          </div>
+        </div>
+        <div class="modal-footer bg-dark">
+          <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
+          <button type="button" (click)="AddItem()" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
 </div>

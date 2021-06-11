@@ -726,7 +726,7 @@ export class ViewTransactionFilesComponent implements OnInit, OnDestroy {
 
             this.showLoader = false;
             this.notify.errorsmsg(
-              'Server Error',
+              'Server Error 610',
               'Something went wrong while trying to access the server.'
             );
           }

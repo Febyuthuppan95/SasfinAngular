@@ -1,3 +1,4 @@
+import { ContextCompanyItemsListComponent } from './../../../../../../views/main/view-company-items-list/view-company-items-list.component';
 import { Component, OnInit } from '@angular/core';
 import { CaptureService } from 'src/app/services/capture.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -6,7 +7,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelpSnackbar } from 'src/app/services/HelpSnackbar.service';
 import { SnackbarModel } from 'src/app/models/StateModels/SnackbarModel';
-
 @Component({
   selector: 'app-dialog-create-items',
   templateUrl: './dialog-create-items.component.html',
@@ -53,3 +53,4 @@ export class DialogCreateItemsComponent implements OnInit {
     this.snackbarService.setHelpContext(newContext);
   }
 }
+
