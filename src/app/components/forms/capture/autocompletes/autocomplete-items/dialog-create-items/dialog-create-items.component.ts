@@ -11,6 +11,7 @@ import { ThemeService } from 'src/app/services/theme.Service';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-dialog-create-items',
   templateUrl: './dialog-create-items.component.html',
@@ -22,7 +23,8 @@ export class DialogCreateItemsComponent implements OnInit {
               private dialogRef: MatDialogRef<DialogCreateItemsComponent>, private snackbar: MatSnackBar,
               private snackbarService: HelpSnackbar,
               private themeService: ThemeService,
-              private api: ApiService,) { }
+              private api: ApiService,
+              ) { }
 
   currentUser = this.userService.getCurrentUser();
   tariffControl = new FormControl(null);
@@ -39,6 +41,8 @@ export class DialogCreateItemsComponent implements OnInit {
   rowEnd: number;
   showLoader = true;
   filter: string;
+  private unsubscribe$ = new Subject<void>();
+
 
   @ViewChild('openAddModal', {static: true})
   openAddModal: ElementRef;
@@ -82,6 +86,33 @@ export class DialogCreateItemsComponent implements OnInit {
     qualifyPI: null,
     vulnerable: null,
   };
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+
+  onTypeChange(id: number) {
+    //console.log(id);
+    this.newItem.itemtypeID = id;
+  }
+
+  onVulnerablestateChange(state: string) {
+    this.newItem.vulnerable = state;
+  }
+
+  onClassChange(id: number) {
+    //console.log(id);
+    this.newItem.itemClassID = id;
+  }
+
+  onUsageChange(id: number) {
+    //console.log(id);
+    this.newItem.usageTypeID = id;
+  }
+
 
   addItem(){
     this.themeService.toggleContextMenu(false);
