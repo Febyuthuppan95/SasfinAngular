@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Subject } from 'rxjs';
+import { ItemType } from 'src/app/models/HttpResponses/ItemType';
 @Component({
   selector: 'app-dialog-create-items',
   templateUrl: './dialog-create-items.component.html',
@@ -42,6 +43,10 @@ export class DialogCreateItemsComponent implements OnInit {
   showLoader = true;
   filter: string;
   private unsubscribe$ = new Subject<void>();
+  itemTypes: ItemType[];
+  itemClasses: any[];
+  usages: any[];
+  YESNO: any[] = [{title: 'True', value: true}, {title: 'False', value: false}];
 
 
   @ViewChild('openAddModal', {static: true})
