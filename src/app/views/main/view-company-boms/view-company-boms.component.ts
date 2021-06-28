@@ -232,7 +232,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error 103',
+          'Server Error 103.15',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -352,7 +352,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error 103',
+          'Server Error 103.16',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -417,7 +417,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
       // message
         console.log(msg);
         this.notify.errorsmsg(
-          'Server Error 103',
+          'Server Error 103.17',
           'Something went wrong while trying to access the server.'
         );
       });
@@ -442,7 +442,7 @@ export class ViewCompanyBOMsComponent implements OnInit {
     },
       msg => {
         this.notify.errorsmsg(
-          'Server Error 103',
+          'Server Error 103.18',
           'Something went wrong while trying to access the server.'
         );
       });

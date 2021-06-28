@@ -346,7 +346,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 623.3',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -467,7 +467,7 @@ export class ViewCompanyServiceClaimsComponent implements OnInit {
       msg => {
         this.showLoader = false;
         this.notify.errorsmsg(
-          'Server Error',
+          'Server Error 623.2',
           'Something went wrong while trying to access the server.'
         );
       }
@@ -981,7 +981,7 @@ loadCompanyPermits() {
     msg => {
       this.showLoader = false;
       this.notify.errorsmsg(
-        'Server Error',
+        'Server Error 623.1',
         'Something went wrong while trying to access the server.'
       );
     }

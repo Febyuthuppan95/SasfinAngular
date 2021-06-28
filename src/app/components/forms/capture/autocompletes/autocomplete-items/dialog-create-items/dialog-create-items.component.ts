@@ -13,6 +13,9 @@ import { environment } from 'src/environments/environment';
 import { NotificationComponent } from 'src/app/components/notification/notification.component';
 import { Subject } from 'rxjs';
 import { ItemType } from 'src/app/models/HttpResponses/ItemType';
+import { CompanyService, SelectedCompany } from 'src/app/services/Company.Service';
+import { CompanyItemsResponse, Item } from 'src/app/models/HttpResponses/CompanyItemsResponse';
+import {ItemTypeListResponse} from 'src/app/models/HttpResponses/ItemTypeListResponse';
 @Component({
   selector: 'app-dialog-create-items',
   templateUrl: './dialog-create-items.component.html',
@@ -25,6 +28,7 @@ export class DialogCreateItemsComponent implements OnInit {
               private snackbarService: HelpSnackbar,
               private themeService: ThemeService,
               private api: ApiService,
+              private companyService: CompanyService,
               ) { }
 
   currentUser = this.userService.getCurrentUser();
@@ -116,6 +120,93 @@ export class DialogCreateItemsComponent implements OnInit {
   onUsageChange(id: number) {
     //console.log(id);
     this.newItem.usageTypeID = id;
+  }
+  //Populate Item Types
+  loadItemTypes(displayGrowl: boolean) {
+    const model = {
+      userID: this.currentUser.userID,
+      filter: this.filter,
+      itemTypeID: -1,
+      rowStart: this.rowStart,
+      rowEnd: this.rowEnd,
+      orderBy: this.orderBy,
+      orderByDirection: this.orderDirection
+    };
+    this.companyService.getItemTypesList(model).then(
+      (res: ItemTypeListResponse) => {
+        this.itemTypes = res.itemTypeLists;
+        console.log(this.itemTypes);
+      },
+      msg => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error 615.2',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  //Populate itemClasses
+  loadItemClasses() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'ItemClassList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.itemClasses = res.data;
+          console.log(this.itemClasses);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error 110',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
+  }
+
+  //Populate UsageTypes
+  loadUsageTypes() {
+    const model = {
+      request: {
+        userID: this.currentUser.userID,
+      },
+      procedure: 'UsageTypesList'
+    }
+    this.api.post(`${environment.ApiEndpoint}/capture/list`, model).then(
+      (res: any) => {
+        if (res.outcome) {
+          this.usages = res.data;
+          console.log(this.usages);
+        }
+        else {
+          this.notify.errorsmsg(
+            'Error',
+            res.outcomeMessage
+          );
+        }
+      },
+      (msg) => {
+        this.showLoader = false;
+        this.notify.errorsmsg(
+          'Server Error 110',
+          'Something went wrong while trying to access the server.'
+        );
+      }
+    );
   }
 
 

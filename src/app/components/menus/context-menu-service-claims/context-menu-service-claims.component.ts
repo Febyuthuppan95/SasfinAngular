@@ -36,6 +36,8 @@ export class ContextMenuServiceClaimsComponent implements OnInit {
   @Output() addClaimPermits = new EventEmitter<number>();
   @Output() submit522Claim = new EventEmitter<number>();
   @Output() remove = new EventEmitter<number>();
+  @Output() reset = new EventEmitter<number>();
+
 populate = false;
   ngOnInit() {}
 
@@ -62,8 +64,16 @@ populate = false;
 
   Reports() {
     // tslint:disable-next-line: max-line-length
-    this.companyService.setClaimReport({companyID: this.companyID, companyName: this.companyName, companyServiceID: this.companyServiceID, claimNumber: this.companyServiceClaimID, serviceId: this.serviceID, serviceName: this.serviceName});
+    this.companyService.setClaimReport({companyID: this.companyID,
+    companyName: this.companyName,
+    companyServiceID: this.companyServiceID,
+    claimNumber: this.companyServiceClaimID,
+    serviceId: this.serviceID,
+    serviceName: this.serviceName});
     this.router.navigate(['claim', 'reports']);
+  }
+  Reset() {
+    this.reset.emit(this.companyServiceClaimID)
   }
   ClaimPermits() {
     this.addClaimPermits.emit(+1);
