@@ -16,9 +16,9 @@ Assign Permits</span></a>
 class="nav-link ls-text-{{ currentTheme }} context-item">
 <span class="menu-title">Reports</span></a>
 
-<a ngIf="this.status !== 'Complete'"
+<!--<a ngIf="this.status !== 'Complete'"
   (click) = "Reset()"
-  <span class="menu-title">Reset</span></a>
+  <span class="menu-title">Reset</span></a>-->
 
 <a *ngIf="this.status === 'Complete' && this.serviceName === '522'"
 (click)="Submit522Report()"
