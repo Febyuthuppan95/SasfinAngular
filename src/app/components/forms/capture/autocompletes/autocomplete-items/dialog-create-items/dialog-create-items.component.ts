@@ -238,10 +238,11 @@ export class DialogCreateItemsComponent implements OnInit {
       this.captureService.post({ request: form.value, procedure: 'ItemAdd' }).then(
         (res: any) => {
           // console.log(res);
+          this.dialogRef.close(res.data[0].createdID);
           if (res.outcome) {
             this.dialogRef.close(res.data[0].createdID);
           } else {
-            this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
+             this.snackbar.open(res.outcomeMessage, '', { duration: 3000 });
           }
         }
       );
@@ -310,5 +311,6 @@ export class DialogCreateItemsComponent implements OnInit {
     }
 
   }
+ 
 }
 

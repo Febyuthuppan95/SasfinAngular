@@ -96,6 +96,7 @@
                       <th scope="col">
                           <button class="headerBtn btn bg-transparent btn-sort ls-text-{{ currentTheme }}" (click)="updateSort('CompanyAddInfoType')">
                             <p class="headerText">Description</p>
+                            
                             <span class="headerSpan">
                               <i class="headerChevrons mdi mdi-chevron-up ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address2_ASC')?'order-active':'order-not-active'"></i>
                               <i class="headerChevrons mdi mdi-chevron-down ls-text-{{ currentTheme }}" [ngClass]="(orderIndicator === 'Address2_DESC')?'order-active':'order-not-active'"></i>

@@ -1,6 +1,15 @@
-<h3 mat-dialog-title>Create Item</h3>
-<div mat-dialog-content>
-  <form>
+<!--create Item-->
+<button class="hide" data-toggle="modal" data-target="#addCompany" #openAddModal></button>
+<div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalContent">Add Item</h5>
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Item:</label>
@@ -10,22 +19,19 @@
           <div class="form-group">
             <label class="control-label">Item Description:</label>
             <textarea type="text" placeholder="Item Description" class="form-control"
-             [(ngModel)]="this.newItem.description"
-             [ngModelOptions]="{standalone: true}"
-             required></textarea>
+             [(ngModel)]="this.newItem.description" [ngModelOptions]="{standalone: true}"  required></textarea>
           </div>
           <div class="form-group">
             <ls-autocomplete-tariffs [control]="tariffControl"></ls-autocomplete-tariffs>
-
+              <!--<label class="control-label">Tariff:</label>
+              <select class="form-control" (change)="onTariffChange($event.target.value)">
+                <option *ngFor="let tariffX of this.tarifflist" [value]="tariffX.id" [selected]="tariffX.id === this.tariffID">{{tariffX.subHeading}}</option>
+              </select>-->
           </div>
           <div class="form-group">
               <label class="control-label">Type:</label>
-              <select class="form-control" (change)="onTypeChange($event.target.value)"
-              [formControl]="typeControl">
-                <option *ngFor="let type of this.itemTypes"
-                [value]="type.itemTypeID"
-                [selected]="type.itemTypeID === this.newItem.itemtypeID">
-                {{type.itemType}} - {{type.description}}</option>
+              <select class="form-control" (change)="onTypeChange($event.target.value)" [formControl]="typeControl">
+                <option *ngFor="let type of this.itemTypes" [value]="type.itemTypeID" [selected]="type.itemTypeID === this.newItem.itemtypeID">{{type.itemType}} - {{type.description}}</option>
               </select>
           </div>
           <div class="form-group">
@@ -58,11 +64,30 @@
             <input type="checkbox" [(ngModel)]="this.newItem.qualifyPI" [ngModelOptions]="{standalone: true}" style="height: 15px; width: 15px; margin: 0px 10px"/>
             <label class="control-label">Qualifies for PI</label>
           </div>
+          <!--<div class="row ">
+            <form class="form-group add-scroll col-md-6 text-center">
+                <h5 class="control-label">Available Services</h5>
+                <div class="modal-list-service" style="border: inset;">
+                  <ul class="service-list">
+                    <li (click)="addNewservice(service.serviceID, service.serviceName, true, service.serviceID)" *ngFor="let service of returnedservices"><a><span>{{service.serviceName}}</span></a></li>
+                  </ul>
+                </div>
+            </form>
+            <form class="form-group add-scroll col-md-6 text-center">
+              <h5 class="control-label">Assigned Services</h5>
+              <div class="modal-add-service" style="border: inset;">
+                <ul class="service-list">
+                  <li (click)="removeservice(iservice.itemServiceID, iservice.serviceName, true)" *ngFor="let iservice of itemservicelist"><a><span>{{iservice.serviceName}}</span></a></li>
+                </ul>
+              </div>
+            </form>
+          </div>-->
         </div>
         <div class="modal-footer bg-dark">
           <button type="button" class="btn btn-dark btn-sm" data-dismiss="modal" #closeAddModal>Close</button>
           <button type="button" (click)="AddItem()" class="btn btn-primary btn-sm">Save</button>
         </div>
       </form>
+    </div>
+  </div>
 </div>
-

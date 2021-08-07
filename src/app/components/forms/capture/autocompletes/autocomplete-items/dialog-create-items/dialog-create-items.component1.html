@@ -1,6 +1,8 @@
-<h3 mat-dialog-title>Create Item</h3>
-<div mat-dialog-content>
-  <form>
+<button class="hide" data-toggle="modal" data-target="#addCompany" #openAddModal></button>
+  <div class="modal fade" id="addCompany" tabindex="-1" role="dialog" aria-labelledby="modalContent" aria-hidden="true">
+    <h5 mat-dialog-title>Create Item</h5>
+      <div mat-dialog-content>
+        <form>
         <div class="modal-body">
           <div class="form-group">
             <label class="control-label">Item:</label>
@@ -64,5 +66,7 @@
           <button type="button" (click)="AddItem()" class="btn btn-primary btn-sm">Save</button>
         </div>
       </form>
-</div>
+    </div>
+  </div>
+
 
