@@ -18,4 +18,6 @@ export class CaptureErrorsComponent implements OnInit, OnChanges {
 
   ngOnChanges() {}
 
+  
+
 }
